@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="main_content">
+    <div class="welcome main_grid">
+        <section class="welcome main_grid_row">
+            <div class="main_row_sub">
+                <div class="main_title">
+                    <h2>This is where you manage waste streams</h2>
+                </div>
+                <p>Thank you for visiting, haztrak is currently under construction
+                Come back and visit us later</p>
+                <br>
+                <p>In the meantime, here is an picture of a <a href="{% static 'Pictures/puppy.jpg' %}"> Puppy! </a></p>
+            </div>
+        </section>
+    </div>
+</div>
+<div class="right_col">
+    <div class="col_content_grid">
+        <div class="search_container right_el">
+            <form action="search_site.php">
+                <input type="text" placeholder="Filter..." class="search-content">
+                <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+            </form>
+            <br>
+            <h2>Notifications</h2>
+        </div>
+        <div class="right_el">
+        </div>
+    </div>
+</div>
+{% endblock content %}

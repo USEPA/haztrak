@@ -1,0 +1,96 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <link href="{% static 'css/base.css' %}" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+	<meta name="description"
+	      content="single board computer clusters"/>
+	<meta name="keywords"
+	      content="SOC, Rock64, cluster, single board computer, public, free"/>
+	<meta name="robots"
+	      content="nofollow"/>
+	<meta http-equiv="author"
+	      content="David Graham" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+	
+	<title>Haztrak</title>
+</head>
+    <body>
+    <header class="top_bar">
+        <div class="menu_wrapper">
+            <div class="menu_sect">
+                <div class="menu_icon menu_content">
+                    <img src="{% static '/Pictures/Icons/icon3_60x54.png' %}" alt="icon"/>
+                </div>
+                <div class="menu_title menu_content">
+                    <h2>Haztrak</h2>
+                </div>
+            </div>
+            <div class="menu_sect">
+                <div class="menu_content menu_btn">
+                    <button onclick="menudrop()" class="btn" id="dropbtn">Menu <i class="fa fa-caret-down"></i></button>
+                    <div id="myDropdown" class="dropdown_content">
+                        <a href="/">Home</a>
+                        <a href="about/">About</a> 
+                    </div>
+                </div>
+                    <div class="menu_content menu_btn">
+                        <button id="modal-btn" class="btn">Sign in</button>
+                        <div id="sign-in-modal" class="modal">
+                        <div class="modal_content">
+                            <div class="modal_header">
+                                <span class="close">&times;</span>
+                                <h2>Log in </h2>
+                            </div>
+                            <div class="modal_body">
+                            <section class="sub_cell">
+                                <form action="Registration/Reg_scripts/authenticate.php" method="POST">
+                                    <div class="fieldset">
+                                        <div class="input_sect">
+                                            <div class="input_field">
+                                                <label>
+                                                    <input id="uname" type="text" name ="uname" class="input_text"/>
+                                                    <label for="uname" class="input_label">Username</label>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="input_sect">
+                                            <div class="input_field">
+                                                <label>
+                                                    <input id="psswd" type="password" name ="psswd" required="required" class="input_text"/>
+                                                    <label for="psswd" class="input_label">Password</label>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <input type="submit" value="submit" class="submit_btn"/>
+                                    </div>
+                                </form>
+                            </section>
+                            </div>
+                            <div class="modal_footer">
+                                <div class="menu_content menu_btn">
+                                    <a href="/">
+                                    <button class="btn">Or Sign up</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <main class="page_content">
+            {% block content %}
+            {% endblock content %}
+        </main>
+        <script type="text/javascript" src="{% static 'JS/menufunc.js' %}"></script>
+    </div>
+    <footer id="footer">
+        <p>Check out our <a href="https://github.com/dpgraham4401/glitchycyborg">GitHub </a> for updates</p>
+    </footer>
+</body>
+</html>

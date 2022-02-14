@@ -1,0 +1,360 @@
+* {
+    margin: 0;
+    padding: 0;
+    color: #000066;
+    font-family: sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+.top_bar {
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    min-height: 40px;
+    z-index: 1;
+    background-color: lightsteelblue;
+    background-image: linear-gradient(LightSteelBlue, #93aed2);
+    box-shadow: 0px 0px 5px #222222;
+}
+
+.menu_wrapper{
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu_sect{
+    display: flex;
+    flex-flow: row nowrap;
+    box-sizing: border-box;
+    padding-right: 32px;
+    padding-left: 8px;
+    align-items: center;
+}
+
+.menu_content {
+    padding-right: 8px;
+    position: relative;
+}
+
+.btn {
+  transition-duration: .2s;
+  font-size: 16px;
+  border: none;
+  padding: 0px 8px;
+  border-radius: 16px;
+  font-weight: bold;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+  }
+
+.btn:hover {
+    background-color: silver;
+    border: none;
+    border-radius: 16px;
+  }
+
+  .btn:focus{
+    background-color: silver;
+    border: none;
+    border-radius: 16px;
+    outline: none;
+  }
+
+.dropdown_content {
+    display: none;
+    position: absolute;
+    top: 18px;
+    right: 30px;
+    background-color: silver;
+    border-radius: 16px;
+    max-width: 125px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+.dropdown_content a {
+    border-radius: 16px;
+    padding: 12px 32px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+  }
+
+.dropdown_content a:hover {
+    background-color: #f1f1f1;
+}
+
+.show {display:block;}
+
+#footer {
+    height: 5%;
+    margin-top: -5%;
+    min-height: 75px;
+    position: relative;
+    clear: both;
+    background-color:  #93aed2;
+    background-image: linear-gradient(to top, #93aed2, LightSteelBlue);
+}
+
+a, a:link, a:visited {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    color:DimGray;
+}
+
+#container {
+    position: relative; top: 5%;
+    min-height: 100%;
+    margin-bottom: 5%;
+    overflow: auto;
+}
+
+main {
+    min-height: 1200px;
+    background-color: #dde0e6;
+}
+
+.cells{
+    padding-top: 40px;
+    padding-bottom: 90px;
+    padding-right: 40px;
+    padding-left: 40px;
+    
+}
+
+.cell_grid{
+    display: grid;
+    max-width: 1200px;
+    box-sizing: border-box;
+    justify-content: center;
+    gap: 64px;
+}
+
+.cell_row{
+    display: grid;
+    align-content: start;
+    box-sizing: border-box;
+    gap: 64px;
+    min-width: 300px;
+}
+
+.cell_sub_col{
+    display: grid;
+    row-gap: 12px;
+    align-content: start;
+    box-sizing: border-box;
+    background-color:  #fff;
+    box-shadow: 0px 1px 15px #888888;
+    max-width: 400px;
+    border-radius: 10px;
+}
+
+.card_title{
+    padding: 20px;
+    padding-bottom: 0px;
+}
+
+.sub_cell{
+    padding: 32px;
+    box-sizing: border-box;
+    font-stretch: normal;
+    text-rendering: auto;
+}
+
+.fieldset{
+    padding: 0px 30px 10px 30px;
+    position: relative;
+}
+
+.input_sect{
+    padding-bottom: 16px;
+    padding-right: 10%;
+    position: relative;
+    direction: ltr;
+}
+
+.input_field{
+    border-radius: 4px;
+    border: 0;
+    position: relative;
+    appearance: none;
+}
+
+.input_text{
+    border-radius: 4px;
+    border: 0;
+    background-color: gainsboro;
+    height: 30px;
+    line-height: 30px;
+    padding: 16px 20px 0;
+    width: 90%;
+    box-shadow: 0px 1px 5px #888888;
+    font-size: 14px;
+}
+
+.input_label{
+    position: absolute;
+    top: 4px;
+    left: 10px;
+    /* transform: translateY(0); */
+    font-size: 12px;
+    
+}
+
+.g-signin2{
+    background-color: gainsboro;
+}
+
+.sub_content{
+    width: 100%;
+    font-stretch: normal;
+    box-sizing: border-box;
+}
+
+.action_header{
+    margin-bottom: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: initial;
+}
+
+.action_header_btn{
+    transition-duration: .4s;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    background-color: inherit;
+}
+
+@media only screen and (min-width: 601px) {
+
+    .cell_row{
+        grid-template-columns: repeat( auto-fit, minmax(100px, 1fr) );;
+    }
+}
+
+@media only screen and (max-width: 601px) {
+
+    #menu {
+        height: 10%;
+    }
+
+    .menu_title {
+        display: none;
+    }
+
+    #menu-right {
+        text-align: right;
+        margin-right: 5%;
+        margin-top: 1%;
+    }
+
+    #container {
+        position: relative; top: 10%;
+    }
+
+    main {
+        min-height: 600px;
+    }
+
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal_content {
+    border-radius: 20px;
+    position: relative;
+    background-color: #fff;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal_header {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    padding: 8px 16px;
+    background-color: lightsteelblue;
+    color: white;
+}
+
+.modal_body {
+    padding: 16px 16px;
+    border-radius: 16px;
+}
+
+.modal_footer {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    padding: 8px 16px;
+    background-color: lightsteelblue;
+    color: white;
+}
+
+.submit_btn {
+    transition-duration: .2s;
+    border: none;
+    padding: 0px 8px;
+    border-radius: 16px;
+    font-weight: bold;
+    background-color: silver;
+    }
+  
+  .submit_btn:hover {
+        background-color: gainsboro;
+        border: none;
+        border-radius: 16px;
+    }

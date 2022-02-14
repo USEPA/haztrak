@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="Assets/CSS/gc_base.css" type="text/css" rel="stylesheet" />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+	<meta name="description"
+	      content="single board computer clusters" />
+	<meta name="keywords"
+	      content="SOC, Rock64, cluster, single board computer, public, free" />
+	<meta name="robots"
+	      content="nofollow"/>
+	<meta http-equiv="author"
+	      content="David Graham" />
+	
+	<title> Glitchy | Cyborg</title>
+	<h1> Glitchy Cybord </h1>
+	<div id="menu">
+			<ul id="nav_list">
+			<li><a href="index.html"> Home </a></li>|
+			<li><a href="#About"> About </a></li>|
+			<li><a href="registration.html"> Registration </a></li>|
+			<li><a href="#Tech Specs"> Tech Specs </a></li>|
+			<li><a href="#Comment"> Leave Feedback</a></li>
+		</ul>
+	</div>
+</head>
+<body>
+	
+    <div id="intro" class="text_block">
+		<p>Glitchy Cyborg is currently under construction. Thank you for visiting,
+		please come back in a couple month.</p>
+		<p>In the meantime, here is a picture of
+		<a href="Assets/Pictures/puppy.jpg"> Puppy.</a></p> 
+	</div>
+	
+    <div id="About" class="text_block">
+		<h2 id="About_title" class="text_title"> About </h2>
+			<p>Glitchy Cyborg is the front end for my personal hobby "super" computer, Gaea.
+			Calling it a supercomputer is of course a joke, but you get the idea. 
+			The curent plan being, build this front end, and give people a chance to 
+			try MPI on ARM based hobby clusters without having to build one themselves. </p>
+
+			<p>I'm making it available to others for a couple reason, mostly learning purposes.
+			Please keep in mind, I'm no expert, just passionately curious.</p>
+
+			<p>I'm also considering setting up a forum, where can people can talk about their 
+			own projects, get help, post reviews, watever. We'll see. </p>
+
+			<p>Of course, this is all very fluid, things can change, not tied to anything </p>
+
+			<p>Cheers!</p>
+			<p>DPGraham4401</p>
+	</div>
+	
+    <div id="Tech_Specs" class="text_block">
+		<h2 id="Tech_Specs_Title" class="text_title"> Tech Specs </h2>
+        <p>Gaea consist of a 5 <a href="https://www.pine64.org/devices/
+        single-board-computers/rock64/">Rock64</a> single board computers from Pine64
+        Like most SOCs, the ROCK64 uses ARM cores which use a reduced Instruction (RISC)
+        and are considered more power efficient than their CISC counteparts</p>
+        <h3>Rock64 v2 specs </h3>
+        <figure>
+            <img src="Assets/Pictures/ROCK64_600x355.jpg" alt="photgraph of Rock64" />
+            <br/>
+            <figcaption> Image taken from Pine64.org </figcaption>
+        </figure>
+        <ul id="specs">
+            <li>Rockchip RK3328 CPU</li>
+            <ul id="RK3328">
+                <li> quad core</li> 
+                <li> A53 ARM cores</li>
+                <li> 64 bit</li>
+            </ul>
+            <li>2 Gb DDR3 RAM</li>
+            <li> 32 Gb emmc storage</li>
+        </ul>
+        <p>The cluster uses a Beowolf architecture (1 login node, 4 slave nodes)
+        with 64 Gb of steady state scratch storage. Additional info on other Pin64 products can be found at
+        <a href="www.pine64.org">Pine64.org</a></p>
+	</div>
+	
+    <div id="comment_field" class="input_block">
+		<form action="/PHP/home_comment.php">
+			<fieldset>
+			<legend><h2 id="comments"> Comment</h2></legend>
+			<p> We appreciate any feedback, tips or tricks for this site. Just follow guidelines</p>
+			<p> Guideline #1: Don't be a jerk</p>
+			<p>Name: <input type="text" name="name" maxlength="30" </p>
+			<p><textarea name="comments" cols="40" rows="4"> Enter Comments here...</textarea></p>
+			<p> How did you hear about us?</p>
+			<select name="sources">
+				<option value="Google">Google Search</option>
+				<option value="Social Media">Social Media</option>
+				<option value="Word of Mouth">Word of Mouth</option>
+				<option value="Other">Other</option>
+			</select>
+            <input type="submit" name="Submit" value="submit" />
+		</fieldset>
+	</form>
+	</div>
+
+</body>
+</html>
