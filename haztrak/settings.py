@@ -120,8 +120,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIR = [
-         BASE_DIR / 'trak/static/',
+STATICFILES_DIRS = [
+         BASE_DIR / 'haztrak/static/',
+         "haztrak/static/"
          ]
 
 # Default primary key field type
