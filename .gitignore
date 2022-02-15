@@ -25,3 +25,5 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+bak
+haztrak/static/bak
