@@ -15,11 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from home import views as homeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('trak/', include('trak.urls')),
     path('', include('home.urls')),
-    path('', homeView.home, name='home'),
+    path('emanifest/', include('emanifest.urls')),
 ]

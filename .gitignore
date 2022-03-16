@@ -6,6 +6,13 @@ __pycache__/
 # C extensions
 *.so
 
+# virtual environment
+venv
+venv1
+
+# PyCharm
+.idea
+
 # Distribution / packaging
 .Python
 build/
@@ -26,4 +33,4 @@ share/python-wheels/
 *.egg
 MANIFEST
 bak
-haztrak/static/bak
+static/bak

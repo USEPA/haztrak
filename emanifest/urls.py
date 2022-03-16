@@ -1,7 +1,6 @@
 from django.urls import path
-
 from . import views
 
 urlpatterns = [
-        path('', views.home, name='trak')
+        path('', views.emanifest, name='emanifest')
         ]
