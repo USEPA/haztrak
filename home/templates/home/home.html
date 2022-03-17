@@ -1,3 +1,22 @@
-<h2>this is the homepage</h2>
-<a href="{% url 'trak' %}">trak</a>
-<a href="{% url 'about' %}">about</a>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <div class="text-left">
+                        <h2>Homepage</h2>
+                        <a href="{% url 'home' %}">Home</a>
+                        <a href="{% url 'about' %}">about</a>
+                        <a href="{% url 'emanifest' %}">emanifest</a>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+{% endblock content %}
