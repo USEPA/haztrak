@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
-# from .rcrainfo.manifest import test_manifest
+from .rcrainfo.manifest import sync_mtn
 
 
 # Create your views here.
@@ -9,8 +9,8 @@ def trak_home(request):
 
 
 def sync(request, num):
-    # test_manifest()
+    data = sync_mtn()
     if 1 <= num <= 3:
-        return HttpResponse("Hello!!!")
+        return HttpResponse(data)
     else:
         raise Http404("No such section")
