@@ -31,6 +31,6 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-trak
 bak
 static/bak
+/db.sqlite3
