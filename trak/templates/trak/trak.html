@@ -7,7 +7,7 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-            <!-- Page Heading -->
+            <!-- Page Heading and top level Button -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                 <button id="sync-manifest" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
@@ -15,47 +15,62 @@
                 </button>
             </div>
 
-                        <!-- Content Row -->
-            <div class="row">
-
-                <!-- Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4 ">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Placeholder 1</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">XX,XXX</div>
+                <!-- Start Manifest row -->
+                <div class="row">
+                    <!--  Table card -->
+                    <div class="col">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div
+                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Manifests</h6>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                        aria-labelledby="dropdownMenuLink">
+                                        <div class="dropdown-header">Filter:</div>
+                                        <a class="dropdown-item" href="#">Ready to Sign</a>
+                                        <a class="dropdown-item" href="#">In Transit</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Bulk Sign</a>
+                                    </div>
                                 </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-check fa-2x text-gray-300"></i>
-                                </div>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <th scope="col">MTN</th>
+                                        <th scope="col">status</th>
+                                        <th scope="col">Gen.</th>
+                                        <th scope="col">TSD</th>
+                                        <th scope="col">Last Update</th>
+                                        <th scope="col"></th>
+                                    </thead>
+                                    <tbody>
+                                        {% for m in manifests %}
+                                            <tr>
+                                                <th scope="row">{{ m.manifest_tracking_number }}</th>
+                                                <td>{{ m.status }}</td>
+                                                <td>{{ m.generator }}</td>
+                                                <td>{{ m.tsd }}</td>
+                                                <td>{{ m.update_date }}</td>
+                                                <td>
+                                                    <a href="./manifest/{{ m.manifest_tracking_number }}"
+                                                       class="fas fa-pen"></a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                        Placeholder 2</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">XXX,XXX</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-check fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- end row -->
-            </div>
 
         </div>
         <!-- /.container-fluid -->
