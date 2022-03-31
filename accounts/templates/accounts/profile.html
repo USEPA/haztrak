@@ -6,7 +6,28 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-            profile
+            <p>
+                This comes from the django User model: {{ user.username }}
+            </p>
+            <p>
+                this comes from the OneToOne Profile model that 'extends' User {{ profile.user }}
+            </p>
+            <div class="form-content">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="small mb-1">Username:</label>
+                                    {{ form.user }}
+                                    {{ form.rcra_api_id }}
+                                    {{ form.rcra_api_key }}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
         </div>
         <!-- /.container-fluid -->
 

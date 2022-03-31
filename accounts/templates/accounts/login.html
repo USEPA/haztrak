@@ -8,10 +8,10 @@
         <div class="container-fluid">
 
             <!-- Content Row -->
-            <div class="row">
+            <div class="row justify-content-center">
 
-                <!-- Project Card Example -->
-                <div class="card shadow mb-4">
+                <!-- login card -->
+                <div class="card shadow mb-4 ">
 
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Login</h6>
@@ -29,7 +29,9 @@
                                 Sign Up
                             </button>
                         </form>
-
+                    <div class="text-right">
+                        <p>New user? <a href="{% url 'signup' %}"> Register here</a></p>
+                    </div>
                     </div>
                 </div>
             <!-- End Content Row -->
