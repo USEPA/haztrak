@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
+# from django.contrib import messages
 from django.shortcuts import redirect
 from django.db import IntegrityError
 from .models import Profile
@@ -54,6 +55,12 @@ def login_haztrak(request):
 @login_required
 def profile(request):
     user_profile = Profile.objects.filter(user=request.user).get()
-    if request.method == 'GET':
+    if request.method == 'POST':
+        profile_form = UpdateProfileForm(request.POST, instance=request.user.profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            # messages.success(request, 'Profile successfully updated')
+            return redirect(to='profile')
+    else:
         profile_form = UpdateProfileForm(instance=request.user.profile)
         return render(request, 'accounts/profile.html', {'profile': user_profile, 'form': profile_form})
