@@ -7,6 +7,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import redirect
 from django.db import IntegrityError
 from .models import Profile
+from .forms import UpdateProfileForm
 
 
 def signup_haztrak(request):
@@ -53,5 +54,6 @@ def login_haztrak(request):
 @login_required
 def profile(request):
     user_profile = Profile.objects.filter(user=request.user).get()
-    print(user_profile)
-    return render(request, 'accounts/profile.html', {'profile': user_profile})
+    if request.method == 'GET':
+        profile_form = UpdateProfileForm(instance=request.user.profile)
+        return render(request, 'accounts/profile.html', {'profile': user_profile, 'form': profile_form})
