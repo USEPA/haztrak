@@ -6,7 +6,17 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-            profile
+            <p>
+                This comes from the django User model: {{ user.username }}
+            </p>
+            <p>
+                this comes from the OneToOne Profile model that 'extends' User {{ profile.user }}
+            </p>
+{#            <p>#}
+{#                {% for p in profile %}#}
+{#                    this comes from the profile model: {{ p.user }}#}
+{#                {% endfor %}#}
+{#            </p>#}
         </div>
         <!-- /.container-fluid -->
 

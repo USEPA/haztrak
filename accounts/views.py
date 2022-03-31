@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import redirect
 from django.db import IntegrityError
+from .models import Profile
 
 
 def signup_haztrak(request):
@@ -48,5 +50,8 @@ def login_haztrak(request):
             return redirect('home')
 
 
+@login_required
 def profile(request):
-    return render(request, 'accounts/profile.html')
+    user_profile = Profile.objects.filter(user=request.user).get()
+    print(user_profile)
+    return render(request, 'accounts/profile.html', {'profile': user_profile})
