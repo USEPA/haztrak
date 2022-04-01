@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+        <!-- Main Content -->
+    <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            <!-- Page Heading and top level Button -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">{{ manifest.manifest_tracking_number }}</h1>
+                <button id="" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        class="fas fa-pen fa-sm text-white-50"></i> Sign
+                </button>
+            </div>
+            <div>
+                <p>mtn: {{ manifest.manifest_tracking_number }}</p>
+                <p>ID number: {{ manifest.id }}</p>
+                <p>Generator: {{ manifest.generator }}</p>
+                <p>TSD: {{ manifest.tsd}}</p>
+                <p>Status: {{ manifest.status }}</p>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Page level plugins -->
+    <script src="{% static 'js/trak/sync-db.js' %}"></script>
+
+{% endblock content %}
