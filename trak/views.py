@@ -15,7 +15,7 @@ def manifest_view(request, manifest_id):
     return render(request, 'trak/manifest.html', {'manifest': manifest})
 
 
-def sync(request, ):
+def sync(request):
     pull_manifest()
     return HttpResponse("data")
 

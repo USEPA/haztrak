@@ -19,11 +19,15 @@ def pull_manifest():
     r = manifest_response.response.json()
     print(r['generator']['epaSiteId'])
     Manifest.objects.create(manifest_tracking_number=r['manifestTrackingNumber'],
-                            generator=r['generator']['epaSiteId'],
-                            status=r['status'],
                             created_date=r['createdDate'],
                             update_date=r['updatedDate'],
-                            tsd=r['designatedFacility']['epaSiteId'])
+                            status=r['status'],
+                            # is_public=r['isPublic'],
+                            submission_type=['submissionType'],
+                            signature_status=['signatureStatus'],
+                            generator=r['generator']['epaSiteId'],
+                            tsd=r['designatedFacility']['epaSiteId'],
+                            )
 
 
 def check_auth():
