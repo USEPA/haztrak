@@ -36,11 +36,9 @@ class Manifest(models.Model):
     status = models.CharField(max_length=25,
                               choices=STATUS,
                               default='notAssigned')
-    is_public = models.BooleanField(default=True)
     submission_type = models.CharField(max_length=25,
                                        choices=SUB_TYPE,
                                        default='FullElectronic')
-    signature_status = models.BooleanField(default=False)
     origin_type = models.CharField(max_length=25,
                                    choices=ORIGIN_TYPE,
                                    default='Service')
