@@ -6,12 +6,6 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-            <p>
-                This comes from the django User model: {{ user.username }}
-            </p>
-            <p>
-                this comes from the OneToOne Profile model that 'extends' User {{ profile.user }}
-            </p>
             <div class="form-content">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -19,9 +13,9 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label class="small mb-1">Username:</label>
-                                    {{ form.user }}
-                                    {{ form.rcra_api_id }}
-                                    {{ form.rcra_api_key }}
+                                    <p>username: {{ form.user }}</p>
+                                    <p>RCRAInfo API ID: {{ form.rcra_api_id }}</p>
+                                    <p>RCRAInfo API Key: {{ form.rcra_api_key }}</p>
                             </div>
                         </div>
                     </div>

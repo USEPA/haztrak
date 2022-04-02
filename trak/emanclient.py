@@ -13,7 +13,8 @@ def pull_mtns():
     print(test)
 
 
-def pull_manifest():
+def pull_manifest(request):
+
     check_auth()
     manifest_response = em.GetManByMTN('100032524ELC')  # type: eman.RcrainfoResponse
     r = manifest_response.response.json()
@@ -22,9 +23,16 @@ def pull_manifest():
                             created_date=r['createdDate'],
                             update_date=r['updatedDate'],
                             status=r['status'],
-                            submission_type=['submissionType'],
-                            generator=r['generator']['epaSiteId'],
-                            tsd=r['designatedFacility']['epaSiteId'],
+                            submission_type=r['submissionType'],
+                            origin_type=r['originType'],
+                            # shipped_date=r['shippedDate'],
+                            # received_date=r['receivedDate'],
+                            # certified_date=r['certifiedDate'],
+                            generator_id=r['generator']['epaSiteId'],
+                            tsd_id=r['designatedFacility']['epaSiteId'],
+                            rejection=r['rejection'],
+                            residue=r['residue'],
+                            import_waste=r['import'],
                             )
 
 

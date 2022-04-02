@@ -30,8 +30,8 @@ ORIGIN_TYPE = [
 class Manifest(models.Model):
     # see documentation on USEPA/e-Manifest repo
     # https://github.com/USEPA/e-manifest/blob/master/Services-Information/Schema/emanifest.json
-    created_date = models.DateTimeField('created date')
-    update_date = models.DateTimeField('update date')
+    created_date = models.DateTimeField('created date', auto_now_add=True)
+    update_date = models.DateTimeField('update date', auto_now_add=True)
     manifest_tracking_number = models.CharField(max_length=15)
     status = models.CharField(max_length=25,
                               choices=STATUS,
@@ -42,12 +42,16 @@ class Manifest(models.Model):
     origin_type = models.CharField(max_length=25,
                                    choices=ORIGIN_TYPE,
                                    default='Service')
-    shipped_date = models.DateTimeField('shipped date')
-    potential_ship_date = models.CharField(max_length=15)
-    recieved_date = models.DateTimeField('received date')
-    certified_date = models.DateTimeField('certified date')
-    generator = models.CharField(max_length=25)
-    tsd = models.CharField(max_length=25)
+    shipped_date = models.DateTimeField('shipped date', null=True)
+    potential_ship_date = models.CharField(max_length=15, null=True)
+    received_date = models.DateTimeField('received date', null=True)
+    certified_date = models.DateTimeField('certified date', null=True)
+    generator_id = models.CharField(max_length=25)
+    tsd_id = models.CharField(max_length=25)
+    rejection = models.BooleanField(default=False)
+    residue = models.BooleanField(default=False)
+    import_waste = models.BooleanField(default=False)
+    contains_rejected_residue = models.BooleanField(default=False)
 #     discrepancy = models.BooleanField(default=False)
 #     submission_type = models.CharField(max_length=25)
 #     origin_type = models.CharField(max_length=25)

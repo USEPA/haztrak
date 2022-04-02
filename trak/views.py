@@ -16,6 +16,6 @@ def manifest_view(request, manifest_id):
 
 
 def sync(request):
-    pull_manifest()
+    pull_manifest(request)
     return HttpResponse("data")
 

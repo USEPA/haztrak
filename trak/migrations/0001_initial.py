@@ -23,10 +23,10 @@ class Migration(migrations.Migration):
                 ('origin_type', models.CharField(choices=[('Web', 'Web'), ('Service', 'Service'), ('Mail', 'Mail')], default='Service', max_length=25)),
                 ('shipped_date', models.DateTimeField(verbose_name='shipped date')),
                 ('potential_ship_date', models.CharField(max_length=15)),
-                ('recieved_date', models.DateTimeField(verbose_name='received date')),
+                ('received_date', models.DateTimeField(verbose_name='received date')),
                 ('certified_date', models.DateTimeField(verbose_name='certified date')),
-                ('generator', models.CharField(max_length=25)),
-                ('tsd', models.CharField(max_length=25)),
+                ('generator_id', models.CharField(max_length=25)),
+                ('tsd_id', models.CharField(max_length=25)),
             ],
         ),
     ]
