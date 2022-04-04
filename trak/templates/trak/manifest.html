@@ -8,11 +8,17 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
             <!-- Page Heading and top level Button -->
+
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h3 mb-0 text-gray-800">{{ manifest.manifest_tracking_number }}</h1>
-                <button id="" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                        class="fas fa-pen fa-sm text-white-50"></i> Sign
-                </button>
+                <div>
+                    <button id="" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                            class="fas fa-wrench fa-sm text-white-50"></i> Edit
+                    </button>
+                    <button id="" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                            class="fas fa-pen fa-sm text-white-50"></i> Sign
+                    </button>
+                </div>
             </div>
             <div>
                 <p>mtn: {{ manifest.manifest_tracking_number }}</p>

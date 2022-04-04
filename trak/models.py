@@ -52,11 +52,6 @@ class Manifest(models.Model):
     residue = models.BooleanField(default=False)
     import_waste = models.BooleanField(default=False)
     contains_rejected_residue = models.BooleanField(default=False)
-#     discrepancy = models.BooleanField(default=False)
-#     submission_type = models.CharField(max_length=25)
-#     origin_type = models.CharField(max_length=25)
-#     shipped_date = models.DateTimeField('shipped date')
-#     received_date = models.DateTimeField('receive date')
 
     def __str__(self):
         return self.manifest_tracking_number
