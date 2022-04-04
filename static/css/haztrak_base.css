@@ -1,0 +1,5 @@
+/* minimal modifications to bootstrap framework*/
+
+.table thead th {
+    border-top: 0;
+}

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'trak',
     'home',
     'accounts',
+    'sites',
 ]
 
 MIDDLEWARE = [
