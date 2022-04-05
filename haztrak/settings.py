@@ -81,14 +81,13 @@ WSGI_APPLICATION = 'haztrak.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'helloworld',
-        'USER': 'dg',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
+        'NAME': 'hazdev',
+        'USER': 'hazdev',
+        'PASSWORD': os.getenv('HAZDEV_PASSWD'),
+        'HOST': '192.168.1.116',
         'PORT': '5432',
     }
 }
-
 
 
 # Password validation
