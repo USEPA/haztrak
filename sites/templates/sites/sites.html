@@ -41,6 +41,7 @@
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
+                                            <th scope="col"></th>
                                             <th scope="col">EPA ID</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Address</th>
@@ -48,6 +49,14 @@
 {#                                            <th scope="col"><a href="#" class="fas fa-arrow-right"></a> </th>#}
                                         </thead>
                                         <tbody>
+                                            {% for site in sites %}
+                                            <tr>
+                                              <th scope="row">{{ forloop.counter }}</th>
+                                              <td>{{ site.epa_id }}</td>
+                                              <td>{{ site.epa_name }}</td>
+                                              <td>{{ site.site_address }}</td>
+                                            </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -55,9 +64,6 @@
                         </div>
                 </div>
             </div>
-            {% for m in sites %}
-                {{ m.epa_id }}
-            {% endfor %}
         </div>
         <!-- /.container-fluid -->
 
