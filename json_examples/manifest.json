@@ -1,0 +1,1352 @@
+{
+  "id": 0,
+  "createdDate": "2022-04-07T18:25:12.085Z",
+  "updatedDate": "2022-04-07T18:25:12.085Z",
+  "createdBy": {
+    "id": 0,
+    "createdDate": "2022-04-07T18:25:12.085Z",
+    "updatedDate": "2022-04-07T18:25:12.085Z",
+    "userId": "string",
+    "status": "Unverified",
+    "lastLoginDate": "2022-04-07T18:25:12.085Z",
+    "securityAgreementDate": "2022-04-07T18:25:12.085Z",
+    "passwordResetDate": "2022-04-07T18:25:12.085Z",
+    "passwordStatus": "Active",
+    "contact": {
+      "id": 0,
+      "createdDate": "2022-04-07T18:25:12.085Z",
+      "updatedDate": "2022-04-07T18:25:12.085Z",
+      "firstName": "string",
+      "middleInitial": "string",
+      "lastName": "string",
+      "phoneNumber": "string",
+      "phoneExtension": "string",
+      "organization": {
+        "id": 0,
+        "name": "string",
+        "organizationType": "RCRA",
+        "cdxOrganizationId": 0
+      },
+      "contractor": true,
+      "address1": "string",
+      "address2": "string",
+      "city": "string",
+      "state": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.085Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "region": "string",
+        "defaultThirdCharacter": "string",
+        "category": "string",
+        "name": "string"
+      },
+      "foreignState": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.085Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "countryCode": "string",
+        "name": "string"
+      },
+      "zip": "string",
+      "legacyUserId": "string",
+      "email": "string",
+      "title": "string",
+      "userRoleId": 0,
+      "userOrganizationId": 0,
+      "country": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.085Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "name": "string"
+      }
+    },
+    "profileType": "RCRA",
+    "sponsor": {
+      "code": "string",
+      "name": "string",
+      "entityType": {
+        "id": 0,
+        "name": "string"
+      }
+    }
+  },
+  "createdSiteId": "string",
+  "updatedBy": {
+    "id": 0,
+    "createdDate": "2022-04-07T18:25:12.085Z",
+    "updatedDate": "2022-04-07T18:25:12.085Z",
+    "userId": "string",
+    "status": "Unverified",
+    "lastLoginDate": "2022-04-07T18:25:12.085Z",
+    "securityAgreementDate": "2022-04-07T18:25:12.085Z",
+    "passwordResetDate": "2022-04-07T18:25:12.085Z",
+    "passwordStatus": "Active",
+    "contact": {
+      "id": 0,
+      "createdDate": "2022-04-07T18:25:12.085Z",
+      "updatedDate": "2022-04-07T18:25:12.085Z",
+      "firstName": "string",
+      "middleInitial": "string",
+      "lastName": "string",
+      "phoneNumber": "string",
+      "phoneExtension": "string",
+      "organization": {
+        "id": 0,
+        "name": "string",
+        "organizationType": "RCRA",
+        "cdxOrganizationId": 0
+      },
+      "contractor": true,
+      "address1": "string",
+      "address2": "string",
+      "city": "string",
+      "state": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.085Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "region": "string",
+        "defaultThirdCharacter": "string",
+        "category": "string",
+        "name": "string"
+      },
+      "foreignState": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.085Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "countryCode": "string",
+        "name": "string"
+      },
+      "zip": "string",
+      "legacyUserId": "string",
+      "email": "string",
+      "title": "string",
+      "userRoleId": 0,
+      "userOrganizationId": 0,
+      "country": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.085Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "name": "string"
+      }
+    },
+    "profileType": "RCRA",
+    "sponsor": {
+      "code": "string",
+      "name": "string",
+      "entityType": {
+        "id": 0,
+        "name": "string"
+      }
+    }
+  },
+  "updatedByRole": "Industry",
+  "manifestTrackingNumber": "string",
+  "status": "NotAssigned",
+  "isPublic": true,
+  "discrepancy": true,
+  "submissionType": "FullElectronic",
+  "signatureStatus": true,
+  "validationStatus": true,
+  "originType": "Web",
+  "shippedDate": "2022-04-07T18:25:12.086Z",
+  "receivedDate": "2022-04-07T18:25:12.086Z",
+  "provideImageGeneratorInfo": true,
+  "generator": {
+    "id": 0,
+    "epaSiteId": "string",
+    "name": "string",
+    "modified": true,
+    "hasSiteId": true,
+    "registered": true,
+    "paperSignatureInfo": {
+      "printedName": "string",
+      "signatureDate": "2022-04-07T18:25:12.086Z"
+    },
+    "mailingAddress": {
+      "id": 0,
+      "streetNumber": "string",
+      "address1": "string",
+      "address2": "string",
+      "city": "string",
+      "state": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "region": "string",
+        "defaultThirdCharacter": "string",
+        "category": "string",
+        "name": "string"
+      },
+      "foreignState": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "countryCode": "string",
+        "name": "string"
+      },
+      "country": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "name": "string"
+      },
+      "zip": "string"
+    },
+    "siteAddress": {
+      "id": 0,
+      "streetNumber": "string",
+      "address1": "string",
+      "address2": "string",
+      "city": "string",
+      "state": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "region": "string",
+        "defaultThirdCharacter": "string",
+        "category": "string",
+        "name": "string"
+      },
+      "foreignState": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "countryCode": "string",
+        "name": "string"
+      },
+      "country": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "name": "string"
+      },
+      "zip": "string"
+    },
+    "contact": {
+      "id": 0,
+      "firstName": "string",
+      "middleName": "string",
+      "lastName": "string",
+      "phoneNumber": {
+        "number": "string",
+        "extension": "string"
+      },
+      "email": "string",
+      "companyName": "string"
+    },
+    "emergencyPhone": {
+      "number": "string",
+      "extension": "string"
+    },
+    "electronicSignatures": [
+      {
+        "id": 0,
+        "signer": {
+          "firstName": "string",
+          "lastName": "string",
+          "userId": "string"
+        },
+        "signatureDate": "2022-04-07T18:25:12.086Z",
+        "humanReadableDocument": {
+          "id": 0,
+          "name": "string",
+          "size": 0,
+          "mimeType": "APPLICATION_PDF",
+          "storageType": "Local",
+          "cloudStorageId": "string",
+          "md5Checksum": "string"
+        },
+        "cromerrDocumentId": "string",
+        "cromerrActivityId": "string",
+        "signerRole": "Industry"
+      }
+    ],
+    "gisPrimary": true,
+    "esaCapable": true,
+    "limitedEsignCapable": true,
+    "hasRegisteredUser": true
+  },
+  "broker": {
+    "id": 0,
+    "epaSiteId": "string",
+    "name": "string",
+    "modified": true,
+    "hasSiteId": true,
+    "registered": true,
+    "paperSignatureInfo": {
+      "printedName": "string",
+      "signatureDate": "2022-04-07T18:25:12.086Z"
+    },
+    "mailingAddress": {
+      "id": 0,
+      "streetNumber": "string",
+      "address1": "string",
+      "address2": "string",
+      "city": "string",
+      "state": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "region": "string",
+        "defaultThirdCharacter": "string",
+        "category": "string",
+        "name": "string"
+      },
+      "foreignState": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "countryCode": "string",
+        "name": "string"
+      },
+      "country": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "name": "string"
+      },
+      "zip": "string"
+    },
+    "siteAddress": {
+      "id": 0,
+      "streetNumber": "string",
+      "address1": "string",
+      "address2": "string",
+      "city": "string",
+      "state": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "region": "string",
+        "defaultThirdCharacter": "string",
+        "category": "string",
+        "name": "string"
+      },
+      "foreignState": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "countryCode": "string",
+        "name": "string"
+      },
+      "country": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "name": "string"
+      },
+      "zip": "string"
+    },
+    "contact": {
+      "id": 0,
+      "firstName": "string",
+      "middleName": "string",
+      "lastName": "string",
+      "phoneNumber": {
+        "number": "string",
+        "extension": "string"
+      },
+      "email": "string",
+      "companyName": "string"
+    },
+    "emergencyPhone": {
+      "number": "string",
+      "extension": "string"
+    },
+    "electronicSignatures": [
+      {
+        "id": 0,
+        "signer": {
+          "firstName": "string",
+          "lastName": "string",
+          "userId": "string"
+        },
+        "signatureDate": "2022-04-07T18:25:12.086Z",
+        "humanReadableDocument": {
+          "id": 0,
+          "name": "string",
+          "size": 0,
+          "mimeType": "APPLICATION_PDF",
+          "storageType": "Local",
+          "cloudStorageId": "string",
+          "md5Checksum": "string"
+        },
+        "cromerrDocumentId": "string",
+        "cromerrActivityId": "string",
+        "signerRole": "Industry"
+      }
+    ],
+    "gisPrimary": true,
+    "esaCapable": true,
+    "limitedEsignCapable": true,
+    "hasRegisteredUser": true
+  },
+  "transporters": [
+    {
+      "id": 0,
+      "epaSiteId": "string",
+      "name": "string",
+      "modified": true,
+      "hasSiteId": true,
+      "registered": true,
+      "paperSignatureInfo": {
+        "printedName": "string",
+        "signatureDate": "2022-04-07T18:25:12.086Z"
+      },
+      "mailingAddress": {
+        "id": 0,
+        "streetNumber": "string",
+        "address1": "string",
+        "address2": "string",
+        "city": "string",
+        "state": {
+          "id": 0,
+          "code": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.086Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "region": "string",
+          "defaultThirdCharacter": "string",
+          "category": "string",
+          "name": "string"
+        },
+        "foreignState": {
+          "id": 0,
+          "code": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.086Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "countryCode": "string",
+          "name": "string"
+        },
+        "country": {
+          "id": 0,
+          "code": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.086Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "name": "string"
+        },
+        "zip": "string"
+      },
+      "siteAddress": {
+        "id": 0,
+        "streetNumber": "string",
+        "address1": "string",
+        "address2": "string",
+        "city": "string",
+        "state": {
+          "id": 0,
+          "code": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.086Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "region": "string",
+          "defaultThirdCharacter": "string",
+          "category": "string",
+          "name": "string"
+        },
+        "foreignState": {
+          "id": 0,
+          "code": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.086Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "countryCode": "string",
+          "name": "string"
+        },
+        "country": {
+          "id": 0,
+          "code": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.086Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "name": "string"
+        },
+        "zip": "string"
+      },
+      "contact": {
+        "id": 0,
+        "firstName": "string",
+        "middleName": "string",
+        "lastName": "string",
+        "phoneNumber": {
+          "number": "string",
+          "extension": "string"
+        },
+        "email": "string",
+        "companyName": "string"
+      },
+      "emergencyPhone": {
+        "number": "string",
+        "extension": "string"
+      },
+      "electronicSignatures": [
+        {
+          "id": 0,
+          "signer": {
+            "firstName": "string",
+            "lastName": "string",
+            "userId": "string"
+          },
+          "signatureDate": "2022-04-07T18:25:12.086Z",
+          "humanReadableDocument": {
+            "id": 0,
+            "name": "string",
+            "size": 0,
+            "mimeType": "APPLICATION_PDF",
+            "storageType": "Local",
+            "cloudStorageId": "string",
+            "md5Checksum": "string"
+          },
+          "cromerrDocumentId": "string",
+          "cromerrActivityId": "string",
+          "signerRole": "Industry"
+        }
+      ],
+      "gisPrimary": true,
+      "esaCapable": true,
+      "limitedEsignCapable": true,
+      "hasRegisteredUser": true,
+      "order": 0
+    }
+  ],
+  "designatedFacility": {
+    "id": 0,
+    "epaSiteId": "string",
+    "name": "string",
+    "modified": true,
+    "hasSiteId": true,
+    "registered": true,
+    "paperSignatureInfo": {
+      "printedName": "string",
+      "signatureDate": "2022-04-07T18:25:12.086Z"
+    },
+    "mailingAddress": {
+      "id": 0,
+      "streetNumber": "string",
+      "address1": "string",
+      "address2": "string",
+      "city": "string",
+      "state": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "region": "string",
+        "defaultThirdCharacter": "string",
+        "category": "string",
+        "name": "string"
+      },
+      "foreignState": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "countryCode": "string",
+        "name": "string"
+      },
+      "country": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "name": "string"
+      },
+      "zip": "string"
+    },
+    "siteAddress": {
+      "id": 0,
+      "streetNumber": "string",
+      "address1": "string",
+      "address2": "string",
+      "city": "string",
+      "state": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "region": "string",
+        "defaultThirdCharacter": "string",
+        "category": "string",
+        "name": "string"
+      },
+      "foreignState": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "countryCode": "string",
+        "name": "string"
+      },
+      "country": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.086Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "name": "string"
+      },
+      "zip": "string"
+    },
+    "contact": {
+      "id": 0,
+      "firstName": "string",
+      "middleName": "string",
+      "lastName": "string",
+      "phoneNumber": {
+        "number": "string",
+        "extension": "string"
+      },
+      "email": "string",
+      "companyName": "string"
+    },
+    "emergencyPhone": {
+      "number": "string",
+      "extension": "string"
+    },
+    "electronicSignatures": [
+      {
+        "id": 0,
+        "signer": {
+          "firstName": "string",
+          "lastName": "string",
+          "userId": "string"
+        },
+        "signatureDate": "2022-04-07T18:25:12.086Z",
+        "humanReadableDocument": {
+          "id": 0,
+          "name": "string",
+          "size": 0,
+          "mimeType": "APPLICATION_PDF",
+          "storageType": "Local",
+          "cloudStorageId": "string",
+          "md5Checksum": "string"
+        },
+        "cromerrDocumentId": "string",
+        "cromerrActivityId": "string",
+        "signerRole": "Industry"
+      }
+    ],
+    "gisPrimary": true,
+    "esaCapable": true,
+    "limitedEsignCapable": true,
+    "hasRegisteredUser": true
+  },
+  "wastes": [
+    {
+      "id": 0,
+      "hazardous": true,
+      "dotInformation": {
+        "id": 0,
+        "properShippingName": {
+          "id": 0,
+          "code": "string",
+          "description": "string",
+          "idNumbers": [
+            {
+              "id": 0,
+              "code": "string",
+              "description": "string",
+              "hazardClasses": [
+                {
+                  "id": 0,
+                  "code": "string",
+                  "description": "string"
+                }
+              ],
+              "packingGroups": [
+                {
+                  "id": 0,
+                  "code": "string",
+                  "description": "string"
+                }
+              ]
+            }
+          ],
+          "technicalNameIndicator": true,
+          "comments": [
+            {
+              "id": 0,
+              "code": "string",
+              "description": "string"
+            }
+          ]
+        },
+        "idNumber": {
+          "id": 0,
+          "code": "string",
+          "description": "string",
+          "hazardClasses": [
+            {
+              "id": 0,
+              "code": "string",
+              "description": "string"
+            }
+          ],
+          "packingGroups": [
+            {
+              "id": 0,
+              "code": "string",
+              "description": "string"
+            }
+          ]
+        },
+        "technicalName": "string",
+        "packingGroup": {
+          "id": 0,
+          "code": "string",
+          "description": "string"
+        },
+        "hazardClass": {
+          "id": 0,
+          "code": "string",
+          "description": "string"
+        },
+        "rqIndicator": true,
+        "rqDescription": "string",
+        "printedDotInformation": "string",
+        "psnComment": {
+          "id": 0,
+          "code": "string",
+          "description": "string"
+        }
+      },
+      "wasteDescription": "string",
+      "quantity": {
+        "id": 0,
+        "containerNumber": 0,
+        "containerType": {
+          "id": 0,
+          "code": "string",
+          "description": "string"
+        },
+        "quantity": 0,
+        "unitOfMeasurement": {
+          "id": 0,
+          "code": "string",
+          "description": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.086Z",
+          "helpNotes": "string",
+          "activityLocation": "string"
+        }
+      },
+      "hazardousWaste": {
+        "id": 0,
+        "federalWasteCodes": [
+          {
+            "id": 0,
+            "code": "string",
+            "description": "string",
+            "active": true,
+            "usage": "string",
+            "userId": "string",
+            "lastChange": "2022-04-07T18:25:12.086Z",
+            "helpNotes": "string",
+            "activityLocation": "string",
+            "brLoadActive": true,
+            "codeType": "string",
+            "acute": true
+          }
+        ],
+        "tsdfWasteCodes": [
+          {
+            "id": 0,
+            "code": "string",
+            "description": "string",
+            "active": true,
+            "usage": "string",
+            "userId": "string",
+            "lastChange": "2022-04-07T18:25:12.086Z",
+            "helpNotes": "string",
+            "activityLocation": "string",
+            "brLoadActive": true,
+            "codeType": "string",
+            "acute": true
+          }
+        ],
+        "generatorWasteCodes": [
+          {
+            "id": 0,
+            "code": "string",
+            "description": "string",
+            "active": true,
+            "usage": "string",
+            "userId": "string",
+            "lastChange": "2022-04-07T18:25:12.086Z",
+            "helpNotes": "string",
+            "activityLocation": "string",
+            "brLoadActive": true,
+            "codeType": "string",
+            "acute": true
+          }
+        ],
+        "txWasteCodes": [
+          "string"
+        ]
+      },
+      "additionalInfo": {
+        "id": 0,
+        "originalManifestTrackingNumbers": [
+          "string"
+        ],
+        "consentNumber": "string",
+        "comments": [
+          {
+            "id": 0,
+            "label": "string",
+            "description": "string",
+            "handlerId": "string"
+          }
+        ],
+        "handlingInstructions": "string",
+        "newManifestDestination": "OriginalGenerator"
+      },
+      "validationStatus": true,
+      "lineNumber": 0,
+      "br": true,
+      "brInfo": {
+        "id": 0,
+        "density": 0,
+        "densityUnitOfMeasurement": {
+          "id": 0,
+          "code": "string",
+          "description": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.087Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "codeName": "string"
+        },
+        "formCode": {
+          "id": 0,
+          "code": "string",
+          "description": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.087Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "codeName": "string"
+        },
+        "sourceCode": {
+          "id": 0,
+          "code": "string",
+          "description": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.087Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "codeName": "string"
+        },
+        "wasteMinimizationCode": {
+          "id": 0,
+          "code": "string",
+          "description": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.087Z",
+          "helpNotes": "string",
+          "activityLocation": "string"
+        }
+      },
+      "managementMethodCode": {
+        "id": 0,
+        "code": "string",
+        "description": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.087Z",
+        "helpNotes": "string",
+        "activityLocation": "string"
+      },
+      "pcb": true,
+      "pcbInfos": [
+        {
+          "id": 0,
+          "loadType": {
+            "id": 0,
+            "code": "string",
+            "description": "string"
+          },
+          "articleContainerId": "string",
+          "dateOfRemoval": "2022-04-07T18:25:12.087Z",
+          "weight": 0,
+          "wasteType": "string",
+          "bulkIdentity": "string"
+        }
+      ],
+      "discrepancyResidueInfo": {
+        "id": 0,
+        "wasteQuantity": true,
+        "residue": true,
+        "discrepancyComments": "string",
+        "residueComments": "string",
+        "wasteType": true
+      },
+      "epaWaste": true
+    }
+  ],
+  "additionalInfo": {
+    "id": 0,
+    "originalManifestTrackingNumbers": [
+      "string"
+    ],
+    "consentNumber": "string",
+    "comments": [
+      {
+        "id": 0,
+        "label": "string",
+        "description": "string",
+        "handlerId": "string"
+      }
+    ],
+    "handlingInstructions": "string",
+    "newManifestDestination": "OriginalGenerator"
+  },
+  "printedDocument": {
+    "id": 0,
+    "name": "string",
+    "size": 0,
+    "mimeType": "APPLICATION_PDF",
+    "storageType": "Local",
+    "cloudStorageId": "string",
+    "md5Checksum": "string"
+  },
+  "rejection": true,
+  "residue": true,
+  "importFlag": true,
+  "containsPreviousRejectOrResidue": true,
+  "formDocument": {
+    "id": 0,
+    "name": "string",
+    "size": 0,
+    "mimeType": "APPLICATION_PDF",
+    "storageType": "Local",
+    "cloudStorageId": "string",
+    "md5Checksum": "string"
+  },
+  "newResidueManifestTrackingNumbers": [
+    "string"
+  ],
+  "rejectionInfo": {
+    "id": 0,
+    "transporterOnSite": true,
+    "rejectionType": "FullReject",
+    "alternateDesignatedFacilityType": "Generator",
+    "generatorPaperSignature": {
+      "printedName": "string",
+      "signatureDate": "2022-04-07T18:25:12.087Z"
+    },
+    "generatorElectronicSignature": {
+      "id": 0,
+      "signer": {
+        "firstName": "string",
+        "lastName": "string",
+        "userId": "string"
+      },
+      "signatureDate": "2022-04-07T18:25:12.087Z",
+      "humanReadableDocument": {
+        "id": 0,
+        "name": "string",
+        "size": 0,
+        "mimeType": "APPLICATION_PDF",
+        "storageType": "Local",
+        "cloudStorageId": "string",
+        "md5Checksum": "string"
+      },
+      "cromerrDocumentId": "string",
+      "cromerrActivityId": "string",
+      "signerRole": "Industry"
+    },
+    "alternateDesignatedFacility": {
+      "id": 0,
+      "epaSiteId": "string",
+      "name": "string",
+      "modified": true,
+      "hasSiteId": true,
+      "registered": true,
+      "paperSignatureInfo": {
+        "printedName": "string",
+        "signatureDate": "2022-04-07T18:25:12.087Z"
+      },
+      "mailingAddress": {
+        "id": 0,
+        "streetNumber": "string",
+        "address1": "string",
+        "address2": "string",
+        "city": "string",
+        "state": {
+          "id": 0,
+          "code": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.087Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "region": "string",
+          "defaultThirdCharacter": "string",
+          "category": "string",
+          "name": "string"
+        },
+        "foreignState": {
+          "id": 0,
+          "code": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.087Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "countryCode": "string",
+          "name": "string"
+        },
+        "country": {
+          "id": 0,
+          "code": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.087Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "name": "string"
+        },
+        "zip": "string"
+      },
+      "siteAddress": {
+        "id": 0,
+        "streetNumber": "string",
+        "address1": "string",
+        "address2": "string",
+        "city": "string",
+        "state": {
+          "id": 0,
+          "code": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.087Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "region": "string",
+          "defaultThirdCharacter": "string",
+          "category": "string",
+          "name": "string"
+        },
+        "foreignState": {
+          "id": 0,
+          "code": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.087Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "countryCode": "string",
+          "name": "string"
+        },
+        "country": {
+          "id": 0,
+          "code": "string",
+          "active": true,
+          "usage": "string",
+          "userId": "string",
+          "lastChange": "2022-04-07T18:25:12.087Z",
+          "helpNotes": "string",
+          "activityLocation": "string",
+          "name": "string"
+        },
+        "zip": "string"
+      },
+      "contact": {
+        "id": 0,
+        "firstName": "string",
+        "middleName": "string",
+        "lastName": "string",
+        "phoneNumber": {
+          "number": "string",
+          "extension": "string"
+        },
+        "email": "string",
+        "companyName": "string"
+      },
+      "emergencyPhone": {
+        "number": "string",
+        "extension": "string"
+      },
+      "electronicSignatures": [
+        {
+          "id": 0,
+          "signer": {
+            "firstName": "string",
+            "lastName": "string",
+            "userId": "string"
+          },
+          "signatureDate": "2022-04-07T18:25:12.087Z",
+          "humanReadableDocument": {
+            "id": 0,
+            "name": "string",
+            "size": 0,
+            "mimeType": "APPLICATION_PDF",
+            "storageType": "Local",
+            "cloudStorageId": "string",
+            "md5Checksum": "string"
+          },
+          "cromerrDocumentId": "string",
+          "cromerrActivityId": "string",
+          "signerRole": "Industry"
+        }
+      ],
+      "gisPrimary": true,
+      "esaCapable": true,
+      "limitedEsignCapable": true,
+      "hasRegisteredUser": true
+    },
+    "newManifestTrackingNumbers": [
+      "string"
+    ],
+    "rejectionComments": "string"
+  },
+  "importInfo": {
+    "id": 0,
+    "portOfEntry": {
+      "id": 0,
+      "code": "string",
+      "description": "string",
+      "active": true,
+      "usage": "string",
+      "userId": "string",
+      "lastChange": "2022-04-07T18:25:12.087Z",
+      "helpNotes": "string",
+      "cityPort": "string",
+      "state": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.087Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "region": "string",
+        "defaultThirdCharacter": "string",
+        "category": "string",
+        "name": "string"
+      }
+    },
+    "importGenerator": {
+      "id": 0,
+      "name": "string",
+      "address": "string",
+      "city": "string",
+      "country": {
+        "id": 0,
+        "code": "string",
+        "active": true,
+        "usage": "string",
+        "userId": "string",
+        "lastChange": "2022-04-07T18:25:12.087Z",
+        "helpNotes": "string",
+        "activityLocation": "string",
+        "name": "string"
+      },
+      "postalCode": "string",
+      "province": "string"
+    }
+  },
+  "correctionInfo": {
+    "epaSiteId": "string",
+    "versionNumber": 0,
+    "active": true,
+    "ppcActive": true,
+    "correctedDate": "2022-04-07T18:25:12.087Z",
+    "electronicSignatureInfo": {
+      "id": 0,
+      "signer": {
+        "firstName": "string",
+        "lastName": "string",
+        "userId": "string"
+      },
+      "signatureDate": "2022-04-07T18:25:12.087Z",
+      "humanReadableDocument": {
+        "id": 0,
+        "name": "string",
+        "size": 0,
+        "mimeType": "APPLICATION_PDF",
+        "storageType": "Local",
+        "cloudStorageId": "string",
+        "md5Checksum": "string"
+      },
+      "cromerrDocumentId": "string",
+      "cromerrActivityId": "string",
+      "signerRole": "Industry"
+    },
+    "initiatorRole": "Industry"
+  },
+  "ppcInfo": {
+    "ppcStatus": "Draft",
+    "mailReceivedDate": "2022-04-07T18:25:12.087Z",
+    "packageId": "string",
+    "documentLocation": "string",
+    "comments": "string",
+    "numberOfPages": 0,
+    "questionsAnswers": "string"
+  },
+  "transferRequested": true,
+  "transferStatus": "Complete",
+  "originalSubmissionType": "FullElectronic",
+  "potentialShipDate": "2022-04-07T18:25:12.087Z",
+  "reTransferCount": 0,
+  "nextTransferTime": "2022-04-07T18:25:12.087Z",
+  "locked": true,
+  "lockReason": "AsyncSign",
+  "certifiedDate": "2022-04-07T18:25:12.087Z",
+  "certifiedBy": {
+    "firstName": "string",
+    "lastName": "string",
+    "userId": "string"
+  }
+}
