@@ -1,0 +1,281 @@
+{
+  "createdDate": "2021-09-24T16:54:01.499+0000",
+  "updatedDate": "2021-09-24T16:54:01.500+0000",
+  "manifestTrackingNumber": "100032524ELC",
+  "status": "Scheduled",
+  "discrepancy": false,
+  "submissionType": "FullElectronic",
+  "originType": "Service",
+  "generator": {
+    "epaSiteId": "VATESTGEN001",
+    "name": "VA TEST GEN 2021",
+    "modified": false,
+    "registered": true,
+    "mailingAddress": {
+      "address1": "123 VA TEST GEN 2021 WAY",
+      "city": "ARLINGTON",
+      "state": {
+        "code": "VA",
+        "name": "VIRGINIA"
+      },
+      "country": {
+        "code": "US",
+        "name": "UNITED STATES"
+      },
+      "zip": "22202"
+    },
+    "siteAddress": {
+      "address1": "123 VA TEST GEN 2021 WAY",
+      "city": "ARLINGTON",
+      "state": {
+        "code": "VA",
+        "name": "VIRGINIA"
+      },
+      "country": {
+        "code": "US",
+        "name": "UNITED STATES"
+      },
+      "zip": "22202"
+    },
+    "contact": {
+      "phone": {
+        "number": "703-308-0023"
+      },
+      "email": "Testing@EPA.GOV"
+    },
+    "emergencyPhone": {
+      "number": "888-456-1234"
+    },
+    "electronicSignaturesInfo": [
+      {
+        "humanReadableDocument": {
+          "name": "human-readable.html",
+          "size": 177949,
+          "mimeType": "TEXT_HTML"
+        }
+      }
+    ],
+    "gisPrimary": false,
+    "canEsign": true,
+    "limitedEsign": true,
+    "hasRegisteredEmanifestUser": true
+  },
+  "transporters": [
+    {
+      "epaSiteId": "VATESTRAN02",
+      "name": "VA TEST TRAN 2021",
+      "modified": false,
+      "registered": true,
+      "mailingAddress": {
+        "address1": "321 VA TEST TRAN 2021 ROAD",
+        "city": "ARLINGTON",
+        "state": {
+          "code": "VA",
+          "name": "VIRGINIA"
+        },
+        "country": {
+          "code": "US",
+          "name": "UNITED STATES"
+        },
+        "zip": "22202"
+      },
+      "siteAddress": {
+        "address1": "321 VA TEST TRAN 2021 ROAD",
+        "city": "ARLINGTON",
+        "state": {
+          "code": "VA",
+          "name": "VIRGINIA"
+        },
+        "country": {
+          "code": "US",
+          "name": "UNITED STATES"
+        },
+        "zip": "22202"
+      },
+      "contact": {
+        "phone": {
+          "number": "703-308-0023"
+        }
+      },
+      "electronicSignaturesInfo": [],
+      "gisPrimary": false,
+      "canEsign": true,
+      "limitedEsign": true,
+      "hasRegisteredEmanifestUser": true,
+      "order": 1
+    }
+  ],
+  "designatedFacility": {
+    "epaSiteId": "VATESTTSDF03",
+    "name": "VA TEST TSDF 2021",
+    "modified": false,
+    "registered": true,
+    "mailingAddress": {
+      "address1": "234 VA TEST TSDF 2021 DRIVE",
+      "city": "ARLINGTON",
+      "state": {
+        "code": "VA",
+        "name": "VIRGINIA"
+      },
+      "country": {
+        "code": "US",
+        "name": "UNITED STATES"
+      },
+      "zip": "22202"
+    },
+    "siteAddress": {
+      "address1": "234 VA TEST TSDF 2021 DRIVE",
+      "city": "ARLINGTON",
+      "state": {
+        "code": "VA",
+        "name": "VIRGINIA"
+      },
+      "country": {
+        "code": "US",
+        "name": "UNITED STATES"
+      },
+      "zip": "22202"
+    },
+    "contact": {
+      "phone": {
+        "number": "703-308-0023"
+      },
+      "email": "Testing@EPA.GOV"
+    },
+    "electronicSignaturesInfo": [],
+    "gisPrimary": false,
+    "canEsign": true,
+    "limitedEsign": true,
+    "hasRegisteredEmanifestUser": true
+  },
+  "wastes": [
+    {
+      "dotHazardous": true,
+      "dotInformation": {
+        "idNumber": {
+          "code": "NA1993"
+        },
+        "printedDotInformation": "NA1993, Waste Diesel fuel, 3, III"
+      },
+      "quantity": {
+        "containerNumber": 12,
+        "containerType": {
+          "code": "DM",
+          "description": "Metal drums, barrels, kegs"
+        },
+        "quantity": 480,
+        "unitOfMeasurement": {
+          "code": "G",
+          "description": "Gallons"
+        }
+      },
+      "hazardousWaste": {
+        "federalWasteCodes": [
+          {
+            "code": "D001",
+            "description": "IGNITABLE WASTE"
+          }
+        ],
+        "tsdfStateWasteCodes": [],
+        "generatorStateWasteCodes": [],
+        "txWasteCodes": []
+      },
+      "additionalInfo": {
+        "originalManifestTrackingNumbers": [],
+        "comments": [
+          {
+            "label": "Profile #",
+            "description": "E654321",
+            "handlerId": "VATESTRAN02"
+          }
+        ],
+        "handlingInstructions": "This Manifest is for testing purposes and does not match reality it's more to show what you can do."
+      },
+      "lineNumber": 1,
+      "br": false,
+      "managementMethod": {
+        "code": "H020",
+        "description": "SOLVENTS RECOVERY"
+      },
+      "pcb": false,
+      "pcbInfos": [],
+      "discrepancyResidueInfo": {
+        "wasteQuantity": false,
+        "wasteType": false,
+        "residue": false
+      },
+      "epaWaste": true
+    },
+    {
+      "dotHazardous": false,
+      "wasteDescription": "PCB contaminated bags",
+      "quantity": {
+        "containerNumber": 12,
+        "containerType": {
+          "code": "BA",
+          "description": "Burlap, cloth, paper, or plastic bags"
+        },
+        "quantity": 432,
+        "unitOfMeasurement": {
+          "code": "K",
+          "description": "Kilograms"
+        }
+      },
+      "hazardousWaste": {
+        "federalWasteCodes": [],
+        "tsdfStateWasteCodes": [],
+        "generatorStateWasteCodes": [],
+        "txWasteCodes": []
+      },
+      "additionalInfo": {
+        "originalManifestTrackingNumbers": [],
+        "comments": [],
+        "handlingInstructions": "This Manifest is for testing purposes and does not match reality it's more to show what you can do."
+      },
+      "lineNumber": 2,
+      "br": false,
+      "managementMethod": {
+        "code": "H040",
+        "description": "INCINERATION"
+      },
+      "pcb": true,
+      "pcbInfos": [
+        {
+          "loadType": {
+            "code": "BulkWaste"
+          },
+          "dateOfRemoval": "2018-04-18T04:00:00.000+0000",
+          "weight": 432,
+          "bulkIdentity": "Bulk Waste ID2"
+        },
+        {
+          "loadType": {
+            "code": "BulkWaste"
+          },
+          "dateOfRemoval": "2018-03-18T04:00:00.000+0000",
+          "weight": 432,
+          "bulkIdentity": "Bulk Waste ID"
+        }
+      ],
+      "discrepancyResidueInfo": {
+        "wasteQuantity": false,
+        "wasteType": false,
+        "residue": false
+      },
+      "epaWaste": false
+    }
+  ],
+  "additionalInfo": {
+    "originalManifestTrackingNumbers": [],
+    "comments": [],
+    "handlingInstructions": "On the Manifest level. This Manifest is for testing purposes and does not match reality it's more to show what you can do."
+  },
+  "rejection": false,
+  "residue": false,
+  "import": false,
+  "containsPreviousRejectOrResidue": false,
+  "residueNewManifestTrackingNumbers": [],
+  "correctionInfo": {
+    "active": true
+  }
+}

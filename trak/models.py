@@ -1,4 +1,5 @@
 from django.db import models
+from sites.models import EpaSite
 
 # Choices
 STATUS = [
@@ -46,6 +47,8 @@ class Manifest(models.Model):
     potential_ship_date = models.CharField(max_length=15, null=True)
     received_date = models.DateTimeField('received date', null=True)
     certified_date = models.DateTimeField('certified date', null=True)
+    # transporter = models.ForeignKey('EpaSite', related_name='transporter', on_delete=models.DO_NOTHING)
+    transporter = models.JSONField()
     generator_id = models.CharField(max_length=25)
     tsd_id = models.CharField(max_length=25)
     rejection = models.BooleanField(default=False)
@@ -55,3 +58,13 @@ class Manifest(models.Model):
 
     def __str__(self):
         return self.manifest_tracking_number
+
+
+class ElectronicSignature(models.Model):
+    signer_first_name = models.CharField(max_length=200)
+    signer_last_name = models.CharField(max_length=200)
+    signer_user_id = models.CharField(max_length=200)
+    signature_date = models.DateTimeField('signature_date')
+
+    def __str__(self):
+        return f'{self.signature_date} by {self.signer_user_id}'
