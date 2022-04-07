@@ -42,21 +42,20 @@
                                     <table class="table">
                                         <thead>
                                             <th scope="col"></th>
-                                            <th scope="col">EPA ID</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Address</th>
+                                            <th scope="col">MTN</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Last Update</th>
                                             <th scope="col"></th>
-{#                                            <th scope="col"><a href="#" class="fas fa-arrow-right"></a> </th>#}
                                         </thead>
                                         <tbody>
-                                            {% for site in sites %}
+                                            {% for manifest in manifests %}
                                             <tr>
                                               <th scope="row">{{ forloop.counter }}</th>
-                                                <td>{{ site.epa_id }}</td>
-                                                <td>{{ site.epa_name }}</td>
-                                                <td>{{ site.site_address }}</td>
-                                                <td><a class="fas fa-eye" href="{{ site.epa_id }}/details"></a></td>
-                                                <td><a class="fas fa-scroll" href="{{ site.epa_id }}/manifests"></a></td>
+                                                <td>{{ manifest.manifest_tracking_number }}</td>
+                                                <td>{{ manifest.status }}</td>
+                                                <td>{{ manifest.update_date }}</td>
+{#                                                <td><a class="fas fa-eye" href="{{ manifest.id }}/details"></a></td>#}
+                                                <td><a class="fas fa-pen" href="{% url 'manifest' manifest.id %}"></a></td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
