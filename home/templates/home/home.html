@@ -24,10 +24,10 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         Manifest in Transit</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">XX,XXX</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ in_transit }}</div>
                                 </div>
                                 <div class="col-auto">
-                                    <a class="fas fa-fw fa-truck fa-2x text-gray-300" href=""></a>
+                                    <a class="fas fa-fw fa-truck fa-2x text-gray-300" href="{% url 'in_transit' %}"></a>
                                 </div>
                             </div>
                         </div>
