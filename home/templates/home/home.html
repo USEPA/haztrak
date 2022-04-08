@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block sidebar %}
+    {% include 'home/home_nav.html' %}
+{% endblock sidebar %}
 {% block content %}
     <!-- Main Content -->
     <div id="content">
@@ -8,11 +11,48 @@
         <div class="container-fluid">
 
             <div class="text-left">
-                <h2>Homepage</h2>
-                <a href="{% url 'home' %}">Home</a>
-                <a href="{% url 'about' %}">about</a>
-                <a href="{% url 'trak' %}">Trak</a>
-                <a href="{% url 'sites' %}">Sites</a>
+                <h2><i>Welcome Back!</i></h2>
+            </div>
+
+            <div class="row">
+
+                <!-- Card Example -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Manifest in Transit</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">XX,XXX</div>
+                                </div>
+                                <div class="col-auto">
+                                    <a class="fas fa-fw fa-truck fa-2x text-gray-300" href=""></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Example -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Ready for Signature</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">XXX,XXX</div>
+                                </div>
+                                <div class="col-auto">
+                                    <a class="fas fa-pen fa-2x text-gray-300 " href=""></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
 
         </div>

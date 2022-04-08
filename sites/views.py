@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import EpaSite
 from trak.models import Manifest
 
+
 @login_required
 def sites_dashboard(request):
     epa_sites = request.user.profile.epa_sites.all()
