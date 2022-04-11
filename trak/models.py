@@ -47,10 +47,12 @@ class Manifest(models.Model):
     potential_ship_date = models.CharField(max_length=15, null=True)
     received_date = models.DateTimeField('received date', null=True)
     certified_date = models.DateTimeField('certified date', null=True)
-    # transporter = models.ForeignKey('EpaSite', related_name='transporter', on_delete=models.DO_NOTHING)
+    # Hazardous waste handlers
     transporter = models.JSONField()
     generator_id = models.CharField(max_length=25)
+    generator_info = models.JSONField()
     tsd_id = models.CharField(max_length=25)
+    tsd_info = models.JSONField()
     rejection = models.BooleanField(default=False)
     residue = models.BooleanField(default=False)
     import_waste = models.BooleanField(default=False)
