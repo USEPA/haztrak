@@ -22,4 +22,5 @@ urlpatterns = [
     path('trak/', include('trak.urls')),
     path('accounts/', include('accounts.urls')),
     path('sites/', include('sites.urls')),
+    path('api/', include('api.urls')),
 ]
