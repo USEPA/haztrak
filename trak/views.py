@@ -23,5 +23,5 @@ def manifests_in_transit(request):
 
 def sync(request):
     pull_manifest(request)
-    return HttpResponse("data")
+    return HttpResponse("Manifest pulled")
 
