@@ -22,3 +22,11 @@ haztrak is a simple web application that aims to showcase how hazardous waste ha
   - emanifest client API library
 - PostgreSQL
 - The Bootstrap Library   
+
+
+## Areas in need of help 04/11/2022
+1. Testing
+2. CI/CD
+3. documentation
+4. Setting up a portable development environment
+5. Pretty much everything else
