@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import EpaSite
-from trak.models import Manifest
+from apps.trak.models import Manifest
 
 
 @login_required

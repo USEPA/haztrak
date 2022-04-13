@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'trak',
-    'home',
-    'accounts',
-    'sites',
+    'apps.trak',
+    'apps.home',
+    'apps.accounts',
+    'apps.sites',
 ]
 
 MIDDLEWARE = [
@@ -80,12 +80,8 @@ WSGI_APPLICATION = 'haztrak.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hazdev',
-        'USER': 'hazdev',
-        'PASSWORD': os.getenv('HAZDEV_PASSWD'),
-        'HOST': '192.168.1.116',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
