@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from sites.models import EpaSite
+from apps.sites.models import EpaSite
 
 
 class Profile(models.Model):
