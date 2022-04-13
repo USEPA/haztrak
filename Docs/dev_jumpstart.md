@@ -16,9 +16,13 @@ $ git clone https://github.com/dpgraham4401/dpgraham.git
 ```
 $ python -m venv <name_of_venv_directory>
 ```
-4. activate the virtual environment (i'm using the git bash shell, if usign command prompt or powershell, not sure)
+4. activate the virtual environment
 ```
 $ source <name_of_venv_directory>/Scripts/activate
+```
+4a. If using Windows Command Prompt / Powershell
+```
+$ .\<name_of_venv_directory>\Scripts\activate
 ```
 5. install dependencies
 ```
