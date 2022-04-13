@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.home',
     'apps.accounts',
     'apps.sites',
+    'apps.api'
 ]
 
 MIDDLEWARE = [

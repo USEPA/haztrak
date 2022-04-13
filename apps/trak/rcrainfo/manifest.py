@@ -1,4 +1,4 @@
-from emanifest import client as em
+from rcrainfo import client as em
 import os
 
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from trak.models import Manifest
+from apps.trak.models import Manifest
 
 
 class ManifestSerializer(serializers.ModelSerializer):
