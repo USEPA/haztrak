@@ -1,5 +1,5 @@
 from django.db import models
-from sites.models import EpaSite
+from apps.sites.models import EpaSite
 
 # Choices
 STATUS = [

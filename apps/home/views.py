@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from trak.models import Manifest
+from apps.trak.models import Manifest
 
 
 @login_required
