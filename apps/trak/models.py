@@ -1,31 +1,18 @@
+import datetime
 from django.db import models
 from apps.sites.models import EpaSite
+from rcrainfo import global_choices as ri
 
-# Choices
-STATUS = [
-    ('notAssigned', 'Not Assigned'),
-    ('Pending', 'Pending'),
-    ('Scheduled', 'Scheduled'),
-    ('InTransit', 'In Transit'),
-    ('ReadyForSignature', 'Ready for Signature'),
-    ('Signed', 'Signed'),
-    ('Corrected', 'Corrected'),
-    ('UnderCorrection', 'Under Correction'),
-    ('MtnValidationFailed', 'MTN Validation Failed'),
-]
 
-SUB_TYPE = [
-    ('FullElectronic', 'Full Electronic'),
-    ('DataImage5Copy', 'Data + Image'),
-    ('Hybrid', 'Hybrid'),
-    ('Image', 'Image'),
-]
+class ManifestSimple(models.Model):
+    manifestTrackingNumber = models.CharField(max_length=15)
+    createdDate = models.DateTimeField(null=True, default=datetime.datetime.now())
+    status = models.CharField(max_length=25,
+                              choices=ri.STATUS,
+                              default='notAssigned')
 
-ORIGIN_TYPE = [
-    ('Web', 'Web'),
-    ('Service', 'Service'),
-    ('Mail', 'Mail'),
-]
+    def __str__(self):
+        return self.manifestTrackingNumber
 
 
 class Manifest(models.Model):
@@ -35,13 +22,13 @@ class Manifest(models.Model):
     update_date = models.DateTimeField('update date', auto_now_add=True)
     manifest_tracking_number = models.CharField(max_length=15)
     status = models.CharField(max_length=25,
-                              choices=STATUS,
+                              choices=ri.STATUS,
                               default='notAssigned')
     submission_type = models.CharField(max_length=25,
-                                       choices=SUB_TYPE,
+                                       choices=ri.SUB_TYPE,
                                        default='FullElectronic')
     origin_type = models.CharField(max_length=25,
-                                   choices=ORIGIN_TYPE,
+                                   choices=ri.ORIGIN_TYPE,
                                    default='Service')
     shipped_date = models.DateTimeField('shipped date', null=True)
     potential_ship_date = models.CharField(max_length=15, null=True)

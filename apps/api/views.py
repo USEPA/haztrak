@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import ManifestSerializer
 from apps.trak.models import Manifest
+from rcrainfo import rcrainfo
 
 
 class ManifestView(APIView):
@@ -21,8 +22,7 @@ class SyncManifest(APIView):
 
     def get(self, request, mtn=None):
         if mtn:
-            print("hello there!")
             return Response(status=200)
         else:
-            print("hello there 2!")
+            rcrainfo.get_mtns()
             return Response(data={'test': 'hello'})
