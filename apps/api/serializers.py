@@ -1,6 +1,6 @@
 from rest_framework import serializers
+
 from apps.trak.models import Manifest, ManifestSimple
-from rcrainfo import global_choices as ri
 
 
 class ManifestSerializer(serializers.ModelSerializer):
@@ -12,13 +12,14 @@ class ManifestSerializer(serializers.ModelSerializer):
         # fields = ['id', 'manifest_tracking_number', 'transporter']
 
 
-class TestSerializer(serializers.Serializer):
-    manifestTrackingNumber = serializers.CharField(max_length=15)
-    createdDate = serializers.DateTimeField()
-    status = serializers.ChoiceField(choices=ri.STATUS, default='notAssigned')
+class TestSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         pass
 
     def create(self, validated_data):
         return ManifestSimple.objects.create(**validated_data)
+
+    class Meta:
+        model = ManifestSimple
+        fields = '__all__'

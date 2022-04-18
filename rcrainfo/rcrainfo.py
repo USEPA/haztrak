@@ -1,11 +1,11 @@
-from emanifest import client as em
-import os
 import io
-from apps.trak.models import ManifestSimple
-import datetime
-from apps.api.serializers import ManifestSerializer, TestSerializer
+import os
+
+from emanifest import client as em
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
+
+from apps.api.serializers import TestSerializer
 
 
 def get_mtns():
@@ -15,17 +15,19 @@ def get_mtns():
 
     ri = em.new_client('preprod')
     ri.Auth(os.getenv('RCRAINFO_API_ID'), os.getenv('RCRAINFO_API_KEY'))
-    resp = ri.GetManByMTN('100032524ELC')
+    resp = ri.GetManByMTN('100033134ELC')
     json = JSONRenderer().render(resp.json)
 
     stream = io.BytesIO(json)
     data = JSONParser().parse(stream=stream)
-    print('data type: %s' % type(data))
+    # print('data type: %s' % type(stream))
     serializer = TestSerializer(data=data)
     serializer.is_valid()
-    print(serializer.is_valid())
-    print(serializer.errors)
-    serializer.save()
+    print("is valid: ", serializer.is_valid())
+    if not serializer.is_valid():
+        print("errors: ", serializer.errors)
+    else:
+        serializer.save()
 
 
 def get_manifest(mtn: str):
