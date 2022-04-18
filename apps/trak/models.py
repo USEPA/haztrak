@@ -21,19 +21,13 @@ class Manifest(models.Model):
                                   default='Service')
     shippedDate = models.DateTimeField('Shipped date', null=True)
     receivedDate = models.DateTimeField('Received date', null=True)
-    # Handler information currently saved as JSON field instead of nested objects
-    # TODO: investigate and design conversion from JSONFields to nested objects,
-    # I believe will require implementing custom create() and update() methods for the
-    # rest framework serializer
     transporters = models.JSONField()
     generator = models.ForeignKey('Handler', on_delete=models.PROTECT)
     broker = models.JSONField(null=True)
     designatedFacility = models.JSONField()
-    # Wastes and other fields stored as JSON field
     wastes = models.JSONField()
     additionalInfo = models.JSONField(null=True)
     printedDocument = models.JSONField(null=True)
-    # More basics fields
     rejection = models.BooleanField(null=True)
     residue = models.BooleanField(null=True)
     importFlag = models.BooleanField(null=True)
@@ -62,7 +56,15 @@ class Manifest(models.Model):
 
 
 class Handler(models.Model):
-    epaSiteId = models.CharField(max_length=25, unique=True)
+    epaSiteId = models.CharField(max_length=25)
+    name = models.CharField(max_length=200)
+    registered = models.BooleanField()
+    mailingAddress = models.JSONField()
+    siteAddress = models.JSONField()
+    contact = models.JSONField()
+    emergencyPhone = models.JSONField()
+    canEsign = models.BooleanField()
+    hasRegisteredEmanifestUser = models.BooleanField()
 
     def __str__(self):
         return self.epaSiteId
