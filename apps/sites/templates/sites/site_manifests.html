@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-        <!-- Main Content -->
+    <!-- Main Content -->
     <div id="content">
 
         <!-- Begin Page Content -->
@@ -16,53 +16,53 @@
             </div>
             <div class="row">
                 <div class="col">
-                   <div class="card shadow mb-4">
-                            <!-- Card Header - Dropdown -->
-                            <div
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">Sites</h6>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                        aria-labelledby="dropdownMenuLink">
-                                        <div class="dropdown-header">Filter:</div>
-                                        <a class="dropdown-item" href="#">placeholder</a>
-                                        <a class="dropdown-item" href="#">placeholder </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">placeholder </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Card Body -->
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <th scope="col"></th>
-                                            <th scope="col">MTN</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Last Update</th>
-                                            <th scope="col"></th>
-                                        </thead>
-                                        <tbody>
-                                            {% for manifest in manifests %}
-                                            <tr>
-                                              <th scope="row">{{ forloop.counter }}</th>
-                                                <td>{{ manifest.manifest_tracking_number }}</td>
-                                                <td>{{ manifest.status }}</td>
-                                                <td>{{ manifest.update_date }}</td>
-{#                                                <td><a class="fas fa-eye" href="{{ manifest.id }}/details"></a></td>#}
-                                                <td><a class="fas fa-eye" href="{% url 'manifest' manifest.id %}"></a></td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
+                            <h6 class="m-0 font-weight-bold text-primary">Sites</h6>
+                            <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                     aria-labelledby="dropdownMenuLink">
+                                    <div class="dropdown-header">Filter:</div>
+                                    <a class="dropdown-item" href="#">placeholder</a>
+                                    <a class="dropdown-item" href="#">placeholder </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">placeholder </a>
                                 </div>
                             </div>
                         </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <th scope="col"></th>
+                                    <th scope="col">MTN</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Last Update</th>
+                                    <th scope="col"></th>
+                                    </thead>
+                                    <tbody>
+                                    {% for manifest in manifests %}
+                                        <tr>
+                                            <th scope="row">{{ forloop.counter }}</th>
+                                            <td>{{ manifest.manifestTrackingNumber }}</td>
+                                            <td>{{ manifest.status }}</td>
+                                            <td>{{ manifest.certifiedDate }}</td>
+                                            {#                                                <td><a class="fas fa-eye" href="{{ manifest.id }}/details"></a></td>#}
+                                            <td><a class="fas fa-eye" href="{% url 'manifest' manifest.id %}"></a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

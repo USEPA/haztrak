@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import EpaSite
+from django.shortcuts import render
+
 from apps.trak.models import Manifest
+from .models import EpaSite
 
 
 @login_required
@@ -18,5 +19,5 @@ def sites_details(request, epa_id):
 
 @login_required
 def site_manifests(request, epa_id):
-    site_object = Manifest.objects.filter(generator_id=epa_id)
+    site_object = Manifest.objects.filter(generator__epaSiteId=epa_id)
     return render(request, 'sites/site_manifests.html', {'manifests': site_object})
