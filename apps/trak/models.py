@@ -3,7 +3,7 @@ import datetime
 from django.db import models
 
 from apps.sites.models import EpaSite
-from rcrainfo import global_choices as ri
+from lib.rcrainfo import lookups as ri
 
 
 class Manifest(models.Model):

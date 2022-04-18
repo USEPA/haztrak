@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.trak.models import Manifest
-from rcrainfo import rcrainfo
+from lib.rcrainfo import rcrainfo
 from .serializers import ManifestSerializer
 
 
