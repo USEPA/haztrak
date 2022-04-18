@@ -8,7 +8,8 @@ from rcrainfo import global_choices as ri
 
 class Manifest(models.Model):
     manifestTrackingNumber = models.CharField(max_length=15)
-    createdDate = models.DateTimeField(null=True, default=datetime.datetime.now())
+    createdDate = models.DateTimeField(null=True)
+    updatedDate = models.DateTimeField(default=datetime.datetime.now())
     status = models.CharField(max_length=25,
                               choices=ri.STATUS,
                               default='notAssigned')

@@ -9,10 +9,7 @@ from apps.api.serializers import ManifestSerializer
 
 
 def get_mtns():
-    # test = ManifestSimple(manifestTrackingNumber='123456789ELC', createdDate=datetime.datetime.now(), status='notAssigned')
-    # serializer = ManifestSerializer(test)
-    # json = JSONRenderer().render(serializer.data)
-
+    # prototyping function
     ri = em.new_client('preprod')
     ri.Auth(os.getenv('RCRAINFO_API_ID'), os.getenv('RCRAINFO_API_KEY'))
     resp = ri.GetManByMTN('100033134ELC')
@@ -20,7 +17,6 @@ def get_mtns():
 
     stream = io.BytesIO(json)
     data = JSONParser().parse(stream=stream)
-    # print('data type: %s' % type(stream))
     serializer = ManifestSerializer(data=data)
     serializer.is_valid()
     print("is valid: ", serializer.is_valid())
