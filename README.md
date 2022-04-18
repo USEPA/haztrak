@@ -28,5 +28,4 @@ haztrak is a simple web application that aims to showcase how hazardous waste ha
 1. Testing
 2. CI/CD
 3. documentation
-4. Setting up a portable development environment
-5. Pretty much everything else
+4. Pretty much everything else
