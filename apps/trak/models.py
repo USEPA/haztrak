@@ -26,7 +26,7 @@ class Manifest(models.Model):
     # I believe will require implementing custom create() and update() methods for the
     # rest framework serializer
     transporters = models.JSONField()
-    generator = models.JSONField()
+    generator = models.ForeignKey('Handler', on_delete=models.PROTECT)
     broker = models.JSONField(null=True)
     designatedFacility = models.JSONField()
     # Wastes and other fields stored as JSON field
@@ -59,6 +59,13 @@ class Manifest(models.Model):
 
     def __str__(self):
         return self.manifestTrackingNumber
+
+
+class Handler(models.Model):
+    epaSiteId = models.CharField(max_length=25, unique=True)
+
+    def __str__(self):
+        return self.epaSiteId
 
 
 class ElectronicSignature(models.Model):
