@@ -34,3 +34,6 @@ share/python-wheels/
 bak
 static/bak
 /db.sqlite3
+
+# other
+*.DS_Store
