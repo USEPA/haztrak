@@ -1,8 +1,8 @@
 {
   "createdDate": "2022-01-21T15:51:04.143+0000",
   "updatedDate": "2022-01-21T19:22:02.857+0000",
-  "manifestTrackingNumber": "100033134ELC",
-  "status": "Signed",
+  "manifestTrackingNumber": "123456789ELC",
+  "status": "InTransit",
   "discrepancy": false,
   "submissionType": "FullElectronic",
   "originType": "Web",
