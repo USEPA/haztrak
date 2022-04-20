@@ -20,9 +20,14 @@ class Manifest(models.Model):
     shippedDate = models.DateTimeField('Shipped date', null=True)
     receivedDate = models.DateTimeField('Received date', null=True)
     transporters = models.JSONField()
-    generator = models.ForeignKey('Handler', on_delete=models.PROTECT)
+    generator = models.ForeignKey('Handler',
+                                  on_delete=models.PROTECT,
+                                  related_name='Generator')
     broker = models.JSONField(null=True)
-    designatedFacility = models.JSONField()
+    # designatedFacility = models.JSONField()
+    designatedFacility = models.ForeignKey('Handler',
+                                           on_delete=models.PROTECT,
+                                           related_name='Designated_Facility')
     wastes = models.JSONField()
     additionalInfo = models.JSONField(null=True)
     printedDocument = models.JSONField(null=True)
