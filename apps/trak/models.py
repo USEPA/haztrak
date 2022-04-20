@@ -1,23 +1,19 @@
-import datetime
-
 from django.db import models
-
-from apps.sites.models import EpaSite
-from lib.rcrainfo import lookups as ri
+from lib.rcrainfo import lookups as lu
 
 
 class Manifest(models.Model):
     manifestTrackingNumber = models.CharField(max_length=15)
     createdDate = models.DateTimeField(null=True)
-    updatedDate = models.DateTimeField(default=datetime.datetime.now())
+    updatedDate = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=25,
-                              choices=ri.STATUS,
+                              choices=lu.STATUS,
                               default='notAssigned')
     submissionType = models.CharField(max_length=25,
-                                      choices=ri.SUB_TYPE,
+                                      choices=lu.SUB_TYPE,
                                       default='FullElectronic')
     originType = models.CharField(max_length=25,
-                                  choices=ri.ORIGIN_TYPE,
+                                  choices=lu.ORIGIN_TYPE,
                                   default='Service')
     shippedDate = models.DateTimeField('Shipped date', null=True)
     receivedDate = models.DateTimeField('Received date', null=True)
@@ -41,7 +37,7 @@ class Manifest(models.Model):
     transferRequested = models.BooleanField(null=True)
     transferStatus = models.CharField(max_length=200, null=True)
     originalSubmissionType = models.CharField(max_length=25,
-                                              choices=ri.SUB_TYPE,
+                                              choices=lu.SUB_TYPE,
                                               null=True)
     potentialShipDate = models.DateTimeField('Potential Ship Date', null=True)
     reTransferCount = models.IntegerField(null=True)
@@ -58,12 +54,16 @@ class Manifest(models.Model):
 class Handler(models.Model):
     epaSiteId = models.CharField(max_length=25)
     name = models.CharField(max_length=200)
+    modified = models.BooleanField()
     registered = models.BooleanField()
     mailingAddress = models.JSONField()
     siteAddress = models.JSONField()
     contact = models.JSONField()
     emergencyPhone = models.JSONField()
+    electronicSignaturesInfo = models.JSONField(null=True)
+    gisPrimary = models.BooleanField()
     canEsign = models.BooleanField()
+    limitedEsign = models.BooleanField()
     hasRegisteredEmanifestUser = models.BooleanField()
 
     def __str__(self):
