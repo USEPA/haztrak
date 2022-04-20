@@ -1,19 +1,23 @@
-from django.shortcuts import render
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, logout, authenticate
-from django.shortcuts import redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.db import IntegrityError
-from .models import Profile
+from django.shortcuts import redirect
+from django.shortcuts import render
+
 from .forms import UpdateProfileForm
+from .models import Profile
 
 
 def signup_haztrak(request):
     if request.method == 'GET':
-        return render(request, 'accounts/signup.html',
-                      {'form': UserCreationForm})
+        if request.user.is_authenticated:
+            return redirect('home')
+        else:
+            return render(request, 'accounts/signup.html',
+                          {'form': UserCreationForm})
     else:
         if request.POST['password1'] == request.POST['password2']:
             try:
@@ -37,8 +41,11 @@ def logout_haztrak(request):
 
 def login_haztrak(request):
     if request.method == 'GET':
-        return render(request, 'accounts/login.html',
-                      {'form': AuthenticationForm})
+        if request.user.is_authenticated:
+            return redirect('home')
+        else:
+            return render(request, 'accounts/login.html',
+                          {'form': AuthenticationForm})
     else:
         user = authenticate(request, username=request.POST['username'],
                             password=request.POST['password'])

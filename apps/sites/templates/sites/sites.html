@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block sidebar %}
+    {% include 'sites/site_nav.html' %}
+{% endblock sidebar %}
 {% block content %}
 
-        <!-- Main Content -->
+    <!-- Main Content -->
     <div id="content">
 
         <!-- Begin Page Content -->
@@ -16,56 +19,56 @@
             </div>
             <div class="row">
                 <div class="col">
-                   <div class="card shadow mb-4">
-                            <!-- Card Header - Dropdown -->
-                            <div
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">Sites</h6>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                        aria-labelledby="dropdownMenuLink">
-                                        <div class="dropdown-header">Filter:</div>
-                                        <a class="dropdown-item" href="#">placeholder</a>
-                                        <a class="dropdown-item" href="#">placeholder </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">placeholder </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Card Body -->
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col"></th>
-                                                <th scope="col">EPA ID</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Address</th>
-                                                <th scope="col"></th>
-                                                {# <th scope="col"><a href="#" class="fas fa-arrow-right"></a> </th>#}
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for site in sites %}
-                                            <tr>
-                                              <th scope="row">{{ forloop.counter }}</th>
-                                                <td>{{ site.epa_id }}</td>
-                                                <td>{{ site.epa_name }}</td>
-                                                <td>{{ site.site_address }}</td>
-                                                <td><a class="fas fa-eye" href="{{ site.epa_id }}/details"></a></td>
-                                                <td><a class="fas fa-scroll" href="{{ site.epa_id }}/manifests"></a></td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
+                            <h6 class="m-0 font-weight-bold text-primary">Sites</h6>
+                            <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                     aria-labelledby="dropdownMenuLink">
+                                    <div class="dropdown-header">Filter:</div>
+                                    <a class="dropdown-item" href="#">placeholder</a>
+                                    <a class="dropdown-item" href="#">placeholder </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">placeholder </a>
                                 </div>
                             </div>
                         </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">EPA ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col"></th>
+                                        {# <th scope="col"><a href="#" class="fas fa-arrow-right"></a> </th>#}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for site in sites %}
+                                        <tr>
+                                            <th scope="row">{{ forloop.counter }}</th>
+                                            <td>{{ site.epa_id }}</td>
+                                            <td>{{ site.epa_name }}</td>
+                                            <td>{{ site.site_address }}</td>
+                                            <td><a class="fas fa-eye" href="{{ site.epa_id }}/details"></a></td>
+                                            <td><a class="fas fa-scroll" href="{{ site.epa_id }}/manifests"></a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

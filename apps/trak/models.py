@@ -1,4 +1,5 @@
 from django.db import models
+
 from lib.rcrainfo import lookups as lu
 
 
@@ -9,6 +10,7 @@ class Manifest(models.Model):
     status = models.CharField(max_length=25,
                               choices=lu.STATUS,
                               default='notAssigned')
+    discrepancy = models.BooleanField(default=False)
     submissionType = models.CharField(max_length=25,
                                       choices=lu.SUB_TYPE,
                                       default='FullElectronic')
@@ -26,7 +28,9 @@ class Manifest(models.Model):
     printedDocument = models.JSONField(null=True)
     rejection = models.BooleanField(null=True)
     residue = models.BooleanField(null=True)
-    importFlag = models.BooleanField(null=True)
+    residueNewManifestTrackingNumbers = models.JSONField()
+    # TODO: The manifest field 'import' conflicts with the python keyword
+    importFlag = models.BooleanField('import', null=True)
     containsPreviousRejectOrResidue = models.BooleanField(null=True)
     formDocument = models.JSONField(null=True)
     newResidueManifestTrackingNumbers = models.JSONField(null=True)

@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block sidebar %}
+    {% include 'trak/trak_nav.html' %}
+{% endblock sidebar %}
 {% block content %}
 
-        <!-- Main Content -->
+    <!-- Main Content -->
     <div id="content">
 
         <!-- Begin Page Content -->
@@ -15,64 +18,64 @@
                 </button>
             </div>
 
-                <!-- Start Manifest row -->
-                <div class="row">
-                    <!--  Table card -->
-                    <div class="col">
-                        <div class="card shadow mb-4">
-                            <!-- Card Header - Dropdown -->
-                            <div
+            <!-- Start Manifest row -->
+            <div class="row">
+                <!--  Table card -->
+                <div class="col">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">Manifests</h6>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                        aria-labelledby="dropdownMenuLink">
-                                        <div class="dropdown-header">Filter:</div>
-                                        <a class="dropdown-item" href="#">Ready to Sign</a>
-                                        <a class="dropdown-item" href="#">In Transit</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Bulk Sign</a>
-                                    </div>
+                            <h6 class="m-0 font-weight-bold text-primary">Manifests</h6>
+                            <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                     aria-labelledby="dropdownMenuLink">
+                                    <div class="dropdown-header">Filter:</div>
+                                    <a class="dropdown-item" href="#">Ready to Sign</a>
+                                    <a class="dropdown-item" href="#">In Transit</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Bulk Sign</a>
                                 </div>
                             </div>
-                            <!-- Card Body -->
-                            <div class="card-body">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">MTN</th>
-                                            <th scope="col">status</th>
-                                            <th scope="col">Gen.</th>
-                                            <th scope="col">TSD</th>
-                                            <th scope="col">Last Update</th>
-                                            <th scope="col"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for m in manifests %}
-                                            <tr>
-                                                <th scope="row">{{ m.manifest_tracking_number }}</th>
-                                                <td>{{ m.status }}</td>
-                                                <td>{{ m.generator_id }}</td>
-                                                <td>{{ m.tsd_id }}</td>
-                                                <td>{{ m.update_date }}</td>
-                                                <td>
-                                                    <a href="/trak/manifest/{{ m.id }}"
-                                                       class="fas fa-pen"></a>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">MTN</th>
+                                    <th scope="col">status</th>
+                                    <th scope="col">Gen.</th>
+                                    <th scope="col">TSD</th>
+                                    <th scope="col">Last Update</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for m in manifests %}
+                                    <tr>
+                                        <th scope="row">{{ m.manifest_tracking_number }}</th>
+                                        <td>{{ m.status }}</td>
+                                        <td>{{ m.generator_id }}</td>
+                                        <td>{{ m.tsd_id }}</td>
+                                        <td>{{ m.update_date }}</td>
+                                        <td>
+                                            <a href="/trak/manifest/{{ m.id }}"
+                                               class="fas fa-pen"></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <!-- end row -->
+            </div>
+            <!-- end row -->
 
         </div>
         <!-- /.container-fluid -->
