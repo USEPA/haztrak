@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block sidebar %}
+    {% include 'accounts/account_nav.html' %}
+{% endblock sidebar %}
 {% block content %}
     <!-- Main Content -->
     <div id="content">
@@ -13,9 +16,9 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label class="small mb-1">Username:</label>
-                                    <p>username: {{ form.user }}</p>
-                                    <p>RCRAInfo API ID: {{ form.rcra_api_id }}</p>
-                                    <p>RCRAInfo API Key: {{ form.rcra_api_key }}</p>
+                                <p>username: {{ form.user }}</p>
+                                <p>RCRAInfo API ID: {{ form.rcra_api_id }}</p>
+                                <p>RCRAInfo API Key: {{ form.rcra_api_key }}</p>
                             </div>
                         </div>
                     </div>
