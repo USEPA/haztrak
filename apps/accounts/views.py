@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.shortcuts import redirect
 from django.shortcuts import render
 
-from .forms import UpdateProfileForm
+from .forms import UpdateProfileForm, UpdateUserForm
 from .models import Profile
 
 
@@ -58,15 +58,27 @@ def login_haztrak(request):
             return redirect('home')
 
 
+# TODO: Remove the serious repetition going on here
 @login_required
 def profile(request):
-    user_profile = Profile.objects.filter(user=request.user).get()
+    # user_profile = Profile.objects.filter(user=request.user).get()
     if request.method == 'POST':
-        profile_form = UpdateProfileForm(request.POST, instance=request.user.profile)
-        if profile_form.is_valid():
-            profile_form.save()
-            # messages.success(request, 'Profile successfully updated')
-            return redirect(to='profile')
+        if 'update_profile' in request.POST:
+            profile_form = UpdateUserForm(request.POST, instance=request.user)
+            if profile_form.is_valid():
+                # messages.success(request, 'Profile successfully updated')
+                return redirect('profile')
+            else:
+                return redirect('profile')
+        elif 'update_api' in request.POST:
+            api_form = UpdateProfileForm(request.POST, instance=request.user.profile)
+            if api_form.is_valid():
+                api_form.save()
+                return redirect('profile')
+            else:
+                return redirect('profile')
     else:
-        profile_form = UpdateProfileForm(instance=request.user.profile)
-        return render(request, 'accounts/profile.html', {'profile': user_profile, 'form': profile_form})
+        api_form = UpdateProfileForm(instance=request.user.profile)
+        profile_form = UpdateUserForm(instance=request.user)
+        return render(request, 'accounts/profile.html',
+                      {'api_form': api_form, 'form': profile_form, 'user': request.user})
