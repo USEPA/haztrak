@@ -18,9 +18,9 @@
                     </div>
                     <div class="card-body">
                         {% if error %}
-                        <div class="alert alert-danger mt-3" role="alert">
-                            {{ error }}
-                        </div>
+                            <div class="alert alert-danger mt-3" role="alert">
+                                {{ error }}
+                            </div>
                         {% endif %}
                         <form method="post">
                             {% csrf_token %}
@@ -29,12 +29,12 @@
                                 Sign Up
                             </button>
                         </form>
-                    <div class="text-right">
-                        <p>Already have an account?<a href="{% url 'login' %}"> Sign in here</a></p>
-                    </div>
+                        <div class="text-right">
+                            <p>Already have an account?<a href="{% url 'login' %}"> Sign in here</a></p>
+                        </div>
                     </div>
                 </div>
-            <!-- End Content Row -->
+                <!-- End Content Row -->
             </div>
         </div>
         <!-- /.container-fluid -->

@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block sidebar %}
-    {% include 'trak/manifest_nav.html' %}
+    {% include 'trak/trak_nav.html' %}
 {% endblock sidebar %}
 {% block content %}
 
-        <!-- Main Content -->
+    <!-- Main Content -->
     <div id="content">
 
         <!-- Begin Page Content -->
@@ -24,17 +24,17 @@
                 </div>
             </div>
             <div>
-                <p>mtn: {{ manifest.manifest_tracking_number }}</p>
+                <p>mtn: {{ manifest.manifestTrackingNumber }}</p>
                 <p>ID number: {{ manifest.id }}</p>
-                <p>Generator: {{ manifest.generator_id }}</p>
-                <p>TSD: {{ manifest.tsd_id }}</p>
+                <p>Generator: {{ manifest.generator }}</p>
+                <p>TSD: {{ manifest.designatedFacility__epaSiteId }}</p>
                 <p>Status: {{ manifest.status }}</p>
-                <p>submission type: {{ manifest.submission_type }}</p>
-                <p>Origin Type: {{ manifest.origin_type }}</p>
-                <p>shipped date: {{ manifest.shipped_date }}</p>
-                <p>potential shipped date: {{ manifest.potential_ship_date }}</p>
-                <p>received date: {{ manifest.received_date }}</p>
-                <p>Certified Date: {{ manifest.certified_date }}</p>
+                <p>submission type: {{ manifest.submissionType }}</p>
+                <p>Origin Type: {{ manifest.originType }}</p>
+                <p>shipped date: {{ manifest.shippedDate }}</p>
+                <p>potential shipped date: {{ manifest.potentialShipDate }}</p>
+                <p>received date: {{ manifest.receivedDate }}</p>
+                <p>Certified Date: {{ manifest.certifiedDate }}</p>
             </div>
         </div>
         <!-- /.container-fluid -->
