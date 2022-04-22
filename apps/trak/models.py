@@ -57,7 +57,7 @@ class Manifest(models.Model):
     certifiedBy = models.JSONField(null=True)
 
     def __str__(self):
-        return self.manifestTrackingNumber
+        return f'{self.manifestTrackingNumber}'
 
 
 class Handler(models.Model):
@@ -76,7 +76,7 @@ class Handler(models.Model):
     hasRegisteredEmanifestUser = models.BooleanField()
 
     def __str__(self):
-        return self.epaSiteId
+        return f'{self.epaSiteId}'
 
 
 class ElectronicSignature(models.Model):
@@ -91,7 +91,8 @@ class ElectronicSignature(models.Model):
 
 # from sites.models
 
-
+# TODO: convert EpaSite to something closer to 'MySite' which will have a one-to-one relationship with
+#  the Handler model and, in effect, extend it to include information such as waste streams, haztrak user permissions
 class EpaSite(models.Model):
     epa_id = models.CharField(max_length=32)
     epa_name = models.CharField(max_length=200, null=True)
@@ -120,4 +121,4 @@ class Address(models.Model):
     state_name = models.CharField(max_length=32, choices=lu.STATES)
 
     def __str__(self):
-        return self.address1
+        return f'{self.address1}'
