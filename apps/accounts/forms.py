@@ -8,6 +8,9 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['rcra_api_id', 'rcra_api_key']
+        widgets = {
+            'rcra_api_key': forms.PasswordInput()
+        }
 
 
 class UpdateUserForm(forms.ModelForm):
