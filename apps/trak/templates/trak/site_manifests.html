@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block sidebar %}
-    {% include 'trak/trak_nav.html' %}
+    {% include 'site_nav.html' %}
 {% endblock sidebar %}
 {% block content %}
 
@@ -12,21 +12,19 @@
         <div class="container-fluid">
             <!-- Page Heading and top level Button -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                <button id="sync-manifest" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                <h1 class="h3 mb-0 text-gray-800">Sites</h1>
+                <button id="sync-manifest" data-name="{{ site }}"
+                        class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                         class="fas fa-download fa-sm text-white-50"></i> Sync with RCRAinfo
                 </button>
             </div>
-
-            <!-- Start Manifest row -->
             <div class="row">
-                <!--  Table card -->
                 <div class="col">
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Manifests</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Sites</h6>
                             <div class="dropdown no-arrow">
                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -35,48 +33,42 @@
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                      aria-labelledby="dropdownMenuLink">
                                     <div class="dropdown-header">Filter:</div>
-                                    <a class="dropdown-item" href="#">Ready to Sign</a>
-                                    <a class="dropdown-item" href="#">In Transit</a>
+                                    <a class="dropdown-item" href="#">placeholder</a>
+                                    <a class="dropdown-item" href="#">placeholder </a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Bulk Sign</a>
+                                    <a class="dropdown-item" href="#">placeholder </a>
                                 </div>
                             </div>
                         </div>
                         <!-- Card Body -->
                         <div class="card-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <th scope="col"></th>
                                     <th scope="col">MTN</th>
-                                    <th scope="col">status</th>
-                                    <th scope="col">Gen.</th>
-                                    <th scope="col">TSD</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Last Update</th>
                                     <th scope="col"></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for m in manifests %}
-                                    <tr>
-                                        <th scope="row">{{ m.manifest_tracking_number }}</th>
-                                        <td>{{ m.status }}</td>
-                                        <td>{{ m.generator_id }}</td>
-                                        <td>{{ m.tsd_id }}</td>
-                                        <td>{{ m.update_date }}</td>
-                                        <td>
-                                            <a href="/trak/manifest/{{ m.id }}"
-                                               class="fas fa-pen"></a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    {% for manifest in manifests %}
+                                        <tr>
+                                            <th scope="row">{{ forloop.counter }}</th>
+                                            <td>{{ manifest.manifestTrackingNumber }}</td>
+                                            <td>{{ manifest.status }}</td>
+                                            <td>{{ manifest.certifiedDate }}</td>
+                                            {#                                                <td><a class="fas fa-eye" href="{{ manifest.id }}/details"></a></td>#}
+                                            <td><a class="fas fa-eye" href="{% url 'manifest' manifest.id %}"></a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- end row -->
-
         </div>
         <!-- /.container-fluid -->
 

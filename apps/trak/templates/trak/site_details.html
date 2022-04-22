@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block sidebar %}
-    {% include 'sites/site_nav.html' %}
+    {% include 'manifest_nav.html' %}
+    {% include 'site_nav.html' %}
 {% endblock sidebar %}
 {% block content %}
 
@@ -41,32 +42,11 @@
                         </div>
                         <!-- Card Body -->
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col"></th>
-                                        <th scope="col">EPA ID</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Address</th>
-                                        <th scope="col"></th>
-                                        {# <th scope="col"><a href="#" class="fas fa-arrow-right"></a> </th>#}
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for site in sites %}
-                                        <tr>
-                                            <th scope="row">{{ forloop.counter }}</th>
-                                            <td>{{ site.epa_id }}</td>
-                                            <td>{{ site.epa_name }}</td>
-                                            <td>{{ site.site_address }}</td>
-                                            <td><a class="fas fa-eye" href="{{ site.epa_id }}/details"></a></td>
-                                            <td><a class="fas fa-scroll" href="{{ site.epa_id }}/manifests"></a></td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
+                            <p>EPA ID: {{ site.epa_id }}</p>
+                            <p>Address: {{ site.site_address.address1 }}, {{ site.site_address.city }}
+                                {{ site.site_address.state_name }} {{ site.site_address.zip_code }}</p>
+                            <p>Can e-Sign: {{ site.can_esign }}</p>
+                            <p>Site Type: {{ site.site_type }}</p>
                         </div>
                     </div>
                 </div>

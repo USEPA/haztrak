@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from apps.sites.models import EpaSite
+from apps.trak.models import EpaSite
 
 
 class Profile(models.Model):
@@ -12,4 +12,4 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=15, null=True, blank=True)
 
     def __str__(self):
-        return self.user.username
+        return f'{self.user.username}'
