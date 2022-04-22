@@ -23,7 +23,7 @@ class TrakViewsTest(TestCase):
         response = self.client.get(f'/trak/manifest/{self.manifest.id}')
         self.assertEqual(response.status_code, 200)
 
-    def test_non_exist_mtn_returns_404(self):
+    def test_non_exist_mtn_view_returns_404(self):
         response = self.client.get(f'/trak/manifest/'
                                    f'{self.manifest.id + randint(100, 5000)}')
         self.assertEqual(response.status_code, 404)

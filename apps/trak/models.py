@@ -68,7 +68,7 @@ class Handler(models.Model):
     mailingAddress = models.JSONField()
     siteAddress = models.JSONField()
     contact = models.JSONField()
-    emergencyPhone = models.JSONField()
+    emergencyPhone = models.JSONField(null=True)
     electronicSignaturesInfo = models.JSONField(null=True)
     gisPrimary = models.BooleanField()
     canEsign = models.BooleanField()
