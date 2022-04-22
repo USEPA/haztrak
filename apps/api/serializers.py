@@ -19,7 +19,7 @@ class ManifestSerializer(serializers.ModelSerializer):
         gen_data = validated_data.pop("generator")
         tsd_data = validated_data.pop('designatedFacility')
         generator_object = Handler.objects.create(**gen_data)
-        tsd_object = Handler.objects.create(**gen_data)
+        tsd_object = Handler.objects.create(**tsd_data)
         manifest = Manifest.objects.create(generator=generator_object,
                                            designatedFacility=tsd_object,
                                            **validated_data)

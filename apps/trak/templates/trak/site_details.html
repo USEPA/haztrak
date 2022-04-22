@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block sidebar %}
-    {% include 'sites/site_nav.html' %}
+    {% include 'trak/site_nav.html' %}
 {% endblock sidebar %}
 {% block content %}
 
@@ -13,9 +13,8 @@
             <!-- Page Heading and top level Button -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h3 mb-0 text-gray-800">Sites</h1>
-                <button id="sync-manifest" data-name="{{ site }}"
-                        class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                        class="fas fa-download fa-sm text-white-50"></i> Sync with RCRAinfo
+                <button id="add-site" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        class="fas fa-building fa-sm text-white-50"></i> Add site
                 </button>
             </div>
             <div class="row">
@@ -42,29 +41,11 @@
                         </div>
                         <!-- Card Body -->
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                    <th scope="col"></th>
-                                    <th scope="col">MTN</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Last Update</th>
-                                    <th scope="col"></th>
-                                    </thead>
-                                    <tbody>
-                                    {% for manifest in manifests %}
-                                        <tr>
-                                            <th scope="row">{{ forloop.counter }}</th>
-                                            <td>{{ manifest.manifestTrackingNumber }}</td>
-                                            <td>{{ manifest.status }}</td>
-                                            <td>{{ manifest.certifiedDate }}</td>
-                                            {#                                                <td><a class="fas fa-eye" href="{{ manifest.id }}/details"></a></td>#}
-                                            <td><a class="fas fa-eye" href="{% url 'manifest' manifest.id %}"></a></td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
+                            <p>EPA ID: {{ site.epa_id }}</p>
+                            <p>Address: {{ site.site_address.address1 }}, {{ site.site_address.city }}
+                                {{ site.site_address.state_name }} {{ site.site_address.zip_code }}</p>
+                            <p>Can e-Sign: {{ site.can_esign }}</p>
+                            <p>Site Type: {{ site.site_type }}</p>
                         </div>
                     </div>
                 </div>

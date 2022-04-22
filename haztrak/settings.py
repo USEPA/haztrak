@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'apps.trak',
     'apps.home',
     'apps.accounts',
-    'apps.sites',
+    # 'apps.sites',
     'apps.api'
 ]
 
