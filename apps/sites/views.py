@@ -19,5 +19,6 @@ def sites_details(request, epa_id):
 
 @login_required
 def site_manifests(request, epa_id):
-    site_object = Manifest.objects.filter(generator__epaSiteId=epa_id)
-    return render(request, 'sites/site_manifests.html', {'manifests': site_object})
+    manifests = Manifest.objects.filter(generator__epaSiteId=epa_id)
+    site_data = EpaSite.objects.filter(epa_id=epa_id).get()
+    return render(request, 'sites/site_manifests.html', {'site': site_data, 'manifests': manifests})

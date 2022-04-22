@@ -19,11 +19,11 @@ class ManifestView(APIView):
             return Response({'manifest': serializer.data})
 
 
-class SyncManifest(APIView):
+class SyncSiteManifest(APIView):
 
-    def get(self, request, mtn=None):
-        if mtn:
-            return Response(status=200)
+    def get(self, request, epa_id=None):
+        if epa_id:
+            resp = rcrainfo.get_mtns(epa_id)
+            return Response(data={'mtn': resp.json})
         else:
-            rcrainfo.get_mtns()
-            return Response(data={'test': 'hello'})
+            return Response(status=200)

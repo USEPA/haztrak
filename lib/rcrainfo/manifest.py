@@ -12,6 +12,8 @@ def from_json_file(json_file):
                 data = json.loads(open_file.read())
         gen_object = Handler.objects.create(**data['generator'])
         data['generator'] = gen_object
+        tsd_object = Handler.objects.create(**data['designatedFacility'])
+        data['designatedFacility'] = tsd_object
         return Manifest.objects.create(**data)
     except IOError:
         logging.error(f'File {json_file} could not be opened')
