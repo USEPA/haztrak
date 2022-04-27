@@ -4,57 +4,111 @@ from lib.rcrainfo import lookups as lu
 
 
 class Manifest(models.Model):
-    manifestTrackingNumber = models.CharField(max_length=15)
-    createdDate = models.DateTimeField(null=True)
+    manifestTrackingNumber = models.CharField(verbose_name='Manifest Tracking Number',
+                                              max_length=15)
+    createdDate = models.DateTimeField(verbose_name='Created Date',
+                                       null=True,
+                                       auto_now=True)
     updatedDate = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=25,
+    status = models.CharField(verbose_name='Status',
+                              max_length=25,
                               choices=lu.STATUS,
                               default='notAssigned')
-    discrepancy = models.BooleanField(default=False)
-    submissionType = models.CharField(max_length=25,
+    discrepancy = models.BooleanField(verbose_name='Discrepancy',
+                                      default=False)
+    submissionType = models.CharField(verbose_name='Submission Type',
+                                      max_length=25,
                                       choices=lu.SUB_TYPE,
                                       default='FullElectronic')
-    originType = models.CharField(max_length=25,
+    originType = models.CharField(verbose_name='Origin Type',
+                                  max_length=25,
                                   choices=lu.ORIGIN_TYPE,
                                   default='Service')
-    shippedDate = models.DateTimeField('Shipped date', null=True)
-    receivedDate = models.DateTimeField('Received date', null=True)
-    transporters = models.JSONField()
+    shippedDate = models.DateTimeField(verbose_name='Shipped date',
+                                       null=True,
+                                       blank=True)
+    receivedDate = models.DateTimeField(verbose_name='Received date',
+                                        null=True,
+                                        blank=True)
+    transporters = models.JSONField(verbose_name='Transporters')
     generator = models.ForeignKey('Handler',
+                                  verbose_name='Generator',
                                   on_delete=models.PROTECT,
-                                  related_name='Generator')
-    broker = models.JSONField(null=True)
-    # designatedFacility = models.JSONField()
+                                  related_name='generator')
+    broker = models.JSONField(null=True, blank=True)
     designatedFacility = models.ForeignKey('Handler',
+                                           verbose_name='Designated facility',
                                            on_delete=models.PROTECT,
-                                           related_name='Designated_Facility')
+                                           related_name='designated_facility')
     wastes = models.JSONField()
-    additionalInfo = models.JSONField(null=True)
-    printedDocument = models.JSONField(null=True)
-    rejection = models.BooleanField(null=True)
-    residue = models.BooleanField(null=True)
-    residueNewManifestTrackingNumbers = models.JSONField()
+    additionalInfo = models.JSONField(verbose_name='Additional Info',
+                                      null=True,
+                                      blank=True)
+    printedDocument = models.JSONField(verbose_name='Printed Document',
+                                       null=True,
+                                       blank=True)
+    rejection = models.BooleanField(verbose_name='Rejection',
+                                    null=True,
+                                    blank=True)
+    residue = models.BooleanField(verbose_name='Residue',
+                                  null=True,
+                                  blank=True)
+    residueNewManifestTrackingNumbers = models.JSONField(verbose_name='Residue MTN')
     # TODO: The manifest field 'import' conflicts with the python keyword
-    importFlag = models.BooleanField('import', null=True)
-    containsPreviousRejectOrResidue = models.BooleanField(null=True)
-    formDocument = models.JSONField(null=True)
-    newResidueManifestTrackingNumbers = models.JSONField(null=True)
-    rejectionInfo = models.JSONField(null=True)
-    importInfo = models.JSONField(null=True)
-    correctionInfo = models.JSONField(null=True)
-    ppcInfo = models.JSONField(null=True)
-    transferRequested = models.BooleanField(null=True)
-    transferStatus = models.CharField(max_length=200, null=True)
-    originalSubmissionType = models.CharField(max_length=25,
+    importFlag = models.BooleanField(verbose_name='Import',
+                                     null=True,
+                                     blank=True)
+    containsPreviousRejectOrResidue = models.BooleanField(verbose_name='Contains previous rejection or residue',
+                                                          null=True)
+    formDocument = models.JSONField(verbose_name='Form Document',
+                                    null=True,
+                                    blank=True)
+    newResidueManifestTrackingNumbers = models.JSONField(verbose_name='New Residue MTN',
+                                                         null=True)
+    rejectionInfo = models.JSONField(verbose_name='Rejection Information',
+                                     null=True,
+                                     blank=True)
+    importInfo = models.JSONField(verbose_name='Import Information',
+                                  null=True,
+                                  blank=True)
+    correctionInfo = models.JSONField(verbose_name='Correction Info',
+                                      null=True,
+                                      blank=True)
+    ppcInfo = models.JSONField(verbose_name='PPC Info',
+                               null=True,
+                               blank=True)
+    transferRequested = models.BooleanField(verbose_name='Transfer Requested',
+                                            null=True,
+                                            blank=True)
+    transferStatus = models.CharField(verbose_name='Transfer Status',
+                                      max_length=200,
+                                      null=True,
+                                      blank=True)
+    originalSubmissionType = models.CharField(verbose_name='Original Submission Type',
+                                              max_length=25,
                                               choices=lu.SUB_TYPE,
                                               null=True)
-    potentialShipDate = models.DateTimeField('Potential Ship Date', null=True)
-    reTransferCount = models.IntegerField(null=True)
-    nextTransferTime = models.DateTimeField('Next Transfer Time', null=True)
-    locked = models.BooleanField(null=True)
-    lockReason = models.CharField(max_length=25, null=True)
-    certifiedDate = models.DateTimeField('Certified date', null=True)
-    certifiedBy = models.JSONField(null=True)
+    potentialShipDate = models.DateTimeField('Potential Ship Date',
+                                             null=True,
+                                             blank=True)
+    reTransferCount = models.IntegerField(verbose_name='Transfer Count',
+                                          null=True,
+                                          blank=True)
+    nextTransferTime = models.DateTimeField('Next Transfer Time',
+                                            null=True,
+                                            blank=True)
+    locked = models.BooleanField(null=True,
+                                 blank=True)
+    lockReason = models.CharField(verbose_name='Lock Reason',
+                                  max_length=25,
+                                  null=True,
+                                  blank=True)
+    certifiedDate = models.DateTimeField(verbose_name='Certified date',
+                                         null=True,
+                                         blank=True)
+    certifiedBy = models.JSONField(verbose_name='Certified By',
+                                   null=True,
+                                   blank=True)
 
     def __str__(self):
         return f'{self.manifestTrackingNumber}'

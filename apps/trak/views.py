@@ -10,11 +10,11 @@ def manifest_view(request, manifest_id):
     return render(request, 'trak/manifest.html', {'manifest': manifest})
 
 
-# @login_required
-# def manifests_in_transit(request):
-#     manifest = Manifest.objects.filter(status='InTransit')
-#     print(manifest.count())
-#     return render(request, 'trak/site_manifests.html', {'manifests': manifest})
+@login_required
+def manifests_in_transit(request):
+    manifest = Manifest.objects.filter(status='InTransit')
+    print(manifest.count())
+    return render(request, 'trak/site_manifests.html', {'manifests': manifest})
 
 
 @login_required
