@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-
 from apps.trak.models import Manifest, Handler
 
 

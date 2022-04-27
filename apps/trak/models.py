@@ -115,7 +115,7 @@ class EpaSite(models.Model):
 class Address(models.Model):
     street_number = models.IntegerField(null=True, blank=True)
     address1: str = models.CharField(max_length=200)
-    address2 = models.CharField(max_length=200, default=None, blank=True)
+    address2 = models.CharField(max_length=200, default=None, null=True, blank=True)
     city = models.CharField(max_length=200)
     zip_code = models.CharField(max_length=32)
     state_name = models.CharField(max_length=32, choices=lu.STATES)
