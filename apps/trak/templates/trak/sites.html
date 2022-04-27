@@ -57,11 +57,13 @@
                                     {% for site in sites %}
                                         <tr>
                                             <th scope="row">{{ forloop.counter }}</th>
-                                            <td>{{ site.epa_id }}</td>
-                                            <td>{{ site.epa_name }}</td>
-                                            <td>{{ site.site_address }}</td>
-                                            <td><a class="fas fa-eye" href="{{ site.epa_id }}/details"></a></td>
-                                            <td><a class="fas fa-scroll" href="{{ site.epa_id }}/manifests"></a></td>
+                                            <td>{{ site.epa_site.epa_id }}</td>
+                                            <td>{{ site.epa_site.name }}</td>
+                                            <td>{{ site.epa_site.site_address }}</td>
+                                            <td><a class="fas fa-eye" href="{{ site.epa_site.epa_id }}/details"></a>
+                                            </td>
+                                            <td><a class="fas fa-scroll"
+                                                   href="{{ site.epa_site.epa_id }}/manifests"></a></td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

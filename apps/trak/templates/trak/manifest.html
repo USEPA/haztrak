@@ -25,17 +25,17 @@
                 </div>
             </div>
             <div>
-                <p>mtn: {{ manifest.manifestTrackingNumber }}</p>
+                <p>mtn: {{ manifest.mtn }}</p>
                 <p>ID number: {{ manifest.id }}</p>
                 <p>Generator: {{ manifest.generator }}</p>
-                <p>TSD: {{ manifest.designatedFacility__epaSiteId }}</p>
+                <p>TSD: {{ manifest.tsd.epa_id }}</p>
                 <p>Status: {{ manifest.status }}</p>
-                <p>submission type: {{ manifest.submissionType }}</p>
-                <p>Origin Type: {{ manifest.originType }}</p>
-                <p>shipped date: {{ manifest.shippedDate }}</p>
-                <p>potential shipped date: {{ manifest.potentialShipDate }}</p>
-                <p>received date: {{ manifest.receivedDate }}</p>
-                <p>Certified Date: {{ manifest.certifiedDate }}</p>
+                <p>submission type: {{ manifest.submission_type }}</p>
+                <p>Origin Type: {{ manifest.origin_type }}</p>
+                <p>shipped date: {{ manifest.shipped_date }}</p>
+                <p>potential shipped date: {{ manifest.potential_ship_date }}</p>
+                <p>received date: {{ manifest.received_date }}</p>
+                <p>Certified Date: {{ manifest.certified_date }}</p>
             </div>
         </div>
         <!-- /.container-fluid -->

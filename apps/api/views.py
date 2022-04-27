@@ -27,3 +27,13 @@ class SyncSiteManifest(APIView):
             return Response(data={'mtn': resp.json})
         else:
             return Response(status=200)
+
+# class SiteView(APIView):
+#
+#     def get(self, request, epa_id=None):
+#         if epa_id:
+#             resp = EpaSite.objects.filter(epa_id=epa_id).get()
+#             test = SiteSerializer(resp)
+#             return Response(data={'site': test.data})
+#         else:
+#             return Response(status=200)

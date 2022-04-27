@@ -103,3 +103,9 @@ GEN_STATUS = [
     ('LQG', 'LQG'),
     ('VSQG', 'VSQG'),
 ]
+
+LOCKED_REASON = [
+    ('AsyncSign', 'Asynchronous signature'),
+    ('EpaChangeBiller', 'EPA change biller'),
+    ('EpaCorrection', 'EPA corrections'),
+]

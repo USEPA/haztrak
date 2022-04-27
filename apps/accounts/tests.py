@@ -3,7 +3,6 @@ from .models import Profile
 from django.test import TestCase
 
 
-# Create your tests here.
 class AccountSignedInTest(TestCase):
 
     def setUp(self):
