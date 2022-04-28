@@ -160,8 +160,11 @@ class ManifestSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        gen_data = Handler.objects.create(**validated_data.pop("generator"))
-        tsd_data = Handler.objects.create(**validated_data.pop('designatedFacility'))
-        manifest = Manifest.objects.create(generator=gen_data,
-                                           tsd=tsd_data,
+        tsd_data = validated_data.pop('tsd')
+        tsd_object = Handler.objects.create(**tsd_data)
+        gen_data = validated_data.pop('generator')
+        gen_object = Handler.objects.create(**gen_data)
+        manifest = Manifest.objects.create(generator=gen_object,
+                                           tsd=tsd_object,
                                            **validated_data)
+        return manifest

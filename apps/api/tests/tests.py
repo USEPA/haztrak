@@ -23,10 +23,13 @@ class ManifestSerializerTests(TestCase):
             print(self.serializer.errors)
         self.assertTrue(self.serializer.is_valid())
 
-    # def test_serializer_creates_manifest_from_json(self):
-    #     self.serializer.is_valid()
-    #     print(self.serializer.validated_data)
-    #     self.serializer.save()
+    def test_serializer_creates_manifest_from_json(self):
+        valid = self.serializer.is_valid()
+        # print(self.serializer.validated_data)
+        if not valid:
+            print(self.serializer.errors)
+        saved_manifest = self.serializer.save()
+        self.assertEqual(f'{saved_manifest}', '100033134ELC')
 
 
 class HandlerSerializerTests(TestCase):
