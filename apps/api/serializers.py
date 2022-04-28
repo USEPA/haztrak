@@ -4,9 +4,51 @@ from apps.trak.models import Manifest, Handler
 
 
 class HandlerSerializer(serializers.ModelSerializer):
+    # siteType TODO
+    epaSiteId = serializers.CharField(source='epa_id')
+    # modified TODO?
+    # name
+    mailingAddress = serializers.JSONField(source='mailing_address')
+    siteAddress = serializers.JSONField(source='mailing_address')
+    # contact
+    emergencyPhone = serializers.JSONField(source='emergency_phone')
+    # paperSignatureInfo TODO
+    electronicSignatureInfo = serializers.JSONField(source='electronic_signature_info',
+                                                    allow_null=True,
+                                                    default=None)
+    # order TODO
+    # registered
+    limitedEsign = serializers.BooleanField(source='limited_esign',
+                                            allow_null=True,
+                                            default=False)
+    canEsign = serializers.BooleanField(source='can_esign',
+                                        allow_null=True,
+                                        default=False)
+    hasRegisteredEmanifestUser = serializers.BooleanField(source='registered_emanifest_user',
+                                                          allow_null=True,
+                                                          default=False)
+    gisPrimary = serializers.BooleanField(source='gis_primary',
+                                          allow_null=True,
+                                          default=False)
+
     class Meta:
         model = Handler
-        fields = '__all__'
+        fields = [
+            'epaSiteId',
+            'name',
+            'mailingAddress',
+            'siteAddress',
+            'contact',
+            'emergencyPhone',
+            # paperSignatureInfo
+            'electronicSignatureInfo',
+            # order
+            # registered
+            'limitedEsign',
+            'canEsign',
+            'hasRegisteredEmanifestUser',
+            'gisPrimary',
+        ]
 
 
 class ManifestSerializer(serializers.ModelSerializer):
@@ -69,7 +111,7 @@ class ManifestSerializer(serializers.ModelSerializer):
     # mtnValidationInfo
     # provideImageGeneratorInfo
     locked = serializers.BooleanField(allow_null=True,
-                                      default=None)
+                                      default=False)
 
     lockedReason = serializers.CharField(source='locked_reason',
                                          allow_null=True,
@@ -111,15 +153,10 @@ class ManifestSerializer(serializers.ModelSerializer):
             'locked',
             'lockedReason',
         ]
-    # def update(self, instance, validated_data):
-    #     pass
-    #
+
     # def create(self, validated_data):
-    #     gen_data = validated_data.pop("generator")
-    #     tsd_data = validated_data.pop('designatedFacility')
-    #     generator_object = Handler.objects.create(**gen_data)
-    #     tsd_object = Handler.objects.create(**tsd_data)
-    #     manifest = Manifest.objects.create(generator=generator_object,
-    #                                        designatedFacility=tsd_object,
+    #     gen_data = Handler.objects.create(**validated_data.pop("generator"))
+    #     tsd_data = Handler.objects.create(**validated_data.pop('designatedFacility'))
+    #     manifest = Manifest.objects.create(generator=gen_data,
+    #                                        tsd=tsd_data,
     #                                        **validated_data)
-    #     return manifest

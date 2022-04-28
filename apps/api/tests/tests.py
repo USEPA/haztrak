@@ -1,12 +1,10 @@
 import io
 from django.test import TestCase
-from apps.api.serializers import ManifestSerializer
-from apps.trak.models import Manifest
+from apps.api.serializers import ManifestSerializer, HandlerSerializer
 from rest_framework.parsers import JSONParser
 
-# Create your tests here.
-
 TEST_MANIFEST_JSON = './apps/api/tests/100033134ELC.json'
+TEST_HANDLER_JSON = './apps/api/tests/VATESTGEN2021.json'
 
 
 class ManifestSerializerTests(TestCase):
@@ -19,12 +17,30 @@ class ManifestSerializerTests(TestCase):
         serializer = ManifestSerializer(data=data)
         cls.serializer = serializer
 
-    def test_serializer_is_valid(self):
+    def test_manifest_serializer_is_valid(self):
+        is_valid = self.serializer.is_valid()
+        if not is_valid:
+            print(self.serializer.errors)
         self.assertTrue(self.serializer.is_valid())
 
-        # serializer.is_valid()
-        # print("is valid: ", serializer.is_valid())
-        # if not serializer.is_valid():
-        #     print("errors: ", serializer.errors)
-        # else:
-        #     serializer.save()
+    # def test_serializer_creates_manifest_from_json(self):
+    #     self.serializer.is_valid()
+    #     print(self.serializer.validated_data)
+    #     self.serializer.save()
+
+
+class HandlerSerializerTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        with open(TEST_HANDLER_JSON, 'rb') as json_file:
+            data = json_file.read()
+        stream = io.BytesIO(data)
+        data = JSONParser().parse(stream=stream)
+        serializer = HandlerSerializer(data=data)
+        cls.serializer = serializer
+
+    def test_handler_serializer_is_valid(self):
+        is_valid = self.serializer.is_valid()
+        if not is_valid:
+            print(self.serializer.errors)
+        self.assertTrue(self.serializer.is_valid())

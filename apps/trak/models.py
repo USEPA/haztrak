@@ -122,22 +122,38 @@ class Manifest(models.Model):
 
 
 class Handler(models.Model):
-    epaSiteId = models.CharField(max_length=25)
-    name = models.CharField(max_length=200)
-    modified = models.BooleanField()
-    registered = models.BooleanField()
-    mailingAddress = models.JSONField()
-    siteAddress = models.JSONField()
-    contact = models.JSONField()
-    emergencyPhone = models.JSONField(null=True)
-    electronicSignaturesInfo = models.JSONField(null=True)
-    gisPrimary = models.BooleanField()
-    canEsign = models.BooleanField()
-    limitedEsign = models.BooleanField()
-    hasRegisteredEmanifestUser = models.BooleanField()
+    epa_id = models.CharField(verbose_name='EPA Id number',
+                              max_length=25)
+    name = models.CharField(verbose_name='Name',
+                            max_length=200)
+    modified = models.BooleanField(verbose_name='Modified')
+    registered = models.BooleanField(verbose_name='Registered')
+    mailing_address = models.JSONField(verbose_name='Mailing address')
+    site_address = models.JSONField(verbose_name='Site address')
+    contact = models.JSONField(verbose_name='Contact information')
+    emergency_phone = models.JSONField(verbose_name='Emergency phone',
+                                       null=True,
+                                       blank=True)
+    electronic_signatures_info = models.JSONField(verbose_name='Electronic signature info',
+                                                  null=True,
+                                                  blank=True)
+    gis_primary = models.BooleanField(verbose_name='GIS primary',
+                                      null=True,
+                                      blank=True,
+                                      default=False)
+    can_esign = models.BooleanField(verbose_name='Can electronically sign',
+                                    null=True,
+                                    blank=True)
+    limited_esign = models.BooleanField(verbose_name='Limited electronic signing ability',
+                                        null=True,
+                                        blank=True)
+    registered_emanifest_user = models.BooleanField(verbose_name='Has Registered e-Manifest user',
+                                                    null=True,
+                                                    blank=True,
+                                                    default=False)
 
     def __str__(self):
-        return f'{self.epaSiteId}'
+        return f'{self.epa_id}'
 
 
 class ElectronicSignature(models.Model):
