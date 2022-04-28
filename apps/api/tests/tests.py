@@ -4,7 +4,7 @@ from apps.api.serializers import ManifestSerializer, HandlerSerializer
 from rest_framework.parsers import JSONParser
 
 TEST_MANIFEST_JSON = './apps/api/tests/100033134ELC.json'
-TEST_HANDLER_JSON = './apps/api/tests/VATESTGEN2021.json'
+TEST_HANDLER_JSON = './apps/api/tests/test_site.json'
 
 
 class ManifestSerializerTests(TestCase):
@@ -49,5 +49,5 @@ class HandlerSerializerTests(TestCase):
         is_valid = self.serializer.is_valid()
         if not is_valid:
             print(self.serializer.errors)
-        else:
-            self.serializer.save()
+        saved_site = self.serializer.save()
+        self.assertEqual(f'{saved_site}', 'TESTSITEID2022')

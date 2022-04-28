@@ -12,7 +12,9 @@ class HandlerSerializer(serializers.ModelSerializer):
     mailingAddress = serializers.JSONField(source='mailing_address')
     siteAddress = serializers.JSONField(source='site_address')
     # contact
-    emergencyPhone = serializers.JSONField(source='emergency_phone')
+    emergencyPhone = serializers.JSONField(source='emergency_phone',
+                                           allow_null=True,
+                                           default=None)
     # paperSignatureInfo TODO
     electronicSignatureInfo = serializers.JSONField(source='electronic_signatures_info',
                                                     allow_null=True,
@@ -157,9 +159,9 @@ class ManifestSerializer(serializers.ModelSerializer):
             'lockedReason',
         ]
 
-    # def create(self, validated_data):
-    #     gen_data = Handler.objects.create(**validated_data.pop("generator"))
-    #     tsd_data = Handler.objects.create(**validated_data.pop('designatedFacility'))
-    #     manifest = Manifest.objects.create(generator=gen_data,
-    #                                        tsd=tsd_data,
-    #                                        **validated_data)
+    def create(self, validated_data):
+        gen_data = Handler.objects.create(**validated_data.pop("generator"))
+        tsd_data = Handler.objects.create(**validated_data.pop('designatedFacility'))
+        manifest = Manifest.objects.create(generator=gen_data,
+                                           tsd=tsd_data,
+                                           **validated_data)
