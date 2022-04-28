@@ -10,22 +10,70 @@ class HandlerSerializer(serializers.ModelSerializer):
 
 
 class ManifestSerializer(serializers.ModelSerializer):
-    manifestTrackingNumber = serializers.CharField(source='mtn')
+    # Model field names that map directly to the manifest.json schema and meet django-rest-framework defaults
+    # can just be included in the Meta.fields. They are included in the comments to show where they should be
+    # implemented if need be
     createdDate = serializers.DateTimeField(source='created_date')
     updatedDate = serializers.DateTimeField(source='update_date')
+    manifestTrackingNumber = serializers.CharField(source='mtn')
+    # status
     submissionType = serializers.CharField(source='submission_type')
+    signatureStatus = serializers.BooleanField(source='signature_status',
+                                               allow_null=True,
+                                               default=False)
     originType = serializers.CharField(source='origin_type')
     shippedDate = serializers.DateTimeField(source='shipped_date')
+    potentialShipDate = serializers.CharField(source='potential_ship_date')
     receivedDate = serializers.DateTimeField(source='received_date')
+    certifiedDate = serializers.DateTimeField(source='certified_date',
+                                              allow_null=True,
+                                              default=None)
+    certifiedBy = serializers.JSONField(source='certified_by',
+                                        allow_null=True,
+                                        default=None)
     generator = HandlerSerializer()
+    # transporters = TODO
     designatedFacility = HandlerSerializer(source='tsd')
-    additionalInfo = serializers.JSONField(source='additional_info')
+    # broker = TODO
+    # wastes = TODO
+    # rejection
+    rejectionInfo = serializers.JSONField(source='rejection_info',
+                                          allow_null=True,
+                                          default=None)
+    # discrepancy
+    # residue
+    residueNewManifestTrackingNumbers = serializers.JSONField(source='residue_new_mtn',
+                                                              allow_null=True,
+                                                              default=None)
+    # import = TODO
+    importInfo = serializers.JSONField(source='import_info',
+                                       allow_null=True,
+                                       default=None)
+    containsPreviousRejectOrResidue = serializers.BooleanField(source='contains_residue_or_rejection')
+    printedDocument = serializers.JSONField(source='printed_document',
+                                            allow_null=True,
+                                            default=None)
+    formDocument = serializers.JSONField(source='form_document',
+                                         allow_null=True,
+                                         default=None)
+    additionalInfo = serializers.JSONField(source='additional_info',
+                                           allow_null=True,
+                                           default=None)
+    correctionInfo = serializers.JSONField(source='correction_info',
+                                           allow_null=True,
+                                           default=None)
 
-    # printedDocument = serializers.JSONField(source='printed_document')
+    ppcStatus = serializers.JSONField(source='ppc_status',
+                                      allow_null=True,
+                                      default=None)
+    # mtnValidationInfo
+    # provideImageGeneratorInfo
+    locked = serializers.BooleanField(allow_null=True,
+                                      default=None)
 
-    # residueNewManifestTrackingNumbers = serializers.JSONField(source='residue_new_mtn')
-
-    # import = serializers.BooleanField(source='import_flag')
+    lockedReason = serializers.CharField(source='locked_reason',
+                                         allow_null=True,
+                                         default=None)
 
     class Meta:
         model = Manifest
@@ -34,20 +82,34 @@ class ManifestSerializer(serializers.ModelSerializer):
             'updatedDate',
             'manifestTrackingNumber',
             'status',
-            'discrepancy',
             'submissionType',
+            'signatureStatus',
             'originType',
             'shippedDate',
+            'potentialShipDate',
             'receivedDate',
+            'certifiedDate',
+            'certifiedBy',
             'generator',
             'transporters',
             'designatedFacility',
+            'broker',
             'wastes',
+            'rejection',
+            'rejectionInfo',
+            'discrepancy',
+            'residue',
+            'residueNewManifestTrackingNumbers',
+            # 'import', Boolean field conflicts with import keyword
+            'importInfo',
+            'containsPreviousRejectOrResidue',
+            'printedDocument',
+            'formDocument',
             'additionalInfo',
-            # 'printedDocument',
-            # 'rejection',
-            # 'residue',
-            # 'residueNewManifestTrackingNumbers',
+            'correctionInfo',
+            'ppcStatus',
+            'locked',
+            'lockedReason',
         ]
     # def update(self, instance, validated_data):
     #     pass
