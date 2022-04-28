@@ -44,3 +44,10 @@ class HandlerSerializerTests(TestCase):
         if not is_valid:
             print(self.serializer.errors)
         self.assertTrue(self.serializer.is_valid())
+
+    def test_handler_save_new_model_instance(self):
+        is_valid = self.serializer.is_valid()
+        if not is_valid:
+            print(self.serializer.errors)
+        else:
+            self.serializer.save()

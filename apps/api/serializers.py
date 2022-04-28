@@ -6,18 +6,20 @@ from apps.trak.models import Manifest, Handler
 class HandlerSerializer(serializers.ModelSerializer):
     # siteType TODO
     epaSiteId = serializers.CharField(source='epa_id')
-    # modified TODO?
+    modified = serializers.BooleanField(allow_null=True,
+                                        default=False)
     # name
     mailingAddress = serializers.JSONField(source='mailing_address')
-    siteAddress = serializers.JSONField(source='mailing_address')
+    siteAddress = serializers.JSONField(source='site_address')
     # contact
     emergencyPhone = serializers.JSONField(source='emergency_phone')
     # paperSignatureInfo TODO
-    electronicSignatureInfo = serializers.JSONField(source='electronic_signature_info',
+    electronicSignatureInfo = serializers.JSONField(source='electronic_signatures_info',
                                                     allow_null=True,
                                                     default=None)
     # order TODO
-    # registered
+    registered = serializers.BooleanField(allow_null=True,
+                                          default=False)
     limitedEsign = serializers.BooleanField(source='limited_esign',
                                             allow_null=True,
                                             default=False)
@@ -35,15 +37,16 @@ class HandlerSerializer(serializers.ModelSerializer):
         model = Handler
         fields = [
             'epaSiteId',
+            'modified',
             'name',
             'mailingAddress',
             'siteAddress',
             'contact',
             'emergencyPhone',
-            # paperSignatureInfo
+            # 'paperSignatureInfo',
             'electronicSignatureInfo',
-            # order
-            # registered
+            # 'order',
+            'registered',
             'limitedEsign',
             'canEsign',
             'hasRegisteredEmanifestUser',

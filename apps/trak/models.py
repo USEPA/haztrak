@@ -126,8 +126,12 @@ class Handler(models.Model):
                               max_length=25)
     name = models.CharField(verbose_name='Name',
                             max_length=200)
-    modified = models.BooleanField(verbose_name='Modified')
-    registered = models.BooleanField(verbose_name='Registered')
+    modified = models.BooleanField(verbose_name='Modified',
+                                   null=True,
+                                   blank=True)
+    registered = models.BooleanField(verbose_name='Registered',
+                                     null=True,
+                                     blank=True)
     mailing_address = models.JSONField(verbose_name='Mailing address')
     site_address = models.JSONField(verbose_name='Site address')
     contact = models.JSONField(verbose_name='Contact information')
