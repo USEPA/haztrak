@@ -6,58 +6,59 @@ from lib.rcrainfo import lookups as lu
 class Manifest(models.Model):
     mtn = models.CharField(verbose_name='Manifest Tracking Number',
                            max_length=15)
-    createdDate = models.DateTimeField(verbose_name='Created Date',
-                                       null=True,
-                                       auto_now=True)
-    updatedDate = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(verbose_name='Created Date',
+                                        null=True,
+                                        auto_now=True)
+    update_date = models.DateTimeField(auto_now=True)
     status = models.CharField(verbose_name='Status',
                               max_length=25,
                               choices=lu.STATUS,
                               default='notAssigned')
     discrepancy = models.BooleanField(verbose_name='Discrepancy',
                                       default=False)
-    submissionType = models.CharField(verbose_name='Submission Type',
-                                      max_length=25,
-                                      choices=lu.SUB_TYPE,
-                                      default='FullElectronic')
-    originType = models.CharField(verbose_name='Origin Type',
-                                  max_length=25,
-                                  choices=lu.ORIGIN_TYPE,
-                                  default='Service')
-    shippedDate = models.DateTimeField(verbose_name='Shipped date',
-                                       null=True,
-                                       blank=True)
-    receivedDate = models.DateTimeField(verbose_name='Received date',
+    submission_type = models.CharField(verbose_name='Submission Type',
+                                       max_length=25,
+                                       choices=lu.SUB_TYPE,
+                                       default='FullElectronic')
+    origin_type = models.CharField(verbose_name='Origin Type',
+                                   max_length=25,
+                                   choices=lu.ORIGIN_TYPE,
+                                   default='Service')
+    shipped_date = models.DateTimeField(verbose_name='Shipped date',
                                         null=True,
                                         blank=True)
+    received_date = models.DateTimeField(verbose_name='Received date',
+                                         null=True,
+                                         blank=True)
     transporters = models.JSONField(verbose_name='Transporters')
     generator = models.ForeignKey('Handler',
                                   verbose_name='Generator',
                                   on_delete=models.PROTECT,
                                   related_name='generator')
     broker = models.JSONField(null=True, blank=True)
-    designatedFacility = models.ForeignKey('Handler',
-                                           verbose_name='Designated facility',
-                                           on_delete=models.PROTECT,
-                                           related_name='designated_facility')
+    tsd = models.ForeignKey('Handler',
+                            verbose_name='Designated facility',
+                            on_delete=models.PROTECT,
+                            related_name='designated_facility')
     wastes = models.JSONField()
-    additionalInfo = models.JSONField(verbose_name='Additional Info',
-                                      null=True,
-                                      blank=True)
-    printedDocument = models.JSONField(verbose_name='Printed Document',
+    additional_info = models.JSONField(verbose_name='Additional Info',
                                        null=True,
                                        blank=True)
+    printed_document = models.JSONField(verbose_name='Printed Document',
+                                        null=True,
+                                        blank=True)
     rejection = models.BooleanField(verbose_name='Rejection',
                                     null=True,
-                                    blank=True)
+                                    blank=True,
+                                    default=False)
     residue = models.BooleanField(verbose_name='Residue',
                                   null=True,
                                   blank=True)
-    residueNewManifestTrackingNumbers = models.JSONField(verbose_name='Residue MTN')
+    residue_new_mtn = models.JSONField(verbose_name='Residue new MTN')
     # TODO: The manifest field 'import' conflicts with the python keyword
-    importFlag = models.BooleanField(verbose_name='Import',
-                                     null=True,
-                                     blank=True)
+    import_flag = models.BooleanField(verbose_name='Import',
+                                      null=True,
+                                      blank=True)
     containsPreviousRejectOrResidue = models.BooleanField(verbose_name='Contains previous rejection or residue',
                                                           null=True,
                                                           blank=True)

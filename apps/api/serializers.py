@@ -11,12 +11,44 @@ class HandlerSerializer(serializers.ModelSerializer):
 
 class ManifestSerializer(serializers.ModelSerializer):
     manifestTrackingNumber = serializers.CharField(source='mtn')
+    createdDate = serializers.DateTimeField(source='created_date')
+    updatedDate = serializers.DateTimeField(source='update_date')
+    submissionType = serializers.CharField(source='submission_type')
+    originType = serializers.CharField(source='origin_type')
+    shippedDate = serializers.DateTimeField(source='shipped_date')
+    receivedDate = serializers.DateTimeField(source='received_date')
+    generator = HandlerSerializer()
+    designatedFacility = HandlerSerializer(source='tsd')
+    additionalInfo = serializers.JSONField(source='additional_info')
+
+    # printedDocument = serializers.JSONField(source='printed_document')
+
+    # residueNewManifestTrackingNumbers = serializers.JSONField(source='residue_new_mtn')
+
+    # import = serializers.BooleanField(source='import_flag')
 
     class Meta:
         model = Manifest
-        fields = ['manifestTrackingNumber']
-    # generator = HandlerSerializer()
-    #
+        fields = [
+            'createdDate',
+            'updatedDate',
+            'manifestTrackingNumber',
+            'status',
+            'discrepancy',
+            'submissionType',
+            'originType',
+            'shippedDate',
+            'receivedDate',
+            'generator',
+            'transporters',
+            'designatedFacility',
+            'wastes',
+            'additionalInfo',
+            # 'printedDocument',
+            # 'rejection',
+            # 'residue',
+            # 'residueNewManifestTrackingNumbers',
+        ]
     # def update(self, instance, validated_data):
     #     pass
     #
@@ -29,7 +61,3 @@ class ManifestSerializer(serializers.ModelSerializer):
     #                                        designatedFacility=tsd_object,
     #                                        **validated_data)
     #     return manifest
-    #
-    # class Meta:
-    #     model = Manifest
-    #     fields = '__all__'

@@ -17,14 +17,14 @@ class ManifestSerializerTests(TestCase):
         stream = io.BytesIO(data)
         data = JSONParser().parse(stream=stream)
         serializer = ManifestSerializer(data=data)
-        serializer.is_valid()
-        print("is valid: ", serializer.is_valid())
-        if not serializer.is_valid():
-            print("errors: ", serializer.errors)
-        else:
-            serializer.save()
+        cls.serializer = serializer
 
-    def test_manifest_saves(self):
-        all_manifest = Manifest.objects.filter().all()
-        print(all_manifest)
-        self.assertIsNotNone(all_manifest)
+    def test_serializer_is_valid(self):
+        self.assertTrue(self.serializer.is_valid())
+
+        # serializer.is_valid()
+        # print("is valid: ", serializer.is_valid())
+        # if not serializer.is_valid():
+        #     print("errors: ", serializer.errors)
+        # else:
+        #     serializer.save()
