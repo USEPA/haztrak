@@ -4,8 +4,8 @@ from lib.rcrainfo import lookups as lu
 
 
 class Manifest(models.Model):
-    manifestTrackingNumber = models.CharField(verbose_name='Manifest Tracking Number',
-                                              max_length=15)
+    mtn = models.CharField(verbose_name='Manifest Tracking Number',
+                           max_length=15)
     createdDate = models.DateTimeField(verbose_name='Created Date',
                                        null=True,
                                        auto_now=True)
@@ -59,12 +59,14 @@ class Manifest(models.Model):
                                      null=True,
                                      blank=True)
     containsPreviousRejectOrResidue = models.BooleanField(verbose_name='Contains previous rejection or residue',
-                                                          null=True)
+                                                          null=True,
+                                                          blank=True)
     formDocument = models.JSONField(verbose_name='Form Document',
                                     null=True,
                                     blank=True)
     newResidueManifestTrackingNumbers = models.JSONField(verbose_name='New Residue MTN',
-                                                         null=True)
+                                                         null=True,
+                                                         blank=True)
     rejectionInfo = models.JSONField(verbose_name='Rejection Information',
                                      null=True,
                                      blank=True)
@@ -111,7 +113,7 @@ class Manifest(models.Model):
                                    blank=True)
 
     def __str__(self):
-        return f'{self.manifestTrackingNumber}'
+        return f'{self.mtn}'
 
 
 class Handler(models.Model):
