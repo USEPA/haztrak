@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Manifest
-from .models import EpaSite
+from .models import Site
 
 
 @login_required
@@ -24,13 +24,14 @@ def sites_dashboard(request):
 
 
 @login_required
-def sites_details(request, epa_id):
-    site_object = get_object_or_404(EpaSite, epa_id=epa_id)
+def sites_details(request, id_number):
+    queryset = Site.objects.filter(epa_site__epa_id=id_number)
+    site_object = get_object_or_404(queryset)
     return render(request, 'trak/site_details.html', {'site': site_object})
 
 
 @login_required
 def site_manifests(request, epa_id):
     manifests = Manifest.objects.filter(generator__epa_id=epa_id)
-    site_data = EpaSite.objects.filter(epa_id=epa_id).get()
+    site_data = Site.objects.filter(epa_site__epa_id=epa_id).get()
     return render(request, 'trak/site_manifests.html', {'site': site_data, 'manifests': manifests})

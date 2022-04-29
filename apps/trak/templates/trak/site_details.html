@@ -42,11 +42,12 @@
                         </div>
                         <!-- Card Body -->
                         <div class="card-body">
-                            <p>EPA ID: {{ site.epa_id }}</p>
-                            <p>Address: {{ site.site_address.address1 }}, {{ site.site_address.city }}
+                            <p>EPA ID: {{ site.epa_site.epa_id }}</p>
+                            {#                            <p>Address: {{ site.site_address.address1 }}, {{ site.site_address.city }}#}
+                            <p>Address: {{ site.epa_site.site_address }}
                                 {{ site.site_address.state_name }} {{ site.site_address.zip_code }}</p>
-                            <p>Can e-Sign: {{ site.can_esign }}</p>
-                            <p>Site Type: {{ site.site_type }}</p>
+                            <p>Can e-Sign: {{ site.epa_site.can_esign }}</p>
+                            <p>Site Type: {{ site.epa_site.site_type }}</p>
                         </div>
                     </div>
                 </div>
