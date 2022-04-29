@@ -57,8 +57,7 @@
                                             <th scope="row">{{ forloop.counter }}</th>
                                             <td>{{ manifest.mtn }}</td>
                                             <td>{{ manifest.status }}</td>
-                                            <td>{{ manifest.certifiedDate }}</td>
-                                            {#                                                <td><a class="fas fa-eye" href="{{ manifest.id }}/details"></a></td>#}
+                                            <td>{{ manifest.update_date }}</td>
                                             <td><a class="fas fa-eye" href="{% url 'manifest' manifest.id %}"></a></td>
                                         </tr>
                                     {% endfor %}
