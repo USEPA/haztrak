@@ -9,7 +9,6 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 
 from .forms import UpdateProfileForm, UpdateUserForm
-from .models import Profile
 
 
 def signup_haztrak(request):

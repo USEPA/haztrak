@@ -1,0 +1,1132 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Schema for emanifest submit (save, update, correct). v1.3. Added entities: mtnValidationInfo, broker",
+  "version": "1.3",
+  "$ref": "#/definitions/Emanifest",
+  "definitions": {
+    "Emanifest": {
+      "description": "Object that contians all manifest data",
+      "type": "object",
+      "properties": {
+        "createdDate": {
+          "description": "Will be returned by Get Manifest. Shall not be provided for Save and Update Manifest.  Example: 2018-01-22T05:07:00.00Z",
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedDate": {
+          "description": "Will be returned by Get Manifest. Shall not be provided for Save and Update Manifest.  Example: 2018-01-22T05:07:00.00Z",
+          "type": "string",
+          "format": "date-time"
+        },
+        "manifestTrackingNumber": {
+          "$ref": "#/definitions/ManifestTrackingNumber"
+        },
+        "status": {
+          "description": " Will be returned by Get Manifest. Status shall not be provided for Save and Update Manifest Service for Image and DataImage5Copy. ",
+          "type": "string",
+          "enum": [
+            "NotAssigned",
+            "Pending",
+            "Scheduled",
+            "InTransit",
+            "ReadyForSignature",
+            "Signed",
+            "Corrected",
+            "UnderCorrection",
+            "MtnValidationFailed"
+          ]
+        },
+        "isPublic": {
+          "description": "Indicates if the manifest is public. Will be returned by Get Manifest. Shall not be provided by Save and Update Manifest",
+          "type": "boolean"
+        },
+        "submissionType": {
+          "type": "string",
+          "enum": [
+            "FullElectronic",
+            "DataImage5Copy",
+            "Hybrid",
+            "Image"
+          ]
+        },
+        "signatureStatus": {
+          "description": "Indicates if manifest was signed by TSDF. Will be returned by Get Manifest. Shall not be provided by Save and Update Manifest",
+          "type": "boolean"
+        },
+        "originType": {
+          "description": "Specifies how the manifest was created. Will be returned by Get Manifest. Shall not be provided for Save and Update Manifest. ",
+          "type": "string",
+          "enum": [
+            "Web",
+            "Service",
+            "Mail"
+          ]
+        },
+        "shippedDate": {
+          "description": "Will be returned by Get Manifest. Shall not be provided for Save and Update Manifest.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "potentialShipDate": {
+          "type": "string"
+        },
+        "receivedDate": {
+          "description": "Will be returned by Get Manifest. Shall not be provided for Save and Update Manifest.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "certifiedDate": {
+          "description": "Will be returned by Get Manifest. Shall not be provided for Save and Update Manifest.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "certifiedBy": {
+          "description": "Will be returned by Get Manifest. Shall not be provided for Save and Update Manifest.",
+          "$ref": "#/definitions/Signer"
+        },
+        "generator": {
+          "$ref": "#/definitions/ManifestHandlerSite"
+        },
+        "transporters": {
+          "description": "contains list of transporters",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ManifestHandlerSite"
+          }
+        },
+        "designatedFacility": {
+          "$ref": "#/definitions/ManifestHandlerSite"
+        },
+        "broker": {
+          "$ref": "#/definitions/ManifestHandlerSite"
+        },
+        "wastes": {
+          "description": "Object containing all the wastes for a manifest",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Waste"
+          }
+        },
+        "rejection": {
+          "description": "Specifies if manifest is rejected",
+          "type": "boolean"
+        },
+        "rejectionInfo": {
+          "description": "If manifest is rejected the entitiy shall contain rejection information",
+          "type": "object",
+          "properties": {
+            "transporterOnSite": {
+              "description": "Specifies if transporter is on site at the time of rejection",
+              "type": "boolean"
+            },
+            "rejectionType": {
+              "type": "string",
+              "enum": [
+                "FullReject",
+                "PartialReject"
+              ]
+            },
+            "alternateDesignatedFacilityType": {
+              "description": "Specifies the type of the alternate facility for shipping rejected waste",
+              "type": "string",
+              "enum": [
+                "Generator",
+                "Tsdf"
+              ]
+            },
+            "generatorPaperSignature": {
+              "$ref": "#/definitions/PaperSignature"
+            },
+            "generatorElectronicSignature": {
+              "$ref": "#/definitions/ElectronicSignature"
+            },
+            "alternateDesignatedFacility": {
+              "$ref": "#/definitions/ManifestHandlerSite"
+            },
+            "newManifestTrackingNumbers": {
+              "description": "Contains the list of MTNs for shipping of the rejected waste. Expected format: 9 digits followed by suffix containing 3 upper case letters. Use printed-tracking-number-suffixes service to obtain the list of valide suffixes.  Regex expression validation: [0-9]{9}[A-Z]{3}",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "rejectionComments": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            }
+          },
+          "additionalProperties": false
+        },
+        "discrepancy": {
+          "description": "Discrepancy indicator. Will be set to true if at least one Waste contains a discrepancy. Shall not be provided for Save and Update Manifest Services. Will be returned by Get Manifest service",
+          "type": "boolean"
+        },
+        "residue": {
+          "description": "Residue indicator. Will be set to true if at least one Waste contains a residue. Shall not be provided for Save and Update Manifest Services. Will be returned by Get Manifest service",
+          "type": "boolean"
+        },
+        "residueNewManifestTrackingNumbers": {
+          "description": "If the Manifest.residue is true the entity contains the list of Manifest Tracking Numbers of the Manifests created for shipment to another facilities. Expected format: 9 digits followed by suffix containing 3 upper case letters. Use printed-tracking-number-suffixes service to obtain the list of valide suffixes.  Regex expression validation: [0-9]{9}[A-Z]{3} ",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "import": {
+          "description": "Import indicator.",
+          "type": "boolean"
+        },
+        "importInfo": {
+          "description": "Contains Import related information",
+          "type": "object",
+          "properties": {
+            "importGenerator": {
+              "description": "The generator of the waste in the foreign country",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "max length 80",
+                  "type": "string"
+                },
+                "address": {
+                  "description": "max length 50",
+                  "type": "string"
+                },
+                "city": {
+                  "description": "max length 25",
+                  "type": "string"
+                },
+                "country": {
+                  "$ref": "#/definitions/Locality"
+                },
+                "postalCode": {
+                  "description": "max length 25",
+                  "type": "string"
+                },
+                "province": {
+                  "description": "max length 50",
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "portOfEntry": {
+              "$ref": "#/definitions/PortOfEntry"
+            }
+          },
+          "additionalProperties": false
+        },
+        "containsPreviousRejectOrResidue": {
+          "description": "If the new manifest is created for shiping the waste to another TSDF or back to the Generator for rejection or residure reasons then containsPreviousRejectOrResidue=true otherwise it is false",
+          "type": "boolean"
+        },
+        "printedDocument": {
+          "$ref": "#/definitions/Document"
+        },
+        "formDocument": {
+          "$ref": "#/definitions/Document"
+        },
+        "additionalInfo": {
+          "$ref": "#/definitions/AdditionalInfo"
+        },
+        "correctionInfo": {
+          "$ref": "#/definitions/CorrectionInfo"
+        },
+        "ppcStatus": {
+          "description": "Contains PPC processing status for Mail and DataImage5Copy manifests. Shall not be provided for Save and Update services. Will be returned by Get Manifest service",
+          "type": "string",
+          "enum": [
+            "Draft",
+            "PendingDataEntry",
+            "DataEntryInProgress",
+            "PendingDataQc",
+            "PendingDataQa",
+            "DataQaCompleted"
+          ]
+        },
+        "mtnValidationInfo": {
+          "$ref": "#/definitions/MtnValidationInfo"
+        },
+        "provideImageGeneratorInfo": {
+          "description": "Indicates if Generator information and Generator printed signature date was provided for the Image submission type manifest. Shall not be provided  for Save Manifest service.  Will be returned by get manifest service as a part of Manifest for the manifests with Image and submission type",
+          "type": "boolean"
+        },
+        "locked": {
+          "description": "Indicates if manifest is locked for update, delete, correct, revert services. If locked is true the manifest is in signing queue. Shall not be provided  for Save and Update Manifest service.  Will be returned by get manifest service",
+          "type": "boolean"
+        },
+        "lockReason": {
+          "type": "string",
+          "enum": [
+            "AsyncSign",
+            "EpaChangeBiller",
+            "EpaCorrection"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "Warning": {
+      "description": "Object that returns any warnings that the system generates",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 255
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "ManifestTrackingNumber": {
+      "description": "Will be returned by Get Manifest. Shall not be provided for a FullElectronic or Hybrid using the Save Manifest Service.  Required for a DataImage5Copy and Image Only manifest. Expected format: 9 digits followed by suffix containing 3 upper case letters. Use printed-tracking-number-suffixes service to obtain the list of valide suffixes.  Regex expression validation: [0-9]{9}[A-Z]{3}",
+      "type": "string"
+    },
+    "DotInformation": {
+      "description": "Object containing all DOT information",
+      "type": "object",
+      "properties": {
+        "idNumber": {
+          "$ref": "#/definitions/Code"
+        },
+        "printedDotInformation": {
+          "description": "Contains Proper Shipping Name, RQ Description, Technical Name, ID Number, Hazard Class, Packing Group and any user edits",
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "idNumber",
+        "printedDotInformation"
+      ],
+      "additionalProperties": false
+    },
+    "QuantityUnitsOfMeasurement": {
+      "description": "Units of Measurement for the waste line quantity",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1,
+          "enum": [
+            "P",
+            "T",
+            "K",
+            "M",
+            "G",
+            "L",
+            "Y",
+            "N"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "enum": [
+            "Pounds",
+            "Tons (2000 Pounds)",
+            "Kilograms",
+            "Metric Tons (1000 Kilograms)",
+            "Gallons",
+            "Liters",
+            "Cubic Yards",
+            "Cubic Meters"
+          ]
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "ContainerType": {
+      "description": "Type of container for waste line",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2,
+          "enum": [
+            "BA",
+            "DT",
+            "CF",
+            "DW",
+            "CM",
+            "HG",
+            "CW",
+            "TC",
+            "CY",
+            "TP",
+            "DF",
+            "TT",
+            "DM"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "enum": [
+            "Burlap, cloth, paper, or plastic bags",
+            "Dump truck",
+            "Fiber or plastic boxes, cartons, cases",
+            "Wooden drums, barrels, kegs",
+            "Metal boxes, cartons, cases (including roll offs)",
+            "Hopper or gondola cars",
+            "Wooden boxes, cartons, cases",
+            "Tank cars",
+            "Cylinders",
+            "Portable tanks",
+            "Fiberboard or plastic drums, barrels, kegs",
+            "Cargo tanks (tank trucks)",
+            "Metal drums, barrels, kegs"
+          ]
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "DensityUnitsOfMeasurement": {
+      "description": "Density Units shall be provided if density is provoided",
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "Either \"1\" or \"2\" can be provided",
+          "type": "string"
+        },
+        "description": {
+          "description": "Either \"lbs/gal\" or \"sg\" can be provided",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Waste": {
+      "description": "Object containing the each waste line",
+      "type": "object",
+      "properties": {
+        "dotHazardous": {
+          "description": "Specifies that the substance is hazardous by DOT definition. This indicator does not specify if the substance is a waste. If dotHazardous is true then dotInformation is required. If dotHazardous is false then wasteDescription is required",
+          "type": "boolean"
+        },
+        "dotInformation": {
+          "$ref": "#/definitions/DotInformation"
+        },
+        "wasteDescription": {
+          "description": "Only required if dotHazardous is false. Max length: 500 charachters",
+          "type": "string"
+        },
+        "quantity": {
+          "$ref": "#/definitions/Quantity"
+        },
+        "brInfo": {
+          "$ref": "#/definitions/BrInfo"
+        },
+        "br": {
+          "description": "Specifies if BR information is provided",
+          "type": "boolean"
+        },
+        "hazardousWaste": {
+          "$ref": "#/definitions/HazardousWaste"
+        },
+        "pcb": {
+          "description": "Specifies if the waste contains PCB",
+          "type": "boolean"
+        },
+        "pcbInfos": {
+          "description": "Contains list of PCB info",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PcbInfo"
+          }
+        },
+        "discrepancyResidueInfo": {
+          "description": "Object containing the discrepancy and residue information for the waste line",
+          "type": "object",
+          "properties": {
+            "wasteQuantity": {
+              "description": "Indicates if the Waste has quantity type discrepancy. Shall be provided in Save and Update Manifest services",
+              "type": "boolean"
+            },
+            "wasteType": {
+              "description": "Indicates if the Waste has waste type discrepancy. Shall be provided in Save and Update Manifest services",
+              "type": "boolean"
+            },
+            "discrepancyComments": {
+              "description": "Discrepancy comments are mandatory if either wasteQuantity is true or wasteType is true",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "residue": {
+              "description": "Indicates if the Waste has a residue",
+              "type": "boolean"
+            },
+            "residueComments": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            }
+          },
+          "additionalProperties": false
+        },
+        "managementMethod": {
+          "$ref": "#/definitions/CodeDescription"
+        },
+        "additionalInfo": {
+          "$ref": "#/definitions/AdditionalInfo"
+        },
+        "lineNumber": {
+          "description": "The Waste line number. Integer number starting at 1",
+          "type": "number"
+        },
+        "epaWaste": {
+          "description": "Specifies if the substance is a waste by EPA definition. This indicator does not specify if the substance is hazardous",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "dotHazardous",
+        "br",
+        "pcb",
+        "lineNumber",
+        "epaWaste"
+      ],
+      "additionalProperties": false
+    },
+    "PcbInfo": {
+      "description": "Object containing PCB information",
+      "type": "object",
+      "properties": {
+        "loadType": {
+          "$ref": "#/definitions/Code"
+        },
+        "articleContainerId": {
+          "description": "Max Length: 255",
+          "type": "string"
+        },
+        "dateOfRemoval": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "weight": {
+          "description": "UOM are Killograms. Decimal number containing no more than 11 whole digit(s) and 6 decimal digit(s) ",
+          "type": "number"
+        },
+        "wasteType": {
+          "description": "Max Length: 255",
+          "type": "string"
+        },
+        "bulkIdentity": {
+          "description": "Max Length: 255",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "BrInfo": {
+      "description": "Entity containing Biennial Report Fields",
+      "type": "object",
+      "properties": {
+        "density": {
+          "description": "Contains waste density if Quantity UOM are volume.  0 < Positive number <= 999.99 shall be provided with 2 decimal points. ",
+          "type": "number"
+        },
+        "densityUnitOfMeasurement": {
+          "$ref": "#/definitions/DensityUnitsOfMeasurement"
+        },
+        "formCode": {
+          "$ref": "#/definitions/CodeDescription"
+        },
+        "sourceCode": {
+          "$ref": "#/definitions/CodeDescription"
+        },
+        "wasteMinimizationCode": {
+          "$ref": "#/definitions/CodeDescription"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Quantity": {
+      "description": "Object containing the Number of containers, type of container, the total quantity and total qunatity units of measurement",
+      "type": "object",
+      "properties": {
+        "containerNumber": {
+          "description": "Number of containers this waste line occupies",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 99999
+        },
+        "containerType": {
+          "$ref": "#/definitions/ContainerType"
+        },
+        "quantity": {
+          "description": "Waste line quantity",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 99999999999
+        },
+        "unitOfMeasurement": {
+          "$ref": "#/definitions/QuantityUnitsOfMeasurement"
+        }
+      },
+      "dependencies": {
+        "quantity": [
+          "unitOfMeasurement"
+        ]
+      },
+      "additionalProperties": false
+    },
+    "HazardousWaste": {
+      "description": "Object containing federal and state waste codes",
+      "type": "object",
+      "properties": {
+        "federalWasteCodes": {
+          "description": "Entity containing Federally Defined Waste Codes",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CodeDescription"
+          }
+        },
+        "tsdfStateWasteCodes": {
+          "description": "Entity containing Waste Codes for the State where the TSDF is located",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CodeDescription"
+          }
+        },
+        "txWasteCodes": {
+          "description": "Entity containing Waste Codes if Generator or/and TSDF is located in TX",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 8
+          }
+        },
+        "generatorStateWasteCodes": {
+          "description": "Entity containing Waste Codes for the State where the Generator is located",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CodeDescription"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "AdditionalInfo": {
+      "description": "Entity containing Additional Information. Both Manifest and individual Wastes can contain this entitiy",
+      "type": "object",
+      "properties": {
+        "originalManifestTrackingNumbers": {
+          "description": "Used only for the Manifest.additionalInfo if Eanifest.containsPreviousRejectOrResidue== true  Expected format: 9 digits followed by suffix containing 3 upper case letters. Use printed-tracking-number-suffixes service to obtain the list of valide suffixes.  Regex expression validation: [0-9]{9}[A-Z]{3}",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "newManifestDestination": {
+          "description": "Used only for the Manifest.additionalInfo if Eanifest.containsPreviousRejectOrResidue== true. Specifies destination of the new manifest created \"as result\" of the rejection or residue of the original manifest.",
+          "type": "string",
+          "enum": [
+            "OriginalGenerator",
+            "Tsdf"
+          ]
+        },
+        "consentNumber": {
+          "description": "Used only for the Waste.additionalInfo in case of Import. Expected format 12 digits.  6 digits \"I\" and then 5 digits. Pattern  ([0-9]{6}I[0-9]{5}) ",
+          "type": "string"
+        },
+        "comments": {
+          "description": "Entity defined reference information",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "description": "Label describing the reference information.  Maxl length 255",
+                "type": "string"
+              },
+              "description": {
+                "description": "Data for the reference information descrbied by the label. Max length 255",
+                "type": "string"
+              },
+              "handlerId": {
+                "description": "Handler ID of site related to this reference information. expected format : Two Letter Activity Location Code + Up to 10 alphanumeric characters ",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "handlingInstructions": {
+          "description": "Special Handling Instructions. Max length 4000",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ManifestHandlerSite": {
+      "description": "Object contianing site information",
+      "type": "object",
+      "properties": {
+        "siteType": {
+          "$ref": "#/definitions/SiteType"
+        },
+        "epaSiteId": {
+          "$ref": "#/definitions/EpaSiteId"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "mailingAddress": {
+          "$ref": "#/definitions/Address"
+        },
+        "siteAddress": {
+          "$ref": "#/definitions/Address"
+        },
+        "contact": {
+          "$ref": "#/definitions/Contact"
+        },
+        "emergencyPhone": {
+          "$ref": "#/definitions/Phone"
+        },
+        "paperSignatureInfo": {
+          "$ref": "#/definitions/PaperSignature"
+        },
+        "electronicSignaturesInfo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ElectronicSignature"
+          }
+        },
+        "order": {
+          "description": "Transporter Order. Used for Transporters only",
+          "type": "number"
+        },
+        "registered": {
+          "description": "Indicates if the site is registered in RCRAInfo. Used for Transporters and Generators only. Shall not be provided for Save and update services.  Will be returned by Get Manifest Service",
+          "type": "boolean"
+        },
+        "modified": {
+          "description": "Indicates if the site information was modified from what was on the handler’s notification form. Shall not be provided for Save and update services.  Will be returned by Get Manifest Service",
+          "type": "boolean"
+        },
+        "limitedEsign": {
+          "description": "Indicates if there is  at least one preparer user associated with the site which can quick sign. Will be returned by get manifest service. Shall not be provided for save, update, correct services.",
+          "type": "boolean"
+        },
+        "canEsign": {
+          "description": "Indicates if there is  at least one user associated with the site which can electronicaly sign. Will be returned by get manifest service. Shall not be provided for save, update, correct services.",
+          "type": "boolean"
+        },
+        "siteState": {
+          "$ref": "#/definitions/Locality"
+        },
+        "hasRegisteredEmanifestUser": {
+          "description": "Indicates if there is  at least one registered user associated with the site. Will be returned by get manifest service. Shall not be provided for save, update, correct services.",
+          "type": "boolean"
+        },
+        "gisPrimary": {
+          "description": "Indicates if site address1 is lat/long primary. Will be returned by get manifest service. Shall not be provided for save, update, correct services.",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "PaperSignature": {
+      "description": "Contains  printed name of the Generator or TSDF or Transporter Signee and Date of Signature. ",
+      "type": "object",
+      "properties": {
+        "printedName": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "signatureDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ElectronicSignature": {
+      "description": "Contains Generator or TSDF or Transporter Signer Info, Date of Signature and Signed document metadata. Shall not be provided for Save and Update services. Will be returned by Get Manifest Service if the participant (Generator, Transporter, TSDF) Electronicaly signed the manifest",
+      "type": "object",
+      "properties": {
+        "signer": {
+          "$ref": "#/definitions/Signer"
+        },
+        "signatureDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "humanReadableDocument": {
+          "$ref": "#/definitions/Document"
+        },
+        "cromerrActivityId": {
+          "type": "string"
+        },
+        "cromerrDocumentId": {
+          "type": "string"
+        },
+        "signerRole": {
+          "description": "Indicates which entity signed the manifest. Industry, State, Ppc, Epa",
+          "type": "string",
+          "enum": [
+            "Industry",
+            "State",
+            "Ppc",
+            "Epa"
+          ]
+        },
+        "onBehalf": {
+          "description": "Specifies if the signature is provided on behalf of the user",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SiteType": {
+      "description": "Specifies How a site interacts with this manifest",
+      "type": "string",
+      "enum": [
+        "Tsdf",
+        "Generator",
+        "Transporter",
+        "Broker"
+      ]
+    },
+    "CompanyName": {
+      "description": "The name for each site on the manifest",
+      "type": "string",
+      "maxLength": 80
+    },
+    "EpaSiteId": {
+      "description": "The handler ID for each site on the manifest. For TSDF and registered Generators and Transporters must follow following format: Two Letter Activity Location Code + Up to 10. alphanumeric characters",
+      "type": "string"
+    },
+    "Phone": {
+      "description": "Object for Phone numbers",
+      "type": "object",
+      "properties": {
+        "number": {
+          "description": "Following format pattern shall be used:  ###-###-####",
+          "type": "string"
+        },
+        "extension": {
+          "description": "max length 6",
+          "type": "string"
+        }
+      },
+      "required": [
+        "number"
+      ],
+      "additionalProperties": false
+    },
+    "Contact": {
+      "description": "Object containing the information about the site contact for this manifest",
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "description": "Max length is 38",
+          "type": "string"
+        },
+        "middleInitial": {
+          "description": " max lengs 1",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "Max length is 38",
+          "type": "string"
+        },
+        "phone": {
+          "$ref": "#/definitions/Phone"
+        },
+        "email": {
+          "type": "string"
+        },
+        "companyName": {
+          "description": "max length 80",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Locality": {
+      "description": "Used for passing and returning State and Country",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "Address": {
+      "description": "Object for Address information for handlers on this manifest",
+      "type": "object",
+      "properties": {
+        "streetNumber": {
+          "type": "string",
+          "maxLength": 12
+        },
+        "address1": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "address2": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 25
+        },
+        "state": {
+          "$ref": "#/definitions/Locality"
+        },
+        "country": {
+          "$ref": "#/definitions/Locality"
+        },
+        "zip": {
+          "description": "zip is required only for the US. If in US following pattern is used for the validation: \\d{5}(?:[-\\s]\\d{4})? ",
+          "type": "string"
+        }
+      },
+      "required": [
+        "address1"
+      ],
+      "additionalProperties": false
+    },
+    "Signer": {
+      "description": "Contains Signer Information. Shall not be provided for Save and Update Manifest.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "firstName": {
+          "description": "Max length is 38",
+          "type": "string"
+        },
+        "middleInitial": {
+          "description": " max lengs 1",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "Max length is 38",
+          "type": "string"
+        },
+        "phone": {
+          "$ref": "#/definitions/Phone"
+        },
+        "email": {
+          "type": "string"
+        },
+        "companyName": {
+          "description": "max length 80",
+          "type": "string"
+        },
+        "contactType": {
+          "type": "string",
+          "enum": [
+            "Email",
+            "Text",
+            "Voice"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "PortOfEntry": {
+      "description": "Contains Port of entry State code and City or City name plus Port or Airport name separated by comma.",
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/Locality"
+        },
+        "cityPort": {
+          "type": "string",
+          "maxLength": 100
+        }
+      },
+      "additionalProperties": false
+    },
+    "Document": {
+      "description": "Attachments metadata formDocument is the PDF generated by EPA.  printedDocument is the file uploaded to EPA, human readable Copy Of Record documents",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "file name ",
+          "type": "string",
+          "pattern": "^[0-9a-zA-Z_\\-. ]+$"
+        },
+        "size": {
+          "description": "Size of file, optional for upload",
+          "type": "number"
+        },
+        "mimeType": {
+          "description": "file mime type",
+          "type": "string",
+          "enum": [
+            "APPLICATION_PDF",
+            "TEXT_HTML"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "CodeDescription": {
+      "description": "Object for handling codes and their descriptions.  This object will have a parent object that will describe the code.  For specific codes please use the e-Manifest look up services",
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "Code coresponding to the parent element.  For example, if the parent element is managementMethod then an example value for code would be H010",
+          "type": "string"
+        },
+        "description": {
+          "description": "Optional field this discription is returned based on the code provided in this object.  For example if code is H010 then the description returned is METALS RECOVERY",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "ProperShippingName": {
+      "description": "Object for DOT Proper Shipping name",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "technicalNameIndicator": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "Code": {
+      "description": "Code is used for certain fields that are independent of their description such as Hazard Class",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "CorrectionInfo": {
+      "description": "Contains correction information. Shall not be provided for Save  and Update Manifest services. will be returned by Get manifest service",
+      "type": "object",
+      "properties": {
+        "versionNumber": {
+          "description": "Contains Manifest version number. Manifest versions will be created only for the manifest which are in Corrected statuse.Will be returned by Get Manifest. Shall not be provided for Save and Update Manifest.",
+          "type": "integer"
+        },
+        "active": {
+          "description": "Indicates if the Manifest version is active or outdatedfor the industry. Will be returned by Correction Details, Correction Version, Get Manifest. Shall not be provided for Save and Update Manifest.",
+          "type": "boolean"
+        },
+        "ppcActive": {
+          "description": "Indicates if the Manifest version is active or outdatedfor the PPC. Will be returned by Correction Details, Correction Version, Get Manifest. Shall not be provided for Save and Update Manifest.",
+          "type": "boolean"
+        },
+        "electronicSignatureInfo": {
+          "$ref": "#/definitions/ElectronicSignature"
+        },
+        "epaSiteId": {
+          "$ref": "#/definitions/EpaSiteId"
+        },
+        "initiatorRole ": {
+          "description": "Indicates if the manifest is under correction by the Industry, State, Ppc, Epa. Will be returned by Correction Details, Correction Version, Get Manifest. Shall not be provided for Save and Update Manifest.",
+          "type": "string",
+          "enum": [
+            "Industry",
+            "State",
+            "Ppc",
+            "Epa"
+          ]
+        },
+        "updateRole ": {
+          "description": "Indicates if the manifest is under correction by the Industry, State, Ppc, Epa. Will be returned by Correction Details, Correction Version, Get Manifest. Shall not be provided for Save and Update Manifest.",
+          "type": "string",
+          "enum": [
+            "Industry",
+            "State",
+            "Ppc",
+            "Epa"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "MtnValidationInfo": {
+      "description": "Contains Manifest Discrepancy Validation information. Shall not be provided for Save Manifest service.For Update service two fields can be provided (mtnsCorrect, mtnCorrectionReason). Will be returned by get manifest service as a part of Manifest for the manifests with Image and DataImage5Copy submission types",
+      "type": "object",
+      "properties": {
+        "mtnExtractionStatus": {
+          "description": "Indicates the status of the MTN extraction from the pdf attachment form 8700-22. System generated field. Shall not be provided for any services",
+          "type": "string",
+          "enum": [
+            "NotStarted",
+            "Completed",
+            "Failed"
+          ]
+        },
+        "mtnsMatch": {
+          "description": "Indicates if the electronic MTN matches MTN extracted from the pdf attachment form 8700-22. System generated field. Shall not be provided for any services",
+          "type": "boolean"
+        },
+        "pdfMtn": {
+          "description": "Contains MTN extracted from the pdf attachment form 8700-22. System generated field. Shall not be provided for any services",
+          "type": "string"
+        },
+        "pdfMtnUnique": {
+          "description": "Indicates if the MTN extracted from the pdf attachment form 8700-22 is unique in the e-Manifest system. System generated field. Shall not be provided for any services",
+          "type": "boolean"
+        },
+        "mtnCorrect": {
+          "description": "User provided field indicating that submitted electronic and pdf mtns are correct",
+          "type": "boolean"
+        },
+        "mtnRerunCounter": {
+          "description": "Indicates how many times MTN validations was performed. System generated field. Shall not be provided for any services",
+          "type": "integer"
+        },
+        "mtnDiscrepancyCorrection": {
+          "description": "User provided field to indicate if PDF change is for MTN discrepancy correction or other reason. 'true' shall be provided if the user changes pdf for MTN discrepancy correction, 'false' shall be provided if the user changes pdf for any other reason ",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
