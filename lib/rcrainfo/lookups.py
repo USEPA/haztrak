@@ -109,3 +109,9 @@ LOCKED_REASON = [
     ('EpaChangeBiller', 'EPA change biller'),
     ('EpaCorrection', 'EPA corrections'),
 ]
+
+COUNTRIES = [
+    ('US', 'United States'),
+    ('MX', 'Mexico'),
+    ('CA', 'Canada'),
+]

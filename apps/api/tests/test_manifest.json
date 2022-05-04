@@ -264,6 +264,7 @@
   },
   "rejection": false,
   "residue": false,
+  "import": false,
   "containsPreviousRejectOrResidue": false,
   "residueNewManifestTrackingNumbers": [],
   "correctionInfo": {

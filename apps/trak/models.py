@@ -1,5 +1,6 @@
 from django.db import models
 from lib.rcrainfo import lookups as lu
+from django.utils.translation import gettext_lazy as _
 
 
 class Manifest(models.Model):
@@ -56,7 +57,6 @@ class Manifest(models.Model):
         null=True, blank=True)
     wastes = models.JSONField()
     rejection = models.BooleanField(
-        null=True,
         blank=True,
         default=False)
     rejection_info = models.JSONField(
@@ -64,19 +64,19 @@ class Manifest(models.Model):
         null=True,
         blank=True)
     discrepancy = models.BooleanField(
+        blank=True,
         default=False)
     residue = models.BooleanField(
-        null=True,
-        blank=True)
+        blank=True,
+        default=False)
     residue_new_mtn = models.JSONField(
         verbose_name='Residue new MTN',
-        null=True,
-        blank=True)
-    # TODO: The manifest field 'import' conflicts with the python keyword
+        blank=True,
+        default=list)
     import_flag = models.BooleanField(
         verbose_name='Import',
-        null=True,
-        blank=True)
+        blank=True,
+        default=False)
     import_info = models.JSONField(
         verbose_name='Import information',
         null=True,
@@ -149,9 +149,11 @@ class Handler(models.Model):
     # TODO convert Addresses foreign key, will also likely require implementing a
     #  custom .create() and .update() method for the Handler serializer, and a new AddressSerializer
     # mailing_address = models.ForeignKey('Address', related_name='mailing_address', on_delete=models.CASCADE)
-    # site_address = models.ForeignKey('Address', related_name='site_address', on_delete=models.CASCADE)
+    site_address = models.ForeignKey(
+        'Address',
+        related_name='site_address',
+        on_delete=models.CASCADE)
     mailing_address = models.JSONField()
-    site_address = models.JSONField()
     contact = models.JSONField(
         verbose_name='Contact information')
     emergency_phone = models.JSONField(
@@ -215,28 +217,36 @@ class Site(models.Model):
 
 
 class Address(models.Model):
-    street_number = models.IntegerField(
+    street_number = models.CharField(
+        max_length=12,
         null=True,
         blank=True)
     address1: str = models.CharField(
         verbose_name='Address 1',
-        max_length=200)
+        max_length=50)
     address2 = models.CharField(
         verbose_name='Address 2',
-        max_length=200,
+        max_length=50,
         default=None,
         null=True,
         blank=True)
     city = models.CharField(
-        max_length=200)
-    zip_code = models.CharField(
-        verbose_name='Zip',
-        max_length=32)
-    state_name = models.CharField(
-        verbose_name='State',
-        max_length=32,
-        choices=lu.STATES)
+        max_length=25)
+    state = models.JSONField(
+        null=True,
+        blank=True)
+    # choices=lu.STATES)
+    country = models.JSONField(
+        null=True,
+        blank=True)
+    # choices=lu.COUNTRIES)
+    zip = models.CharField(
+        null=True,
+        blank=True,
+        max_length=5)
 
     def __str__(self):
-        return f'{self.street_number} {self.address1}, ' \
-               f'{self.city} {self.state_name} {self.zip_code}'
+        if self.street_number:
+            return f'{self.street_number} {self.address1}'
+        else:
+            return f' {self.address1}'
