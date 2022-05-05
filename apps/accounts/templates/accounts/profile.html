@@ -1,191 +1,189 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block sidebar %}
-    {% include 'site_nav.html' %}
+  {% include 'site_nav.html' %}
 {% endblock sidebar %}
 {% block content %}
 
-    <div id="content">
+  <div id="content">
 
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
 
 
-            <!-- Prototype Modal-->
-            <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <!-- Modal Header-->
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <!-- Modal Form -->
-                        <div class="modal-body">
-                            <form method="POST">
-                                {% csrf_token %}
-                                {{ form.as_p }}
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" name="update_profile" class="btn btn-primary">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+      <!-- Prototype Modal-->
+      <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog"
+           aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <!-- Modal Header-->
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
             </div>
-
-
-            <!-- Prototype Modal-->
-            <div class="modal fade" id="editApiModal" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <!-- Modal Header-->
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit RCRAInfo API ID and Key</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <!-- Modal Form -->
-                        <div class="modal-body">
-                            <form method="POST">
-                                {% csrf_token %}
-                                {{ api_form.as_p }}
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" name="update_api" class="btn btn-primary">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+            <!-- Modal Form -->
+            <div class="modal-body">
+              <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                  <button type="submit" name="update_profile" class="btn btn-primary">Submit</button>
                 </div>
+              </form>
             </div>
-
-
-            <!-- Prototype Modal-->
-            <div class="modal fade" id="editPasswordModal" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <!-- Modal Header-->
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit RCRAInfo API ID and Key</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <!-- Modal Form -->
-                        <div class="modal-body">
-                            <form method="POST">
-                                {% csrf_token %}
-                                {{ pw_form.as_p }}
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" name="update_pw" class="btn btn-primary">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Start Row -->
-            <div class="row justify-content-center">
-                <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
-                    <div class="card p-4" style="min-width: 400px">
-                        <div class="d-flex flex-column justify-content-center align-items-center">
-                            {% if messages %}
-                                {% for message in messages %}
-                                    {% if message.tags %}
-                                        <div class="alert alert-{{ message.tags }}" role="alert">
-                                            {{ message }}
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
-                            <button class="img-thumbnail rounded-circle">
-                                <img src="{% static 'img/rubber_plant.jpg' %}" height="120"
-                                     alt="Hi There!" width="120"/>
-                            </button>
-                            <div class="container">
-                                <p class="font-weight-bold">Profile
-                                <p>
-                            </div>
-                            <span class="">{{ user.first_name }} {{ user.last_name }}</span>
-                            <span class="">@{{ user.profile.user }}</span>
-                            <span class="">{{ user.email }}</span>
-                            <span class="">{{ user.profile.phone_number }}</span>
-                            <div class="d-flex flex-row justify-content-center align-items-center gap-2">
-                                <div class=" d-flex m-2">
-                                    <button class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">
-                                        Edit Profile
-                                    </button>
-                                </div>
-                                <div class=" d-flex m-2">
-                                    <button class="btn btn-primary" data-toggle="modal"
-                                            data-target="#editPasswordModal">
-                                        Change Password
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="container">
-                                <hr class="mt-0">
-                                <div class="col-auto">
-                                    <p class="font-weight-bold">RCRAInfo Access</p>
-                                </div>
-                            </div>
-                            {% if user.profile.rcra_api_id != None %}
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <p>ID: </p>
-                                    </div>
-                                    <div class="col">
-                                        <p>{{ user.profile.rcra_api_id }} </p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <p>Key: </p>
-                                    </div>
-                                    <div class="col text-left">
-                                        <span class="">********************</span><span class="fas fa-key"></span>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-row justify-content-end align-items-center gap-2">
-                                    <div class="">
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#editApiModal">
-                                            Update RCRAInfo Access
-                                        </button>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <div class="d-flex flex-row justify-content-end align-items-center gap-2">
-                                    <div class="">
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#editApiModal">
-                                            Add a RCRAInfo API ID and Key
-                                        </button>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.container-fluid -->
+          </div>
         </div>
-        <!-- End of Main Content -->
+      </div>
+
+
+      <!-- Prototype Modal-->
+      <div class="modal fade" id="editApiModal" tabindex="-1" role="dialog"
+           aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <!-- Modal Header-->
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit RCRAInfo API ID and Key</h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <!-- Modal Form -->
+            <div class="modal-body">
+              <form method="POST">
+                {% csrf_token %}
+                {{ api_form.as_p }}
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                  <button type="submit" name="update_api" class="btn btn-primary">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Prototype Modal-->
+      <div class="modal fade" id="editPasswordModal" tabindex="-1" role="dialog"
+           aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <!-- Modal Header-->
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit RCRAInfo API ID and Key</h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <!-- Modal Form -->
+            <div class="modal-body">
+              <form method="POST">
+                {% csrf_token %}
+                {{ pw_form.as_p }}
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                  <button type="submit" name="update_pw" class="btn btn-primary">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start Row -->
+      <div class="row justify-content-center">
+        <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+          <div class="card p-4" style="min-width: 400px">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+              {% if messages %}
+                {% for message in messages %}
+                  {% if message.tags %}
+                    <div class="alert alert-{{ message.tags }}" role="alert">
+                      {{ message }}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+              <button class="img-thumbnail rounded-circle">
+                <img src="{% static 'img/rubber_plant.jpg' %}" height="120"
+                     alt="Hi There!" width="120"/>
+              </button>
+              <div class="container">
+                <p class="font-weight-bold">Profile
+                <p>
+              </div>
+              <span class="">{{ user.first_name }} {{ user.last_name }}</span>
+              <span class="">@{{ user.profile.user }}</span>
+              <span class="">{{ user.email }}</span>
+              <span class="">{{ user.profile.phone_number }}</span>
+              <div class="d-flex flex-row justify-content-center align-items-center gap-2">
+                <div class=" d-flex m-2">
+                  <button class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">
+                    Edit Profile
+                  </button>
+                </div>
+                <div class=" d-flex m-2">
+                  <button class="btn btn-primary" data-toggle="modal"
+                          data-target="#editPasswordModal">
+                    Change Password
+                  </button>
+                </div>
+              </div>
+              <div class="container">
+                <hr class="mt-0">
+                <div class="col-auto">
+                  <p class="font-weight-bold">RCRAInfo Access</p>
+                </div>
+              </div>
+              {% if user.profile.rcra_api_id != None %}
+                <div class="row">
+                  <div class="col-auto">
+                    <p>ID: </p>
+                  </div>
+                  <div class="col">
+                    <p>{{ user.profile.rcra_api_id }} </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-auto">
+                    <p>Key: </p>
+                  </div>
+                  <div class="col text-left">
+                    <span class="">********************</span><span class="fas fa-key"></span>
+                  </div>
+                </div>
+                <div class="d-flex flex-row justify-content-end align-items-center gap-2">
+                  <div class="">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#editApiModal">
+                      Update RCRAInfo Access
+                    </button>
+                  </div>
+                </div>
+              {% else %}
+                <div class="d-flex flex-row justify-content-end align-items-center gap-2">
+                  <div class="">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#editApiModal">
+                      Add a RCRAInfo API ID and Key
+                    </button>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
     </div>
-
-
+    <!-- End of Main Content -->
+  </div>
 {% endblock content %}

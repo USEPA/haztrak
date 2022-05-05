@@ -1,6 +1,5 @@
 from django.db import models
 from lib.rcrainfo import lookups as lu
-from django.utils.translation import gettext_lazy as _
 
 
 class Manifest(models.Model):
