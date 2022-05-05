@@ -1,0 +1,13 @@
+{
+  "address1": "123 VA TEST GEN 2021 WAY",
+  "city": "ARLINGTON",
+  "state": {
+    "code": "VA",
+    "name": "VIRGINIA"
+  },
+  "country": {
+    "code": "US",
+    "name": "UNITED STATES"
+  },
+  "zip": "22202"
+}

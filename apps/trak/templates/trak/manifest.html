@@ -1,49 +1,43 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block sidebar %}
-    {% include 'manifest_nav.html' %}
-    {% include 'site_nav.html' %}
+  {% include 'manifest_nav.html' %}
+  {% include 'site_nav.html' %}
 {% endblock sidebar %}
 {% block content %}
-
-    <!-- Main Content -->
-    <div id="content">
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-            <!-- Page Heading and top level Button -->
-
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">{{ manifest.manifest_tracking_number }}</h1>
-                <div>
-                    <button id="" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                            class="fas fa-wrench fa-sm text-white-50"></i> Edit
-                    </button>
-                    <button id="" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                            class="fas fa-pen fa-sm text-white-50"></i> Sign
-                    </button>
-                </div>
-            </div>
-            <div>
-                <p>mtn: {{ manifest.mtn }}</p>
-                <p>ID number: {{ manifest.id }}</p>
-                <p>Generator: {{ manifest.generator }}</p>
-                <p>TSD: {{ manifest.tsd.epa_id }}</p>
-                <p>Status: {{ manifest.status }}</p>
-                <p>submission type: {{ manifest.submission_type }}</p>
-                <p>Origin Type: {{ manifest.origin_type }}</p>
-                <p>shipped date: {{ manifest.shipped_date }}</p>
-                <p>potential shipped date: {{ manifest.potential_ship_date }}</p>
-                <p>received date: {{ manifest.received_date }}</p>
-                <p>Certified Date: {{ manifest.certified_date }}</p>
-            </div>
+  <!-- Main Content -->
+  <div id="content">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+      <!-- Page Heading and top level Button -->
+      <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">{{ manifest.manifest_tracking_number }}</h1>
+        <div>
+          <button id="" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-wrench fa-sm text-white-50"></i> Edit
+          </button>
+          <button id="" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-pen fa-sm text-white-50"></i> Sign
+          </button>
         </div>
-        <!-- /.container-fluid -->
-
+      </div>
+      <div>
+        <p>mtn: {{ manifest.mtn }}</p>
+        <p>ID number: {{ manifest.id }}</p>
+        <p>Generator: {{ manifest.generator }}</p>
+        <p>TSD: {{ manifest.tsd.epa_id }}</p>
+        <p>Status: {{ manifest.status }}</p>
+        <p>submission type: {{ manifest.submission_type }}</p>
+        <p>Origin Type: {{ manifest.origin_type }}</p>
+        <p>shipped date: {{ manifest.shipped_date }}</p>
+        <p>potential shipped date: {{ manifest.potential_ship_date }}</p>
+        <p>received date: {{ manifest.received_date }}</p>
+        <p>Certified Date: {{ manifest.certified_date }}</p>
+      </div>
     </div>
+    <!-- /.container-fluid -->
     <!-- End of Main Content -->
-
-    <!-- Page level plugins -->
-    <script src="{% static 'js/trak/sync-db.js' %}"></script>
-
+  </div>
+  <!-- Page level plugins -->
+  <script src="{% static 'js/trak/sync-db.js' %}"></script>
 {% endblock content %}

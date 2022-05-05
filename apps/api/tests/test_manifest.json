@@ -1,11 +1,13 @@
 {
-  "createdDate": "2021-09-24T16:54:01.499+0000",
-  "updatedDate": "2021-09-24T16:54:01.500+0000",
-  "manifestTrackingNumber": "100032524ELC",
-  "status": "Scheduled",
+  "createdDate": "2022-01-21T15:51:04.143+0000",
+  "updatedDate": "2022-01-21T19:22:02.857+0000",
+  "manifestTrackingNumber": "100033134ELC",
+  "status": "Signed",
   "discrepancy": false,
   "submissionType": "FullElectronic",
-  "originType": "Service",
+  "originType": "Web",
+  "shippedDate": "2022-01-21T19:19:28.423+0000",
+  "receivedDate": "2022-01-21T19:20:41.924+0000",
   "generator": {
     "epaSiteId": "VATESTGEN001",
     "name": "VA TEST GEN 2021",
@@ -38,21 +40,30 @@
       "zip": "22202"
     },
     "contact": {
+      "firstName": "SCOTT",
+      "lastName": "CHRISTIAN",
       "phone": {
-        "number": "703-308-0023"
+        "number": "888-888-8888"
       },
-      "email": "Testing@EPA.GOV"
+      "email": "dpgraham4401@gmail.com"
     },
     "emergencyPhone": {
-      "number": "888-456-1234"
+      "number": "555-555-5555"
     },
     "electronicSignaturesInfo": [
       {
+        "signer": {
+          "firstName": "David",
+          "lastName": "Graham",
+          "userId": "DPGRAHAM4401"
+        },
+        "signatureDate": "2022-01-21T15:56:07.136+0000",
         "humanReadableDocument": {
           "name": "human-readable.html",
-          "size": 177949,
+          "size": 161358,
           "mimeType": "TEXT_HTML"
-        }
+        },
+        "signerRole": "Industry"
       }
     ],
     "gisPrimary": false,
@@ -93,11 +104,28 @@
         "zip": "22202"
       },
       "contact": {
+        "firstName": "SCOTT",
+        "lastName": "CHRISTIAN",
         "phone": {
-          "number": "703-308-0023"
+          "number": "888-888-8888"
         }
       },
-      "electronicSignaturesInfo": [],
+      "electronicSignaturesInfo": [
+        {
+          "signer": {
+            "firstName": "David",
+            "lastName": "Graham",
+            "userId": "DPGRAHAM4401"
+          },
+          "signatureDate": "2022-01-21T19:19:28.423+0000",
+          "humanReadableDocument": {
+            "name": "human-readable.html",
+            "size": 161379,
+            "mimeType": "TEXT_HTML"
+          },
+          "signerRole": "Industry"
+        }
+      ],
       "gisPrimary": false,
       "canEsign": true,
       "limitedEsign": true,
@@ -137,12 +165,35 @@
       "zip": "22202"
     },
     "contact": {
+      "firstName": "TSDF",
+      "lastName": "TEST",
       "phone": {
-        "number": "703-308-0023"
-      },
-      "email": "Testing@EPA.GOV"
+        "number": "888-888-8888"
+      }
     },
-    "electronicSignaturesInfo": [],
+    "electronicSignaturesInfo": [
+      {
+        "signer": {
+          "firstName": "David",
+          "lastName": "Graham",
+          "userId": "DPGRAHAM4401"
+        },
+        "signatureDate": "2022-01-21T19:20:41.924+0000",
+        "humanReadableDocument": {
+          "name": "human-readable.html",
+          "size": 165977,
+          "mimeType": "TEXT_HTML"
+        },
+        "signerRole": "Industry"
+      },
+      {
+        "humanReadableDocument": {
+          "name": "human-readable.html",
+          "size": 166372,
+          "mimeType": "TEXT_HTML"
+        }
+      }
+    ],
     "gisPrimary": false,
     "canEsign": true,
     "limitedEsign": true,
@@ -153,20 +204,20 @@
       "dotHazardous": true,
       "dotInformation": {
         "idNumber": {
-          "code": "NA1993"
+          "code": "UN2212"
         },
-        "printedDotInformation": "NA1993, Waste Diesel fuel, 3, III"
+        "printedDotInformation": "UN2212, Waste Asbestos amphibole, 9, II"
       },
       "quantity": {
-        "containerNumber": 12,
+        "containerNumber": 1,
         "containerType": {
-          "code": "DM",
-          "description": "Metal drums, barrels, kegs"
+          "code": "TC",
+          "description": "Tank cars"
         },
-        "quantity": 480,
+        "quantity": 10,
         "unitOfMeasurement": {
-          "code": "G",
-          "description": "Gallons"
+          "code": "L",
+          "description": "Liters"
         }
       },
       "hazardousWaste": {
@@ -184,18 +235,18 @@
         "originalManifestTrackingNumbers": [],
         "comments": [
           {
-            "label": "Profile #",
-            "description": "E654321",
-            "handlerId": "VATESTRAN02"
+            "label": "Rail Car #",
+            "description": "1",
+            "handlerId": "VATESTGEN001"
           }
         ],
-        "handlingInstructions": "This Manifest is for testing purposes and does not match reality it's more to show what you can do."
+        "handlingInstructions": "I can add additional information here"
       },
       "lineNumber": 1,
       "br": false,
       "managementMethod": {
-        "code": "H020",
-        "description": "SOLVENTS RECOVERY"
+        "code": "H011",
+        "description": "MERCURY RECOVERY"
       },
       "pcb": false,
       "pcbInfos": [],
@@ -205,70 +256,11 @@
         "residue": false
       },
       "epaWaste": true
-    },
-    {
-      "dotHazardous": false,
-      "wasteDescription": "PCB contaminated bags",
-      "quantity": {
-        "containerNumber": 12,
-        "containerType": {
-          "code": "BA",
-          "description": "Burlap, cloth, paper, or plastic bags"
-        },
-        "quantity": 432,
-        "unitOfMeasurement": {
-          "code": "K",
-          "description": "Kilograms"
-        }
-      },
-      "hazardousWaste": {
-        "federalWasteCodes": [],
-        "tsdfStateWasteCodes": [],
-        "generatorStateWasteCodes": [],
-        "txWasteCodes": []
-      },
-      "additionalInfo": {
-        "originalManifestTrackingNumbers": [],
-        "comments": [],
-        "handlingInstructions": "This Manifest is for testing purposes and does not match reality it's more to show what you can do."
-      },
-      "lineNumber": 2,
-      "br": false,
-      "managementMethod": {
-        "code": "H040",
-        "description": "INCINERATION"
-      },
-      "pcb": true,
-      "pcbInfos": [
-        {
-          "loadType": {
-            "code": "BulkWaste"
-          },
-          "dateOfRemoval": "2018-04-18T04:00:00.000+0000",
-          "weight": 432,
-          "bulkIdentity": "Bulk Waste ID2"
-        },
-        {
-          "loadType": {
-            "code": "BulkWaste"
-          },
-          "dateOfRemoval": "2018-03-18T04:00:00.000+0000",
-          "weight": 432,
-          "bulkIdentity": "Bulk Waste ID"
-        }
-      ],
-      "discrepancyResidueInfo": {
-        "wasteQuantity": false,
-        "wasteType": false,
-        "residue": false
-      },
-      "epaWaste": false
     }
   ],
   "additionalInfo": {
     "originalManifestTrackingNumbers": [],
-    "comments": [],
-    "handlingInstructions": "On the Manifest level. This Manifest is for testing purposes and does not match reality it's more to show what you can do."
+    "comments": []
   },
   "rejection": false,
   "residue": false,
@@ -277,5 +269,6 @@
   "residueNewManifestTrackingNumbers": [],
   "correctionInfo": {
     "active": true
-  }
+  },
+  "potentialShipDate": "2022-01-21T12:00:00.000+0000"
 }

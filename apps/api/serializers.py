@@ -7,7 +7,45 @@
 # this is either because ModelSerializer's defaults are sufficient or
 # they are left as a TODO item
 from rest_framework import serializers
-from apps.trak.models import Manifest, Handler
+from apps.trak.models import Manifest, Handler, Address
+
+
+class AddressSerializer(serializers.ModelSerializer):
+    streetNumber = serializers.CharField(
+        required=False,
+        allow_null=True,
+        allow_blank=True,
+        source='street_number')
+    address1 = serializers.CharField()
+    address2 = serializers.CharField(
+        required=False,
+        allow_null=True,
+        allow_blank=True)
+    city = serializers.CharField(
+        required=False,
+        allow_null=True,
+        allow_blank=True)
+    state = serializers.JSONField(
+        required=False,
+        allow_null=True)
+    country = serializers.JSONField(
+        required=False,
+        allow_null=True)
+    zip = serializers.CharField(
+        required=False,
+        allow_blank=True)
+
+    class Meta:
+        model = Address
+        fields = [
+            'streetNumber',
+            'address1',
+            'address2',
+            'city',
+            'state',
+            'country',
+            'zip',
+        ]
 
 
 class HandlerSerializer(serializers.ModelSerializer):
@@ -20,8 +58,7 @@ class HandlerSerializer(serializers.ModelSerializer):
     # name
     mailingAddress = serializers.JSONField(
         source='mailing_address')
-    siteAddress = serializers.JSONField(
-        source='site_address')
+    siteAddress = AddressSerializer(source='site_address')
     # contact
     emergencyPhone = serializers.JSONField(
         source='emergency_phone',
@@ -52,6 +89,24 @@ class HandlerSerializer(serializers.ModelSerializer):
         source='gis_primary',
         allow_null=True,
         default=False)
+
+    def create(self, validated_data):
+        print("from HandlerSerializer.create", validated_data)
+        site_address_data = validated_data.pop('site_address')
+        site_instance = Address.objects.create(**site_address_data)
+        handler = Handler.objects.create(site_address=site_instance, **validated_data)
+        return handler
+
+    # Override method to remove null fields when serializing
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        for field in self.fields:
+            try:
+                if data[field] is None:
+                    data.pop(field)
+            except KeyError:
+                pass
+        return data
 
     class Meta:
         model = Handler
@@ -119,9 +174,8 @@ class ManifestSerializer(serializers.ModelSerializer):
     # residue
     residueNewManifestTrackingNumbers = serializers.JSONField(
         source='residue_new_mtn',
-        allow_null=True,
-        default=None)
-    # import TODO
+        default=[])
+    # import, see .to_representation() and .to_internal_value() methods
     importInfo = serializers.JSONField(
         source='import_info',
         allow_null=True,
@@ -160,6 +214,46 @@ class ManifestSerializer(serializers.ModelSerializer):
         allow_null=True,
         default=None)
 
+    def create(self, validated_data) -> Manifest:
+        tsd_data = validated_data.pop('tsd')
+        tsd_site = tsd_data.pop('site_address')
+        site_address_object = Address.objects.create(**tsd_site)
+        tsd_object = Handler.objects.create(site_address=site_address_object,
+                                            **tsd_data)
+        gen_data = validated_data.pop('generator')
+        gen_site = gen_data.pop('site_address')
+        site_address_object = Address.objects.create(**gen_site)
+        gen_object = Handler.objects.create(site_address=site_address_object,
+                                            **gen_data)
+        # gen_object = Handler.objects.create(**gen_data)
+        manifest = Manifest.objects.create(generator=gen_object,
+                                           tsd=tsd_object,
+                                           **validated_data)
+        return manifest
+
+    # overriding to_representation and to_internal_value method to alter behavior for 'import' field
+    # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
+    def to_representation(self, instance):
+        data = super(ManifestSerializer, self).to_representation(instance)
+        data['import'] = instance.import_flag
+        # remove null fields when serializing manifest
+        for field in self.fields:
+            try:
+                if data[field] is None:
+                    data.pop(field)
+            except KeyError:
+                pass
+        return data
+
+    def to_internal_value(self, data):
+        instance = super(ManifestSerializer, self).to_internal_value(data)
+        try:
+            instance.import_flag = data.get('import')
+            return instance
+        except KeyError:
+            instance.import_flag = False
+            return instance
+
     class Meta:
         model = Manifest
         fields = [
@@ -196,13 +290,3 @@ class ManifestSerializer(serializers.ModelSerializer):
             'locked',
             'lockedReason',
         ]
-
-    def create(self, validated_data):
-        tsd_data = validated_data.pop('tsd')
-        tsd_object = Handler.objects.create(**tsd_data)
-        gen_data = validated_data.pop('generator')
-        gen_object = Handler.objects.create(**gen_data)
-        manifest = Manifest.objects.create(generator=gen_object,
-                                           tsd=tsd_object,
-                                           **validated_data)
-        return manifest
