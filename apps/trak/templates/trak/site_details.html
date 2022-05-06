@@ -22,7 +22,7 @@
             <!-- Card Header - Dropdown -->
             <div
               class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Sites</h6>
+              <h6 class="m-0 font-weight-bold text-primary">{{ site.epa_site.epa_id }}</h6>
               <div class="dropdown no-arrow">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -40,10 +40,13 @@
             </div>
             <!-- Card Body -->
             <div class="card-body">
-              <p>EPA ID: {{ site.epa_site.epa_id }}</p>
-              {#                            <p>Address: {{ site.site_address.address1 }}, {{ site.site_address.city }}#}
-              <p>Address: {{ site.epa_site.site_address }}
-                {{ site.site_address.state_name }} {{ site.site_address.zip_code }}</p>
+              {% if site.epa_site.site_street_number %}
+                <p>Address: {{ site.epa_site.site_street_number }} {{ site.epa_site.site_address1 }},
+                  {{ site.epa_site.site_state }} {{ site.epa_site.site_zip }}</p>
+              {% else %}
+                <p>Address: {{ site.epa_site.site_address1 }},
+                  {{ site.epa_site.site_state }} {{ site.epa_site.site_zip }}</p>
+              {% endif %}
               <p>Can e-Sign: {{ site.epa_site.can_esign }}</p>
               <p>Site Type: {{ site.epa_site.site_type }}</p>
             </div>

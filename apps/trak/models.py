@@ -108,7 +108,6 @@ class Manifest(models.Model):
         choices=lu.LOCKED_REASON,
         null=True,
         blank=True)
-    # Not sure if these fields are needed
     transfer_requested = models.BooleanField(
         null=True,
         blank=True)
@@ -145,14 +144,8 @@ class Handler(models.Model):
     registered = models.BooleanField(
         null=True,
         blank=True)
-    # TODO convert Addresses foreign key, will also likely require implementing a
-    #  custom .create() and .update() method for the Handler serializer, and a new AddressSerializer
-    # mailing_address = models.ForeignKey('Address', related_name='mailing_address', on_delete=models.CASCADE)
-    site_address = models.ForeignKey(
-        'Address',
-        related_name='site_address',
-        on_delete=models.CASCADE)
-    mailing_address = models.JSONField()
+    # site_address = models.JSONField()
+    # mailing_address = models.JSONField()
     contact = models.JSONField(
         verbose_name='Contact information')
     emergency_phone = models.JSONField(
@@ -180,6 +173,70 @@ class Handler(models.Model):
         null=True,
         blank=True,
         default=False)
+    # Site Address related fields
+    site_street_number = models.CharField(
+        max_length=12,
+        null=True,
+        blank=True)
+    site_address1: str = models.CharField(
+        verbose_name='Site address 1',
+        max_length=50)
+    site_address2 = models.CharField(
+        verbose_name='Site address 2',
+        max_length=50,
+        default=None,
+        null=True,
+        blank=True)
+    site_city = models.CharField(
+        null=True,
+        blank=True,
+        max_length=25)
+    site_state = models.CharField(
+        max_length=2,
+        null=True,
+        blank=True,
+        choices=lu.STATES)
+    site_country = models.CharField(
+        max_length=2,
+        null=True,
+        blank=True,
+        choices=lu.COUNTRIES)
+    site_zip = models.CharField(
+        null=True,
+        blank=True,
+        max_length=5)
+    # Mailing address related fields
+    mail_street_number = models.CharField(
+        max_length=12,
+        null=True,
+        blank=True)
+    mail_address1: str = models.CharField(
+        verbose_name='Mailing address 1',
+        max_length=50)
+    mail_address2 = models.CharField(
+        verbose_name='Mailing address 2',
+        max_length=50,
+        default=None,
+        null=True,
+        blank=True)
+    mail_city = models.CharField(
+        null=True,
+        blank=True,
+        max_length=25)
+    mail_state = models.CharField(
+        max_length=2,
+        null=True,
+        blank=True,
+        choices=lu.STATES)
+    mail_country = models.CharField(
+        max_length=2,
+        null=True,
+        blank=True,
+        choices=lu.COUNTRIES)
+    mail_zip = models.CharField(
+        null=True,
+        blank=True,
+        max_length=5)
 
     def __str__(self):
         return f'{self.epa_id}'
@@ -213,39 +270,3 @@ class Site(models.Model):
 
     def __str__(self):
         return f'{self.epa_site.epa_id}'
-
-
-class Address(models.Model):
-    street_number = models.CharField(
-        max_length=12,
-        null=True,
-        blank=True)
-    address1: str = models.CharField(
-        verbose_name='Address 1',
-        max_length=50)
-    address2 = models.CharField(
-        verbose_name='Address 2',
-        max_length=50,
-        default=None,
-        null=True,
-        blank=True)
-    city = models.CharField(
-        max_length=25)
-    state = models.JSONField(
-        null=True,
-        blank=True)
-    # choices=lu.STATES)
-    country = models.JSONField(
-        null=True,
-        blank=True)
-    # choices=lu.COUNTRIES)
-    zip = models.CharField(
-        null=True,
-        blank=True,
-        max_length=5)
-
-    def __str__(self):
-        if self.street_number:
-            return f'{self.street_number} {self.address1}'
-        else:
-            return f' {self.address1}'

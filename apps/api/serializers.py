@@ -7,45 +7,85 @@
 # this is either because ModelSerializer's defaults are sufficient or
 # they are left as a TODO item
 from rest_framework import serializers
-from apps.trak.models import Manifest, Handler, Address
+from apps.trak.models import Manifest, Handler
+from lib.rcrainfo.lookups import get_state_name, get_country_name
 
 
-class AddressSerializer(serializers.ModelSerializer):
-    streetNumber = serializers.CharField(
-        required=False,
-        allow_null=True,
-        allow_blank=True,
-        source='street_number')
-    address1 = serializers.CharField()
-    address2 = serializers.CharField(
-        required=False,
-        allow_null=True,
-        allow_blank=True)
-    city = serializers.CharField(
-        required=False,
-        allow_null=True,
-        allow_blank=True)
-    state = serializers.JSONField(
-        required=False,
-        allow_null=True)
-    country = serializers.JSONField(
-        required=False,
-        allow_null=True)
-    zip = serializers.CharField(
-        required=False,
-        allow_blank=True)
+# TODO remove duplication of MailAddressField and SiteAddressField
+class MailAddressField(serializers.Field):
+    def to_representation(self, value):
+        state_name = get_state_name(value.mail_state)
+        country_name = get_country_name(value.mail_country)
+        mail_address = {"streetNumber": value.mail_street_number,
+                        "address1": value.mail_address1,
+                        "address2": value.mail_address2,
+                        "city": value.mail_city,
+                        "state": {
+                            "code": value.mail_state,
+                            "name": state_name,
+                        },
+                        "country": {
+                            "code": value.mail_country,
+                            "name": country_name,
+                        },
+                        "zip": value.mail_zip
+                        }
+        # remove nulls when serializing for fun
+        for key, value in dict(mail_address).items():
+            if value is None:
+                try:
+                    del mail_address[key]
+                except KeyError:
+                    pass
+        return mail_address
 
-    class Meta:
-        model = Address
-        fields = [
-            'streetNumber',
-            'address1',
-            'address2',
-            'city',
-            'state',
-            'country',
-            'zip',
-        ]
+    def to_internal_value(self, data):
+        address = {}
+        try:
+            address = {'mail_address1': data['address1'],
+                       'mail_state': data['state']['code'],
+                       'mail_country': data['country']['code']}
+        except KeyError:
+            pass
+        return address
+
+
+class SiteAddressField(serializers.Field):
+    def to_representation(self, value):
+        state_name = get_state_name(value.site_state)
+        country_name = get_country_name(value.site_country)
+        site_address = {"streetNumber": value.site_street_number,
+                        "address1": value.site_address1,
+                        "address2": value.site_address2,
+                        "city": value.site_city,
+                        "state": {
+                            "code": value.site_state,
+                            "name": state_name,
+                        },
+                        "country": {
+                            "code": value.site_country,
+                            "name": country_name,
+                        },
+                        "zip": value.site_zip
+                        }
+        # remove nulls when serializing for fun
+        for key, value in dict(site_address).items():
+            if value is None:
+                try:
+                    del site_address[key]
+                except KeyError:
+                    pass
+        return site_address
+
+    def to_internal_value(self, data):
+        address = {}
+        try:
+            address = {'site_address1': data['address1'],
+                       'site_state': data['state']['code'],
+                       'site_country': data['country']['code']}
+        except KeyError:
+            pass
+        return address
 
 
 class HandlerSerializer(serializers.ModelSerializer):
@@ -56,9 +96,10 @@ class HandlerSerializer(serializers.ModelSerializer):
         allow_null=True,
         default=False)
     # name
-    mailingAddress = serializers.JSONField(
-        source='mailing_address')
-    siteAddress = AddressSerializer(source='site_address')
+    mailingAddress = MailAddressField(
+        source='*')
+    siteAddress = SiteAddressField(
+        source='*')
     # contact
     emergencyPhone = serializers.JSONField(
         source='emergency_phone',
@@ -90,14 +131,6 @@ class HandlerSerializer(serializers.ModelSerializer):
         allow_null=True,
         default=False)
 
-    def create(self, validated_data):
-        print("from HandlerSerializer.create", validated_data)
-        site_address_data = validated_data.pop('site_address')
-        site_instance = Address.objects.create(**site_address_data)
-        handler = Handler.objects.create(site_address=site_instance, **validated_data)
-        return handler
-
-    # Override method to remove null fields when serializing
     def to_representation(self, instance):
         data = super().to_representation(instance)
         for field in self.fields:
@@ -216,22 +249,14 @@ class ManifestSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data) -> Manifest:
         tsd_data = validated_data.pop('tsd')
-        tsd_site = tsd_data.pop('site_address')
-        site_address_object = Address.objects.create(**tsd_site)
-        tsd_object = Handler.objects.create(site_address=site_address_object,
-                                            **tsd_data)
+        tsd_object = Handler.objects.create(**tsd_data)
         gen_data = validated_data.pop('generator')
-        gen_site = gen_data.pop('site_address')
-        site_address_object = Address.objects.create(**gen_site)
-        gen_object = Handler.objects.create(site_address=site_address_object,
-                                            **gen_data)
-        # gen_object = Handler.objects.create(**gen_data)
+        gen_object = Handler.objects.create(**gen_data)
         manifest = Manifest.objects.create(generator=gen_object,
                                            tsd=tsd_object,
                                            **validated_data)
         return manifest
 
-    # overriding to_representation and to_internal_value method to alter behavior for 'import' field
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
     def to_representation(self, instance):
         data = super(ManifestSerializer, self).to_representation(instance)
@@ -279,7 +304,7 @@ class ManifestSerializer(serializers.ModelSerializer):
             'discrepancy',
             'residue',
             'residueNewManifestTrackingNumbers',
-            # 'import', Boolean field conflicts with import keyword
+            # 'import', field conflicts with keyword,  see to_representation method
             'importInfo',
             'containsPreviousRejectOrResidue',
             'printedDocument',
