@@ -1,9 +1,9 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.trak.models import Manifest
+from apps.trak.models import Manifest, Handler
 from lib.rcrainfo import rcrainfo
-from .serializers import ManifestSerializer
+from .serializers import ManifestSerializer, HandlerSerializer
 
 
 class ManifestView(APIView):
@@ -28,12 +28,11 @@ class SyncSiteManifest(APIView):
         else:
             return Response(status=200)
 
-# class SiteView(APIView):
-#
-#     def get(self, request, epa_id=None):
-#         if epa_id:
-#             resp = EpaSite.objects.filter(epa_id=epa_id).get()
-#             test = SiteSerializer(resp)
-#             return Response(data={'site': test.data})
-#         else:
-#             return Response(status=200)
+
+class HandlerView(APIView):
+
+    def get(self, request, epa_id=None):
+        if epa_id:
+            handler = Handler.objects.get(epa_id=epa_id)
+            serializer = HandlerSerializer(handler)
+            return Response(serializer.data)

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from apps.trak.models import Site, Manifest, Address
+from apps.trak.models import Site, Manifest
 
 
 class TrakViewsTest(TestCase):
@@ -59,11 +59,3 @@ class TrakViewsTest(TestCase):
         site_count = Site.objects.all().count()
         response = self.client.get(f'/trak/{site_count + 128}ELC/details')
         self.assertEqual(response.status_code, 404)
-
-
-class AddressModel(TestCase):
-    fixtures = ['test_data.json']
-
-    @classmethod
-    def setUpTestData(cls):
-        cls.address = Address.objects.get(id=1)

@@ -1,4 +1,4 @@
-# Choices
+# Choices presented by RCRAinfo and utility functions for easy access to values
 STATUS = [
     ('notAssigned', 'Not Assigned'),
     ('Pending', 'Pending'),
@@ -115,3 +115,23 @@ COUNTRIES = [
     ('MX', 'Mexico'),
     ('CA', 'Canada'),
 ]
+
+
+# for usage with the serializers
+# The locality name is not required by RCRAinfo so we can return nothing if error
+def get_state_name(code: str) -> str:
+    try:
+        for state in STATES:
+            if state[0] == code:
+                return str(state[1])
+    except KeyError:
+        pass
+
+
+def get_country_name(code: str) -> str:
+    try:
+        for country in COUNTRIES:
+            if country[0] == code:
+                return str(country[1])
+    except KeyError:
+        pass
