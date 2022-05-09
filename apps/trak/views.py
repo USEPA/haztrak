@@ -1,45 +1,81 @@
+from django.http import HttpRequest, HttpResponse
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import QuerySet
+from django.views import View
 from .models import Manifest
 from .models import Site
 
 
-@login_required
-def manifest_view(request, manifest_id):
-    try:
-        manifest = Manifest.objects.get(id=manifest_id)
-        return render(request, 'trak/manifest.html', {'manifest': manifest})
-    except Manifest.DoesNotExist:
-        return render(request, '404.html', status=404)
+class Trak(LoginRequiredMixin, View):
+    template_name = 'trak/manifest_table.html'
+    http_method_names = ['get']
+
+    def filter(self) -> QuerySet:
+        pass
 
 
-@login_required
-def manifests_in_transit(request):
-    manifests = Manifest.objects.filter(status='InTransit')
-    return render(request, 'trak/site_manifests.html', {'manifests': manifests})
+class SiteManifests(Trak):
+
+    def get(self, request: HttpRequest, epa_id) -> HttpResponse:
+        try:
+            # ToDo the manifest model needs to have a 'site' field added to it,
+            #  manifest will be filtered by this new field.
+            manifests = Manifest.objects.filter(generator__epa_id=epa_id)
+            site = Site.objects.get(epa_site__epa_id=epa_id)
+            return render(request, self.template_name,
+                          {'site': site, 'manifests': manifests})
+        except Site.DoesNotExist:
+            return render(request, '404.html', status=404)
+        except PermissionDenied:
+            return render(request, '403.html', status=403)
 
 
-@login_required
-def sites_dashboard(request):
-    epa_sites = request.user.profile.epa_sites.all()
-    return render(request, 'trak/sites.html', {'sites': epa_sites})
+class ManifestDetails(Trak):
+    template_name = 'trak/manifest_details.html'
+
+    def get(self, request: HttpRequest, manifest_id: str) -> HttpResponse:
+        try:
+            manifest = Manifest.objects.get(id=manifest_id)
+            return render(request, self.template_name, {'manifest': manifest})
+        except Manifest.DoesNotExist:
+            return render(request, '404.html', status=404)
+        except PermissionDenied:
+            return render(request, '403.html', status=403)
 
 
-@login_required
-def sites_details(request, id_number):
-    try:
-        site = Site.objects.get(epa_site__epa_id=id_number)
-        return render(request, 'trak/site_details.html', {'site': site})
-    except Site.DoesNotExist:
-        return render(request, '404.html', status=404)
+class ManifestInTransit(Trak):
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        try:
+            manifests = Manifest.objects.filter(status='InTransit')
+            return render(request, self.template_name, {'manifests': manifests})
+        except Manifest.DoesNotExist:
+            return render(request, '404.html', status=404)
+        except PermissionDenied:
+            return render(request, '403.html', status=403)
 
 
-@login_required
-def site_manifests(request, epa_id):
-    try:
-        manifests = Manifest.objects.filter(generator__epa_id=epa_id)
-        site = Site.objects.get(epa_site__epa_id=epa_id)
-        return render(request, 'trak/site_manifests.html',
-                      {'site': site, 'manifests': manifests})
-    except Site.DoesNotExist:
-        return render(request, '404.html', status=404)
+class Sites(Trak):
+    template_name = 'trak/site_table.html'
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        try:
+            epa_sites = request.user.profile.epa_sites.all()
+            return render(request, self.template_name, {'sites': epa_sites})
+        except PermissionDenied:
+            return render(request, '403.html', status=403)
+
+
+class SiteDetails(Trak):
+    template_name = 'trak/site_details.html'
+
+    def get(self, request: HttpRequest, id_number: int) -> HttpResponse:
+        try:
+            site = Site.objects.get(epa_site__epa_id=id_number)
+            return render(request, self.template_name, {'site': site})
+        except Site.DoesNotExist:
+            return render(request, '404.html', status=404)
+        except PermissionDenied:
+            return render(request, '403.html', status=403)

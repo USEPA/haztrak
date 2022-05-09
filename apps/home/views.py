@@ -1,13 +1,21 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.views import View
 from apps.trak.models import Manifest
 
 
-@login_required
-def home(request):
-    manifest_count = Manifest.objects.filter(status='InTransit').count()
-    return render(request, 'home/home.html', {'in_transit': manifest_count})
+class Home(View):
+    template = 'home/home.html'
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        # TODO: filter manifest by sites that the user has access to
+        #  requires modification to the manifest model (tying a manifest to a site)
+        manifest_count = Manifest.objects.filter(status='InTransit').count()
+        return render(request, self.template, {'in_transit': manifest_count})
 
 
-def about(request):
-    return render(request, 'home/about.html')
+class AboutHaztrak(View):
+    template = 'home/about.html'
+
+    def get(self, request):
+        return render(request, self.template)

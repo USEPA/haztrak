@@ -3,9 +3,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.sites_dashboard, name='trak'),
-    path('<str:id_number>/details', views.sites_details, name='site_details'),
-    path('<str:epa_id>/manifests', views.site_manifests, name='site_manifests'),
-    path('manifest/<int:manifest_id>', views.manifest_view, name='manifest'),
-    path('intransit/', views.manifests_in_transit, name='in_transit'),
+    path('', views.Sites.as_view(), name='trak'),
+    path('<str:id_number>/details', views.SiteDetails.as_view(), name='site_details'),
+    path('<str:epa_id>/manifests', views.SiteManifests.as_view(),
+         name='site_manifests'),
+    path('manifest/<int:manifest_id>', views.ManifestDetails.as_view(),
+         name='manifest'),
+    path('intransit/', views.ManifestInTransit.as_view(), name='in_transit'),
 ]
