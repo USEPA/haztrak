@@ -1,3 +1,6 @@
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
+![haztrak tests](https://github.com/dpgraham4401/haztrak/actions/workflows/django_test.yml/badge.svg)
+
 # Haztrak
 
 If you're reading this, this project is in such an early stage it doesn't even merit versioning
@@ -5,32 +8,24 @@ If you're reading this, this project is in such an early stage it doesn't even m
 haztrak is a simple web application that aims to showcase how hazardous waste handlers can integrate their systems with
 EPA's RCRAInfo and e-Manifest system.
 
-### The end goal is to create something that users can...
+### The end goal is to create something so users can...
 
 1. See a functioning example in action
 3. Read and easily understand how it functions
 5. Extend and make their own
     - Haztrak is distributed under the a permissive license. Feel free to take, adapt and redistribute it!
 
-### Haztrak is not...
-
-1. An out-of-the-box solution
-    - Haztrak is not meant for end consumers, those looking to use haztrak should have the necessarily knowledge and
-      skills to deploy such a web application on their own.
-3. Distributed with warranty of any kind
-    - We welcome bug report, issues, patches, etc. However, you should not adopt haztrak with the expectation of
-      receiving support from it's developers.
-
 ### The Stack
 
 - Python
-    - The Django Framework
-    - The Django Rest Framework
+    - The Django Framework (> 4.0)
+    - The Django Rest Framework (> 3.13)
     - [emanifest client API library](https://github.com/USEPA/e-manifest/tree/master/emanifest-py)
 - PostgreSQL (TBD)
-    - future work, currently there are so many modifications to our models right now it doesn't make sense to
-      migrate from the SQLite default to a real database
-- The Bootstrap Library
+    - currently we're still making so many modifications it does not make sense to setup something besides SQLite.
+      However, the django framework tends to favor the use of Postgres, and while we currently have not made any design
+      decisions that would force use of one db over another, I expect we will.
+- The Bootstrap Library (4.6)
 
 ### Areas in need of help 04/29/2022
 
@@ -41,7 +36,7 @@ EPA's RCRAInfo and e-Manifest system.
     - Currently there's no separation between configs and the deployment
     - we may want to employ a third party library like [django-env](https://pypi.org/project/django-env/), although i
       don't really want to bring in more dependencies
-    - Dockerizing Haztrak
+    - Dockerizing Haztrak (low priority for now)
 3. CI/CD
     - The unittest are improving, and we run all test when pushed to main, always room to grow
     - CD would need to come after the configs and deployment (we need deployable before we can get continuous

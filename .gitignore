@@ -1,18 +1,19 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# C extensions
-*.so
+# config files
+.env
 
 # virtual environment
 env
-venv
-venv1
+venv/
+.venv/
+env/
 
-# PyCharm
+# IDE
 .idea
+.vscode
+
+# Coverage
+.coverage
+.coveragerc
 
 # Distribution / packaging
 .Python
@@ -32,9 +33,17 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-bak
 static/bak
 /db.sqlite3
 
 # other
 *.DS_Store
+bak
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
