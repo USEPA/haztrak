@@ -116,6 +116,33 @@ COUNTRIES = [
     ('CA', 'Canada'),
 ]
 
+CONTAINERS = [
+    ('BA', 'Burlap, cloth, paper, or plastic bags'),
+    ('DT', 'Dump truck'),
+    ('CF', 'Fiber or plastic boxes, cartons, cases'),
+    ('DW', 'Wooden drums, barrels, kegs'),
+    ('CM', 'Metal boxes, cartons, cases (including roll offs)'),
+    ('HG', 'Hopper or gondola cars'),
+    ('CW', 'Wooden boxes, cartons, cases'),
+    ('TC', 'Tank cars'),
+    ('CY', 'Cylinders'),
+    ('TP', 'Portable tanks'),
+    ('DF', 'Fiberboard or plastic drums, barrels, kegs'),
+    ('TT', 'Cargo tanks (tank trucks)'),
+    ('DM', 'Metal drums, barrels, kegs'),
+]
+
+UOM = [
+    ('P', 'Pounds'),
+    ('T', 'Tons (2000 Pounds)'),
+    ('K', 'Kilograms'),
+    ('M', 'Metric Tons (1000 Kilograms)'),
+    ('G', 'Gallons'),
+    ('L', 'Liters'),
+    ('Y', 'Cubic Yards'),
+    ('N', 'Cubic Meters'),
+]
+
 
 # for usage with the serializers
 # The locality name is not required by RCRAinfo so we can return nothing if error

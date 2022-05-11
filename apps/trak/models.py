@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from lib.rcrainfo import lookups as lu
@@ -111,6 +112,33 @@ class Handler(models.Model):
         return f'{self.epa_id}'
 
 
+class WasteLine(models.Model):
+    dot_hazardous = models.BooleanField(
+        verbose_name='DOT hazardous')
+    dot_id = models.CharField(
+        verbose_name='DOT ID number',
+        max_length=12)
+    dot_printed_info = models.CharField(
+        verbose_name='DOT printed information',
+        max_length=500)
+    waste_description = models.CharField(
+        null=True,
+        blank=True,
+        max_length=500)
+    container_count = models.PositiveIntegerField(
+        verbose_name='Number of containers',
+        validators=[MinValueValidator(0), MaxValueValidator(99999)])
+    container_type = models.CharField(
+        max_length=2,
+        choices=lu.CONTAINERS)
+    quantity = models.PositiveIntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(99999)])
+    uom = models.CharField(
+        verbose_name='Unit of Measurement',
+        max_length=1,
+        choices=lu.UOM)
+
+
 class Manifest(models.Model):
     created_date = models.DateTimeField(
         null=True,
@@ -155,7 +183,6 @@ class Manifest(models.Model):
         'Handler',
         on_delete=models.PROTECT,
         related_name='generator')
-    # transporters = models.JSONField()
     transporters = models.ManyToManyField(Handler)
     tsd = models.ForeignKey(
         'Handler',
