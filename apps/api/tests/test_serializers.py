@@ -6,6 +6,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import JSONParser
 
 from apps.api.serializers import HandlerSerializer, ManifestSerializer
+from apps.trak.models import Manifest
 
 TEST_MANIFEST_JSON = './apps/api/tests/test_manifest.json'
 TEST_HANDLER_JSON = './apps/api/tests/test_site.json'
@@ -13,14 +14,14 @@ TEST_ADDRESS_JSON = './apps/api/tests/test_address.json'
 
 
 class ManifestSerializerTests(TestCase):
-    def __int__(self):
-        self.test_json = TEST_MANIFEST_JSON
+    test_json = TEST_MANIFEST_JSON
 
     @classmethod
     def setUpTestData(cls):
         data = bytes_from_json(TEST_MANIFEST_JSON)
         serializer = ManifestSerializer(data=data)
         cls.serializer = serializer
+        cls.json_data = data
 
     def setUp(self) -> None:
         self.valid = self.serializer.is_valid()
@@ -36,6 +37,25 @@ class ManifestSerializerTests(TestCase):
     def test_serializer_creates_manifest_from_json(self):
         saved_manifest = self.serializer.save()
         self.assertEqual(f'{saved_manifest}', '100033134ELC')
+
+    def test_create_populated_transporter_field(self):
+        try:
+            transporter_id = dict(self.json_data)['transporters'][0]['epaSiteId']
+            saved_manifest = self.serializer.save()  # type: Manifest
+            transporter = saved_manifest.transporters.all()
+            transporter = [str(transporter) for transporter in transporter]
+            self.assertIn(transporter_id, transporter)
+        except KeyError:
+            self.skipTest('Problem getting transporter data from JSON')
+
+    def test_create_transporter_field_contains_multiple(self):
+        try:
+            number_transporters = len(dict(self.json_data)['transporters'])
+            saved_manifest = self.serializer.save()  # type: Manifest
+            transporter = saved_manifest.transporters.all()
+            self.assertEqual(len(transporter), number_transporters)
+        except KeyError:
+            self.skipTest('Problem getting transporter data from JSON')
 
 
 class HandlerSerializerTests(TestCase):

@@ -131,6 +131,66 @@
       "limitedEsign": true,
       "hasRegisteredEmanifestUser": true,
       "order": 1
+    },
+    {
+      "epaSiteId": "VATESTRAN03",
+      "name": "VA TEST TRAN 2021",
+      "modified": false,
+      "registered": true,
+      "mailingAddress": {
+        "address1": "321 VA TEST TRAN 2021 ROAD",
+        "city": "ARLINGTON",
+        "state": {
+          "code": "VA",
+          "name": "VIRGINIA"
+        },
+        "country": {
+          "code": "US",
+          "name": "UNITED STATES"
+        },
+        "zip": "22202"
+      },
+      "siteAddress": {
+        "address1": "321 VA TEST TRAN 2021 ROAD",
+        "city": "ARLINGTON",
+        "state": {
+          "code": "VA",
+          "name": "VIRGINIA"
+        },
+        "country": {
+          "code": "US",
+          "name": "UNITED STATES"
+        },
+        "zip": "22202"
+      },
+      "contact": {
+        "firstName": "SCOTT",
+        "lastName": "CHRISTIAN",
+        "phone": {
+          "number": "888-888-8888"
+        }
+      },
+      "electronicSignaturesInfo": [
+        {
+          "signer": {
+            "firstName": "David",
+            "lastName": "Graham",
+            "userId": "DPGRAHAM4401"
+          },
+          "signatureDate": "2022-01-21T19:19:28.423+0000",
+          "humanReadableDocument": {
+            "name": "human-readable.html",
+            "size": 161379,
+            "mimeType": "TEXT_HTML"
+          },
+          "signerRole": "Industry"
+        }
+      ],
+      "gisPrimary": false,
+      "canEsign": true,
+      "limitedEsign": true,
+      "hasRegisteredEmanifestUser": true,
+      "order": 1
     }
   ],
   "designatedFacility": {

@@ -148,8 +148,8 @@ class HandlerSerializer(serializers.ModelSerializer):
             'epaSiteId',
             'modified',
             'name',
-            'mailingAddress',
             'siteAddress',
+            'mailingAddress',
             'contact',
             'emergencyPhone',
             # 'paperSignatureInfo',
@@ -194,7 +194,7 @@ class ManifestSerializer(serializers.ModelSerializer):
         allow_null=True,
         default=None)
     generator = HandlerSerializer()
-    # transporters TODO
+    transporters = HandlerSerializer(many=True)
     designatedFacility = HandlerSerializer(
         source='tsd')
     # broker TODO
@@ -252,10 +252,16 @@ class ManifestSerializer(serializers.ModelSerializer):
         tsd_data = validated_data.pop('tsd')
         tsd_object = Handler.objects.create(**tsd_data)
         gen_data = validated_data.pop('generator')
+        trans_data = validated_data.pop('transporters')
         gen_object = Handler.objects.create(**gen_data)
         manifest = Manifest.objects.create(generator=gen_object,
                                            tsd=tsd_object,
                                            **validated_data)
+        transporters = []
+        for i in trans_data:
+            tran = Handler.objects.create(**i)
+            transporters.append(tran)
+        manifest.transporters.add(*transporters)
         return manifest
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
