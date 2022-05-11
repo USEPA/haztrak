@@ -137,6 +137,12 @@ class WasteLine(models.Model):
         verbose_name='Unit of Measurement',
         max_length=1,
         choices=lu.UOM)
+    line_number = models.PositiveIntegerField()
+    epa_waste = models.BooleanField(
+        verbose_name='Is EPA waste?')
+
+    def __str__(self):
+        return f'{self.container_count} {self.container_type}(s) of blah'
 
 
 class Manifest(models.Model):
