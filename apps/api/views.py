@@ -1,9 +1,10 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.trak.models import Manifest, Handler
+from apps.trak.models import Handler, Manifest
 from lib.rcrainfo import rcrainfo
-from .serializers import ManifestSerializer, HandlerSerializer
+
+from .serializers import HandlerSerializer, ManifestSerializer
 
 
 class ManifestView(APIView):

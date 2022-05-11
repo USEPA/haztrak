@@ -7,8 +7,9 @@
 # this is either because ModelSerializer's defaults are sufficient or
 # they are left as a TODO item
 from rest_framework import serializers
-from apps.trak.models import Manifest, Handler
-from lib.rcrainfo.lookups import get_state_name, get_country_name
+
+from apps.trak.models import Handler, Manifest
+from lib.rcrainfo.lookups import get_country_name, get_state_name
 
 
 # TODO remove duplication of MailAddressField and SiteAddressField

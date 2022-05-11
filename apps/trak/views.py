@@ -1,11 +1,11 @@
-from django.http import HttpRequest, HttpResponse
-from django.core.exceptions import PermissionDenied
-from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.db.models import QuerySet
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
 from django.views import View
-from .models import Manifest
-from .models import Site
+
+from .models import Manifest, Site
 
 
 class Trak(LoginRequiredMixin, View):

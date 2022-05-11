@@ -1,9 +1,11 @@
 import io
 import logging
+
 from django.test import TestCase
-from apps.api.serializers import HandlerSerializer, ManifestSerializer
 from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import JSONParser
+
+from apps.api.serializers import HandlerSerializer, ManifestSerializer
 
 TEST_MANIFEST_JSON = './apps/api/tests/test_manifest.json'
 TEST_HANDLER_JSON = './apps/api/tests/test_site.json'

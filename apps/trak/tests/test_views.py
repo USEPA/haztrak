@@ -1,6 +1,7 @@
-from django.test import TestCase
 from django.contrib.auth.models import User
-from apps.trak.models import Site, Manifest
+from django.test import TestCase
+
+from apps.trak.models import Manifest, Site
 
 
 class TrakViewsTest(TestCase):

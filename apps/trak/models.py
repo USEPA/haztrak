@@ -1,4 +1,5 @@
 from django.db import models
+
 from lib.rcrainfo import lookups as lu
 
 
@@ -144,8 +145,6 @@ class Handler(models.Model):
     registered = models.BooleanField(
         null=True,
         blank=True)
-    # site_address = models.JSONField()
-    # mailing_address = models.JSONField()
     contact = models.JSONField(
         verbose_name='Contact information')
     emergency_phone = models.JSONField(

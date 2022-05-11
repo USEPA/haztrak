@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Manifest, Handler, Site
+from .models import Handler, Manifest, Site
 
 # Register your models here.
 admin.site.register(Manifest)
