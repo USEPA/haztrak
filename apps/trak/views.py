@@ -18,7 +18,7 @@ class Trak(LoginRequiredMixin, View):
 
 class SiteManifests(Trak):
 
-    def get(self, request: HttpRequest, epa_id) -> HttpResponse:
+    def get(self, request: HttpRequest, epa_id: str) -> HttpResponse:
         try:
             # ToDo the manifest model needs to have a 'site' field added to it,
             #  manifest will be filtered by this new field.

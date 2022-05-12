@@ -18,5 +18,5 @@ class Home(View):
 class AboutHaztrak(View):
     template = 'home/about.html'
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> HttpResponse:
         return render(request, self.template)
