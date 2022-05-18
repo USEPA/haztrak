@@ -31,7 +31,7 @@ EPA's RCRAInfo and e-Manifest system.
 
 1. Database design!!!
     - No idea what i'm doing in this area
-    - Would appreciate feedback on the design of the [models captured by the trak app](./apps/trak/models.py)
+    - Would appreciate feedback on the design of the [models captured by the trak app](apps/trak/models)
 2. Configs and Deployment
     - Currently there's no separation between configs and the deployment
     - we may want to employ a third party library like [django-env](https://pypi.org/project/django-env/), although i

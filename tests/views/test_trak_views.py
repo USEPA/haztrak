@@ -5,8 +5,6 @@ from apps.trak.models import Manifest, Site
 
 
 class TrakViewsTest(TestCase):
-    # fixture data populates the db before setUpTestData()
-    # see FIXTURE_DIR in settings.py for the path
     fixtures = ['test_data.json']
 
     # SetUpTestData() runs once per Test Class, setUp() runs each before method
