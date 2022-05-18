@@ -26,7 +26,7 @@ fi
 
 print_usage() {
    # Display Help
-   echo "Command line utility to run and test Haztrak"
+   echo "Command line utility to help develop Haztrak"
    echo
    echo "Syntax: $(basename "$0") [-t|r|h|m]"
    echo "options:"
@@ -34,6 +34,7 @@ print_usage() {
    echo "r     Run using Django's built in runserver command"
    echo "t     Test by app name(s), defaults to all"
    echo "m     Makemigrations, migrate and dump fixture data for unittests"
+   echo "p     installs hooks, if necessary, and runs pre-commit run --all-files"
    echo
 }
 
@@ -83,9 +84,22 @@ django_dump(){
 	eval "$CMD"
 }
 
+run_pre_commit() {
+    if command -V pre-commit > /dev/null 2>&1 ; then
+        eval "pre-commit install"
+        eval "pre-commit run --all-files"
+    else
+        echo "pre-commit not found, did you forget to activate your virtualenv?"
+        exit 1
+    fi
+}
+
 # Parse CLI argument
-while getopts 'trmhd' opt; do
+while getopts 'trmhdp' opt; do
   case "$opt" in
+    p)
+        run_pre_commit
+        ;;
     t)
 		test_django "$@"
 		;;
