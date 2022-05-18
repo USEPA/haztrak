@@ -7,14 +7,20 @@ DJANGO_APPS=(api trak accounts home)
 if command -v python3 > /dev/null 2>&1; then
     PYTHON=$(command -v python3)
     BASE_CMD="$PYTHON $BASE_DIR/manage.py "
+elif command -v python > /dev/null 2>&1; then
+    PYTHON=$(command -v python)
+    BASE_CMD="$PYTHON $BASE_DIR/manage.py "
 else
-  echo python3 not found
+  echo "Python3 not found"
+  exit 1
 fi
 
 # check python version is at least 3.8
 ver=$($PYTHON -V 2>&1 | sed 's/.* \([0-9]\).\([0-9]\).*/\1\2/')
-if [ "$ver" -lt "38" ]; then
-    echo "runhaz, and django 4.0, required python version 3.8 or greater"
+if [ "$ver" -eq "31" ]; then
+    :
+elif [ "$ver" -lt "38" ]; then
+    echo "Python version 3.8 or greater is expected, received $ver"
     exit 1
 fi
 
@@ -51,6 +57,7 @@ test_django(){
 
 django_migrate(){
     # makemigrations and migrate if necessary
+    echo "$BASE_CMD"
     if eval "$BASE_CMD makemigrations"
     then
         eval "$BASE_CMD migrate"
