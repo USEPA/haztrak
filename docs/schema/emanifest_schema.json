@@ -1001,11 +1001,11 @@
       "type": "object",
       "properties": {
         "code": {
-          "description": "Code coresponding to the parent element.  For example, if the parent element is managementMethod then an example value for code would be H010",
+          "description": "Code corresponding to the parent element.  For example, if the parent element is managementMethod then an example value for code would be H010",
           "type": "string"
         },
         "description": {
-          "description": "Optional field this discription is returned based on the code provided in this object.  For example if code is H010 then the description returned is METALS RECOVERY",
+          "description": "Optional field this description is returned based on the code provided in this object.  For example if code is H010 then the description returned is METALS RECOVERY",
           "type": "string"
         }
       },

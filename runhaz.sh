@@ -7,20 +7,26 @@ DJANGO_APPS=(api trak accounts home)
 if command -v python3 > /dev/null 2>&1; then
     PYTHON=$(command -v python3)
     BASE_CMD="$PYTHON $BASE_DIR/manage.py "
+elif command -v python > /dev/null 2>&1; then
+    PYTHON=$(command -v python)
+    BASE_CMD="$PYTHON $BASE_DIR/manage.py "
 else
-  echo python3 not found
+  echo "Python3 not found"
+  exit 1
 fi
 
 # check python version is at least 3.8
 ver=$($PYTHON -V 2>&1 | sed 's/.* \([0-9]\).\([0-9]\).*/\1\2/')
-if [ "$ver" -lt "38" ]; then
-    echo "runhaz, and django 4.0, required python version 3.8 or greater"
+if [ "$ver" -eq "31" ]; then
+    :
+elif [ "$ver" -lt "38" ]; then
+    echo "Python version 3.8 or greater is expected, received $ver"
     exit 1
 fi
 
 print_usage() {
    # Display Help
-   echo "Command line utility to run and test Haztrak"
+   echo "Command line utility to help develop Haztrak"
    echo
    echo "Syntax: $(basename "$0") [-t|r|h|m]"
    echo "options:"
@@ -28,6 +34,7 @@ print_usage() {
    echo "r     Run using Django's built in runserver command"
    echo "t     Test by app name(s), defaults to all"
    echo "m     Makemigrations, migrate and dump fixture data for unittests"
+   echo "p     installs hooks, if necessary, and runs pre-commit run --all-files"
    echo
 }
 
@@ -51,6 +58,7 @@ test_django(){
 
 django_migrate(){
     # makemigrations and migrate if necessary
+    echo "$BASE_CMD"
     if eval "$BASE_CMD makemigrations"
     then
         eval "$BASE_CMD migrate"
@@ -76,9 +84,22 @@ django_dump(){
 	eval "$CMD"
 }
 
+run_pre_commit() {
+    if command -V pre-commit > /dev/null 2>&1 ; then
+        eval "pre-commit install"
+        eval "pre-commit run --all-files"
+    else
+        echo "pre-commit not found, did you forget to activate your virtualenv?"
+        exit 1
+    fi
+}
+
 # Parse CLI argument
-while getopts 'trmhd' opt; do
+while getopts 'trmhdp' opt; do
   case "$opt" in
+    p)
+        run_pre_commit
+        ;;
     t)
 		test_django "$@"
 		;;
