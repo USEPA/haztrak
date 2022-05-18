@@ -9,7 +9,7 @@ JSON_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'
 
 
-class GetManifestTests(APITestCase):
+class ManifestAPITests(APITestCase):
     base_url = '/api/manifest/'
     fixtures = ['test_data.json']
 
@@ -35,3 +35,7 @@ class GetManifestTests(APITestCase):
         self.client.post(f'{self.base_url}{new_mtn}', data=self.data, format='json')
         new_manifest = Manifest.objects.get(mtn=new_mtn)
         self.assertEqual(new_mtn, str(new_manifest))
+
+    def test_non_existent_returns_404(self):
+        response = self.client.get(f'{self.base_url}000000111FOO')
+        self.assertEqual(response.status_code, 404)
