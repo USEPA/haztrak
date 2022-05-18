@@ -25,7 +25,7 @@ EPA's RCRAInfo and e-Manifest system.
     - currently we're still making so many modifications it does not make sense to setup something besides SQLite.
       However, the django framework tends to favor the use of Postgres, and while we currently have not made any design
       decisions that would force use of one db over another, I expect we will.
-- The Bootstrap Library (4.6)
+- The Bootstrap Library (4.6 [see migrating to BS 5](https://github.com/dpgraham4401/haztrak/issues/18))
 
 ### Areas in need of help 04/29/2022
 
@@ -49,3 +49,7 @@ EPA's RCRAInfo and e-Manifest system.
     - Just generally paying down technical debt
 6. Pretty much everything else
     - See [dpgraham4401/haztrak/issues](https://github.com/dpgraham4401/haztrak/issues)
+
+### Getting started
+
+- see [docs/contributing](https://github.com/dpgraham4401/haztrak/blob/main/docs/CONTRIBUTING.md) guide
