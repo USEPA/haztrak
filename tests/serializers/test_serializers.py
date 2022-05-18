@@ -1,5 +1,6 @@
 import io
 import logging
+import os
 
 from django.test import TestCase
 from rest_framework.exceptions import ValidationError
@@ -8,9 +9,10 @@ from rest_framework.parsers import JSONParser
 from apps.api.serializers import HandlerSerializer, ManifestSerializer
 from apps.trak.models import Manifest
 
-TEST_MANIFEST_JSON = './apps/api/tests/test_manifest.json'
-TEST_HANDLER_JSON = './apps/api/tests/test_site.json'
-TEST_ADDRESS_JSON = './apps/api/tests/test_address.json'
+JSON_DIR = os.path.dirname(os.path.abspath(__file__))
+TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'
+TEST_HANDLER_JSON = f'{JSON_DIR}/test_site.json'
+TEST_ADDRESS_JSON = f'{JSON_DIR}/test_address.json'
 
 
 class ManifestSerializerTests(TestCase):
