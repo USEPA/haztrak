@@ -38,7 +38,12 @@ class WasteLine(models.Model):
         max_length=1,
         choices=lu.UOM
     )
-    br_info = models.JSONField()
+    br_info = models.JSONField(
+        verbose_name='BR information'
+    )
+    br_provided = models.BooleanField(
+        verbose_name='BR info provided'
+    )
     density = models.FloatField(
         null=True,
         blank=True,
@@ -67,9 +72,6 @@ class WasteLine(models.Model):
         max_length=5,
         null=True,
         blank=True
-    )
-    br_provided = models.BooleanField(
-        verbose_name='BR info provided'
     )
     hazardous_waste = models.JSONField()
     pcb = models.BooleanField(
