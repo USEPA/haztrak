@@ -1,0 +1,57 @@
+{
+  "dotHazardous": true,
+  "dotInformation": {
+    "idNumber": {
+      "code": "UN2212"
+    },
+    "printedDotInformation": "UN2212, Waste Asbestos amphibole, 9, II"
+  },
+  "quantity": {
+    "containerNumber": 1,
+    "containerType": {
+      "code": "TC",
+      "description": "Tank cars"
+    },
+    "quantity": 10,
+    "unitOfMeasurement": {
+      "code": "L",
+      "description": "Liters"
+    }
+  },
+  "hazardousWaste": {
+    "federalWasteCodes": [
+      {
+        "code": "D001",
+        "description": "IGNITABLE WASTE"
+      }
+    ],
+    "tsdfStateWasteCodes": [],
+    "generatorStateWasteCodes": [],
+    "txWasteCodes": []
+  },
+  "additionalInfo": {
+    "originalManifestTrackingNumbers": [],
+    "comments": [
+      {
+        "label": "Rail Car #",
+        "description": "1",
+        "handlerId": "VATESTGEN001"
+      }
+    ],
+    "handlingInstructions": "I can add additional information here"
+  },
+  "lineNumber": 1,
+  "br": false,
+  "managementMethod": {
+    "code": "H011",
+    "description": "MERCURY RECOVERY"
+  },
+  "pcb": false,
+  "pcbInfos": [],
+  "discrepancyResidueInfo": {
+    "wasteQuantity": false,
+    "wasteType": false,
+    "residue": false
+  },
+  "epaWaste": true
+}

@@ -13,10 +13,27 @@ JSON_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'
 TEST_HANDLER_JSON = f'{JSON_DIR}/test_site.json'
 TEST_ADDRESS_JSON = f'{JSON_DIR}/test_address.json'
+TEST_WASTE1_JSON = f'{JSON_DIR}/test_wasteline1.json'
 
 
-class ManifestSerializerTests(TestCase):
-    test_json = TEST_MANIFEST_JSON
+class SerializerBaseTests(TestCase):
+    def __int__(self, test_json, serializer):
+        self.test_json = test_json
+        self.serializer = serializer
+
+    def setUp(self) -> None:
+        self.valid = self.serializer.is_valid()
+        if not self.valid:
+            logging.error(f'{self.serializer.errors}')
+            self.skipTest(
+                f'{self.__class__.__name__} failed to '
+                f'initiate valid data from {self.test_json}')
+
+
+class ManifestSerializerTests(SerializerBaseTests):
+    def __int__(self, *args, **kwargs):
+        super(ManifestSerializerTests, self).__int__(test_json=TEST_MANIFEST_JSON,
+                                                     serializer=ManifestSerializer)
 
     @classmethod
     def setUpTestData(cls):
@@ -24,14 +41,6 @@ class ManifestSerializerTests(TestCase):
         serializer = ManifestSerializer(data=data)
         cls.serializer = serializer
         cls.json_data = data
-
-    def setUp(self) -> None:
-        self.valid = self.serializer.is_valid()
-        if not self.valid:
-            logging.error(f'{self.serializer.errors}')
-            self.skipTest(
-                f'ManifestSerializerTests.SetUpTestData failed to '
-                f'initiate valid data from {self.test_json}')
 
     def test_manifest_serializer_is_valid(self):
         self.assertTrue(self.serializer.is_valid())
@@ -60,23 +69,16 @@ class ManifestSerializerTests(TestCase):
             self.skipTest('Problem getting transporter data from JSON')
 
 
-class HandlerSerializerTests(TestCase):
-    def __int__(self):
-        self.test_json = TEST_HANDLER_JSON
+class HandlerSerializerTests(SerializerBaseTests):
+    def __int__(self, *args, **kwargs):
+        super(HandlerSerializerTests, self).__int__(test_json=TEST_HANDLER_JSON,
+                                                    serializer=HandlerSerializer)
 
     @classmethod
     def setUpTestData(cls):
         data = bytes_from_json(TEST_HANDLER_JSON)
         serializer = HandlerSerializer(data=data)
         cls.serializer = serializer
-
-    def setUp(self) -> None:
-        self.valid = self.serializer.is_valid()
-        if not self.valid:
-            logging.error(f'{self.serializer.errors}')
-            self.skipTest(
-                f'ManifestSerializerTests.SetUpTestData failed to '
-                f'initiate valid data from {self.test_json}')
 
     def test_handler_serializer_is_valid(self):
         self.assertTrue(self.valid)
@@ -86,8 +88,10 @@ class HandlerSerializerTests(TestCase):
         self.assertEqual(f'{saved_site}', 'TESTSITEID2022')
 
 
-# utility function primarily used for loading test data from a file
 def bytes_from_json(json_file: str) -> bytes:
+    """
+    utility function primarily used for loading test data from a file
+    """
     try:
         with open(json_file, 'rb') as open_file:
             stream = io.BytesIO(open_file.read())
