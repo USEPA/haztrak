@@ -121,7 +121,7 @@ class ManifestSerializer(serializers.ModelSerializer):
     designatedFacility = HandlerSerializer(
         source='tsd')
     # broker TODO
-    wastes = WasteLineSerializer(many=True, read_only=True)
+    wastes = WasteLineSerializer(many=True)
     # rejection
     rejectionInfo = serializers.JSONField(
         source='rejection_info',
@@ -172,6 +172,7 @@ class ManifestSerializer(serializers.ModelSerializer):
         default=None)
 
     def create(self, validated_data) -> Manifest:
+        waste_data = validated_data.pop('wastes')
         tsd_data = validated_data.pop('tsd')
         tsd_object = Handler.objects.create(**tsd_data)
         gen_data = validated_data.pop('generator')
@@ -180,6 +181,8 @@ class ManifestSerializer(serializers.ModelSerializer):
         manifest = Manifest.objects.create(generator=gen_object,
                                            tsd=tsd_object,
                                            **validated_data)
+        for waste_line in waste_data:
+            WasteLine.objects.create(manifest=manifest, **waste_line)
         transporters = []
         for i in trans_data:
             tran = Handler.objects.create(**i)

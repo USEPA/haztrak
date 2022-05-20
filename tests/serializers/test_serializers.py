@@ -8,7 +8,7 @@ from rest_framework.parsers import JSONParser
 
 from apps.api.serializers import (HandlerSerializer, ManifestSerializer,
                                   WasteLineSerializer)
-from apps.trak.models import Handler, Manifest
+from apps.trak.models import Handler, Manifest, WasteLine
 
 JSON_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'
@@ -52,7 +52,7 @@ class ManifestSerializerTests(SerializerBaseTests):
     def test_create_populated_transporter_field(self):
         try:
             transporter_id = dict(self.json_data)['transporters'][0]['epaSiteId']
-            saved_manifest = self.serializer.save()  # type: Manifest
+            saved_manifest = self.serializer.save()
             transporter = saved_manifest.transporters.all()
             transporter = [str(transporter) for transporter in transporter]
             self.assertIn(transporter_id, transporter)
@@ -62,11 +62,16 @@ class ManifestSerializerTests(SerializerBaseTests):
     def test_create_transporter_field_contains_multiple(self):
         try:
             number_transporters = len(dict(self.json_data)['transporters'])
-            saved_manifest = self.serializer.save()  # type: Manifest
+            saved_manifest = self.serializer.save()
             transporter = saved_manifest.transporters.all()
             self.assertEqual(len(transporter), number_transporters)
         except KeyError:
             self.fail('Problem getting transporter data from JSON')
+
+    def test_save_manifest_creates_wasteline(self):
+        saved_manifest = self.serializer.save()
+        waste_line = WasteLine.objects.filter(manifest=saved_manifest).first()
+        self.assertIsInstance(waste_line, WasteLine)
 
 
 class HandlerSerializerTests(SerializerBaseTests):
