@@ -6,134 +6,74 @@
 # Comments are included in each serializer where fields have not implemented
 # this is either because ModelSerializer's defaults are sufficient or
 # they are left as a TODO item
+
 from rest_framework import serializers
 
-from apps.trak.models import Handler, Manifest
-from lib.rcrainfo.lookups import get_country_name, get_state_name
+from apps.trak.models import Handler, Manifest, WasteLine
+
+from . import HandlerSerializer
 
 
-# TODO remove duplication of MailAddressField and SiteAddressField
-class MailAddressField(serializers.Field):
-    def to_representation(self, value):
-        state_name = get_state_name(value.mail_state)
-        country_name = get_country_name(value.mail_country)
-        mail_address = {"streetNumber": value.mail_street_number,
-                        "address1": value.mail_address1,
-                        "address2": value.mail_address2,
-                        "city": value.mail_city,
-                        "state": {
-                            "code": value.mail_state,
-                            "name": state_name,
-                        },
-                        "country": {
-                            "code": value.mail_country,
-                            "name": country_name,
-                        },
-                        "zip": value.mail_zip
-                        }
-        # remove nulls when serializing for fun
-        for key, value in dict(mail_address).items():
-            if value is None:
-                try:
-                    del mail_address[key]
-                except KeyError:
-                    pass
-        return mail_address
+class WasteLineSerializer(serializers.ModelSerializer):
+    lineNumber = serializers.IntegerField(
+        source='line_number',
+    )
+    dotHazardous = serializers.BooleanField(
+        source='dot_hazardous',
+    )
+    dotInformation = serializers.JSONField(
+        source='dot_info',
+        required=False,
+    )
+    quantity = serializers.JSONField(
+        required=False,
+    )
+    hazardousWaste = serializers.JSONField(
+        source='hazardous_waste',
+        required=False,
+    )
+    # br
+    brInfo = serializers.JSONField(
+        source='br_info',
+        required=False,
+    )
+    managementMethod = serializers.JSONField(
+        source='management_method',
+        required=False,
+    )
+    # pcb
+    pcbInfos = serializers.JSONField(
+        source='pcb_infos',
+        required=False,
+    )
+    discrepancyResidueInfo = serializers.JSONField(
+        source='discrepancy_info',
+        required=False,
+    )
+    epaWaste = serializers.BooleanField(
+        source='epa_waste',
+    )
 
-    def to_internal_value(self, data):
-        address = {}
-        try:
-            address = {'mail_address1': data['address1'],
-                       'mail_state': data['state']['code'],
-                       'mail_country': data['country']['code']}
-        except KeyError:
-            pass
-        return address
+    class Meta:
+        model = WasteLine
+        fields = [
+            'lineNumber',
+            'dotHazardous',
+            'dotInformation',
+            'quantity',
+            'hazardousWaste',
+            'br',
+            'brInfo',
+            'managementMethod',
+            'pcb',
+            'pcbInfos',
+            'discrepancyResidueInfo',
+            'epaWaste',
 
+        ]
 
-class SiteAddressField(serializers.Field):
-    def to_representation(self, value):
-        state_name = get_state_name(value.site_state)
-        country_name = get_country_name(value.site_country)
-        site_address = {"streetNumber": value.site_street_number,
-                        "address1": value.site_address1,
-                        "address2": value.site_address2,
-                        "city": value.site_city,
-                        "state": {
-                            "code": value.site_state,
-                            "name": state_name,
-                        },
-                        "country": {
-                            "code": value.site_country,
-                            "name": country_name,
-                        },
-                        "zip": value.site_zip
-                        }
-        # remove nulls when serializing for fun
-        for key, value in dict(site_address).items():
-            if value is None:
-                try:
-                    del site_address[key]
-                except KeyError:
-                    pass
-        return site_address
-
-    def to_internal_value(self, data):
-        address = {}
-        try:
-            address = {'site_address1': data['address1'],
-                       'site_state': data['state']['code'],
-                       'site_country': data['country']['code']}
-        except KeyError:
-            pass
-        return address
-
-
-class HandlerSerializer(serializers.ModelSerializer):
-    # siteType TODO
-    epaSiteId = serializers.CharField(
-        source='epa_id')
-    modified = serializers.BooleanField(
-        allow_null=True,
-        default=False)
-    # name
-    mailingAddress = MailAddressField(
-        source='*')
-    siteAddress = SiteAddressField(
-        source='*')
-    # contact
-    emergencyPhone = serializers.JSONField(
-        source='emergency_phone',
-        allow_null=True,
-        default=None)
-    # paperSignatureInfo TODO
-    electronicSignatureInfo = serializers.JSONField(
-        source='electronic_signatures_info',
-        allow_null=True,
-        default=None)
-    # order TODO
-    registered = serializers.BooleanField(
-        allow_null=True,
-        default=False)
-    limitedEsign = serializers.BooleanField(
-        source='limited_esign',
-        allow_null=True,
-        default=False)
-    canEsign = serializers.BooleanField(
-        source='can_esign',
-        allow_null=True,
-        default=False)
-    hasRegisteredEmanifestUser = serializers.BooleanField(
-        source='registered_emanifest_user',
-        allow_null=True,
-        default=False)
-    gisPrimary = serializers.BooleanField(
-        source='gis_primary',
-        allow_null=True,
-        default=False)
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
+    def to_representation(self, instance) -> str:
+        data = super(WasteLineSerializer, self).to_representation(instance)
         for field in self.fields:
             try:
                 if data[field] is None:
@@ -142,25 +82,8 @@ class HandlerSerializer(serializers.ModelSerializer):
                 pass
         return data
 
-    class Meta:
-        model = Handler
-        fields = [
-            'epaSiteId',
-            'modified',
-            'name',
-            'siteAddress',
-            'mailingAddress',
-            'contact',
-            'emergencyPhone',
-            # 'paperSignatureInfo',
-            'electronicSignatureInfo',
-            # 'order',
-            'registered',
-            'limitedEsign',
-            'canEsign',
-            'hasRegisteredEmanifestUser',
-            'gisPrimary',
-        ]
+    def __str__(self):
+        return f'{self.lineNumber}'
 
 
 class ManifestSerializer(serializers.ModelSerializer):
@@ -198,7 +121,7 @@ class ManifestSerializer(serializers.ModelSerializer):
     designatedFacility = HandlerSerializer(
         source='tsd')
     # broker TODO
-    # wastes TODO
+    wastes = WasteLineSerializer(many=True)
     # rejection
     rejectionInfo = serializers.JSONField(
         source='rejection_info',
@@ -249,6 +172,7 @@ class ManifestSerializer(serializers.ModelSerializer):
         default=None)
 
     def create(self, validated_data) -> Manifest:
+        waste_data = validated_data.pop('wastes')
         tsd_data = validated_data.pop('tsd')
         tsd_object = Handler.objects.create(**tsd_data)
         gen_data = validated_data.pop('generator')
@@ -257,6 +181,8 @@ class ManifestSerializer(serializers.ModelSerializer):
         manifest = Manifest.objects.create(generator=gen_object,
                                            tsd=tsd_object,
                                            **validated_data)
+        for waste_line in waste_data:
+            WasteLine.objects.create(manifest=manifest, **waste_line)
         transporters = []
         for i in trans_data:
             tran = Handler.objects.create(**i)
@@ -265,7 +191,7 @@ class ManifestSerializer(serializers.ModelSerializer):
         return manifest
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
-    def to_representation(self, instance):
+    def to_representation(self, instance) -> str:
         data = super(ManifestSerializer, self).to_representation(instance)
         data['import'] = instance.import_flag
         # remove null fields when serializing manifest

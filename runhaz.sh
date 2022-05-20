@@ -1,22 +1,22 @@
 #!/bin/bash
 
-BASE_DIR=$(dirname "$0")
-DJANGO_APPS=(api trak accounts home)
+base_dir=$(dirname "$0")
+django_apps=(api trak accounts home)
 
 # check python is installed
 if command -v python3 > /dev/null 2>&1; then
-    PYTHON=$(command -v python3)
-    BASE_CMD="$PYTHON $BASE_DIR/manage.py "
+    python_cmd=$(command -v python3)
+    base_cmd="$python_cmd $base_dir/manage.py "
 elif command -v python > /dev/null 2>&1; then
-    PYTHON=$(command -v python)
-    BASE_CMD="$PYTHON $BASE_DIR/manage.py "
+    python_cmd=$(command -v python)
+    base_cmd="$python_cmd $base_dir/manage.py "
 else
   echo "Python3 not found"
   exit 1
 fi
 
 # check python version is at least 3.8
-ver=$($PYTHON -V 2>&1 | sed 's/.* \([0-9]\).\([0-9]\).*/\1\2/')
+ver=$($python_cmd -V 2>&1 | sed 's/.* \([0-9]\).\([0-9]\).*/\1\2/')
 if [ "$ver" -eq "31" ]; then
     :
 elif [ "$ver" -lt "38" ]; then
@@ -28,63 +28,53 @@ print_usage() {
    # Display Help
    echo "Command line utility to help develop Haztrak"
    echo
-   echo "Syntax: $(basename "$0") [-t|r|h|m]"
+   echo "Syntax: $(basename "$0") [-m|d|t|p|r|h]"
    echo "options:"
-   echo "h     Print this help message"
-   echo "r     Run using Django's built in runserver command"
-   echo "t     Test by app name(s), defaults to all"
-   echo "m     Makemigrations, migrate and dump fixture data for unittests"
+   echo "m     Makemigrations and migrate"
+   echo "d     Dump data into fixtures files tests (if needed, migrate first)"
+   echo "t     Run all tests"
    echo "p     installs hooks, if necessary, and runs pre-commit run --all-files"
+   echo "r     Run haztrak locally"
+   echo "h     Print this help message"
    echo
 }
 
-test_django(){
-    # Test all or certain django apps
-    CMD="$BASE_CMD test"
-	if [ "$#" -eq 0 ]; then
-	  eval "$CMD"
-	  exit 0
-	fi
-	for i in "$@"
-	do
-	  if [[ "${DJANGO_APPS[*]}" =~ ${i} ]]
-	  then
-		CMD="$BASE_CMD apps.$i"
-	  fi
-	done
-	echo "Running tests --> $CMD"
-	eval "$CMD"
+run_tests(){
+    # Since I moved all tests to the 'tests' directory, you can just run all tests
+    # sorry
+    eval "$base_cmd test"
 }
 
-django_migrate(){
-    # makemigrations and migrate if necessary
-    echo "$BASE_CMD"
-    if eval "$BASE_CMD makemigrations"
+run_migrations(){
+    # Use Django's 'makemigrations' and 'migrate' to propagate model changes
+    # since their typically executed together, this is just more convenient
+    echo "$base_cmd"
+    if eval "$base_cmd makemigrations"
     then
-        eval "$BASE_CMD migrate"
+        eval "$base_cmd migrate"
     fi
 }
 
-django_dump(){
-    # dump the database into a fixture file, migrations should be applied before
-    # defaults to stdout
-    CMD="$BASE_CMD dumpdata"
-	if [ "$#" -eq 0 ]; then
-	  eval "$CMD"
-	  exit 0
-	fi
-	for i in "$@"
-	do
-	  if [[ $i -ne 0 ]]
-	  then
-		CMD="$CMD $i"
-	  fi
-	done
-	echo "Running --> $CMD"
-	eval "$CMD"
+dump_fixtures(){
+    # hardcoded (data)dumps (hehe) for fixture files used for unittests
+    # if more fixtures files are added, they will need to be added here
+    exec_cmd="$base_cmd dumpdata"
+    fixture_dir="$base_dir/tests/fixtures"
+    fixture_cmd=(
+    "> $fixture_dir/test_data.json"
+    "trak.WasteLine --pks=1 > $fixture_dir/test_waste_line.json"
+    )
+    for i in "${fixture_cmd[@]}"
+    do
+        eval "$exec_cmd $i"
+    done
+    echo "Data Dumped"
 }
 
 run_pre_commit() {
+    # This will install the pre-commit script, and run whatever pre-commit
+    # hooks we have configured. Great to run before committing as a pre-commit hook
+    # failure will abort the commit
     if command -V pre-commit > /dev/null 2>&1 ; then
         eval "pre-commit install"
         eval "pre-commit run --all-files"
@@ -97,20 +87,20 @@ run_pre_commit() {
 # Parse CLI argument
 while getopts 'trmhdp' opt; do
   case "$opt" in
+    m)
+        run_migrations
+        ;;
+    d)
+        dump_fixtures "$@"
+        ;;
+    t)
+		run_tests "$@"
+		;;
     p)
         run_pre_commit
         ;;
-    t)
-		test_django "$@"
-		;;
-    m)
-        django_migrate
-        ;;
-    d)
-        django_dump "$@"
-        ;;
     r)
-        eval "$CMD runserver"
+        eval "$exec_cmd runserver"
 		;;
     \?|h)
 	  print_usage

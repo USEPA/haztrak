@@ -1,0 +1,75 @@
+{
+  "dotHazardous": true,
+  "dotInformation": {
+    "idNumber": {
+      "code": "NA1993"
+    },
+    "printedDotInformation": "NA1993, Waste Diesel fuel, 3, III"
+  },
+  "quantity": {
+    "containerNumber": 12,
+    "containerType": {
+      "code": "DM",
+      "description": "Metal drums, barrels, kegs"
+    },
+    "quantity": 480,
+    "unitOfMeasurement": {
+      "code": "G",
+      "description": "Gallons"
+    }
+  },
+  "hazardousWaste": {
+    "federalWasteCodes": [
+      {
+        "code": "D001",
+        "description": "IGNITABLE WASTE"
+      }
+    ],
+    "tsdfStateWasteCodes": [],
+    "generatorStateWasteCodes": [],
+    "txWasteCodes": []
+  },
+  "additionalInfo": {
+    "originalManifestTrackingNumbers": [],
+    "comments": [
+      {
+        "label": "Profile #",
+        "description": "E654321",
+        "handlerId": "VATESTRAN02"
+      }
+    ],
+    "handlingInstructions": "This Manifest is for testing purposes and does not match reality it's more to show what you can do."
+  },
+  "lineNumber": 1,
+  "br": true,
+  "brInfo": {
+    "densityUnitOfMeasurement": {
+      "code": "2",
+      "description": "sg"
+    },
+    "formCode": {
+      "code": "W103",
+      "description": "SPENT CONCENTRATED ACID"
+    },
+    "sourceCode": {
+      "code": "G02",
+      "description": "STRIPPING AND ACID OR CAUSTIC CLEANING"
+    },
+    "density": 0.92,
+    "wasteMinimizationCode": {
+      "code": "A"
+    }
+  },
+  "managementMethod": {
+    "code": "H020",
+    "description": "SOLVENTS RECOVERY"
+  },
+  "pcb": false,
+  "pcbInfos": [],
+  "discrepancyResidueInfo": {
+    "wasteQuantity": false,
+    "wasteType": false,
+    "residue": false
+  },
+  "epaWaste": true
+}

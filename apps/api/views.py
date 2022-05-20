@@ -46,6 +46,7 @@ class ManifestView(APIView):
 
 # trash to be fixed, can't be bothered to remove it right now
 class SyncSiteManifest(APIView):
+    response = Response
 
     def get(self, request: Request, epa_id: str = None) -> Response:
         if epa_id:
@@ -56,6 +57,7 @@ class SyncSiteManifest(APIView):
 
 
 class HandlerView(APIView):
+    response = Response
 
     def get(self, request: Request, epa_id: str = None) -> Response:
         try:
@@ -68,3 +70,18 @@ class HandlerView(APIView):
         except ObjectDoesNotExist:
             return self.response(status=http.HTTPStatus.NOT_FOUND,
                                  data={'Error': f'{epa_id} not found'})
+
+# class WasteLineView(APIView):
+#     response = Response
+#
+#     def get(self, request: Request, wl_id: int = None) -> Response:
+#         try:
+#             if wl_id:
+#                 wasteline = WasteLine.objects.get(id=wl_id)
+#                 serializer = WasteLineSerializer(wasteline)
+#                 return self.response(serializer.data)
+#         except APIException:
+#             return self.response(status=http.HTTPStatus.INTERNAL_SERVER_ERROR)
+#         except ObjectDoesNotExist:
+#             return self.response(status=http.HTTPStatus.NOT_FOUND,
+#                                  data={'Error': f'{wl_id} not found'})
