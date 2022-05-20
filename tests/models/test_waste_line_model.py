@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from apps.trak.models import WasteLine
+from apps.trak.models import Manifest, WasteLine
 
 MIN_WASTELINE = {
     'dot_hazardous': True,
@@ -12,7 +12,7 @@ MIN_WASTELINE = {
 
 
 class WasteLineModelTest(TestCase):
-    fixtures = ['test_waste_line.json']
+    fixtures = ['test_waste_line.json', 'test_data.json']
 
     def test_fixture(self):
         waste_line = WasteLine.objects.get(id=1)
@@ -23,5 +23,6 @@ class WasteLineModelTest(TestCase):
         self.assertIsInstance(waste_line, WasteLine)
 
     def test_create_minimal_wasteline(self):
-        my_waste = WasteLine.objects.create(**MIN_WASTELINE)
+        manifest = Manifest.objects.get(id=1)
+        my_waste = WasteLine.objects.create(manifest=manifest, **MIN_WASTELINE)
         self.assertIsInstance(my_waste, WasteLine)

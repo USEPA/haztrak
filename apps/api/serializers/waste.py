@@ -61,7 +61,7 @@ class WasteLineSerializer(serializers.ModelSerializer):
 
         ]
 
-    def to_representation(self, instance):
+    def to_representation(self, instance) -> str:
         data = super(WasteLineSerializer, self).to_representation(instance)
         for field in self.fields:
             try:

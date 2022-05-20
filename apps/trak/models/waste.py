@@ -2,6 +2,10 @@ from django.db import models
 
 
 class WasteLine(models.Model):
+    manifest = models.ForeignKey(
+        'Manifest',
+        on_delete=models.CASCADE,
+    )
     dot_hazardous = models.BooleanField(
         verbose_name='DOT hazardous',
     )

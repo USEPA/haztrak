@@ -8,7 +8,7 @@ from rest_framework.parsers import JSONParser
 
 from apps.api.serializers import (HandlerSerializer, ManifestSerializer,
                                   WasteLineSerializer)
-from apps.trak.models import Handler, Manifest, WasteLine
+from apps.trak.models import Handler, Manifest
 
 JSON_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'
@@ -103,9 +103,9 @@ class WasteLineSerializerTest(SerializerBaseTests):
     def test_is_valid(self):
         self.assertTrue(self.valid)
 
-    def test_save(self):
-        save_waste_line = self.serializer.save()
-        self.assertIsInstance(save_waste_line, WasteLine)
+    # def test_save(self):
+    #     save_waste_line = self.serializer.save()
+    #     self.assertIsInstance(save_waste_line, WasteLine)
 
 
 def bytes_from_json(json_file: str) -> bytes:

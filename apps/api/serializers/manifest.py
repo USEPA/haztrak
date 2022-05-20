@@ -115,7 +115,7 @@ class ManifestSerializer(serializers.ModelSerializer):
         return manifest
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
-    def to_representation(self, instance):
+    def to_representation(self, instance) -> str:
         data = super(ManifestSerializer, self).to_representation(instance)
         data['import'] = instance.import_flag
         # remove null fields when serializing manifest
