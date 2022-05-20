@@ -4,6 +4,7 @@ from django.db import models
 class WasteLine(models.Model):
     manifest = models.ForeignKey(
         'Manifest',
+        related_name='wastes',
         on_delete=models.CASCADE,
     )
     dot_hazardous = models.BooleanField(
