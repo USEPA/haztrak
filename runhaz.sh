@@ -42,21 +42,7 @@ print_usage() {
 run_tests(){
     # Since I moved all tests to the 'tests' directory, you can just run all tests
     # sorry
-    exec_cmd="$base_cmd test"
-    eval "$exec_cmd"
-#	if [ "$#" -eq 0 ]; then
-#	  eval "$exec_cmd"
-#	  exit 0
-#	fi
-#	for i in "$@"
-#	do
-#	  if [[ "${django_apps[*]}" =~ ${i} ]]
-#	  then
-#		exec_cmd="$exec_cmd apps.$i"
-#	  fi
-#	done
-#	echo "Running tests --> $exec_cmd"
-#	eval "$exec_cmd"
+    eval "$base_cmd test"
 }
 
 run_migrations(){

@@ -22,7 +22,7 @@ class WasteLine(models.Model):
         verbose_name='Waste line number',
     )
     br = models.BooleanField(
-        verbose_name='BR info provided'
+        verbose_name='BR info provided',
     )
     br_info = models.JSONField(
         verbose_name='BR information',
@@ -35,20 +35,20 @@ class WasteLine(models.Model):
         blank=True,
     )
     pcb = models.BooleanField(
-        verbose_name='Contains PCBs'
+        verbose_name='Contains PCBs',
     )
     pcb_infos = models.JSONField(
         verbose_name='PCB information',
         null=True,
         blank=True,
     )
-    discrepancy_info = models.BooleanField(
+    discrepancy_info = models.JSONField(
         verbose_name='Discrepancy-Residue information',
         null=True,
         blank=True,
     )
     epa_waste = models.BooleanField(
-        verbose_name='Federal waste',
+        verbose_name='EPA waste',
     )
     additional_info = models.JSONField(
         null=True,
