@@ -10,7 +10,7 @@ class WasteLineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = WasteLine
-        fields = 'dotHazardous'
+        fields = ['dotHazardous']
 
     def __str__(self):
         return f'{self.dotHazardous} yo!'

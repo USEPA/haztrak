@@ -33,6 +33,7 @@ print_usage() {
    echo "h     Print this help message"
    echo "r     Run using Django's built in runserver command"
    echo "t     Test by app name(s), defaults to all"
+   echo "d     Dump the database to stdout, redirect with '$ ./runhaz.sh -d > file.json'"
    echo "m     Makemigrations, migrate and dump fixture data for unittests"
    echo "p     installs hooks, if necessary, and runs pre-commit run --all-files"
    echo
@@ -80,7 +81,6 @@ django_dump(){
 		CMD="$CMD $i"
 	  fi
 	done
-	echo "Running --> $CMD"
 	eval "$CMD"
 }
 

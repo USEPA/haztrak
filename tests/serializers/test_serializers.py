@@ -6,7 +6,8 @@ from django.test import TestCase
 from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import JSONParser
 
-from apps.api.serializers import HandlerSerializer, ManifestSerializer
+from apps.api.serializers import (HandlerSerializer, ManifestSerializer,
+                                  WasteLineSerializer)
 from apps.trak.models import Manifest
 
 JSON_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -25,9 +26,8 @@ class SerializerBaseTests(TestCase):
         self.valid = self.serializer.is_valid()
         if not self.valid:
             logging.error(f'{self.serializer.errors}')
-            self.skipTest(
-                f'{self.__class__.__name__} failed to '
-                f'initiate valid data from {self.test_json}')
+            self.fail(
+                f'{self.__class__.__name__} failed to initiate valid data')
 
 
 class ManifestSerializerTests(SerializerBaseTests):
@@ -57,7 +57,7 @@ class ManifestSerializerTests(SerializerBaseTests):
             transporter = [str(transporter) for transporter in transporter]
             self.assertIn(transporter_id, transporter)
         except KeyError:
-            self.skipTest('Problem getting transporter data from JSON')
+            self.fail('Problem getting transporter data from JSON')
 
     def test_create_transporter_field_contains_multiple(self):
         try:
@@ -66,7 +66,7 @@ class ManifestSerializerTests(SerializerBaseTests):
             transporter = saved_manifest.transporters.all()
             self.assertEqual(len(transporter), number_transporters)
         except KeyError:
-            self.skipTest('Problem getting transporter data from JSON')
+            self.fail('Problem getting transporter data from JSON')
 
 
 class HandlerSerializerTests(SerializerBaseTests):
@@ -86,6 +86,22 @@ class HandlerSerializerTests(SerializerBaseTests):
     def test_handler_save_new_model_instance(self):
         saved_site = self.serializer.save()
         self.assertEqual(f'{saved_site}', 'TESTSITEID2022')
+
+
+class WasteLineSerializerTest(SerializerBaseTests):
+
+    def __int__(self, *args, **kwargs):
+        super(WasteLineSerializerTest, self).__int__(test_json=TEST_WASTE1_JSON,
+                                                     serializer=WasteLineSerializer)
+
+    @classmethod
+    def setUpTestData(cls):
+        data = bytes_from_json(TEST_WASTE1_JSON)
+        serializer = WasteLineSerializer(data=data)
+        cls.serializer = serializer
+
+    def test_waste_line_serializer_is_valid(self):
+        self.assertTrue(self.valid)
 
 
 def bytes_from_json(json_file: str) -> bytes:
