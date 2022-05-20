@@ -48,7 +48,7 @@ class ManifestSerializer(serializers.ModelSerializer):
     designatedFacility = HandlerSerializer(
         source='tsd')
     # broker TODO
-    # wastes TODO
+    # wastes
     # rejection
     rejectionInfo = serializers.JSONField(
         source='rejection_info',
@@ -155,7 +155,7 @@ class ManifestSerializer(serializers.ModelSerializer):
             'transporters',
             'designatedFacility',
             'broker',
-            'wastes',
+            # 'wastes',
             'rejection',
             'rejectionInfo',
             'discrepancy',

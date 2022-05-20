@@ -71,7 +71,7 @@ class Manifest(models.Model):
     )
     broker = models.JSONField(
         null=True, blank=True)
-    wastes = models.JSONField()
+    # wastes = models.JSONField()
     rejection = models.BooleanField(
         blank=True,
         default=False
