@@ -3,12 +3,8 @@ from django.db import models
 from . import Handler
 
 
-class Transporter(models.Model):
+class Transporter(Handler):
     order = models.IntegerField()
-    handler = models.OneToOneField(
-        Handler,
-        on_delete=models.PROTECT,
-    )
 
     def __str__(self):
-        return f'{self.handler.epa_id}'
+        return f'{self.epa_id}'

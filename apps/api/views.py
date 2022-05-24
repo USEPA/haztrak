@@ -6,10 +6,11 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.trak.models import Handler, Manifest
+from apps.trak.models import Handler, Manifest, Transporter
 from lib.rcrainfo import rcrainfo
 
-from .serializers import HandlerSerializer, ManifestSerializer
+from .serializers import (HandlerSerializer, ManifestSerializer,
+                          TransporterSerializer)
 
 
 class ManifestView(APIView):
@@ -71,17 +72,18 @@ class HandlerView(APIView):
             return self.response(status=http.HTTPStatus.NOT_FOUND,
                                  data={'Error': f'{epa_id} not found'})
 
-# class WasteLineView(APIView):
-#     response = Response
-#
-#     def get(self, request: Request, wl_id: int = None) -> Response:
-#         try:
-#             if wl_id:
-#                 wasteline = WasteLine.objects.get(id=wl_id)
-#                 serializer = WasteLineSerializer(wasteline)
-#                 return self.response(serializer.data)
-#         except APIException:
-#             return self.response(status=http.HTTPStatus.INTERNAL_SERVER_ERROR)
-#         except ObjectDoesNotExist:
-#             return self.response(status=http.HTTPStatus.NOT_FOUND,
-#                                  data={'Error': f'{wl_id} not found'})
+
+class TransporterView(APIView):
+    response = Response
+
+    def get(self, request: Request, tran_id: int = None) -> Response:
+        try:
+            if tran_id:
+                transporter = Transporter.objects.get(id=tran_id)
+                serializer = TransporterSerializer(transporter)
+                return self.response(serializer.data)
+        except APIException:
+            return self.response(status=http.HTTPStatus.INTERNAL_SERVER_ERROR)
+        except ObjectDoesNotExist:
+            return self.response(status=http.HTTPStatus.NOT_FOUND,
+                                 data={'Error': f'{tran_id} not found'})
