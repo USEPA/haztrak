@@ -2,8 +2,6 @@ from django.db import models
 
 from lib.rcrainfo import lookups as lu
 
-from . import Handler
-
 
 class Manifest(models.Model):
     created_date = models.DateTimeField(
@@ -62,7 +60,7 @@ class Manifest(models.Model):
         on_delete=models.PROTECT,
         related_name='generator'
     )
-    transporters = models.ManyToManyField(Handler)
+    # transporters
     tsd = models.ForeignKey(
         'Handler',
         verbose_name='Designated facility',
@@ -71,7 +69,7 @@ class Manifest(models.Model):
     )
     broker = models.JSONField(
         null=True, blank=True)
-    # wastes = models.JSONField()
+    # wastes
     rejection = models.BooleanField(
         blank=True,
         default=False

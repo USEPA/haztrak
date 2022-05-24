@@ -61,14 +61,14 @@ dump_fixtures(){
     exec_cmd="$base_cmd dumpdata"
     fixture_dir="$base_dir/tests/fixtures"
     fixture_cmd=(
-    "> $fixture_dir/test_data.json"
+    "-e contenttypes> $fixture_dir/test_data.json"
     "trak.WasteLine --pks=1 > $fixture_dir/test_waste_line.json"
     )
     for i in "${fixture_cmd[@]}"
     do
         eval "$exec_cmd $i"
     done
-    echo "Data Dumped"
+    echo "Data successfully dumped"
 }
 
 run_pre_commit() {
