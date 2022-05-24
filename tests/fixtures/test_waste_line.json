@@ -1,1 +1,1 @@
-[]
+[{"model": "trak.wasteline", "pk": 1, "fields": {"manifest": 1, "dot_hazardous": true, "dot_info": {"test": "test"}, "quantity": {"test": "test"}, "hazardous_waste": {"test": "test"}, "line_number": 1, "br": false, "br_info": null, "management_method": null, "pcb": false, "pcb_infos": null, "discrepancy_info": null, "epa_waste": false, "additional_info": null}}]

@@ -68,7 +68,7 @@ dump_fixtures(){
     do
         eval "$exec_cmd $i"
     done
-    echo "Data Dumped"
+    echo "Data successfully dumped"
 }
 
 run_pre_commit() {
