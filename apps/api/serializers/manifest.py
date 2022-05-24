@@ -9,9 +9,30 @@
 
 from rest_framework import serializers
 
-from apps.trak.models import Handler, Manifest, WasteLine
+from apps.trak.models import Handler, Manifest, Transporter, WasteLine
 
 from . import HandlerSerializer
+
+
+class TransporterSerializer(HandlerSerializer):
+    class Meta:
+        model = Transporter
+        fields = [
+            'epaSiteId',
+            'modified',
+            'name',
+            'siteAddress',
+            'mailingAddress',
+            'contact',
+            'emergencyPhone',
+            'electronicSignatureInfo',
+            'order',
+            'registered',
+            'limitedEsign',
+            'canEsign',
+            'hasRegisteredEmanifestUser',
+            'gisPrimary',
+        ]
 
 
 class WasteLineSerializer(serializers.ModelSerializer):
@@ -117,10 +138,10 @@ class ManifestSerializer(serializers.ModelSerializer):
         allow_null=True,
         default=None)
     generator = HandlerSerializer()
-    transporters = HandlerSerializer(many=True)
+    transporters = TransporterSerializer(many=True)
     designatedFacility = HandlerSerializer(
         source='tsd')
-    # broker TODO
+    # broker
     wastes = WasteLineSerializer(many=True)
     # rejection
     rejectionInfo = serializers.JSONField(
@@ -173,21 +194,18 @@ class ManifestSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data) -> Manifest:
         waste_data = validated_data.pop('wastes')
+        trans_data = validated_data.pop('transporters')
         tsd_data = validated_data.pop('tsd')
         tsd_object = Handler.objects.create(**tsd_data)
         gen_data = validated_data.pop('generator')
-        trans_data = validated_data.pop('transporters')
         gen_object = Handler.objects.create(**gen_data)
         manifest = Manifest.objects.create(generator=gen_object,
                                            tsd=tsd_object,
                                            **validated_data)
+        for transporter in trans_data:
+            Transporter.objects.create(manifest=manifest, **transporter)
         for waste_line in waste_data:
             WasteLine.objects.create(manifest=manifest, **waste_line)
-        transporters = []
-        for i in trans_data:
-            tran = Handler.objects.create(**i)
-            transporters.append(tran)
-        manifest.transporters.add(*transporters)
         return manifest
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
