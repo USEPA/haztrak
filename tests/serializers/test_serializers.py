@@ -54,7 +54,7 @@ class ManifestSerializerTests(SerializerBaseTests):
             transporter_id = dict(self.json_data)['transporters'][0]['epaSiteId']
             saved_manifest = self.serializer.save()
             transporter = saved_manifest.transporters.all()
-            transporter = [str(transporter) for transporter in transporter]
+            transporter = [str(transporter.epa_id) for transporter in transporter]
             self.assertIn(transporter_id, transporter)
         except KeyError:
             self.fail('Problem getting transporter data from JSON')

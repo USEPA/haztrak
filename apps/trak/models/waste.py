@@ -61,4 +61,4 @@ class WasteLine(models.Model):
     )
 
     def __str__(self):
-        return 'placeholder, re-simplifying waste line model'
+        return f'{self.manifest} line {self.line_number}'

@@ -12,4 +12,4 @@ class Transporter(Handler):
     order = models.IntegerField()
 
     def __str__(self):
-        return f'{self.epa_id} on {self.manifest.mtn}'
+        return f'{self.epa_id}: transporter {self.order} on {self.manifest.mtn}'
