@@ -1,7 +1,6 @@
 #!/bin/bash
 
 base_dir=$(dirname "$0")
-django_apps=(api trak accounts home)
 
 # check python is installed
 if command -v python3 > /dev/null 2>&1; then
@@ -28,24 +27,19 @@ print_usage() {
    # Display Help
    echo "Command line utility to help develop Haztrak"
    echo
-   echo "Syntax: $(basename "$0") [-m|d|t|p|r|h]"
+   echo "Syntax: $(basename "$0") [-m|d|l|t|p|r|h]"
    echo "options:"
    echo "m     Makemigrations and migrate"
    echo "d     Dump data into fixtures files tests (if needed, migrate first)"
-   echo "t     Run all tests"
+   echo "l     load fixture data from test/fixtures/test_data.json"
+   echo "t     Run all unittests"
    echo "p     installs hooks, if necessary, and runs pre-commit run --all-files"
    echo "r     Run haztrak locally"
    echo "h     Print this help message"
    echo
 }
 
-run_tests(){
-    # Since I moved all tests to the 'tests' directory, you can just run all tests
-    # sorry
-    eval "$base_cmd test"
-}
-
-run_migrations(){
+migrate_changes(){
     # Use Django's 'makemigrations' and 'migrate' to propagate model changes
     # since their typically executed together, this is just more convenient
     echo "$base_cmd"
@@ -71,6 +65,19 @@ dump_fixtures(){
     echo "Data successfully dumped"
 }
 
+load_fixtures() {
+    # load initial data, good if you need to wipe the dev database
+    # creates users 'admin', 'testuser1', both with 'password1'
+    exec_cmd="$base_cmd loaddata tests/fixtures/test_data.json"
+    eval "$exec_cmd"
+}
+
+test_django(){
+    # Since I moved all tests to the 'tests' directory, you can just run all tests
+    # sorry
+    eval "$base_cmd test"
+}
+
 run_pre_commit() {
     # This will install the pre-commit script, and run whatever pre-commit
     # hooks we have configured. Great to run before committing as a pre-commit hook
@@ -85,16 +92,19 @@ run_pre_commit() {
 }
 
 # Parse CLI argument
-while getopts 'trmhdp' opt; do
+while getopts 'mdltprh' opt; do
   case "$opt" in
     m)
-        run_migrations
+        migrate_changes
         ;;
     d)
         dump_fixtures "$@"
         ;;
+    l)
+        load_fixtures
+        ;;
     t)
-		run_tests "$@"
+		test_django "$@"
 		;;
     p)
         run_pre_commit
