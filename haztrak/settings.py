@@ -106,6 +106,8 @@ if os.getenv('DB_NAME'):
         if not os.getenv(i):
             logging.error(f'missing required DB environment variable {i}')
             exit(1)
+    if not os.getenv('TEST_DB_NAME'):
+        os.environ['test'] = 'test'
     default_db = {
         'ENGINE': os.getenv('DB_ENGINE'),
         'NAME': os.getenv('DB_NAME'),
@@ -114,7 +116,7 @@ if os.getenv('DB_NAME'):
         'HOST': os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT'),
         'TEST': {
-            'NAME': 'test'
+            'NAME': os.getenv('TEST_DB_NAME')
         }
     }
 else:
@@ -178,3 +180,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 FIXTURE_DIRS = ['tests/fixtures']
+
+# RCRAInfo environment
+if not os.getenv('RCRAINFO_ENV'):
+    os.environ['RCRAINFO_ENV'] = 'preprod'
