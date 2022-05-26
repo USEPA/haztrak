@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import logging
 import os
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,13 +22,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
+load_dotenv()
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d'
+if os.getenv('HAZTRAK_SECRET_KEY'):
+    SECRET_KEY = os.getenv('HAZTRAK_SECRET_KEY')
+else:
+    logging.error('environment HAZTRAK_SECRET_KEY not found, exiting')
+    exit(1)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.getenv('HAZTRAK_DEBUG'):
+    DEBUG = os.getenv('HAZTRAK_DEBUG')
+else:
+    DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+if os.getenv('HAZTRAK_HOST'):
+    ALLOWED_HOSTS = os.getenv('HAZTRAK_HOST')
+    if type(ALLOWED_HOSTS) is str:
+        ALLOWED_HOSTS = [ALLOWED_HOSTS]
+else:
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -76,14 +93,42 @@ WSGI_APPLICATION = 'haztrak.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+if os.getenv('DB_NAME'):
+    required_env_vars = [
+        'DB_ENGINE',
+        'DB_NAME',
+        'DB_USER',
+        'DB_PASSWORD',
+        'DB_HOST',
+        'DB_PORT',
+    ]
+    for i in required_env_vars:
+        if not os.getenv(i):
+            logging.error(f'missing required DB environment variable {i}')
+            exit(1)
+    default_db = {
+        'ENGINE': os.getenv('DB_ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
+        'TEST': {
+            'NAME': 'test'
+        }
+    }
+else:
+    logging.info('Resorting to sqlite backend')
+    default_db = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
         'TEST': {
             'NAME': BASE_DIR / 'test_db.sqlite3',
         }
     }
+
+DATABASES = {
+    'default': default_db
 }
 
 # Password validation
@@ -109,7 +154,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+if os.getenv('HAZTRAK_TIMEZONE'):
+    TIME_ZONE = os.getenv('HAZTRAK_TIMEZONE')
+else:
+    TIME_ZONE = 'UTC'
 
 USE_I18N = False
 
