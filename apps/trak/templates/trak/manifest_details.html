@@ -21,9 +21,142 @@
           </button>
         </div>
       </div>
-      <div>
-        <p>mtn: {{ manifest.mtn }}</p>
-        <p>ID number: {{ manifest.id }}</p>
+      <div class="container-fluid">
+        <!-- Start Manifest Cards, this row encompasses all col/cards-->
+        <div class="row">
+          <div class="col">
+            <div class="card shadow-sm m-3">
+              <div class="card-header bg-secondary">
+                <p class="h4 text-light">{{ manifest }}</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <p class="font-weight-bold">Manifest Tracking Number</p>
+                    {{ manifest.mtn }}
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Manifest Type</p>
+                    {{ manifest.submission_type }}
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Status</p>
+                    {{ manifest.status }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Generator Info -->
+            <div class="card shadow-sm m-3">
+              <div class="card-header bg-secondary">
+                <p class="h5 text-light">1-5. Generator Information</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <p class="font-weight-bold">EPA ID</p>
+                    {{ manifest.generator.epa_id }}
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Name</p>
+                    {{ manifest.generator.name }}
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Mailing Address</p>
+                    <p>
+                      {{ manifest.generator.mail_street_number }}
+                      {{ manifest.generator.mail_address1 }}
+                      {{ manifest.generator.mail_address2 }}
+                      {{ manifest.generator.mail_city }}
+                      {{ manifest.generator.mail_state }},
+                      {{ manifest.generator.mail_zip }}
+                    </p>
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Site Address</p>
+                    <p>
+                      {{ manifest.generator.site_street_number }}
+                      {{ manifest.generator.site_address1 }}
+                      {{ manifest.generator.site_address2 }}
+                      {{ manifest.generator.site_city }}
+                      {{ manifest.generator.site_state }},
+                      {{ manifest.generator.site_zip }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p class="font-weight-bold">Emergency Phone</p>
+                    <p>
+                      {{ manifest.generator.emergency_phone }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Transporter Info -->
+            <div class="card shadow-sm m-3">
+              <div class="card-header bg-secondary">
+                <p class="h4 text-light">6-7. Transporter Info</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  {#                  {% for transporter in manifest.transporters %}#}
+                  {#                    {{ transporter }}#}
+                  {#                  {% endfor %}#}
+                </div>
+              </div>
+            </div>
+            <!-- Designated Facility Info -->
+            <div class="card shadow-sm m-3">
+              <div class="card-header bg-secondary">
+                <p class="h5 text-light">8. Receiving Facility Info</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <p class="font-weight-bold">EPA ID</p>
+                    {{ manifest.tsd.epa_id }}
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Name</p>
+                    {{ manifest.tsd.name }}
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Mailing Address</p>
+                    <p>
+                      {{ manifest.tsd.mail_street_number }}
+                      {{ manifest.tsd.mail_address1 }}
+                      {{ manifest.tsd.mail_address2 }}
+                      {{ manifest.tsd.mail_city }}
+                      {{ manifest.tsd.mail_state }},
+                      {{ manifest.tsd.mail_zip }}
+                    </p>
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Site Address</p>
+                    <p>
+                      {{ manifest.tsd.site_street_number }}
+                      {{ manifest.tsd.site_address1 }}
+                      {{ manifest.tsd.site_address2 }}
+                      {{ manifest.tsd.site_city }}
+                      {{ manifest.tsd.site_state }},
+                      {{ manifest.tsd.site_zip }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p class="font-weight-bold">Emergency Phone</p>
+                    <p>
+                      {{ manifest.tsd.emergency_phone }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <p>Generator: {{ manifest.generator }}</p>
         <p>TSD: {{ manifest.tsd.epa_id }}</p>
         <p>Status: {{ manifest.status }}</p>

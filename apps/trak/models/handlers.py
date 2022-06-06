@@ -97,7 +97,7 @@ class Handler(models.Model):
         null=True,
         blank=True
     )
-    mail_address1: str = models.CharField(
+    mail_address1 = models.CharField(
         verbose_name='Mailing address 1',
         max_length=50
     )
