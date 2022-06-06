@@ -162,5 +162,9 @@ class Manifest(models.Model):
         blank=True
     )
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('manifest_details', kwargs={'pk': self.pk})
+
     def __str__(self):
         return f'{self.mtn}'

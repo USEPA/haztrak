@@ -4,7 +4,7 @@ from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import DetailView
+from django.views.generic import DetailView, UpdateView
 
 from .models import Manifest, Site, Transporter, WasteLine
 
@@ -39,10 +39,15 @@ class ManifestDetails(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(self.object)
         context['transporters'] = Transporter.objects.filter(manifest=self.object)
         context['waste_lines'] = WasteLine.objects.filter(manifest=self.object)
         return context
+
+
+class ManifestUpdate(UpdateView):
+    model = Manifest
+    fields = ['mtn']
+    template_name_suffix = '_update_form'
 
 
 class ManifestInTransit(Trak):

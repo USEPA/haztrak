@@ -13,7 +13,8 @@
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">{{ manifest.manifest_tracking_number }}</h1>
         <div>
-          <button id="" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+          <button id="" onclick=" window.location.href='{% url 'manifest_update' manifest.id %}';"
+                  class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             class="fas fa-wrench fa-sm text-white-50"></i> Edit
           </button>
           <button id="" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
