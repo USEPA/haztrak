@@ -5,8 +5,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from .models import Manifest, Site
-from .models.transporter import Transporter
+from .models import Manifest, Site, Transporter, WasteLine
 
 
 class Trak(LoginRequiredMixin, View):
@@ -39,9 +38,12 @@ class ManifestDetails(Trak):
     def get(self, request: HttpRequest, manifest_id: str) -> HttpResponse:
         try:
             manifest = Manifest.objects.get(id=manifest_id)
-            test = Transporter.objects.all()
-            print(test)
-            return render(request, self.template_name, {'manifest': manifest})
+            transporters = Transporter.objects.filter(manifest=manifest.id)
+            waste_lines = WasteLine.objects.filter(manifest=manifest.id)
+            return render(request, self.template_name,
+                          {'manifest': manifest,
+                           'transporters': transporters,
+                           'waste_lines': waste_lines})
         except Manifest.DoesNotExist:
             return render(request, '404.html', status=404)
         except PermissionDenied:

@@ -101,9 +101,24 @@
               </div>
               <div class="card-body">
                 <div class="row">
-                  {#                  {% for transporter in manifest.transporters %}#}
-                  {#                    {{ transporter }}#}
-                  {#                  {% endfor %}#}
+                  <table class="table">
+                    <thead>
+                    <tr>
+                      <th scope="col">Order</th>
+                      <th scope="col">EPA ID</th>
+                      <th scope="col">Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for transporter in transporters %}
+                      <tr>
+                        <th scope="row">{{ transporter.order }}</th>
+                        <td>{{ transporter.epa_id }}</td>
+                        <td>{{ transporter.name }}</td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -152,6 +167,39 @@
                       {{ manifest.tsd.emergency_phone }}
                     </p>
                   </div>
+                </div>
+              </div>
+            </div>
+            <!-- Waste Lines Info -->
+            <div class="card shadow-sm m-3">
+              <div class="card-header bg-secondary">
+                <p class="h4 text-light">9-13. Waste Info</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <table class="table">
+                    <thead>
+                    <tr>
+                      <th scope="col">Line Number</th>
+                      {#                      <th scope="col">Containers</th>#}
+                      {#                      <th scope="col">Type</th>#}
+                      <th scope="col">Total Quantity</th>
+                      {#                      <th scope="col">Units</th>#}
+                      <th scope="col">Waste Codes</th>
+                      {#                      <th scope="col">Management Method</th>#}
+                      {#                      <th scope="col">Actions</th>#}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for waste_line in waste_lines %}
+                      <tr>
+                        <th scope="row">{{ waste_line.line_number }}</th>
+                        <td>{{ waste_line.quantity }}</td>
+                        <td>{{ waste_line.hazardous_waste }}</td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
