@@ -4,8 +4,9 @@ from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import View
+from django.views.generic import DetailView, UpdateView
 
-from .models import Manifest, Site
+from .models import Manifest, Site, Transporter, WasteLine
 
 
 class Trak(LoginRequiredMixin, View):
@@ -32,17 +33,21 @@ class SiteManifests(Trak):
             return render(request, '403.html', status=403)
 
 
-class ManifestDetails(Trak):
+class ManifestDetails(DetailView):
+    model = Manifest
     template_name = 'trak/manifest_details.html'
 
-    def get(self, request: HttpRequest, manifest_id: str) -> HttpResponse:
-        try:
-            manifest = Manifest.objects.get(id=manifest_id)
-            return render(request, self.template_name, {'manifest': manifest})
-        except Manifest.DoesNotExist:
-            return render(request, '404.html', status=404)
-        except PermissionDenied:
-            return render(request, '403.html', status=403)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['transporters'] = Transporter.objects.filter(manifest=self.object)
+        context['waste_lines'] = WasteLine.objects.filter(manifest=self.object)
+        return context
+
+
+class ManifestUpdate(UpdateView):
+    model = Manifest
+    fields = ['mtn']
+    template_name_suffix = '_update_form'
 
 
 class ManifestInTransit(Trak):

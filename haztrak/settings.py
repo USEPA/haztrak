@@ -32,8 +32,8 @@ else:
     exit(1)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.getenv('HAZTRAK_DEBUG'):
-    DEBUG = os.getenv('HAZTRAK_DEBUG')
+if os.getenv('HAZTRAK_DEBUG').upper() == 'TRUE':
+    DEBUG = True
 else:
     DEBUG = False
 

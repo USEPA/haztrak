@@ -8,7 +8,7 @@
   <meta name="author" content="dpgraham4401">
   {#    <meta http-equiv="refresh" content="10">#}
   <title>Haztrak</title>
-  <link href="{% static 'css/font_awesome_free.min.css' %}" rel="stylesheet" type="text/css">
+  <script src="https://kit.fontawesome.com/df70426842.js" crossorigin="anonymous"></script>
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
   <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -103,8 +103,7 @@
             <a class="nav-link dropdown-toggle" id="userDropdown" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="mr-2 d-lg-inline text-gray-600 small">{{ user.username }}</span>
-              <img class="img-profile rounded-circle" alt="Hello!"
-                   src="{% static 'img/rubber_plant.jpg' %}">
+              <i class="fa-solid fa-user dropdown-toggle"></i>
             </a>
           {% else %}
             <a class="nav-link" href="{% url 'login' %}" role="button">
@@ -153,7 +152,7 @@
     {% endblock content %}
 
     <!-- Footer -->
-    <footer class="sticky-footer bg-white">
+    <footer class="sticky-footer bg-white mt-5">
       <div class="container my-auto">
         <div class="copyright text-center my-auto">
           <span>Distributed under the MIT License</span>
