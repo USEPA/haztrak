@@ -25,9 +25,10 @@
         <!-- Start Manifest Cards, this row encompasses all col/cards-->
         <div class="row">
           <div class="col">
+            <!-- General Info -->
             <div class="card shadow-sm m-3">
               <div class="card-header bg-secondary">
-                <p class="h4 text-light">{{ manifest }}</p>
+                <p class="h4 font-weight-bold text-light my-1 ">{{ manifest }}</p>
               </div>
               <div class="card-body">
                 <div class="row">
@@ -49,7 +50,7 @@
             <!-- Generator Info -->
             <div class="card shadow-sm m-3">
               <div class="card-header bg-secondary">
-                <p class="h5 text-light">1-5. Generator Information</p>
+                <p class="h5 text-light my-1">1-5. Generator Info</p>
               </div>
               <div class="card-body">
                 <div class="row">
@@ -97,7 +98,7 @@
             <!-- Transporter Info -->
             <div class="card shadow-sm m-3">
               <div class="card-header bg-secondary">
-                <p class="h4 text-light">6-7. Transporter Info</p>
+                <p class="h5 text-light my-1">6-7. Transporter Info</p>
               </div>
               <div class="card-body">
                 <div class="row">
@@ -125,7 +126,7 @@
             <!-- Designated Facility Info -->
             <div class="card shadow-sm m-3">
               <div class="card-header bg-secondary">
-                <p class="h5 text-light">8. Receiving Facility Info</p>
+                <p class="h5 text-light my-1">8. Receiving Facility Info</p>
               </div>
               <div class="card-body">
                 <div class="row">
@@ -173,7 +174,7 @@
             <!-- Waste Lines Info -->
             <div class="card shadow-sm m-3">
               <div class="card-header bg-secondary">
-                <p class="h4 text-light">9-13. Waste Info</p>
+                <p class="h5 text-light my-1">9-13. Waste Info</p>
               </div>
               <div class="card-body">
                 <div class="row">
@@ -203,20 +204,24 @@
                 </div>
               </div>
             </div>
+            <!-- Additional Info -->
+            <div class="card shadow-sm m-3">
+              <div class="card-header bg-secondary">
+                <p class="h5 text-light">14. Handling Instructions and Additional info</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <p class="font-weight-bold">Additional Info</p>
+                    {{ manifest.additional_info }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <p>Generator: {{ manifest.generator }}</p>
-        <p>TSD: {{ manifest.tsd.epa_id }}</p>
-        <p>Status: {{ manifest.status }}</p>
-        <p>submission type: {{ manifest.submission_type }}</p>
-        <p>Origin Type: {{ manifest.origin_type }}</p>
-        <p>shipped date: {{ manifest.shipped_date }}</p>
-        <p>potential shipped date: {{ manifest.potential_ship_date }}</p>
-        <p>received date: {{ manifest.received_date }}</p>
-        <p>Certified Date: {{ manifest.certified_date }}</p>
       </div>
     </div>
-    <!-- /.container-fluid -->
     <!-- End of Main Content -->
   </div>
   <!-- Page level plugins -->
