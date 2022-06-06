@@ -7,7 +7,7 @@ urlpatterns = [
     path('<str:id_number>/details', views.SiteDetails.as_view(), name='site_details'),
     path('<str:epa_id>/manifests', views.SiteManifests.as_view(),
          name='site_manifests'),
-    path('manifest/<int:manifest_id>', views.ManifestDetails.as_view(),
+    path('manifest/<int:pk>', views.ManifestDetails.as_view(),
          name='manifest'),
     path('intransit/', views.ManifestInTransit.as_view(), name='in_transit'),
 ]

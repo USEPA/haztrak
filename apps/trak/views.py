@@ -4,6 +4,7 @@ from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import View
+from django.views.generic import DetailView
 
 from .models import Manifest, Site, Transporter, WasteLine
 
@@ -32,22 +33,16 @@ class SiteManifests(Trak):
             return render(request, '403.html', status=403)
 
 
-class ManifestDetails(Trak):
+class ManifestDetails(DetailView):
+    model = Manifest
     template_name = 'trak/manifest_details.html'
 
-    def get(self, request: HttpRequest, manifest_id: str) -> HttpResponse:
-        try:
-            manifest = Manifest.objects.get(id=manifest_id)
-            transporters = Transporter.objects.filter(manifest=manifest.id)
-            waste_lines = WasteLine.objects.filter(manifest=manifest.id)
-            return render(request, self.template_name,
-                          {'manifest': manifest,
-                           'transporters': transporters,
-                           'waste_lines': waste_lines})
-        except Manifest.DoesNotExist:
-            return render(request, '404.html', status=404)
-        except PermissionDenied:
-            return render(request, '403.html', status=403)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(self.object)
+        context['transporters'] = Transporter.objects.filter(manifest=self.object)
+        context['waste_lines'] = WasteLine.objects.filter(manifest=self.object)
+        return context
 
 
 class ManifestInTransit(Trak):
