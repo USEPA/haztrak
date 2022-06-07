@@ -36,13 +36,13 @@ class TrakViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_site_details_view_exists(self):
-        response = self.client.get(f'/trak/{self.site.epa_site.epa_id}/details')
+        response = self.client.get(f'/trak/{self.site.id}/details')
         self.assertEqual(response.status_code, 200)
 
     # Test that these URLs redirect to login page if user is logged out
     def test_trak_url_redirect_without_login(self):
         self.client.logout()
-        response = self.client.get(f'/trak/{self.site.epa_site.epa_id}/details')
+        response = self.client.get(f'/trak/{self.site.id}/details')
         self.assertEqual(response.status_code, 302)
 
     def test_manifest_view_redirects_without_login(self):
@@ -53,7 +53,7 @@ class TrakViewsTest(TestCase):
 
     def test_site_details_view_redirects_without_login(self):
         self.client.logout()
-        response = self.client.get(f'/trak/{self.site.epa_site.epa_id}/details',
+        response = self.client.get(f'/trak/{self.site.id}/details',
                                    follow=False)
         self.assertEqual(response.status_code, 302)
 

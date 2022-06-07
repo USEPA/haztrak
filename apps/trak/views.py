@@ -85,14 +85,22 @@ class Sites(Trak):
             return render(request, '403.html', status=403)
 
 
-class SiteDetails(Trak):
+# class SiteDetails(Trak):
+#     template_name = 'trak/site_details.html'
+#
+#     def get(self, request: HttpRequest, id_number: int) -> HttpResponse:
+#         try:
+#             site = Site.objects.get(epa_site__epa_id=id_number)
+#             return render(request, self.template_name, {'site': site})
+#         except Site.DoesNotExist:
+#             return render(request, '404.html', status=404)
+#         except PermissionDenied:
+#             return render(request, '403.html', status=403)
+
+class SiteDetails(LoginRequiredMixin, DetailView):
+    model = Site
     template_name = 'trak/site_details.html'
 
-    def get(self, request: HttpRequest, id_number: int) -> HttpResponse:
-        try:
-            site = Site.objects.get(epa_site__epa_id=id_number)
-            return render(request, self.template_name, {'site': site})
-        except Site.DoesNotExist:
-            return render(request, '404.html', status=404)
-        except PermissionDenied:
-            return render(request, '403.html', status=403)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context

@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [
     # Site Views
     path('', views.Sites.as_view(), name='trak'),
-    path('<str:id_number>/details', views.SiteDetails.as_view(), name='site_details'),
+    path('<int:pk>/details', views.SiteDetails.as_view(), name='site_details'),
     path('<str:epa_id>/manifests', views.SiteManifests.as_view(),
          name='site_manifests'),
     # Manifest Views
