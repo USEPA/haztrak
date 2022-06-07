@@ -17,22 +17,6 @@ class Trak(LoginRequiredMixin, View):
         pass
 
 
-class SiteManifests(Trak):
-
-    def get(self, request: HttpRequest, epa_id: str) -> HttpResponse:
-        try:
-            # ToDo the manifest model needs to have a 'site' field added to it,
-            #  manifest will be filtered by this new field.
-            manifests = Manifest.objects.filter(generator__epa_id=epa_id)
-            site = Site.objects.get(epa_site__epa_id=epa_id)
-            return render(request, self.template_name,
-                          {'site': site, 'manifests': manifests})
-        except Site.DoesNotExist:
-            return render(request, '404.html', status=404)
-        except PermissionDenied:
-            return render(request, '403.html', status=403)
-
-
 class ManifestDetails(LoginRequiredMixin, DetailView):
     model = Manifest
     template_name = 'trak/manifest_details.html'
@@ -85,18 +69,6 @@ class Sites(Trak):
             return render(request, '403.html', status=403)
 
 
-# class SiteDetails(Trak):
-#     template_name = 'trak/site_details.html'
-#
-#     def get(self, request: HttpRequest, id_number: int) -> HttpResponse:
-#         try:
-#             site = Site.objects.get(epa_site__epa_id=id_number)
-#             return render(request, self.template_name, {'site': site})
-#         except Site.DoesNotExist:
-#             return render(request, '404.html', status=404)
-#         except PermissionDenied:
-#             return render(request, '403.html', status=403)
-
 class SiteDetails(LoginRequiredMixin, DetailView):
     model = Site
     template_name = 'trak/site_details.html'
@@ -104,3 +76,19 @@ class SiteDetails(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class SiteManifests(Trak):
+
+    def get(self, request: HttpRequest, epa_id: str) -> HttpResponse:
+        try:
+            # ToDo the manifest model needs to have a 'site' field added to it,
+            #  manifest will be filtered by this new field.
+            manifests = Manifest.objects.filter(generator__epa_id=epa_id)
+            site = Site.objects.get(epa_site__epa_id=epa_id)
+            return render(request, self.template_name,
+                          {'site': site, 'manifests': manifests})
+        except Site.DoesNotExist:
+            return render(request, '404.html', status=404)
+        except PermissionDenied:
+            return render(request, '403.html', status=403)
