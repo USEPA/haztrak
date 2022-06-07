@@ -97,7 +97,7 @@ class Handler(models.Model):
         null=True,
         blank=True
     )
-    mail_address1: str = models.CharField(
+    mail_address1 = models.CharField(
         verbose_name='Mailing address 1',
         max_length=50
     )
@@ -143,6 +143,10 @@ class Site(models.Model):
         verbose_name='Handler',
         to=Handler,
         on_delete=models.CASCADE)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('site_details', kwargs={'pk': self.pk})
 
     def __str__(self):
         return f'{self.epa_site.epa_id}'

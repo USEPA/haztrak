@@ -13,7 +13,8 @@
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">{{ manifest.manifest_tracking_number }}</h1>
         <div>
-          <button id="" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+          <button id="" onclick=" window.location.href='{% url 'manifest_update' manifest.id %}';"
+                  class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             class="fas fa-wrench fa-sm text-white-50"></i> Edit
           </button>
           <button id="" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
@@ -21,21 +22,207 @@
           </button>
         </div>
       </div>
-      <div>
-        <p>mtn: {{ manifest.mtn }}</p>
-        <p>ID number: {{ manifest.id }}</p>
-        <p>Generator: {{ manifest.generator }}</p>
-        <p>TSD: {{ manifest.tsd.epa_id }}</p>
-        <p>Status: {{ manifest.status }}</p>
-        <p>submission type: {{ manifest.submission_type }}</p>
-        <p>Origin Type: {{ manifest.origin_type }}</p>
-        <p>shipped date: {{ manifest.shipped_date }}</p>
-        <p>potential shipped date: {{ manifest.potential_ship_date }}</p>
-        <p>received date: {{ manifest.received_date }}</p>
-        <p>Certified Date: {{ manifest.certified_date }}</p>
+      <div class="container-fluid">
+        <!-- Start Manifest Cards, this row encompasses all col/cards-->
+        <div class="row">
+          <div class="col">
+            <!-- General Info -->
+            <div class="card shadow-sm m-3">
+              <div class="card-header bg-secondary">
+                <p class="h4 font-weight-bold text-light my-1 ">{{ manifest }}</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <p class="font-weight-bold">Manifest Tracking Number</p>
+                    {{ manifest.mtn }}
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Manifest Type</p>
+                    {{ manifest.submission_type }}
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Status</p>
+                    {{ manifest.status }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Generator Info -->
+            <div class="card shadow-sm m-3">
+              <div class="card-header bg-secondary">
+                <p class="h5 text-light my-1">1-5. Generator Info</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <p class="font-weight-bold">EPA ID</p>
+                    {{ manifest.generator.epa_id }}
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Name</p>
+                    {{ manifest.generator.name }}
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Mailing Address</p>
+                    <p>
+                      {{ manifest.generator.mail_street_number }}
+                      {{ manifest.generator.mail_address1 }}
+                      {{ manifest.generator.mail_address2 }}
+                      {{ manifest.generator.mail_city }}
+                      {{ manifest.generator.mail_state }},
+                      {{ manifest.generator.mail_zip }}
+                    </p>
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Site Address</p>
+                    <p>
+                      {{ manifest.generator.site_street_number }}
+                      {{ manifest.generator.site_address1 }}
+                      {{ manifest.generator.site_address2 }}
+                      {{ manifest.generator.site_city }}
+                      {{ manifest.generator.site_state }},
+                      {{ manifest.generator.site_zip }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p class="font-weight-bold">Emergency Phone</p>
+                    <p>
+                      {{ manifest.generator.emergency_phone }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Transporter Info -->
+            <div class="card shadow-sm m-3">
+              <div class="card-header bg-secondary">
+                <p class="h5 text-light my-1">6-7. Transporter Info</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <table class="table">
+                    <thead>
+                    <tr>
+                      <th scope="col">Order</th>
+                      <th scope="col">EPA ID</th>
+                      <th scope="col">Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for transporter in transporters %}
+                      <tr>
+                        <th scope="row">{{ transporter.order }}</th>
+                        <td>{{ transporter.epa_id }}</td>
+                        <td>{{ transporter.name }}</td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Designated Facility Info -->
+            <div class="card shadow-sm m-3">
+              <div class="card-header bg-secondary">
+                <p class="h5 text-light my-1">8. Receiving Facility Info</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <p class="font-weight-bold">EPA ID</p>
+                    {{ manifest.tsd.epa_id }}
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Name</p>
+                    {{ manifest.tsd.name }}
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Mailing Address</p>
+                    <p>
+                      {{ manifest.tsd.mail_street_number }}
+                      {{ manifest.tsd.mail_address1 }}
+                      {{ manifest.tsd.mail_address2 }}
+                      {{ manifest.tsd.mail_city }}
+                      {{ manifest.tsd.mail_state }},
+                      {{ manifest.tsd.mail_zip }}
+                    </p>
+                  </div>
+                  <div class="col">
+                    <p class="font-weight-bold">Site Address</p>
+                    <p>
+                      {{ manifest.tsd.site_street_number }}
+                      {{ manifest.tsd.site_address1 }}
+                      {{ manifest.tsd.site_address2 }}
+                      {{ manifest.tsd.site_city }}
+                      {{ manifest.tsd.site_state }},
+                      {{ manifest.tsd.site_zip }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p class="font-weight-bold">Emergency Phone</p>
+                    <p>
+                      {{ manifest.tsd.emergency_phone }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Waste Lines Info -->
+            <div class="card shadow-sm m-3">
+              <div class="card-header bg-secondary">
+                <p class="h5 text-light my-1">9-13. Waste Info</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <table class="table">
+                    <thead>
+                    <tr>
+                      <th scope="col">Line Number</th>
+                      {#                      <th scope="col">Containers</th>#}
+                      {#                      <th scope="col">Type</th>#}
+                      <th scope="col">Total Quantity</th>
+                      {#                      <th scope="col">Units</th>#}
+                      <th scope="col">Waste Codes</th>
+                      {#                      <th scope="col">Management Method</th>#}
+                      {#                      <th scope="col">Actions</th>#}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for waste_line in waste_lines %}
+                      <tr>
+                        <th scope="row">{{ waste_line.line_number }}</th>
+                        <td>{{ waste_line.quantity }}</td>
+                        <td>{{ waste_line.hazardous_waste }}</td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Additional Info -->
+            <div class="card shadow-sm m-3">
+              <div class="card-header bg-secondary">
+                <p class="h5 text-light">14. Handling Instructions and Additional info</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <p class="font-weight-bold">Additional Info</p>
+                    {{ manifest.additional_info }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- /.container-fluid -->
     <!-- End of Main Content -->
   </div>
   <!-- Page level plugins -->
