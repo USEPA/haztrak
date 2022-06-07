@@ -33,7 +33,7 @@ class SiteManifests(Trak):
             return render(request, '403.html', status=403)
 
 
-class ManifestDetails(DetailView):
+class ManifestDetails(LoginRequiredMixin, DetailView):
     model = Manifest
     template_name = 'trak/manifest_details.html'
 
@@ -46,8 +46,17 @@ class ManifestDetails(DetailView):
 
 class ManifestUpdate(UpdateView):
     model = Manifest
-    fields = ['mtn']
+    fields = [
+        'generator',
+        'status',
+    ]
     template_name_suffix = '_update_form'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        manifest = Manifest.objects.get(id=self.object.id)
+        context['manifest'] = manifest
+        return context
 
 
 class ManifestInTransit(Trak):
