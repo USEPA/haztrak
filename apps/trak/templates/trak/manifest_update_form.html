@@ -11,6 +11,7 @@
     <div class="container-fluid">
       <!-- Page Heading and top level Button -->
       <form method="post">
+        {% csrf_token %}
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
           <h1 class="h3 mb-0 text-gray-800">{{ manifest.manifest_tracking_number }}</h1>
           <div>
@@ -47,8 +48,104 @@
                   </div>
                 </div>
               </div>
-              {% csrf_token %}
-              {{ form.as_p }}
+              <!-- Generator Info -->
+              <div class="card shadow-sm m-3">
+                <div class="card-header bg-secondary">
+                  <p class="h5 text-light my-1">1-5. Generator Info</p>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <p class="font-weight-bold">EPA ID</p>
+                      {{ form.generator }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Transporter Info -->
+              <div class="card shadow-sm m-3">
+                <div class="card-header bg-secondary">
+                  <p class="h5 text-light my-1">6-7. Transporter Info</p>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <table class="table">
+                      <thead>
+                      <tr>
+                        <th scope="col">Order</th>
+                        <th scope="col">EPA ID</th>
+                        <th scope="col">Name</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {% for transporter in transporters %}
+                        <tr>
+                          <th scope="row">{{ transporter.order }}</th>
+                          <td>{{ transporter.epa_id }}</td>
+                          <td>{{ transporter.name }}</td>
+                        </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- Designated Facility Info -->
+              <div class="card shadow-sm m-3">
+                <div class="card-header bg-secondary">
+                  <p class="h5 text-light my-1">8. Receiving Facility Info</p>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <p class="font-weight-bold">EPA ID</p>
+                      {{ form.tsd }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Waste Lines Info -->
+              <div class="card shadow-sm m-3">
+                <div class="card-header bg-secondary">
+                  <p class="h5 text-light my-1">9-13. Waste Info</p>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <table class="table">
+                      <thead>
+                      <tr>
+                        <th scope="col">Line Number</th>
+                        <th scope="col">Total Quantity</th>
+                        <th scope="col">Waste Codes</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {% for waste_line in waste_lines %}
+                        <tr>
+                          <th scope="row">{{ waste_line.line_number }}</th>
+                          <td>{{ waste_line.quantity }}</td>
+                          <td>{{ waste_line.hazardous_waste }}</td>
+                        </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- Additional Info -->
+              <div class="card shadow-sm m-3">
+                <div class="card-header bg-secondary">
+                  <p class="h5 text-light">14. Handling Instructions and Additional info</p>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <p class="font-weight-bold">Additional Info</p>
+                      {{ form.additional_info }}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

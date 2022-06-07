@@ -49,13 +49,16 @@ class ManifestUpdate(UpdateView):
     fields = [
         'generator',
         'status',
+        'tsd',
+        'additional_info',
     ]
     template_name_suffix = '_update_form'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        manifest = Manifest.objects.get(id=self.object.id)
-        context['manifest'] = manifest
+        context['manifest'] = Manifest.objects.get(id=self.object.id)
+        context['transporters'] = Transporter.objects.filter(manifest_id=self.object)
+        context['waste_lines'] = WasteLine.objects.filter(manifest=self.object)
         return context
 
 
