@@ -50,6 +50,7 @@
                   <th scope="col">Status</th>
                   <th scope="col">Last Update</th>
                   <th scope="col"></th>
+                  <th scope="col"></th>
                   </thead>
                   <tbody>
                   {% for manifest in manifests %}
@@ -58,7 +59,10 @@
                       <td>{{ manifest.mtn }}</td>
                       <td>{{ manifest.status }}</td>
                       <td>{{ manifest.update_date }}</td>
-                      <td><a class="fas fa-eye" href="{% url 'manifest' manifest.id %}"></a></td>
+                      <td><a class="fas fa-eye text-decoration-none"
+                             href="{% url 'manifest_details' manifest.id %}"></a></td>
+                      <td><a class="fas fa-wrench text-decoration-none"
+                             href="{% url 'manifest_update' manifest.id %}"></a></td>
                     </tr>
                   {% endfor %}
                   </tbody>

@@ -72,7 +72,7 @@ class ManifestSerializerTests(SerializerBaseTests):
         except KeyError:
             self.fail('Problem getting transporter data from JSON')
 
-    def test_save_manifest_creates_wasteline(self):
+    def test_save_manifest_creates_waste_line(self):
         saved_manifest = self.serializer.save()
         waste_line = WasteLine.objects.filter(manifest=saved_manifest).first()
         self.assertIsInstance(waste_line, WasteLine)
