@@ -10,7 +10,7 @@ from .models import Manifest, Site, Transporter, WasteLine
 
 
 class Trak(LoginRequiredMixin, View):
-    template_name = 'trak/manifest_table.html'
+    template_name = 'trak/site_manifests.html'
     http_method_names = ['get']
 
     def filter(self) -> QuerySet:
@@ -80,20 +80,11 @@ class SiteDetails(LoginRequiredMixin, DetailView):
 
 class SiteManifests(LoginRequiredMixin, DetailView):
     model = Site
-    template_name = 'trak/manifest_table.html'
+    template_name = 'trak/site_manifests.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        manifests = Manifest.objects.filter()
-        context['manifests'] = manifests
+        context['gen_manifests'] = Manifest.objects.filter(
+            generator_id=self.object.epa_site)
+        context['tsd_manifests'] = Manifest.objects.filter(tsd_id=self.object.epa_site)
         return context
-
-    # def get(self, request: HttpRequest, site_id: int) -> HttpResponse:
-    #     try:
-    #         manifests = Manifest.objects.filter(generator_id=site_id)
-    #         return render(request, self.template_name,
-    #                       {'manifests': manifests})
-    #     except Site.DoesNotExist:
-    #         return render(request, '404.html', status=404)
-    #     except PermissionDenied:
-    #         return render(request, '403.html', status=403)
