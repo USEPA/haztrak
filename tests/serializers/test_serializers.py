@@ -1,8 +1,9 @@
 import io
+import json
 import logging
 import os
 
-from django.db.utils import IntegrityError
+from django.db import IntegrityError
 from django.test import TestCase
 from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import JSONParser
@@ -28,7 +29,8 @@ class SerializerBaseTests(TestCase):
         if not self.valid:
             logging.error(f'{self.serializer.errors}')
             self.fail(
-                f'{self.__class__.__name__} failed to initiate valid data')
+                f'{self.__class__.__name__} failed to initiate valid data\n'
+                f'{json.dumps(self.serializer.errors)}')
 
 
 class ManifestSerializerTests(SerializerBaseTests):

@@ -14,7 +14,8 @@
     "modified": false,
     "registered": true,
     "mailingAddress": {
-      "address1": "123 VA TEST GEN 2021 WAY",
+      "streetNumber": "123",
+      "address1": "VA TEST GEN 2021 WAY",
       "city": "ARLINGTON",
       "state": {
         "code": "VA",
@@ -27,7 +28,8 @@
       "zip": "22202"
     },
     "siteAddress": {
-      "address1": "123 VA TEST GEN 2021 WAY",
+      "streetNumber": "123",
+      "address1": "VA TEST GEN 2021 WAY",
       "city": "ARLINGTON",
       "state": {
         "code": "VA",
@@ -78,7 +80,8 @@
       "modified": false,
       "registered": true,
       "mailingAddress": {
-        "address1": "321 VA TEST TRAN 2021 ROAD",
+        "streetNumber": "123",
+        "address1": "VA TEST GEN 2021 WAY",
         "city": "ARLINGTON",
         "state": {
           "code": "VA",
@@ -91,7 +94,8 @@
         "zip": "22202"
       },
       "siteAddress": {
-        "address1": "321 VA TEST TRAN 2021 ROAD",
+        "streetNumber": "123",
+        "address1": "VA TEST GEN 2021 WAY",
         "city": "ARLINGTON",
         "state": {
           "code": "VA",
@@ -138,7 +142,8 @@
       "modified": false,
       "registered": true,
       "mailingAddress": {
-        "address1": "321 VA TEST TRAN 2021 ROAD",
+        "streetNumber": "123",
+        "address1": "VA TEST GEN 2021 WAY",
         "city": "ARLINGTON",
         "state": {
           "code": "VA",
@@ -151,7 +156,8 @@
         "zip": "22202"
       },
       "siteAddress": {
-        "address1": "321 VA TEST TRAN 2021 ROAD",
+        "streetNumber": "123",
+        "address1": "VA TEST GEN 2021 WAY",
         "city": "ARLINGTON",
         "state": {
           "code": "VA",
@@ -199,6 +205,7 @@
     "modified": false,
     "registered": true,
     "mailingAddress": {
+      "streetNumber": "123",
       "address1": "234 VA TEST TSDF 2021 DRIVE",
       "city": "ARLINGTON",
       "state": {
@@ -212,7 +219,8 @@
       "zip": "22202"
     },
     "siteAddress": {
-      "address1": "234 VA TEST TSDF 2021 DRIVE",
+      "streetNumber": "123",
+      "address1": "VA TEST GEN 2021 WAY",
       "city": "ARLINGTON",
       "state": {
         "code": "VA",

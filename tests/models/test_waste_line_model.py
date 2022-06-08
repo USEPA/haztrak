@@ -13,7 +13,7 @@ MIN_WASTELINE = {
 
 
 class WasteLineModelTest(TestCase):
-    fixtures = ['site_handler_manifest.json']
+    fixtures = ['test_data.json']
 
     def test_create_minimal_wasteline(self):
         try:

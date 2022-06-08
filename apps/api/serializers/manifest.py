@@ -9,7 +9,7 @@
 
 from rest_framework import serializers
 
-from apps.trak.models import Handler, Manifest, Transporter, WasteLine
+from apps.trak.models import Address, Handler, Manifest, Transporter, WasteLine
 
 from . import HandlerSerializer
 
@@ -193,20 +193,42 @@ class ManifestSerializer(serializers.ModelSerializer):
         default=None)
 
     def create(self, validated_data) -> Manifest:
+        # pop foreign table data
         waste_data = validated_data.pop('wastes')
         trans_data = validated_data.pop('transporters')
         tsd_data = validated_data.pop('tsd')
-        tsd_object = Handler.objects.create(**tsd_data)
         gen_data = validated_data.pop('generator')
-        gen_object = Handler.objects.create(**gen_data)
+        # Secondary foreign table data
+        gen_object = self.create_handler_instance(gen_data)
+        tsd_object = self.create_handler_instance(tsd_data)
+
+        # Create model instances
+        # gen_object = Handler.objects.create(**gen_data)
+        # tsd_object = Handler.objects.create(**tsd_data)
         manifest = Manifest.objects.create(generator=gen_object,
                                            tsd=tsd_object,
                                            **validated_data)
         for transporter in trans_data:
-            Transporter.objects.create(manifest=manifest, **transporter)
+            site_address_data = transporter.pop('site_address')
+            mail_address_data = transporter.pop('mail_address')
+            site_address = Address.objects.create(**site_address_data)
+            mail_address = Address.objects.create(**mail_address_data)
+            Transporter.objects.create(manifest=manifest, **transporter,
+                                       mail_address=mail_address,
+                                       site_address=site_address)
         for waste_line in waste_data:
             WasteLine.objects.create(manifest=manifest, **waste_line)
         return manifest
+
+    def create_handler_instance(self, handler_data: dict) -> Handler:
+        site_address_data = handler_data.pop('site_address')
+        mail_address_data = handler_data.pop('mail_address')
+        site_address = Address.objects.create(**site_address_data)
+        mail_address = Address.objects.create(**mail_address_data)
+        new_handler = Handler.objects.create(site_address=site_address,
+                                             mail_address=mail_address,
+                                             **handler_data)
+        return new_handler
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
     def to_representation(self, instance) -> str:
