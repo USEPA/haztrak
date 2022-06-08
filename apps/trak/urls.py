@@ -6,7 +6,7 @@ urlpatterns = [
     # Site Views
     path('', views.Sites.as_view(), name='trak'),
     path('<int:pk>/details', views.SiteDetails.as_view(), name='site_details'),
-    path('<str:epa_id>/manifests', views.SiteManifests.as_view(),
+    path('<int:pk>/manifests', views.SiteManifests.as_view(),
          name='site_manifests'),
     # Manifest Views
     path('manifest/<int:pk>', views.ManifestDetails.as_view(), name='manifest_details'),

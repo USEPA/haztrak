@@ -28,7 +28,7 @@ class ManifestDetails(LoginRequiredMixin, DetailView):
         return context
 
 
-class ManifestUpdate(UpdateView):
+class ManifestUpdate(LoginRequiredMixin, UpdateView):
     model = Manifest
     fields = [
         'generator',
@@ -78,17 +78,22 @@ class SiteDetails(LoginRequiredMixin, DetailView):
         return context
 
 
-class SiteManifests(Trak):
+class SiteManifests(LoginRequiredMixin, DetailView):
+    model = Site
+    template_name = 'trak/manifest_table.html'
 
-    def get(self, request: HttpRequest, epa_id: str) -> HttpResponse:
-        try:
-            # ToDo the manifest model needs to have a 'site' field added to it,
-            #  manifest will be filtered by this new field.
-            manifests = Manifest.objects.filter(generator__epa_id=epa_id)
-            site = Site.objects.get(epa_site__epa_id=epa_id)
-            return render(request, self.template_name,
-                          {'site': site, 'manifests': manifests})
-        except Site.DoesNotExist:
-            return render(request, '404.html', status=404)
-        except PermissionDenied:
-            return render(request, '403.html', status=403)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        manifests = Manifest.objects.filter()
+        context['manifests'] = manifests
+        return context
+
+    # def get(self, request: HttpRequest, site_id: int) -> HttpResponse:
+    #     try:
+    #         manifests = Manifest.objects.filter(generator_id=site_id)
+    #         return render(request, self.template_name,
+    #                       {'manifests': manifests})
+    #     except Site.DoesNotExist:
+    #         return render(request, '404.html', status=404)
+    #     except PermissionDenied:
+    #         return render(request, '403.html', status=403)
