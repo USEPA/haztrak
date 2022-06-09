@@ -21,7 +21,6 @@ class ManifestAPITests(APITestCase):
             json_string = json_file.read()
         cls.data = json.loads(json_string)
 
-    # Test that these urls return 200 with logged in user
     def test_get_manifest_by_mtn_response(self):
         response = self.client.get(f'{self.base_url}{self.first_mtn}')
         self.assertEqual(str(self.first_mtn), response.data['manifestTrackingNumber'])

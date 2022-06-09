@@ -2,10 +2,12 @@ from rest_framework import serializers
 
 from apps.trak.models import Address
 
+from .base import TrakSerializer
+
 # from lib.rcrainfo.lookups import get_country_name, get_state_name
 
 
-class AddressSerializer(serializers.ModelSerializer):
+class AddressSerializer(TrakSerializer):
     streetNumber = serializers.CharField(
         source='street_number',
     )
@@ -21,13 +23,3 @@ class AddressSerializer(serializers.ModelSerializer):
             'country',
             'zip',
         ]
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        for field in self.fields:
-            try:
-                if data[field] is None:
-                    data.pop(field)
-            except KeyError:
-                pass
-        return data

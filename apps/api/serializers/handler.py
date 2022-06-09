@@ -1,11 +1,12 @@
 from rest_framework import serializers
 
-from apps.trak.models import Address, Handler
+from apps.trak.models import Handler
 
 from . import AddressSerializer
+from .base import TrakSerializer
 
 
-class HandlerSerializer(serializers.ModelSerializer):
+class HandlerSerializer(TrakSerializer):
     epaSiteId = serializers.CharField(
         source='epa_id',
     )
@@ -58,24 +59,8 @@ class HandlerSerializer(serializers.ModelSerializer):
     )
 
     def create(self, validated_data):
-        site_address_data = validated_data.pop('site_address')
-        mail_address_data = validated_data.pop('mail_address')
-        site_address = Address.objects.create(**site_address_data)
-        mail_address = Address.objects.create(**mail_address_data)
-        new_handler = Handler.objects.create(site_address=site_address,
-                                             mail_address=mail_address,
-                                             **validated_data)
+        new_handler = self.create_handler(**validated_data)
         return new_handler
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        for field in self.fields:
-            try:
-                if data[field] is None:
-                    data.pop(field)
-            except KeyError:
-                pass
-        return data
 
     class Meta:
         model = Handler
