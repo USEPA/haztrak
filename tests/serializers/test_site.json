@@ -4,6 +4,7 @@
   "modified": false,
   "registered": true,
   "mailingAddress": {
+    "streetNumber": "123",
     "address1": "123 VA TEST GEN 2021 WAY",
     "city": "ARLINGTON",
     "state": {
@@ -17,6 +18,7 @@
     "zip": "22202"
   },
   "siteAddress": {
+    "streetNumber": "123",
     "address1": "123 VA TEST GEN 2021 WAY",
     "city": "ARLINGTON",
     "state": {

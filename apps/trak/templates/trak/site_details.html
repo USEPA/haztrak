@@ -40,12 +40,12 @@
             </div>
             <!-- Card Body -->
             <div class="card-body">
-              {% if site.epa_site.site_street_number %}
-                <p>Address: {{ site.epa_site.site_street_number }} {{ site.epa_site.site_address1 }},
-                  {{ site.epa_site.site_state }} {{ site.epa_site.site_zip }}</p>
+              {% if site.epa_site.site_address.street_number %}
+                <p>Address: {{ site.epa_site.site_address.street_number }} {{ site.epa_site.site_address.address1 }},
+                  {{ site.epa_site.site_address.state }} {{ site.epa_site.site_address.zip }}</p>
               {% else %}
-                <p>Address: {{ site.epa_site.site_address1 }},
-                  {{ site.epa_site.site_state }} {{ site.epa_site.site_zip }}</p>
+                <p>Address: {{ site.epa_site.site_address.address1 }},
+                  {{ site.epa_site.site_address.state }} {{ site.epa_site.site_address.zip }}</p>
               {% endif %}
               <p>Can e-Sign: {{ site.epa_site.can_esign }}</p>
               <p>Site Type: {{ site.epa_site.site_type }}</p>

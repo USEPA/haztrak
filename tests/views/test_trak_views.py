@@ -9,21 +9,34 @@ from apps.trak.models import Manifest, Site
 
 
 class TrakViewsTest(TestCase):
-    fixtures = ['site_handler_manifest.json']
+    fixtures = ['test_data.json']
 
-    # SetUpTestData() runs once per Test Class, setUp() runs each before method
-    @classmethod
-    def setUpTestData(cls):
-        try:
-            User.objects.create_user(username='username', password='password')
-            cls.manifest_mtn = Manifest.objects.filter(mtn='000000001ELC').get()
-            cls.site = Site.objects.filter(id=1).get()
-        except ObjectDoesNotExist:
-            logging.error('object does not exist')
-        except IntegrityError:
-            logging.error('integrity error')
+    # # SetUpTestData() runs once per Test Class, setUp() runs each before method
+    # @classmethod
+    # def setUpTestData(cls):
+    #     try:
+    #         User.objects.create_user(username='username', password='password')
+    #         cls.manifest_mtn = Manifest.objects.filter(mtn='000000001ELC').get()
+    #         cls.site = Site.objects.filter(id=1).get()
+    #     except ObjectDoesNotExist:
+    #         logging.error('object does not exist')
+    #     except IntegrityError:
+    #         logging.error('integrity error')
 
     def setUp(self) -> None:
+        try:
+            User.objects.create_user(username='username', password='password')
+            self.manifest_mtn = Manifest.objects.filter(mtn='000000001ELC').get()
+            self.site = Site.objects.filter(id=1).get()
+        except ObjectDoesNotExist:
+            logging.error('object does not exist')
+            self.fail()
+        except IntegrityError:
+            logging.error('integrity error')
+            self.fail()
+        except KeyError:
+            logging.error('KeyError')
+            self.fail()
         self.client.login(username='username', password='password')
 
     # Test that these urls return 200 with logged in user

@@ -57,10 +57,10 @@
                       <th scope="row">{{ forloop.counter }}</th>
                       <td>{{ site.epa_site.epa_id }}</td>
                       <td>{{ site.epa_site.name }}</td>
-                      {% if site.epa_site.site_street_number %}
-                        <td>{{ site.epa_site.site_street_number }} {{ site.epa_site.site_address1 }}</td>
+                      {% if site.epa_site %}
+                        <td>{{ site.epa_site.site_address.street_number }} {{ site.epa_site.site_address.address1 }}</td>
                       {% else %}
-                        <td>{{ site.epa_site.site_address1 }}</td>
+                        <td>{{ site.epa_site.site_address.address1 }}</td>
                       {% endif %}
                       <td><a class="fas fa-eye" href="{{ site.id }}/details"></a>
                       </td>

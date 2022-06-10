@@ -2,61 +2,65 @@ from rest_framework import serializers
 
 from apps.trak.models import Handler
 
-from . import MailAddressField, SiteAddressField
+from . import AddressSerializer
+from .base import TrakSerializer
 
 
-class HandlerSerializer(serializers.ModelSerializer):
-    # siteType TODO
+class HandlerSerializer(TrakSerializer):
     epaSiteId = serializers.CharField(
-        source='epa_id')
+        source='epa_id',
+    )
     modified = serializers.BooleanField(
         allow_null=True,
-        default=False)
+        default=False,
+    )
     # name
-    mailingAddress = MailAddressField(
-        source='*')
-    siteAddress = SiteAddressField(
-        source='*')
+    mailingAddress = AddressSerializer(
+        source='mail_address',
+    )
+    siteAddress = AddressSerializer(
+        source='site_address',
+    )
     # contact
     emergencyPhone = serializers.JSONField(
         source='emergency_phone',
         allow_null=True,
-        default=None)
-    # paperSignatureInfo TODO
+        default=None,
+    )
+    # paperSignatureInfo
     electronicSignatureInfo = serializers.JSONField(
         source='electronic_signatures_info',
         allow_null=True,
-        default=None)
-    # order TODO
+        default=None,
+    )
     registered = serializers.BooleanField(
         allow_null=True,
-        default=False)
+        default=False,
+    )
     limitedEsign = serializers.BooleanField(
         source='limited_esign',
         allow_null=True,
-        default=False)
+        default=False,
+    )
     canEsign = serializers.BooleanField(
         source='can_esign',
         allow_null=True,
-        default=False)
+        default=False,
+    )
     hasRegisteredEmanifestUser = serializers.BooleanField(
         source='registered_emanifest_user',
         allow_null=True,
-        default=False)
+        default=False,
+    )
     gisPrimary = serializers.BooleanField(
         source='gis_primary',
         allow_null=True,
-        default=False)
+        default=False,
+    )
 
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        for field in self.fields:
-            try:
-                if data[field] is None:
-                    data.pop(field)
-            except KeyError:
-                pass
-        return data
+    def create(self, validated_data):
+        new_handler = self.create_handler(**validated_data)
+        return new_handler
 
     class Meta:
         model = Handler

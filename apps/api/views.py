@@ -27,7 +27,8 @@ class ManifestView(APIView):
                 serializer = ManifestSerializer(manifest, many=True)
                 return self.response(serializer.data)
         except APIException:
-            return self.response(status=http.HTTPStatus.INTERNAL_SERVER_ERROR)
+            return self.response(status=http.HTTPStatus.INTERNAL_SERVER_ERROR,
+                                 data=APIException)
         except ObjectDoesNotExist:
             return self.response(status=http.HTTPStatus.NOT_FOUND,
                                  data={'Error': f'{mtn} not found'})
