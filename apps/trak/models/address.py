@@ -1,5 +1,7 @@
 from django.db import models
 
+from lib.rcrainfo import lookups as lu
+
 
 class Address(models.Model):
     street_number = models.CharField(
@@ -21,17 +23,17 @@ class Address(models.Model):
     city = models.CharField(
         max_length=25,
     )
-    state = models.JSONField(
-        # max_length=100,
+    state = models.CharField(
+        max_length=3,
         null=True,
         blank=True,
-        # choices=lu.STATES,
+        choices=lu.STATES,
     )
-    country = models.JSONField(
-        # max_length=100,
+    country = models.CharField(
+        max_length=3,
         null=True,
         blank=True,
-        # choices=lu.COUNTRIES,
+        choices=lu.COUNTRIES,
     )
     zip = models.CharField(
         null=True,
