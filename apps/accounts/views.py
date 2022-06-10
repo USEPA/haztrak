@@ -9,6 +9,7 @@ from django.db import IntegrityError
 from django.shortcuts import redirect, render
 
 from .forms import UpdateProfileForm, UpdateUserForm
+from .models import Profile
 
 
 def signup_haztrak(request):
@@ -28,7 +29,8 @@ def signup_haztrak(request):
                 return redirect('home')
             except IntegrityError:
                 return render(request, 'accounts/signup.html',
-                              {'form': UserCreationForm, 'error': 'Username exists. Choose a new username'})
+                              {'form': UserCreationForm,
+                               'error': 'Username exists. Choose a new username'})
         else:
             return render(request, 'accounts/signup.html',
                           {'form': UserCreationForm, 'error': 'Passwords do not match'})
@@ -58,9 +60,8 @@ def login_haztrak(request):
             return redirect('home')
 
 
-# TODO: Remove the serious repetition going on here
 @login_required
-def profile(request):
+def profile_view(request):
     if request.method == 'POST':
         if 'update_profile' in request.POST:
             profile_form = UpdateUserForm(request.POST, instance=request.user)
@@ -88,11 +89,18 @@ def profile(request):
                 messages.success(request, "Password successfully updated. WooHoo!")
                 return redirect('profile')
             else:
-                messages.add_message(request, 41, "error: Password not changed", extra_tags='danger')
+                messages.add_message(request, 41, "error: Password not changed",
+                                     extra_tags='danger')
                 return redirect('profile')
     else:
         pw_form = PasswordChangeForm(request.user)
         api_form = UpdateProfileForm(instance=request.user.profile)
         profile_form = UpdateUserForm(instance=request.user)
+        profile = Profile.objects.get(user=request.user)
+        sites = profile.epa_sites.all()
         return render(request, 'accounts/profile.html',
-                      {'api_form': api_form, 'form': profile_form, 'pw_form': pw_form, 'user': request.user})
+                      {'api_form': api_form,
+                       'form': profile_form,
+                       'pw_form': pw_form,
+                       'user': request.user,
+                       'sites': sites})

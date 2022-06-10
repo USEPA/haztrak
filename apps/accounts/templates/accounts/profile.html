@@ -181,6 +181,24 @@
           </div>
         </div>
       </div>
+      <!-- Start Row -->
+      <div class="row justify-content-center">
+        <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+          <div class="card p-4" style="min-width: 400px">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+              <div class="container">
+                <div class="col-auto">
+                  <p class="fs-1 font-weight-bold">My Sites</p>
+                  <hr class="mt-0">
+                  {% for site in sites %}
+                    {{ site }}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- /.container-fluid -->
     </div>
     <!-- End of Main Content -->
