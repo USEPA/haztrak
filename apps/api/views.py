@@ -110,6 +110,13 @@ class PullManifest(APIView):
             for mtn in self.request.data['mtn']:
                 resp = self.ri_client.GetManByMTN(mtn)
                 data['mtn'].append({mtn: resp.response.status_code})
+                if Manifest.objects.filter(mtn=mtn):
+                    print('manifest exists')
+                    pass
+                else:
+                    new_manifest = ManifestSerializer(data=resp.json)
+                    new_manifest.is_valid()
+                    new_manifest.save()
             print(data)
             return Response(status=status.HTTP_200_OK, data=data)
         except KeyError:

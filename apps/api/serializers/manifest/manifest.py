@@ -19,88 +19,113 @@ from .waste_line import WasteLineSerializer
 
 class ManifestSerializer(TrakSerializer):
     createdDate = serializers.DateTimeField(
-        source='created_date')
+        source='created_date',
+    )
     updatedDate = serializers.DateTimeField(
-        source='update_date')
+        source='update_date',
+    )
     manifestTrackingNumber = serializers.CharField(
-        source='mtn')
+        source='mtn',
+    )
     # status
     submissionType = serializers.CharField(
-        source='submission_type')
+        source='submission_type',
+    )
     signatureStatus = serializers.BooleanField(
         source='signature_status',
         allow_null=True,
-        default=False)
+        default=False,
+    )
     originType = serializers.CharField(
-        source='origin_type')
+        source='origin_type',
+    )
     shippedDate = serializers.DateTimeField(
-        source='shipped_date')
+        source='shipped_date',
+        required=False,
+    )
     potentialShipDate = serializers.CharField(
-        source='potential_ship_date')
+        source='potential_ship_date',
+        required=False,
+    )
     receivedDate = serializers.DateTimeField(
-        source='received_date')
+        source='received_date',
+        required=False,
+    )
     certifiedDate = serializers.DateTimeField(
         source='certified_date',
         allow_null=True,
-        default=None)
+        default=None,
+    )
     certifiedBy = serializers.JSONField(
         source='certified_by',
         allow_null=True,
-        default=None)
+        default=None,
+    )
     generator = HandlerSerializer()
     transporters = TransporterSerializer(many=True)
     designatedFacility = HandlerSerializer(
-        source='tsd')
+        source='tsd',
+    )
     # broker
     wastes = WasteLineSerializer(many=True)
     # rejection
     rejectionInfo = serializers.JSONField(
         source='rejection_info',
         allow_null=True,
-        default=None)
+        default=None,
+    )
     # discrepancy
     # residue
     residueNewManifestTrackingNumbers = serializers.JSONField(
         source='residue_new_mtn',
-        default=[])
+        default=[],
+    )
     # import, see .to_representation() and .to_internal_value() methods
     importInfo = serializers.JSONField(
         source='import_info',
         allow_null=True,
-        default=None)
+        default=None,
+    )
     containsPreviousRejectOrResidue = serializers.BooleanField(
-        source='contains_residue_or_rejection')
+        source='contains_residue_or_rejection',
+    )
     printedDocument = serializers.JSONField(
         source='printed_document',
         allow_null=True,
-        default=None)
+        default=None,
+    )
     formDocument = serializers.JSONField(
         source='form_document',
         allow_null=True,
-        default=None)
+        default=None,
+    )
     additionalInfo = serializers.JSONField(
         source='additional_info',
         allow_null=True,
-        default=None)
+        default=None,
+    )
     correctionInfo = serializers.JSONField(
         source='correction_info',
         allow_null=True,
-        default=None)
-
+        default=None,
+    )
     ppcStatus = serializers.JSONField(
         source='ppc_status',
         allow_null=True,
-        default=None)
+        default=None,
+    )
     # mtnValidationInfo
     # provideImageGeneratorInfo
     locked = serializers.BooleanField(
         allow_null=True,
-        default=False)
+        default=False,
+    )
 
     lockedReason = serializers.CharField(
         source='locked_reason',
         allow_null=True,
-        default=None)
+        default=None,
+    )
 
     def create(self, validated_data) -> Manifest:
         # pop foreign table data
