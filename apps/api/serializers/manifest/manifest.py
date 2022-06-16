@@ -9,7 +9,7 @@
 
 from rest_framework import serializers
 
-from apps.trak.models import Manifest, WasteLine
+from apps.trak.models import Handler, Manifest, WasteLine
 
 from ..base import TrakSerializer
 from ..handler import HandlerSerializer
@@ -134,8 +134,14 @@ class ManifestSerializer(TrakSerializer):
         tsd_data = validated_data.pop('tsd')
         gen_data = validated_data.pop('generator')
         # Secondary foreign table data
-        gen_object = self.create_handler(**gen_data)
-        tsd_object = self.create_handler(**tsd_data)
+        if Handler.objects.filter(epa_id=gen_data['epa_id']).exists():
+            gen_object = Handler.objects.get(epa_id=gen_data['epa_id'])
+        else:
+            gen_object = self.create_handler(**gen_data)
+        if Handler.objects.filter(epa_id=tsd_data['epa_id']).exists():
+            tsd_object = Handler.objects.get(epa_id=tsd_data['epa_id'])
+        else:
+            tsd_object = self.create_handler(**tsd_data)
 
         # Create model instances
         manifest = Manifest.objects.create(generator=gen_object,
