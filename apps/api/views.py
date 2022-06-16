@@ -105,6 +105,10 @@ class PullManifest(APIView):
     def post(self, request: Request) -> Response:
         try:
             user_profile = Profile.objects.get(user_id=self.request.user)
+            if not user_profile.rcra_api_id and user_profile.rcra_api_key:
+                return Response(status=status.HTTP_401_UNAUTHORIZED, data={
+                    "msg": f'user {user_profile} RCRAInfo API ID and Key '
+                           f'no found, add them to your profile'})
             self.ri_client.Auth(user_profile.rcra_api_id, user_profile.rcra_api_key)
             data = {'mtn': []}
             for mtn in self.request.data['mtn']:
@@ -117,7 +121,6 @@ class PullManifest(APIView):
                     new_manifest = ManifestSerializer(data=resp.json)
                     new_manifest.is_valid()
                     new_manifest.save()
-            print(data)
             return Response(status=status.HTTP_200_OK, data=data)
         except KeyError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
