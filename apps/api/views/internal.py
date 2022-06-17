@@ -33,7 +33,8 @@ class PullManifest(APIView):
                 resp = self.ri_client.GetManByMTN(mtn)
                 data['mtn'].append({mtn: resp.response.status_code})
                 if Manifest.objects.filter(mtn=mtn):
-                    print('manifest exists')
+                    # ToDo update manifest if already downloaded
+                    #  see ManifestSerializer .update method
                     pass
                 else:
                     new_manifest = ManifestSerializer(data=resp.json)
@@ -41,7 +42,7 @@ class PullManifest(APIView):
                     new_manifest.save()
             return Response(status=status.HTTP_200_OK, data=data)
         except KeyError:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # trash, not time remove it right now

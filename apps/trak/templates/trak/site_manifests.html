@@ -13,11 +13,34 @@
       <!-- Page Heading and top level Button -->
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">{{ site }} Manifests</h1>
-        <button id="sync-manifest" data-name="{{ site }}"
+        <button type="button" data-toggle="modal" data-target="#pullManifestModal"
                 class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-          class="fas fa-download fa-sm text-white-50"></i> Sync with RCRAinfo
+          class="fas fa-download fa-sm text-white-50"></i> Pull Manifests
         </button>
       </div>
+
+      <!-- Pull manifest modal -->
+      <div class="modal fade" id="pullManifestModal" tabindex="-1" role="dialog"
+           aria-labelledby="pullManifestModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="pullManifestModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {% if gen_manifests %}
         <!-- Generator Manifest Card/row -->
         <div class="row">
