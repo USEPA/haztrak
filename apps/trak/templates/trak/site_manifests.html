@@ -26,20 +26,41 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="pullManifestModalLabel">Modal title</h5>
+              <h5 class="modal-title" id="pullManifestModalLabel">Pull Manifests from RCRAInfo by MTN</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
+              <label for="pullMtnInput">Manifest Tracking Number(s):</label>
+              <input id="pullMtnInput" type="text" name="mtn">
+              <i class="text-muted d-flex justify-content-end">Separate MTN by spaces</i>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" onclick="pullMtn()" class="btn btn-primary">Submit</button>
             </div>
           </div>
         </div>
       </div>
+      <script>
+
+        function pullMtn() {
+          const mtnInput = document.getElementById("pullMtnInput").value
+          let mtnArray = mtnInput.split(" ")
+          let data = {'mtn': mtnArray}
+          const options = {
+            "method": 'POST',
+            "body": JSON.stringify(data),
+            "headers": {
+              "Content-Type": "application/json",
+              "X-CSRFToken": "99GAeIIXOdT3cILPblHYujK7wWRnhJV1b0zcxNZ1hSYtd1GT65OwJd4cuTEMGCaf"
+            }
+          }
+          let res = fetch("http://127.0.0.1:8000/api/rcrainfo/manifest-pull", options)
+          console.log(res)
+        }
+      </script>
 
       {% if gen_manifests %}
         <!-- Generator Manifest Card/row -->
