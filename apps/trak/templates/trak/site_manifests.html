@@ -25,7 +25,7 @@
            aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-light">
               <h5 class="modal-title" id="pullManifestModalLabel">Pull Manifests from RCRAInfo by MTN</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -33,11 +33,12 @@
             </div>
             <div class="modal-body">
               <label for="pullMtnInput">Manifest Tracking Number(s):</label>
-              <input id="pullMtnInput" type="text" name="mtn">
+              <input id="pullMtnInput" type="text" class="form-control" name="mtn">
               <i class="text-muted d-flex justify-content-end">Separate MTN by spaces</i>
-              <div id="pullMtnRespBox" class="py-2 px-5 bg-light rounded">
+              <div id="pullMtnRespBox" class="justify-content-start  px-5 py-1 mr-5 bg-light rounded"
+                   style="min-height: 60px">
                 <ul id="pullMtnRespList" class="list-unstyled">
-
+                  <!-- Pull manifest Response box-->
                 </ul>
               </div>
             </div>

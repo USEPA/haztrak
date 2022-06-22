@@ -41,7 +41,6 @@ class PullManifest(APIView):
                         new_manifest = ManifestSerializer(data=resp.json)
                         new_manifest.is_valid()
                         new_manifest.save()
-            print(data)
             return Response(status=status.HTTP_200_OK, data=data)
         except KeyError:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

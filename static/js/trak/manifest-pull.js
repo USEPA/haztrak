@@ -23,23 +23,24 @@ function outputPullMtn(response) {
     let pullMtnRespList = document.getElementById("pullMtnRespList")
     response.mtn.forEach((mtn) => {
         let li = document.createElement("li")
-        li.classList.add("d-flex")
-        li.classList.add("justify-content-between")
+        li.classList.add("d-flex", "justify-content-between")
         let newMtn = document.createElement("p")
         newMtn.innerText = Object.keys(mtn)[0]
+        newMtn.classList.add("h4", "font-weight-bold")
         li.appendChild(newMtn)
-        if (mtn[Object.keys(mtn)[0]] === 200) {
-            let newMtnStatus = document.createElement("i")
-            newMtnStatus.classList.add("fa-solid")
-            newMtnStatus.classList.add("fa-circle-check")
-            newMtnStatus.classList.add("text-success")
-            li.appendChild(newMtnStatus)
+        let wrapStatusDiv = document.createElement("div")
+        wrapStatusDiv.classList.add("d-inline")
+        let newMtnStatus = document.createElement("i")
+        newMtnStatus.classList.add("fa-xl", "fa-solid")
+        let status = Boolean(mtn[Object.keys(mtn)[0]] < 200 && mtn[Object.keys(mtn)[0]] > 300)
+        if (status) {
+            newMtnStatus.classList.add("fa-circle-check", "text-success")
+            wrapStatusDiv.appendChild(newMtnStatus)
+            li.appendChild(wrapStatusDiv)
         } else {
-            let newMtnStatus = document.createElement("i")
-            newMtnStatus.classList.add("fa-solid")
-            newMtnStatus.classList.add("fa-circle-xmark")
-            newMtnStatus.classList.add("text-danger")
-            li.appendChild(newMtnStatus)
+            newMtnStatus.classList.add("fa-circle-xmark", "text-danger")
+            wrapStatusDiv.appendChild(newMtnStatus)
+            li.appendChild(wrapStatusDiv)
         }
         pullMtnRespList.appendChild(li)
     })
