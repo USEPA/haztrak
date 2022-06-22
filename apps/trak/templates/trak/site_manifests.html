@@ -35,6 +35,11 @@
               <label for="pullMtnInput">Manifest Tracking Number(s):</label>
               <input id="pullMtnInput" type="text" name="mtn">
               <i class="text-muted d-flex justify-content-end">Separate MTN by spaces</i>
+              <div id="pullMtnRespBox" class="py-2 px-5 bg-light rounded">
+                <ul id="pullMtnRespList" class="list-unstyled">
+
+                </ul>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -44,22 +49,6 @@
         </div>
       </div>
       <script>
-
-        function pullMtn() {
-          const mtnInput = document.getElementById("pullMtnInput").value
-          let mtnArray = mtnInput.split(" ")
-          let data = {'mtn': mtnArray}
-          const options = {
-            "method": 'POST',
-            "body": JSON.stringify(data),
-            "headers": {
-              "Content-Type": "application/json",
-              "X-CSRFToken": "99GAeIIXOdT3cILPblHYujK7wWRnhJV1b0zcxNZ1hSYtd1GT65OwJd4cuTEMGCaf"
-            }
-          }
-          let res = fetch("http://127.0.0.1:8000/api/rcrainfo/manifest-pull", options)
-          console.log(res)
-        }
       </script>
 
       {% if gen_manifests %}
@@ -180,4 +169,5 @@
   </div>
   <!-- Page level plugins -->
   <script src="{% static 'js/trak/sync-db.js' %}"></script>
+  <script src="{% static 'js/trak/manifest-pull.js' %}"></script>
 {% endblock content %}
