@@ -33,6 +33,7 @@ class LocalityField(serializers.Field):
 class AddressSerializer(TrakSerializer):
     streetNumber = serializers.CharField(
         source='street_number',
+        required=False,
     )
     state = LocalityField('state')
     country = LocalityField('country')

@@ -1,16 +1,15 @@
 import http
 
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework import status
 from rest_framework.exceptions import APIException
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.api.serializers import (HandlerSerializer, ManifestSerializer,
+                                  TransporterSerializer)
 from apps.trak.models import Handler, Manifest, Transporter
-from lib.rcrainfo import rcrainfo
-
-from .serializers import (HandlerSerializer, ManifestSerializer,
-                          TransporterSerializer)
 
 
 class ManifestView(APIView):
@@ -35,7 +34,7 @@ class ManifestView(APIView):
 
     def post(self, request: Request, mtn: str = None) -> Response:
         if not mtn:
-            return self.response(status=400)
+            return self.response(status=status.HTTP_400_BAD_REQUEST)
         else:
             serializer = ManifestSerializer(data=request.data)
             valid = serializer.is_valid()
@@ -44,18 +43,6 @@ class ManifestView(APIView):
                 return self.response(status=200)
             else:
                 return self.response(status=500)
-
-
-# trash to be fixed, can't be bothered to remove it right now
-class SyncSiteManifest(APIView):
-    response = Response
-
-    def get(self, request: Request, epa_id: str = None) -> Response:
-        if epa_id:
-            resp = rcrainfo.get_mtns(epa_id)
-            return Response(data={'mtn': resp.json})
-        else:
-            return self.response(status=200)
 
 
 class HandlerView(APIView):
