@@ -4,7 +4,7 @@ How to contribute to `haztrak`
 ### Bugs or Questions?
 
 * Submit an issue
-  on [the Issues page](https://github.com/dpgraham4401/haztrak/issues)
+  on [the Issues page](https://github.com/USEPA/haztrak/issues)
 
 ### Code contributions
 
@@ -12,7 +12,7 @@ How to contribute to `haztrak`
 * Clone your fork to your machine,
     * e.g,. `$ git clone git@github.com/<yourgithubusername>/haztrak.git`
 * Make sure to track upstream progress
-    * `$ git remote add upstream https://github.com/dpgraham4401/haztrak.git`
+    * `$ git remote add upstream https://github.com/USEPA/haztrak.git`
     * Before making changes make sure to pull upstream changes
         * `$ git fetch upstream` then merge later or just `$ git pull upstream`
 * Make your changes
@@ -21,7 +21,7 @@ How to contribute to `haztrak`
       the PR.
     * `$ python manage.py test`
 * Push changes to your account
-* Submit a pull request to home base at `dpgraham4401/haztrak`
+* Submit a pull request to home base at `USEPA/haztrak`
 
 ### Setting up a development environment
 
