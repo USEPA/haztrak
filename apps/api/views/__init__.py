@@ -1,2 +1,2 @@
-from .external import HandlerView, ManifestView, TransporterView
-from .internal import PullManifest, SyncSiteManifest
+from .handler import HandlerView, TransporterView
+from .manifest import ManifestView, PullManifest, SyncSiteManifest

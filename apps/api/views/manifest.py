@@ -1,7 +1,10 @@
+import http
 import os
 
+from django.core.exceptions import ObjectDoesNotExist
 from emanifest import client as em
 from rest_framework import status
+from rest_framework.exceptions import APIException
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,6 +13,39 @@ from apps.accounts.models import Profile
 from apps.api.serializers import ManifestSerializer
 from apps.trak.models import Manifest
 from lib.rcrainfo import rcrainfo
+
+
+class ManifestView(APIView):
+    response = Response
+
+    def get(self, request: Request, mtn: str = None) -> Response:
+        try:
+            if mtn:
+                manifest = Manifest.objects.get(mtn=mtn)
+                serializer = ManifestSerializer(manifest)
+                return self.response(serializer.data)
+            else:
+                manifest = Manifest.objects.all()
+                serializer = ManifestSerializer(manifest, many=True)
+                return self.response(serializer.data)
+        except APIException:
+            return self.response(status=http.HTTPStatus.INTERNAL_SERVER_ERROR,
+                                 data=APIException)
+        except ObjectDoesNotExist:
+            return self.response(status=http.HTTPStatus.NOT_FOUND,
+                                 data={'Error': f'{mtn} not found'})
+
+    def post(self, request: Request, mtn: str = None) -> Response:
+        if not mtn:
+            return self.response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            serializer = ManifestSerializer(data=request.data)
+            valid = serializer.is_valid()
+            if valid:
+                serializer.save()
+                return self.response(status=200)
+            else:
+                return self.response(status=500)
 
 
 # ToDo authentication, right now will work as long as user is signed
