@@ -1,5 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-from rest_framework import status
+from rest_framework import permissions, status
 from rest_framework.exceptions import APIException
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -11,6 +11,7 @@ from apps.trak.models import Handler, Transporter
 
 class HandlerView(APIView):
     response = Response
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request: Request, epa_id: str = None) -> Response:
         try:

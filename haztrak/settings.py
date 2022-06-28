@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'apps.trak',
     'apps.home',
     'apps.accounts',
@@ -185,3 +186,9 @@ FIXTURE_DIRS = ['tests/fixtures']
 # RCRAInfo environment
 if not os.getenv('RCRAINFO_ENV'):
     os.environ['RCRAINFO_ENV'] = 'preprod'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
