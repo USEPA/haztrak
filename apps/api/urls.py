@@ -4,7 +4,8 @@ from . import views
 
 urlpatterns = [
     # Authentication
-    path('signup', views.SignUp.as_view()),
+    path('signup/', views.SignUp.as_view()),
+    path('login/', views.Login.as_view()),
     # Manifest
     path('manifest/', views.ManifestView.as_view()),
     path('manifest/<str:mtn>', views.ManifestView.as_view()),
