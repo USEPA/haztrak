@@ -28,7 +28,7 @@ load_dotenv()
 if os.getenv('HAZTRAK_SECRET_KEY'):
     SECRET_KEY = os.getenv('HAZTRAK_SECRET_KEY')
 else:
-    logging.error('environment HAZTRAK_SECRET_KEY not found, exiting')
+    logging.fatal('environment HAZTRAK_SECRET_KEY not found, exiting')
     exit(1)
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -43,7 +43,8 @@ if os.getenv('HAZTRAK_HOST'):
     if type(ALLOWED_HOSTS) is str:
         ALLOWED_HOSTS = [ALLOWED_HOSTS]
 else:
-    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+    # ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+    ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -74,9 +75,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'haztrak.urls'
 
+FRONTEND_DIR = BASE_DIR / 'haztrak-frontend'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [FRONTEND_DIR / 'build'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -173,7 +177,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static/"
+    FRONTEND_DIR / 'build' / 'static'
 ]
 
 # Default primary key field type
