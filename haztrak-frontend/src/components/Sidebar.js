@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 const Sidebar = () => {
   return (
@@ -8,48 +9,47 @@ const Sidebar = () => {
         <div className="sb-sidenav-menu">
           <div className="nav">
             <div className="sb-sidenav-menu-heading">Apps</div>
-            <a className="nav-link" href="#">
-              <div className="sb-nav-link-icon"><i
-                className="fas fa-tachometer-alt"></i></div>
+            <Link className="nav-link" to="/">
+              <i
+                className="sb-nav-link-icon text-primary fas fa-tachometer-alt"></i>
               Dashboard
-            </a>
-            <a className="nav-link collapsed" href="#"
-               data-bs-toggle="collapse" data-bs-target="#collapsePages"
-               aria-expanded="false" aria-controls="collapsePages">
+            </Link>
+            <a className="nav-link collapsed" href="."
+               data-bs-toggle="collapse" data-bs-target="#collapseSites"
+               aria-expanded="false" aria-controls="collapseSites">
               <div className="sb-nav-link-icon">
-                <i className="fa-solid fa-location-dot"></i>
+                <i
+                  className="sb-nav-link-icon text-primary fa-solid fa-location-dot"></i>
               </div>
               Sites
               <div className="sb-sidenav-collapse-arrow">
                 <i className="fas fa-angle-down"></i>
               </div>
             </a>
-            <div className="collapse" id="collapsePages"
+            <div className="collapse" id="collapseSites"
                  aria-labelledby="headingTwo"
                  data-bs-parent="#sidenavAccordion">
               <nav className="sb-sidenav-menu-nested nav accordion"
                    id="sidenavAccordionPages">
-                <a className="nav-link" href="#">
-                  <div className="sb-nav-link-icon">
-                    <i className="fa-solid fa-location-pin"></i>
-                  </div>
+                <Link className="nav-link" to="/sites">
+                  <i
+                    className="sb-nav-link-icon text-primary fa-solid fa-location-pin"></i>
                   My Sites
-                </a>
-                <a className="nav-link" href="https://rcrainfopreprod.epa.gov">
-                  <div className="sb-nav-link-icon">
-                    <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                  </div>
+                </Link>
+                <Link className="nav-link" to="https://rcrainfopreprod.epa.gov">
+                  <i
+                    className="sb-nav-link-icon text-danger fa-solid
+                    fa-arrow-up-right-from-square"></i>
                   RCRAInfo
-                </a>
+                </Link>
               </nav>
             </div>
             <div className="sb-sidenav-menu-heading">Core</div>
-            <a className="nav-link" href="#">
-              <div className="sb-nav-link-icon">
-                <i className="fa-solid fa-circle-info"></i>
-              </div>
+            <Link className="nav-link" to="/about">
+              <i
+                className="sb-nav-link-icon text-primary fa-solid fa-circle-info"></i>
               About
-            </a>
+            </Link>
           </div>
         </div>
         <div className="sb-sidenav-footer">

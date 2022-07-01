@@ -1,5 +1,6 @@
 import React from "react";
 import {Button, Dropdown} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 const TopNav = () => {
 
@@ -12,10 +13,10 @@ const TopNav = () => {
     <nav
       className="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex">
       <div className="flex-grow-1 ps-2">
-        <a className="navbar-brand ps-3 pe-5" href="/">
+        <Link to="/" className="navbar-brand ps-3 pe-5">
           <i className="fa-solid fa-truck-fast pe-2"></i>
           Haztrak
-        </a>
+        </Link>
         <Button id="sidebarToggle" onClick={toggleSidebar}
                 className="ms-5 btn-link btn btn-sm bg-transparent btn-outline-none btn-outline-dark">
           <i className="fas fa-bars"></i>
@@ -25,7 +26,7 @@ const TopNav = () => {
         <li className="nav-item dropdown">
           <Dropdown>
             <Dropdown.Toggle id="navbarDropdown"
-                             className="nav-link bg-transparent btn-outline-dark btn-outline-none">
+                             className="nav-link bg-transparent btn-dark btn-outline-none">
               <i className="fas fa-user fa-fw"></i>
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -35,7 +36,8 @@ const TopNav = () => {
               </Dropdown.Item>
               <Dropdown.Item href="#/action-2">
                 <i className="fa-solid fa-user pe-2"></i>
-                Profile
+                <Link to="/profile"
+                      className="text-decoration-none text-reset">Profile</Link>
               </Dropdown.Item>
               <hr className="dropdown-divider"/>
               <Dropdown.Item href="#/action-3">Logout</Dropdown.Item>

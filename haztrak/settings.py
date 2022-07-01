@@ -80,7 +80,7 @@ FRONTEND_DIR = BASE_DIR / 'haztrak-frontend'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [FRONTEND_DIR / 'build'],
+        'DIRS': [os.path.join(FRONTEND_DIR, "build")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -177,7 +177,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    FRONTEND_DIR / 'build' / 'static'
+    os.path.join(FRONTEND_DIR, 'build/static'),
 ]
 
 # Default primary key field type

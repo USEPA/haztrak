@@ -110,7 +110,7 @@ while getopts 'mdltprh' opt; do
         run_pre_commit
         ;;
     r)
-        eval "$exec_cmd runserver"
+        eval "$base_cmd runserver"
 		;;
     \?|h)
 	  print_usage
