@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 const Sidebar = () => {
   return (
     <div id="layoutSidenav_nav">
-      <nav className="sb-sidenav accordion sb-sidenav-dark"
+      <nav className="sb-sidenav accordion sb-sidenav-dark bs-primary"
            id="sidenavAccordion">
         <div className="sb-sidenav-menu">
           <div className="nav">
@@ -19,7 +19,7 @@ const Sidebar = () => {
                aria-expanded="false" aria-controls="collapseSites">
               <div className="sb-nav-link-icon">
                 <i
-                  className="sb-nav-link-icon text-primary fa-solid fa-location-dot"></i>
+                  className="sb-nav-link-icon text-primary fa-solid fa-map-location-dot"></i>
               </div>
               Sites
               <div className="sb-sidenav-collapse-arrow">
@@ -33,15 +33,15 @@ const Sidebar = () => {
                    id="sidenavAccordionPages">
                 <Link className="nav-link" to="/sites">
                   <i
-                    className="sb-nav-link-icon text-primary fa-solid fa-location-pin"></i>
+                    className="sb-nav-link-icon text-primary fa-solid fa-location-dot"></i>
                   My Sites
                 </Link>
-                <Link className="nav-link" to="https://rcrainfopreprod.epa.gov">
-                  <i
-                    className="sb-nav-link-icon text-danger fa-solid
+                <a className="nav-link"
+                   href="https://rcrainfopreprod.epa.gov">
+                  <i className="sb-nav-link-icon text-danger fa-solid
                     fa-arrow-up-right-from-square"></i>
                   RCRAInfo
-                </Link>
+                </a>
               </nav>
             </div>
             <div className="sb-sidenav-menu-heading">Core</div>

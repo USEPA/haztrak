@@ -1,8 +1,8 @@
 import React from "react";
-import {Button, Card} from "react-bootstrap";
-import {Container} from "react-bootstrap";
+import {Button, Card, Container} from "react-bootstrap";
 
 const Manifest = () => {
+
   return (
     <Container className="p-4">
       <Container
@@ -16,20 +16,24 @@ const Manifest = () => {
           </Button>
         </div>
       </Container>
-      <div className="justify-content-end p-3">
-      </div>
-      <Card className="shadow-lg">
-        <Card.Header className="">General Info</Card.Header>
-        <Card.Body>
-          <Card.Title>Special title treatment</Card.Title>
-          <Card.Text>
-            With supporting text below as a natural lead-in to additional
-            content.
-          </Card.Text>
-        </Card.Body>
-      </Card>
+      <General/>
     </Container>
   )
 }
+
+const General = () => {
+  return (
+    <Card className="shadow-lg">
+      <Card.Header className="bg-primary">
+        General Information
+      </Card.Header>
+      <Card.Body>
+        hello there
+      </Card.Body>
+    </Card>
+  )
+}
+Manifest.General = General;
+
 
 export default Manifest

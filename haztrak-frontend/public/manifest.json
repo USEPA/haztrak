@@ -1,10 +1,10 @@
 {
-  "short_name": "CoreUI-React",
-  "name": "CoreUI-React sample",
+  "short_name": "Haztrak",
+  "name": "Haztrak React",
   "icons": [
     {
-      "src": "./assets/img/favicon.png",
-      "sizes": "100x100",
+      "src": "./favicon.ico",
+      "sizes": "16x16",
       "type": "image/png"
     }
   ],
