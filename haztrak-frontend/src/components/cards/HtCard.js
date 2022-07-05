@@ -11,7 +11,7 @@ const HtCard = ({children}) => {
 
   return (
     <>
-      <div className="card shadow-lg">
+      <div className="card shadow-lg border-0 my-4">
         {subComponents.map((component) => component)}
       </div>
     </>

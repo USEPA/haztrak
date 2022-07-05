@@ -2,7 +2,7 @@ import React from "react";
 import {Container} from "react-bootstrap";
 import Stamp from "../components/cards/Stamp";
 
-const Home = () => {
+const Home = props => {
   return (
     <Container fluid>
       <h1 className="mt-4">Dashboard</h1>

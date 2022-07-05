@@ -1,7 +1,9 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = props => {
+
+  console.log(props.user)
   return (
     <div id="layoutSidenav_nav">
       <nav className="sb-sidenav accordion sb-sidenav-dark bs-primary"
@@ -54,7 +56,7 @@ const Sidebar = () => {
         </div>
         <div className="sb-sidenav-footer">
           <div className="small">Logged in as:</div>
-          Username 1
+          {props.user ? props.user : "login in"}
         </div>
       </nav>
     </div>

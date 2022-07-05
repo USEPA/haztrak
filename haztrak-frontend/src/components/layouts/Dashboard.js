@@ -8,10 +8,11 @@ import Sites from "../../views/Sites";
 import Manifest from "../../views/Manifest";
 import About from "../../views/About";
 
-const Dashboard = () => {
+const Dashboard = props => {
+  console.log("from Dashboard", props.user)
   return (
     <div id="layoutSidenav">
-      <Sidebar/>
+      <Sidebar user={props.user}/>
       <Container fluid className="p-3 bg-light" id="layoutSidenav_content">
         <Routes>
           <Route

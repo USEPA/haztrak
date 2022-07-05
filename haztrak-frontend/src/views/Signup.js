@@ -1,38 +1,32 @@
 import React, {useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {Button, Card, Container, FloatingLabel, Form} from "react-bootstrap";
 
-const Login = props => {
+const Signup = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  let navigate = useNavigate()
+  const [rePassword, setRePassword] = useState("")
 
   const onChangeUsername = e => {
     const username = e.target.value
     setUsername(username)
   }
+
+  const onChangeRePassword = e => setRePassword(e.target.value)
+
   const onChangePassword = e => {
     const password = e.target.value
     setPassword(password)
-  }
-
-  const login = () => {
-    let data = {
-      username: username,
-      password: password
-    }
-    props.login(data)
-    navigate('/')
   }
 
   return (
     <Container fluid>
       <div className="row justify-content-center">
         <div className="col-lg-5">
-          {/* Login Card */}
+          {/* Sign Up Card */}
           <Card className="shadow-lg border-0 rounded my-5">
             <Card.Header className="py-4 bg-primary text-light text-center">
-              <span className="h2">Login</span>
+              <span className="h2">Sign Up</span>
             </Card.Header>
             <Card.Body>
               <Form>
@@ -46,7 +40,7 @@ const Login = props => {
                                   onChange={onChangeUsername}
                     />
                   </FloatingLabel>
-                  <FloatingLabel controlId="passwordInput"
+                  <FloatingLabel controlId="passwordInput1"
                                  label="Password"
                                  className="mb-3">
                     <Form.Control type="password"
@@ -55,15 +49,19 @@ const Login = props => {
                                   onChange={onChangePassword}
                     />
                   </FloatingLabel>
-                  <Form.Check
-                    type="switch"
-                    id="rememberPasswordInput"
-                    label="Remember Password"
-                  />
+                  <FloatingLabel controlId="passwordInput2"
+                                 label="Repeat Password"
+                                 className="mb-3">
+                    <Form.Control type="password"
+                                  placeholder="Repeat myP@assword"
+                                  value={rePassword}
+                                  onChange={onChangeRePassword}
+                    />
+                  </FloatingLabel>
                   <div
                     className="d-flex align-items-center justify-content-end mt-4 mb-0">
-                    <Button variant="success" type="button" onClick={login}>
-                      Login
+                    <Button variant="success" type="submit">
+                      Sign Up
                     </Button>
                   </div>
                 </Form.Group>
@@ -72,7 +70,6 @@ const Login = props => {
             <Card.Footer>
               <div className="d-flex justify-content-between">
                 <Link to="#">Forgot Password?</Link>
-                <Link to="/signup">Need an account? Sign up!</Link>
               </div>
             </Card.Footer>
           </Card>
@@ -82,4 +79,4 @@ const Login = props => {
   )
 }
 
-export default Login
+export default Signup

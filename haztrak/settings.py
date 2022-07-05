@@ -43,8 +43,8 @@ if os.getenv('HAZTRAK_HOST'):
     if type(ALLOWED_HOSTS) is str:
         ALLOWED_HOSTS = [ALLOWED_HOSTS]
 else:
-    # ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+    # ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -57,14 +57,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
     'apps.trak',
     'apps.home',
     'apps.accounts',
-    'apps.api'
+    'apps.api',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -73,14 +75,22 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+APPEND_SLASH = True
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+]
+
 ROOT_URLCONF = 'haztrak.urls'
 
-FRONTEND_DIR = BASE_DIR / 'haztrak-frontend'
+# FRONTEND_DIR = BASE_DIR / 'haztrak-frontend'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(FRONTEND_DIR, "build")],
+        # 'DIRS': [os.path.join(FRONTEND_DIR, "build")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -177,7 +187,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    os.path.join(FRONTEND_DIR, 'build/static'),
+    # os.path.join(FRONTEND_DIR, 'build/static'),
 ]
 
 # Default primary key field type

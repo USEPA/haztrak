@@ -2,7 +2,7 @@ import React from "react";
 import {Button, Dropdown} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
-const TopNav = () => {
+const TopNav = props => {
 
   function toggleSidebar() {
     console.log("hello")
@@ -46,7 +46,7 @@ const TopNav = () => {
               </Dropdown.Item>
               <hr className="dropdown-divider"/>
               <Dropdown.Item>
-                <Link to="/logout"
+                <Link to="logout"
                       className="text-reset text-decoration-none">
                   <i
                     className="text-danger fa-solid fa-arrow-right-from-bracket pe-2"></i>

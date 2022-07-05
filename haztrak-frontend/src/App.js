@@ -2,19 +2,56 @@ import TopNav from "./components/TopNav";
 import {Route, Routes} from "react-router-dom";
 import './App.css';
 import Dashboard from "./components/layouts/Dashboard";
+import Login from "./views/Login";
+import Signup from "./views/Signup";
+import {useState} from "react";
+import AuthService from "./services/Auth";
 
-function App() {
+const App = props => {
+
+  const [user, setUser] = useState(null)
+  const [token, setToken] = useState(null)
+  const [error, setError] = useState("")
+
+  async function login(user = null) {
+    AuthService.login(user)
+      .then(function (response) {
+        setToken(response.data.token)
+        setUser(user.username)
+        localStorage.setItem('token', response.data.token)
+        localStorage.setItem('user', user.username)
+        setError('')
+      })
+      .catch(e => {
+        console.log(e)
+        setError(e.toString())
+      })
+  }
+
+  async function logout() {
+    setToken('')
+    setUser('')
+    localStorage.setItem('token', '')
+    localStorage.setItem('user', '')
+  }
+
+  console.log("from app", user)
+
   return (
     <div className="App">
-      <TopNav/>
+      <TopNav user={user} logout={logout}/>
       <Routes>
         <Route
-          path="/"
-          element={<Dashboard/>}
+          path="*"
+          element={<Dashboard user={user}/>}
         />
         <Route
-          path="/"
-          element={<Dashboard/>}
+          path="/login"
+          element={<Login {...props} login={login}/>}
+        />
+        <Route
+          path="/signup"
+          element={<Signup/>}
         />
       </Routes>
     </div>
