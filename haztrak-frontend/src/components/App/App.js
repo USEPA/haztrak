@@ -1,11 +1,12 @@
-import TopNav from "../components/TopNav";
+import TopNav from "../TopNav";
+// noinspection ES6CheckImport
 import {Route, Routes} from "react-router-dom";
 import './App.css';
-import Dashboard from "../components/Dashboard";
-import Login from "../views/Login";
-import Signup from "../views/Signup";
+import Dashboard from "../Dashboard";
+import Login from "../../views/Login";
+import Signup from "../../views/Signup";
 import {useState} from "react";
-import UserService from "../services/User";
+import UserService from "../../services/User";
 
 const App = props => {
 
@@ -35,24 +36,13 @@ const App = props => {
     localStorage.setItem('user', '')
   }
 
-  console.log("from app", user)
-
   return (
     <div className="App">
       <TopNav user={user} logout={logout}/>
       <Routes>
-        <Route
-          path="*"
-          element={<Dashboard user={user}/>}
-        />
-        <Route
-          path="/login"
-          element={<Login {...props} login={login}/>}
-        />
-        <Route
-          path="/signup"
-          element={<Signup/>}
-        />
+        <Route path="*" element={<Dashboard user={user}/>}/>
+        <Route path="/login" element={<Login {...props} login={login}/>}/>
+        <Route path="/signup" element={<Signup/>}/>
       </Routes>
     </div>
   );

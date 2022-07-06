@@ -1,9 +1,10 @@
-asgiref==3.5.0
+asgiref==3.5.2
 certifi==2021.10.8
 charset-normalizer==2.0.12
-Django==4.0.4
+Django==4.0.6
 djangorestframework==3.13.1
-emanifest==2.0.4
+django-cors-headers==3.13.0
+emanifest==2.0.5
 idna==3.3
 psycopg2-binary==2.9.3
 pytz==2022.1
