@@ -1,6 +1,6 @@
 import React from "react";
 import {Container} from "react-bootstrap";
-import Stamp from "../components/cards/Stamp";
+import Stamp from "../components/Stamp";
 
 const Home = props => {
   return (

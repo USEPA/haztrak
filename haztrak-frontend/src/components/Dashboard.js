@@ -1,12 +1,12 @@
 import React from "react";
 import {Container} from "react-bootstrap";
 import {Route, Routes} from "react-router-dom";
-import Sidebar from "../Sidebar";
-import Home from "../../views/home";
-import Profile from "../../views/Profile";
-import Sites from "../../views/Sites";
-import Manifest from "../../views/Manifest";
-import About from "../../views/About";
+import Sidebar from "./Sidebar";
+import Home from "../views/home";
+import Profile from "../views/Profile";
+import Sites from "../views/Sites";
+import Manifest from "../views/Manifest";
+import About from "../views/About";
 
 const Dashboard = props => {
   console.log("from Dashboard", props.user)

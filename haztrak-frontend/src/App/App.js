@@ -1,11 +1,11 @@
-import TopNav from "./components/TopNav";
+import TopNav from "../components/TopNav";
 import {Route, Routes} from "react-router-dom";
 import './App.css';
-import Dashboard from "./components/layouts/Dashboard";
-import Login from "./views/Login";
-import Signup from "./views/Signup";
+import Dashboard from "../components/Dashboard";
+import Login from "../views/Login";
+import Signup from "../views/Signup";
 import {useState} from "react";
-import AuthService from "./services/Auth";
+import UserService from "../services/User";
 
 const App = props => {
 
@@ -14,7 +14,7 @@ const App = props => {
   const [error, setError] = useState("")
 
   async function login(user = null) {
-    AuthService.login(user)
+    UserService.login(user)
       .then(function (response) {
         setToken(response.data.token)
         setUser(user.username)

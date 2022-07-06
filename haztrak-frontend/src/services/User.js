@@ -1,6 +1,6 @@
 import axios from "axios";
 
-class AuthService {
+class UserService {
   static login(data) {
     return axios.post("http://localhost:8000/api/login/", data)
   }
@@ -10,4 +10,4 @@ class AuthService {
   }
 }
 
-export default AuthService
+export default UserService

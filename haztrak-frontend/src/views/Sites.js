@@ -1,6 +1,6 @@
 import React from "react";
 import {Col, Container} from "react-bootstrap";
-import HtCard from "../components/cards/HtCard";
+import HtCard from "../components/HtCard";
 
 const Sites = () => {
   return (
