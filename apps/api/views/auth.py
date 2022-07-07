@@ -51,4 +51,4 @@ class Login(APIView):
                 token = Token.objects.get(user=user)
             except ObjectDoesNotExist:
                 token = Token.objects.create(user=user)
-            return JsonResponse({'token': str(token)})
+            return JsonResponse({'user': str(user), 'token': str(token)})
