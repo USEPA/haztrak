@@ -6,7 +6,6 @@ import {
   useNavigate
 } from 'react-router-dom';
 
-import './App.css'
 import {history} from './_helpers';
 import {PrivateRoute} from './_components';
 import {Home} from './home';
