@@ -43,8 +43,7 @@ if os.getenv('HAZTRAK_HOST'):
     if type(ALLOWED_HOSTS) is str:
         ALLOWED_HOSTS = [ALLOWED_HOSTS]
 else:
-    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-    # ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -171,10 +170,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-if os.getenv('HAZTRAK_TIMEZONE'):
-    TIME_ZONE = os.getenv('HAZTRAK_TIMEZONE')
-else:
-    TIME_ZONE = 'UTC'
+TIME_ZONE = os.getenv('HAZTRAK_TIMEZONE', 'UTC')
 
 USE_I18N = False
 
@@ -201,7 +197,10 @@ if not os.getenv('RCRAINFO_ENV'):
     os.environ['RCRAINFO_ENV'] = 'preprod'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'apps.api.authentication.BearerAuthentication'
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated'
+    )
 }
