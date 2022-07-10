@@ -35,6 +35,9 @@ share/python-wheels/
 static/bak
 /db.sqlite3
 
+# frontend
+**/node_modules
+
 # other
 *.DS_Store
 bak
