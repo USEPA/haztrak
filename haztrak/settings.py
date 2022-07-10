@@ -198,9 +198,9 @@ if not os.getenv('RCRAINFO_ENV'):
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'apps.api.authentication.BearerAuthentication'
+        'apps.api.authentication.BearerAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated'
+        'rest_framework.permissions.IsAuthenticated',
     )
 }

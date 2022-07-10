@@ -1,6 +1,6 @@
 from django.db import IntegrityError, InternalError
 from django.http import JsonResponse
-from rest_framework import status, permissions
+from rest_framework import permissions, status
 from rest_framework.request import Request
 from rest_framework.views import APIView
 
@@ -18,6 +18,8 @@ class ProfileView(APIView):
             profile = Profile.objects.get(user=user)
             profile_serializer = ProfileSerializer(profile)
             return self.response(profile_serializer.data, status=status.HTTP_200_OK)
+        except TypeError:
+            raise InternalError
         except InternalError:
             return self.response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                                  data={

@@ -14,6 +14,7 @@ import TopNav from "./_components/TopNav";
 import {Container} from "react-bootstrap";
 import Sidebar from "./_components/Sidebar";
 import About from "./_components/About";
+import Profile from "./profile/Profile";
 
 export {App};
 
@@ -34,6 +35,13 @@ function App() {
                    element={
                      <PrivateRoute>
                        <Home/>
+                     </PrivateRoute>
+                   }
+            />
+            <Route path="/profile"
+                   element={
+                     <PrivateRoute>
+                       <Profile/>
                      </PrivateRoute>
                    }
             />

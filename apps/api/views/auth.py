@@ -8,11 +8,13 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.parsers import JSONParser
+from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.views import APIView
 
 
 class SignUp(APIView):
+    permission_classes = [AllowAny]
     response = JsonResponse
 
     @method_decorator(csrf_exempt)
@@ -36,6 +38,7 @@ class SignUp(APIView):
 
 
 class Login(APIView):
+    permission_classes = [AllowAny]
     response = JsonResponse
 
     @method_decorator(csrf_exempt)
