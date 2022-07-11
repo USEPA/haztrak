@@ -342,3 +342,7 @@ body {
 .rotate-90-cc {
     transform: rotate(-90deg);
 }
+
+.app-container {
+    min-height: 350px;
+}

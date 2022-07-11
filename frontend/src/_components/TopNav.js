@@ -35,28 +35,19 @@ const TopNav = () => {
               <i className="fas fa-user fa-fw"></i>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item>
-                <Link to="/settings"
-                      className="text-reset text-decoration-none">
-                  <i className="text-primary fa-solid fa-gear pe-2"></i>
-                  Settings
-                </Link>
+              <Dropdown.Item as={Link} to="settings/">
+                <i className="text-primary fa-solid fa-gear pe-2"></i>
+                Settings
               </Dropdown.Item>
-              <Dropdown.Item>
-                <Link to="/profile"
-                      className="text-reset text-decoration-none">
-                  <i className="text-primary fa-solid fa-user pe-2"></i>
-                  Profile
-                </Link>
+              <Dropdown.Item as={Link} to="profile/">
+                <i className="text-primary fa-solid fa-user pe-2"></i>
+                Profile
               </Dropdown.Item>
               <hr className="dropdown-divider"/>
-              <Dropdown.Item>
-                <Link onClick={logout} to="login/"
-                      className="text-reset text-decoration-none">
-                  <i
-                    className="text-danger fa-solid fa-arrow-right-from-bracket pe-2"></i>
-                  Logout
-                </Link>
+              <Dropdown.Item onClick={logout}>
+                <i
+                  className="text-danger fa-solid fa-arrow-right-from-bracket pe-2"></i>
+                Logout
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

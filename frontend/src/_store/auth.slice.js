@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
-import {fetchWrapper, history} from '_helpers';
+import {history} from '_helpers';
 import {api} from "../_services";
 
 // create slice
@@ -39,7 +39,6 @@ function createReducers() {
 }
 
 function createExtraActions() {
-  const baseUrl = `${process.env.REACT_APP_HAZTRAK_API_URL}/api`;
 
   return {
     login: login()
@@ -55,7 +54,6 @@ function createExtraActions() {
         "username": username,
         "password": password
       })
-      // .then(response => response.data)
     );
   }
 }
@@ -73,7 +71,6 @@ function createExtraReducers() {
       },
       [fulfilled]: (state, action) => {
         const authResponse = action.payload;
-
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(authResponse.user));
         localStorage.setItem('token', JSON.stringify(authResponse.token));

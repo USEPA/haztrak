@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {history} from '_helpers';
-import {authActions} from '_store';
+import {authActions, getUser} from '_store';
 
 export {Login};
 
@@ -16,9 +16,9 @@ function Login() {
 
   useEffect(() => {
     // redirect to home if already logged in
-    if (authUser) history.navigate('/');
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (authUser) {
+      history.navigate('/');
+    }
   }, []);
 
   // form validation rules
