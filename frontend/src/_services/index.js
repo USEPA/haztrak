@@ -1,10 +1,9 @@
-import axios from "axios";
+// import {user} from "./user";
+// import {api} from "./auth";
+export * from './auth'
 
 
-export const api = axios.create({
-  baseURL: `${process.env.REACT_APP_HAZTRAK_API_URL}/api`,
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  }
-})
+// export const api = {
+// user: user(),
+//   api2: api2,
+// }

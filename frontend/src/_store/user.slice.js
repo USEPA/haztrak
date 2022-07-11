@@ -11,12 +11,8 @@ const initialState = {
 }
 
 export const getUser = createAsyncThunk('user/getUser', async () => {
-  let token = localStorage.getItem('token')
-  token = token.replace(/['"]+/g, '')
-  api.defaults.headers.common['Authorization'] = "Bearer " + token
-  const profileResponse = await api.get('/profile/')
-  console.log(profileResponse.data)
-  return (profileResponse.data)
+  const profileResponse = await api.get('profile/', null)
+  return (profileResponse)
 })
 
 const userSlice = createSlice({
@@ -31,7 +27,10 @@ const userSlice = createSlice({
       state.loading = false
       state.user = payload.user
       state.rcraAPIID = payload.rcraAPIID
+      state.rcraAPIKey = payload.rcraAPIKey
       state.phoneNumber = payload.phoneNumber
+      state.epaSites = payload.epaSites
+      // return state = {...payload}
     },
     [getUser.rejected]: (state) => {
       state.loading = false

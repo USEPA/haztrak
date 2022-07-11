@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 import {fetchWrapper, history} from '_helpers';
+import {api} from "../_services";
 
 // create slice
 const name = 'auth';
@@ -19,6 +20,7 @@ function createInitialState() {
   return {
     // initialize state from local storage to enable user to stay logged in
     user: JSON.parse(localStorage.getItem('user')),
+    token: JSON.parse(localStorage.getItem('token')),
     error: null
   }
 }
@@ -31,6 +33,7 @@ function createReducers() {
   function logout(state) {
     state.user = null;
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     history.navigate('/login');
   }
 }
@@ -48,10 +51,11 @@ function createExtraActions() {
       async ({
                username,
                password
-             }) => await fetchWrapper.post(`${baseUrl}/login/`, {
+             }) => await api.post(`login/`, {
         "username": username,
         "password": password
       })
+      // .then(response => response.data)
     );
   }
 }
@@ -74,6 +78,7 @@ function createExtraReducers() {
         localStorage.setItem('user', JSON.stringify(authResponse.user));
         localStorage.setItem('token', JSON.stringify(authResponse.token));
         state.user = authResponse.user;
+        state.token = authResponse.token;
 
         // get return url from location state or default to home page
         const {from} = history.location.state || {from: {pathname: '/'}};

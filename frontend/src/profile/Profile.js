@@ -7,11 +7,11 @@ import {getUser} from "../_store";
 function Profile() {
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.auth)
-  const {rcraAPIID, phoneNumber} = useSelector(state => state.user)
+  const profile = useSelector(state => state.user)
 
   useEffect(() => {
     dispatch(getUser())
-  }, [])
+  }, [user])
 
   return (
     <Container fluid className="py-3">
@@ -29,13 +29,13 @@ function Profile() {
                 RCRAInfo API ID
               </p>
               <p>
-                {rcraAPIID}
+                {profile.rcraAPIID}
               </p>
               <p className="fw-bold">
                 Phone Number
               </p>
               <p>
-                {phoneNumber}
+                {profile.phoneNumber}
               </p>
             </Card.Body>
           </Card>

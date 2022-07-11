@@ -39,7 +39,7 @@ function Login() {
   return (
     <div className="col-md-6 offset-md-3 mt-5">
       <div className="card">
-        <h4 className="card-header">Login</h4>
+        <h4 className="card-header bg-primary text-light">Login</h4>
         <div className="card-body">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group">
@@ -54,7 +54,7 @@ function Login() {
                      className={`form-control ${errors.password ? 'is-invalid' : ''}`}/>
               <div className="invalid-feedback">{errors.password?.message}</div>
             </div>
-            <button disabled={isSubmitting} className="btn btn-primary">
+            <button disabled={isSubmitting} className="btn btn-primary m-2">
               {isSubmitting &&
                 <span className="spinner-border spinner-border-sm mr-1"></span>}
               Login
