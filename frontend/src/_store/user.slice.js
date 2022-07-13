@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { api } from '../_services';
+import api from '../_services';
 
 const initialState = {
   user: 0,
@@ -23,6 +23,7 @@ const userSlice = createSlice({
     [getUser.pending]: (state) => {
       state.loading = true;
     },
+    // Todo figure out how to handle promises David, and be consistent dummy
     [getUser.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.user = payload.user;

@@ -2,7 +2,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import history from '_helpers';
-import { api } from '../_services';
+import api from '../_services';
 
 // create slice
 const name = 'auth';

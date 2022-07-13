@@ -52,9 +52,11 @@ function request(method) {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export const api = {
+const api = {
   get: request('GET'),
   post: request('POST'),
   put: request('PUT'),
   delete: request('DELETE'),
 };
+
+export default api;

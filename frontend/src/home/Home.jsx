@@ -1,7 +1,6 @@
-import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {Button} from 'react-bootstrap';
-import {getUser} from '../_store';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../_store';
 
 function Home() {
   const dispatch = useDispatch();
@@ -15,7 +14,10 @@ function Home() {
   return (
     <div>
       <h1>
-        Hi {user}!
+        Hi
+        {' '}
+        {user}
+        !
       </h1>
     </div>
   );

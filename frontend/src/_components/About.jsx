@@ -29,8 +29,7 @@ function About() {
           >
             <p className="text-start">MIT License</p>
             <p className="text-start">
-              Copyright (c) 2022
-              ______________
+              Copyright (c) 2022 U.S. Environmental Protection Agency
             </p>
             <p className="text-start">
               Permission is hereby granted, free of charge, to any person
