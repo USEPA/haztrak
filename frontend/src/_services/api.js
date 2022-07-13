@@ -1,26 +1,41 @@
-import axios from "axios";
-import {authActions, store} from "../_store";
+import axios from 'axios';
+import { authActions, store } from '../_store';
 
-export const api = {
-  get: request('GET'),
-  post: request('POST'),
-  put: request('PUT'),
-  delete: request('DELETE')
+function authToken() {
+  return store.getState().auth.token;
+}
+
+function authHeader(url) {
+  // return auth header with jwt if user is logged in and request is to the api url
+  const token = authToken();
+  const isLoggedIn = !!token;
+  const isApiUrl = url.startsWith(process.env.REACT_APP_HAZTRAK_API_URL);
+  if (isLoggedIn && isApiUrl) {
+    return {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+  }
+  return {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  };
 }
 
 function request(method) {
-  const baseURL = `${process.env.REACT_APP_HAZTRAK_API_URL}/api`
+  const baseURL = `${process.env.REACT_APP_HAZTRAK_API_URL}/api`;
   return (url, body) => {
     const requestOptions = {
       url: `${baseURL}/${url}`,
       method,
-      headers: authHeader(`${baseURL}/${url}`)
-    }
+      headers: authHeader(`${baseURL}/${url}`),
+    };
     if (body) {
       requestOptions.data = body;
     }
     return axios(requestOptions).then((response) => {
-      const data = response.data
+      const { data } = response;
 
       if (!response.status) {
         if ([401, 403].includes(response.status) && authToken()) {
@@ -33,28 +48,15 @@ function request(method) {
       }
       return data;
     });
-  }
+  };
 }
 
-function authHeader(url) {
-  // return auth header with jwt if user is logged in and request is to the api url
-  const token = authToken();
-  const isLoggedIn = !!token;
-  const isApiUrl = url.startsWith(process.env.REACT_APP_HAZTRAK_API_URL);
-  if (isLoggedIn && isApiUrl) {
-    return {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${token}`
-    };
-  } else {
-    return {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    };
-  }
-}
+// eslint-disable-next-line import/prefer-default-export
+const api = {
+  get: request('GET'),
+  post: request('POST'),
+  put: request('PUT'),
+  delete: request('DELETE'),
+};
 
-function authToken() {
-  return store.getState().auth.token
-}
+export default api;

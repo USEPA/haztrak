@@ -1,5 +1,7 @@
 // custom history object to allow navigation outside react components
-export const history = {
+const history = {
   navigate: null,
-  location: null
+  location: null,
 };
+
+export default history;

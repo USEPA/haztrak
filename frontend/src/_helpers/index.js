@@ -1,2 +1,3 @@
-// export * from './fake-backend';
-export * from './history';
+import history from './history';
+
+export default history;

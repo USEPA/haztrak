@@ -1,14 +1,17 @@
-import React from "react";
-import {Card, Container} from "react-bootstrap";
+import React from 'react';
+import { Card, Container } from 'react-bootstrap';
 
-const About = () => {
+function About() {
   return (
     <Container fluid className="text-lg-center py-4">
       <h1>Welcome to Haztrak!</h1>
       <p>
         Haztrak is an an open-source example of how hazardous handlers
-        can interface their waste management software with <a
-        href="https://rcrainfo.epa.gov">RCRAInfo</a> to use e-Manifest. It
+        can interface their waste management software with
+        <a href="https://rcrainfo.epa.gov">
+          RCRAInfo
+        </a>
+        to use e-Manifest. It
         illustrates how many of the common task necessary to execute a fully
         electronic manifest can be completed without ever having to login to
         RCRAInfo via the web browser.
@@ -22,10 +25,12 @@ const About = () => {
       <Card className="shadow-lg mx-5 my-3 bg-white p-2">
         <Card.Body>
           <div
-            className="d-flex flex-column text-muted">
+            className="d-flex flex-column text-muted"
+          >
             <p className="text-start">MIT License</p>
-            <p className="text-start">Copyright (c) 2022
-              ______________</p>
+            <p className="text-start">
+              Copyright (c) 2022 U.S. Environmental Protection Agency
+            </p>
             <p className="text-start">
               Permission is hereby granted, free of charge, to any person
               obtaining a copy
@@ -64,15 +69,18 @@ const About = () => {
       </Card>
       <p className="pt-4">
         We welcome contribution to the source code, which you can find, along
-        with the contributor's guidelines in our git repository on <a
-        href="https://github.com/USEPA/e-Manifest">GitHub</a>
+        with the contributor's guidelines in our git repository on
+        {' '}
+        <a
+          href="https://github.com/USEPA/e-Manifest"
+        >
+          GitHub
+        </a>
       </p>
-      <p>
-
-      </p>
+      <p />
     </Container>
 
-  )
+  );
 }
 
-export default About
+export default About;
