@@ -1,5 +1,5 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {api} from "../_services";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { api } from '../_services';
 
 const initialState = {
   user: 0,
@@ -7,13 +7,13 @@ const initialState = {
   rcraAPIKey: null,
   epaSites: [],
   phoneNumber: null,
-  loading: false
-}
+  loading: false,
+};
 
 export const getUser = createAsyncThunk('user/getUser', async () => {
-  const profileResponse = await api.get('profile/', null)
-  return (profileResponse)
-})
+  const profileResponse = await api.get('profile/', null);
+  return (profileResponse);
+});
 
 const userSlice = createSlice({
   name: 'user',
@@ -21,23 +21,22 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getUser.pending]: (state) => {
-      state.loading = true
+      state.loading = true;
     },
-    [getUser.fulfilled]: (state, {payload}) => {
-      state.loading = false
-      state.user = payload.user
-      state.rcraAPIID = payload.rcraAPIID
-      state.rcraAPIKey = payload.rcraAPIKey
-      state.phoneNumber = payload.phoneNumber
-      state.epaSites = payload.epaSites
+    [getUser.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.user = payload.user;
+      state.rcraAPIID = payload.rcraAPIID;
+      state.rcraAPIKey = payload.rcraAPIKey;
+      state.phoneNumber = payload.phoneNumber;
+      state.epaSites = payload.epaSites;
       // return state = {...payload}
     },
     [getUser.rejected]: (state) => {
-      state.loading = false
+      state.loading = false;
     },
-  }
-})
-
+  },
+});
 
 // export const {getUser} = userSlice.actions
 export const usersReducer = userSlice.reducer;

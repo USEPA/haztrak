@@ -1,26 +1,29 @@
-import {useDispatch, useSelector} from 'react-redux';
-import {Card, Col, Container, Row} from "react-bootstrap";
-import {useEffect} from "react";
-import {getUser} from "../_store";
-
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  Card, Col, Container, Row,
+} from 'react-bootstrap';
+import { getUser } from '../_store';
 
 function Profile() {
   const dispatch = useDispatch();
-  const {user} = useSelector(state => state.auth)
-  const profile = useSelector(state => state.user)
+  const { user } = useSelector((state) => state.auth);
+  const profile = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(getUser())
-  }, [user])
+    dispatch(getUser());
+  }, [user]);
 
   return (
     <Container fluid className="py-3">
       <Row className="justify-content-center">
-        <Col xs={true} md={10} lg={9} xl={8}>
+        <Col xs md={10} lg={9} xl={8}>
           <Card className="shadow-lg">
             <Card.Header className="bg-primary">
               <p className="h4 text-light">
-                {user} Profile
+                {user}
+                {' '}
+                Profile
               </p>
             </Card.Header>
             <Card.Body className="bg-white">
@@ -45,4 +48,4 @@ function Profile() {
   );
 }
 
-export default Profile
+export default Profile;
