@@ -1,14 +1,16 @@
 #!/bin/bash
 
 base_dir=$(dirname "$0")
+backend_dir="$base_dir/backend"
+frontend_dir="$base_dir/frontend"
 
 # check python is installed
 if command -v python3 > /dev/null 2>&1; then
     python_cmd=$(command -v python3)
-    base_cmd="$python_cmd $base_dir/manage.py "
+    base_cmd="$python_cmd $backend_dir/manage.py "
 elif command -v python > /dev/null 2>&1; then
     python_cmd=$(command -v python)
-    base_cmd="$python_cmd $base_dir/manage.py "
+    base_cmd="$python_cmd $backend_dir/manage.py "
 else
   echo "Python3 not found"
   exit 1
@@ -53,7 +55,7 @@ dump_fixtures(){
     # hardcoded (data)dumps (hehe) for fixture files used for unittests
     # if more fixtures files are added, they will need to be added here
     exec_cmd="$base_cmd dumpdata"
-    fixture_dir="$base_dir/tests/fixtures"
+    fixture_dir="$backend_dir/tests/fixtures"
     fixture_cmd=(
     "-e contenttypes -e auth.permission -e admin.logentry -e sessions.session > $fixture_dir/test_data.json"
     "trak.WasteLine --pks=1 > $fixture_dir/test_waste_line.json"
