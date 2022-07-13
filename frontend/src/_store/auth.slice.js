@@ -32,15 +32,11 @@ function createReducers() {
 
 function createExtraActions() {
   function login() {
-    return createAsyncThunk(
-      `${name}/login`,
-      async ({
+    return createAsyncThunk(`${name}/login`, async ({username, password}) =>
+      api.post('login/', {
         username,
         password,
-      }) => api.post('login/', {
-        username,
-        password,
-      }),
+      })
     );
   }
 
@@ -87,7 +83,10 @@ const initialState = createInitialState();
 const reducers = createReducers();
 const extraReducers = createExtraReducers();
 const slice = createSlice({
-  name, initialState, reducers, extraReducers,
+  name,
+  initialState,
+  reducers,
+  extraReducers,
 });
 
 // exports

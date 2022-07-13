@@ -5,7 +5,9 @@
   },
   "extends": [
     "plugin:react/recommended",
-    "airbnb"
+    "airbnb",
+    "eslint:recommended",
+    "prettier"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -15,9 +17,13 @@
     "sourceType": "module"
   },
   "plugins": [
-    "react"
+    "react",
+    "prettier"
   ],
   "rules": {
+    //    "prettier/prettier": [
+    //      "error"
+    //    ],
     // temporary turn off until resolve
     "react/no-unescaped-entities": "off",
     "react/prop-types": "off",
@@ -25,6 +31,7 @@
     "react/jsx-props-no-spreading": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "object-curly-spacing": "off",
+    "no-console": "off",
     "no-param-reassign": "off"
   },
   "settings": {

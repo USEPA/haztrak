@@ -13,12 +13,7 @@ function Home() {
 
   return (
     <div>
-      <h1>
-        Hi
-        {' '}
-        {user}
-        !
-      </h1>
+      <h1>Hi {user}!</h1>
     </div>
   );
 }

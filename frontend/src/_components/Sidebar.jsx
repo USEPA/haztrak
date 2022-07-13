@@ -20,8 +20,7 @@ function Sidebar() {
             <div className="sb-sidenav-menu-heading">Apps</div>
             <Link className="nav-link" to="/">
               <i
-                className="sb-nav-link-icon text-primary fas fa-tachometer-alt"
-              />
+                className="sb-nav-link-icon text-primary fas fa-tachometer-alt"/>
               Dashboard
             </Link>
             <Button
@@ -31,13 +30,14 @@ function Sidebar() {
               aria-expanded={open}
             >
               <i
-                className="sb-nav-link-icon text-primary fa-solid fa-map-location-dot"
-              />
+                className="sb-nav-link-icon text-primary fa-solid fa-map-location-dot"/>
               Sites
               <div
-                className={`sb-sidenav-collapse-arrow ${open ? '' : 'rotate-90-cc'} `}
+                className={`sb-sidenav-collapse-arrow ${
+                  open ? '' : 'rotate-90-cc'
+                } `}
               >
-                <i className="fas fa-angle-down" />
+                <i className="fas fa-angle-down"/>
               </div>
             </Button>
             <Collapse in={open}>
@@ -48,15 +48,15 @@ function Sidebar() {
                 >
                   <Link className="nav-link" to="/sites">
                     <i
-                      className="sb-nav-link-icon text-primary fa-solid fa-location-dot"
-                    />
+                      className="sb-nav-link-icon text-primary fa-solid fa-location-dot"/>
                     My Sites
                   </Link>
                   <a
                     className="nav-link"
                     href="https://rcrainfopreprod.epa.gov"
                   >
-                    <i className="sb-nav-link-icon text-danger fa-solid
+                    <i
+                      className="sb-nav-link-icon text-danger fa-solid
                     fa-arrow-up-right-from-square"
                     />
                     RCRAInfo
@@ -67,8 +67,7 @@ function Sidebar() {
             <div className="sb-sidenav-menu-heading">Core</div>
             <Link className="nav-link" to="/about">
               <i
-                className="sb-nav-link-icon text-primary fa-solid fa-circle-info"
-              />
+                className="sb-nav-link-icon text-primary fa-solid fa-circle-info"/>
               About
             </Link>
           </div>

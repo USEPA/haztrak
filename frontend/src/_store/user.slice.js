@@ -12,7 +12,7 @@ const initialState = {
 
 export const getUser = createAsyncThunk('user/getUser', async () => {
   const profileResponse = await api.get('profile/', null);
-  return (profileResponse);
+  return profileResponse;
 });
 
 const userSlice = createSlice({

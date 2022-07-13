@@ -46,7 +46,9 @@ function Login() {
                 name="username"
                 type="text"
                 {...register('username')}
-                className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                className={`form-control ${
+                  errors.username ? 'is-invalid' : ''
+                }`}
               />
               <div className="invalid-feedback">{errors.username?.message}</div>
             </div>
@@ -57,23 +59,27 @@ function Login() {
                 name="password"
                 type="password"
                 {...register('password')}
-                className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                className={`form-control ${
+                  errors.password ? 'is-invalid' : ''
+                }`}
               />
               <div className="invalid-feedback">{errors.password?.message}</div>
             </div>
-            <button type="submit" disabled={isSubmitting} className="btn btn-primary m-2">
-              {isSubmitting
-                && <span className="spinner-border spinner-border-sm mr-1" />}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="btn btn-primary m-2"
+            >
+              {isSubmitting && (
+                <span className="spinner-border spinner-border-sm mr-1"/>
+              )}
               Login
             </button>
-            {authError
-              && (
-              <div
-                className="alert alert-danger mt-3 mb-0"
-              >
+            {authError && (
+              <div className="alert alert-danger mt-3 mb-0">
                 {authError.message}
               </div>
-              )}
+            )}
           </form>
         </div>
       </div>

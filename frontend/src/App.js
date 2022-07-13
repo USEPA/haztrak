@@ -34,19 +34,19 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={(
+              element={
                 <PrivateRoute>
-                  <Home />
+                  <Home/>
                 </PrivateRoute>
-                   )}
+              }
             />
             <Route
               path="/profile"
-              element={(
+              element={
                 <PrivateRoute>
-                  <Profile />
+                  <Profile/>
                 </PrivateRoute>
-                   )}
+              }
             />
             <Route path="/login" element={<Login />} />
             <Route path="/about" element={<About />} />

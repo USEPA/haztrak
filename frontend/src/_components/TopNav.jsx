@@ -15,12 +15,10 @@ function TopNav() {
   };
 
   return (
-    <nav
-      className="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex"
-    >
+    <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex">
       <div className="flex-grow-1 ps-2">
         <Link to="/" className="navbar-brand ps-3 pe-5">
-          <i className="fa-solid fa-truck-fast pe-2" />
+          <i className="fa-solid fa-truck-fast pe-2"/>
           Haztrak
         </Link>
         <Button
@@ -52,8 +50,7 @@ function TopNav() {
               <hr className="dropdown-divider" />
               <Dropdown.Item onClick={logout}>
                 <i
-                  className="text-danger fa-solid fa-arrow-right-from-bracket pe-2"
-                />
+                  className="text-danger fa-solid fa-arrow-right-from-bracket pe-2"/>
                 Logout
               </Dropdown.Item>
             </Dropdown.Menu>
