@@ -15,9 +15,9 @@ function About() {
       </p>
       <p>
         Haztrak It was developed by the United State Environmental Protection
-        Agency (US EPA) under the MIT license. If you're thinking about using
-        Haztrak and you're unfamiliar the MIT License, it's short, we encourage
-        you to read it:
+        Agency (US EPA) under the MIT license. If you're thinking about
+        using/forking/etc. Haztrak encourage you to read the license, don't
+        worry, it's short:
       </p>
       <Card className="shadow-lg mx-5 my-3 bg-white p-2">
         <Card.Body>
