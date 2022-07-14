@@ -1,6 +1,8 @@
 import json
 import os
 
+from django.contrib.auth.models import User
+from rest_framework import status
 from rest_framework.test import APITestCase
 
 from apps.trak.models import Manifest
@@ -21,34 +23,15 @@ class ManifestAPITests(APITestCase):
             json_string = json_file.read()
         cls.data = json.loads(json_string)
 
-    def test_get_manifest_by_mtn_response(self):
-        response = self.client.get(f'{self.base_url}{self.first_mtn}')
-        self.assertEqual(str(self.first_mtn), response.data['manifestTrackingNumber'])
+    def setUp(self) -> None:
+        self.user = User.objects.create_user('username', 'foo@bar.com', 'Pas$w0rd')
+        self.client.login(username='username', password='Pas$w0rd')
+        self.client.force_authenticate(self.user)
 
     def test_get_manifest_by_mtn_status(self):
         response = self.client.get(f'{self.base_url}{self.first_mtn}')
-        self.assertEqual(response.status_code, 200)
-
-    # def test_post_manifest(self):
-    #     self.new_mtn = '000000099ELC'
-    #     response = self.client.post(f'{self.base_url}{self.new_mtn}', data=self.data,
-    #                                 format='json')
-    #     if response.status_code != 200:
-    #         logging.warning(response.data)
-    #     self.assertEqual(response.status_code, 200)
-    #
-    # def test_post_manifest_saves(self):
-    #     try:
-    #         self.new_mtn = '000000009ELC'
-    #         self.client.post(f'{self.base_url}{self.new_mtn}', data=self.data,
-    #                          format='json')
-    #         new_manifest = Manifest.objects.get(mtn=self.new_mtn)
-    #         self.assertEqual(self.new_mtn, str(new_manifest))
-    #     except Manifest.DoesNotExist:
-    #         self.fail(f'manifest {self.new_mtn} DoesNotExists')
-    #     except AssertionError as e:
-    #         self.fail(f'{e}')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_non_existent_returns_404(self):
         response = self.client.get(f'{self.base_url}000000111FOO')
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
