@@ -2,12 +2,14 @@ import React from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { authActions } from '../store';
+
+// import { authActions } from '../store';
 
 function TopNav() {
-  const authUser = useSelector((x) => x.auth.user);
+  const authUser = useSelector((x) => x.user.user);
   const dispatch = useDispatch();
-  const logout = () => dispatch(authActions.logout());
+  // const logout = () => dispatch(authActions.logout());
+  const logout = () => dispatch({type: 'user/logout'});
   if (!authUser) return null;
 
   const toggleSidebar = () => {

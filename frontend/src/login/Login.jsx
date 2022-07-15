@@ -5,12 +5,15 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 
 import history from '../helpers';
-import { authActions } from '../store';
+import { login } from '../store';
+// import userSlice from '../store/user.slice';
+
+// import { authActions } from '../store';
 
 function Login() {
   const dispatch = useDispatch();
-  const authUser = useSelector((state) => state.auth.user);
-  const authError = useSelector((state) => state.auth.error);
+  const authUser = useSelector((state) => state.user.user);
+  const authError = useSelector((state) => state.user.error);
 
   useEffect(() => {
     // redirect to home if already logged in
@@ -31,7 +34,7 @@ function Login() {
   const { errors, isSubmitting } = formState;
 
   function onSubmit({ username, password }) {
-    return dispatch(authActions.login({ username, password }));
+    return dispatch(login({username, password}));
   }
 
   return (

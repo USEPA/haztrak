@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { authActions, store } from '../store';
+import { store } from '../store';
 
 function authToken() {
-  return store.getState().auth.token;
+  return store.getState().user.token;
 }
 
 function authHeader(url) {
@@ -40,7 +40,7 @@ function request(method) {
       if (!response.status) {
         if ([401, 403].includes(response.status) && authToken()) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-          const logout = () => store.dispatch(authActions.logout());
+          const logout = () => store.dispatch({type: 'user/logout'});
           logout();
         }
         const error = (data && data.message) || response.statusText;

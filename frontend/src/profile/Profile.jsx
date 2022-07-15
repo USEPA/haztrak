@@ -5,7 +5,7 @@ import { getUser } from '../store';
 
 function Profile() {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const {user} = useSelector((state) => state.user);
   const profile = useSelector((state) => state.user);
 
   useEffect(() => {
