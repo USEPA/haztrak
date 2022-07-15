@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Col, Container, Row } from 'react-bootstrap';
-import { getUser } from '../store';
+import { getUser } from '../../store';
 
 function Profile() {
   const dispatch = useDispatch();
-  const {user} = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const profile = useSelector((state) => state.user);
 
   useEffect(() => {

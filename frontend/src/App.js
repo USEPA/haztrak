@@ -10,13 +10,13 @@ import {
 import { Container } from 'react-bootstrap';
 import history from './helpers';
 import PrivateRoute from './components/PrivateRoute';
-import Home from './home';
+import Home from './features/home';
 
-import Login from './login';
+import Login from './features/login';
 import TopNav from './components/TopNav';
 import Sidebar from './components/Sidebar';
 import About from './components/About';
-import Profile from './profile/Profile';
+import Profile from './features/profile/Profile';
 
 function App() {
   // init custom history object to allow navigation from
@@ -36,7 +36,7 @@ function App() {
               path="/"
               element={
                 <PrivateRoute>
-                  <Home/>
+                  <Home />
                 </PrivateRoute>
               }
             />
@@ -44,7 +44,7 @@ function App() {
               path="/profile"
               element={
                 <PrivateRoute>
-                  <Profile/>
+                  <Profile />
                 </PrivateRoute>
               }
             />

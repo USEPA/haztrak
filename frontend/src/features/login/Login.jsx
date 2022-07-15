@@ -4,8 +4,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 
-import history from '../helpers';
-import { login } from '../store';
+import history from '../../helpers';
+import { login } from '../../store';
 // import userSlice from '../store/user.slice';
 
 // import { authActions } from '../store';
@@ -34,7 +34,7 @@ function Login() {
   const { errors, isSubmitting } = formState;
 
   function onSubmit({ username, password }) {
-    return dispatch(login({username, password}));
+    return dispatch(login({ username, password }));
   }
 
   return (
@@ -74,7 +74,7 @@ function Login() {
               className="btn btn-primary m-2"
             >
               {isSubmitting && (
-                <span className="spinner-border spinner-border-sm mr-1"/>
+                <span className="spinner-border spinner-border-sm mr-1" />
               )}
               Login
             </button>
