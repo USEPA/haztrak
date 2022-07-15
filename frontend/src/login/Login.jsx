@@ -4,13 +4,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 
-import history from '_helpers';
-import { authActions } from '_store';
+import history from '../helpers';
+import { authActions } from '../store';
 
 function Login() {
   const dispatch = useDispatch();
-  const authUser = useSelector((x) => x.auth.user);
-  const authError = useSelector((x) => x.auth.error);
+  const authUser = useSelector((state) => state.auth.user);
+  const authError = useSelector((state) => state.auth.error);
 
   useEffect(() => {
     // redirect to home if already logged in

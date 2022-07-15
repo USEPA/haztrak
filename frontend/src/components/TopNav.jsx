@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { authActions } from '_store';
 import { useDispatch, useSelector } from 'react-redux';
+import { authActions } from '../store';
 
 function TopNav() {
   const authUser = useSelector((x) => x.auth.user);

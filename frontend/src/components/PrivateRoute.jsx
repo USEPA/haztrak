@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import history from '_helpers';
+import history from '../helpers';
 
 function PrivateRoute({ children }) {
   const { user: authUser } = useSelector((x) => x.auth);
@@ -15,4 +15,5 @@ function PrivateRoute({ children }) {
   // authorized so return child components
   return children;
 }
+
 export default PrivateRoute;

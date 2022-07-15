@@ -8,14 +8,14 @@ import {
 } from 'react-router-dom';
 
 import { Container } from 'react-bootstrap';
-import history from './_helpers';
-import PrivateRoute from './_components/PrivateRoute';
+import history from './helpers';
+import PrivateRoute from './components/PrivateRoute';
 import Home from './home';
 
 import Login from './login';
-import TopNav from './_components/TopNav';
-import Sidebar from './_components/Sidebar';
-import About from './_components/About';
+import TopNav from './components/TopNav';
+import Sidebar from './components/Sidebar';
+import About from './components/About';
 import Profile from './profile/Profile';
 
 function App() {

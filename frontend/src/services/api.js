@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { authActions, store } from '../_store';
+import { authActions, store } from '../store';
 
 function authToken() {
   return store.getState().auth.token;

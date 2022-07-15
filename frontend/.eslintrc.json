@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "jest": true
   },
   "extends": [
     "plugin:react/recommended",
@@ -21,9 +22,17 @@
     "prettier"
   ],
   "rules": {
-    //    "prettier/prettier": [
-    //      "error"
-    //    ],
+    // Allow JSX in test.js files
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          "test.js",
+          "spec.jsx",
+          ".jsx"
+        ]
+      }
+    ],
     // temporary turn off until resolve
     "react/no-unescaped-entities": "off",
     "react/prop-types": "off",

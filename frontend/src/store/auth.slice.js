@@ -1,8 +1,8 @@
 // SO much wrong with this file
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import history from '_helpers';
-import api from '../_services';
+import history from '../helpers';
+import api from '../services';
 
 // create slice
 const name = 'auth';
