@@ -2,6 +2,8 @@
 
 import usersReducer, { getUser } from './user.slice';
 
+jest.spyOn(Storage.prototype, 'setItem');
+
 describe('User Slice tests', () => {
   const initialState = {
     user: null,

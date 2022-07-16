@@ -3,8 +3,13 @@ import api from '../services';
 import history from '../helpers';
 
 const initialState = {
-  user: JSON.parse(localStorage.getItem('user')),
-  token: JSON.parse(localStorage.getItem('token')),
+  user: localStorage.getItem('user')
+    ? JSON.parse(localStorage.getItem('user'))
+    : null,
+  token: localStorage.getItem('token')
+    ? JSON.parse(localStorage.getItem('token'))
+    : null,
+  // token: JSON.parse(localStorage.getItem('token')),
   rcraAPIID: null,
   rcraAPIKey: null,
   epaSites: [],
