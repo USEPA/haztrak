@@ -1,0 +1,27 @@
+// test userSlice
+
+import usersReducer, { getUser } from './user.slice';
+
+describe('User Slice tests', () => {
+  const initialState = {
+    user: null,
+    token: null,
+    rcraAPIID: null,
+    rcraAPIKey: null,
+    epaSites: [],
+    phoneNumber: null,
+    loading: false,
+    error: null,
+  };
+
+  const pendingGetUser = { type: getUser.pending };
+  const fulfilledGetUser = { type: getUser.fulfilled };
+  const rejectedGetUser = { type: getUser.rejected };
+
+  test('initial user state is not logged in', () => {
+    expect(usersReducer(initialState, pendingGetUser)).toEqual({
+      ...initialState,
+      loading: true,
+    });
+  });
+});

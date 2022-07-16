@@ -2,8 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../services';
 import history from '../helpers';
 
-const name = 'user';
-
 const initialState = {
   user: JSON.parse(localStorage.getItem('user')),
   token: JSON.parse(localStorage.getItem('token')),
@@ -15,38 +13,39 @@ const initialState = {
   error: null,
 };
 
-export const getUser = createAsyncThunk(`${name}/getUser`, async () =>
+export const getUser = createAsyncThunk('user/getUser', async () =>
   api.get('profile/', null)
 );
 
-function logoutHandler(state) {
-  state.user = initialState;
-  localStorage.removeItem('user');
-  localStorage.removeItem('token');
-  history.navigate('/login');
-}
-
 export const login = createAsyncThunk(
-  `${name}/login`,
-  async ({username, password}) =>
+  'user/login',
+  async ({ username, password }) =>
     api.post('login/', {
       username,
       password,
     })
 );
 
+function logout(state) {
+  state.user = initialState;
+  localStorage.removeItem('user');
+  localStorage.removeItem('token');
+  history.navigate('/login');
+  return state;
+}
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    logout: logoutHandler,
+    logout,
   },
   extraReducers: {
     [getUser.pending]: (user) => {
       user.loading = true;
       user.error = null;
     },
-    [getUser.fulfilled]: (user, {payload}) => {
+    [getUser.fulfilled]: (user, { payload }) => {
       user.loading = false;
       user.user = payload.user;
       user.rcraAPIID = payload.rcraAPIID;
@@ -72,7 +71,7 @@ const userSlice = createSlice({
       state.token = authResponse.token;
 
       // get return url from location state or default to home page
-      const {from} = history.location.state || {from: {pathname: '/'}};
+      const { from } = history.location.state || { from: { pathname: '/' } };
       history.navigate(from);
     },
     [login.rejected]: (state, action) => {
@@ -81,5 +80,5 @@ const userSlice = createSlice({
   },
 });
 
-const usersReducer = userSlice.reducer;
-export default usersReducer;
+const userReducers = userSlice.reducer;
+export default userReducers;
