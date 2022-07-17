@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../../store';
+// import { getUser } from '../../store';
+import { getUser } from '../../app/store';
 
 function Home() {
   const dispatch = useDispatch();

@@ -1,39 +1,59 @@
-# Haztrak Front End
+# Getting Started with Create React App and Redux
 
-___
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app),
+using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/)
+template.
 
-### What's in this directory?
+## Available Scripts
 
-This directory contains half of the Haztrak web-app; the user-interface! If you're looking for a
-holistic overview of the Haztrak project, check the [README](../README.md) in the root directory or
-the [docs/](../docs) for greater detail.
+In the project directory, you can run:
 
-### What it does
+### `npm start`
 
-Diving into an explanation
-of [client-side rendered web-apps](https://www.google.com/search?q=single%20page%20applications) is
-outside the scope of this documentation. In essence though, the front end is responsible for a
-couple things:
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-1. Dynamically rendering/displaying the user-interface in the browser
-2. Talking to the Haztrak server (requesting/sending data)
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-Currently, the front end does not directly intergace with [RCRAInfo](https://rcrainfo.epa.gov), This
-means every interaction with RCRAInfo requires that the user sends a request to Haztrak's backend,
-which is turn sends a request to RCRAInfo, and the response follows the reverse path back to the end
-user. While arguably inefficient, this keeps the user's
-RCRAInfo [API](https://www.google.com/search?q=API) ID and Key (i.e., sensitive info) on the
-Haztrak server instead of the browser.
+### `npm test`
 
-### How's it made
+Launches the test runner in the interactive watch mode.\
+See the section
+about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more
+information.
 
-Laboriously.
-But if you're interested in what frameworks and libraries it uses...
+### `npm run build`
 
-* [React](https://reactjs.org/)
-* [Redux](https://redux.js.org/)
-* [Bootstrap / React-bootstrap](https://react-bootstrap.github.io/)
-* Take look at [package.json](package.json) for more information
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-It's initial UI is based on Start
-Bootstrap's [SB Admin](https://startbootstrap.com/template/sb-admin) template.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for
+more information.
+
+### `npm run eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time.
+This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel,
+ESLint, etc) right into your project so you have full control over them. All of the commands
+except `eject` will still work, but they will point to the copied scripts so you can tweak them. At
+this point you're on your own.
+
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle
+deployments, and you shouldn't feel obligated to use this feature. However we understand that this
+tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in
+the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started)
+.
+
+To learn React, check out the [React documentation](https://reactjs.org/).

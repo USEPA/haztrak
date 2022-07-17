@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Col, Container, Row } from 'react-bootstrap';
-import { getUser } from '../../store';
+import { getUser } from '../../app/store';
 
 function Profile() {
   const dispatch = useDispatch();

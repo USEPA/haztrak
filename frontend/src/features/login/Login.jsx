@@ -5,10 +5,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 
 import history from '../../helpers';
-import { login } from '../../store';
-// import userSlice from '../store/user.slice';
-
-// import { authActions } from '../store';
+import { login } from '../../app/store';
 
 function Login() {
   const dispatch = useDispatch();
@@ -20,7 +17,7 @@ function Login() {
     if (authUser) {
       history.navigate('/');
     }
-  }, []);
+  }, [authUser]);
 
   // form validation rules
   const validationSchema = Yup.object().shape({
