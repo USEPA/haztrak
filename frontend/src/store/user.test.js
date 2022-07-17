@@ -1,6 +1,6 @@
 // test userSlice
 
-import usersReducer, { getUser } from './user.slice';
+import { getUser, userReducers } from './user.slice';
 
 jest.spyOn(Storage.prototype, 'setItem');
 
@@ -21,7 +21,7 @@ describe('User Slice tests', () => {
   const rejectedGetUser = { type: getUser.rejected };
 
   test('initial user state is not logged in', () => {
-    expect(usersReducer(initialState, pendingGetUser)).toEqual({
+    expect(userReducers(initialState, pendingGetUser)).toEqual({
       ...initialState,
       loading: true,
     });
