@@ -1,15 +1,16 @@
-name: Tests
+name: Test Haztrak Backend
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - "*"
     paths:
       - backend/**
   pull_request:
     branches: [ main ]
 
 jobs:
-  build:
+  test:
 
     runs-on: ubuntu-latest
     env:

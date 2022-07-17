@@ -1,11 +1,11 @@
-name: Node.js CI
+name: Test Haztrak Frontend
 
 on:
   push:
     branches:
-      - "project_setup"
-      - "main"
       - "*"
+    paths:
+      - frontend/**
   pull_request:
     branches: [ "main" ]
 
