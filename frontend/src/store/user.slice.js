@@ -3,12 +3,8 @@ import api from '../services';
 import history from '../helpers';
 
 const initialState = {
-  user: localStorage.getItem('user')
-    ? JSON.parse(localStorage.getItem('user'))
-    : null,
-  token: localStorage.getItem('token')
-    ? JSON.parse(localStorage.getItem('token'))
-    : null,
+  user: JSON.parse(localStorage.getItem('user')),
+  token: JSON.parse(localStorage.getItem('token')),
   // token: JSON.parse(localStorage.getItem('token')),
   rcraAPIID: null,
   rcraAPIKey: null,
@@ -59,9 +55,9 @@ const userSlice = createSlice({
       user.epaSites = payload.epaSites;
       user.error = null;
     },
-    [getUser.rejected]: (user, action) => {
+    [getUser.rejected]: (user, {payload}) => {
       user.loading = false;
-      user.error = action.error;
+      user.error = payload.error;
     },
     [login.pending]: (state) => {
       state.error = null;

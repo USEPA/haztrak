@@ -1,0 +1,24 @@
+// import React from 'react';
+// // import { jest } from '@jest/globals';
+// import { render, screen } from '@testing-library/react';
+// import { Provider } from 'react-redux';
+// import { configureStore } from '@reduxjs/toolkit';
+// import Login from './index';
+// import { userReducers } from '../../store/user.slice';
+//
+// describe('Login component', () => {
+//   const createStore = () =>
+//     configureStore({
+//       reducer: {
+//         user: userReducers,
+//       },
+//     });
+//   test('Renders when user is not logged in', () => {
+//     render(
+//       <Provider store={createStore()}>
+//         <Login />
+//       </Provider>
+//     );
+//     expect(screen.getByText(/Login/i)).toBeInTheDocument();
+//   });
+// });
