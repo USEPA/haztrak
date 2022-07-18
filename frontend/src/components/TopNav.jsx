@@ -16,6 +16,7 @@ function TopNav() {
     document.body.classList.toggle('sb-sidenav-toggled');
   };
 
+  // noinspection JSValidateTypes
   return (
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex">
       <div className="flex-grow-1 ps-2">

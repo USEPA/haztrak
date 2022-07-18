@@ -86,21 +86,6 @@ body {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-#layoutAuthentication {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-#layoutAuthentication #layoutAuthentication_content {
-    min-width: 0;
-    flex-grow: 1;
-}
-
-#layoutAuthentication #layoutAuthentication_footer {
-    min-width: 0;
-}
-
 #layoutSidenav {
     display: flex;
 }

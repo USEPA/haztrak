@@ -1,5 +1,5 @@
 {
-  "name": "Haztrak",
+  "name": "haztrak",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -30,7 +30,10 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "react-hooks/exhaustive-deps": "off"
+    }
   },
   "browserslist": {
     "production": [
