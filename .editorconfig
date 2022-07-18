@@ -1,5 +1,4 @@
 # https://editorconfig.org/
-
 root = true
 
 [*]
@@ -9,24 +8,27 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 end_of_line = lf
 charset = utf-8
+max_line_length = 80
 
 # Django recommends 88 characters per line max
 [*.py]
 max_line_length = 88
 
-# Use 2 spaces for the HTML files
 [*.html]
 indent_size = 2
 
-# The JSON files contain newlines inconsistently
-[*.json]
+[*.js]
 indent_size = 2
 
-[docs/**.txt]
-max_line_length = 79
+[*.jsx]
+indent_size = 2
 
-[docs/**.md]
-max_line_length = 79
+[*.json]
+indent_size = 2
+max_line_length = 200
+
+[*.md]
+max_line_length = 100
 
 [*.yaml]
 indent_size = 2

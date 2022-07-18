@@ -1,14 +1,16 @@
 #!/bin/bash
 
 base_dir=$(dirname "$0")
+backend_dir="$base_dir/backend"
+frontend_dir="$base_dir/frontend"
 
 # check python is installed
 if command -v python3 > /dev/null 2>&1; then
     python_cmd=$(command -v python3)
-    base_cmd="$python_cmd $base_dir/manage.py "
+    base_cmd="$python_cmd $backend_dir/manage.py "
 elif command -v python > /dev/null 2>&1; then
     python_cmd=$(command -v python)
-    base_cmd="$python_cmd $base_dir/manage.py "
+    base_cmd="$python_cmd $backend_dir/manage.py "
 else
   echo "Python3 not found"
   exit 1
@@ -34,7 +36,7 @@ print_usage() {
    echo "l     load fixture data from test/fixtures/test_data.json"
    echo "t     Run all unittests"
    echo "p     installs hooks, if necessary, and runs pre-commit run --all-files"
-   echo "r     Run haztrak locally"
+   echo "r     Run haztrak (both frontend and backend) locally"
    echo "h     Print this help message"
    echo
 }
@@ -53,7 +55,7 @@ dump_fixtures(){
     # hardcoded (data)dumps (hehe) for fixture files used for unittests
     # if more fixtures files are added, they will need to be added here
     exec_cmd="$base_cmd dumpdata"
-    fixture_dir="$base_dir/tests/fixtures"
+    fixture_dir="$backend_dir/tests/fixtures"
     fixture_cmd=(
     "-e contenttypes -e auth.permission -e admin.logentry -e sessions.session > $fixture_dir/test_data.json"
     "trak.WasteLine --pks=1 > $fixture_dir/test_waste_line.json"
@@ -65,16 +67,15 @@ dump_fixtures(){
     echo "Data dumped"
 }
 
-load_fixtures() {
-    # load initial data, good if you need to wipe the dev database
+load_django_fixtures() {
+    # load initial data, good if you need to drop the dev database
     # creates users 'admin', 'testuser1', both with 'password1'
     exec_cmd="$base_cmd loaddata tests/fixtures/test_data.json"
     eval "$exec_cmd"
 }
 
 test_django(){
-    # Since I moved all tests to the 'tests' directory, you can just run all tests
-    # sorry
+    # run all django's/backend tests
     eval "$base_cmd test"
 }
 
@@ -89,6 +90,23 @@ run_pre_commit() {
         echo "pre-commit not found, did you forget to activate your virtualenv?"
         exit 1
     fi
+}
+
+cleanup() {
+	echo
+	echo "Haztrak shutting down..."
+	kill -- -0
+}
+
+run_haztrak() {
+	# Run both the front end and backend as subprocesses, SIGINT (Ctrl-c from Bash) will end both
+	trap "exit" INT TERM ERR
+	trap "cleanup" EXIT
+
+	eval "$base_cmd runserver" &
+	eval npm --prefix ./frontend run start &
+
+	wait
 }
 
 # Parse CLI argument
@@ -110,7 +128,7 @@ while getopts 'mdltprh' opt; do
         run_pre_commit
         ;;
     r)
-        eval "$exec_cmd runserver"
+		run_haztrak
 		;;
     \?|h)
 	  print_usage
