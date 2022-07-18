@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 
 import { Container } from 'react-bootstrap';
-import history from './helpers';
+import history from './utils';
 import PrivateRoute from './components/PrivateRoute';
 import Home from './features/home';
 

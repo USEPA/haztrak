@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../services';
-import history from '../helpers';
+import history from '../utils';
 
 const initialState = {
   user: JSON.parse(localStorage.getItem('user')),
