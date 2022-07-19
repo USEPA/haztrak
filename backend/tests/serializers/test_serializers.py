@@ -8,9 +8,9 @@ from django.test import TestCase
 from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import JSONParser
 
-from apps.api.serializers import (HandlerSerializer, ManifestSerializer,
-                                  WasteLineSerializer)
 from apps.trak.models import Handler, Manifest, WasteLine
+from apps.trak.serializers import (HandlerSerializer, ManifestSerializer,
+                                   WasteLineSerializer)
 
 JSON_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'

@@ -12,7 +12,7 @@ TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'
 
 
 class ManifestAPITests(APITestCase):
-    base_url = '/api/manifest/'
+    base_url = '/api/trak/manifest/'
     fixtures = ['test_data.json']
 
     @classmethod

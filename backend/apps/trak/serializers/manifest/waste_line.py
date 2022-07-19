@@ -1,8 +1,7 @@
 from rest_framework import serializers
 
 from apps.trak.models import WasteLine
-
-from ..base import TrakSerializer
+from lib.serializers import TrakSerializer
 
 
 class WasteLineSerializer(TrakSerializer):

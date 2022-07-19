@@ -10,8 +10,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.accounts.models import Profile
-from apps.api.serializers import ManifestSerializer
 from apps.trak.models import Manifest
+from apps.trak.serializers import ManifestSerializer
 from lib.rcrainfo import rcrainfo
 
 

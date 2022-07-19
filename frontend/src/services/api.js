@@ -24,7 +24,7 @@ function authHeader(url) {
 }
 
 function request(method) {
-  const baseURL = `${process.env.REACT_APP_HAZTRAK_API_URL}/api`;
+  const baseURL = `${process.env.REACT_APP_HAZTRAK_API_URL}/api/user`;
   return (url, body) => {
     const requestOptions = {
       url: `${baseURL}/${url}`,
