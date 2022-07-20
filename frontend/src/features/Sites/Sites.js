@@ -4,12 +4,16 @@ import { Dropdown } from 'react-bootstrap';
 import api from '../../services';
 import { Link } from 'react-router-dom';
 
-function Sites(props) {
+function Sites() {
   const [sites, setSites] = React.useState();
 
   useEffect(() => {
-    api.get('trak/site', null).then((response) => console.log(response));
-  });
+    api.get('trak/site', null).then((response) => {
+      if (response.length > 0) {
+        setSites(response);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -27,9 +31,12 @@ function Sites(props) {
           </Dropdown>
         </HtCard.Header>
         <HtCard.Body>
-          {props.children}
           {sites ? (
-            sites
+            <ul>
+              {sites.map((site, i) => {
+                return <li key={i}>{site.name}</li>;
+              })}
+            </ul>
           ) : (
             <div className="text-muted text-center">
               <p>No sites to display</p>
