@@ -145,6 +145,14 @@
     "pk": 1,
     "fields": {
       "name": "My Site",
+      "epa_site": 3
+    }
+  },
+  {
+    "model": "trak.site",
+    "pk": 2,
+    "fields": {
+      "name": "My other Site",
       "epa_site": 4
     }
   },
@@ -303,10 +311,11 @@
     "fields": {
       "user": 1,
       "rcra_api_key": null,
-      "rcra_api_id": null,
+      "rcra_api_id": "my_rcra_api_id",
       "phone_number": null,
       "epa_sites": [
-        1
+        1,
+        2
       ]
     }
   },

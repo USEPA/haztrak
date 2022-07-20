@@ -114,10 +114,6 @@ class WasteLineSerializerTest(SerializerBaseTests):
     def test_is_valid(self):
         self.assertTrue(self.valid)
 
-    # def test_save(self):
-    #     save_waste_line = self.serializer.save()
-    #     self.assertIsInstance(save_waste_line, WasteLine)
-
 
 def bytes_from_json(json_file: str) -> bytes:
     """
