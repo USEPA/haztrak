@@ -15,13 +15,13 @@ const initialState = {
 };
 
 export const getUser = createAsyncThunk('user/getUser', async () =>
-  api.get('profile/', null)
+  api.get('user/profile/', null)
 );
 
 export const login = createAsyncThunk(
   'user/login',
   async ({ username, password }) =>
-    api.post('login/', {
+    api.post('user/login/', {
       username,
       password,
     })

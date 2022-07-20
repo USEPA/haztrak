@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import HtCard from '../../components/HtCard';
 import { Dropdown } from 'react-bootstrap';
+import api from '../../services';
+import { Link } from 'react-router-dom';
 
 function Sites(props) {
+  const [sites, setSites] = React.useState();
+
+  useEffect(() => {
+    api.get('trak/site', null).then((response) => console.log(response));
+  });
+
   return (
     <>
       <HtCard>
@@ -19,10 +27,18 @@ function Sites(props) {
           </Dropdown>
         </HtCard.Header>
         <HtCard.Body>
-          hello, it's me
           {props.children}
+          {sites ? (
+            sites
+          ) : (
+            <div className="text-muted text-center">
+              <p>No sites to display</p>
+              <p>
+                Add sites to your <Link to="/profile">Profile</Link>
+              </p>
+            </div>
+          )}
         </HtCard.Body>
-        <HtCard.Footer>hello again</HtCard.Footer>
       </HtCard>
     </>
   );
