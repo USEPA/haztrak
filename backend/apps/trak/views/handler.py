@@ -5,8 +5,8 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.api.serializers import HandlerSerializer, TransporterSerializer
 from apps.trak.models import Handler, Transporter
+from apps.trak.serializers import HandlerSerializer, TransporterSerializer
 
 
 class HandlerView(APIView):

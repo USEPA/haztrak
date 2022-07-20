@@ -1,6 +1,5 @@
 from apps.trak.models import Transporter
-
-from ..handler import HandlerSerializer
+from apps.trak.serializers.handler import HandlerSerializer
 
 
 class TransporterSerializer(HandlerSerializer):

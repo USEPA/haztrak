@@ -17,6 +17,7 @@ import TopNav from './components/TopNav';
 import Sidebar from './components/Sidebar';
 import About from './components/About';
 import Profile from './features/profile/Profile';
+import Sites from './features/Sites/Sites';
 
 function App() {
   // init custom history object to allow navigation from
@@ -44,13 +45,21 @@ function App() {
               path="/profile"
               element={
                 <PrivateRoute>
-                  <Profile />
+                  <Profile/>
                 </PrivateRoute>
               }
             />
-            <Route path="/login" element={<Login />} />
-            <Route path="/about" element={<About />} />
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route
+              path="/sites"
+              element={
+                <PrivateRoute>
+                  <Sites/>
+                </PrivateRoute>
+              }
+            />
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/about" element={<About/>}/>
+            <Route path="*" element={<Navigate to="/"/>}/>
           </Routes>
         </Container>
       </div>

@@ -5,7 +5,7 @@ from rest_framework.request import Request
 from rest_framework.views import APIView
 
 from apps.accounts.models import Profile
-from apps.api.serializers import ProfileSerializer
+from apps.accounts.serializers import ProfileSerializer
 
 
 class ProfileView(APIView):

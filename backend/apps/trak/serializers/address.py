@@ -3,8 +3,7 @@ from rest_framework.exceptions import ValidationError
 
 from apps.trak.models import Address
 from lib.rcrainfo.lookups import get_country_name, get_state_name
-
-from .base import TrakSerializer
+from lib.serializers import TrakSerializer
 
 
 class LocalityField(serializers.Field):

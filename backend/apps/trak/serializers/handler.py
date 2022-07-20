@@ -1,9 +1,8 @@
 from rest_framework import serializers
 
 from apps.trak.models import Handler
-
-from . import AddressSerializer
-from .base import TrakSerializer
+from apps.trak.serializers import AddressSerializer
+from lib.serializers import TrakSerializer
 
 
 class HandlerSerializer(TrakSerializer):

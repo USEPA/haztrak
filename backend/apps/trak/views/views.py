@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import DetailView, UpdateView
 
-from .models import Manifest, Site, Transporter, WasteLine
+from apps.trak.models import Manifest, Site, Transporter, WasteLine
 
 
 class Trak(LoginRequiredMixin, View):

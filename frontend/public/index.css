@@ -338,3 +338,20 @@ body {
 .app-container {
     min-height: 350px;
 }
+
+.ht-ellipsis::after {
+    display: none !important;
+}
+
+button.ht-ellipsis {
+    border: none;
+    box-shadow: none;
+}
+
+button.ht-ellipsis:hover {
+    color: var(--bs-gray-dark);
+}
+
+button.ht-ellipsis:active {
+    color: var(--bs-gray-dark);
+}

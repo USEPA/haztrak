@@ -10,9 +10,9 @@
 from rest_framework import serializers
 
 from apps.trak.models import Handler, Manifest, WasteLine
+from apps.trak.serializers.handler import HandlerSerializer
+from lib.serializers import TrakSerializer
 
-from ..base import TrakSerializer
-from ..handler import HandlerSerializer
 from .transporter import TransporterSerializer
 from .waste_line import WasteLineSerializer
 
