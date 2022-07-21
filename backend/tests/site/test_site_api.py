@@ -1,12 +1,8 @@
-import os
-
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 from apps.accounts.models import Profile
-
-JSON_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class SiteAPITests(APITestCase):
@@ -32,6 +28,16 @@ class SiteAPITests(APITestCase):
         except KeyError as error:
             self.fail(error)
         self.assertEqual(profile_sites, response_sites)
+
+    def test_if_id_return_200(self):
+        sites = [str(i) for i in self.profile.epa_sites.all()]
+        response = self.client.get(f'{self.base_url}{sites[0]}')
+        self.assertIsNotNone(response.status_code, status.HTTP_200_OK)
+
+    def test_nonexistent_site_returns_401(self):
+        # sites = [str(i) for i in self.profile.epa_sites.all()]
+        response = self.client.get(f'{self.base_url}NONEXISTENT')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_unauthenticated_returns_401(self):
         self.client.logout()

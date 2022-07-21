@@ -19,16 +19,21 @@ class SiteAPI(APIView):
     def get(self, request: Request, epa_id: str = None) -> Response:
         try:
             if epa_id:
-                my_site = Site.objects.get(epa_id=epa_id)
-                serializer = SiteSerializer(my_site)
-                return self.response(serializer.data)
+                profile_sites = [str(i) for i in
+                                 Profile.objects.get(user=request.user).epa_sites.all()]
+                if epa_id in profile_sites:
+                    my_site = Site.objects.get(epa_site__epa_id=epa_id)
+                    serializer = SiteSerializer(my_site)
+                    return self.response(serializer.data)
+                else:
+                    return self.response(status=status.HTTP_401_UNAUTHORIZED)
             else:
                 my_sites = Profile.objects.get(user=request.user).epa_sites.all()
                 my_sites_json = []
                 for i in my_sites:
                     my_site_serializer = SiteSerializer(i)
                     my_sites_json.append(my_site_serializer.data)
-                return self.response(data=my_sites_json, status=status.HTTP_200_OK)
+                return self.response(data=my_sites_json)
         except (APIException, AttributeError) as error:
             logging.warning(error)
             return self.response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
