@@ -28,4 +28,13 @@ HtCard.Body = function (props) {
   return <Card.Body className="bg-light">{props.children}</Card.Body>;
 };
 
+HtCard.Spinner = function ({ message }) {
+  return (
+    <h4 className="d-flex justify-content-center text-muted">
+      <i className="fa-solid fa-spin fa-circle-notch"></i>
+      &nbsp;&nbsp;{message}
+    </h4>
+  );
+};
+
 export default HtCard;

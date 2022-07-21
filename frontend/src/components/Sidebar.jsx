@@ -44,7 +44,7 @@ function Sidebar() {
                   className="sb-sidenav-menu-nested nav accordion"
                   id="sidenavAccordionPages"
                 >
-                  <Link className="nav-link" to="/sites">
+                  <Link className="nav-link" to="/site">
                     <i className="sb-nav-link-icon text-primary fa-solid fa-location-dot" />
                     My Sites
                   </Link>
