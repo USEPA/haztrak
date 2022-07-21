@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'apps.trak',
     'apps.home',
     'apps.accounts',
-    'apps.api',
+    # 'apps.api',
 ]
 
 MIDDLEWARE = [
@@ -198,7 +198,7 @@ if not os.getenv('RCRAINFO_ENV'):
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'apps.api.authentication.BearerAuthentication',
+        'haztrak.authentication.BearerAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
