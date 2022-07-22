@@ -1,16 +1,16 @@
 #!/bin/bash
 
-base_dir=$(dirname "$0")
+base_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 backend_dir="$base_dir/backend"
 frontend_dir="$base_dir/frontend"
 
 # check python is installed
 if command -v python3 > /dev/null 2>&1; then
     python_cmd=$(command -v python3)
-    base_cmd="$python_cmd $backend_dir/manage.py "
+    base_py_cmd="$python_cmd $backend_dir/manage.py "
 elif command -v python > /dev/null 2>&1; then
     python_cmd=$(command -v python)
-    base_cmd="$python_cmd $backend_dir/manage.py "
+    base_py_cmd="$python_cmd $backend_dir/manage.py "
 else
   echo "Python3 not found"
   exit 1
@@ -25,18 +25,39 @@ elif [ "$ver" -lt "38" ]; then
     exit 1
 fi
 
+# prints colored text
+print_style() {
+
+    if [ "$2" == "info" ] ; then
+        COLOR="96m";
+    elif [ "$2" == "success" ] ; then
+        COLOR="92m";
+    elif [ "$2" == "warning" ] ; then
+        COLOR="93m";
+    elif [ "$2" == "danger" ] ; then
+        COLOR="91m";
+    else #default color
+        COLOR="0m";
+    fi
+
+    STARTCOLOR="\e[$COLOR";
+    ENDCOLOR="\e[0m";
+
+    printf "$STARTCOLOR%b$ENDCOLOR" "$1";
+}
+
 print_usage() {
    # Display Help
    echo "Command line utility to help develop Haztrak"
    echo
    echo "Syntax: $(basename "$0") [-m|d|l|t|p|r|h]"
    echo "options:"
-   echo "m     Makemigrations and migrate"
+   echo "m     Make django migrations and migrate"
    echo "d     Dump data into fixtures files tests (if needed, migrate first)"
-   echo "l     load fixture data from test/fixtures/test_data.json"
-   echo "t     Run all unittests"
+   echo "l     load back end fixtures from test/fixtures/test_data.json"
+   echo "t     Run all tests, show output if exit status is not 0"
    echo "p     installs hooks, if necessary, and runs pre-commit run --all-files"
-   echo "r     Run haztrak (both frontend and backend) locally"
+   echo "r     Run haztrak (both client and server) locally"
    echo "h     Print this help message"
    echo
 }
@@ -44,17 +65,17 @@ print_usage() {
 migrate_changes(){
     # Use Django's 'makemigrations' and 'migrate' to propagate model changes
     # since their typically executed together, this is just more convenient
-    echo "$base_cmd"
-    if eval "$base_cmd makemigrations"
+    echo "$base_py_cmd"
+    if eval "$base_py_cmd makemigrations"
     then
-        eval "$base_cmd migrate"
+        eval "$base_py_cmd migrate"
     fi
 }
 
 dump_fixtures(){
     # hardcoded (data)dumps (hehe) for fixture files used for unittests
     # if more fixtures files are added, they will need to be added here
-    exec_cmd="$base_cmd dumpdata"
+    exec_cmd="$base_py_cmd dumpdata"
     fixture_dir="$backend_dir/tests/fixtures"
     fixture_cmd=(
     "-e contenttypes -e auth.permission -e admin.logentry -e sessions.session > $fixture_dir/test_data.json"
@@ -70,13 +91,49 @@ dump_fixtures(){
 load_django_fixtures() {
     # load initial data, good if you need to drop the dev database
     # creates users 'admin', 'testuser1', both with 'password1'
-    exec_cmd="$base_cmd loaddata tests/fixtures/test_data.json"
+    exec_cmd="$base_py_cmd loaddata tests/fixtures/test_data.json"
     eval "$exec_cmd"
+}
+
+print_test_status() {
+        if [ "$1" -eq 0 ];
+    then
+        print_style "Passed!\n" "success";
+    else
+        print_style "Failed\n" "danger";
+    fi
+
 }
 
 test_django(){
     # run all django's/backend tests
-    eval "$base_cmd test"
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
+    echo "Running Haztrak test..."
+    printf "Testing Server: "
+    cd "$backend_dir" || exit
+    django_output="$(eval "$python_cmd $base_dir/backend/manage.py test 2>&1")"
+    django_exit_code=$?
+    print_test_status $django_exit_code
+    cd "$base_dir" || exit
+    cd "$frontend_dir" || exit
+    printf "Testing Client: "
+    npm_output="$(eval "npm test 2>&1")"
+    npm_exit_code=$?
+    print_test_status $npm_exit_code
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
+    sleep 2
+    if [ $django_exit_code -ne 0 ];
+    then
+        echo "DJANGO TEST OUTPUT..."
+        printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
+        echo "${django_output}"
+    fi
+    if [ $npm_exit_code -ne 0 ];
+    then
+        echo "NPM TEST OUTPUT..."
+        printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
+        echo "${npm_output}"
+    fi
 }
 
 run_pre_commit() {
@@ -103,7 +160,7 @@ run_haztrak() {
 	trap "exit" INT TERM ERR
 	trap "cleanup" EXIT
 
-	eval "$base_cmd runserver" &
+	eval "$base_py_cmd runserver" &
 	eval npm --prefix ./frontend run start &
 
 	wait
