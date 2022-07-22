@@ -5,6 +5,12 @@ import api from '../../services';
 import { Link } from 'react-router-dom';
 import SiteActions from './ActionDropdown';
 
+/**
+ * Request and display a list of Sites a user has access to
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function Sites(props) {
   const [siteData, setSiteData] = React.useState();
   const [loading, setLoading] = React.useState(false);

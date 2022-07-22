@@ -2,18 +2,28 @@
 
 haztrak expects configurations in form of environment variables, Yay!
 For development purposes, environment variables can be read from 2 `.env` files, present in
-[backend](../backend) and [frontend](../frontend) directories. You can find an `.env.example` config
+[backend (aka server)](../backend) and [frontend (aka client)](../frontend) directories. You can
+find an `.env.example` config
 file in each, just copy it, and remove the `.example` suffix to use it as a starting template.
 
-## Back End
+## Table of Contents
 
-### Required
+- [Server Configuration](#Server)
+    - [Required](#required-(server))
+    - [Optional](#optional-(server))
+        - [Database](#Database-configs)
+- [Client Configuration](#Client)
+    - [Required Parameters](#required-(client))
+
+## Server
+
+### Required (server)
 
 The follow variables are required, haztrak will gracefully exit if not present.
 `HAZTRAK_SECRET_KEY`: Salt for cryptographic hashing,
 [required by Django](https://docs.djangoproject.com/en/4.0/ref/settings/#secret-key)
 
-### Optional
+### Optional (server)
 
 * `HAZTRAK_DEBUG`
     * Value: `True` or `False`
@@ -38,13 +48,16 @@ The follow variables are required, haztrak will gracefully exit if not present.
     * Description: RCRAInfo environment that Haztrak will interface with per
       the [e-Manifest API Client Library](https://github.com/USEPA/e-manifest/tree/master/emanifest-py#methods)
 
-### Back End Database Configs
+### Database Configs
 
-Haztrak may consider postgres option and password files in a future release,
-for now, it expects one of two setups...
+Technically these are optional. If these environment variables are not found, Haztrak will fall back
+to a [SQLite3](https://www.sqlite.org/index.html) database in the [backend](../backend) directory (
+not recommended for production). This is kept for demonstration purposes.
 
-1. all these variables to be present
-2. None of the following variables, in which case it will fallback to a local SQLite3
+Things could change, for now, it expects one of two configurations...
+
+1. all `DB_` variables to be present
+2. None of the variables, in which case it will fallback to a local SQLite3
 
 * `DB_ENGINE`: [The backend driver](https://docs.djangoproject.com/en/4.0/ref/settings/#engine)
   used by django's ORM (e.g., `django.db.backends.postgresql_psycopg2`)
@@ -57,7 +70,7 @@ for now, it expects one of two setups...
 * `TEST_DB_NAME`: [Name of database used for testing](https://docs.djangoproject.com/en/4.0/ref/settings/#test)
   defaults to `test` if not present
 
-## Front End
+## Client
 
 By default, since it is a React app, environment variables that meet both following requirements
 will automagically be available to the front end during runtime.
@@ -65,7 +78,7 @@ will automagically be available to the front end during runtime.
 1. listed in the [frontend .env](../frontend/.env.example) file
 2. Begin with `REACT_APP_`
 
-### Required
+### Required (client)
 
 * `REACT_APP_HAZTRAK_API_URL`
     * Value: host/domain name of the haztrak back end

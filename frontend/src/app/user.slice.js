@@ -5,7 +5,6 @@ import history from '../utils';
 const initialState = {
   user: JSON.parse(localStorage.getItem('user')),
   token: JSON.parse(localStorage.getItem('token')),
-  // token: JSON.parse(localStorage.getItem('token')),
   rcraAPIID: null,
   rcraAPIKey: null,
   epaSites: [],
@@ -27,12 +26,17 @@ export const login = createAsyncThunk(
     })
 );
 
-function logout(state) {
-  state.user = initialState;
+/**
+ * Reducer Function that logs user out
+ * @param    {Object} user User state
+ * @return   {Object}      Updated state
+ */
+function logout(user) {
+  user = initialState;
   localStorage.removeItem('user');
   localStorage.removeItem('token');
   history.navigate('/login');
-  return state;
+  return user;
 }
 
 const userSlice = createSlice({
@@ -55,7 +59,7 @@ const userSlice = createSlice({
       user.epaSites = payload.epaSites;
       user.error = null;
     },
-    [getUser.rejected]: (user, {payload}) => {
+    [getUser.rejected]: (user, { payload }) => {
       user.loading = false;
       user.error = payload.error;
     },

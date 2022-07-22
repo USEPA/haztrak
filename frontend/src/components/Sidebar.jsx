@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button, Collapse } from 'react-bootstrap';
 
+/**
+ * Vertical sidebar for navigation that disappears when the viewport is small
+ * @returns {JSX.Element|null}
+ * @constructor
+ */
 function Sidebar() {
   const [open, setOpen] = useState(false);
 

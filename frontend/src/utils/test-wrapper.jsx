@@ -7,7 +7,7 @@ import { setupStore } from '../app/store';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-const AllTheProviders = ({children}) => {
+const AllTheProviders = ({ children }) => {
   return (
     <Provider store={setupStore()}>
       <BrowserRouter>{children}</BrowserRouter>
@@ -16,8 +16,9 @@ const AllTheProviders = ({children}) => {
 };
 
 const customRender = (ui, options) =>
-  render(ui, {wrapper: AllTheProviders, ...options});
+  render(ui, { wrapper: AllTheProviders, ...options });
 
 export * from '@testing-library/react';
 
+// replace @testing-library/react's render function with our own custom render
 export { customRender as render };

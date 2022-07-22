@@ -3,6 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { getUser } from '../../store';
 import { getUser } from '../../app/store';
 
+/**
+ * Home page for logged in user, currently does not really include anything
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function Home() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);

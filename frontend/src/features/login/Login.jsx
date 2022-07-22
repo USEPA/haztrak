@@ -7,6 +7,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import history from '../../utils';
 import { login } from '../../app/store';
 
+/**
+ * Haztrak Login component, redirects if user is already logged in
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function Login() {
   const dispatch = useDispatch();
   const authUser = useSelector((state) => state.user.user);

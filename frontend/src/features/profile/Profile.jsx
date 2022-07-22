@@ -3,6 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { getUser } from '../../app/store';
 
+/**
+ * Display user profile
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function Profile() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
