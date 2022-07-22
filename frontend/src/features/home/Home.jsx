@@ -8,9 +8,9 @@ function Home() {
   const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
-    // get user profile information first time login redirects to home page
+    // get user profile information when the user changes
     dispatch(getUser());
-  }, []);
+  }, [user]);
 
   return (
     <div>

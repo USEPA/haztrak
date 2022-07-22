@@ -18,12 +18,16 @@ import Sidebar from './components/Sidebar';
 import About from './components/About';
 import Profile from './features/profile/Profile';
 import Sites from './features/Sites/Sites';
+import SiteDetails from './features/SiteDetails';
+import { useSelector } from 'react-redux';
 
 function App() {
   // init custom history object to allow navigation from
   // anywhere in the React app (inside or outside components)
   history.navigate = useNavigate();
   history.location = useLocation();
+
+  const { user } = useSelector((state) => state.user);
 
   return (
     // eslint-disable-next-line react/jsx-filename-extension
@@ -45,21 +49,29 @@ function App() {
               path="/profile"
               element={
                 <PrivateRoute>
-                  <Profile/>
+                  <Profile />
                 </PrivateRoute>
               }
             />
             <Route
-              path="/sites"
+              path="/site"
               element={
                 <PrivateRoute>
-                  <Sites/>
+                  <Sites user={user} />
                 </PrivateRoute>
               }
             />
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/about" element={<About/>}/>
-            <Route path="*" element={<Navigate to="/"/>}/>
+            <Route
+              path="/site/:siteId"
+              element={
+                <PrivateRoute>
+                  <SiteDetails />
+                </PrivateRoute>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/about" element={<About />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Container>
       </div>

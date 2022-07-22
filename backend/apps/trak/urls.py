@@ -9,6 +9,7 @@ urlpatterns = [
     path('manifest/<str:mtn>', views.ManifestView.as_view()),
     # Site
     path('site/', views.SiteAPI.as_view()),
+    path('site/<str:epa_id>', views.SiteAPI.as_view()),
     path('handler/<str:epa_id>', views.HandlerView.as_view()),
     # Rcrainfo integration actions
     path('rcrainfo/sync-manifest', views.PullManifest.as_view(), name='manifest-pull'),

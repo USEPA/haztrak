@@ -12,7 +12,7 @@ webservices.
 
 ### About e-Manifest
 
-June 30, 2018. EPA laucnhed a national system for tracking hazardous waste shipments electronically,
+June 30, 2018. EPA launched a national system for tracking hazardous waste shipments electronically,
 this system, known as "[e-Manifest](https://www.epa.gov/e-manifest)," modernizes the nation’s
 cradle-to-grave hazardous waste tracking process while saving valuable time, resources, and dollars
 for industry and states.
@@ -21,7 +21,7 @@ e-Manifest, a modular component of EPA's [RCRAInfo](https://rcrainfo.epa.gov/), 
 it's users a few ways...
 
 1. Through your favorite web browser at https://rcrainfo.epa.gov/
-2. Via the RCRAInfo web services/application programming interface (API)
+2. Via the RCRAInfo RESTful application programming interface (API)
 
 Haztrak aims to showcase how hazardous waste handlers can utilize the later in their own waste
 management software.
@@ -29,13 +29,12 @@ management software.
 For more information on using the RCRAInfo and e-Manifest web services, please see the
 [USEPA/e-Manifest](https://github.com/USEPA/e-manifest) repo or contact the
 [e-Manifest Team](https://www.epa.gov/e-manifest/forms/contact-us-about-hazardous-waste-electronic-manifest-system)
+. This project would not be possible without the incredible work done by the EPA e-Manifest Team.
 
-Haztrak would not be possible without the incredible work done by the EPA e-Manifest Team.
-
-## Contribute
+## Getting Started
 
 - See [docs/contributing](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md) for a
-  guide getting started a development environment set up and contributing your work upstream.
+  guide on setting up a development environment and contributing your work upstream.
 - See the [haztrak/issues](https://github.com/USEPA/haztrak/issues) to report a problem, request a
   feature, or find something to work on.
     - Just starting out? We try keeping the
