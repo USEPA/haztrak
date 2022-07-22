@@ -1,6 +1,12 @@
 import React from 'react';
 import { Card, Container } from 'react-bootstrap';
 
+/**
+ * Static page that talks about Haztrak's licensing, maybe versioning in future
+ * @returns {JSX.Element}
+ * @constructor
+ * @example "<About/>"
+ */
 function About() {
   return (
     <Container fluid className="text-lg-center py-4">
@@ -57,7 +63,7 @@ function About() {
         with the contributor's guidelines in our git repository on{' '}
         <a href="https://github.com/USEPA/e-Manifest">GitHub</a>
       </p>
-      <p/>
+      <p />
     </Container>
   );
 }

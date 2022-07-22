@@ -38,6 +38,11 @@ function renderSiteDetail({ siteHandler }) {
   );
 }
 
+/**
+ * Display details of the selected Site model
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function SiteDetails() {
   // pull parameter Id from the URL
   let params = useParams();

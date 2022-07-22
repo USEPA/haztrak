@@ -3,13 +3,10 @@ import { Button, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-// import { authActions } from '../store';
-
 function TopNav() {
   const authUser = useSelector((x) => x.user.user);
   const dispatch = useDispatch();
-  // const logout = () => dispatch(authActions.logout());
-  const logout = () => dispatch({type: 'user/logout'});
+  const logout = () => dispatch({ type: 'user/logout' });
   if (!authUser) return null;
 
   const toggleSidebar = () => {
@@ -21,7 +18,7 @@ function TopNav() {
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex">
       <div className="flex-grow-1 ps-2">
         <Link to="/" className="navbar-brand ps-3 pe-5">
-          <i className="fa-solid fa-truck-fast pe-2"/>
+          <i className="fa-solid fa-truck-fast pe-2" />
           Haztrak
         </Link>
         <Button
@@ -52,8 +49,7 @@ function TopNav() {
               </Dropdown.Item>
               <hr className="dropdown-divider" />
               <Dropdown.Item onClick={logout}>
-                <i
-                  className="text-danger fa-solid fa-arrow-right-from-bracket pe-2"/>
+                <i className="text-danger fa-solid fa-arrow-right-from-bracket pe-2" />
                 Logout
               </Dropdown.Item>
             </Dropdown.Menu>
