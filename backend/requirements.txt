@@ -12,6 +12,6 @@ requests==2.27.1
 requests-toolbelt==0.9.1
 sqlparse==0.4.2
 tzdata==2022.1
-urllib3==1.26.10
+urllib3==1.26.11
 
 python-dotenv~=0.20.0
