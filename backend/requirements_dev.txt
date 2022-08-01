@@ -1,6 +1,6 @@
 -r requirements.txt
 cfgv==3.3.1
-identify==2.5.0
+identify==2.5.2
 nodeenv==1.6.0
 pre-commit==2.20.0
 PyYAML==6.0
