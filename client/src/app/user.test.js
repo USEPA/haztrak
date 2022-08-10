@@ -13,7 +13,7 @@ describe('User Slice tests', () => {
     epaSites: [],
     phoneNumber: null,
     loading: false,
-    error: null,
+    error: '',
   };
 
   const userPayload = {

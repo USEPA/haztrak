@@ -4,21 +4,21 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/frontend"
+    directory: "/client"
     schedule:
       interval: "monthly"
     labels:
-      - "frontend"
+      - "client"
       - "dependencies"
     open-pull-requests-limit: 2
     reviewers:
       - "dpgraham4401"
   - package-ecosystem: "pip"
-    directory: "/backend"
+    directory: "/server"
     schedule:
       interval: "monthly"
     labels:
-      - "backend"
+      - "server"
       - "dependencies"
     open-pull-requests-limit: 2
     reviewers:

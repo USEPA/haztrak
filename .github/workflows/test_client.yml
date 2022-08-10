@@ -1,11 +1,11 @@
-name: Test Haztrak Frontend
+name: Test Haztrak Client
 
 on:
   push:
     branches:
       - "*"
     paths:
-      - frontend/**
+      - client/**
   pull_request:
     branches: [ "main" ]
 
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./frontend
+        working-directory: ./client
 
     strategy:
       matrix:
