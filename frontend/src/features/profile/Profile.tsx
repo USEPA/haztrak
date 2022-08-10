@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { getUser } from '../../app/store';
 
@@ -9,9 +10,9 @@ import { getUser } from '../../app/store';
  * @constructor
  */
 function Profile() {
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
-  const profile = useSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.user);
+  const profile = useAppSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getUser());
