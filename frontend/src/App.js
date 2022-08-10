@@ -15,7 +15,7 @@ import Home from './features/home';
 import Login from './features/login';
 import TopNav from './components/TopNav';
 import Sidebar from './components/Sidebar';
-import About from './components/About';
+import About from './features/About';
 import Profile from './features/profile/Profile';
 import Sites from './features/Sites/Sites';
 import SiteDetails from './features/SiteDetails';
