@@ -1,11 +1,11 @@
-name: Test Haztrak Backend
+name: Test Haztrak Server
 
 on:
   push:
     branches:
       - "*"
     paths:
-      - backend/**
+      - server/**
   pull_request:
     branches: [ main ]
 
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: ./server
     env:
       HAZTRAK_SECRET_KEY: django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d
     strategy:

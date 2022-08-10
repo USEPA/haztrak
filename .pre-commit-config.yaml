@@ -17,12 +17,12 @@ repos:
     rev: 3.8.4
     hooks:
       - id: flake8
-        args: [ --config, backend/setup.cfg ]
+        args: [ --config, server/setup.cfg ]
   - repo: local
     hooks:
       - id: pre-commit-django-migrations
         name: Check django migrations
-        entry: python backend/manage.py makemigrations --check
+        entry: python server/manage.py makemigrations --check
         language: system
         types:
           - python

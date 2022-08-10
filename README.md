@@ -1,6 +1,6 @@
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
-[![Test Haztrak Backend](https://github.com/USEPA/haztrak/actions/workflows/test_backend.yml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_backend.yml)
-[![Front end Tests](https://github.com/USEPA/haztrak/actions/workflows/test_frontend.yml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_frontend.yml)
+[![Server Test](https://github.com/USEPA/haztrak/actions/workflows/test_server.yml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_server.yml)
+[![Client Tests](https://github.com/USEPA/haztrak/actions/workflows/test_client.yml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_client.yml)
 ___
 
 # Haztrak
@@ -43,8 +43,8 @@ For more information on using the RCRAInfo and e-Manifest web services, please s
 
 ## Documentation
 
-See the README.md for the [Django back end](./backend/README.md)
-and [React front end](./frontend/README.md) in their respective directories for a high level
+See the README.md for the [Django back end](server/README.md)
+and [React front end](client/README.md) in their respective directories for a high level
 overview.
 
 We plan on additional developer documentation in the [docs](./docs) directory, which contain

@@ -46,7 +46,7 @@ How to contribute to `haztrak`
 
     * `runhaz.sh`
         * A bash script to help with development
-        * To run haztrak (both frontend and backend) locally `$ ./runhaz.sh -r`
+        * To run haztrak (both frontend and server) locally `$ ./runhaz.sh -r`
         * usage: `$ ./runhaz.sh -h`
 
 * Back end
@@ -64,9 +64,9 @@ How to contribute to `haztrak`
     * `npm`
         * Our current package manage,[npm](https://www.npmjs.com/), comes with the Node.js runtime
           environment, which you'll need to run the front end locally.
-        * The [package.json](../frontend/package.json) can be found in the 'frontend' directory.
+        * The [package.json](../client/package.json) can be found in the 'frontend' directory.
     * `Prettier`
         * [Prettier](https://prettier.io/) is used to autoformat source files, specifically the
           front end for now. If you're using an IDE, it likely have a prettier plugin available.
-        * The configs are found in [.prettierrc.json](../frontend/.prettierrc.json)
-          and [.prettierignore](../frontend/.prettierignore)
+        * The configs are found in [.prettierrc.json](../client/.prettierrc.json)
+          and [.prettierignore](../client/.prettierignore)

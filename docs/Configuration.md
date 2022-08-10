@@ -2,7 +2,7 @@
 
 haztrak expects configurations in form of environment variables, Yay!
 For development purposes, environment variables can be read from 2 `.env` files, present in
-[backend (aka server)](../backend) and [frontend (aka client)](../frontend) directories. You can
+[backend (aka server)](../server) and [frontend (aka client)](../client) directories. You can
 find an `.env.example` config
 file in each, just copy it, and remove the `.example` suffix to use it as a starting template.
 
@@ -32,7 +32,7 @@ The follow variables are required, haztrak will gracefully exit if not present.
 * `HAZTRAK_HOST`
     * Value: host/domain names that Django will serve
     * Default: ['localhost']
-    * Description: the URL that the backend will serve from,
+    * Description: the URL that the server will serve from,
       see [Django's ALLOWED_HOSTS documentation](https://docs.djangoproject.com/en/4.0/ref/settings/#allowed-hosts)
         * Haztrak currently only accepts one value
 * `HAZTRAK_TIMEZONE`
@@ -51,7 +51,7 @@ The follow variables are required, haztrak will gracefully exit if not present.
 ### Database Configs
 
 Technically these are optional. If these environment variables are not found, Haztrak will fall back
-to a [SQLite3](https://www.sqlite.org/index.html) database in the [backend](../backend) directory (
+to a [SQLite3](https://www.sqlite.org/index.html) database in the [server](../server) directory (
 not recommended for production). This is kept for demonstration purposes.
 
 Things could change, for now, it expects one of two configurations...
@@ -59,7 +59,7 @@ Things could change, for now, it expects one of two configurations...
 1. all `DB_` variables to be present
 2. None of the variables, in which case it will fallback to a local SQLite3
 
-* `DB_ENGINE`: [The backend driver](https://docs.djangoproject.com/en/4.0/ref/settings/#engine)
+* `DB_ENGINE`: [The server driver](https://docs.djangoproject.com/en/4.0/ref/settings/#engine)
   used by django's ORM (e.g., `django.db.backends.postgresql_psycopg2`)
 * `DB_NAME`: Your database's name
 * `DB_USER`: Database username
@@ -75,7 +75,7 @@ Things could change, for now, it expects one of two configurations...
 By default, since it is a React app, environment variables that meet both following requirements
 will automagically be available to the front end during runtime.
 
-1. listed in the [frontend .env](../frontend/.env.example) file
+1. listed in the [frontend .env](../client/.env.example) file
 2. Begin with `REACT_APP_`
 
 ### Required (client)

@@ -1,4 +1,4 @@
-# Haztrak Front End
+# Haztrak Client
 
 ___
 
@@ -44,7 +44,7 @@ template.
 
 ## Available Scripts
 
-In the `./frontend` directory, you can run:
+In the `./client` directory, you can run:
 
 ### `npm start`
 

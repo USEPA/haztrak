@@ -1,16 +1,16 @@
 #!/bin/bash
 
 base_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-backend_dir="$base_dir/backend"
-frontend_dir="$base_dir/frontend"
+server_dir="$base_dir/server"
+client_dir="$base_dir/client"
 
 # check python is installed
 if command -v python3 > /dev/null 2>&1; then
     python_cmd=$(command -v python3)
-    base_py_cmd="$python_cmd $backend_dir/manage.py "
+    base_py_cmd="$python_cmd $server_dir/manage.py "
 elif command -v python > /dev/null 2>&1; then
     python_cmd=$(command -v python)
-    base_py_cmd="$python_cmd $backend_dir/manage.py "
+    base_py_cmd="$python_cmd $server_dir/manage.py "
 else
   echo "Python3 not found"
   exit 1
@@ -76,7 +76,7 @@ dump_fixtures(){
     # hardcoded (data)dumps (hehe) for fixture files used for unittests
     # if more fixtures files are added, they will need to be added here
     exec_cmd="$base_py_cmd dumpdata"
-    fixture_dir="$backend_dir/tests/fixtures"
+    fixture_dir="$server_dir/tests/fixtures"
     fixture_cmd=(
     "-e contenttypes -e auth.permission -e admin.logentry -e sessions.session > $fixture_dir/test_data.json"
     "trak.WasteLine --pks=1 > $fixture_dir/test_waste_line.json"
@@ -106,16 +106,16 @@ print_test_status() {
 }
 
 test_django(){
-    # run all django's/backend tests
+    # run all django's/server tests
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
     echo "Running Haztrak test..."
     printf "Testing Server: "
-    cd "$backend_dir" || exit
-    django_output="$(eval "$python_cmd $base_dir/backend/manage.py test 2>&1")"
+    cd "$server_dir" || exit
+    django_output="$(eval "$python_cmd $base_dir/server/manage.py test 2>&1")"
     django_exit_code=$?
     print_test_status $django_exit_code
     cd "$base_dir" || exit
-    cd "$frontend_dir" || exit
+    cd "$client_dir" || exit
     printf "Testing Client: "
     npm_output="$(eval "npm test 2>&1")"
     npm_exit_code=$?
@@ -156,12 +156,12 @@ cleanup() {
 }
 
 run_haztrak() {
-	# Run both the front end and backend as subprocesses, SIGINT (Ctrl-c from Bash) will end both
+	# Run both the front end and server as subprocesses, SIGINT (Ctrl-c from Bash) will end both
 	trap "exit" INT TERM ERR
 	trap "cleanup" EXIT
 
 	eval "$base_py_cmd runserver" &
-	eval npm --prefix ./frontend run start &
+	eval npm --prefix ./client run start &
 
 	wait
 }

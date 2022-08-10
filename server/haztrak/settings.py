@@ -83,7 +83,7 @@ CORS_ORIGIN_WHITELIST = [
 
 ROOT_URLCONF = 'haztrak.urls'
 
-# FRONTEND_DIR = BASE_DIR / 'haztrak-frontend'
+# FRONTEND_DIR = BASE_DIR / 'haztrak-client'
 
 TEMPLATES = [
     {
@@ -133,7 +133,7 @@ if os.getenv('DB_NAME'):
         }
     }
 else:
-    logging.info('Resorting to sqlite backend')
+    logging.info('Resorting to sqlite server')
     default_db = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',

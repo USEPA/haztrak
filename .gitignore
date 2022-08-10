@@ -1,5 +1,5 @@
 # config files
-backend/.env
+server/.env
 
 # virtual environment
 *.env
@@ -33,9 +33,9 @@ share/python-wheels/
 .installed.cfg
 *.egg
 static/bak
-/backend/db.sqlite3
+/server/db.sqlite3
 
-# frontend
+# client
 **/node_modules
 
 # other
