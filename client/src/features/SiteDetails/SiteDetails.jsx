@@ -2,7 +2,7 @@ import React from 'react';
 import HtCard from '../../components/HtCard';
 import { useParams } from 'react-router-dom';
 import SiteDetailActions from './ActionDropdown';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../../services';
 import { Col, Row } from 'react-bootstrap';
 
@@ -46,9 +46,9 @@ function renderSiteDetail({ siteHandler }) {
 function SiteDetails() {
   // pull parameter Id from the URL
   let params = useParams();
-  const [siteData, setSiteData] = React.useState();
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState(false);
+  const [siteData, setSiteData] = useState();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     setLoading(true);

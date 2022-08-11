@@ -1,15 +1,28 @@
 import axios from 'axios';
 import { store } from '../app/store';
 
+interface RequestOptions {
+  url: string;
+  method: string;
+  headers: object;
+  data: object | null;
+}
+
 function authToken() {
   return store.getState().user.token;
 }
 
-function authHeader(url) {
+function authHeader(url: string) {
   // return auth header with jwt if user is logged in and request is to the api url
   const token = authToken();
   const isLoggedIn = !!token;
-  const isApiUrl = url.startsWith(process.env.REACT_APP_HAZTRAK_API_URL);
+  const haztrakURL = process.env.REACT_APP_HAZTRAK_API_URL;
+  let isApiUrl: boolean;
+  if (typeof haztrakURL === 'string') {
+    isApiUrl = url.startsWith(haztrakURL);
+  } else {
+    isApiUrl = false;
+  }
   if (isLoggedIn && isApiUrl) {
     return {
       'Content-Type': 'application/json',
@@ -23,20 +36,20 @@ function authHeader(url) {
   };
 }
 
-function request(method) {
+function request(method: string) {
   const baseURL = `${process.env.REACT_APP_HAZTRAK_API_URL}/api`;
-  return (url, body) => {
-    const requestOptions = {
+  return (url: string, body: object | null) => {
+    const requestOptions: RequestOptions = {
       url: `${baseURL}/${url}`,
       method,
       headers: authHeader(`${baseURL}/${url}`),
+      data: null,
     };
     if (body) {
       requestOptions.data = body;
     }
-    return axios(requestOptions).then((response) => {
+    return axios(requestOptions as any).then((response) => {
       const { data } = response;
-
       if (!response.status) {
         if ([401, 403].includes(response.status) && authToken()) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
