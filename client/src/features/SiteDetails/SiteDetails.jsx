@@ -1,6 +1,6 @@
 import React from 'react';
 import HtCard from '../../components/HtCard';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import SiteDetailActions from './ActionDropdown';
 import { useEffect } from 'react';
 import api from '../../services';

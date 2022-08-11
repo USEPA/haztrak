@@ -19,6 +19,7 @@ import About from './features/About';
 import Profile from './features/profile/Profile';
 import Sites from './features/Sites/Sites';
 import SiteDetails from './features/SiteDetails';
+import SiteManifests from './features/siteManifests/SiteManifests';
 import { useSelector } from 'react-redux';
 
 function App() {
@@ -66,6 +67,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <SiteDetails />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/site/:siteId/manifests"
+              element={
+                <PrivateRoute>
+                  <SiteManifests />
                 </PrivateRoute>
               }
             />

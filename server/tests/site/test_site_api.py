@@ -43,3 +43,18 @@ class SiteAPITests(APITestCase):
         self.client.logout()
         response = self.client.get(f'{self.base_url}')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class SiteManifestTests(APITestCase):
+    base_url = '/api/trak/site/'
+    fixtures = ['test_data.json']
+
+    def setUp(self) -> None:
+        self.user = User.objects.get(username='testuser1')
+        self.profile = Profile.objects.get(user=self.user)
+        self.client.force_authenticate(self.user)
+
+    def test_site_manifest_returns_200(self):
+        print(self.profile)
+        response = self.client.get(f'{self.base_url}VATESTGEN001/manifest')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
