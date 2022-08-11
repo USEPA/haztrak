@@ -1,17 +1,17 @@
 import React from 'react';
-import {Card} from 'react-bootstrap';
+import { Card, Container } from 'react-bootstrap';
 
 interface props {
-    children: any;
+  children?: any;
 }
 
 interface headerProps {
-    title: string;
-    children: any;
+  title?: string;
+  children?: any;
 }
 
 interface spinnerProps {
-    message: string;
+  message?: string;
 }
 
 /**
@@ -27,9 +27,9 @@ interface spinnerProps {
  * </HtCard>
  */
 function HtCard(props: props) {
-    return (
-        <div className="m-5 shadow-lg bg-light rounded-2">{props.children}</div>
-    );
+  return (
+    <div className="m-5 shadow-lg bg-light rounded-2">{props.children}</div>
+  );
 }
 
 /**
@@ -43,14 +43,14 @@ function HtCard(props: props) {
  * </HtCard>
  */
 HtCard.Header = function (props: headerProps) {
-    return (
-        <Card.Header className="bg-primary text-light rounded-top">
-            <div className="d-flex justify-content-between p-1 px-2 py-1">
-                <div className="fw-bold h5">{props.title}</div>
-                <div>{props.children}</div>
-            </div>
-        </Card.Header>
-    );
+  return (
+    <Card.Header className="bg-primary text-light rounded-top">
+      <div className="d-flex justify-content-between p-1 px-2 py-1">
+        <div className="fw-bold h5">{props.title}</div>
+        <div>{props.children}</div>
+      </div>
+    </Card.Header>
+  );
 };
 
 /**
@@ -64,12 +64,11 @@ HtCard.Header = function (props: headerProps) {
  * </HtCard>
  */
 HtCard.Footer = function (props: props) {
-    return (
-        <Card.Footer className="bg-gray">
-            <div
-                className="d-flex justify-content-start gap-2">{props.children}</div>
-        </Card.Footer>
-    );
+  return (
+    <Card.Footer className="bg-gray">
+      <div className="d-flex justify-content-start gap-2">{props.children}</div>
+    </Card.Footer>
+  );
 };
 
 /**
@@ -83,7 +82,11 @@ HtCard.Footer = function (props: props) {
  * </HtCard>
  */
 HtCard.Body = function (props: props) {
-    return <Card.Body className="bg-light">{props.children}</Card.Body>;
+  return (
+    <Card.Body className="bg-light">
+      <Container className="py-2">{props.children}</Container>
+    </Card.Body>
+  );
 };
 
 /**
@@ -96,15 +99,15 @@ HtCard.Body = function (props: props) {
  *   <HtCard.Spinner message="loading..."/>
  * </HtCard.Body>
  */
-HtCard.Spinner = function ({message}: spinnerProps) {
-    return (
-        <>
-            <h4 className="d-flex justify-content-center text-muted bg-transparent p-1 py-3">
-                <i className="fa-solid fa-spin fa-circle-notch"></i>
-                &nbsp;&nbsp;{message}
-            </h4>
-        </>
-    );
+HtCard.Spinner = function ({ message }: spinnerProps) {
+  return (
+    <>
+      <h4 className="d-flex justify-content-center text-muted bg-transparent p-1 py-3">
+        <i className="fa-solid fa-spin fa-circle-notch"></i>
+        &nbsp;&nbsp;{message}
+      </h4>
+    </>
+  );
 };
 
 export default HtCard;
