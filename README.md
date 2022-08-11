@@ -57,8 +57,8 @@ that in the codebase.
 ## Development Status
 
 Haztrak is **not** a polished, ready-to-ship product. it's intended audience are those looking
-to see a working example and those who have the technical expertise to leverage this
-open-source code for their own requirements. It's licensed under under
+to see a working example and those who have the technical expertise to leverage the
+source files for their own requirements. It's licensed under under
 the [MIT open source](./LICENSE)
 license, a permissive license designed to provide you(!) the freedom to use, modify, redistribute,
 even develop proprietary derivative works.
