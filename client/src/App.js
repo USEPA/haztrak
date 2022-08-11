@@ -19,7 +19,7 @@ import About from './features/About';
 import Profile from './features/profile/Profile';
 import Sites from './features/Sites/Sites';
 import SiteDetails from './features/SiteDetails';
-import SiteManifests from './features/siteManifests/SiteManifests';
+import SiteManifests from './features/SiteManifests/SiteManifests';
 import { useSelector } from 'react-redux';
 
 function App() {
