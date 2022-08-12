@@ -1,20 +1,21 @@
-import React, { useEffect } from 'react';
-import HtCard from '../../components/HtCard';
-import { Table } from 'react-bootstrap';
-import api from '../../services';
-import { Link } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import api from '../../../services';
+import {sleep} from '../../../utils/utils';
+import HtCard from '../../../components/HtCard';
+import {Link} from 'react-router-dom';
+import {Table} from 'react-bootstrap';
 import SiteActions from './ActionDropdown';
 
-/**
- * Request and display a list of Sites a user has access to
- * @param props
- * @returns {JSX.Element}
- * @constructor
- */
-function Sites(props) {
-  const [siteData, setSiteData] = React.useState();
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState(false);
+interface props {
+  user: any;
+}
+
+// interface SiteData {}
+
+function SiteList(props: props) {
+  const [siteData, setSiteData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -22,22 +23,22 @@ function Sites(props) {
       .get('trak/site', null)
       .then((response) => {
         if (response.length > 0) {
-          sleep(200);
-          setSiteData(response);
+          // Show off the HtCard.Spinner when not in production
+          const env = process.env.REACT_APP_ENV;
+          if (
+            typeof env === 'string' &&
+            env.toUpperCase() === 'PREPRODUCTION'
+          ) {
+            sleep(750).then(() => setLoading(false));
+            setSiteData(response as any);
+          } else {
+            setLoading(false);
+            setSiteData(response as any);
+          }
         }
       })
-      .then(() => setLoading(false))
       .catch(setError);
   }, [props.user]);
-
-  // utility function to show HtCard.Spinner for a second
-  function sleep(milliseconds) {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-  }
 
   function SitesTable() {
     return (
@@ -51,6 +52,7 @@ function Sites(props) {
         </tr>
         </thead>
         <tbody>
+        {/*// @ts-ignore */}
         {siteData.map((site, i) => {
           return (
             <tr key={i}>
@@ -108,4 +110,4 @@ function Sites(props) {
   );
 }
 
-export default Sites;
+export default SiteList;

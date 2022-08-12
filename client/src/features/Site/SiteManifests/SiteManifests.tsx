@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import api from '../../services';
-import {Container, Table} from 'react-bootstrap';
-import HtCard from '../../components/HtCard';
-import HtTooltip from '../../components/HtTooltip';
+import api from '../../../services';
+import { Container, Table } from 'react-bootstrap';
+import HtCard from '../../../components/HtCard';
+import HtTooltip from '../../../components/HtTooltip';
 
 interface SiteManifest {
   generator: string[];
@@ -15,36 +15,36 @@ function manifestTable(manifest: string[]) {
   return (
     <Table hover>
       <thead>
-      <tr>
-        <th>Manifest Tracking Number</th>
-        <th>Status</th>
-        <th></th>
-        <th></th>
-      </tr>
+        <tr>
+          <th>Manifest Tracking Number</th>
+          <th>Status</th>
+          <th></th>
+          <th></th>
+        </tr>
       </thead>
       <tbody>
-      {manifest.map((mtn, i) => {
-        return (
-          <tr key={i}>
-            <td>{mtn}</td>
-            <td>status</td>
-            <td>
-              <HtTooltip text={`View: ${mtn}`}>
-                <Link to={`/manifest/${mtn}/view`}>
-                  <i className="fa-solid fa-eye"></i>
-                </Link>
-              </HtTooltip>
-            </td>
-            <td>
-              <HtTooltip text={`Edit ${mtn}`}>
-                <Link to={`/manifest/${mtn}/edit`}>
-                  <i className="fa-solid fa-file-lines"></i>
-                </Link>
-              </HtTooltip>
-            </td>
-          </tr>
-        );
-      })}
+        {manifest.map((mtn, i) => {
+          return (
+            <tr key={i}>
+              <td>{mtn}</td>
+              <td>status</td>
+              <td>
+                <HtTooltip text={`View: ${mtn}`}>
+                  <Link to={`/manifest/${mtn}/view`}>
+                    <i className="fa-solid fa-eye"></i>
+                  </Link>
+                </HtTooltip>
+              </td>
+              <td>
+                <HtTooltip text={`Edit ${mtn}`}>
+                  <Link to={`/manifest/${mtn}/edit`}>
+                    <i className="fa-solid fa-file-lines"></i>
+                  </Link>
+                </HtTooltip>
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </Table>
   );
@@ -71,7 +71,7 @@ function SiteManifests() {
     <>
       <Container>
         <HtCard>
-          <HtCard.Header title="Designated Receiving Facility"/>
+          <HtCard.Header title="Designated Receiving Facility" />
           <HtCard.Body>
             {siteManifest ? (
               manifestTable(siteManifest.tsd)

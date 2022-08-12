@@ -1,9 +1,9 @@
 import React from 'react';
-import HtCard from '../../components/HtCard';
+import HtCard from '../../../components/HtCard';
 import { useParams } from 'react-router-dom';
 import SiteDetailActions from './ActionDropdown';
 import { useEffect, useState } from 'react';
-import api from '../../services';
+import api from '../../../services';
 import { Col, Row } from 'react-bootstrap';
 
 function renderSiteDetail({ siteHandler }) {

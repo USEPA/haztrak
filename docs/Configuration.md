@@ -84,7 +84,8 @@ will automagically be available to the front end during runtime.
     * Value: host/domain name of the haztrak back end
     * Default: `http://localhost:8000`
     * Description: IP or URL of the back end haztrak server
-* `REACT_APP_HAZTRAK_ENV`
-    * Value: `production`, `preproduction`, `local`
-    * Default: `production`
-    * Description: The environment Haztrak is being deployed to, `local` is used for demo purposes 
+* `REACT_APP_ENV`
+    * Value: `production` or other
+    * Default: `productoin`
+    * Description: haztrak will treat anything besides `production` as a development/preproduction
+      environment
