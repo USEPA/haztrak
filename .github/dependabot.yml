@@ -13,8 +13,6 @@ updates:
     open-pull-requests-limit: 2
     reviewers:
       - "dpgraham4401"
-    assignee:
-      - "dpgraham4401"
   - package-ecosystem: "pip"
     directory: "/server"
     schedule:
@@ -24,6 +22,4 @@ updates:
       - "dependencies"
     open-pull-requests-limit: 2
     reviewers:
-      - "dpgraham4401"
-    assignee:
       - "dpgraham4401"

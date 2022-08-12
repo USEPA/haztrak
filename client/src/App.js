@@ -17,9 +17,9 @@ import TopNav from './components/TopNav';
 import Sidebar from './components/Sidebar';
 import About from './features/About';
 import Profile from './features/profile/Profile';
-import Sites from './features/Sites/Sites';
-import SiteDetails from './features/SiteDetails';
-import SiteManifests from './features/SiteManifests/SiteManifests';
+import Sites from './features/Site/Sites';
+import SiteDetails from './features/Site/SiteDetails';
+import SiteManifests from './features/Site/SiteManifests/SiteManifests';
 import { useSelector } from 'react-redux';
 
 function App() {
@@ -55,26 +55,10 @@ function App() {
               }
             />
             <Route
-              path="/site"
+              path="/site/*"
               element={
                 <PrivateRoute>
                   <Sites user={user} />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/site/:siteId"
-              element={
-                <PrivateRoute>
-                  <SiteDetails />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/site/:siteId/manifests"
-              element={
-                <PrivateRoute>
-                  <SiteManifests />
                 </PrivateRoute>
               }
             />
