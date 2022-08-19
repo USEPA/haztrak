@@ -21,6 +21,7 @@ import Sites from './features/Site/Sites';
 import SiteDetails from './features/Site/SiteDetails';
 import SiteManifests from './features/Site/SiteManifests/SiteManifests';
 import { useSelector } from 'react-redux';
+import Manifest from './features/Manifest';
 
 function App() {
   // init custom history object to allow navigation from
@@ -59,6 +60,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Sites user={user} />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/manifest*"
+              element={
+                <PrivateRoute>
+                  <Manifest />
                 </PrivateRoute>
               }
             />
