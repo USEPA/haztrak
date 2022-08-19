@@ -11,7 +11,7 @@ interface SiteManifest {
   tsd: string[];
 }
 
-function manifestTable(manifest: string[]) {
+function manifestTable(manifest: string[]): JSX.Element {
   return (
     <Table hover>
       <thead>
@@ -50,7 +50,7 @@ function manifestTable(manifest: string[]) {
   );
 }
 
-function SiteManifests() {
+function SiteManifests(): JSX.Element {
   let params = useParams();
   const [loading, setLoading] = useState(false);
   const [siteManifest, setSiteManifest] = useState<SiteManifest | undefined>(

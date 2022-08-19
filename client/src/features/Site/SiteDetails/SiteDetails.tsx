@@ -5,8 +5,9 @@ import SiteDetailActions from './ActionDropdown';
 import { useEffect, useState } from 'react';
 import api from '../../../services';
 import { Col, Row } from 'react-bootstrap';
+import { sleepDemo } from '../../../utils/utils';
 
-function renderSiteDetail({ siteHandler }) {
+function renderSiteDetail({ siteHandler }: any): JSX.Element {
   const sa = siteHandler.siteAddress;
   const ma = siteHandler.mailingAddress;
   const siteAddress = `${sa.streetNumber} ${sa.address1}, ${sa.city} ${sa.state.code} ${sa.zip}`;
@@ -43,7 +44,7 @@ function renderSiteDetail({ siteHandler }) {
  * @returns {JSX.Element}
  * @constructor
  */
-function SiteDetails() {
+function SiteDetails(): JSX.Element {
   // pull parameter Id from the URL
   let params = useParams();
   const [siteData, setSiteData] = useState();
@@ -55,9 +56,13 @@ function SiteDetails() {
     api
       .get(`trak/site/${params.siteId}`, null)
       .then((response) => {
-        setSiteData(response);
+        // Begin HT Example
+        // sleepDemo illustrates how HT handles async hydration
+        sleepDemo(750).then(() => setLoading(false));
+        // setLoading(false)
+        // End HT Example
+        setSiteData(response as any);
       })
-      .then(() => setLoading(false))
       .catch(setError);
   }, [params.siteId]);
 
@@ -69,11 +74,11 @@ function SiteDetails() {
         </HtCard.Header>
         <HtCard.Body>
           {loading ? (
-            <HtCard.Spinner />
+            <HtCard.Spinner message="Loading site details..." />
           ) : siteData ? (
             <>{renderSiteDetail(siteData)}</>
           ) : (
-            <p>error</p>
+            <p>{error}</p>
           )}
         </HtCard.Body>
       </HtCard>

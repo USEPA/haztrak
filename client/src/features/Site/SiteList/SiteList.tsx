@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import api from '../../../services';
-import {sleep} from '../../../utils/utils';
+import {sleepDemo} from '../../../utils/utils';
 import HtCard from '../../../components/HtCard';
 import {Link} from 'react-router-dom';
 import {Table} from 'react-bootstrap';
@@ -23,18 +23,12 @@ function SiteList(props: props) {
       .get('trak/site', null)
       .then((response) => {
         if (response.length > 0) {
-          // Show off the HtCard.Spinner when not in production
-          const env = process.env.REACT_APP_ENV;
-          if (
-            typeof env === 'string' &&
-            env.toUpperCase() === 'PREPRODUCTION'
-          ) {
-            sleep(750).then(() => setLoading(false));
-            setSiteData(response as any);
-          } else {
-            setLoading(false);
-            setSiteData(response as any);
-          }
+          // Begin HT demo
+          // sleepDemo illustrates how HT handles async hydration
+          sleepDemo(750).then(() => setLoading(false));
+          // setLoading(false)
+          // End HT demo
+          setSiteData(response as any);
         }
       })
       .catch(setError);
@@ -93,7 +87,10 @@ function SiteList(props: props) {
               ) : // else check if there's an error
               error ? (
                 // if error exist, display it
-                <p>Sorry, we experienced a error fetching your sites</p>
+                <>
+                  <p>Sorry, we experienced a error fetching your sites</p>
+                  <p>{error}</p>
+                </>
               ) : (
                 // lastly, if no error but siteData is empty, suggest
                 // they add a site they have access to in their profile
