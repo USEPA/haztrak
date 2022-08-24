@@ -33,7 +33,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 static/bak
-/server/db.sqlite3
+**/db.sqlite3
 
 # client
 **/node_modules

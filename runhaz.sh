@@ -160,8 +160,8 @@ run_haztrak() {
 	trap "exit" INT TERM ERR
 	trap "cleanup" EXIT
 
-	eval "$base_py_cmd runserver" &
-	eval npm --prefix ./client run start &
+	eval "python $server_dir/manage.py runserver" &
+	eval "npm --prefix $client_dir run start" &
 
 	wait
 }
