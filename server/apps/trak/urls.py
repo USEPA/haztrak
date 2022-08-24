@@ -11,10 +11,4 @@ urlpatterns = [
     path('site/', views.SiteAPI.as_view()),
     path('site/<str:epa_id>', views.SiteAPI.as_view()),
     path('site/<str:epa_id>/manifest', views.SiteManifest.as_view()),
-    path('handler/<str:epa_id>', views.HandlerView.as_view()),
-    # Rcrainfo integration actions
-    path('rcrainfo/sync-manifest', views.PullManifest.as_view(), name='manifest-pull'),
-    # Other
-    path('sync/<str:site_id>', views.SyncSiteManifest.as_view(), name='sync'),
-    path('tran/<int:tran_id>', views.TransporterView.as_view())
 ]
