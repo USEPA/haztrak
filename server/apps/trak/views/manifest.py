@@ -80,15 +80,3 @@ class PullManifest(APIView):
             return Response(status=status.HTTP_200_OK, data=data)
         except KeyError:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-# trash, not time remove it right now
-class SyncSiteManifest(APIView):
-    response = Response
-
-    def get(self, request: Request, epa_id: str = None) -> Response:
-        if epa_id:
-            resp = rcrainfo.get_mtns(epa_id)
-            return Response(data={'mtn': resp.json})
-        else:
-            return self.response(status=status.HTTP_200_OK)

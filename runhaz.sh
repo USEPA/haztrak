@@ -91,7 +91,7 @@ dump_fixtures(){
 load_django_fixtures() {
     # load initial data, good if you need to drop the dev database
     # creates users 'admin', 'testuser1', both with 'password1'
-    exec_cmd="$base_py_cmd loaddata tests/fixtures/test_data.json"
+    exec_cmd="$base_py_cmd loaddata $server_dir/tests/fixtures/test_data.json"
     eval "$exec_cmd"
 }
 
@@ -176,7 +176,7 @@ while getopts 'mdltprh' opt; do
         dump_fixtures "$@"
         ;;
     l)
-        load_fixtures
+        load_django_fixtures
         ;;
     t)
 		test_django "$@"

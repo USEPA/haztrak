@@ -1,3 +1,3 @@
 from .handler import HandlerView
-from .manifest import ManifestView, PullManifest, SyncSiteManifest
+from .manifest import ManifestView, PullManifest
 from .sites import SiteAPI, SiteManifest
