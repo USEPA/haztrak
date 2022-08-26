@@ -64,7 +64,7 @@ function App() {
               }
             />
             <Route
-              path="/manifest*"
+              path="/manifest/*"
               element={
                 <PrivateRoute>
                   <Manifest />

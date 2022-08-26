@@ -28,7 +28,9 @@ interface spinnerProps {
  */
 function HtCard(props: props) {
   return (
-    <div className="m-5 shadow-lg bg-light rounded-2">{props.children}</div>
+    <div className="m-5 my-3 shadow-lg bg-light rounded-2">
+      {props.children}
+    </div>
   );
 }
 
