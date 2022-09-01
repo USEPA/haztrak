@@ -5,4 +5,4 @@ nodeenv==1.6.0
 pre-commit==2.20.0
 PyYAML==6.0
 toml==0.10.2
-virtualenv==20.14.1
+virtualenv==20.16.4
