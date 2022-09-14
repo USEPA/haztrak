@@ -13,13 +13,11 @@ import PrivateRoute from './components/PrivateRoute';
 import Home from './features/home';
 
 import Login from './features/login';
-import TopNav from './components/TopNav';
-import Sidebar from './components/Sidebar';
+import { TopNav } from './components/Nav';
+import { Sidebar } from './components/Nav';
 import About from './features/About';
 import Profile from './features/profile/Profile';
 import Sites from './features/Site/Sites';
-import SiteDetails from './features/Site/SiteDetails';
-import SiteManifests from './features/Site/SiteManifests/SiteManifests';
 import { useSelector } from 'react-redux';
 import Manifest from './features/Manifest';
 
