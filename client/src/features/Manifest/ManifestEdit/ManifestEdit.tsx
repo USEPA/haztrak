@@ -1,43 +1,46 @@
-import React, { useState } from 'react';
-import { Form } from 'react-bootstrap';
+import {Button, Form} from 'react-bootstrap';
+import {useForm, SubmitHandler} from 'react-hook-form';
+import HtCard from '../../../components/HtCard';
+import * as yup from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup';
+
+interface Inputs {
+  age: string;
+  email: number;
+}
+
+const schema = yup
+  .object({
+    age: yup.number().positive().integer().required(),
+  })
+  .required();
 
 function ManifestEdit(): JSX.Element {
-  const [name, setName] = useState('');
-  const [option, setOption] = useState('');
-
-  const onChangeInput = (event: any) => {
-    setName(event.target.value);
-    console.log(event.target.value);
-  };
-
-  const onChangeSelect = (event: any) => {
-    setOption(event.target.value);
-  };
-
-  const onSubmit = (event: any) => {
-    event.preventDefault();
-    console.log(name);
-    console.log(option);
-  };
+  const {
+    register,
+    handleSubmit,
+    // formState: { errors },
+  } = useForm<Inputs>({resolver: yupResolver(schema)});
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
   return (
-    <div>
-      <Form onSubmit={onSubmit}>
-        {/*<label for="name">Name</label>*/}
-        <input type="text" id="name" name="name" onChange={onChangeInput} />
-        <select
-          onChange={onChangeSelect}
-          value={option}
-          id="options"
-          name="options"
-        >
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
-          <option value="option4">Option4</option>
-        </select>
-      </Form>
-    </div>
+    <HtCard>
+      <HtCard.Header title={'New Manifest'}/>
+      <HtCard.Body>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form.Group>
+            <Form.Label>Email Address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder={'enter email'}
+              {...register('email', {required: true})}
+            />
+            <Form.Control defaultValue="test" {...register('age')} />
+            <Button type="submit">Submit</Button>
+          </Form.Group>
+        </Form>
+      </HtCard.Body>
+    </HtCard>
   );
 }
 
