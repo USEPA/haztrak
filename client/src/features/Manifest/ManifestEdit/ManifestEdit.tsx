@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Form} from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Form } from 'react-bootstrap';
 
 function ManifestEdit(): JSX.Element {
   const [name, setName] = useState('');
@@ -7,6 +7,7 @@ function ManifestEdit(): JSX.Element {
 
   const onChangeInput = (event: any) => {
     setName(event.target.value);
+    console.log(event.target.value);
   };
 
   const onChangeSelect = (event: any) => {
@@ -23,7 +24,7 @@ function ManifestEdit(): JSX.Element {
     <div>
       <Form onSubmit={onSubmit}>
         {/*<label for="name">Name</label>*/}
-        <input type="text" id="name" name="name" onChange={onChangeInput}/>
+        <input type="text" id="name" name="name" onChange={onChangeInput} />
         <select
           onChange={onChangeSelect}
           value={option}
