@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../services';
 import history from '../utils';
 
-interface UserState {
+export interface UserState {
   user: string | null;
   token: string | null;
   rcraAPIID: string;

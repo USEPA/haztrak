@@ -1,3 +1,3 @@
-import Manifest from './Manifest';
+import { Manifest } from './Manifest/';
 
-export type {Manifest};
+export type { Manifest };

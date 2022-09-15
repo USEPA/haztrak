@@ -11,12 +11,11 @@ import { Container } from 'react-bootstrap';
 import history from './utils';
 import PrivateRoute from './components/PrivateRoute';
 import Home from './features/home';
-
 import Login from './features/login';
 import { TopNav } from './components/Nav';
 import { Sidebar } from './components/Nav';
-import About from './features/About';
-import Profile from './features/profile/Profile';
+import About from './features/Help';
+import Profile from './features/profile';
 import Sites from './features/Site/Sites';
 import { useSelector } from 'react-redux';
 import Manifest from './features/Manifest';

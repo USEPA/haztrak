@@ -6,11 +6,10 @@ import App from './App';
 import { store } from './app/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const container = document.getElementById('root');
+const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 
 root.render(
-  // eslint-disable-next-line react/jsx-filename-extension
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
