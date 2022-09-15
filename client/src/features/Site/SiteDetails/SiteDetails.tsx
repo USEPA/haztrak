@@ -1,11 +1,11 @@
 import React from 'react';
 import HtCard from '../../../components/HtCard';
 import { useParams } from 'react-router-dom';
-import SiteDetailActions from './ActionDropdown';
 import { useEffect, useState } from 'react';
 import api from '../../../services';
 import { Col, Row } from 'react-bootstrap';
 import { sleepDemo } from '../../../utils/utils';
+import HtDropdown from '../../../components/HtDropdown';
 
 function renderSiteDetail({ siteHandler }: any): JSX.Element {
   const sa = siteHandler.siteAddress;
@@ -70,7 +70,7 @@ function SiteDetails(): JSX.Element {
     <>
       <HtCard>
         <HtCard.Header title={params.siteId}>
-          <SiteDetailActions />
+          <HtDropdown links={[{ name: 'hello', path: '#/blah/' }]} />
         </HtCard.Header>
         <HtCard.Body>
           {loading ? (
