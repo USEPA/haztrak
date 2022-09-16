@@ -1,8 +1,8 @@
-import {Button, Form} from 'react-bootstrap';
+import {Button, Container, Form} from 'react-bootstrap';
 import {useForm, SubmitHandler} from 'react-hook-form';
-import HtCard from '../../../components/HtCard';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
+import HtCard from '../HtCard';
 
 interface Inputs {
   age: string;
@@ -15,17 +15,17 @@ const schema = yup
   })
   .required();
 
-function ManifestEdit(): JSX.Element {
+function ManifestForm(): JSX.Element {
   const {
     register,
     handleSubmit,
-    // formState: { errors },
+    formState: {errors},
   } = useForm<Inputs>({resolver: yupResolver(schema)});
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
   return (
     <HtCard>
-      <HtCard.Header title={'New Manifest'}/>
+      <HtCard.Header title={'New manifest'}/>
       <HtCard.Body>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Group>
@@ -37,6 +37,9 @@ function ManifestEdit(): JSX.Element {
             />
             <Form.Control defaultValue="test" {...register('age')} />
             <Button type="submit">Submit</Button>
+            <Container>
+              {errors.age && <span>{errors.age.message}</span>}
+            </Container>
           </Form.Group>
         </Form>
       </HtCard.Body>
@@ -44,4 +47,4 @@ function ManifestEdit(): JSX.Element {
   );
 }
 
-export default ManifestEdit;
+export default ManifestForm;

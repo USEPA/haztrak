@@ -1,17 +1,16 @@
 // test userSlice
-
-import { getUser, userReducers } from './user.slice';
+import { getUser, userReducers, UserState } from './user.slice';
 
 jest.spyOn(Storage.prototype, 'setItem');
 
 describe('User Slice tests', () => {
-  const initialState = {
+  const initialState: UserState = {
     user: null,
     token: null,
     rcraAPIID: null,
     rcraAPIKey: null,
     epaSites: [],
-    phoneNumber: null,
+    phoneNumber: '',
     loading: false,
     error: '',
   };
@@ -29,10 +28,10 @@ describe('User Slice tests', () => {
     error: 'rejected promise error message',
   };
 
-  const pendingGetUser = {type: getUser.pending};
-  const fulfilledGetUser = {type: getUser.fulfilled, payload: userPayload};
-  const rejectedGetUser = {type: getUser.rejected, payload: rejectedPayload};
-  const pendingUserState = {...initialState, loading: true};
+  const pendingGetUser = { type: getUser.pending };
+  const fulfilledGetUser = { type: getUser.fulfilled, payload: userPayload };
+  const rejectedGetUser = { type: getUser.rejected, payload: rejectedPayload };
+  const pendingUserState = { ...initialState, loading: true };
 
   test('initial user state is not logged in', () => {
     expect(userReducers(initialState, pendingGetUser)).toEqual({

@@ -14,11 +14,11 @@ import Home from './features/home';
 import Login from './features/login';
 import { TopNav } from './components/Nav';
 import { Sidebar } from './components/Nav';
-import About from './features/Help';
+import About from './features/help';
 import Profile from './features/profile';
-import Sites from './features/Site/Sites';
+import Sites from './features/site/Sites';
 import { useSelector } from 'react-redux';
-import Manifest from './features/Manifest';
+import Manifest from './features/manifest';
 
 function App() {
   // init custom history object to allow navigation from

@@ -2,9 +2,10 @@ import React from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 
 function TopNav() {
-  const authUser = useSelector((x) => x.user.user);
+  const authUser = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
   const logout = () => dispatch({ type: 'user/logout' });
   if (!authUser) return null;

@@ -5,12 +5,11 @@ import SiteDetails from './SiteDetails';
 import SiteManifests from './SiteManifests';
 
 /**
- * Request and display a list of Site a user has access to
- * @param props
+ * Request and display a list of site a user has access to
  * @returns {JSX.Element}
  * @constructor
  */
-function Sites(props) {
+function Sites() {
   return (
     <Routes>
       <Route path="/" element={<SiteList user={null} />} />

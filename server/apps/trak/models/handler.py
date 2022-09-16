@@ -55,7 +55,7 @@ class Handler(models.Model):
         blank=True,
     )
     registered_emanifest_user = models.BooleanField(
-        verbose_name='Has Registered e-Manifest user',
+        verbose_name='Has Registered e-manifest user',
         null=True,
         blank=True,
         default=False,

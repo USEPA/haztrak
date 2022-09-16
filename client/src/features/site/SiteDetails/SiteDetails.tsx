@@ -40,7 +40,7 @@ function renderSiteDetail({ siteHandler }: any): JSX.Element {
 }
 
 /**
- * Display details of the selected Site model
+ * Display details of the selected site model
  * @returns {JSX.Element}
  * @constructor
  */
