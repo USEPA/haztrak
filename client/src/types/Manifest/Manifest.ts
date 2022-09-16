@@ -1,4 +1,4 @@
-// Manifest type declaration
+// manifest type declaration
 
 import { Signer } from './Contact';
 import { Handler, Locality } from './Handler';

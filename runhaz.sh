@@ -47,7 +47,7 @@ print_style() {
 }
 
 print_usage() {
-   # Display Help
+   # Display help
    echo "Command line utility to help develop Haztrak"
    echo
    echo "Syntax: $(basename "$0") [-m|d|l|t|p|r|h]"

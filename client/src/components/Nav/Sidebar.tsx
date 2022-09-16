@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button, Collapse } from 'react-bootstrap';
+import { RootState } from '../../app/store';
 
 /**
  * Vertical sidebar for navigation that disappears when the viewport is small
@@ -11,7 +12,7 @@ import { Button, Collapse } from 'react-bootstrap';
 function Sidebar() {
   const [open, setOpen] = useState(false);
 
-  const authUser = useSelector((state) => state.user.user);
+  const authUser = useSelector((state: RootState) => state.user.user);
   if (!authUser) return null;
 
   return (

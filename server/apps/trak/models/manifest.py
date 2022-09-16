@@ -12,7 +12,7 @@ class Manifest(models.Model):
         auto_now=True,
     )
     mtn = models.CharField(
-        verbose_name='Manifest Tracking Number',
+        verbose_name='manifest Tracking Number',
         max_length=15,
     )
     status = models.CharField(

@@ -5,8 +5,8 @@ import history from '../utils';
 export interface UserState {
   user: string | null;
   token: string | null;
-  rcraAPIID: string;
-  rcraAPIKey: string;
+  rcraAPIID: string | null;
+  rcraAPIKey: string | null;
   epaSites: string[];
   phoneNumber: string;
   loading: boolean;

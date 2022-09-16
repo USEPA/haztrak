@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import api from '../../../services';
-import {sleepDemo} from '../../../utils/utils';
-import {Manifest} from '../../../types';
-import {Col, Container, Row} from 'react-bootstrap';
+import { sleepDemo } from '../../../utils/utils';
+import { Manifest } from '../../../types';
+import { Col, Container, Row } from 'react-bootstrap';
 import HtCard from '../../../components/HtCard';
 
 function ManifestDetails(): JSX.Element {
@@ -112,15 +112,15 @@ function ManifestDetails(): JSX.Element {
           <Row>
             <Col>
               <p className="fw-bold mb-1">Emergency Phone</p>
-              <p>{manifestData.generator.contact.test}</p>
+              <p>{manifestData.generator.contact.phone.number}</p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Contact Phone</p>
-              <p>{manifestData.generator.contact.test}</p>
+              <p>{manifestData.generator.contact.phone.number}</p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Email</p>
-              <p>{manifestData.generator.contact.test}</p>
+              <p>{manifestData.generator.contact.email}</p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Can use electronic manifests?</p>
@@ -174,15 +174,15 @@ function ManifestDetails(): JSX.Element {
           <Row>
             <Col>
               <p className="fw-bold mb-1">Emergency Phone</p>
-              <p>{manifestData.designatedFacility.contact.test}</p>
+              <p>{manifestData.designatedFacility.contact.phone.number}</p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Contact Phone</p>
-              <p>{manifestData.designatedFacility.contact.test}</p>
+              <p>{manifestData.designatedFacility.contact.phone.number}</p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Email</p>
-              <p>{manifestData.designatedFacility.contact.test}</p>
+              <p>{manifestData.designatedFacility.contact.email}</p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Can use electronic manifests?</p>

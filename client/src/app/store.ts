@@ -1,8 +1,8 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { userReducers, login, getUser } from './user.slice';
 
-// Primarily use this for test to simulate the store
-const setupStore = (preloadedState: any) => {
+// Primarily use this for test to simulate the Redux store
+const setupStore = (preloadedState: RootState) => {
   return configureStore({
     reducer: {
       user: userReducers,
@@ -12,7 +12,6 @@ const setupStore = (preloadedState: any) => {
 };
 
 // The central Redux store
-// @ts-ignore
 const store = configureStore({
   reducer: {
     user: userReducers,
