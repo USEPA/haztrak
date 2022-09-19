@@ -1,16 +1,18 @@
 import React from 'react';
 import { Card, Container } from 'react-bootstrap';
 
-interface props {
+interface Props {
+  id?: string;
   children?: any;
 }
 
-interface headerProps {
+interface HeaderProps {
+  id?: string;
   title?: string;
   children?: any;
 }
 
-interface spinnerProps {
+interface SpinnerProps {
   message?: string;
 }
 
@@ -26,9 +28,9 @@ interface spinnerProps {
  *   <HtCard.Footer>submit button here<HtCard.Footer>
  * </HtCard>
  */
-function HtCard(props: props) {
+function HtCard(props: Props) {
   return (
-    <div className="m-1 my-3 shadow-lg bg-light rounded-2">
+    <div id={props.id} className="m-1 my-3 shadow-lg bg-light rounded-2">
       {props.children}
     </div>
   );
@@ -44,7 +46,7 @@ function HtCard(props: props) {
  *   <HtCard.Header title="Card Title!">{top right dropdown button}<HtCard.Header>
  * </HtCard>
  */
-HtCard.Header = function (props: headerProps) {
+HtCard.Header = function (props: HeaderProps) {
   return (
     <Card.Header className="bg-primary text-light rounded-top">
       <div className="d-flex justify-content-between p-1 px-2 py-1">
@@ -65,7 +67,7 @@ HtCard.Header = function (props: headerProps) {
  *   <HtCard.Footer>Put button here!<HtCard.Footer>
  * </HtCard>
  */
-HtCard.Footer = function (props: props) {
+HtCard.Footer = function (props: Props) {
   return (
     <Card.Footer className="bg-gray">
       <div className="d-flex justify-content-start gap-2">{props.children}</div>
@@ -83,7 +85,7 @@ HtCard.Footer = function (props: props) {
  *   <HtCard.Body>Hello World!<HtCard.Body>
  * </HtCard>
  */
-HtCard.Body = function (props: props) {
+HtCard.Body = function (props: Props) {
   return (
     <Card.Body className="bg-light">
       <Container className="py-2">{props.children}</Container>
@@ -101,10 +103,11 @@ HtCard.Body = function (props: props) {
  *   <HtCard.Spinner message="loading..."/>
  * </HtCard.Body>
  */
-HtCard.Spinner = function ({ message }: spinnerProps) {
+HtCard.Spinner = function ({message}: SpinnerProps) {
   return (
     <>
-      <h4 className="d-flex justify-content-center text-muted bg-transparent p-1 py-3">
+      <h4
+        className="d-flex justify-content-center text-muted bg-transparent p-1 py-3">
         <i className="fa-solid fa-spin fa-circle-notch"></i>
         &nbsp;&nbsp;{message}
       </h4>
