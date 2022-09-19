@@ -3,6 +3,11 @@ import {useForm, SubmitHandler} from 'react-hook-form';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import HtCard from '../HtCard';
+import {Manifest} from '../../types';
+
+interface Props {
+  manifest?: Manifest;
+}
 
 interface Inputs {
   age: string;
@@ -15,7 +20,7 @@ const schema = yup
   })
   .required();
 
-function ManifestForm(): JSX.Element {
+function ManifestForm(props: Props): JSX.Element {
   const {
     register,
     handleSubmit,
@@ -25,7 +30,13 @@ function ManifestForm(): JSX.Element {
 
   return (
     <HtCard>
-      <HtCard.Header title={'New manifest'}/>
+      <HtCard.Header
+        title={
+          props.manifest
+            ? props.manifest.manifestTrackingNumber
+            : 'New manifest'
+        }
+      />
       <HtCard.Body>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Group>
