@@ -4,12 +4,12 @@ export interface Contact {
   lastName: string;
   phone: Phone;
   email: string;
-  companyName: string;
+  companyName?: string;
 }
 
 export interface Phone {
   number: string;
-  extension: string;
+  extension?: string;
 }
 
 export interface Signer {
@@ -27,4 +27,8 @@ enum ContactType {
   Email,
   Text,
   Voice,
+}
+
+export interface EmergencyPhone {
+  number: string;
 }

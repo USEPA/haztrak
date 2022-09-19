@@ -33,6 +33,11 @@ function ManifestDetails(): JSX.Element {
       });
   }, [params.mtn]);
 
+  const genPhone = manifestData?.generator.contact.phone.number;
+  const genEmerPhone = manifestData?.generator.emergencyPhone.number;
+  const tsdPhone = manifestData?.designatedFacility.contact.phone.number;
+  const tsdEmerPhone = manifestData?.designatedFacility.emergencyPhone.number;
+
   return manifestData ? (
     <Container className="py-4">
       <h2 className="fw-bold">{manifestData.manifestTrackingNumber}</h2>
@@ -112,11 +117,11 @@ function ManifestDetails(): JSX.Element {
           <Row>
             <Col>
               <p className="fw-bold mb-1">Emergency Phone</p>
-              <p>{manifestData.generator.contact.phone.number}</p>
+              <p>{genEmerPhone ? genEmerPhone : ''}</p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Contact Phone</p>
-              <p>{manifestData.generator.contact.phone.number}</p>
+              <p>{genPhone ? genPhone : ''}</p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Email</p>
@@ -174,11 +179,11 @@ function ManifestDetails(): JSX.Element {
           <Row>
             <Col>
               <p className="fw-bold mb-1">Emergency Phone</p>
-              <p>{manifestData.designatedFacility.contact.phone.number}</p>
+              <p>{tsdEmerPhone ? tsdEmerPhone : ''}</p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Contact Phone</p>
-              <p>{manifestData.designatedFacility.contact.phone.number}</p>
+              <p>{tsdPhone ? tsdPhone : ''}</p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Email</p>
