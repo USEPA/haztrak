@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import api from '../../../services';
-import { sleepDemo } from '../../../utils/utils';
-import { Manifest } from '../../../types';
+import api from 'services';
+import { sleepDemo } from 'utils/utils';
+import { Manifest } from 'types';
 import { Col, Container, Row } from 'react-bootstrap';
-import HtCard from '../../../components/HtCard';
+import HtCard from 'components/HtCard';
 
 function ManifestDetails(): JSX.Element {
   let params = useParams();

@@ -17,13 +17,16 @@ import { Sidebar } from './components/Nav';
 import About from './features/help';
 import Profile from './features/profile';
 import Sites from './features/site/Sites';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from './app/hooks';
 import Manifest from './features/manifest';
 
 function App() {
+  const useSelector = useAppSelector;
   // init custom history object to allow navigation from
   // anywhere in the React app (inside or outside components)
+  // @ts-ignore
   history.navigate = useNavigate();
+  // @ts-ignore
   history.location = useLocation();
 
   const { user } = useSelector((state) => state.user);
@@ -56,7 +59,7 @@ function App() {
               path="/site/*"
               element={
                 <PrivateRoute>
-                  <Sites user={user} />
+                  <Sites user={user ? user : ''} />
                 </PrivateRoute>
               }
             />

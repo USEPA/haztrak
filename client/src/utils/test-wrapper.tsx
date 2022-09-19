@@ -3,19 +3,24 @@
 // https://testing-library.com/docs/react-testing-library/setup/#custom-render
 import React from 'react';
 import { render } from '@testing-library/react';
-import { setupStore } from '../app/store';
+import { RootState, setupStore } from 'app/store';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-const AllTheProviders = ({ children }) => {
+interface Props {
+  children: JSX.Element;
+  initialState: RootState;
+}
+
+const AllTheProviders = ({ children, initialState }: Props) => {
   return (
-    <Provider store={setupStore()}>
+    <Provider store={setupStore(initialState)}>
       <BrowserRouter>{children}</BrowserRouter>
     </Provider>
   );
 };
 
-const customRender = (ui, options) =>
+const customRender = (ui: JSX.Element, options: any | null) =>
   render(ui, { wrapper: AllTheProviders, ...options });
 
 export * from '@testing-library/react';

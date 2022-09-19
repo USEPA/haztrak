@@ -1,7 +1,7 @@
-import ManifestForm from '../../../components/ManifestForm/ManifestForm';
+import ManifestForm from 'components/ManifestForm/ManifestForm';
 
 function ManifestEdit(): JSX.Element {
-  return <ManifestForm/>;
+  return <ManifestForm />;
 }
 
 export default ManifestEdit;

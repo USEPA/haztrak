@@ -2,10 +2,14 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
+import history from 'utils';
+import { login } from 'app/store';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
 
-import history from '../../utils';
-import { login } from '../../app/store';
+interface Inputs {
+  username: string;
+  password: string;
+}
 
 /**
  * Haztrak Login component, redirects if user is already logged in
@@ -13,13 +17,15 @@ import { login } from '../../app/store';
  * @constructor
  */
 function Login() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const useSelector = useAppSelector;
   const authUser = useSelector((state) => state.user.user);
   const authError = useSelector((state) => state.user.error);
 
   useEffect(() => {
     // redirect to home if already logged in
     if (authUser) {
+      // @ts-ignore
       history.navigate('/');
     }
   }, [authUser]);
@@ -32,10 +38,15 @@ function Login() {
   const formOptions = { resolver: yupResolver(validationSchema) };
 
   // get functions to build form with useForm() hook
-  const { register, handleSubmit, formState } = useForm(formOptions);
-  const { errors, isSubmitting } = formState;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<Inputs>(formOptions);
 
-  function onSubmit({ username, password }) {
+  // const { errors, isSubmitting } = formState;
+
+  function onSubmit({ username, password }: Inputs) {
     return dispatch(login({ username, password }));
   }
 
@@ -48,7 +59,6 @@ function Login() {
             <div className="form-group">
               <label>Username</label>
               <input
-                name="username"
                 type="text"
                 {...register('username')}
                 className={`form-control ${
@@ -58,10 +68,8 @@ function Login() {
               <div className="invalid-feedback">{errors.username?.message}</div>
             </div>
             <div className="form-group">
-              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label>Password</label>
               <input
-                name="password"
                 type="password"
                 {...register('password')}
                 className={`form-control ${
@@ -81,9 +89,7 @@ function Login() {
               Login
             </button>
             {authError && (
-              <div className="alert alert-danger mt-3 mb-0">
-                {authError.message}
-              </div>
+              <div className="alert alert-danger mt-3 mb-0">{authError}</div>
             )}
           </form>
         </div>
