@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import api from '../../../services';
-import { sleepDemo } from '../../../utils/utils';
-import HtCard from '../../../components/HtCard';
+import api from 'services';
+import { sleepDemo } from 'utils/utils';
+import HtCard from 'components/HtCard';
 import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
-import HtDropdown from '../../../components/HtDropdown';
+import HtDropdown from 'components/HtDropdown';
 
 interface props {
   user: any;

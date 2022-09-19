@@ -1,9 +1,9 @@
-import {Button, Container, Form} from 'react-bootstrap';
-import {useForm, SubmitHandler} from 'react-hook-form';
+import { Button, Container, Form } from 'react-bootstrap';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
-import {yupResolver} from '@hookform/resolvers/yup';
-import HtCard from '../HtCard';
-import {Manifest} from '../../types';
+import { yupResolver } from '@hookform/resolvers/yup';
+import HtCard from 'components/HtCard';
+import { Manifest } from 'types';
 
 interface Props {
   manifest?: Manifest;
@@ -24,8 +24,9 @@ function ManifestForm(props: Props): JSX.Element {
   const {
     register,
     handleSubmit,
-    formState: {errors},
-  } = useForm<Inputs>({resolver: yupResolver(schema)});
+    formState: { errors },
+  } = useForm<Inputs>({ resolver: yupResolver(schema) });
+
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
   return (
@@ -44,7 +45,7 @@ function ManifestForm(props: Props): JSX.Element {
             <Form.Control
               type="email"
               placeholder={'enter email'}
-              {...register('email', {required: true})}
+              {...register('email', { required: true })}
             />
             <Form.Control defaultValue="test" {...register('age')} />
             <Button type="submit">Submit</Button>

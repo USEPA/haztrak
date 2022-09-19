@@ -4,12 +4,16 @@ import SiteList from './SiteList';
 import SiteDetails from './SiteDetails';
 import SiteManifests from './SiteManifests';
 
+interface Props {
+  user: string;
+}
+
 /**
  * Request and display a list of site a user has access to
  * @returns {JSX.Element}
  * @constructor
  */
-function Sites() {
+function Sites({ user }: Props) {
   return (
     <Routes>
       <Route path="/" element={<SiteList user={null} />} />

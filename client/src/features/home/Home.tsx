@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-// import { getUser } from '../../store';
-import { getUser } from '../../app/store';
+import { getUser, RootState } from 'app/store';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
 
 /**
  * Home page for logged in user, currently does not really include anything
@@ -9,8 +8,8 @@ import { getUser } from '../../app/store';
  * @constructor
  */
 function Home() {
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state: RootState) => state.user);
 
   useEffect(() => {
     // get user profile information when the user changes

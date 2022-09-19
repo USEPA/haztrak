@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import api from '../../../services';
+import api from 'services';
 import { Button, Row, Col, Container, Table } from 'react-bootstrap';
-import HtCard from '../../../components/HtCard';
-import HtTooltip from '../../../components/Tooltip';
+import HtCard from 'components/HtCard';
+import HtTooltip from 'components/Tooltip';
 
 interface SiteManifest {
   generator: string[];

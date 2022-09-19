@@ -2,8 +2,8 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import history from '../utils';
-import { RootState } from '../app/store';
+import history from 'utils';
+import { RootState } from 'app/store';
 
 /**
  * Wraps around Route component to redirect to login if not authenticated user

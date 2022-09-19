@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../services';
-import history from '../utils';
+import api from 'services';
+import history from 'utils';
 
 export interface UserState {
   user: string | null;
