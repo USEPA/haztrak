@@ -1,7 +1,7 @@
 // manifest type declaration
 
 import { Signer } from './Contact';
-import { Handler, Locality } from './Handler';
+import { Handler, Locality } from '../Handler/Handler';
 import { CorrectionInfo, CorrectionRequest } from './Correction';
 import { RejectionInfo } from './Rejection';
 import { Waste } from './Waste';

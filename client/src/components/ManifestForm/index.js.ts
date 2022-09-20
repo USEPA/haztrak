@@ -1,3 +1,3 @@
-import ManifestForm from './ManifestForm';
+import HandlerForm from './HandlerForm/HandlerForm';
 
-export default ManifestForm;
+export default HandlerForm;
