@@ -1,4 +1,4 @@
-import { Locality } from './Handler';
+import { Locality } from '../Handler/Handler';
 
 export interface CorrectionRequest {
   correctionRequestStatus: CorrectionRequestStatus;
