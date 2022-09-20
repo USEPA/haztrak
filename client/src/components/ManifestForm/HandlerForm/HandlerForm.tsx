@@ -19,6 +19,10 @@ function HandlerForm(props: Props): JSX.Element {
 
   const onSubmit: SubmitHandler<Handler> = (data: Handler) => console.log(data);
 
+  if (errors) {
+    console.log(errors);
+  }
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Row>
@@ -81,7 +85,7 @@ function HandlerForm(props: Props): JSX.Element {
             <Form.Label>State</Form.Label>
             <Form.Select
               placeholder="Select State"
-              {...register('siteAddress.state.code')}
+              {...register('siteAddress.state')}
             >
               <StateSelect />
             </Form.Select>
@@ -106,6 +110,8 @@ function HandlerForm(props: Props): JSX.Element {
         {errors && <span>{errors.name?.message}</span>}
         {errors && <span>{errors.siteAddress?.message}</span>}
         {errors && <span>{errors.siteAddress?.streetNumber?.message}</span>}
+        {errors && <span>{errors.siteAddress?.address1?.message}</span>}
+        {errors && <span>{errors.siteAddress?.city?.message}</span>}
       </Container>
     </Form>
   );

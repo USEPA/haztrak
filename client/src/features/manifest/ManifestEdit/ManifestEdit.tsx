@@ -32,7 +32,12 @@ function ManifestEdit(props: Props): JSX.Element {
     return (
       <Container>
         <h2 className="fw-bold">{mtn}</h2>
-        <HandlerForm handlerType={HandlerType.Generator} />
+        <HtCard id="generator-form-card">
+          <HtCard.Header title="Generator" />
+          <HtCard.Body>
+            <HandlerForm handlerType={HandlerType.Generator} />
+          </HtCard.Body>
+        </HtCard>
       </Container>
     );
   }

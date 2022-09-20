@@ -8,7 +8,7 @@ const HandlerSchema = yup.object().shape({
       streetNumber: yup.number().optional(),
       address1: yup.string().required('Street address is required'),
       city: yup.string().optional(),
-      state: yup.string().required("Select the site's state"),
+      state: yup.object().required('State is required'),
     })
     .required('Site Address is required'),
 });
