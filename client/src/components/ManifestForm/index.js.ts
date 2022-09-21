@@ -1,3 +1,3 @@
-import HandlerForm from './HandlerForm/HandlerForm';
+import HandlerForm from './HandlerForm';
 
 export default HandlerForm;

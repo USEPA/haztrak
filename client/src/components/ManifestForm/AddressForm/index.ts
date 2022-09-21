@@ -1,3 +1,4 @@
-import AddressForm from './AddressForm';
+import { AddressForm } from './AddressForm';
+import { AddressSchema } from './AddressSchema';
 
-export default AddressForm;
+export { AddressForm, AddressSchema };
