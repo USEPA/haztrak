@@ -23,7 +23,7 @@ function ManifestEdit(props: Props): JSX.Element {
         <HtCard id="generator-form-card">
           <HtCard.Header title="Generator" />
           <HtCard.Body>
-            <HandlerForm handlerType={HandlerType.Generator} />
+            <HandlerForm handlerType={HandlerType.Generator}/>
           </HtCard.Body>
         </HtCard>
       </Container>
