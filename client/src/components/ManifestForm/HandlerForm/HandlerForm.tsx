@@ -19,38 +19,40 @@ function HandlerForm(props: Props): JSX.Element {
 
   const onSubmit: SubmitHandler<Handler> = (data: Handler) => console.log(data);
 
-  if (errors) {
-    console.log(errors);
-  }
-
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <Row>
+      <Row className="mb-2">
         <Col className="col-sm-4">
           <Form.Group className="mb-2">
-            <Form.Label>Generator ID</Form.Label>
+            <Form.Label className="mb-0">Generator ID</Form.Label>
             <Form.Control
               type="text"
               placeholder={'EPA ID number'}
-              {...register('epaSiteId', { required: true })}
+              {...register('epaSiteId')}
             />
           </Form.Group>
         </Col>
         <Col className="col-sm-8">
           <Form.Group className="mb-2">
-            <Form.Label>Site Name</Form.Label>
+            <Form.Label className="mb-0">Site Name</Form.Label>
             <Form.Control
               type="text"
               placeholder={`${props.handlerType} Name`}
-              {...register('name', { required: true })}
+              // register comes from react-hook-form, however haztrak leaves the
+              // validation to the dedicated 'yup' library which is more expressive
+              {...register('name')}
             />
           </Form.Group>
         </Col>
+        {errors && (
+          <span className="text-danger">{errors.epaSiteId?.message}</span>
+        )}
+        {errors && <span className="text-danger">{errors.name?.message}</span>}
       </Row>
-      <Row>
+      <Row className="mb-2">
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label>Street Number</Form.Label>
+            <Form.Label className="mb-0">Street Number</Form.Label>
             <Form.Control
               type="text"
               placeholder="1234"
@@ -60,7 +62,7 @@ function HandlerForm(props: Props): JSX.Element {
         </Col>
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label>Street Name</Form.Label>
+            <Form.Label className="mb-0">Street Name</Form.Label>
             <Form.Control
               type="text"
               placeholder="Main St."
@@ -70,7 +72,7 @@ function HandlerForm(props: Props): JSX.Element {
         </Col>
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label>City</Form.Label>
+            <Form.Label className="mb-0">City</Form.Label>
             <Form.Control
               type="text"
               placeholder="Springfield"
@@ -78,11 +80,29 @@ function HandlerForm(props: Props): JSX.Element {
             />
           </Form.Group>
         </Col>
+        {errors && (
+          <span className="text-danger">{errors.siteAddress?.message}</span>
+        )}
+        {errors && (
+          <span className="text-danger">
+            {errors.siteAddress?.streetNumber?.message}
+          </span>
+        )}
+        {errors && (
+          <span className="text-danger">
+            {errors.siteAddress?.address1?.message}
+          </span>
+        )}
+        {errors && (
+          <span className="text-danger">
+            {errors.siteAddress?.city?.message}
+          </span>
+        )}
       </Row>
-      <Row>
+      <Row className="mb-2">
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label>State</Form.Label>
+            <Form.Label className="mb-0">State</Form.Label>
             <Form.Select
               placeholder="Select State"
               {...register('siteAddress.state')}
@@ -93,7 +113,7 @@ function HandlerForm(props: Props): JSX.Element {
         </Col>
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label>Zip</Form.Label>
+            <Form.Label className="mb-0">Zip</Form.Label>
             <Form.Control
               type="text"
               placeholder="12345"
@@ -101,18 +121,19 @@ function HandlerForm(props: Props): JSX.Element {
             />
           </Form.Group>
         </Col>
+        {errors && (
+          <span className="text-danger">
+            {errors.siteAddress?.zip?.message}
+          </span>
+        )}
+        {errors && (
+          <span className="text-danger">
+            {errors.siteAddress?.state?.message}
+          </span>
+        )}
       </Row>
-      <Button className="m-2" type="submit">
-        Submit
-      </Button>
-      <Container>
-        {errors && <span>{errors.epaSiteId?.message}</span>}
-        {errors && <span>{errors.name?.message}</span>}
-        {errors && <span>{errors.siteAddress?.message}</span>}
-        {errors && <span>{errors.siteAddress?.streetNumber?.message}</span>}
-        {errors && <span>{errors.siteAddress?.address1?.message}</span>}
-        {errors && <span>{errors.siteAddress?.city?.message}</span>}
-      </Container>
+      <Button type="submit">Submit</Button>
+      <Container></Container>
     </Form>
   );
 }
