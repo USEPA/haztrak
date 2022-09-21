@@ -25,6 +25,11 @@ export enum HandlerType {
   Transporter = 'Transporter',
 }
 
+export enum AddressType {
+  site = 'siteAddress',
+  mail = 'mailingAddress',
+}
+
 export interface Address {
   address1: string;
   city: string;
