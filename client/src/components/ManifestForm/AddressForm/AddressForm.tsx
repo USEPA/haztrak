@@ -1,14 +1,17 @@
 import { Col, Form, Row } from 'react-bootstrap';
 import StateSelect from './StateSelect';
 import { useFormContext } from 'react-hook-form';
-import { AddressType } from '../../../types/Handler/Handler';
+import { AddressType } from 'types/Handler/Handler';
 import { ErrorMessage } from '@hookform/error-message';
 
+// AddressForm can be used to set a Handler's mailingAddress or siteAddress
 interface Props {
   addressType: AddressType;
 }
 
-function AddressForm({ addressType }: Props) {
+export function AddressForm({ addressType }: Props) {
+  // AddressForm uses the react-hook-form useFormContext hook to avoid the need
+  // to pass the useForm methods via props. it needs to be used in a FormProvider
   const {
     register,
     formState: { errors },
@@ -108,5 +111,3 @@ function AddressForm({ addressType }: Props) {
     </>
   );
 }
-
-export default AddressForm;

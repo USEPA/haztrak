@@ -2,10 +2,10 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Handler } from 'types';
-import HandlerSchema from './HandlerValidation';
+import HandlerSchema from './HandlerSchema';
 import { AddressType, HandlerType } from 'types/Handler/Handler';
 import { useState } from 'react';
-import AddressForm from '../AddressForm';
+import { AddressForm } from '../AddressForm';
 
 interface Props {
   handlerType: HandlerType;
@@ -24,10 +24,6 @@ function HandlerForm(props: Props): JSX.Element {
     }
     console.log(data);
   };
-
-  // if (errors) {
-  //   console.log(errors);
-  // }
 
   return (
     <FormProvider {...methods}>
