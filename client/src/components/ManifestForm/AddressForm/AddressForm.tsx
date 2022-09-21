@@ -1,15 +1,17 @@
 import { Col, Form, Row } from 'react-bootstrap';
 import StateSelect from './StateSelect';
 import { useFormContext } from 'react-hook-form';
-import { AddressType } from 'types/Handler/Handler';
+import { AddressType, HandlerType } from 'types/Handler/Handler';
 import { ErrorMessage } from '@hookform/error-message';
 
 // AddressForm can be used to set a Handler's mailingAddress or siteAddress
 interface Props {
   addressType: AddressType;
+  handlerType: HandlerType;
 }
 
-export function AddressForm({ addressType }: Props) {
+export function AddressForm({ addressType, handlerType }: Props) {
+  const namePrefix = `${handlerType}.${addressType}`;
   // AddressForm uses the react-hook-form useFormContext hook to avoid the need
   // to pass the useForm methods via props. it needs to be used in a FormProvider
   const {
@@ -25,7 +27,7 @@ export function AddressForm({ addressType }: Props) {
             <Form.Control
               type="text"
               placeholder="1234"
-              {...register(`${addressType}.streetNumber`)}
+              {...register(`${namePrefix}.streetNumber`)}
             />
           </Form.Group>
         </Col>
@@ -35,7 +37,7 @@ export function AddressForm({ addressType }: Props) {
             <Form.Control
               type="text"
               placeholder="Main St."
-              {...register(`${addressType}.address1`)}
+              {...register(`${namePrefix}.address1`)}
             />
           </Form.Group>
         </Col>
@@ -45,27 +47,27 @@ export function AddressForm({ addressType }: Props) {
             <Form.Control
               type="text"
               placeholder="Springfield"
-              {...register(`${addressType}.city`)}
+              {...register(`${namePrefix}.city`)}
             />
           </Form.Group>
         </Col>
         <ErrorMessage
           errors={errors}
-          name={`${addressType}.address1`}
+          name={`${namePrefix}.address1`}
           render={({ message }) => (
             <span className="text-danger">{message}</span>
           )}
         />
         <ErrorMessage
           errors={errors}
-          name={`${addressType}.streetNumber`}
+          name={`${namePrefix}.streetNumber`}
           render={({ message }) => (
             <span className="text-danger">{message}</span>
           )}
         />
         <ErrorMessage
           errors={errors}
-          name={`${addressType}.city`}
+          name={`${namePrefix}.city`}
           render={({ message }) => (
             <span className="text-danger">{message}</span>
           )}
@@ -77,7 +79,7 @@ export function AddressForm({ addressType }: Props) {
             <Form.Label className="mb-0">State</Form.Label>
             <Form.Select
               placeholder="Select State"
-              {...register(`${addressType}.state`)}
+              {...register(`${namePrefix}.state`)}
             >
               <StateSelect />
             </Form.Select>
@@ -89,20 +91,20 @@ export function AddressForm({ addressType }: Props) {
             <Form.Control
               type="text"
               placeholder="12345"
-              {...register(`${addressType}.zip`)}
+              {...register(`${namePrefix}.zip`)}
             />
           </Form.Group>
         </Col>
         <ErrorMessage
           errors={errors}
-          name={`${addressType}.zip`}
+          name={`${namePrefix}.zip`}
           render={({ message }) => (
             <span className="text-danger">{message}</span>
           )}
         />
         <ErrorMessage
           errors={errors}
-          name={`${addressType}.state`}
+          name={`${namePrefix}.state`}
           render={({ message }) => (
             <span className="text-danger">{message}</span>
           )}

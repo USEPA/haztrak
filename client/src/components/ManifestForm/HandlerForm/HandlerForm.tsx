@@ -1,50 +1,28 @@
-import {Button, Col, Form, Row} from 'react-bootstrap';
-import {
-  FormProvider,
-  SubmitHandler,
-  useForm,
-  useFormContext,
-} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {Handler} from 'types';
-import HandlerSchema from './HandlerSchema';
-import {AddressType, HandlerType} from 'types/Handler/Handler';
-import {useEffect, useState} from 'react';
-import {AddressForm} from '../AddressForm';
-import {ErrorMessage} from '@hookform/error-message';
+import { Button, Col, Form, Row } from 'react-bootstrap';
+import { useFormContext } from 'react-hook-form';
+import { AddressType, HandlerType } from 'types/Handler/Handler';
+import { useEffect, useState } from 'react';
+import { AddressForm } from '../AddressForm';
+import { ErrorMessage } from '@hookform/error-message';
 
 interface Props {
   handlerType: HandlerType;
 }
 
-function HandlerForm(props: Props): JSX.Element {
+function HandlerForm({ handlerType }: Props): JSX.Element {
   const [mailCheck, setMailCheck] = useState(false);
   const {
     register,
     getValues,
     setValue,
-    formState: {errors},
+    formState: { errors },
   } = useFormContext();
   useEffect(() => {
     if (!mailCheck) {
       const test = getValues('siteAddress');
       setValue('mailingAddress', test);
-      console.log(getValues());
-    } else {
-      console.log('separate values filled');
     }
   }, [mailCheck]);
-  // const methods = useForm<Handler>({ resolver: yupResolver(HandlerSchema) });
-  // const {
-  //   formState: { errors },
-  // } = methods;
-
-  const onSubmit: SubmitHandler<Handler> = (data: Handler) => {
-    if (!mailCheck) {
-      data.mailingAddress = data.siteAddress;
-    }
-    console.log(data);
-  };
 
   return (
     <>
@@ -55,7 +33,7 @@ function HandlerForm(props: Props): JSX.Element {
             <Form.Control
               type="text"
               placeholder={'EPA ID number'}
-              {...register('epaSiteId')}
+              {...register(`${handlerType}.epaSiteId`)}
             />
           </Form.Group>
         </Col>
@@ -64,31 +42,31 @@ function HandlerForm(props: Props): JSX.Element {
             <Form.Label className="mb-0">Site Name</Form.Label>
             <Form.Control
               type="text"
-              placeholder={`${props.handlerType} Name`}
+              placeholder={`${handlerType} Name`}
               // register comes from react-hook-form, however haztrak leaves the
               // validation to the dedicated 'yup' library which is more expressive
-              {...register('name')}
+              {...register(`${handlerType}.name`)}
             />
           </Form.Group>
         </Col>
         <ErrorMessage
           errors={errors}
           name={`epaSiteId`}
-          render={({message}) => (
+          render={({ message }) => (
             <span className="text-danger">{message}</span>
           )}
         />
         <ErrorMessage
           errors={errors}
           name={`name`}
-          render={({message}) => (
+          render={({ message }) => (
             <span className="text-danger">{message}</span>
           )}
         />
       </Row>
-      <AddressForm addressType={AddressType.site}/>
+      <AddressForm addressType={AddressType.site} handlerType={handlerType} />
       <Row className="mb-2">
-        {props.handlerType === HandlerType.Generator ? (
+        {handlerType === HandlerType.Generator ? (
           <Col>
             <Form.Check
               defaultChecked={mailCheck}
@@ -107,13 +85,16 @@ function HandlerForm(props: Props): JSX.Element {
         {mailCheck ? (
           <>
             <h4>Mailing Address</h4>
-            <AddressForm addressType={AddressType.mail}/>
+            <AddressForm
+              addressType={AddressType.mail}
+              handlerType={handlerType}
+            />
           </>
         ) : (
           <></>
         )}
       </Row>
-      <Button type="submit">{`Add ${props.handlerType}`}</Button>
+      <Button type="submit">{`Add ${handlerType}`}</Button>
     </>
   );
 }

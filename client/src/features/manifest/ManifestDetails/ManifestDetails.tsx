@@ -25,7 +25,6 @@ function ManifestDetails(): JSX.Element {
         // setLoading(false)
         // End HT Example
         setManifestData(response as Manifest);
-        console.log(response);
       })
       .catch((error) => {
         setError(error);
