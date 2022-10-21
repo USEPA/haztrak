@@ -1,0 +1,10 @@
+.editorconfig
+.gitignore
+.dockerignore
+README.md
+.prettierignore
+.prettierrc.json
+.env.example
+node_modules/
+dpg-client/
+.github/
