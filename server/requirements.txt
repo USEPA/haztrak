@@ -14,4 +14,4 @@ sqlparse==0.4.2
 tzdata==2022.1
 urllib3==1.26.11
 
-python-dotenv~=0.20.0
+python-dotenv~=0.21.0
