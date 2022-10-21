@@ -8,8 +8,8 @@ venv/
 env/
 
 # IDE
-.idea
-.vscode
+**/.idea
+**/.vscode
 
 # Coverage
 .coverage
