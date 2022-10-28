@@ -13,11 +13,11 @@ function About() {
       <h1>Welcome to Haztrak!</h1>
       <p>
         Haztrak is an an open-source example of how hazardous handlers can
-        interface their waste management software with
-        <a href="https://rcrainfo.epa.gov">RCRAInfo</a>
-        to use e-Manifest. It illustrates how many of the common task necessary
-        to execute a fully electronic manifest can be completed without ever
-        having to login to RCRAInfo via the web browser.
+        interface their waste management software with{' '}
+        <a href="https://rcrainfo.epa.gov">RCRAInfo</a> to use e-Manifest. It
+        illustrates how many of the common task necessary to execute a fully
+        electronic manifest can be completed without ever having to login to
+        RCRAInfo via the web browser.
       </p>
       <p>
         Haztrak It was developed by the United State Environmental Protection
