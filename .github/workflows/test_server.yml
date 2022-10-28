@@ -17,7 +17,7 @@ jobs:
       run:
         working-directory: ./server
     env:
-      HAZTRAK_SECRET_KEY: django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d
+      HT_SECRET_KEY: django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d
     strategy:
       max-parallel: 4
       matrix:
@@ -36,3 +36,9 @@ jobs:
       - name: Run Tests
         run: |
           python manage.py test
+        env:
+          HT_CORS_DOMAIN: http://localhost:3000
+          HT_TIMEZONE: America/New_York
+          HT_HOST: localhost
+          HT_RCRAINFO_ENV: preprod
+          HT_DEBUG: true

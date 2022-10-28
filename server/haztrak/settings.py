@@ -16,6 +16,13 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+ht_host = "HT_HOST"
+ht_debug = "HT_DEBUG"
+ht_secret = "HT_SECRET_KEY"
+ht_timezone = "HT_TIMEZONE"
+ht_test_db_name = 'HT_TEST_DB_NAME'
+ht_cors_domain = 'HT_CORS_DOMAIN'
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,25 +32,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 
 # SECURITY WARNING: keep the secret key used in production secret!
-if os.getenv('HAZTRAK_SECRET_KEY'):
-    SECRET_KEY = os.getenv('HAZTRAK_SECRET_KEY')
+if os.getenv(ht_secret):
+    SECRET_KEY = os.getenv(ht_secret)
 else:
-    logging.fatal('environment HAZTRAK_SECRET_KEY not found, exiting')
+    logging.fatal('environment HT_SECRET_KEY not found, exiting')
     exit(1)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.getenv('HAZTRAK_DEBUG'):
-    if os.getenv('HAZTRAK_DEBUG').upper() == 'TRUE':
+if os.getenv(ht_debug):
+    if os.getenv(ht_debug).upper() == 'TRUE':
         DEBUG = True
 else:
     DEBUG = False
 
-if os.getenv('HAZTRAK_HOST'):
-    ALLOWED_HOSTS = os.getenv('HAZTRAK_HOST')
-    if type(ALLOWED_HOSTS) is str:
-        ALLOWED_HOSTS = [ALLOWED_HOSTS]
+if os.getenv(ht_host):
+    ALLOWED_HOSTS = [str(os.getenv(ht_host))]
+    # if type(ALLOWED_HOSTS) is str:
+    #     ALLOWED_HOSTS = [ALLOWED_HOSTS]
 else:
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ['localhost']
 
 # Application definition
 INSTALLED_APPS = [
@@ -79,8 +86,12 @@ APPEND_SLASH = True
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
+    str(os.getenv(ht_cors_domain))
 ]
+if os.getenv(ht_cors_domain):
+    CORS_ORIGIN_WHITELIST = [str(os.getenv(ht_cors_domain))]
+else:
+    CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 
 ROOT_URLCONF = 'haztrak.urls'
 
@@ -107,30 +118,30 @@ WSGI_APPLICATION = 'haztrak.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-if os.getenv('DB_NAME'):
+if os.getenv('HT_DB_NAME'):
     required_env_vars = [
-        'DB_ENGINE',
-        'DB_NAME',
-        'DB_USER',
-        'DB_PASSWORD',
-        'DB_HOST',
-        'DB_PORT',
+        'HT_DB_ENGINE',
+        'HT_DB_NAME',
+        'HT_DB_USER',
+        'HT_DB_PASSWORD',
+        'HT_DB_HOST',
+        'HT_DB_PORT',
     ]
     for i in required_env_vars:
         if not os.getenv(i):
             logging.error(f'missing required DB environment variable {i}')
             exit(1)
-    if not os.getenv('TEST_DB_NAME'):
+    if not os.getenv(ht_test_db_name):
         os.environ['test'] = 'test'
     default_db = {
-        'ENGINE': os.getenv('DB_ENGINE'),
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
+        'ENGINE': os.getenv('HT_DB_ENGINE'),
+        'NAME': os.getenv('HT_DB_NAME'),
+        'USER': os.getenv('HT_DB_USER'),
+        'PASSWORD': os.getenv('HT_DB_PASSWORD'),
+        'HOST': os.getenv('HT_DB_HOST'),
+        'PORT': os.getenv('HT_DB_PORT'),
         'TEST': {
-            'NAME': os.getenv('TEST_DB_NAME')
+            'NAME': os.getenv(ht_test_db_name)
         }
     }
 else:
@@ -171,7 +182,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = os.getenv('HAZTRAK_TIMEZONE', 'UTC')
+TIME_ZONE = os.getenv(ht_timezone, 'UTC')
 
 USE_I18N = False
 
