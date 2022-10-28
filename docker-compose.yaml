@@ -5,24 +5,41 @@ services:
     build: ./server
     ports:
       - "8000:8000"
-    networks:
-      backend-net:
     environment:
-      HAZTRAK_HOST: "http://localhost"
+      HT_HOST: "localhost"
+      HT_SECRET_KEY: ${HT_SECRET_KEY}
+      HT_DEBUG: ${HT_DEBUG}
+      HT_TIMEZONE: ${HT_TIMEZONE}
+      HT_RCRAINFO_ENV: ${HT_RCRAINFO_ENV}
+      HT_CORS_DOMAIN: ${HT_CORS_DOMAIN}
+#      HT_DB_ENGINE: ${HT_DB_ENGINE}
+#      HT_DB_NAME: ${HT_DB_NAME}
+#      HT_DB_USER: ${HT_DB_USER}
+#      HT_DB_PASSWORD: ${HT_DB_PASSWORD}
+#      HT_DB_HOST: ${HT_DB_HOST}
+#      HT_DB_PORT: ${HT_DB_PORT}
 
-  haztrak-redis:
-    image: "redis:alpine"
-    networks:
-      backend-net:
+#  haztrak-redis:
+#    image: "redis:alpine"
+
+#  haztrak-postgres:
+#    image: "postgres:14"
+#    environment:
+#      - POSTGRES_USER=${HT_POSTGRES_USER}
+#      - POSTGRES_PASSWORD=${HT_POSTGRES_PASSWORD}
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - haztrak-development:/var/lib/postgresql/data
 
   haztrak-client:
     build: ./client
     ports:
       - "3000:3000"
     environment:
-      REACT_APP_HAZTRAK_API_URL: "http://localhost:8000"
+      REACT_APP_HT_API_URL: "http://haztrak-server:8000/"
+      REACT_APP_HT_ENV: ${REACT_APP_HT_ENV}
 
-networks:
-  backend-net:
-    driver: overlay
-    attachable: true
+volumes:
+  haztrak-development:
+    external: true

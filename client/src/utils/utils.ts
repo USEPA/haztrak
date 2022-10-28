@@ -5,12 +5,12 @@
  * @param {number} ms - number of milliseconds before the fake async call is resolved
  */
 function sleepDemo(ms: number): Promise<{}> {
-  const env = process.env.REACT_APP_HAZTRAK_ENV;
-  if (typeof env === 'string' && env.toUpperCase() === 'LOCAL') {
+  const env = process.env.REACT_APP_HT_ENV;
+  if (typeof env === 'string' && env.toUpperCase() === 'DEVELOPMENT') {
     return new Promise<{}>((resolve) => setTimeout(resolve, ms));
   } else {
     return new Promise<{}>((resolve) => setTimeout(resolve, 0));
   }
 }
 
-export {sleepDemo};
+export { sleepDemo };

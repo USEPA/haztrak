@@ -16,7 +16,7 @@ function authHeader(url: string) {
   // return auth header with jwt if user is logged in and request is to the api url
   const token = authToken();
   const isLoggedIn = !!token;
-  const haztrakURL = process.env.REACT_APP_HAZTRAK_API_URL;
+  const haztrakURL = process.env.REACT_APP_HT_API_URL;
   let isApiUrl: boolean;
   if (typeof haztrakURL === 'string') {
     isApiUrl = url.startsWith(haztrakURL);
@@ -37,7 +37,7 @@ function authHeader(url: string) {
 }
 
 function request(method: string) {
-  const baseURL = `${process.env.REACT_APP_HAZTRAK_API_URL}/api`;
+  const baseURL = `${process.env.REACT_APP_HT_API_URL}/api`;
   return (url: string, body: object | null) => {
     const requestOptions: RequestOptions = {
       url: `${baseURL}/${url}`,
