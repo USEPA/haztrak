@@ -43,7 +43,7 @@ if os.getenv('HAZTRAK_HOST'):
     if type(ALLOWED_HOSTS) is str:
         ALLOWED_HOSTS = [ALLOWED_HOSTS]
 else:
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ['localhost']
 
 # Application definition
 INSTALLED_APPS = [

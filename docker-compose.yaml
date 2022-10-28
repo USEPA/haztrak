@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+
+  haztrak-server:
+    build: ./server
+    ports:
+      - "8000:8000"
+    networks:
+      backend-net:
+    environment:
+      HAZTRAK_HOST: "http://localhost"
+
+  haztrak-redis:
+    image: "redis:alpine"
+    networks:
+      backend-net:
+
+  haztrak-client:
+    build: ./client
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_HAZTRAK_API_URL: "http://localhost:8000"
+
+networks:
+  backend-net:
+    driver: overlay
+    attachable: true
