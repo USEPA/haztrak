@@ -46,9 +46,9 @@ else:
     DEBUG = False
 
 if os.getenv(ht_host):
-    ALLOWED_HOSTS = os.getenv(ht_host)
-    if type(ALLOWED_HOSTS) is str:
-        ALLOWED_HOSTS = [ALLOWED_HOSTS]
+    ALLOWED_HOSTS = [str(os.getenv(ht_host))]
+    # if type(ALLOWED_HOSTS) is str:
+    #     ALLOWED_HOSTS = [ALLOWED_HOSTS]
 else:
     ALLOWED_HOSTS = ['localhost']
 
@@ -86,7 +86,7 @@ APPEND_SLASH = True
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = [
-    os.getenv(ht_cors_domain)
+    str(os.getenv(ht_cors_domain))
 ]
 
 ROOT_URLCONF = 'haztrak.urls'
