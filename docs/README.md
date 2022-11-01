@@ -5,7 +5,7 @@
     - [Individual Containers](#deploy-the-individual-containers)
     - [Deploying Locally](#deploying-locally)
 - [Configuration](./Configuration.md)
-- [Project Structure](./project_structure.md)
+- [Project Structure]()
 - [Contributing](./CONTRIBUTING.md)
 - [Code of Conduct](./CODE_OF_CONDUCT.md)
 - [Demo Code](#demo-code)
