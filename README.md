@@ -12,7 +12,7 @@ Haztrak is a example web-application that aims to showcase how [hazardous waste]
 ### About e-Manifest
 
 June 30, 2018. EPA launched a national system for tracking hazardous waste shipments electronically,
-this system, known as "[e-Manifest](https://www.epa.gov/e-manifest)," modernizes the nation’s paper-intensive process 
+this system, known as "[e-Manifest](https://www.epa.gov/e-manifest)," modernizes the nation’s paper-intensive process
 for tracking hazardous waste from cradle to grave while saving valuable time, resources, and dollars for industry and states.
 
 e-Manifest, a modular component of [RCRAInfo](https://rcrainfo.epa.gov/), can be accessed by
@@ -31,11 +31,11 @@ This project would not be possible without the work of the EPA e-Manifest Team.
 
 
 ## Getting Started :rocket:
+- Wanna try haztrak? [See our documentation on built-in options to deploy](docs/README.md#Deploy)
 
-Looking to help out? You've got options...
-
+Looking to contribute?
 - For a high level overview of the project components, configuration, diagrams, see our [documentation](https://github.com/USEPA/haztrak/tree/main/docs).
-- Check out our short [guide on how to contribute](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
+- See the [guide on submit a PR](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
 - [Report an issue, request a feature, or find something to work on](https://github.com/USEPA/haztrak/issues).
     - Just starting out? We try keeping the [Good First Issue](https://github.com/USEPA/haztrak/labels/good%20first%20issue) label up to date
 
@@ -48,13 +48,13 @@ overview.
 We plan on additional developer documentation in the [docs](./docs) directory, which contain
 theoretical workflows for using the RCRAInfo services.
 
-Lastly, since this is intended to be first and foremost an example web application, 
-we will work to keep a healthy dose of inline comments in the codebase. 
+Lastly, since this is intended to be first and foremost an example web application,
+we will work to keep a healthy dose of inline comments in the codebase.
 
 
 ## Development Status :warning:
 
 Haztrak is **NOT** intended to be a polished, ready-to-ship, web app. it's intended audience are those seeking
-a working example with the technical expertise to leverage the source for their own requirements. 
-It's licensed under the [MIT open source](./LICENSE) license, a permissive license designed to provide you(!) 
+a working example with the technical expertise to leverage the source for their own requirements.
+It's licensed under the [MIT open source](./LICENSE) license, a permissive license designed to provide you(!)
 the freedom to use, modify, redistribute, even develop proprietary derivative works.
