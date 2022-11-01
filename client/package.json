@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@hookform/error-message": "^2.0.0",
-    "@hookform/resolvers": "^2.9.8",
+    "@hookform/resolvers": "^2.9.10",
     "@reduxjs/toolkit": "^1.8.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
