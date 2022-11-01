@@ -1,0 +1,28 @@
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  test-server:
+    uses: ./.github/workflows/test_server.yaml
+
+  test-client:
+    uses: ./.github/workflows/test_client.yaml
+
+  create-release:
+    needs: [test-client, test-server]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          body: ${{steps.github_release.outputs.changelog}}
