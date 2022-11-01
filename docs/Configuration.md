@@ -3,8 +3,7 @@
 haztrak expects configurations in form of environment variables, Yay!
 For development purposes, environment variables can be read from 2 `.env` files, present in
 [backend (aka server)](../server) and [frontend (aka client)](../client) directories. You can
-find an `.env.example` config
-file in each, just copy it, and remove the `.example` suffix to use it as a starting template.
+find an `.env.example` config file in each, just copy it, and remove the `.example` suffix to use it as a starting template.
 
 ## Table of Contents
 

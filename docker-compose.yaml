@@ -1,7 +1,7 @@
 version: "3.9"
 services:
 
-  haztrak-server:
+  ht-server:
     build: ./server
     ports:
       - "8000:8000"
@@ -19,10 +19,10 @@ services:
 #      HT_DB_HOST: ${HT_DB_HOST}
 #      HT_DB_PORT: ${HT_DB_PORT}
 
-#  haztrak-redis:
+#  ht-redis:
 #    image: "redis:alpine"
 
-#  haztrak-postgres:
+#  ht-postgres:
 #    image: "postgres:14"
 #    environment:
 #      - POSTGRES_USER=${HT_POSTGRES_USER}
@@ -30,16 +30,15 @@ services:
 #    ports:
 #      - "5432:5432"
 #    volumes:
-#      - haztrak-development:/var/lib/postgresql/data
+#      - ht-development:/var/lib/postgresql/data
 
-  haztrak-client:
+  ht-client:
     build: ./client
     ports:
       - "3000:3000"
     environment:
-      REACT_APP_HT_API_URL: "http://haztrak-server:8000/"
+      REACT_APP_HT_API_URL: "http://ht-server:8000/"
       REACT_APP_HT_ENV: ${REACT_APP_HT_ENV}
 
 volumes:
-  haztrak-development:
-    external: true
+  ht-development:
