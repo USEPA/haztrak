@@ -216,3 +216,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     )
 }
+
+# Celery settings
+HT_CELERY_BROKER_URL = os.getenv("HT_CELERY_BROKER_URL", "redis://localhost:6379")
+HT_CELERY_RESULT_BACKEND = os.getenv("HT_CELERY_RESULT_BACKEND", "redis://localhost"
+                                                                 ":6379")

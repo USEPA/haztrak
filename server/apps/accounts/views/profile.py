@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 
 from apps.accounts.models import Profile
 from apps.accounts.serializers import ProfileSerializer
+from apps.accounts.tasks import hello
 
 
 class ProfileView(APIView):
@@ -17,6 +18,7 @@ class ProfileView(APIView):
             user = request.user
             profile = Profile.objects.get(user=user)
             profile_serializer = ProfileSerializer(profile)
+            hello()
             return self.response(profile_serializer.data, status=status.HTTP_200_OK)
         except TypeError:
             raise InternalError
