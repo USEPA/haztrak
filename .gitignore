@@ -8,10 +8,10 @@ venv/
 env/
 
 # IDE
-# !.idea
-# .idea/*
-# # I'm sick of redoing these, including for now
-# !.idea/runConfigurations/
+ !.idea
+ .idea/*
+ # I'm sick of redoing these, including for now
+ !.idea/runConfigurations/
 **/.idea
 **/.vscode
 
@@ -44,7 +44,7 @@ static/bak
 
 # other
 *.DS_Store
-bak
+**/*.bak
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

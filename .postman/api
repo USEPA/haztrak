@@ -1,0 +1,17 @@
+id = e5a712aa-4262-4499-9a3d-5826ad289b04
+
+[relations]
+
+[relations.collections]
+rootDirectory = docs/postman/collections
+files[] = {"id":"15928187-8de5bed6-edc9-492c-9bf9-d890621deee3","path":"haztrak.json","metaData":{}}
+
+[relations.collections.metaData]
+
+[relations.apiDefinition]
+rootDirectory = docs/postman/schemas
+files[] = {"path":"index.json","metaData":{}}
+
+[relations.apiDefinition.metaData]
+type = openapi:3
+rootFiles[] = index.json

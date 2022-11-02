@@ -52,7 +52,7 @@ print_usage() {
    echo
    echo "Syntax: $(basename "$0") [-m|d|l|t|p|r|h]"
    echo "options:"
-   echo "m     Make django migrations and migrate"
+   echo "m     Make django migrations and apply"
    echo "d     Dump data into fixtures files tests (if needed, migrate first)"
    echo "l     load back end fixtures from test/fixtures/test_data.json"
    echo "t     Run all tests, show output if exit status is not 0"

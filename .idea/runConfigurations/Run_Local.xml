@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Local" type="CompoundRunConfigurationType">
+    <toRun name="Run Server" type="Python.DjangoServer" />
+    <toRun name="Celery" type="docker-deploy" />
+    <toRun name="Redis" type="docker-deploy" />
+    <toRun name="Run Client" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>

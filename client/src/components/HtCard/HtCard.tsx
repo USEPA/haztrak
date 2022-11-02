@@ -30,7 +30,7 @@ interface SpinnerProps {
  */
 function HtCard(props: Props) {
   return (
-    <div id={props.id} className="m-1 my-3 shadow-lg bg-light rounded-2">
+    <div id={props.id} className="m-1 my-3 shadow-lg bg-light rounded">
       {props.children}
     </div>
   );
@@ -87,7 +87,7 @@ HtCard.Footer = function (props: Props) {
  */
 HtCard.Body = function (props: Props) {
   return (
-    <Card.Body className="bg-light">
+    <Card.Body className="bg-light rounded">
       <Container className="py-2">{props.children}</Container>
     </Card.Body>
   );
@@ -103,11 +103,10 @@ HtCard.Body = function (props: Props) {
  *   <HtCard.Spinner message="loading..."/>
  * </HtCard.Body>
  */
-HtCard.Spinner = function ({message}: SpinnerProps) {
+HtCard.Spinner = function ({ message }: SpinnerProps) {
   return (
     <>
-      <h4
-        className="d-flex justify-content-center text-muted bg-transparent p-1 py-3">
+      <h4 className="d-flex justify-content-center text-muted bg-transparent p-1 py-3">
         <i className="fa-solid fa-spin fa-circle-notch"></i>
         &nbsp;&nbsp;{message}
       </h4>
