@@ -5,7 +5,6 @@ from . import views
 urlpatterns = [
 
     # manifest
-    path('manifest/', views.ManifestView.as_view()),
     path('manifest/<str:mtn>', views.ManifestView.as_view()),
     # site
     path('site/', views.SiteAPI.as_view()),

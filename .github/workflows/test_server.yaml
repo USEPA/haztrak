@@ -1,11 +1,11 @@
 name: Test Haztrak Server
 
 on:
-  # push:
-  #   branches:
-  #     - "*"
-  #   paths:
-  #     - server/**
+  push:
+    branches:
+      - "*"
+    paths:
+      - server/**
   pull_request:
     branches: ["main"]
   workflow_call:
@@ -29,6 +29,7 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
+          cache: "pip"
           python-version: ${{ matrix.python-version }}
 
       - name: Install Dependencies

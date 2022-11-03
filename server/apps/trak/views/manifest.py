@@ -2,6 +2,7 @@ import http
 import os
 
 from django.core.exceptions import ObjectDoesNotExist
+from drf_spectacular.utils import extend_schema
 from emanifest import client as em
 from rest_framework import status
 from rest_framework.exceptions import APIException
@@ -12,12 +13,15 @@ from rest_framework.views import APIView
 from apps.accounts.models import Profile
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
-from lib.rcrainfo import rcrainfo
 
 
 class ManifestView(APIView):
     response = Response
 
+    @extend_schema(
+        description='Retrieve a EPA uniform hazardous waste manifest in electronic '
+                    'format '
+    )
     def get(self, request: Request, mtn: str = None) -> Response:
         try:
             if mtn:

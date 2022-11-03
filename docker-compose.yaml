@@ -6,8 +6,6 @@ services:
     build: ./server
     ports:
       - "8000:8000"
-    volumes:
-      - ./server:/code
     environment:
       HT_HOST: "localhost"
       HT_SECRET_KEY: ${HT_SECRET_KEY}
