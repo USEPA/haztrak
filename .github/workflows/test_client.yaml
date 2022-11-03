@@ -1,11 +1,11 @@
 name: Test Haztrak Client
 
 on:
-  # push:
-  #   branches:
-  #     - "*"
-  #   paths:
-  #     - client/**
+  push:
+    branches:
+      - "*"
+    paths:
+      - client/**
   pull_request:
     branches: ["main"]
   workflow_call:

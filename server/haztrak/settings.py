@@ -62,11 +62,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_spectacular',
     'corsheaders',
     'apps.trak',
     'apps.home',
     'apps.accounts',
-    # 'apps.api',
 ]
 
 MIDDLEWARE = [
@@ -100,7 +100,7 @@ ROOT_URLCONF = 'haztrak.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': [os.path.join(FRONTEND_DIR, "build")],
+        # 'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -214,7 +214,16 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Haztrak API',
+    'DESCRIPTION': 'An open-source web app illustrating how hazardous waste '
+                   'management software can integrate with EPA\'s RCRAInfo',
+    'VERSION': '0.0.1',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 # Celery settings
