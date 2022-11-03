@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="project w/o dependencies" pattern="!file[haztrak]:venv//*&amp;&amp;!ext:*/&amp;&amp;!file[haztrak]:.idea//*" />
+</component>

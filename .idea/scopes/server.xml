@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="server" pattern="file[haztrak]:server//*" />
+</component>

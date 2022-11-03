@@ -1,0 +1,151 @@
+openapi: 3.0.3
+info:
+  title: Haztrak API
+  version: 0.0.1
+  description: An open-source web app illustrating how hazardous waste management
+    software can integrate with EPA's RCRAInfo
+paths:
+  /api/trak/manifest/{mtn}:
+    get:
+      operationId: trak_manifest_retrieve
+      description: 'Retrieve a EPA uniform hazardous waste manifest in electronic
+        format '
+      parameters:
+      - in: path
+        name: mtn
+        schema:
+          type: string
+        required: true
+      tags:
+      - trak
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: trak_manifest_create
+      parameters:
+      - in: path
+        name: mtn
+        schema:
+          type: string
+        required: true
+      tags:
+      - trak
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/trak/site/:
+    get:
+      operationId: trak_site_retrieve
+      tags:
+      - trak
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/trak/site/{epa_id}:
+    get:
+      operationId: trak_site_retrieve_2
+      parameters:
+      - in: path
+        name: epa_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - trak
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/trak/site/{epa_id}/manifest:
+    get:
+      operationId: trak_site_manifest_retrieve
+      parameters:
+      - in: path
+        name: epa_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - trak
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/user/login/:
+    post:
+      operationId: user_login_create
+      tags:
+      - user
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+  /api/user/profile/:
+    get:
+      operationId: user_profile_retrieve
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/user/signup/:
+    post:
+      operationId: user_signup_create
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - password
+      - token
+      - username
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer

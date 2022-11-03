@@ -1,15 +1,15 @@
-from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError, InternalError
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
@@ -37,21 +37,15 @@ class SignUp(APIView):
                                      'error': 'username taken, please choose another'})
 
 
-class Login(APIView):
-    permission_classes = [AllowAny]
-    response = JsonResponse
+class Login(ObtainAuthToken):
 
-    @method_decorator(csrf_exempt)
-    def post(self, request: Request) -> JsonResponse:
-        data = JSONParser().parse(request)
-        user = authenticate(request, username=data['username'],
-                            password=data['password'])
-        if user is None:
-            return JsonResponse(status=status.HTTP_400_BAD_REQUEST,
-                                data={'error': 'check username and password'})
-        else:
-            try:
-                token = Token.objects.get(user=user)
-            except ObjectDoesNotExist:
-                token = Token.objects.create(user=user)
-            return JsonResponse({'user': str(user), 'token': str(token)})
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user': user.pk
+        })
