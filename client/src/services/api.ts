@@ -50,6 +50,8 @@ function request(method: string) {
     }
     return axios(requestOptions as any).then((response) => {
       const { data } = response;
+      // leaving this log statement for the time being, every time we call the api, there's output to the console with the response body
+      console.log(data);
       if (!response.status) {
         if ([401, 403].includes(response.status) && authToken()) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api

@@ -50,15 +50,16 @@ print_usage() {
    # Display help
    echo "Command line utility to help develop Haztrak"
    echo
-   echo "Syntax: $(basename "$0") [-m|d|l|t|p|r|h]"
+   echo "Syntax: $(basename "$0") <option>"
    echo "options:"
-   echo "m     Make django migrations and apply"
-   echo "d     Dump data into fixtures files tests (if needed, migrate first)"
-   echo "l     load back end fixtures from test/fixtures/test_data.json"
-   echo "t     Run all tests, show output if exit status is not 0"
-   echo "p     installs hooks, if necessary, and runs pre-commit run --all-files"
-   echo "r     Run haztrak (both client and server) locally"
-   echo "h     Print this help message"
+   echo "-m, --migrate       Make django migrations and apply"
+   echo "-d, --dump          Dump data into fixtures files tests (if needed, migrate first)"
+   echo "-l, --load          load back end fixtures from test/fixtures/test_data.json"
+   echo "-t, --test          Run all tests, show output if exit status is not 0"
+   echo "-p, --pre-commit    installs hooks, if necessary, and runs pre-commit run --all-files"
+   echo "-r, --run           Run haztrak (both client and server) locally"
+   echo "-g, --generate      Generate the Open API Schema to /docs/API/"
+   echo "-h, --help          Print this help message"
    echo
 }
 
@@ -70,6 +71,7 @@ migrate_changes(){
     then
         eval "$base_py_cmd migrate"
     fi
+    exit
 }
 
 dump_fixtures(){
@@ -85,7 +87,8 @@ dump_fixtures(){
     do
         eval "$exec_cmd $i"
     done
-    echo "Data dumped"
+    print_style "Data successfully dumped\n" "success";
+    exit
 }
 
 load_django_fixtures() {
@@ -93,6 +96,14 @@ load_django_fixtures() {
     # creates users 'admin', 'testuser1', both with 'password1'
     exec_cmd="$base_py_cmd loaddata $server_dir/tests/fixtures/test_data.json"
     eval "$exec_cmd"
+    exit
+}
+
+generate_api_schema() {
+    print_style "Generating Open API schema...\n" "success";
+    exec_cmd="$base_py_cmd spectacular --file $base_dir/docs/API/openapi-schema.yaml"
+    eval "$exec_cmd"
+    exit
 }
 
 print_test_status() {
@@ -143,6 +154,7 @@ run_pre_commit() {
     if command -V pre-commit > /dev/null 2>&1 ; then
         eval "pre-commit install"
         eval "pre-commit run --all-files"
+        exit
     else
         echo "pre-commit not found, did you forget to activate your virtualenv?"
         exit 1
@@ -151,8 +163,9 @@ run_pre_commit() {
 
 cleanup() {
 	echo
-	echo "Haztrak shutting down..."
+	print_style "Haztrak shutting down...\n" "success";
 	kill -- -0
+	exit
 }
 
 run_haztrak() {
@@ -164,33 +177,41 @@ run_haztrak() {
 	eval "npm --prefix $client_dir run start" &
 
 	wait
+	exit
 }
 
 # Parse CLI argument
-while getopts 'mdltprh' opt; do
-  case "$opt" in
-    m)
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -m|--migrate)
         migrate_changes
         ;;
-    d)
+    -d|--dump)
         dump_fixtures "$@"
+#		shift # past argument
+#		shift # past value
         ;;
-    l)
+    -l|--load)
         load_django_fixtures
         ;;
-    t)
+    -t|--test)
 		test_django "$@"
+#		shift # past argument
+#		shift # past value
 		;;
-    p)
+    -p|--pre-commit)
         run_pre_commit
         ;;
-    r)
+    -r|--run)
 		run_haztrak
 		;;
-    \?|h)
+    -g|--generate)
+		generate_api_schema
+		;;
+    *)
+      echo "Unknown option $1"
 	  print_usage
       exit 1
       ;;
   esac
 done
-shift $((OPTIND-1))

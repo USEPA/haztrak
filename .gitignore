@@ -8,10 +8,6 @@ venv/
 env/
 
 # IDE
- !.idea
- .idea/*
- # I'm sick of redoing these, including for now
- !.idea/runConfigurations/
 **/.idea
 **/.vscode
 

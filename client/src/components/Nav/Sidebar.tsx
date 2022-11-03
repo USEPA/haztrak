@@ -10,7 +10,8 @@ import { RootState } from 'app/store';
  * @constructor
  */
 function Sidebar() {
-  const [open, setOpen] = useState(false);
+  const [siteNav, setSiteNav] = useState(false);
+  const [helpNav, setHelpNav] = useState(false);
 
   const authUser = useSelector((state: RootState) => state.user.user);
   if (!authUser) return null;
@@ -30,21 +31,21 @@ function Sidebar() {
             </Link>
             <Button
               className="bg-dark border-0 nav-link shadow-none"
-              onClick={() => setOpen(!open)}
+              onClick={() => setSiteNav(!siteNav)}
               aria-controls="collapseSite"
-              aria-expanded={open}
+              aria-expanded={siteNav}
             >
               <i className="sb-nav-link-icon text-primary fa-solid fa-map-location-dot" />
               Sites
               <div
                 className={`sb-sidenav-collapse-arrow ${
-                  open ? '' : 'rotate-90-cc'
+                  siteNav ? '' : 'rotate-90-cc'
                 } `}
               >
                 <i className="fas fa-angle-down" />
               </div>
             </Button>
-            <Collapse in={open}>
+            <Collapse in={siteNav}>
               <div id="collapseSite">
                 <nav
                   className="sb-sidenav-menu-nested nav accordion"
@@ -68,10 +69,43 @@ function Sidebar() {
               </div>
             </Collapse>
             <div className="sb-sidenav-menu-heading">Core</div>
-            <Link className="nav-link" to="/about">
-              <i className="sb-nav-link-icon text-primary fa-solid fa-circle-info" />
-              About
-            </Link>
+            <Button
+              className="bg-dark border-0 nav-link shadow-none"
+              onClick={() => setHelpNav(!helpNav)}
+              aria-controls="collapseHelp"
+              aria-expanded={helpNav}
+            >
+              <i className="sb-nav-link-icon text-primary fa-solid fa-map-location-dot" />
+              Help
+              <div
+                className={`sb-sidenav-collapse-arrow ${
+                  helpNav ? '' : 'rotate-90-cc'
+                } `}
+              >
+                <i className="fas fa-angle-down" />
+              </div>
+            </Button>
+            <Collapse in={helpNav}>
+              <div id="collapseHelp">
+                <nav
+                  className="sb-sidenav-menu-nested nav accordion"
+                  id="sidenavAccordionPages"
+                >
+                  <Link className="nav-link" to="/about">
+                    <i className="sb-nav-link-icon text-primary fa-solid fa-circle-info" />
+                    About
+                  </Link>
+                  <a
+                    className="nav-link"
+                    target="_blank"
+                    href={`${process.env.REACT_APP_HT_API_URL}/api/schema/swagger-ui`}
+                  >
+                    <i className="sb-nav-link-icon text-primary fa-solid fa-network-wired" />
+                    Swagger UI
+                  </a>
+                </nav>
+              </div>
+            </Collapse>
           </div>
         </div>
         <div className="sb-sidenav-footer">
