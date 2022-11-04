@@ -1,3 +1,5 @@
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -6,6 +8,7 @@ from lib.rcrainfo.lookups import get_country_name, get_state_name
 from lib.serializers import TrakSerializer
 
 
+@extend_schema_field(OpenApiTypes.OBJECT)
 class LocalityField(serializers.Field):
 
     def __init__(self, locality_type):
