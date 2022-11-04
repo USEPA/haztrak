@@ -2,6 +2,7 @@ version: "3.9"
 services:
 
   server:
+    container_name: server
     build: ./server
     ports:
       - "8000:8000"
@@ -24,33 +25,33 @@ services:
   #       HT_DB_PORT: ${HT_DB_PORT}
 
   redis:
+    container_name: redis
     image: "redis:alpine"
     ports:
       - "6379:6379"
 
   celery:
+    container_name: celery
     build: ./server
     command: celery -A haztrak worker -l info
-    volumes:
-      - ./server:/app
     environment:
       HT_CELERY_BROKER_URL: redis://redis:6379
       HT_CELERY_RESULT_BACKEND: redis://redis:6379
-      CHOKIDAR_USEPOLLING: "true"
     depends_on:
       - redis
       - server
 
 
-  #   db:
-  #     image: "postgres:14"
-  #     environment:
-  #       - POSTGRES_USER=${HT_POSTGRES_USER}
-  #       - POSTGRES_PASSWORD=${HT_POSTGRES_PASSWORD}
-  #     ports:
-  #       - "5432:5432"
-  #     volumes:
-  #       - development:/var/lib/postgresql/data
+  #  postgres:
+  #    container_name: postgres
+  #    image: "postgres:14"
+  #    environment:
+  #      - POSTGRES_USER=${HT_POSTGRES_USER}
+  #      - POSTGRES_PASSWORD=${HT_POSTGRES_PASSWORD}
+  #    ports:
+  #      - "5432:5432"
+  #    volumes:
+  #      - development:/var/lib/postgresql/data
 
   client:
     build: ./client
@@ -61,7 +62,6 @@ services:
     environment:
       REACT_APP_HT_API_URL: "http://server:8000/"
       REACT_APP_HT_ENV: ${REACT_APP_HT_ENV}
-      CHOKIDAR_USEPOLLING: true
 
 volumes:
   development:

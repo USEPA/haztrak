@@ -1,5 +1,4 @@
 .env.example
-requirements_dev.txt
 README.md
 tests/
 Dockerfile

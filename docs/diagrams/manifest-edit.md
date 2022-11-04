@@ -4,7 +4,7 @@ sequenceDiagram
     participant C as HT Client
     participant S as HT Server
     participant R as RCRAInfo
-    
+
     # steps
     C->>S: Request 1: Request manifest View
     S->>C: Response 1: Manifest data
@@ -21,5 +21,5 @@ sequenceDiagram
     else HT not current
         S->>C: Response 2: Payload with new version
     end
-    
+
 ```

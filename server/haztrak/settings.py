@@ -126,7 +126,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.0/topics/i18n/
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = os.getenv(ht_timezone, 'UTC')
@@ -137,13 +136,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 FIXTURE_DIRS = ['tests/fixtures']
@@ -166,7 +163,7 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Haztrak API',
     'DESCRIPTION': 'An open-source web app illustrating how hazardous waste '
                    'management software can integrate with EPA\'s RCRAInfo',
-    'VERSION': '0.0.1',
+    'VERSION': '0.1.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
 
