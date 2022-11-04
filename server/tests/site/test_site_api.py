@@ -34,10 +34,10 @@ class SiteAPITests(APITestCase):
         response = self.client.get(f'{self.base_url}{sites[0]}')
         self.assertIsNotNone(response.status_code, status.HTTP_200_OK)
 
-    def test_nonexistent_site_returns_401(self):
+    def test_nonexistent_site_returns_404(self):
         # sites = [str(i) for i in self.profile.epa_sites.all()]
         response = self.client.get(f'{self.base_url}NONEXISTENT')
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_unauthenticated_returns_401(self):
         self.client.logout()
