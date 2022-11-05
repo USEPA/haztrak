@@ -1,11 +1,12 @@
 version: "3.9"
 services:
 
-  ht-server:
-    container_name: ht-server
+  server:
     build: ./server
     ports:
       - "8000:8000"
+    volumes:
+      - ./server:/app
     environment:
       HT_HOST: "localhost"
       HT_SECRET_KEY: ${HT_SECRET_KEY}
@@ -13,51 +14,54 @@ services:
       HT_TIMEZONE: ${HT_TIMEZONE}
       HT_RCRAINFO_ENV: ${HT_RCRAINFO_ENV}
       HT_CORS_DOMAIN: ${HT_CORS_DOMAIN}
-  #      HT_DB_ENGINE: ${HT_DB_ENGINE}
-  #      HT_DB_NAME: ${HT_DB_NAME}
-  #      HT_DB_USER: ${HT_DB_USER}
-  #      HT_DB_PASSWORD: ${HT_DB_PASSWORD}
-  #      HT_DB_HOST: ${HT_DB_HOST}
-  #      HT_DB_PORT: ${HT_DB_PORT}
-
-  ht-redis:
-    container_name: ht-redis
-    image: "redis:alpine"
-
-  ht-celery:
-    container_name: ht-celery
-    build: ./server
-    command: celery -A haztrak worker -l info
-    ports:
-      - "6379:6379"
-    environment:
       HT_CELERY_BROKER_URL: ${HT_CELERY_BROKER_URL}
       HT_CELERY_RESULT_BACKEND: ${HT_CELERY_RESULT_BACKEND}
+  #       HT_DB_ENGINE: ${HT_DB_ENGINE}
+  #       HT_DB_NAME: ${HT_DB_NAME}
+  #       HT_DB_USER: ${HT_DB_USER}
+  #       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
+  #       HT_DB_HOST: ${HT_DB_HOST}
+  #       HT_DB_PORT: ${HT_DB_PORT}
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: ./server
+    command: celery -A haztrak worker -l info
+    volumes:
+      - ./server:/app
+    environment:
+      HT_CELERY_BROKER_URL: redis://redis:6379
+      HT_CELERY_RESULT_BACKEND: redis://redis:6379
+      CHOKIDAR_USEPOLLING: "true"
     depends_on:
-      - ht-redis
-      - ht-server
+      - redis
+      - server
 
 
-  #  ht-postgres:
-  #    container_name: ht-postgres
-  #    image: "postgres:14"
-  #    environment:
-  #      - POSTGRES_USER=${HT_POSTGRES_USER}
-  #      - POSTGRES_PASSWORD=${HT_POSTGRES_PASSWORD}
-  #    ports:
-  #      - "5432:5432"
-  #    volumes:
-  #      - ht-development:/var/lib/postgresql/data
+  #   db:
+  #     image: "postgres:14"
+  #     environment:
+  #       - POSTGRES_USER=${HT_POSTGRES_USER}
+  #       - POSTGRES_PASSWORD=${HT_POSTGRES_PASSWORD}
+  #     ports:
+  #       - "5432:5432"
+  #     volumes:
+  #       - development:/var/lib/postgresql/data
 
-  ht-client:
+  client:
     build: ./client
     ports:
       - "3000:3000"
     volumes:
       - ./client:/app
     environment:
-      REACT_APP_HT_API_URL: "http://ht-server:8000/"
+      REACT_APP_HT_API_URL: "http://server:8000/"
       REACT_APP_HT_ENV: ${REACT_APP_HT_ENV}
+      CHOKIDAR_USEPOLLING: true
 
 volumes:
-  ht-development:
+  development:

@@ -1,0 +1,56 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Compose Up" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+    <deployment type="docker-compose.yml">
+      <settings>
+        <option name="envFilePath" value="" />
+        <option name="envVars">
+          <list>
+            <DockerEnvVarImpl>
+              <option name="name" value="HT_API_URL" />
+              <option name="value" value="http://localhost:8000" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="HT_CELERY_BROKER_URL" />
+              <option name="value" value="redis://ht-redis:6379" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="HT_CELERY_RESULT_BACKEND" />
+              <option name="value" value="redis://ht-redis:6379" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="HT_CORS_DOMAIN" />
+              <option name="value" value="http://localhost:3000" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="HT_DEBUG" />
+              <option name="value" value="true" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="HT_HOST" />
+              <option name="value" value="localhost" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="HT_RCRAINFO_ENV" />
+              <option name="value" value="preprod" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="HT_SECRET_KEY" />
+              <option name="value" value="django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&amp;5p2nrf6cmiw4)jsx5d" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="HT_TIMEZONE" />
+              <option name="value" value="America/New_York" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="REACT_APP_HT_ENV" />
+              <option name="value" value="DEVELOPMENT" />
+            </DockerEnvVarImpl>
+          </list>
+        </option>
+        <option name="commandLineOptions" value="--build" />
+        <option name="sourceFilePath" value="docker-compose.yaml" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>
