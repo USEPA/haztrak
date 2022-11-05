@@ -5,14 +5,6 @@
         <option name="imageTag" value="ht-celery" />
         <option name="command" value="celery -A haztrak worker -l info" />
         <option name="containerName" value="local-celery" />
-        <option name="portBindings">
-          <list>
-            <DockerPortBindingImpl>
-              <option name="containerPort" value="6379" />
-              <option name="hostPort" value="6379" />
-            </DockerPortBindingImpl>
-          </list>
-        </option>
         <option name="sourceFilePath" value="server/Dockerfile" />
       </settings>
     </deployment>

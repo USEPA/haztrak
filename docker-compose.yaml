@@ -13,26 +13,28 @@ services:
       HT_TIMEZONE: ${HT_TIMEZONE}
       HT_RCRAINFO_ENV: ${HT_RCRAINFO_ENV}
       HT_CORS_DOMAIN: ${HT_CORS_DOMAIN}
-  #      HT_DB_ENGINE: ${HT_DB_ENGINE}
-  #      HT_DB_NAME: ${HT_DB_NAME}
-  #      HT_DB_USER: ${HT_DB_USER}
-  #      HT_DB_PASSWORD: ${HT_DB_PASSWORD}
-  #      HT_DB_HOST: ${HT_DB_HOST}
-  #      HT_DB_PORT: ${HT_DB_PORT}
+      HT_CELERY_BROKER_URL: ${HT_CELERY_BROKER_URL}
+      HT_CELERY_RESULT_BACKEND: ${HT_CELERY_RESULT_BACKEND}
+#       HT_DB_ENGINE: ${HT_DB_ENGINE}
+#       HT_DB_NAME: ${HT_DB_NAME}
+#       HT_DB_USER: ${HT_DB_USER}
+#       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
+#       HT_DB_HOST: ${HT_DB_HOST}
+#       HT_DB_PORT: ${HT_DB_PORT}
 
   ht-redis:
     container_name: ht-redis
     image: "redis:alpine"
+    ports:
+      - "6379:6379"
 
   ht-celery:
     container_name: ht-celery
     build: ./server
     command: celery -A haztrak worker -l info
-    ports:
-      - "6379:6379"
     environment:
-      HT_CELERY_BROKER_URL: ${HT_CELERY_BROKER_URL}
-      HT_CELERY_RESULT_BACKEND: ${HT_CELERY_RESULT_BACKEND}
+      HT_CELERY_BROKER_URL: redis://ht-redis:6379
+      HT_CELERY_RESULT_BACKEND: redis://ht-redis:6379
     depends_on:
       - ht-redis
       - ht-server

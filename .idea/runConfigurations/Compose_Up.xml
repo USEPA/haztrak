@@ -10,6 +10,14 @@
               <option name="value" value="http://localhost:8000" />
             </DockerEnvVarImpl>
             <DockerEnvVarImpl>
+              <option name="name" value="HT_CELERY_BROKER_URL" />
+              <option name="value" value="redis://ht-redis:6379" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="HT_CELERY_RESULT_BACKEND" />
+              <option name="value" value="redis://ht-redis:6379" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
               <option name="name" value="HT_CORS_DOMAIN" />
               <option name="value" value="http://localhost:3000" />
             </DockerEnvVarImpl>

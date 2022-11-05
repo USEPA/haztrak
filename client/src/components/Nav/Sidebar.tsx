@@ -75,7 +75,7 @@ function Sidebar() {
               aria-controls="collapseHelp"
               aria-expanded={helpNav}
             >
-              <i className="sb-nav-link-icon text-primary fa-solid fa-map-location-dot" />
+              <i className="sb-nav-link-icon text-primary fa-solid fa-circle-info" />
               Help
               <div
                 className={`sb-sidenav-collapse-arrow ${
@@ -92,7 +92,7 @@ function Sidebar() {
                   id="sidenavAccordionPages"
                 >
                   <Link className="nav-link" to="/about">
-                    <i className="sb-nav-link-icon text-primary fa-solid fa-circle-info" />
+                    <i className="sb-nav-link-icon text-primary fa-regular fa-file"></i>
                     About
                   </Link>
                   <a
