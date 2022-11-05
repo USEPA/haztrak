@@ -43,6 +43,12 @@ function ManifestForm() {
               <HandlerForm handlerType={HandlerType.Generator} />
             </HtCard.Body>
           </HtCard>
+          <HtCard id="transporter-form-card">
+            <HtCard.Header title="Transporters" />
+            <HtCard.Body>
+              <HandlerForm handlerType={HandlerType.Transporter} />
+            </HtCard.Body>
+          </HtCard>
         </Form>
       </FormProvider>
     </Container>
