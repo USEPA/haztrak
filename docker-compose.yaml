@@ -6,8 +6,6 @@ services:
     build: ./server
     ports:
       - "8000:8000"
-    volumes:
-      - ./server:/app
     environment:
       HT_HOST: "localhost"
       HT_SECRET_KEY: ${HT_SECRET_KEY}
@@ -60,7 +58,7 @@ services:
     volumes:
       - ./client:/app
     environment:
-      REACT_APP_HT_API_URL: "http://server:8000/"
+      REACT_APP_HT_API_URL: ${REACT_APP_HT_API_URL}
       REACT_APP_HT_ENV: ${REACT_APP_HT_ENV}
 
 volumes:

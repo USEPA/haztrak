@@ -1,4 +1,5 @@
-.env.example
 README.md
-tests/
+tests/*
 Dockerfile
+db.sqlite3
+*.bak

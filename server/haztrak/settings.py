@@ -69,7 +69,7 @@ APPEND_SLASH = True
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ORIGIN_WHITELIST = [os.getenv(ht_cors_domain, '*')]
+CORS_ORIGIN_WHITELIST = [os.getenv(ht_cors_domain, 'http://localhost:3000')]
 
 ROOT_URLCONF = 'haztrak.urls'
 
