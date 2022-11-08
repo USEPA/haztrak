@@ -2,7 +2,7 @@ import logging
 
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from drf_spectacular.utils import extend_schema
-from rest_framework import permissions, status, generics
+from rest_framework import generics, permissions, status
 from rest_framework.exceptions import APIException
 from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request

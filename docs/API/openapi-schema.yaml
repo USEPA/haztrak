@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Haztrak API
-  version: 0.0.1
+  version: 0.1.0
   description: An open-source web app illustrating how hazardous waste management
     software can integrate with EPA's RCRAInfo
 paths:
@@ -11,30 +11,30 @@ paths:
       description: 'Retrieve a EPA uniform hazardous waste manifest in electronic
         format '
       parameters:
-      - in: path
-        name: mtn
-        schema:
-          type: string
-        required: true
+        - in: path
+          name: mtn
+          schema:
+            type: string
+          required: true
       tags:
-      - trak
+        - trak
       security:
-      - tokenAuth: []
+        - tokenAuth: [ ]
       responses:
         '200':
           description: No response body
     post:
       operationId: trak_manifest_create
       parameters:
-      - in: path
-        name: mtn
-        schema:
-          type: string
-        required: true
+        - in: path
+          name: mtn
+          schema:
+            type: string
+          required: true
       tags:
-      - trak
+        - trak
       security:
-      - tokenAuth: []
+        - tokenAuth: [ ]
       responses:
         '200':
           description: No response body
@@ -42,9 +42,9 @@ paths:
     get:
       operationId: trak_site_retrieve
       tags:
-      - trak
+        - trak
       security:
-      - tokenAuth: []
+        - tokenAuth: [ ]
       responses:
         '200':
           description: No response body
@@ -52,15 +52,15 @@ paths:
     get:
       operationId: trak_site_retrieve_2
       parameters:
-      - in: path
-        name: epa_id
-        schema:
-          type: string
-        required: true
+        - in: path
+          name: epa_id
+          schema:
+            type: string
+          required: true
       tags:
-      - trak
+        - trak
       security:
-      - tokenAuth: []
+        - tokenAuth: [ ]
       responses:
         '200':
           description: No response body
@@ -68,15 +68,15 @@ paths:
     get:
       operationId: trak_site_manifest_retrieve
       parameters:
-      - in: path
-        name: epa_id
-        schema:
-          type: string
-        required: true
+        - in: path
+          name: epa_id
+          schema:
+            type: string
+          required: true
       tags:
-      - trak
+        - trak
       security:
-      - tokenAuth: []
+        - tokenAuth: [ ]
       responses:
         '200':
           description: No response body
@@ -84,7 +84,7 @@ paths:
     post:
       operationId: user_login_create
       tags:
-      - user
+        - user
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -98,7 +98,7 @@ paths:
               $ref: '#/components/schemas/AuthToken'
         required: true
       security:
-      - tokenAuth: []
+        - tokenAuth: [ ]
       responses:
         '200':
           content:
@@ -110,9 +110,9 @@ paths:
     get:
       operationId: user_profile_retrieve
       tags:
-      - user
+        - user
       security:
-      - tokenAuth: []
+        - tokenAuth: [ ]
       responses:
         '200':
           description: No response body
@@ -120,10 +120,10 @@ paths:
     post:
       operationId: user_signup_create
       tags:
-      - user
+        - user
       security:
-      - tokenAuth: []
-      - {}
+        - tokenAuth: [ ]
+        - { }
       responses:
         '200':
           description: No response body
@@ -142,9 +142,9 @@ components:
           type: string
           readOnly: true
       required:
-      - password
-      - token
-      - username
+        - password
+        - token
+        - username
   securitySchemes:
     tokenAuth:
       type: http

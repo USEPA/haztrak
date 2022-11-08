@@ -8,5 +8,5 @@ sequenceDiagram
         C->>C: Save Username and <br> token to local storage
     end
     C->>S: Request user Redux state
-    S->>C: Response: Reducer payload 
+    S->>C: Response: Reducer payload
 ```

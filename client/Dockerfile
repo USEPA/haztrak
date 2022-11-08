@@ -8,6 +8,7 @@ RUN npm run build
 
 # Bundle stage
 FROM nginx:1.21.0-alpine as production
+WORKDIR /app
 ENV NODE_ENV production
 COPY --from=builder /app/build /usr/share/nginx/html
 # Add nginx.conf
