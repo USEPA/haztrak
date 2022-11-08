@@ -1,12 +1,8 @@
 # Configuration
 
-haztrak expects configurations in form of environment variables, Yay!
-For local development purposes, environment variables will be read from 2 `.env` files, present in
-[server](/server) and [client](/client) directories. You can find an `.env.example` config file in
-each.
-
 ## Table of Contents
 
+- [Overview](#Overview)
 - [Server Configuration](#Server)
     - [Required](#required-(server))
     - [Optional](#optional-(server))
@@ -14,6 +10,23 @@ each.
         - [Database](#Celery)
 - [Client Configuration](#Client)
     - [Required Parameters](#required-(client))
+
+## Overview
+
+haztrak expects configurations in form of environment variables supplied at runtime Yay!
+For non-containerized local development, you can place '.env' files in the [server](/server)
+and [client](/client) directories, with the outlined values below and the values will be
+automatically added. You can find [example configs here](/configs).
+
+Haztrak also comes with Dockerfiles and docker-compose files,
+including [docker-compose.dev.yaml](/docker-compose.dev.yaml). Environment variables can be passed
+to a
+using [docker-composes --env-file flag](https://docs.docker.com/compose/environment-variables/#using-the---env-file--option)
+like so.
+
+```shell
+$ docker-compose --env-file configs/.env.dev -f docker-compose.yaml -f docker-compose.dev.yaml up --build
+```
 
 ## Server
 
