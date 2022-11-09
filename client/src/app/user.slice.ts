@@ -103,7 +103,7 @@ const userSlice = createSlice({
     builder.addCase(login.rejected, (state, action) => {
       // Todo
       // @ts-ignore
-      state.error = action.payload.error;
+      state.error = action.error.message;
     });
   },
 });
