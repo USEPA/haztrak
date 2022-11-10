@@ -52,6 +52,10 @@ function Login() {
 
   return (
     <div className="col-md-6 offset-md-3 mt-5">
+      <p className="h1 mb-4 text-center">
+        <i className="fa-solid fa-truck-fast pe-2" />
+        Haztrak
+      </p>
       <div className="card" id="login-card">
         <h4 className="card-header bg-primary text-light">Login</h4>
         <div className="card-body">
