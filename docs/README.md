@@ -70,7 +70,7 @@ make use of the scripts exposed by django and create-react-app.
             ```
         2. Install the server and celery dependencies
             ```shell
-            $ pip install -r requirement.txt
+            $ pip install -r requirements.txt
             ```
         3. Configure you're environment, either with a local `/server/.env` file or environment
            variables directly in the terminal used to deploy the server.
