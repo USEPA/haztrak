@@ -34,6 +34,7 @@ share/python-wheels/
 *.egg
 static/bak
 **/db.sqlite3
+**/*.rdb
 
 # client
 **/node_modules

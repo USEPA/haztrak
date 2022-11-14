@@ -2,7 +2,7 @@
   <configuration default="false" name="Run Local" type="CompoundRunConfigurationType">
     <toRun name="Run Server" type="Python.DjangoServer" />
     <toRun name="Run Client" type="js.build_tools.npm" />
-    <toRun name="celery" type="PythonConfigurationType" />
+    <toRun name="Celery Local" type="PythonConfigurationType" />
     <toRun name="Redis" type="ShConfigurationType" />
     <method v="2" />
   </configuration>

@@ -5,14 +5,14 @@ jest.spyOn(Storage.prototype, 'setItem');
 
 describe('User Slice tests', () => {
   const initialState: UserState = {
-    user: null,
-    token: null,
+    user: undefined,
+    token: undefined,
     rcraAPIID: null,
     rcraAPIKey: null,
     epaSites: [],
     phoneNumber: '',
     loading: false,
-    error: '',
+    error: undefined,
   };
 
   const userPayload = {
