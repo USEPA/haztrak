@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Help from './Core/Help';
+import Sites from './Core/Sites';
 import { Button, Collapse } from 'react-bootstrap';
 import { RootState } from 'app/store';
 
@@ -10,8 +12,7 @@ import { RootState } from 'app/store';
  * @constructor
  */
 function Sidebar() {
-  const [siteNav, setSiteNav] = useState(false);
-  const [helpNav, setHelpNav] = useState(false);
+ 
 
   const authUser = useSelector((state: RootState) => state.user.user);
   if (!authUser) return null;
@@ -29,83 +30,9 @@ function Sidebar() {
               <i className="sb-nav-link-icon text-primary fas fa-tachometer-alt" />
               Dashboard
             </Link>
-            <Button
-              className="bg-dark border-0 nav-link shadow-none"
-              onClick={() => setSiteNav(!siteNav)}
-              aria-controls="collapseSite"
-              aria-expanded={siteNav}
-            >
-              <i className="sb-nav-link-icon text-primary fa-solid fa-map-location-dot" />
-              Sites
-              <div
-                className={`sb-sidenav-collapse-arrow ${
-                  siteNav ? '' : 'rotate-90-cc'
-                } `}
-              >
-                <i className="fas fa-angle-down" />
-              </div>
-            </Button>
-            <Collapse in={siteNav}>
-              <div id="collapseSite">
-                <nav
-                  className="sb-sidenav-menu-nested nav accordion"
-                  id="sidenavAccordionPages"
-                >
-                  <Link className="nav-link" to="/site">
-                    <i className="sb-nav-link-icon text-primary fa-solid fa-location-dot" />
-                    My Sites
-                  </Link>
-                  <a
-                    className="nav-link"
-                    href="https://rcrainfopreprod.epa.gov"
-                  >
-                    <i
-                      className="sb-nav-link-icon text-danger fa-solid
-                    fa-arrow-up-right-from-square"
-                    />
-                    RCRAInfo
-                  </a>
-                </nav>
-              </div>
-            </Collapse>
+           <Sites />
             <div className="sb-sidenav-menu-heading">Core</div>
-            <Button
-              className="bg-dark border-0 nav-link shadow-none"
-              onClick={() => setHelpNav(!helpNav)}
-              aria-controls="collapseHelp"
-              aria-expanded={helpNav}
-            >
-              <i className="sb-nav-link-icon text-primary fa-solid fa-circle-info" />
-              Help
-              <div
-                className={`sb-sidenav-collapse-arrow ${
-                  helpNav ? '' : 'rotate-90-cc'
-                } `}
-              >
-                <i className="fas fa-angle-down" />
-              </div>
-            </Button>
-            <Collapse in={helpNav}>
-              <div id="collapseHelp">
-                <nav
-                  className="sb-sidenav-menu-nested nav accordion"
-                  id="sidenavAccordionPages"
-                >
-                  <Link className="nav-link" to="/about">
-                    <i className="sb-nav-link-icon text-primary fa-regular fa-file"></i>
-                    About
-                  </Link>
-                  <a
-                    className="nav-link"
-                    target="_blank"
-                    href={`${process.env.REACT_APP_HT_API_URL}/api/schema/swagger-ui`}
-                  >
-                    <i className="sb-nav-link-icon text-primary fa-solid fa-network-wired" />
-                    Swagger UI
-                  </a>
-                </nav>
-              </div>
-            </Collapse>
+            <Help />
           </div>
         </div>
         <div className="sb-sidenav-footer">
