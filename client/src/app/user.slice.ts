@@ -64,7 +64,7 @@ const userSlice = createSlice({
     builder
       .addCase(getUser.pending, (state) => {
         state.loading = true;
-        state.error = '';
+        state.error = undefined;
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.loading = false;
@@ -73,7 +73,7 @@ const userSlice = createSlice({
         state.rcraAPIKey = action.payload.rcraAPIKey;
         state.phoneNumber = action.payload.phoneNumber;
         state.epaSites = action.payload.epaSites;
-        state.error = '';
+        state.error = undefined;
       })
       .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
@@ -82,7 +82,7 @@ const userSlice = createSlice({
         state.error = action.payload.error;
       })
       .addCase(login.pending, (state, action) => {
-        state.error = '';
+        state.error = undefined;
         state.loading = true;
       })
       .addCase(login.fulfilled, (state, action) => {
