@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Help from './Core/Help';
-import Sites from './Core/Sites';
-import { Button, Collapse } from 'react-bootstrap';
+import Help from './SubNav/Help';
+import Sites from './SubNav/Sites';
 import { RootState } from 'app/store';
 
 /**
@@ -31,7 +30,6 @@ function Sidebar() {
               Dashboard
             </Link>
            <Sites />
-            <div className="sb-sidenav-menu-heading">Core</div>
             <Help />
           </div>
         </div>
