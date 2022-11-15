@@ -1,6 +1,7 @@
 {
   "epaSiteId": "TESTSITEID2022",
   "name": "VA TEST GEN 2021",
+  "siteType": "Generator",
   "modified": false,
   "registered": true,
   "mailingAddress": {

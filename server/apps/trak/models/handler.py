@@ -2,6 +2,14 @@ from django.db import models
 
 
 class Handler(models.Model):
+    site_type = models.CharField(max_length=20,
+                                 choices=[
+                                     ('Tsdf', 'Tsdf'),
+                                     ('Generator', 'Generator'),
+                                     ('Transporter', 'Transporter'),
+                                     ('Broker', 'Broker')
+                                 ])
+
     epa_id = models.CharField(
         verbose_name='EPA Id number',
         max_length=25,

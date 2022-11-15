@@ -11,6 +11,7 @@
   "generator": {
     "epaSiteId": "VATESTGEN001",
     "name": "VA TEST GEN 2021",
+    "siteType": "Generator",
     "modified": false,
     "registered": true,
     "mailingAddress": {
@@ -77,6 +78,7 @@
     {
       "epaSiteId": "VATESTRAN02",
       "name": "VA TEST TRAN 2021",
+      "siteType": "Transporter",
       "modified": false,
       "registered": true,
       "mailingAddress": {
@@ -139,6 +141,7 @@
     {
       "epaSiteId": "VATESTRAN03",
       "name": "VA TEST TRAN 2021",
+      "siteType": "Transporter",
       "modified": false,
       "registered": true,
       "mailingAddress": {
@@ -202,6 +205,7 @@
   "designatedFacility": {
     "epaSiteId": "VATESTTSDF03",
     "name": "VA TEST TSDF 2021",
+    "siteType": "Tsdf",
     "modified": false,
     "registered": true,
     "mailingAddress": {
