@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Help from './SubNav/Help';
-import Sites from './SubNav/Sites';
+import Help from './Help';
+import Sites from './Sites';
 import { RootState } from 'app/store';
 
 /**
