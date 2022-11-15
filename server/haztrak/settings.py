@@ -1,7 +1,6 @@
 """
 Django settings for haztrak project.
 """
-import logging
 import os
 from pathlib import Path
 
@@ -20,11 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 
 # SECURITY WARNING: keep the secret key used in production secret!
-if ht_secret in os.environ:
-    SECRET_KEY = os.getenv(ht_secret)
-else:
-    logging.fatal('environment HT_SECRET_KEY not found, exiting')
-    exit(1)
+SECRET_KEY = os.getenv(ht_secret)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.getenv(ht_debug):

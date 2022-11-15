@@ -3,14 +3,14 @@ import api from 'services';
 import history from 'utils';
 
 export interface UserState {
-  user: string | null;
-  token: string | null;
+  user: string | undefined;
+  token: string | undefined;
   rcraAPIID: string | null;
   rcraAPIKey: string | null;
   epaSites: string[];
-  phoneNumber: string;
+  phoneNumber: string | undefined;
   loading: boolean;
-  error: string;
+  error: string | undefined;
 }
 
 const initialState: UserState = {
@@ -19,9 +19,9 @@ const initialState: UserState = {
   rcraAPIID: '',
   rcraAPIKey: '',
   epaSites: [],
-  phoneNumber: '',
+  phoneNumber: undefined,
   loading: false,
-  error: '',
+  error: undefined,
 };
 
 export const getUser = createAsyncThunk('user/getUser', async () => {
@@ -61,50 +61,51 @@ const userSlice = createSlice({
     logout,
   },
   extraReducers: (builder) => {
-    builder.addCase(getUser.pending, (state) => {
-      state.loading = true;
-      state.error = '';
-    });
-    builder.addCase(getUser.fulfilled, (state, action) => {
-      state.loading = false;
-      state.user = action.payload.user;
-      state.rcraAPIID = action.payload.rcraAPIID;
-      state.rcraAPIKey = action.payload.rcraAPIKey;
-      state.phoneNumber = action.payload.phoneNumber;
-      state.epaSites = action.payload.epaSites;
-      state.error = '';
-    });
-    builder.addCase(getUser.rejected, (state, action) => {
-      state.loading = false;
-      // Todo
-      // @ts-ignore
-      state.error = action.payload.error;
-    });
-    builder.addCase(login.pending, (state, action) => {
-      state.error = '';
-      state.loading = true;
-    });
-    builder.addCase(login.fulfilled, (state, action) => {
-      const authResponse = action.payload;
-      // store user details and jwt token in local storage to
-      // keep user logged in between page refreshes
-      localStorage.setItem('user', JSON.stringify(authResponse.user));
-      localStorage.setItem('token', JSON.stringify(authResponse.token));
-      state.user = authResponse.user;
-      state.token = authResponse.token;
+    builder
+      .addCase(getUser.pending, (state) => {
+        state.loading = true;
+        state.error = undefined;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.rcraAPIID = action.payload.rcraAPIID;
+        state.rcraAPIKey = action.payload.rcraAPIKey;
+        state.phoneNumber = action.payload.phoneNumber;
+        state.epaSites = action.payload.epaSites;
+        state.error = undefined;
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.loading = false;
+        // Todo
+        // @ts-ignore
+        state.error = action.payload.error;
+      })
+      .addCase(login.pending, (state, action) => {
+        state.error = undefined;
+        state.loading = true;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        const authResponse = action.payload;
+        // store user details and jwt token in local storage to
+        // keep user logged in between page refreshes
+        localStorage.setItem('user', JSON.stringify(authResponse.user));
+        localStorage.setItem('token', JSON.stringify(authResponse.token));
+        state.user = authResponse.user;
+        state.token = authResponse.token;
 
-      // get return url from location state or default to home page
-      // @ts-ignore
-      const { from } = history.location.state || { from: { pathname: '/' } };
-      // Todo
-      // @ts-ignore
-      history.navigate(from);
-    });
-    builder.addCase(login.rejected, (state, action) => {
-      // Todo
-      // @ts-ignore
-      state.error = action.error.message;
-    });
+        // get return url from location state or default to home page
+        // @ts-ignore
+        const { from } = history.location.state || { from: { pathname: '/' } };
+        // Todo
+        // @ts-ignore
+        history.navigate(from);
+      })
+      .addCase(login.rejected, (state, action) => {
+        // Todo
+        // @ts-ignore
+        state.error = action.error.message;
+      });
   },
 });
 
