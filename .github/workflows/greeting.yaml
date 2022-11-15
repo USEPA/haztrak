@@ -12,7 +12,8 @@ jobs:
       - uses: actions/first-interaction@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          issue-message: "Hi, welcome to Haztrak!
+          issue-message: |
+            Hi, welcome to Haztrak!
 
             It looks like this is your first issue,
             If you're looking to contribute, be sure to check out our [contribution guideline](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md),
@@ -21,10 +22,10 @@ jobs:
             If you have have a question, the question may have been asked before and you can look at our [previous issues](https://github.com/USEPA/haztrak/issues?q=is%3Aissue+is%3Aclosed).
             You may also find the answer in our [documentation](https://github.com/USEPA/haztrak/tree/main/docs).
 
-            Thanks!"
-          pr-message: "Thank you for your first Pull Request!
+            Thanks!
+          pr-message: |
+            Thank you for your first Pull Request!
             If you're submitting a fix or a new feature, please ensure that you've also implemented tests so we know it's working.
 
             Thanks again, enjoy
             [this picture of an adorable puppy](https://media.4-paws.org/1/e/d/6/1ed6da75afe37d82757142dc7c6633a532f53a7d/VIER%20PFOTEN_2019-03-15_001-2886x1999-1920x1330.jpg)!
-            "
