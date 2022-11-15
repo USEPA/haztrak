@@ -1,4 +1,4 @@
-README.md
+**/README.md
 tests/*
 Dockerfile
 db.sqlite3

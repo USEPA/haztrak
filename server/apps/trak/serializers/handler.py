@@ -9,6 +9,9 @@ class HandlerSerializer(TrakSerializer):
     epaSiteId = serializers.CharField(
         source='epa_id',
     )
+    siteType = serializers.CharField(
+        source='site_type',
+    )
     modified = serializers.BooleanField(
         allow_null=True,
         default=False,
@@ -65,6 +68,7 @@ class HandlerSerializer(TrakSerializer):
         model = Handler
         fields = [
             'epaSiteId',
+            'siteType',
             'modified',
             'name',
             'siteAddress',
