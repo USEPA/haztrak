@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-      - "v*"
+      - "v*.*.*"
 
 jobs:
   test-server:
@@ -22,7 +22,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Release
-        uses: ncipollo/release-action@v1
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
           body: ${{steps.github_release.outputs.changelog}}

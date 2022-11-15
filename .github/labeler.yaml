@@ -1,0 +1,22 @@
+# Add 'test' label to any change to *.spec.js files within the source dir
+test:
+  - client/src/**/*.spec.js
+  - server/tests/**/*.py
+
+django:
+  - server/**/*.py
+
+reactjs:
+  - client/src/**/*.ts
+  - client/src/**/*.tsx
+
+documentation:
+  - any: ["docs/**/*", "**/README.md"]
+
+dependencies:
+  - any:
+      [
+        "server/requirements.txt",
+        "client/package.json",
+        "client/package-lock.json",
+      ]
