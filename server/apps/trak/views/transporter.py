@@ -5,17 +5,16 @@ from rest_framework.fields import CharField
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
-from apps.trak.models import Transporter
-from apps.trak.serializers import TransporterSerializer
+from apps.trak.models import Handler
+from apps.trak.serializers import HandlerSerializer
 
 
 class TransporterSearch(GenericAPIView):
-    queryset = Transporter.objects.all()
-    http_method_names = ['POST']
+    queryset = Handler.objects.all()
 
     @extend_schema(
         description='Search for Transporters saved to the Haztrak database',
-        methods=['POST'],
+        # methods=['POST'],
         request=inline_serializer(name='test',
                                   fields={'epaId': CharField(), 'name': CharField()}),
     )
@@ -25,12 +24,13 @@ class TransporterSearch(GenericAPIView):
             name = self.request.data['name']
             if len(epa_id) < 3 and len(name) < 3:
                 return Response(status=HTTPStatus.UNPROCESSABLE_ENTITY)
-            transporters_queryset = Transporter.objects.filter(
+            transporters_queryset = Handler.objects.filter(
+                site_type='Transporter').filter(
                 epa_id__icontains=epa_id).filter(name__icontains=name)
             data = list(transporters_queryset)
             response = []
             for i in data:
-                response.append(TransporterSerializer(i).data)
+                response.append(HandlerSerializer(i).data)
             return Response(status=HTTPStatus.OK, data=response)
         except KeyError:
             return Response(status=HTTPStatus.BAD_REQUEST)
