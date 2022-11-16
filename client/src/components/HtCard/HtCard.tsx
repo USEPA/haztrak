@@ -4,6 +4,7 @@ import { Card, Container } from 'react-bootstrap';
 interface Props {
   id?: string;
   children?: any;
+  className?: string;
 }
 
 interface HeaderProps {
@@ -87,7 +88,9 @@ HtCard.Footer = function (props: Props) {
  */
 HtCard.Body = function (props: Props) {
   return (
-    <Card.Body className="bg-light rounded">
+    <Card.Body
+      className={props.className ? props.className : `${props.className}`}
+    >
       <Container className="py-2">{props.children}</Container>
     </Card.Body>
   );
