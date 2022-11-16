@@ -7,6 +7,7 @@ import HandlerForm from '../HandlerForm';
 import { HandlerType } from 'types/Handler/Handler';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ManifestSchema from './ManifestSchema';
+import TransporterSearch from '../TransporterSearch';
 
 function ManifestForm() {
   const methods = useForm<Manifest>({ resolver: yupResolver(ManifestSchema) });
@@ -17,8 +18,7 @@ function ManifestForm() {
     console.log(data);
   };
   const [transFormShow, setTransFormShow] = useState(false);
-  const handleClose = () => setTransFormShow(false);
-  const handleShow = () => setTransFormShow(true);
+  const toggleTranSearchShow = () => setTransFormShow(!transFormShow);
 
   return (
     <Container>
@@ -50,27 +50,16 @@ function ManifestForm() {
             <HtCard.Body className="bg-light rounded py-4">
               <Row className="d-flex justify-content-center px-5">
                 <Col className="text-center">
-                  <Button variant="success" onClick={handleShow}>
+                  <Button variant="success" onClick={toggleTranSearchShow}>
                     Add Transporter
                   </Button>
                 </Col>
               </Row>
-              <Modal show={transFormShow} onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Transporter Search</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  This is where the transporter search form will go.
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose}>
-                    Cancel
-                  </Button>
-                  <Button variant="primary" onClick={handleClose}>
-                    Add
-                  </Button>
-                </Modal.Footer>
-              </Modal>
+              {/* Add Transporter modal can go here*/}
+              <TransporterSearch
+                handleClose={toggleTranSearchShow}
+                show={transFormShow}
+              />
             </HtCard.Body>
           </HtCard>
         </Form>
