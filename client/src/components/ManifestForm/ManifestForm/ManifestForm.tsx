@@ -1,6 +1,5 @@
-import React from 'react';
-import { Container } from 'react-bootstrap';
-import { Form } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Container, Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 import { Manifest } from 'types';
@@ -17,6 +16,9 @@ function ManifestForm() {
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log(data);
   };
+  const [transFormShow, setTransFormShow] = useState(false);
+  const handleClose = () => setTransFormShow(false);
+  const handleShow = () => setTransFormShow(true);
 
   return (
     <Container>
@@ -45,8 +47,30 @@ function ManifestForm() {
           </HtCard>
           <HtCard id="transporter-form-card">
             <HtCard.Header title="Transporters" />
-            <HtCard.Body>
-              <HandlerForm handlerType={HandlerType.Transporter} />
+            <HtCard.Body className="bg-light rounded py-4">
+              <Row className="d-flex justify-content-center px-5">
+                <Col className="text-center">
+                  <Button variant="success" onClick={handleShow}>
+                    Add Transporter
+                  </Button>
+                </Col>
+              </Row>
+              <Modal show={transFormShow} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Transporter Search</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  This is where the transporter search form will go.
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleClose}>
+                    Cancel
+                  </Button>
+                  <Button variant="primary" onClick={handleClose}>
+                    Add
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </HtCard.Body>
           </HtCard>
         </Form>
