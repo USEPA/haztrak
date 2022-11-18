@@ -21,7 +21,7 @@ interface Manifest {
   certifiedDate: string;
   certifiedBy: Signer;
   generator: Handler;
-  transporter: Handler;
+  transporters: [Handler]; // todo: convert to 'Transporter' type definition
   designatedFacility: Handler;
   broker?: Handler;
   wastes: Waste[];

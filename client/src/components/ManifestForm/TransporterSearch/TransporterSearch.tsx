@@ -24,7 +24,7 @@ function TransporterSearch({ handleClose, show }: Props) {
           </Row>
         </Col>
       </Modal.Header>
-      <TransporterSearchForm />
+      <TransporterSearchForm handleClose={handleClose} show={show} />
     </Modal>
   );
 }
