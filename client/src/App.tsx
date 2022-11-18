@@ -37,7 +37,7 @@ function App() {
       <TopNav />
       <div id="layoutSidenav">
         <Sidebar />
-        <Container fluid className="" id="layoutSidenav_content">
+        <Container fluid id="layoutSidenav_content">
           <Routes>
             <Route
               path="/"

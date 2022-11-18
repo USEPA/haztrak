@@ -31,7 +31,7 @@ interface SpinnerProps {
  */
 function HtCard(props: Props) {
   return (
-    <div id={props.id} className="m-1 my-3 shadow-lg bg-light rounded">
+    <div id={props.id} className="my-3 shadow-lg bg-light rounded">
       {props.children}
     </div>
   );
@@ -91,7 +91,7 @@ HtCard.Body = function (props: Props) {
     <Card.Body
       className={props.className ? props.className : `${props.className}`}
     >
-      <Container className="py-2">{props.children}</Container>
+      <div className="p-3">{props.children}</div>
     </Card.Body>
   );
 };

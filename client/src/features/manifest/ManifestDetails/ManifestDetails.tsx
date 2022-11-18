@@ -38,7 +38,7 @@ function ManifestDetails(): JSX.Element {
   const tsdEmerPhone = manifestData?.designatedFacility.emergencyPhone.number;
 
   return manifestData ? (
-    <Container className="py-4">
+    <>
       <h2 className="fw-bold">{manifestData.manifestTrackingNumber}</h2>
       <HtCard>
         <HtCard.Header title="General Info"></HtCard.Header>
@@ -199,7 +199,7 @@ function ManifestDetails(): JSX.Element {
           </Row>
         </HtCard.Body>
       </HtCard>
-    </Container>
+    </>
   ) : (
     <p>no manifest data {error ? 'error msg goes here' : ''}</p>
   );
