@@ -27,7 +27,7 @@ interface FormValues {
 }
 
 function TransporterSearchForm({ handleClose, show }: Props) {
-  // The TransporterSearch is a separate form, but is used in the context of a ManifestForm
+  // The Transporter is a separate form, but is used in the context of a ManifestForm
   const manifestForm = useFormContext();
 
   const [tranOptions, setTranOptions] = useState<[Transporter] | undefined>(

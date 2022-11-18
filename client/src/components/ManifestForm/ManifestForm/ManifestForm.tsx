@@ -7,8 +7,10 @@ import HandlerForm from '../HandlerForm';
 import { HandlerType } from 'types/Handler/Handler';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ManifestSchema from './ManifestSchema';
-import TransporterSearch from '../TransporterSearch';
-import { Transporter } from 'types/Transporter/Transporter';
+import {
+  TransporterSearch,
+  TransporterTable,
+} from 'components/ManifestForm/Transporter';
 
 function ManifestForm() {
   // methods contains all the useForm context
@@ -28,7 +30,7 @@ function ManifestForm() {
   console.log(transporters);
 
   return (
-    <Container>
+    <>
       <FormProvider {...methods}>
         <Form onSubmit={methods.handleSubmit(onSubmit)}>
           <h2 className="fw-bold">{'Draft Manifest'}</h2>
@@ -56,15 +58,7 @@ function ManifestForm() {
             <HtCard.Header title="Transporters" />
             <HtCard.Body className="bg-light rounded py-4">
               {/* List transporters */}
-              <Row>
-                {transporters ? (
-                  transporters.map((transporter, index) => {
-                    return <p key={index}>{transporter.name}</p>;
-                  })
-                ) : (
-                  <p>bye</p>
-                )}
-              </Row>
+              <TransporterTable transporters={transporters} />
               <Row className="d-flex justify-content-center px-5">
                 <Col className="text-center">
                   <Button variant="success" onClick={toggleTranSearchShow}>
@@ -85,7 +79,7 @@ function ManifestForm() {
           show={transFormShow}
         />
       </FormProvider>
-    </Container>
+    </>
   );
 }
 
