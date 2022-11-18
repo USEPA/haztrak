@@ -11,7 +11,7 @@ reactjs:
   - client/src/**/*.tsx
 
 documentation:
-  - any: ["docs/**/*", "**/README.md"]
+  - any: [ "docs/**/*", "**/README.md" ]
 
 dependencies:
   - any:
@@ -20,3 +20,6 @@ dependencies:
         "client/package.json",
         "client/package-lock.json",
       ]
+
+database:
+  - server/**/migrations/*.py

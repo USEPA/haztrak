@@ -1,27 +1,36 @@
 import React, { useState } from 'react';
-import { Container, Modal, Button, Form, Row, Col } from 'react-bootstrap';
+import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
-import { Manifest } from 'types';
+import { Handler, Manifest } from 'types';
 import HandlerForm from '../HandlerForm';
 import { HandlerType } from 'types/Handler/Handler';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ManifestSchema from './ManifestSchema';
+import {
+  TransporterSearch,
+  TransporterTable,
+} from 'components/ManifestForm/Transporter';
 
 function ManifestForm() {
+  // methods contains all the useForm context
   const methods = useForm<Manifest>({ resolver: yupResolver(ManifestSchema) });
+
   const {
     formState: { errors },
   } = methods;
-  const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
+
+  const onSubmit: SubmitHandler<Manifest> = (data: Manifest) =>
     console.log(data);
-  };
+
   const [transFormShow, setTransFormShow] = useState(false);
-  const handleClose = () => setTransFormShow(false);
-  const handleShow = () => setTransFormShow(true);
+  const toggleTranSearchShow = () => setTransFormShow(!transFormShow);
+
+  const transporters: [Handler] = methods.getValues('transporters');
+  console.log(transporters);
 
   return (
-    <Container>
+    <>
       <FormProvider {...methods}>
         <Form onSubmit={methods.handleSubmit(onSubmit)}>
           <h2 className="fw-bold">{'Draft Manifest'}</h2>
@@ -48,34 +57,29 @@ function ManifestForm() {
           <HtCard id="transporter-form-card">
             <HtCard.Header title="Transporters" />
             <HtCard.Body className="bg-light rounded py-4">
+              {/* List transporters */}
+              <TransporterTable transporters={transporters} />
               <Row className="d-flex justify-content-center px-5">
                 <Col className="text-center">
-                  <Button variant="success" onClick={handleShow}>
+                  <Button variant="success" onClick={toggleTranSearchShow}>
                     Add Transporter
                   </Button>
                 </Col>
               </Row>
-              <Modal show={transFormShow} onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Transporter Search</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  This is where the transporter search form will go.
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose}>
-                    Cancel
-                  </Button>
-                  <Button variant="primary" onClick={handleClose}>
-                    Add
-                  </Button>
-                </Modal.Footer>
-              </Modal>
             </HtCard.Body>
           </HtCard>
+          <div className="mx-1 d-flex flex-row-reverse">
+            <Button variant="success" type="submit">
+              Create Manifest
+            </Button>
+          </div>
         </Form>
+        <TransporterSearch
+          handleClose={toggleTranSearchShow}
+          show={transFormShow}
+        />
       </FormProvider>
-    </Container>
+    </>
   );
 }
 
