@@ -12,7 +12,15 @@ describe('HtCard renders', () => {
   test('renders with title', () => {
     render(
       <HtCard>
-        <HtCard.Header title="hello"/>
+        <HtCard.Header id={'this_!$/the_ID'} title="hello"/>
+      </HtCard>
+    );
+    expect(screen.getByText('hello')).toBeInTheDocument();
+  });
+  test('Catches errors and still renders', () => {
+    render(
+      <HtCard>
+        <HtCard.Header id={'this_!$/the_ID'} title="hello"/>
       </HtCard>
     );
     expect(screen.getByText('hello')).toBeInTheDocument();

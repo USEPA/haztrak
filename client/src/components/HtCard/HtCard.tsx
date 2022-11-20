@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Container } from 'react-bootstrap';
+import ErrorBoundary from "../ErrorBoundary";
 
 interface Props {
   id?: string;
@@ -32,7 +33,7 @@ interface SpinnerProps {
 function HtCard(props: Props) {
   return (
     <div id={props.id} className="my-3 shadow-lg bg-light rounded">
-      {props.children}
+        {props.children}
     </div>
   );
 }
@@ -87,11 +88,16 @@ HtCard.Footer = function (props: Props) {
  * </HtCard>
  */
 HtCard.Body = function (props: Props) {
+  if (typeof props.className === undefined){
+    props.className = ''
+  }
   return (
     <Card.Body
-      className={props.className ? props.className : `${props.className}`}
+      className={props.className ? `${props.className}` : ''}
     >
-      <div className="p-3">{props.children}</div>
+      <ErrorBoundary>
+        <div className="p-3">{props.children}</div>
+      </ErrorBoundary>
     </Card.Body>
   );
 };
