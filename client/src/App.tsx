@@ -19,7 +19,7 @@ import Profile from './features/profile';
 import Sites from './features/site/Sites';
 import { useAppSelector } from './app/hooks';
 import Manifest from './features/manifest';
-import ErrorBoundary from "./components/ErrorBoundary";
+import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
   const useSelector = useAppSelector;
@@ -40,43 +40,43 @@ function App() {
         <Sidebar />
         <Container fluid id="layoutSidenav_content">
           <ErrorBoundary>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <PrivateRoute>
-                  <Home />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <PrivateRoute>
-                  <Profile />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/site/*"
-              element={
-                <PrivateRoute>
-                  <Sites user={user ? user : ''} />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/manifest/*"
-              element={
-                <PrivateRoute>
-                  <Manifest />
-                </PrivateRoute>
-              }
-            />
-            <Route path="/login" element={<Login />} />
-            <Route path="/about" element={<About />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <Home />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/site/*"
+                element={
+                  <PrivateRoute>
+                    <Sites user={user ? user : ''} />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/manifest/*"
+                element={
+                  <PrivateRoute>
+                    <Manifest />
+                  </PrivateRoute>
+                }
+              />
+              <Route path="/login" element={<Login />} />
+              <Route path="/about" element={<About />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
           </ErrorBoundary>
         </Container>
       </div>

@@ -4,3 +4,5 @@ README.md
 .prettierignore
 .prettierrc.json
 node_modules/
+**/*.spec.tsx
+**/*.spec.ts
