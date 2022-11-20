@@ -4,15 +4,17 @@ import {
   useForm,
   useFormContext,
   SubmitHandler,
-  useFieldArray,
+  UseFieldArrayAppend,
 } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import api from 'services';
 import { Transporter } from 'types/Transporter/Transporter';
+import { Manifest } from 'types';
 
 interface Props {
   handleClose: () => void;
   show: boolean | undefined;
+  tranAppend: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 
 interface SearchCriteria {
@@ -26,7 +28,7 @@ interface FormValues {
   name: string;
 }
 
-function TransporterSearchForm({ handleClose, show }: Props) {
+function TransporterSearchForm({ handleClose, show, tranAppend }: Props) {
   // The Transporter is a separate form, but is used in the context of a ManifestForm
   const manifestForm = useFormContext();
 
@@ -40,14 +42,6 @@ function TransporterSearchForm({ handleClose, show }: Props) {
     watch,
     formState: { errors },
   } = useForm<FormValues>();
-
-  // Todo: this hook needs to be 'owned' by the ManifestForm and passed as a prop
-  //  to this form. That way the manifest form can do things like remove, reorder, insert, etc. Transporters.
-  //  https://legacy.react-hook-form.com/api/usefieldarray
-  const { append } = useFieldArray({
-    control: manifestForm.control,
-    name: 'transporters',
-  });
 
   /**
    This is the data that is sent to the RESTful api, it's automatically updated
@@ -85,7 +79,7 @@ function TransporterSearchForm({ handleClose, show }: Props) {
       for (let i = 0; i < tranOptions?.length; i++) {
         if (tranOptions[i].epaSiteId === data.transporter) {
           // append in run in the ManifestForm context, on the 'transporter' field
-          append(tranOptions[i]);
+          tranAppend(tranOptions[i]);
           console.log(manifestForm.getValues()); // uncomment to see how the new transporter is added to the manifest
         }
       }

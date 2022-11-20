@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import { Container, Button, Form, Row, Col } from 'react-bootstrap';
+import { Button, Form, Row, Col } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
-import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
+import {
+  useForm,
+  FormProvider,
+  SubmitHandler,
+  useFieldArray,
+} from 'react-hook-form';
 import { Handler, Manifest } from 'types';
 import HandlerForm from '../HandlerForm';
 import { HandlerType } from 'types/Handler/Handler';
@@ -17,6 +22,7 @@ function ManifestForm() {
   const methods = useForm<Manifest>({ resolver: yupResolver(ManifestSchema) });
 
   const {
+    control,
     formState: { errors },
   } = methods;
 
@@ -27,7 +33,13 @@ function ManifestForm() {
   const toggleTranSearchShow = () => setTransFormShow(!transFormShow);
 
   const transporters: [Handler] = methods.getValues('transporters');
-  console.log(transporters);
+
+  const { append } = useFieldArray({
+    control,
+    name: 'transporters',
+  });
+
+  console.log('append: ', append);
 
   return (
     <>
@@ -77,6 +89,7 @@ function ManifestForm() {
         <TransporterSearch
           handleClose={toggleTranSearchShow}
           show={transFormShow}
+          tranAppend={append}
         />
       </FormProvider>
     </>

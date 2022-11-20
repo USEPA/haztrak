@@ -1,13 +1,16 @@
 import React from 'react';
 import TransporterSearchForm from './TransporterSearchForm';
 import { Modal, Row, Col } from 'react-bootstrap';
+import { UseFieldArrayAppend } from 'react-hook-form';
+import { Manifest } from 'types';
 
 interface Props {
   handleClose: () => void;
   show: boolean | undefined;
+  tranAppend: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 
-function TransporterSearch({ handleClose, show }: Props) {
+function TransporterSearch({ handleClose, show, tranAppend }: Props) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -24,7 +27,11 @@ function TransporterSearch({ handleClose, show }: Props) {
           </Row>
         </Col>
       </Modal.Header>
-      <TransporterSearchForm handleClose={handleClose} show={show} />
+      <TransporterSearchForm
+        handleClose={handleClose}
+        show={show}
+        tranAppend={tranAppend}
+      />
     </Modal>
   );
 }
