@@ -1,9 +1,13 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 import history from 'utils';
 import { RootState } from 'app/store';
+
+interface Props {
+  children: any;
+  authUser: string | undefined;
+}
 
 /**
  * Wraps around Route component to redirect to login if not authenticated user
@@ -11,8 +15,7 @@ import { RootState } from 'app/store';
  * @returns {JSX.Element|*}
  * @constructor
  */
-function PrivateRoute({ children }: any): JSX.Element {
-  const { user: authUser } = useSelector((state: RootState) => state.user);
+function PrivateRoute({ children, authUser }: Props): JSX.Element {
   if (!authUser) {
     // not logged in so redirect to login page with the return url
     return <Navigate to="/login" state={{ from: history.location }} />;

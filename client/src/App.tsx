@@ -8,21 +8,23 @@ import {
 } from 'react-router-dom';
 
 import { Container } from 'react-bootstrap';
-import history from './utils';
-import PrivateRoute from './components/PrivateRoute';
-import Home from './features/home';
-import Login from './features/login';
-import { TopNav } from './components/Nav';
-import { Sidebar } from './components/Nav';
-import About from './features/help';
-import Profile from './features/profile';
-import Sites from './features/site/Sites';
-import { useAppSelector } from './app/hooks';
-import Manifest from './features/manifest';
-import ErrorBoundary from './components/ErrorBoundary';
+import history from 'utils';
+import PrivateRoute from 'components/PrivateRoute';
+import Home from 'features/home';
+import Login from 'features/login';
+import { TopNav } from 'components/Nav';
+import { Sidebar } from 'components/Nav';
+import About from 'features/help';
+import Profile from 'features/profile';
+import Sites from 'features/site/Sites';
+import { useAppSelector } from 'app/hooks';
+import Manifest from 'features/manifest';
+import ErrorBoundary from 'components/ErrorBoundary';
+import { RootState } from './app/store';
 
 function App() {
   const useSelector = useAppSelector;
+  // Todo: remove this
   // init custom history object to allow navigation from
   // anywhere in the React app (inside or outside components)
   // @ts-ignore
@@ -30,7 +32,7 @@ function App() {
   // @ts-ignore
   history.location = useLocation();
 
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
 
   return (
     // eslint-disable-next-line react/jsx-filename-extension
@@ -44,7 +46,7 @@ function App() {
               <Route
                 path="/"
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute authUser={user}>
                     <Home />
                   </PrivateRoute>
                 }
@@ -52,7 +54,7 @@ function App() {
               <Route
                 path="/profile"
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute authUser={user}>
                     <Profile />
                   </PrivateRoute>
                 }
@@ -60,7 +62,7 @@ function App() {
               <Route
                 path="/site/*"
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute authUser={user}>
                     <Sites user={user ? user : ''} />
                   </PrivateRoute>
                 }
@@ -68,7 +70,7 @@ function App() {
               <Route
                 path="/manifest/*"
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute authUser={user}>
                     <Manifest />
                   </PrivateRoute>
                 }
