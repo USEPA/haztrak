@@ -1,14 +1,15 @@
 import { rest } from 'msw';
 
+const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
+
 export const handlers = [
-  rest.post('http://localhost:8000/api/user/login', (req, res, ctx) => {
+  rest.post(`${API_BASE_URL}/api/user/login`, (req, res, ctx) => {
     // Persist user's authentication in the session
     sessionStorage.setItem('token', 'this_is_a_fake_token');
     sessionStorage.setItem('user', 'testuser1');
 
     return res(
       // Respond with a 200 status code
-
       ctx.status(200),
       ctx.json({
         token: 'fake_token',
@@ -16,10 +17,9 @@ export const handlers = [
       })
     );
   }),
-  rest.get('http://localhost:8000/api/user/profile', (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/user/profile`, (req, res, ctx) => {
     return res(
       // Respond with a 200 status code
-
       ctx.status(200),
       ctx.json({
         token: 'fake_token',

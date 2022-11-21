@@ -1,27 +1,37 @@
 // utility wrapper for '@testing-library/react so we do not need to
 // use Redux store Provider and BrowserRouter in all test.js files, see
 // https://testing-library.com/docs/react-testing-library/setup/#custom-render
-import React from 'react';
-import { render } from '@testing-library/react';
-import { RootState, setupStore } from 'app/store';
+import React, { PropsWithChildren } from 'react';
+import { render, RenderOptions } from '@testing-library/react';
+import { AppStore, RootState, setupStore } from 'app/store';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { PreloadedState } from '@reduxjs/toolkit';
 
-interface Props {
-  children: JSX.Element;
-  initialState: RootState;
+interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
+  preloadedState?: PreloadedState<RootState>;
+  store?: AppStore;
 }
 
-const allTheProviders = ({ children, initialState }: Props) => {
-  return (
-    <Provider store={setupStore(initialState)}>
-      <BrowserRouter>{children}</BrowserRouter>
-    </Provider>
-  );
-};
+export function renderWithProviders(
+  ui: React.ReactElement,
+  {
+    preloadedState = {},
+    // Automatically create a store instance if no store was passed in
+    store = setupStore(preloadedState),
+    ...renderOptions
+  }: ExtendedRenderOptions = {}
+) {
+  function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
+    return (
+      <Provider store={store}>
+        <BrowserRouter>{children}</BrowserRouter>
+      </Provider>
+    );
+  }
 
-const renderWithProviders = (ui: JSX.Element, options: any | null) =>
-  render(ui, { wrapper: allTheProviders, ...options });
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+}
 
 export * from '@testing-library/react';
 

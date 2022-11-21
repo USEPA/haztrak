@@ -4,7 +4,7 @@ import Login from './index';
 
 describe('Login Component', () => {
   test('renders', () => {
-    render(<Login />, null);
+    render(<Login />, undefined);
     expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
   });
 });
