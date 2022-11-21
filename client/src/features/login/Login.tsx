@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import history from 'utils';
 import { login } from 'app/store';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { useNavigate } from 'react-router-dom';
+import { Form } from 'react-bootstrap';
 
 interface Inputs {
   username: string;
@@ -21,12 +22,12 @@ function Login() {
   const useSelector = useAppSelector;
   const authUser = useSelector((state) => state.user.user);
   const authError = useSelector((state) => state.user.error);
+  const navigation = useNavigate();
 
   useEffect(() => {
     // redirect to home if already logged in
     if (authUser) {
-      // @ts-ignore
-      history.navigate('/');
+      navigation('/');
     }
   }, [authUser]);
 
@@ -60,28 +61,32 @@ function Login() {
         <h4 className="card-header bg-primary text-light">Login</h4>
         <div className="card-body">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="form-group">
-              <label>Username</label>
-              <input
+            <Form.Group>
+              <Form.Label htmlFor="username">Username</Form.Label>
+              <Form.Control
+                id="username"
                 type="text"
-                {...register('username')}
+                placeholder={'wary-walrus-123'}
+                {...register('username', {})}
                 className={`form-control ${
                   errors.username ? 'is-invalid' : ''
                 }`}
               />
               <div className="invalid-feedback">{errors.username?.message}</div>
-            </div>
-            <div className="form-group">
-              <label>Password</label>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="password">Password</Form.Label>
               <input
+                id="password"
                 type="password"
-                {...register('password')}
+                placeholder="MyP@ssword123"
+                {...register('password', {})}
                 className={`form-control ${
                   errors.password ? 'is-invalid' : ''
                 }`}
               />
               <div className="invalid-feedback">{errors.password?.message}</div>
-            </div>
+            </Form.Group>
             <button
               type="submit"
               disabled={isSubmitting}

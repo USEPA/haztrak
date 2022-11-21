@@ -57,7 +57,9 @@ function Sidebar() {
                   </Link>
                   <a
                     className="nav-link"
+                    target="_blank"
                     href="https://rcrainfopreprod.epa.gov"
+                    rel="noreferrer"
                   >
                     <i
                       className="sb-nav-link-icon text-danger fa-solid
@@ -99,6 +101,7 @@ function Sidebar() {
                     className="nav-link"
                     target="_blank"
                     href={`${process.env.REACT_APP_HT_API_URL}/api/schema/swagger-ui`}
+                    rel="noreferrer"
                   >
                     <i className="sb-nav-link-icon text-primary fa-solid fa-network-wired" />
                     Swagger UI

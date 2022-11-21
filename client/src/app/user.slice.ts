@@ -5,12 +5,12 @@ import history from 'utils';
 export interface UserState {
   user: string | undefined;
   token: string | undefined;
-  rcraAPIID: string | null;
-  rcraAPIKey: string | null;
-  epaSites: string[];
-  phoneNumber: string | undefined;
+  rcraAPIID?: string;
+  rcraAPIKey?: string;
+  epaSites?: string[];
+  phoneNumber?: string;
   loading: boolean;
-  error: string | undefined;
+  error?: string | undefined;
 }
 
 const initialState: UserState = {

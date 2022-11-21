@@ -7,8 +7,6 @@ describe('User Slice tests', () => {
   const initialState: UserState = {
     user: undefined,
     token: undefined,
-    rcraAPIID: null,
-    rcraAPIKey: null,
     epaSites: [],
     phoneNumber: '',
     loading: false,

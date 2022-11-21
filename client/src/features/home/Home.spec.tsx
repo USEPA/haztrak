@@ -7,16 +7,16 @@ import { rest } from 'msw';
 
 const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
 
+const username = 'testuser1';
+
 export const handlers = [
   rest.get(`${API_BASE_URL}/api/user/profile`, (req, res, ctx) => {
     return res(
-      // Respond with a 200 status code
+      ctx.delay(), // random 'realistic' server response time
       ctx.status(200),
       ctx.json({
         token: 'fake_token',
-        user: 'testuser1',
-        rcraAPIID: 'test_api_id',
-        rcraAPIKey: 'test_api_key_to_be_eliminated',
+        user: username,
         epaSites: ['VATESTRAN003', 'VATESTGEN001'],
         phoneNumber: undefined,
         loading: false,
@@ -28,20 +28,20 @@ export const handlers = [
 
 const server = setupServer(...handlers);
 
-beforeAll(() => server.listen());
-// Reset any runtime request handlers we may add during the tests.
-afterEach(() => server.resetHandlers());
-
-// Disable API mocking after the tests are done.
-afterAll(() => server.close());
-
+beforeAll(() => server.listen()); // setup mock http server
 afterEach(() => {
+  server.resetHandlers();
   cleanup();
   jest.resetAllMocks();
 });
+afterAll(() => server.close()); // Disable API mocking after the tests are done.
 
-describe('Home', () => {
-  test('renders', async () => {
+describe('Home component', () => {
+  test('renders', () => {
+    renderWithProviders(<Home />);
+    expect(screen.getByText(/Hello/i)).toBeInTheDocument();
+  });
+  test('User information is retrieved', async () => {
     renderWithProviders(<Home />, {});
     expect(await screen.findByText('Hello testuser1!')).toBeInTheDocument();
   });
