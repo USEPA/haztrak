@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from 'services';
-import history from 'utils';
 
 export interface UserState {
   user: string | undefined;
@@ -41,17 +40,17 @@ export const login = createAsyncThunk(
 );
 
 /**
- * Reducer Function that logs user out
- * @param    {Object} user User state
- * @return   {Object}      Updated state
+ * User logout Redux reducer Function
+ *
+ * @description on logout, we want to strip all information
+ * from browser storage and redux store's state
+ * @param    {Object} user UserState
+ * @return   {Object}      UserState
  */
 function logout(user: UserState) {
   localStorage.removeItem('user');
   localStorage.removeItem('token');
-  user = initialState;
-  // @ts-ignore
-  history.navigate('/login');
-  return user as UserState;
+  return { ...initialState, user: undefined, token: undefined } as UserState;
 }
 
 const userSlice = createSlice({
@@ -93,13 +92,6 @@ const userSlice = createSlice({
         localStorage.setItem('token', JSON.stringify(authResponse.token));
         state.user = authResponse.user;
         state.token = authResponse.token;
-
-        // get return url from location state or default to home page
-        // @ts-ignore
-        const { from } = history.location.state || { from: { pathname: '/' } };
-        // Todo
-        // @ts-ignore
-        history.navigate(from);
       })
       .addCase(login.rejected, (state, action) => {
         // Todo

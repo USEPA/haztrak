@@ -3,11 +3,16 @@ import { Button, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/store';
+import { useNavigate } from 'react-router-dom';
 
 function TopNav() {
   const authUser = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
-  const logout = () => dispatch({ type: 'user/logout' });
+  const navigation = useNavigate();
+  const logout = () => {
+    dispatch({ type: 'user/logout' });
+    navigation('/login');
+  };
   if (!authUser) return null;
 
   const toggleSidebar = () => {
