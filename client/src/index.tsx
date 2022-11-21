@@ -6,6 +6,14 @@ import App from './App';
 import { store } from './app/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+if (
+  process.env.REACT_APP_HT_ENV &&
+  process.env.REACT_APP_HT_ENV.toUpperCase() === 'DEVELOPMENT'
+) {
+  const { worker } = require('./mocks/browser');
+  worker.start();
+}
+
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 
