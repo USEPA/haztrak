@@ -18,6 +18,7 @@ function ManifestDetails(): JSX.Element {
     api
       .get(`trak/manifest/${params.mtn}`, null)
       .then((response) => {
+        setLoading(false);
         setManifestData(response as Manifest);
       })
       .catch((error) => {

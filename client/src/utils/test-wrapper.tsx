@@ -12,7 +12,7 @@ interface Props {
   initialState: RootState;
 }
 
-const AllTheProviders = ({ children, initialState }: Props) => {
+const allTheProviders = ({ children, initialState }: Props) => {
   return (
     <Provider store={setupStore(initialState)}>
       <BrowserRouter>{children}</BrowserRouter>
@@ -20,10 +20,10 @@ const AllTheProviders = ({ children, initialState }: Props) => {
   );
 };
 
-const customRender = (ui: JSX.Element, options: any | null) =>
-  render(ui, { wrapper: AllTheProviders, ...options });
+const renderWithProviders = (ui: JSX.Element, options: any | null) =>
+  render(ui, { wrapper: allTheProviders, ...options });
 
 export * from '@testing-library/react';
 
 // replace @testing-library/react's render function with our own custom render
-export { customRender as render };
+export { renderWithProviders as render };

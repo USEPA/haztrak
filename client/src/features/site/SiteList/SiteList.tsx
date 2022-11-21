@@ -22,6 +22,7 @@ function SiteList(props: props) {
       .get('trak/site', null)
       .then((response) => {
         if (response.length > 0) {
+          setLoading(false);
           setSiteData(response as any);
         }
       })

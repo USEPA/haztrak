@@ -55,6 +55,7 @@ function SiteDetails(): JSX.Element {
     api
       .get(`trak/site/${params.siteId}`, null)
       .then((response) => {
+        setLoading(false);
         setSiteData(response as any);
       })
       .catch(setError);
