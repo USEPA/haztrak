@@ -1,24 +1,23 @@
 from django.contrib.auth.models import User
 from django.db import IntegrityError, InternalError
-from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.generics import GenericAPIView
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 
-class SignUp(APIView):
+class SignUp(GenericAPIView):
     permission_classes = [AllowAny]
-    response = JsonResponse
+    response = Response
 
     @method_decorator(csrf_exempt)
-    def post(self, request: Request) -> JsonResponse:
+    def post(self, request: Request) -> Response:
         try:
             data = JSONParser().parse(request)
             user = User.objects.create_user(
@@ -47,5 +46,5 @@ class Login(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'token': token.key,
-            'user': user.pk
+            'user': str(user)
         })

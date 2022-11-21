@@ -32,7 +32,7 @@ export const getUser = createAsyncThunk('user/getUser', async () => {
 export const login = createAsyncThunk(
   'user/login',
   async ({ username, password }: { username: string; password: string }) => {
-    const response: UserState = await api.post('user/login/', {
+    const response = await api.post('user/login/', {
       username,
       password,
     });
@@ -87,8 +87,8 @@ const userSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         const authResponse = action.payload;
-        // store user details and jwt token in local storage to
-        // keep user logged in between page refreshes
+        // Todo: currently, we store username and jwt token in local storage so
+        //  the user stays logged in between page refreshes. This is a vulnerability
         localStorage.setItem('user', JSON.stringify(authResponse.user));
         localStorage.setItem('token', JSON.stringify(authResponse.token));
         state.user = authResponse.user;
