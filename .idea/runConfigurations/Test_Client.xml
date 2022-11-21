@@ -4,7 +4,9 @@
     <node-options value="" />
     <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
     <working-dir value="$PROJECT_DIR$/client" />
-    <envs />
+    <envs>
+      <env name="REACT_APP_HT_ENV" value="TEST" />
+    </envs>
     <scope-kind value="ALL" />
     <method v="2" />
   </configuration>

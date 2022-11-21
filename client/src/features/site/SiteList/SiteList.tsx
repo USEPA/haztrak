@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import api from 'services';
-import { sleepDemo } from 'utils/utils';
 import HtCard from 'components/HtCard';
 import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
@@ -23,11 +22,6 @@ function SiteList(props: props) {
       .get('trak/site', null)
       .then((response) => {
         if (response.length > 0) {
-          // Begin HT demo
-          // sleepDemo illustrates how HT handles async hydration
-          sleepDemo(750).then(() => setLoading(false));
-          // setLoading(false)
-          // End HT demo
           setSiteData(response as any);
         }
       })
