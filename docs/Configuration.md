@@ -4,16 +4,16 @@
 
 - [Overview](#Overview)
 - [Server Configuration](#Server)
-    - [Required](#required-(server))
-    - [Optional](#optional-(server))
+    - [Required](#required-server)
+    - [Optional](#optional-server)
         - [Database](#Database)
         - [Database](#Celery)
 - [Client Configuration](#Client)
-    - [Required Parameters](#required-(client))
+    - [Required Parameters](#required-client)
 
 ## Overview
 
-haztrak expects configurations in form of environment variables supplied at runtime Yay!
+haztrak expects configurations in form of environment variables supplied at runtime, Yay!
 For non-containerized local development, you can place '.env' files in the [server](/server)
 and [client](/client) directories, with the outlined values below and the values will be
 automatically added. You can find [example configs here](/configs).
@@ -110,7 +110,7 @@ or [RabbitMQ](https://www.rabbitmq.com/).
 * `REACT_APP_HT_ENV`
     * Default: `PROD`
     * Options: `PROD`, `DEV`, `TEST`
-    * Description: The deployment environment, `TEST` and `DEV` will initiate some additional
-      things to be aware of
+    * Description: The deployment environments, `TEST` and `DEV` will initiate some additional
+      things that you should be aware of.
         * `TEST` will initiate our mock service worker that intercepts API calls and responds with
           test data. It should be used for unit-testing purposes.

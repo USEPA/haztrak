@@ -3,33 +3,36 @@ How to contribute to `haztrak`
 
 ### Bugs or Questions?
 
-* Submit an issue on [the Issues page](https://github.com/USEPA/haztrak/issues),
-  we love input in general and we're happy to answer and questions.
-* It's also best to ask clarifying questions here before starting work or submitting a PR.
+* Submit [an Issues](https://github.com/USEPA/haztrak/issues),
+  we love input in general and we're happy to answer any questions.
+* It's best to ask clarifying questions, via an issue or discussion, before starting work or submitting a PR. we also welcome draft PRs.
 
 ### Code contributions
 
 If you're looking to contribute code or documentation, here's the general process...
 
-* Ask to be assigned an [Issues](https://github.com/USEPA/haztrak/issues),
-* Fork this repo to your GitHub account
-* Clone your fork to your local workstation
+* Ask to be assigned an [Issues](https://github.com/USEPA/haztrak/issues).
+* Fork this repo to your GitHub account.
+* Clone your fork to your local workstation.
     * e.g,. `$ git clone git@github.com/<yourgithubusername>/haztrak.git`
-* Add [USEPA/haztrak](https://github.com/USEPA/haztrak) as a remote and track upstream changes
+* Add [USEPA/haztrak](https://github.com/USEPA/haztrak) as a remote and track upstream changes.
     * `$ git remote add upstream https://github.com/USEPA/haztrak.git`
         * `$ git fetch upstream` then merge later or just `$ git pull upstream`
     * Or keep your fork in sync
-* Create a new branch and make your changes
+* Create a new branch and make your changes.
     * If you are adding or changing haztrak's functionality, include new test(s) and make sure they
       pass
-      before submitting the pull request.
-        * `$ ./runhaz -t` is a convenience script to run all test.
-        * `$ python manage.py test` for running django's test
-        * `$ npm test` for running create-react-app's test script
+    * before submitting your pull request...
+        * Update the documentation.
+        * Run all tests.
+            * `$ ./runhaz -t` is a convenience script to run all test.
+        * Resolve merge conflicts with upstream, please and thank you.
 * Push changes to your account's fork
 * Submit a pull request to [USEPA/haztrak](https://github.com/USEPA/haztrak/pulls)
 
 ### Setting up a development environment
+
+* For setting up Haztrak, see our [Deployment docs](/docs/Deployment.md)
 
 * To make life a little easier, we've included a couple configs to help get a
   development environment setup.
