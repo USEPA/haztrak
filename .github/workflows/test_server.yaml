@@ -14,8 +14,6 @@ jobs:
     defaults:
       run:
         working-directory: ./server
-    env:
-      HT_SECRET_KEY: ${{ secrets.HT_SECRET_KEY }}
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10"]
@@ -36,6 +34,7 @@ jobs:
 
       - name: Run Tests
         env:
+          HT_SECRET_KEY: ${{ secrets.HT_SECRET_KEY }}
           HT_CORS_DOMAIN: http://localhost:3000
           HT_TIMEZONE: America/New_York
           HT_HOST: localhost
