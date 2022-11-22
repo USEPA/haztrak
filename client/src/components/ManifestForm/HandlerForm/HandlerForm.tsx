@@ -94,7 +94,7 @@ function HandlerForm({ handlerType }: Props): JSX.Element {
           <></>
         )}
       </Row>
-      <Button type="submit">{`Add ${handlerType}`}</Button>
+      {/*<Button type="submit">{`Add ${handlerType}`}</Button>*/}
     </>
   );
 }
