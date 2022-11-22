@@ -18,6 +18,7 @@ import {
 } from 'components/ManifestForm/Transporter';
 import { Transporter } from '../../../types/Transporter/Transporter';
 import WasteLine from '../WasteLine';
+import Tsdf from '../Tsdf';
 
 function ManifestForm() {
   // Top level ManifestForm methods and objects
@@ -41,6 +42,10 @@ function ManifestForm() {
   // Wasteline controls
   const [wlFormShow, setWlFormShow] = useState<boolean>(false);
   const toggleWlFormShow = () => setWlFormShow(!wlFormShow);
+
+  // Tsdf controls
+  const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
+  const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
 
   return (
     <>
@@ -81,14 +86,26 @@ function ManifestForm() {
               </Row>
             </HtCard.Body>
           </HtCard>
-          <HtCard id="tsdf-form-card">
+          <HtCard id="waste-form-card">
             <HtCard.Header title="Waste" />
             <HtCard.Body className="bg-light rounded py-4">
-              {/* TSDF should not manually added */}
               <Row className="d-flex justify-content-center px-5">
                 <Col className="text-center">
                   <Button variant="success" onClick={toggleWlFormShow}>
                     Add Waste
+                  </Button>
+                </Col>
+              </Row>
+            </HtCard.Body>
+          </HtCard>
+          <HtCard id="tsdf-form-card">
+            {/* Where The Tsdf information is added and displayed */}
+            <HtCard.Header title="Designated Facility" />
+            <HtCard.Body className="bg-light rounded py-4">
+              <Row className="d-flex justify-content-center px-5">
+                <Col className="text-center">
+                  <Button variant="success" onClick={toggleTsdfFormShow}>
+                    Add TSDF
                   </Button>
                 </Col>
               </Row>
@@ -107,6 +124,7 @@ function ManifestForm() {
           tranAppend={append}
         />
         <WasteLine handleClose={toggleWlFormShow} show={wlFormShow} />
+        <Tsdf handleClose={toggleTsdfFormShow} show={tsdfFormShow} />
       </FormProvider>
     </>
   );
