@@ -4,15 +4,10 @@ import HtCard from 'components/HtCard';
 import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
 import HtDropdown from 'components/HtDropdown';
+import { Site } from 'types/Handler';
 
-interface props {
-  user: any;
-}
-
-// interface SiteData {}
-
-function SiteList(props: props) {
-  const [siteData, setSiteData] = useState(null);
+function SiteList() {
+  const [siteData, setSiteData] = useState<[Site] | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -23,11 +18,11 @@ function SiteList(props: props) {
       .then((response) => {
         if (response.length > 0) {
           setLoading(false);
-          setSiteData(response as any);
+          setSiteData(response as [Site]);
         }
       })
       .catch(setError);
-  }, [props.user]);
+  }, []);
 
   function SitesTable() {
     return (
@@ -41,25 +36,28 @@ function SiteList(props: props) {
           </tr>
         </thead>
         <tbody>
-          {/*// @ts-ignore */}
-          {siteData.map((site, i) => {
-            return (
-              <tr key={i}>
-                <td>{site.name}</td>
-                <td>{site.siteHandler.epaSiteId}</td>
-                <td>
-                  <Link to={`/site/${site.siteHandler.epaSiteId}`}>
-                    <i className="fa-solid fa-eye"></i>
-                  </Link>
-                </td>
-                <td>
-                  <Link to={`/site/${site.siteHandler.epaSiteId}/manifests`}>
-                    <i className="fa-solid fa-file-lines"></i>
-                  </Link>
-                </td>
-              </tr>
-            );
-          })}
+          {siteData ? (
+            siteData.map((site, i) => {
+              return (
+                <tr key={i}>
+                  <td>{site.name}</td>
+                  <td>{site.siteHandler.epaSiteId}</td>
+                  <td>
+                    <Link to={`/site/${site.siteHandler.epaSiteId}`}>
+                      <i className="fa-solid fa-eye"></i>
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/site/${site.siteHandler.epaSiteId}/manifests`}>
+                      <i className="fa-solid fa-file-lines"></i>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <p>nothing</p>
+          )}
         </tbody>
       </Table>
     );

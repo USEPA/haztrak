@@ -1,3 +1,4 @@
 import { Handler } from './Handler';
+import { Site } from './Site';
 
-export type { Handler };
+export type { Site, Handler };
