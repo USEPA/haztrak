@@ -27,7 +27,7 @@ function TransporterTable({ transporters }: Props) {
         {transporters.map((transporter, index) => {
           return (
             <tr key={index}>
-              <td>{index + 1}</td>
+              <td>{transporter.order}</td>
               <td>{transporter.epaSiteId}</td>
               <td>{transporter.name}</td>
               <td>{transporter.canEsign ? 'yes' : 'no'}</td>

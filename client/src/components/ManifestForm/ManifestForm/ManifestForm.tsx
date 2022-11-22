@@ -16,6 +16,7 @@ import {
   TransporterSearch,
   TransporterTable,
 } from 'components/ManifestForm/Transporter';
+import { Transporter } from '../../../types/Transporter/Transporter';
 
 function ManifestForm() {
   // methods contains all the useForm context
@@ -29,17 +30,15 @@ function ManifestForm() {
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) =>
     console.log(data);
 
-  const [transFormShow, setTransFormShow] = useState(false);
+  const [transFormShow, setTransFormShow] = useState<boolean>(false);
   const toggleTranSearchShow = () => setTransFormShow(!transFormShow);
 
-  const transporters: [Handler] = methods.getValues('transporters');
+  const transporters: [Transporter] = methods.getValues('transporters');
 
-  const { append } = useFieldArray({
+  const { append } = useFieldArray<Manifest, 'transporters'>({
     control,
     name: 'transporters',
   });
-
-  console.log('append: ', append);
 
   return (
     <>
@@ -89,6 +88,7 @@ function ManifestForm() {
         <TransporterSearch
           handleClose={toggleTranSearchShow}
           show={transFormShow}
+          currentTransporters={transporters}
           tranAppend={append}
         />
       </FormProvider>

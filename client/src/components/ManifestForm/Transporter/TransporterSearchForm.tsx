@@ -9,11 +9,11 @@ import {
 import { ErrorMessage } from '@hookform/error-message';
 import api from 'services';
 import { Transporter } from 'types/Transporter/Transporter';
-import { Manifest } from 'types';
+import { Handler, Manifest } from 'types';
 
 interface Props {
   handleClose: () => void;
-  show: boolean | undefined;
+  currentTransporters?: [Transporter];
   tranAppend: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 
@@ -28,11 +28,15 @@ interface FormValues {
   name: string;
 }
 
-function TransporterSearchForm({ handleClose, show, tranAppend }: Props) {
+function TransporterSearchForm({
+  handleClose,
+  tranAppend,
+  currentTransporters,
+}: Props) {
   // The Transporter is a separate form, but is used in the context of a ManifestForm
   const manifestForm = useFormContext();
 
-  const [tranOptions, setTranOptions] = useState<[Transporter] | undefined>(
+  const [tranOptions, setTranOptions] = useState<[Handler] | undefined>(
     undefined
   );
 
@@ -67,7 +71,7 @@ function TransporterSearchForm({ handleClose, show, tranAppend }: Props) {
       }
     }
 
-    fetchOptions().then((trans) => setTranOptions(trans));
+    fetchOptions().then((trans: [Handler]) => setTranOptions(trans));
   }, [watch('epaId'), watch('name')]);
 
   /**Use the value (string) set in the Form.Select to look up
@@ -79,7 +83,15 @@ function TransporterSearchForm({ handleClose, show, tranAppend }: Props) {
       for (let i = 0; i < tranOptions?.length; i++) {
         if (tranOptions[i].epaSiteId === data.transporter) {
           // append in run in the ManifestForm context, on the 'transporter' field
-          tranAppend(tranOptions[i]);
+          // const numberOfTransporter = currentTransporters?.length;
+          const numberOfTransporter = currentTransporters
+            ? currentTransporters.length
+            : 0;
+          const newTransporter: Transporter = {
+            order: numberOfTransporter + 1,
+            ...tranOptions[i],
+          };
+          tranAppend(newTransporter);
           console.log(manifestForm.getValues()); // uncomment to see how the new transporter is added to the manifest
         }
       }

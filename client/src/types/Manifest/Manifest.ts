@@ -5,6 +5,7 @@ import { Handler, Locality } from '../Handler/Handler';
 import { CorrectionInfo, CorrectionRequest } from './Correction';
 import { RejectionInfo } from './Rejection';
 import { Waste } from './Waste';
+import { Transporter } from '../Transporter/Transporter';
 
 interface Manifest {
   createdDate?: string;
@@ -21,7 +22,7 @@ interface Manifest {
   certifiedDate: string;
   certifiedBy: Signer;
   generator: Handler;
-  transporters: [Handler]; // todo: convert to 'Transporter' type definition
+  transporters: [Transporter];
   designatedFacility: Handler;
   broker?: Handler;
   wastes: Waste[];
