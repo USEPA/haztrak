@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Tests
         env:
-          HT_SECRET_KEY: ${{ secrets.HT_SECRET_KEY }}
+          HT_SECRET_KEY: "django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d"
           HT_CORS_DOMAIN: http://localhost:3000
           HT_TIMEZONE: America/New_York
           HT_HOST: localhost
