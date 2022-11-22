@@ -17,28 +17,30 @@ import {
   TransporterTable,
 } from 'components/ManifestForm/Transporter';
 import { Transporter } from '../../../types/Transporter/Transporter';
+import WasteLine from '../WasteLine';
 
 function ManifestForm() {
-  // methods contains all the useForm context
+  // Top level ManifestForm methods and objects
   const methods = useForm<Manifest>({ resolver: yupResolver(ManifestSchema) });
-
   const {
     control,
     formState: { errors },
   } = methods;
-
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) =>
     console.log(data);
 
+  // Transporter controls
   const [transFormShow, setTransFormShow] = useState<boolean>(false);
   const toggleTranSearchShow = () => setTransFormShow(!transFormShow);
-
   const transporters: [Transporter] = methods.getValues('transporters');
-
   const { append } = useFieldArray<Manifest, 'transporters'>({
     control,
     name: 'transporters',
   });
+
+  // Wasteline controls
+  const [wlFormShow, setWlFormShow] = useState<boolean>(false);
+  const toggleWlFormShow = () => setWlFormShow(!wlFormShow);
 
   return (
     <>
@@ -79,6 +81,19 @@ function ManifestForm() {
               </Row>
             </HtCard.Body>
           </HtCard>
+          <HtCard id="tsdf-form-card">
+            <HtCard.Header title="Waste" />
+            <HtCard.Body className="bg-light rounded py-4">
+              {/* TSDF should not manually added */}
+              <Row className="d-flex justify-content-center px-5">
+                <Col className="text-center">
+                  <Button variant="success" onClick={toggleWlFormShow}>
+                    Add Waste
+                  </Button>
+                </Col>
+              </Row>
+            </HtCard.Body>
+          </HtCard>
           <div className="mx-1 d-flex flex-row-reverse">
             <Button variant="success" type="submit">
               Create Manifest
@@ -91,6 +106,7 @@ function ManifestForm() {
           currentTransporters={transporters}
           tranAppend={append}
         />
+        <WasteLine handleClose={toggleWlFormShow} show={wlFormShow} />
       </FormProvider>
     </>
   );
