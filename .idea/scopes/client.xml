@@ -1,3 +1,3 @@
 <component name="DependencyValidationManager">
-  <scope name="client" pattern="file[haztrak]:client//*" />
+  <scope name="client" pattern="file[haztrak]:client//*&amp;&amp;!file:client/package-lock.json" />
 </component>

@@ -1,24 +1,25 @@
 from django.db import IntegrityError, InternalError
-from django.http import JsonResponse
 from rest_framework import permissions, status
+from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
-from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from apps.accounts.models import Profile
 from apps.accounts.serializers import ProfileSerializer
 from apps.accounts.tasks import hello
 
 
-class ProfileView(APIView):
-    response = JsonResponse
+class ProfileView(GenericAPIView):
+    queryset = Profile.objects.all()
+    response = Response
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request: Request) -> JsonResponse:
+    def get(self, request: Request) -> Response:
         try:
             user = request.user
             profile = Profile.objects.get(user=user)
             profile_serializer = ProfileSerializer(profile)
-            hello()
+            hello()  # this is just here as POC for using celery tasks
             return self.response(profile_serializer.data, status=status.HTTP_200_OK)
         except TypeError:
             raise InternalError

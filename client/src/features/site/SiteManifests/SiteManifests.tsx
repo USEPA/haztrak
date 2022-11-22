@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import api from 'services';
 import { Button, Row, Col, Container, Table } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
-import HtTooltip from 'components/Tooltip';
+import HtTooltip from 'components/HtTooltip';
 
 interface SiteManifest {
   generator: string[];

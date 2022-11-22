@@ -31,7 +31,8 @@
     "start": "WATCHPACK_POLLING=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "msw": "npx msw init public/ --save"
   },
   "eslintConfig": {
     "extends": [
@@ -55,6 +56,10 @@
     ]
   },
   "devDependencies": {
+    "msw": "^0.49.0",
     "prettier": "^2.7.1"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

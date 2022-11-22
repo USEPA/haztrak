@@ -108,6 +108,9 @@ or [RabbitMQ](https://www.rabbitmq.com/).
     * Value: host/domain name of the haztrak back end
     * Default: `http://localhost:8000`
 * `REACT_APP_HT_ENV`
-    * Default: `production`
-    * Description: haztrak will treat anything besides `development` or `DEVELOPMENT`
-      as a production environment
+    * Default: `PROD`
+    * Options: `PROD`, `DEV`, `TEST`
+    * Description: The deployment environment, `TEST` and `DEV` will initiate some additional
+      things to be aware of
+        * `TEST` will initiate our mock service worker that intercepts API calls and responds with
+          test data. It should be used for unit-testing purposes.

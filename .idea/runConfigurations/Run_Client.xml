@@ -6,7 +6,9 @@
       <script value="start" />
     </scripts>
     <node-interpreter value="project" />
-    <envs />
+    <envs>
+      <env name="REACT_APP_HT_ENV" value="TEST" />
+    </envs>
     <method v="2" />
   </configuration>
 </component>

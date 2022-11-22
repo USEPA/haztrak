@@ -1,10 +1,12 @@
 import React from 'react';
-import { render, screen } from 'utils';
+import { renderWithProviders, screen } from 'utils';
 import Login from './index';
 
-describe('Login Component', () => {
+describe('Login component', () => {
   test('renders', () => {
-    render(<Login />, null);
+    renderWithProviders(<Login />, {});
     expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Username')).toBeInTheDocument();
+    expect(screen.getByLabelText('Password')).toBeInTheDocument();
   });
 });

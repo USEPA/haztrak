@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from 'services';
-import { sleepDemo } from 'utils/utils';
 import { Manifest } from 'types';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
 
 function ManifestDetails(): JSX.Element {
@@ -19,11 +18,7 @@ function ManifestDetails(): JSX.Element {
     api
       .get(`trak/manifest/${params.mtn}`, null)
       .then((response) => {
-        // Begin HT Example
-        // sleepDemo illustrates how HT handles async hydration
-        sleepDemo(750).then(() => setLoading(false));
-        // setLoading(false)
-        // End HT Example
+        setLoading(false);
         setManifestData(response as Manifest);
       })
       .catch((error) => {

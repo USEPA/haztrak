@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import api from 'services';
 import { Col, Row } from 'react-bootstrap';
-import { sleepDemo } from 'utils/utils';
 import HtDropdown from 'components/HtDropdown';
 
 function renderSiteDetail({ siteHandler }: any): JSX.Element {
@@ -56,11 +55,7 @@ function SiteDetails(): JSX.Element {
     api
       .get(`trak/site/${params.siteId}`, null)
       .then((response) => {
-        // Begin HT Example
-        // sleepDemo illustrates how HT handles async hydration
-        sleepDemo(750).then(() => setLoading(false));
-        // setLoading(false)
-        // End HT Example
+        setLoading(false);
         setSiteData(response as any);
       })
       .catch(setError);
