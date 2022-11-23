@@ -1,7 +1,13 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { UseFieldArrayRemove } from 'react-hook-form';
 
-function TransporterRowActions() {
+interface Props {
+  order: number;
+  removeTransporter: UseFieldArrayRemove;
+}
+
+function TransporterRowActions({ order, removeTransporter }: Props) {
   return (
     <div className="d-flex justify-content-between mx-0">
       <Button
@@ -18,7 +24,9 @@ function TransporterRowActions() {
       </Button>
       <Button
         className="m-0 p-0 bg-transparent border-0"
-        onClick={() => console.log('hello')}
+        onClick={() => {
+          removeTransporter(order);
+        }}
       >
         <i className="text-danger fas fa-times-circle fa-lg"></i>
       </Button>
@@ -26,4 +34,4 @@ function TransporterRowActions() {
   );
 }
 
-export default TransporterRowActions;
+export { TransporterRowActions };

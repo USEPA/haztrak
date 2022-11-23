@@ -9,13 +9,13 @@ interface Props {
   handleClose: () => void;
   show: boolean | undefined;
   currentTransporters?: [Transporter];
-  tranAppend: UseFieldArrayAppend<Manifest, 'transporters'>;
+  appendTransporter: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 
 function TransporterSearch({
   handleClose,
   show,
-  tranAppend,
+  appendTransporter,
   currentTransporters,
 }: Props) {
   return (
@@ -36,7 +36,7 @@ function TransporterSearch({
       </Modal.Header>
       <TransporterSearchForm
         handleClose={handleClose}
-        tranAppend={tranAppend}
+        tranAppend={appendTransporter}
         currentTransporters={currentTransporters}
       />
     </Modal>

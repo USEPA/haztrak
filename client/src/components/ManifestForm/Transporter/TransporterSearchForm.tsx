@@ -92,7 +92,7 @@ function TransporterSearchForm({
             ...tranOptions[i],
           };
           tranAppend(newTransporter);
-          console.log(manifestForm.getValues()); // uncomment to see how the new transporter is added to the manifest
+          // console.log(manifestForm.getValues()); // uncomment to see how the new transporter is added to the manifest
         }
       }
     }
