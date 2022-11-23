@@ -1,17 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import { Handler } from 'types';
 import TransporterRowActions from './TransporterRowActions';
+import { UseFieldArrayRemove } from 'react-hook-form';
 
 interface Props {
   transporters?: [Handler];
+  removeTransporter: UseFieldArrayRemove;
 }
 
-function TransporterTable({ transporters }: Props) {
-  if (!transporters) {
+function TransporterTable({ transporters, removeTransporter }: Props) {
+  // useEffect(() => {
+  //   if (transporters) {
+  //     for (let i = 0; i < transporters?.length; i++) {
+  //       transporters[i].order = i + 1;
+  //       console.log(transporters[i]);
+  //     }
+  //   }
+  // }, [transporters]);
+
+  if (!transporters || transporters.length < 1) {
     return <></>;
   }
+  if (transporters) {
+    console.log(transporters);
+    for (let i = 0; i < transporters?.length; i++) {
+      transporters[i].order = i + 1;
+    }
+  }
 
+  console.log(transporters);
   return (
     <Table striped>
       <thead>
@@ -32,7 +50,10 @@ function TransporterTable({ transporters }: Props) {
               <td>{transporter.name}</td>
               <td>{transporter.canEsign ? 'yes' : 'no'}</td>
               <td>
-                <TransporterRowActions />
+                <TransporterRowActions
+                  removeTransporter={removeTransporter}
+                  order={index}
+                />
               </td>
             </tr>
           );

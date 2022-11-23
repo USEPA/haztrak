@@ -7,7 +7,7 @@ import {
   SubmitHandler,
   useFieldArray,
 } from 'react-hook-form';
-import { Handler, Manifest } from 'types';
+import { Manifest } from 'types';
 import HandlerForm from '../HandlerForm';
 import { HandlerType } from 'types/Handler/Handler';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -16,7 +16,7 @@ import {
   TransporterSearch,
   TransporterTable,
 } from 'components/ManifestForm/Transporter';
-import { Transporter } from '../../../types/Transporter/Transporter';
+import { Transporter } from 'types/Transporter/Transporter';
 import WasteLine from '../WasteLine';
 import Tsdf from '../Tsdf';
 
@@ -34,12 +34,12 @@ function ManifestForm() {
   const [transFormShow, setTransFormShow] = useState<boolean>(false);
   const toggleTranSearchShow = () => setTransFormShow(!transFormShow);
   const transporters: [Transporter] = methods.getValues('transporters');
-  const { append } = useFieldArray<Manifest, 'transporters'>({
+  const { append, remove } = useFieldArray<Manifest, 'transporters'>({
     control,
     name: 'transporters',
   });
 
-  // Wasteline controls
+  // WasteLine controls
   const [wlFormShow, setWlFormShow] = useState<boolean>(false);
   const toggleWlFormShow = () => setWlFormShow(!wlFormShow);
 
@@ -76,7 +76,10 @@ function ManifestForm() {
             <HtCard.Header title="Transporters" />
             <HtCard.Body className="bg-light rounded py-4">
               {/* List transporters */}
-              <TransporterTable transporters={transporters} />
+              <TransporterTable
+                transporters={transporters}
+                removeTransporter={remove}
+              />
               <Row className="d-flex justify-content-center px-5">
                 <Col className="text-center">
                   <Button variant="success" onClick={toggleTranSearchShow}>
@@ -121,7 +124,7 @@ function ManifestForm() {
           handleClose={toggleTranSearchShow}
           show={transFormShow}
           currentTransporters={transporters}
-          tranAppend={append}
+          appendTransporter={append}
         />
         <WasteLine handleClose={toggleWlFormShow} show={wlFormShow} />
         <Tsdf handleClose={toggleTsdfFormShow} show={tsdfFormShow} />
