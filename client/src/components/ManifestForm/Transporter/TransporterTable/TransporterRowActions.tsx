@@ -34,4 +34,4 @@ function TransporterRowActions({ order, removeTransporter }: Props) {
   );
 }
 
-export default TransporterRowActions;
+export { TransporterRowActions };

@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Table } from 'react-bootstrap';
 import { Handler } from 'types';
-import TransporterRowActions from './TransporterRowActions';
+import { TransporterRowActions } from './TransporterRowActions';
 import { UseFieldArrayRemove } from 'react-hook-form';
 
 interface Props {
@@ -63,4 +63,4 @@ function TransporterTable({ transporters, removeTransporter }: Props) {
   );
 }
 
-export default TransporterTable;
+export { TransporterTable };
