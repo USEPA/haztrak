@@ -2,6 +2,4 @@
 //  remove the history object (POC source)
 import history from './history';
 
-export * from './test-wrapper';
-
 export default history;

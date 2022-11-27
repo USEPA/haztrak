@@ -1,5 +1,5 @@
 import React from 'react';
-import { cleanup, screen, renderWithProviders } from 'utils';
+import { cleanup, screen, renderWithProviders } from 'test';
 import '@testing-library/jest-dom';
 import Home from './index';
 import { setupServer } from 'msw/node';

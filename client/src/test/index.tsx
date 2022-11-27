@@ -1,6 +1,5 @@
-// utility wrapper for '@testing-library/react so we do not need to
-// use Redux store Provider and BrowserRouter in all test.js files, see
-// https://testing-library.com/docs/react-testing-library/setup/#custom-render
+import { worker } from './browser';
+import { handlers } from './handlers';
 import React, { PropsWithChildren } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { AppStore, RootState, setupStore } from 'redux/store';
@@ -13,6 +12,9 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   store?: AppStore;
 }
 
+// utility wrapper for '@testing-library/react so we do not need to
+// use Redux store Provider and BrowserRouter in all test.js files, see
+// https://testing-library.com/docs/react-testing-library/setup/#custom-render
 export function renderWithProviders(
   ui: React.ReactElement,
   {
@@ -35,5 +37,5 @@ export function renderWithProviders(
 
 export * from '@testing-library/react';
 
-// replace @testing-library/react's render function with our own custom render
+// replace @testing-library/React's render function with our own custom render
 export { renderWithProviders as render };
