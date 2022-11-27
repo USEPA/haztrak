@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { getUser, RootState } from 'redux/store';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
 /**
  * Home page for logged in user, currently does not really include anything
- * @returns {JSX.Element}
  * @constructor
  */
-function Home() {
+function Home(): ReactElement {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state: RootState) => state.user);
 

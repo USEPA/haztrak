@@ -3,7 +3,6 @@ import { Card, Container } from 'react-bootstrap';
 
 /**
  * Static page that talks about Haztrak's licensing, maybe versioning in future
- * @returns {JSX.Element}
  * @constructor
  * @example "<About/>"
  */

@@ -9,7 +9,6 @@ interface Props {
 /**
  * Wraps around Route component to redirect to og in if not authenticated user
  * @param { children } Route to wrap around
- * @returns {JSX.Element|*}
  * @constructor
  */
 function PrivateRoute({ children, authUser }: Props): ReactElement {

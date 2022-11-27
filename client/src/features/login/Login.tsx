@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -14,10 +14,9 @@ interface Inputs {
 
 /**
  * Haztrak Login component, redirects if user is already logged in
- * @returns {JSX.Element}
  * @constructor
  */
-function Login() {
+function Login(): ReactElement {
   const dispatch = useAppDispatch();
   const useSelector = useAppSelector;
   const authUser = useSelector((state) => state.user.user);

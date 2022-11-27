@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import HandlerSchema from '../HandlerForm/HandlerSchema';
+import HandlerSchema from './HandlerForm/HandlerSchema';
 
 const ManifestSchema = yup.object().shape({
   generator: HandlerSchema,

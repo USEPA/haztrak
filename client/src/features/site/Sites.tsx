@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import SiteList from './SiteList';
 import SiteDetails from './SiteDetails';
@@ -10,10 +10,9 @@ interface Props {
 
 /**
  * Request and display a list of site a user has access to
- * @returns {JSX.Element}
  * @constructor
  */
-function Sites({ user }: Props) {
+function Sites({ user }: Props): ReactElement {
   return (
     <Routes>
       <Route path="/" element={<SiteList />} />

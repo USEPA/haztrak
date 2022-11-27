@@ -1,5 +1,5 @@
 import { handlers } from './mock/handlers';
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { AppStore, RootState, setupStore } from 'redux/store';
 import { Provider } from 'react-redux';
@@ -11,9 +11,18 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   store?: AppStore;
 }
 
-// utility wrapper for '@testing-library/react so we do not need to
-// use Redux store Provider and BrowserRouter in all test.js files, see
-// https://testing-library.com/docs/react-testing-library/setup/#custom-render
+/** utility wrapper for @testing-library/react, so we do not need to
+ * use Redux store Provider and BrowserRouter in all tests, see
+ * https://testing-library.com/docs/react-testing-library/setup/#custom-render
+ *
+ * @example
+ *describe('HelloWorld Test Suite', () => {
+ *  test('test name', () => {
+ *    renderWithProviders(<HelloWorldComponent />);
+ *    expect(screen.getByText(/Hello World/i)).toBeInTheDocument();
+ *  });
+ *});
+ */
 export function renderWithProviders(
   ui: React.ReactElement,
   {
@@ -23,7 +32,7 @@ export function renderWithProviders(
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) {
-  function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
+  function Wrapper({ children }: PropsWithChildren<{}>): ReactElement {
     return (
       <Provider store={store}>
         <BrowserRouter>{children}</BrowserRouter>
