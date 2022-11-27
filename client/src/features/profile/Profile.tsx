@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { Card, Col, Container, Row } from 'react-bootstrap';
-import { getUser } from 'app/store';
+import { getUser } from 'redux/store';
 
 /**
  * Display user profile

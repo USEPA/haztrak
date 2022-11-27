@@ -3,7 +3,7 @@
 // https://testing-library.com/docs/react-testing-library/setup/#custom-render
 import React, { PropsWithChildren } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
-import { AppStore, RootState, setupStore } from 'app/store';
+import { AppStore, RootState, setupStore } from 'redux/store';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { PreloadedState } from '@reduxjs/toolkit';

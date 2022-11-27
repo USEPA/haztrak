@@ -17,10 +17,10 @@ import { Sidebar } from 'components/Nav';
 import About from 'features/help';
 import Profile from 'features/profile';
 import Sites from 'features/site/Sites';
-import { useAppSelector } from 'app/hooks';
+import { useAppSelector } from 'redux/hooks';
 import Manifest from 'features/manifest';
 import ErrorBoundary from 'components/ErrorBoundary';
-import { RootState } from './app/store';
+import { RootState } from './redux/store';
 
 function App() {
   const useSelector = useAppSelector;

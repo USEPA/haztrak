@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { login } from 'app/store';
-import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { login } from 'redux/store';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 

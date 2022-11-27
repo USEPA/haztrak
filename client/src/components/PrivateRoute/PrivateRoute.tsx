@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 import history from 'utils';
-import { RootState } from 'app/store';
+import { RootState } from 'redux/store';
 
 interface Props {
   children: any;
