@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from 'services';
 import { Manifest } from 'types';
 import { Col, Row } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
 
-function ManifestDetails(): JSX.Element {
+function ManifestDetails(): ReactElement {
   let params = useParams();
   const [manifestData, setManifestData] = useState<Manifest | undefined>(
     undefined

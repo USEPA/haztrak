@@ -12,7 +12,7 @@ if (
   process.env.REACT_APP_HT_ENV &&
   process.env.REACT_APP_HT_ENV.toUpperCase() === 'TEST'
 ) {
-  const { worker } = require('./test/browser');
+  const { worker } = require('./test/mock/browser');
   worker.start();
 }
 

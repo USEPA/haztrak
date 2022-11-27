@@ -1,5 +1,4 @@
-import { worker } from './browser';
-import { handlers } from './handlers';
+import { handlers } from './mock/handlers';
 import React, { PropsWithChildren } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { AppStore, RootState, setupStore } from 'redux/store';
@@ -38,4 +37,4 @@ export function renderWithProviders(
 export * from '@testing-library/react';
 
 // replace @testing-library/React's render function with our own custom render
-export { renderWithProviders as render };
+export { handlers, renderWithProviders as render };
