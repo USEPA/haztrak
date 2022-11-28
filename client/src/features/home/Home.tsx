@@ -3,7 +3,7 @@ import { getUser, RootState } from 'redux/store';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
 /**
- * Home page for logged in user, currently does not really include anything
+ * Home page for logged-in user, currently does not really include anything
  * @constructor
  */
 function Home(): ReactElement {

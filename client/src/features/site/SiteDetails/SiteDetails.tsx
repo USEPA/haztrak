@@ -42,7 +42,7 @@ function renderSiteDetail({ siteHandler }: any): ReactElement {
  * @constructor
  */
 function SiteDetails(): ReactElement {
-  // pull parameter Id from the URL
+  // pull parameter ID from the URL
   let params = useParams();
   const [siteData, setSiteData] = useState();
   const [loading, setLoading] = useState(false);
