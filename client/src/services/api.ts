@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { store } from 'app/store';
+import { store } from 'redux/store';
 
 interface RequestOptions {
   url: string;

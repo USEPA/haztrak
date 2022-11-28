@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button, Collapse } from 'react-bootstrap';
-import { RootState } from 'app/store';
+import { RootState } from 'redux/store';
 
 /**
  * Vertical sidebar for navigation that disappears when the viewport is small
- * @returns {JSX.Element|null}
+ * @returns {ReactElement|null}
  * @constructor
  */
-function Sidebar() {
+function Sidebar(): ReactElement | null {
   const [siteNav, setSiteNav] = useState(false);
   const [helpNav, setHelpNav] = useState(false);
 

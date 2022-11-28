@@ -1,7 +1,7 @@
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 import { AddressType, HandlerType } from 'types/Handler/Handler';
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { AddressForm } from '../AddressForm';
 import { ErrorMessage } from '@hookform/error-message';
 
@@ -9,7 +9,7 @@ interface Props {
   handlerType: HandlerType;
 }
 
-function HandlerForm({ handlerType }: Props): JSX.Element {
+function HandlerForm({ handlerType }: Props): ReactElement {
   const [mailCheck, setMailCheck] = useState(false);
   const {
     register,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'app/store';
+import { RootState } from 'redux/store';
 import { useNavigate } from 'react-router-dom';
 
 function TopNav() {

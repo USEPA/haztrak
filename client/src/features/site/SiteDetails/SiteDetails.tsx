@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import HtCard from 'components/HtCard';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import api from 'services';
 import { Col, Row } from 'react-bootstrap';
 import HtDropdown from 'components/HtDropdown';
 
-function renderSiteDetail({ siteHandler }: any): JSX.Element {
+function renderSiteDetail({ siteHandler }: any): ReactElement {
   const sa = siteHandler.siteAddress;
   const ma = siteHandler.mailingAddress;
   const siteAddress = `${sa.streetNumber} ${sa.address1}, ${sa.city} ${sa.state.code} ${sa.zip}`;
@@ -40,11 +39,10 @@ function renderSiteDetail({ siteHandler }: any): JSX.Element {
 
 /**
  * Display details of the selected site model
- * @returns {JSX.Element}
  * @constructor
  */
-function SiteDetails(): JSX.Element {
-  // pull parameter Id from the URL
+function SiteDetails(): ReactElement {
+  // pull parameter ID from the URL
   let params = useParams();
   const [siteData, setSiteData] = useState();
   const [loading, setLoading] = useState(false);

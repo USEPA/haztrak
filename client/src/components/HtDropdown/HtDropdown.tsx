@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Dropdown } from 'react-bootstrap';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
  * @param links {Object[]} array of link object {name: string, path: string}
  * @param keyName { string } suffix added to a key to ensure uniqueness
  * @constructor
- * @returns {JSX.Element}
+ * @returns {ReactElement}
  * @example
  * <HtDropdown
  * keyName="mySitesDropdown"
@@ -24,7 +24,7 @@ interface Props {
  *            ]}
  * />
  */
-function HtDropdown({ keyName, links }: Props): JSX.Element {
+function HtDropdown({ keyName, links }: Props): ReactElement {
   return (
     <Dropdown>
       <Dropdown.Toggle className="bg-transparent ht-ellipsis shadow-none">

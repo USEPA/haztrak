@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api from 'services';
-import { Button, Row, Col, Container, Table } from 'react-bootstrap';
+import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
 import HtTooltip from 'components/HtTooltip';
 
@@ -11,7 +11,7 @@ interface SiteManifest {
   tsd: string[];
 }
 
-function manifestTable(manifest: string[], title: string): JSX.Element | null {
+function manifestTable(manifest: string[], title: string): ReactElement | null {
   if (manifest.length === 0) {
     return null;
   }
@@ -58,7 +58,7 @@ function manifestTable(manifest: string[], title: string): JSX.Element | null {
   );
 }
 
-function SiteManifests(): JSX.Element {
+function SiteManifests(): ReactElement {
   let params = useParams();
   const [loading, setLoading] = useState(false);
   const [siteManifest, setSiteManifest] = useState<SiteManifest | undefined>(

@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderWithProviders, screen } from 'utils';
+import { renderWithProviders, screen } from 'test';
 import Login from './index';
 
 describe('Login component', () => {

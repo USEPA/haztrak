@@ -8,8 +8,8 @@ export const handlers = [
     sessionStorage.setItem('token', 'this_is_a_fake_token');
     sessionStorage.setItem('user', 'testuser1');
 
+    // Mock response from haztrak API
     return res(
-      // Respond with a 200 status code
       ctx.status(200),
       ctx.json({
         token: 'fake_token',
@@ -34,13 +34,3 @@ export const handlers = [
     );
   }),
 ];
-// const initialState: UserState = {
-//   user: JSON.parse(localStorage.getItem('user') || 'null') || null,
-//   token: JSON.parse(localStorage.getItem('token') || 'null') || null,
-//   rcraAPIID: '',
-//   rcraAPIKey: '',
-//   epaSites: [],
-//   phoneNumber: undefined,
-//   loading: false,
-//   error: undefined,
-// };

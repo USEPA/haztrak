@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderWithProviders, screen, Screen } from 'utils';
+import { renderWithProviders, screen, Screen } from 'test';
 import SiteList from './index';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';

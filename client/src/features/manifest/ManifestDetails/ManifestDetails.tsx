@@ -1,12 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import api from 'services';
 import { Manifest } from 'types';
 import { Col, Row } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
 
-function ManifestDetails(): JSX.Element {
-  let params = useParams();
+/**
+ * This React component displays an existing hazardous waste manifest.
+ * Currently, there's a lot of work to do here. It knows which manifest
+ * to display from the manifest in the URL.
+ *
+ * @constructor
+ */
+function ManifestDetails(): ReactElement {
+  let { mtn } = useParams();
+  const navigate = useNavigate();
   const [manifestData, setManifestData] = useState<Manifest | undefined>(
     undefined
   );
@@ -16,16 +24,18 @@ function ManifestDetails(): JSX.Element {
   useEffect(() => {
     setLoading(true);
     api
-      .get(`trak/manifest/${params.mtn}`, null)
+      .get(`trak/manifest/${mtn}`, null)
       .then((response) => {
         setLoading(false);
         setManifestData(response as Manifest);
       })
       .catch((error) => {
+        // Todo: error handling if, e.g., mtn does not exist.
         setError(error);
         setLoading(false);
+        navigate('/');
       });
-  }, [params.mtn]);
+  }, [mtn]);
 
   const genPhone = manifestData?.generator.contact.phone.number;
   const genEmerPhone = manifestData?.generator.emergencyPhone.number;
@@ -196,7 +206,7 @@ function ManifestDetails(): JSX.Element {
       </HtCard>
     </>
   ) : (
-    <p>no manifest data {error ? 'error msg goes here' : ''}</p>
+    <></>
   );
 }
 

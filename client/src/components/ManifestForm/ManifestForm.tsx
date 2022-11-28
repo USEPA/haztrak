@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Button, Form, Row, Col } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
 import {
-  useForm,
   FormProvider,
   SubmitHandler,
   useFieldArray,
+  useForm,
 } from 'react-hook-form';
 import { Manifest } from 'types';
-import HandlerForm from '../HandlerForm';
+import HandlerForm from './HandlerForm';
 import { HandlerType } from 'types/Handler/Handler';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ManifestSchema from './ManifestSchema';
@@ -17,9 +17,15 @@ import {
   TransporterTable,
 } from 'components/ManifestForm/Transporter';
 import { Transporter } from 'types/Transporter/Transporter';
-import WasteLine from '../WasteLine';
-import Tsdf from '../Tsdf';
+import WasteLine from './WasteLine';
+import Tsdf from './Tsdf';
 
+/**
+ * Returns a form for, currently only, new uniform hazardous waste manifest.
+ *
+ * @constructor
+ */
+// ToDo: accept an existing manifest (Manifest type) and set as default value
 function ManifestForm() {
   // Top level ManifestForm methods and objects
   const methods = useForm<Manifest>({ resolver: yupResolver(ManifestSchema) });

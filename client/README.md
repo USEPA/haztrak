@@ -8,7 +8,7 @@ the [docs/](/docs) for greater detail.
 
 ### What's in this directory?
 
-To oversimplify, the React user-interface is responsible for a couple things:
+To oversimplify, the React user-interface is responsible for a couple of things:
 
 1. Dynamically rendering/displaying the user-interface in the browser.
 2. Talking to the Haztrak server.
@@ -36,7 +36,7 @@ template.
 
 ## Getting Started
 
-Some of the available scripts to get started
+Some available scripts to get started
 
 * `npm start`
 * `npm test`
