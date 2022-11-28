@@ -1,9 +1,10 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import api from 'services';
 import { Manifest } from 'types';
 import { Col, Row } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
+import HtSpinner from '../../../components/HtSpinner';
 
 /**
  * This React component displays an existing hazardous waste manifest.
@@ -14,12 +15,11 @@ import HtCard from 'components/HtCard';
  */
 function ManifestDetails(): ReactElement {
   let { mtn } = useParams();
-  const navigate = useNavigate();
   const [manifestData, setManifestData] = useState<Manifest | undefined>(
     undefined
   );
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [_error, setError] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -32,8 +32,7 @@ function ManifestDetails(): ReactElement {
       .catch((error) => {
         // Todo: error handling if, e.g., mtn does not exist.
         setError(error);
-        setLoading(false);
-        navigate('/');
+        // setLoading(false);
       });
   }, [mtn]);
 
@@ -42,7 +41,9 @@ function ManifestDetails(): ReactElement {
   const tsdPhone = manifestData?.designatedFacility.contact.phone.number;
   const tsdEmerPhone = manifestData?.designatedFacility.emergencyPhone.number;
 
-  return manifestData ? (
+  return loading ? (
+    <HtSpinner />
+  ) : manifestData ? (
     <>
       <h2 className="fw-bold">{manifestData.manifestTrackingNumber}</h2>
       <HtCard>
