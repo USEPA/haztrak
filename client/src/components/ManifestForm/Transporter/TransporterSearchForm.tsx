@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import {
-  useForm,
-  useFormContext,
-  SubmitHandler,
-  UseFieldArrayAppend,
-} from 'react-hook-form';
+import { useForm, SubmitHandler, UseFieldArrayAppend } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import api from 'services';
 import { Transporter } from 'types/Transporter/Transporter';
@@ -33,9 +28,6 @@ function TransporterSearchForm({
   tranAppend,
   currentTransporters,
 }: Props) {
-  // The Transporter is a separate form, but is used in the context of a ManifestForm
-  const manifestForm = useFormContext();
-
   const [tranOptions, setTranOptions] = useState<[Handler] | undefined>(
     undefined
   );

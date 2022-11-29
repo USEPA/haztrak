@@ -4,7 +4,7 @@ import { Signer } from './Contact';
 import { Handler, Locality } from '../Handler/Handler';
 import { CorrectionInfo, CorrectionRequest } from './Correction';
 import { RejectionInfo } from './Rejection';
-import { Waste } from './Waste';
+import { WasteLine } from './WasteLine';
 import { Transporter } from '../Transporter/Transporter';
 
 interface Manifest {
@@ -25,7 +25,7 @@ interface Manifest {
   transporters: [Transporter];
   designatedFacility: Handler;
   broker?: Handler;
-  wastes: Waste[];
+  wastes: WasteLine[];
   rejection: boolean;
   rejectionInfo?: RejectionInfo;
   discrepancy?: boolean;
