@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { Container } from 'react-bootstrap';
 import PrivateRoute from 'components/PrivateRoute';
@@ -13,6 +13,7 @@ import { useAppSelector } from 'redux/hooks';
 import Manifest from 'features/manifest';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { RootState } from './redux/store';
+import HtError from './components/HtError';
 
 function App(): ReactElement {
   const { user } = useAppSelector((state: RootState) => state.user);
@@ -59,7 +60,7 @@ function App(): ReactElement {
               />
               <Route path="/login" element={<Login />} />
               <Route path="/about" element={<About />} />
-              <Route path="*" element={<Navigate to="/" />} />
+              <Route path="*" element={<HtError httpError={404} />} />
             </Routes>
           </ErrorBoundary>
         </Container>
