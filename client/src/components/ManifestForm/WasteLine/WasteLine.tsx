@@ -9,7 +9,7 @@ interface Props {
 
 function WasteLine({ show, handleClose }: Props) {
   return (
-    <Modal show={show} onHide={handleClose} size="lg">
+    <Modal show={show} onHide={handleClose} dialogClassName="modal-90w">
       <Modal.Header closeButton>
         <Col>
           <Row>

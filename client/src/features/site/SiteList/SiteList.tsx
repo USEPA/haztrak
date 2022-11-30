@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
 import HtDropdown from 'components/HtDropdown';
 import { Site } from 'types/Handler';
-import HtTooltip from '../../../components/HtTooltip';
+import HtTooltip from 'components/HtTooltip';
 
 function SiteList() {
   const [siteData, setSiteData] = useState<[Site] | undefined>(undefined);

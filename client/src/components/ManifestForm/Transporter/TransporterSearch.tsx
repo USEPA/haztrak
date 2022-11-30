@@ -3,7 +3,7 @@ import TransporterSearchForm from './TransporterSearchForm';
 import { Modal, Row, Col } from 'react-bootstrap';
 import { UseFieldArrayAppend } from 'react-hook-form';
 import { Manifest } from 'types';
-import { Transporter } from '../../../types/Transporter/Transporter';
+import { Transporter } from 'types/Transporter/Transporter';
 
 interface Props {
   handleClose: () => void;

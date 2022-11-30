@@ -12,8 +12,9 @@ import Sites from 'features/site/Sites';
 import { useAppSelector } from 'redux/hooks';
 import Manifest from 'features/manifest';
 import ErrorBoundary from 'components/ErrorBoundary';
-import { RootState } from './redux/store';
+import { RootState } from 'redux/store';
 import HtError from './components/HtError';
+import './App.scss';
 
 function App(): ReactElement {
   const { user } = useAppSelector((state: RootState) => state.user);

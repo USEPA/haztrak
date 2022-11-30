@@ -2,7 +2,7 @@ import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 import { AddressType, HandlerType } from 'types/Handler/Handler';
 import { ReactElement, useEffect, useState } from 'react';
-import { AddressForm } from '../AddressForm';
+import { AddressForm } from 'components/ManifestForm/AddressForm';
 import { ErrorMessage } from '@hookform/error-message';
 
 interface Props {

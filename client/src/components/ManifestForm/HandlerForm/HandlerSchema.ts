@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { AddressSchema } from '../AddressForm';
+import { AddressSchema } from 'components/ManifestForm/AddressForm';
 
 const HandlerSchema = yup.object().shape({
   epaSiteId: yup.string().required('Site ID is required'),

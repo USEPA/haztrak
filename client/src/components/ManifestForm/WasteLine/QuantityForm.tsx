@@ -5,12 +5,12 @@ import {
   ContainerCode,
   QuantityCode,
   ContainerCodeValues,
-} from 'types/Manifest/WasteLine';
+} from 'types/WasteLine';
 import {
   ContainerDescriptionValues,
   QuantityCodeValues,
   QuantityDescriptionValues,
-} from 'types/Manifest/WasteLine/WasteLine';
+} from 'types/WasteLine/WasteLine';
 
 type CC = keyof typeof ContainerCode;
 type QC = keyof typeof QuantityCode;
@@ -21,7 +21,7 @@ function QuantityForm() {
   return (
     <>
       <Row className="mb-2">
-        <Col>
+        <Col xs={3}>
           <Form.Group className="mb-2">
             <Form.Label className="mb-0">Container Number</Form.Label>
             <Form.Control
@@ -39,7 +39,7 @@ function QuantityForm() {
                   const contDescription = ContainerDescriptionValues[cc];
                   return (
                     <option key={`cc-${index}`} value={String(cc)}>
-                      {`${String(cc)}-${contDescription}`}
+                      {`${String(cc)} - ${contDescription}`}
                     </option>
                   );
                 }
@@ -49,7 +49,7 @@ function QuantityForm() {
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col xs={3}>
           <Form.Group className="mb-2">
             <Form.Label className="mb-0">Total Quantity</Form.Label>
             <Form.Control type="number" {...register(`quantity.quantity`)} />
@@ -64,7 +64,7 @@ function QuantityForm() {
                   const quantityDescription = QuantityDescriptionValues[qc];
                   return (
                     <option key={`cc-${index}`} value={String(qc)}>
-                      {`${String(qc)}-${quantityDescription}`}
+                      {`${String(qc)} - ${quantityDescription}`}
                     </option>
                   );
                 }

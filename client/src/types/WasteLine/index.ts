@@ -6,9 +6,7 @@ import {
   QuantityDescription,
   ContainerCodeValues,
   ContainerDescriptionValues,
-  QuantityCodeValues,
-  QuantityDescriptionValues,
-} from './WasteLine';
+} from 'types/WasteLine/WasteLine';
 
 export { ContainerCodeValues, ContainerDescriptionValues };
 export type {

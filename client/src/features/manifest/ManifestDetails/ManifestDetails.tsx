@@ -4,7 +4,7 @@ import api from 'services';
 import { Manifest } from 'types';
 import { Col, Row } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
-import HtSpinner from '../../../components/HtSpinner';
+import HtSpinner from 'components/HtSpinner';
 
 /**
  * This React component displays an existing hazardous waste manifest.

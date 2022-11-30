@@ -1,22 +1,21 @@
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { Placement } from 'react-bootstrap/types';
+import { TooltipProps } from 'react-bootstrap';
 import { ReactElement } from 'react';
 
 // see react-bootstrap OverlayTrigger for additional props that could be added
 // https://react-bootstrap.github.io/components/overlays/#overlay-trigger-props
-interface Props {
+interface HtToolTipProps extends TooltipProps {
   text: string;
   children: ReactElement;
-  placement?: Placement;
-  defaultShow?: boolean;
 }
 
 // renderTooltip function passed to OverlayTrigger's overlay property
 const renderTooltip = (text: string) => <Tooltip>{text}</Tooltip>;
 
-function HtTooltip(props: Props): ReactElement {
+function HtTooltip(props: HtToolTipProps): ReactElement {
   // create copy of props intended for the OverlayTrigger
-  const overlayProps = (({ text, children, ...o }: Props) => o)(props);
+  const overlayProps = (({ text, children, ...props }: HtToolTipProps) =>
+    props)(props);
   return (
     <OverlayTrigger
       {...overlayProps}

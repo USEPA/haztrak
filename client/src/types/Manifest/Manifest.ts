@@ -1,11 +1,11 @@
 // manifest type declaration
 
 import { Signer } from './Contact';
-import { Handler, Locality } from '../Handler/Handler';
+import { Handler, Locality } from 'types/Handler/Handler';
 import { CorrectionInfo, CorrectionRequest } from './Correction';
 import { RejectionInfo } from './Rejection';
-import { WasteLine } from './WasteLine';
-import { Transporter } from '../Transporter/Transporter';
+import { WasteLine } from 'types/WasteLine';
+import { Transporter } from 'types/Transporter/Transporter';
 
 interface Manifest {
   createdDate?: string;

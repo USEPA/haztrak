@@ -114,10 +114,10 @@ enum ContainerDescription {
 }
 
 interface HazardousWaste {
-  federalWasteCodes: CodeDescription[];
-  tsdfStateWasteCodes: CodeDescription[];
-  txWasteCodes: string;
-  generatorStateWasteCodes: CodeDescription[];
+  federalWasteCodes?: CodeDescription[];
+  tsdfStateWasteCodes?: CodeDescription[];
+  txWasteCodes?: string;
+  generatorStateWasteCodes?: CodeDescription[];
 }
 
 interface PcbInfo {
