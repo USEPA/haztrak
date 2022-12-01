@@ -1,3 +1,4 @@
+import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import React, { useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
@@ -31,10 +32,12 @@ function ManifestForm() {
   const methods = useForm<Manifest>({ resolver: yupResolver(ManifestSchema) });
   const {
     control,
-    formState: { errors },
+    // formState: { errors },
   } = methods;
-  const onSubmit: SubmitHandler<Manifest> = (data: Manifest) =>
+  const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
+    console.log('manifest onSubmit');
     console.log(data);
+  };
 
   // Transporter controls
   const [transFormShow, setTransFormShow] = useState<boolean>(false);
@@ -80,7 +83,7 @@ function ManifestForm() {
           </HtCard>
           <HtCard id="transporter-form-card">
             <HtCard.Header title="Transporters" />
-            <HtCard.Body className="bg-light rounded py-4">
+            <HtCard.Body className="py-4">
               {/* List transporters */}
               <TransporterTable
                 transporters={transporters}
@@ -97,7 +100,7 @@ function ManifestForm() {
           </HtCard>
           <HtCard id="waste-form-card">
             <HtCard.Header title="Waste" />
-            <HtCard.Body className="bg-light rounded py-4">
+            <HtCard.Body className="py-4">
               <Row className="d-flex justify-content-center px-5">
                 <Col className="text-center">
                   <Button variant="success" onClick={toggleWlFormShow}>
@@ -110,7 +113,7 @@ function ManifestForm() {
           <HtCard id="tsdf-form-card">
             {/* Where The Tsdf information is added and displayed */}
             <HtCard.Header title="Designated Facility" />
-            <HtCard.Body className="bg-light rounded py-4">
+            <HtCard.Body className="py-4">
               <Row className="d-flex justify-content-center px-5">
                 <Col className="text-center">
                   <Button variant="success" onClick={toggleTsdfFormShow}>
@@ -118,6 +121,15 @@ function ManifestForm() {
                   </Button>
                 </Col>
               </Row>
+            </HtCard.Body>
+          </HtCard>
+          <HtCard id="manifest-additional-info-card">
+            {/* Additional information for the manifest, such as reference information*/}
+            <HtCard.Header>
+              <h6>Special Handling Instructions and Additional info</h6>
+            </HtCard.Header>
+            <HtCard.Body className="px-4">
+              <AdditionalInfoForm />
             </HtCard.Body>
           </HtCard>
           <div className="mx-1 d-flex flex-row-reverse">

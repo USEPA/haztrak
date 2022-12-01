@@ -23,68 +23,70 @@ function HazardousWasteForm() {
       <Row className="mb-2">
         <Col>
           <Form.Group className="mb-2">
-            <div className="mb-3">
-              <Form.Label className="mb-0">Federal Waste Codes</Form.Label>
-              {/* We need to use 'Controller' to wrap
+            <Form.Label className="mb-0">Federal Waste Codes</Form.Label>
+            {/* We need to use 'Controller' to wrap
               around React-Select's controlled component */}
-              {/*https://react-hook-form.com/api/usecontroller/controller*/}
-              <Controller
-                control={control}
-                name="hazardousWaste.federalWasteCodes"
-                render={({ field, fieldState, formState }) => {
-                  // There's not a good way to assign just the value from the
-                  // options, we need to clean the data before sending to the server
-                  return (
-                    <Select
-                      {...field} // spread the onChange, onBlur, value, and ref fields
-                      options={options}
-                      openMenuOnFocus={false}
-                      isMulti
-                      isClearable
-                      hideSelectedOptions
-                    />
-                  );
-                }}
-              ></Controller>
-            </div>
-            <div className="mb-3">
-              <Form.Label>Generator State Waste Codes</Form.Label>
-              <Controller
-                control={control}
-                name="hazardousWaste.generatorStateWasteCodes"
-                render={({ field }) => {
-                  return (
-                    <Select
-                      {...field}
-                      options={options}
-                      openMenuOnFocus={false}
-                      isMulti
-                      isClearable
-                      hideSelectedOptions
-                    />
-                  );
-                }}
-              ></Controller>
-            </div>
-            <div className="mb-3">
-              <Form.Label>Destination State Waste Codes</Form.Label>
-              <Controller
-                control={control}
-                name="hazardousWaste.tsdfStateWasteCodes"
-                render={({ field }) => {
-                  return (
-                    <Select
-                      {...field}
-                      options={options}
-                      openMenuOnFocus={false}
-                      isMulti
-                      isClearable
-                      hideSelectedOptions
-                    />
-                  );
-                }}
-              ></Controller>
-            </div>
+            {/*https://react-hook-form.com/api/usecontroller/controller*/}
+            <Controller
+              control={control}
+              name="hazardousWaste.federalWasteCodes"
+              render={({ field, fieldState, formState }) => {
+                // There's not a good way to assign just the value from the
+                // options, we need to clean the data before sending to the server
+                return (
+                  <Select
+                    {...field} // spread the onChange, onBlur, value, and ref fields
+                    options={options}
+                    openMenuOnFocus={false}
+                    isMulti
+                    isClearable
+                    hideSelectedOptions
+                  />
+                );
+              }}
+            ></Controller>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label className="mb-0">
+              Generator State Waste Codes
+            </Form.Label>
+            <Controller
+              control={control}
+              name="hazardousWaste.generatorStateWasteCodes"
+              render={({ field }) => {
+                return (
+                  <Select
+                    {...field}
+                    options={options}
+                    openMenuOnFocus={false}
+                    isMulti
+                    isClearable
+                    hideSelectedOptions
+                  />
+                );
+              }}
+            ></Controller>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="mb-0">
+              Destination State Waste Codes
+            </Form.Label>
+            <Controller
+              control={control}
+              name="hazardousWaste.tsdfStateWasteCodes"
+              render={({ field }) => {
+                return (
+                  <Select
+                    {...field}
+                    options={options}
+                    openMenuOnFocus={false}
+                    isMulti
+                    isClearable
+                    hideSelectedOptions
+                  />
+                );
+              }}
+            ></Controller>
           </Form.Group>
         </Col>
       </Row>

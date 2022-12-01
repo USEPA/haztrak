@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
-import { Card, Container } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { CardProps } from 'react-bootstrap';
 import ErrorBoundary from 'components/ErrorBoundary';
 import HtSpinner from 'components/HtSpinner';
 
 interface HeaderProps extends CardProps {
   title?: string;
+  size?: string;
 }
 
 interface SpinnerProps extends CardProps {
@@ -50,12 +51,19 @@ HtCard.Header = function ({
   className,
   title,
 }: HeaderProps): ReactElement {
+  // If the title prop is passed, we use a consistent styling. else,
+  // the children/content and it will be distributed evenly in the header.
+  const content = title ? (
+    <>
+      <p className={`mb-0 fs-5`}>{title}</p>
+      {children}
+    </>
+  ) : (
+    <>{children}</>
+  );
   return (
     <Card.Header className={`bg-primary text-light rounded-top ${className}`}>
-      <div className="d-flex justify-content-between p-1 pt-2">
-        <div className="fw-bold fs-5">{title}</div>
-        {children}
-      </div>
+      <div className="d-flex justify-content-between p-1 pt-2">{content}</div>
     </Card.Header>
   );
 };

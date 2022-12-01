@@ -1,5 +1,6 @@
 // manifest type declaration
 
+import { AdditionalInfo } from 'types/Manifest/AdditionalInfo';
 import { Signer } from './Contact';
 import { Handler, Locality } from 'types/Handler/Handler';
 import { CorrectionInfo, CorrectionRequest } from './Correction';
@@ -37,7 +38,7 @@ interface Manifest {
   containsPreviousRejectOrResidue: boolean;
   printedDocument: Document;
   formDocument: Document;
-  additionalInfo: AdditionalInfo;
+  additionalInfo?: AdditionalInfo;
   correctionInfo?: CorrectionInfo;
   ppcStatus: PpcStatus;
   // mtnValidationInfo
@@ -105,24 +106,6 @@ enum LockReason {
   AsyncSign,
   EpaChangeBiller,
   EpaCorrection,
-}
-
-interface AdditionalInfo {
-  originalManifestTrackingNumbers: string[];
-  newManifestDestination: NewManifestDestination;
-  consentNumber: string;
-  comments: Comment[];
-}
-
-interface Comment {
-  label: string;
-  description: string;
-  handlerId: string;
-}
-
-enum NewManifestDestination {
-  OriginalGenerator,
-  Tsdf,
 }
 
 export default Manifest;

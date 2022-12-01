@@ -23,13 +23,11 @@ function TransporterTable({ transporters, removeTransporter }: Props) {
     return <></>;
   }
   if (transporters) {
-    console.log(transporters);
     for (let i = 0; i < transporters?.length; i++) {
       transporters[i].order = i + 1;
     }
   }
 
-  console.log(transporters);
   return (
     <Table striped>
       <thead>

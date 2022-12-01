@@ -1,12 +1,9 @@
 import { Row, Form, Col } from 'react-bootstrap';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { ContainerCode, QuantityCode } from 'types/WasteLine';
 import {
-  ContainerCode,
-  QuantityCode,
   ContainerCodeValues,
-} from 'types/WasteLine';
-import {
   ContainerDescriptionValues,
   QuantityCodeValues,
   QuantityDescriptionValues,
