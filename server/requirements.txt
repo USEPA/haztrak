@@ -12,7 +12,7 @@ pytz==2022.1
 requests==2.28.1
 requests-toolbelt==0.10.1
 sqlparse==0.4.3
-tzdata==2022.1
+tzdata==2022.7
 urllib3==1.26.12
 whitenoise==6.2.0
 python-dotenv~=0.21.0
