@@ -1,10 +1,10 @@
+import { ErrorMessage } from '@hookform/error-message';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import { useForm, SubmitHandler, UseFieldArrayAppend } from 'react-hook-form';
-import { ErrorMessage } from '@hookform/error-message';
+import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import api from 'services';
-import { Transporter } from 'types/Transporter/Transporter';
 import { Handler, Manifest } from 'types';
+import { Transporter } from 'types/Transporter/Transporter';
 
 interface Props {
   handleClose: () => void;
@@ -58,7 +58,7 @@ function TransporterSearchForm({
         typeof searchData.name === 'string'
       ) {
         if (searchData.epaId.length >= 3 || searchData.name.length >= 3) {
-          return await api.post('trak/transporter/search', searchData);
+          return await api.post('trak/handler/search', searchData);
         }
       }
     }

@@ -12,5 +12,5 @@ urlpatterns = [
     path('site/<str:epa_id>', views.SiteApi.as_view()),
     path('site/<str:epa_id>/manifest', views.SiteManifest.as_view()),
     # Transporter
-    path('transporter/search', views.TransporterSearch.as_view()),
+    path('handler/search', views.HandlerSearch.as_view()),
 ]
