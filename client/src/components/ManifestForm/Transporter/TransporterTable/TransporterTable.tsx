@@ -4,21 +4,15 @@ import { Handler } from 'types';
 import { TransporterRowActions } from './TransporterRowActions';
 import { UseFieldArrayRemove } from 'react-hook-form';
 
-interface Props {
+interface TransporterTableProps {
   transporters?: Array<Handler>;
   removeTransporter: UseFieldArrayRemove;
 }
 
-function TransporterTable({ transporters, removeTransporter }: Props) {
-  // useEffect(() => {
-  //   if (transporters) {
-  //     for (let i = 0; i < transporters?.length; i++) {
-  //       transporters[i].order = i + 1;
-  //       console.log(transporters[i]);
-  //     }
-  //   }
-  // }, [transporters]);
-
+function TransporterTable({
+  transporters,
+  removeTransporter,
+}: TransporterTableProps) {
   if (!transporters || transporters.length < 1) {
     return <></>;
   }

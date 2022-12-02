@@ -1,4 +1,5 @@
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
+import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable/WasteLineTable';
 import React, { useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
@@ -35,8 +36,7 @@ function ManifestForm() {
     // formState: { errors },
   } = methods;
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
-    console.log('manifest onSubmit');
-    console.log(data);
+    console.log('manifest onSubmit: ', data);
   };
 
   // Transporter controls
@@ -88,7 +88,7 @@ function ManifestForm() {
           </HtCard>
           <HtCard id="transporter-form-card">
             <HtCard.Header title="Transporters" />
-            <HtCard.Body className="py-4">
+            <HtCard.Body className="pb-4">
               {/* List transporters */}
               <TransporterTable
                 transporters={transporters}
@@ -105,8 +105,10 @@ function ManifestForm() {
           </HtCard>
           <HtCard id="waste-form-card">
             <HtCard.Header title="Waste" />
-            <HtCard.Body className="py-4">
-              <Row className="d-flex justify-content-center px-5">
+            <HtCard.Body className="pb-4">
+              <Row className="d-flex justify-content-center px-3">
+                {/* Table Showing current Waste Lines included on the manifest */}
+                <WasteLineTable wastes={wastes} />
                 <Col className="text-center">
                   <Button variant="success" onClick={toggleWlFormShow}>
                     Add Waste
@@ -118,7 +120,7 @@ function ManifestForm() {
           <HtCard id="tsdf-form-card">
             {/* Where The Tsdf information is added and displayed */}
             <HtCard.Header title="Designated Facility" />
-            <HtCard.Body className="py-4">
+            <HtCard.Body className="pb-4">
               <Row className="d-flex justify-content-center px-5">
                 <Col className="text-center">
                   <Button variant="success" onClick={toggleTsdfFormShow}>
@@ -133,7 +135,7 @@ function ManifestForm() {
             <HtCard.Header>
               <h6>Special Handling Instructions and Additional info</h6>
             </HtCard.Header>
-            <HtCard.Body className="px-4">
+            <HtCard.Body className="px-3">
               <AdditionalInfoForm />
             </HtCard.Body>
           </HtCard>
