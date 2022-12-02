@@ -5,7 +5,7 @@ import { TransporterRowActions } from './TransporterRowActions';
 import { UseFieldArrayRemove } from 'react-hook-form';
 
 interface Props {
-  transporters?: [Handler];
+  transporters?: Array<Handler>;
   removeTransporter: UseFieldArrayRemove;
 }
 

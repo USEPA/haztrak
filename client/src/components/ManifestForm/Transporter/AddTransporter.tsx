@@ -2,17 +2,16 @@ import React from 'react';
 import TransporterSearchForm from './TransporterSearchForm';
 import { Modal, Row, Col } from 'react-bootstrap';
 import { UseFieldArrayAppend } from 'react-hook-form';
-import { Manifest } from 'types';
-import { Transporter } from 'types/Transporter/Transporter';
+import { Handler, Manifest } from 'types';
 
 interface Props {
   handleClose: () => void;
   show: boolean | undefined;
-  currentTransporters?: [Transporter];
+  currentTransporters?: Array<Handler>;
   appendTransporter: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 
-function TransporterSearch({
+function AddTransporter({
   handleClose,
   show,
   appendTransporter,
@@ -43,4 +42,4 @@ function TransporterSearch({
   );
 }
 
-export default TransporterSearch;
+export default AddTransporter;

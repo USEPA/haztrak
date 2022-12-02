@@ -8,7 +8,7 @@ import { Handler, Manifest } from 'types';
 
 interface Props {
   handleClose: () => void;
-  currentTransporters?: [Transporter];
+  currentTransporters?: Array<Handler>;
   tranAppend: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 

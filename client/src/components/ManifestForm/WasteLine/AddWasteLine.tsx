@@ -1,13 +1,30 @@
 import React from 'react';
 import { Modal, Row, Col } from 'react-bootstrap';
 import WasteLineForm from './WasteLineForm';
+import { UseFieldArrayAppend } from 'react-hook-form';
+import { Manifest } from 'types';
+import { WasteLine } from 'types/WasteLine';
 
 interface Props {
   handleClose: () => void;
   show: boolean | undefined;
+  currentWastes?: Array<WasteLine>;
+  appendWaste: UseFieldArrayAppend<Manifest, 'wastes'>;
 }
 
-function WasteLine({ show, handleClose }: Props) {
+/**
+ * WasteLine is solely responsible for displaying the WasteLineForm in a
+ * pleasant to look at modal.
+ * @param show
+ * @param handleClose
+ * @constructor
+ */
+function AddWasteLine({
+  show,
+  handleClose,
+  appendWaste,
+  currentWastes,
+}: Props) {
   return (
     <Modal show={show} onHide={handleClose} dialogClassName="modal-90w">
       <Modal.Header closeButton>
@@ -31,4 +48,4 @@ function WasteLine({ show, handleClose }: Props) {
   );
 }
 
-export default WasteLine;
+export default AddWasteLine;

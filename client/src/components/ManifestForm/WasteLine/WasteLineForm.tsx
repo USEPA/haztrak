@@ -7,9 +7,16 @@ import { WasteLine } from 'types/WasteLine';
 import QuantityForm from './QuantityForm';
 import HtCard from 'components/HtCard';
 
+/**
+ * WasteLineForm is the top level component/form for adding wastes to
+ * the uniform hazardous waste manifest.
+ * @constructor
+ */
 function WasteLineForm() {
-  const onSubmit = (data: WasteLine) =>
-    console.log(data.hazardousWaste?.federalWasteCodes);
+  // ToDo: on submit, add new WasteLine object to the ManifestForm. we'll need
+  //  to add another useFieldArray hook for the 'wastes' field in the ManifestForm
+  //  and pass the necessary methods to this component (like we did the TransporterForm)
+  const onSubmit = (data: WasteLine) => console.log(data);
   // const {
   //   register,
   //   watch,
@@ -79,6 +86,8 @@ function WasteLineForm() {
             <HtCard.Body>
               <h5>Special Handing Instructions and Additional Info</h5>
               <Row className="mb-2">
+                {/* AdditionalInfoForm needs to be used in the context of a
+                WasteLineForm or ManifestForm (e.g., surrounded by FormProvider*/}
                 <AdditionalInfoForm />
               </Row>
             </HtCard.Body>
