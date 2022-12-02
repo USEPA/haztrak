@@ -4,11 +4,11 @@ from .views import (HandlerSearch, HandlerView, ManifestView, SiteApi,
                     SiteList, SiteManifest)
 
 urlpatterns = [
-    # manifest
+    # Manifest
     path('manifest/<str:mtn>',
          ManifestView.as_view(
              {'get': 'retrieve', 'post': 'create', 'delete': 'destroy'})),
-    # site
+    # Site
     path('site/', SiteList.as_view()),
     path('site/<str:epa_id>', SiteApi.as_view()),
     path('site/<str:epa_id>/manifest', SiteManifest.as_view()),

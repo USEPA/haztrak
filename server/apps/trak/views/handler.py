@@ -21,7 +21,8 @@ class HandlerView(RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
-# ToDo: this is POC source
+# ToDo: this is POC source, should be able to replace with ListAPIView
+#  https://www.django-rest-framework.org/api-guide/filtering/
 class HandlerSearch(GenericAPIView):
     queryset = Handler.objects.all()
     accepted_handler_types = ['any', 'generator', 'transporter', 'tsdf']
