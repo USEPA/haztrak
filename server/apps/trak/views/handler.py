@@ -1,36 +1,24 @@
 from http import HTTPStatus
 
-from django.core.exceptions import ObjectDoesNotExist
 from drf_spectacular.utils import extend_schema, inline_serializer
-from rest_framework import permissions, status
-from rest_framework.exceptions import APIException
-from rest_framework.generics import GenericAPIView
-from rest_framework.request import Request
+from rest_framework import permissions
+from rest_framework.fields import CharField
+from rest_framework.generics import GenericAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
 from apps.trak.models import Handler
 from apps.trak.serializers import HandlerSerializer
 
 
-class HandlerView(GenericAPIView):
-    """
-    HandlerView  provides https handlers for reading handlers from the haztrak database
-
-    """
-    response = Response
+# HandlerView is a DRF generic API view that filters by URL parameters and
+# returns a single Handler, or an error
+@extend_schema(
+    description='Retrieve details on a handler stored in the Haztrak database',
+)
+class HandlerView(RetrieveAPIView):
+    queryset = Handler.objects.all()
+    serializer_class = HandlerSerializer
     permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request: Request, epa_id: str = None) -> Response:
-        try:
-            if epa_id:
-                handler = Handler.objects.get(epa_id=epa_id)
-                serializer = HandlerSerializer(handler)
-                return self.response(serializer.data)
-        except APIException:
-            return self.response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except ObjectDoesNotExist:
-            return self.response(status=status.HTTP_404_NOT_FOUND,
-                                 data={'Error': f'{epa_id} not found'})
 
 
 class HandlerSearch(GenericAPIView):

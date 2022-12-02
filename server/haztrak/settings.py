@@ -159,6 +159,11 @@ SPECTACULAR_SETTINGS = {
                    'management software can integrate with EPA\'s RCRAInfo',
     'VERSION': '0.1.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "displayOperationId": True,
+    },
 }
 
 HT_CELERY_BROKER_URL = os.getenv("HT_CELERY_BROKER_URL", "redis://localhost:6379")

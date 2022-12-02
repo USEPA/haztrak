@@ -1,16 +1,18 @@
 from django.urls import path
 
-from . import views
+from .views import (HandlerSearch, HandlerView, ManifestView, SiteApi,
+                    SiteList, SiteManifest)
 
 urlpatterns = [
     # manifest
     path('manifest/<str:mtn>',
-         views.ManifestView.as_view(
+         ManifestView.as_view(
              {'get': 'retrieve', 'post': 'create', 'delete': 'destroy'})),
     # site
-    path('site/', views.SiteList.as_view()),
-    path('site/<str:epa_id>', views.SiteApi.as_view()),
-    path('site/<str:epa_id>/manifest', views.SiteManifest.as_view()),
-    # Transporter
-    path('handler/search', views.HandlerSearch.as_view()),
+    path('site/', SiteList.as_view()),
+    path('site/<str:epa_id>', SiteApi.as_view()),
+    path('site/<str:epa_id>/manifest', SiteManifest.as_view()),
+    # Handler
+    path('handler/search', HandlerSearch.as_view()),
+    path('handler/details/<int:pk>', HandlerView.as_view()),
 ]
