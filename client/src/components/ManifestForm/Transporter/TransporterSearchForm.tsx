@@ -15,6 +15,8 @@ interface Props {
 interface SearchCriteria {
   epaId: string | undefined;
   name: string | undefined;
+
+  type: string;
 }
 
 interface TranAppendValues {
@@ -46,6 +48,7 @@ function TransporterSearchForm({
   const searchData: SearchCriteria = {
     epaId: watch('epaId'),
     name: watch('name'),
+    type: 'transporter',
   };
 
   /** This useEffect is responsible for watching the transporter search fields

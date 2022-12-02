@@ -21,25 +21,45 @@ class HandlerView(RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
+# ToDo: this is POC source
 class HandlerSearch(GenericAPIView):
     queryset = Handler.objects.all()
+    accepted_handler_types = ['any', 'generator', 'transporter', 'tsdf']
+    handler_type_key = 'type'
+    epa_id_key = 'epaId'
+    name_key = 'name'
 
     @extend_schema(
         description='Search for Transporters saved to the Haztrak database',
-        # methods=['POST'],
         request=inline_serializer(name='test',
-                                  fields={'epaId': CharField(), 'name': CharField()}),
+                                  fields={handler_type_key: CharField(),
+                                          epa_id_key: CharField(),
+                                          name_key: CharField()}),
     )
     def post(self, request):
         try:
+            # Check if 'type' is in the POST body, and is one of the accepted handler types
+            if self.handler_type_key in self.request.data:
+                if self.request.data[
+                    self.handler_type_key].lower() in self.accepted_handler_types:
+                    handler_type = self.request.data[self.handler_type_key].capitalize()
+                else:
+                    handler_type = 'Any'
+            else:
+                handler_type = 'Any'
             epa_id = self.request.data['epaId']
             name = self.request.data['name']
             if len(epa_id) < 3 and len(name) < 3:
                 return Response(status=HTTPStatus.UNPROCESSABLE_ENTITY)
-            transporters_queryset = Handler.objects.filter(
-                site_type='Transporter').filter(
-                epa_id__icontains=epa_id).filter(name__icontains=name)
-            data = list(transporters_queryset)
+            if handler_type == 'Any':
+                handler_queryset = Handler.objects.filter(
+                    epa_id__icontains=epa_id).filter(name__icontains=name)
+            else:
+                handler_queryset = Handler.objects.filter(
+                    site_type=handler_type).filter(
+                    epa_id__icontains=epa_id).filter(name__icontains=name)
+
+            data = list(handler_queryset)
             response = []
             for i in data:
                 response.append(HandlerSerializer(i).data)
