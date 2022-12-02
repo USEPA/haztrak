@@ -2,27 +2,32 @@ import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import HazardousWasteForm from 'components/ManifestForm/WasteLine/HazardousWasteForm';
 import React from 'react';
 import { Container, Form, Row, Button } from 'react-bootstrap';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, UseFieldArrayAppend } from 'react-hook-form';
+import { Manifest } from 'types';
 import { WasteLine } from 'types/WasteLine';
 import QuantityForm from './QuantityForm';
 import HtCard from 'components/HtCard';
+
+interface WasteLineFormProps {
+  handleClose: () => void;
+  currentWastes?: Array<WasteLine>;
+  appendWaste: UseFieldArrayAppend<Manifest, 'wastes'>;
+}
 
 /**
  * WasteLineForm is the top level component/form for adding wastes to
  * the uniform hazardous waste manifest.
  * @constructor
  */
-function WasteLineForm() {
+function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
   // ToDo: on submit, add new WasteLine object to the ManifestForm. we'll need
   //  to add another useFieldArray hook for the 'wastes' field in the ManifestForm
   //  and pass the necessary methods to this component (like we did the TransporterForm)
-  const onSubmit = (data: WasteLine) => console.log(data);
-  // const {
-  //   register,
-  //   watch,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useFormContext();
+  const onSubmit = (data: WasteLine) => {
+    appendWaste(data);
+    console.log('WasteLine added: ', data);
+    handleClose();
+  };
   const wasteMethods = useForm<WasteLine>();
   const { register, handleSubmit } = wasteMethods;
   return (
@@ -93,7 +98,14 @@ function WasteLineForm() {
             </HtCard.Body>
           </HtCard>
         </Container>
-        <Button type="submit">Submit</Button>
+        <div className="d-flex justify-content-end">
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button type="submit" variant="success" className="mx-3">
+            Add Waste Line
+          </Button>
+        </div>
       </Form>
     </FormProvider>
   );

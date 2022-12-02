@@ -15,8 +15,6 @@ interface Props {
 /**
  * WasteLine is solely responsible for displaying the WasteLineForm in a
  * pleasant to look at modal.
- * @param show
- * @param handleClose
  * @constructor
  */
 function AddWasteLine({
@@ -42,7 +40,11 @@ function AddWasteLine({
         </Col>
       </Modal.Header>
       <Modal.Body>
-        <WasteLineForm />
+        <WasteLineForm
+          appendWaste={appendWaste}
+          currentWastes={currentWastes}
+          handleClose={handleClose}
+        />
       </Modal.Body>
     </Modal>
   );
