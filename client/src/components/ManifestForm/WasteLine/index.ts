@@ -1,3 +1,3 @@
-import WasteLine from './WasteLine';
+import AddWasteLine from './AddWasteLine';
 
-export default WasteLine;
+export default AddWasteLine;

@@ -1,11 +1,12 @@
 // manifest type declaration
 
+import { AdditionalInfo } from 'types/Manifest/AdditionalInfo';
 import { Signer } from './Contact';
-import { Handler, Locality } from '../Handler/Handler';
+import { Handler, Locality } from 'types/Handler/Handler';
 import { CorrectionInfo, CorrectionRequest } from './Correction';
 import { RejectionInfo } from './Rejection';
-import { Waste } from './Waste';
-import { Transporter } from '../Transporter/Transporter';
+import { WasteLine } from 'types/WasteLine';
+import { Transporter } from 'types/Transporter/Transporter';
 
 interface Manifest {
   createdDate?: string;
@@ -25,7 +26,7 @@ interface Manifest {
   transporters: [Transporter];
   designatedFacility: Handler;
   broker?: Handler;
-  wastes: Waste[];
+  wastes: WasteLine[];
   rejection: boolean;
   rejectionInfo?: RejectionInfo;
   discrepancy?: boolean;
@@ -37,7 +38,7 @@ interface Manifest {
   containsPreviousRejectOrResidue: boolean;
   printedDocument: Document;
   formDocument: Document;
-  additionalInfo: AdditionalInfo;
+  additionalInfo?: AdditionalInfo;
   correctionInfo?: CorrectionInfo;
   ppcStatus: PpcStatus;
   // mtnValidationInfo
@@ -105,24 +106,6 @@ enum LockReason {
   AsyncSign,
   EpaChangeBiller,
   EpaCorrection,
-}
-
-interface AdditionalInfo {
-  originalManifestTrackingNumbers: string[];
-  newManifestDestination: NewManifestDestination;
-  consentNumber: string;
-  comments: Comment[];
-}
-
-interface Comment {
-  label: string;
-  description: string;
-  handlerId: string;
-}
-
-enum NewManifestDestination {
-  OriginalGenerator,
-  Tsdf,
 }
 
 export default Manifest;

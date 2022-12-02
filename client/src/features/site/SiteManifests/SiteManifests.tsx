@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import api from 'services';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
@@ -60,6 +60,7 @@ function manifestTable(manifest: string[], title: string): ReactElement | null {
 
 function SiteManifests(): ReactElement {
   let params = useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [siteManifest, setSiteManifest] = useState<SiteManifest | undefined>(
     undefined
@@ -83,13 +84,11 @@ function SiteManifests(): ReactElement {
             <h2>{params.siteId}</h2>
           </Col>
           <Col className="d-flex justify-content-end">
-            <Button variant="success">
-              <Link
-                className="text-decoration-none text-white"
-                to={`/manifest/new/edit`}
-              >
-                New Manifest
-              </Link>
+            <Button
+              variant="success"
+              onClick={() => navigate('/manifest/new/edit')}
+            >
+              New Manifest
             </Button>
           </Col>
         </Row>

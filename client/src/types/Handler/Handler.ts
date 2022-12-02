@@ -1,4 +1,4 @@
-import { Contact, EmergencyPhone } from '../Manifest/Contact';
+import { Contact, EmergencyPhone } from 'types/Manifest/Contact';
 
 export interface Handler {
   name: string;

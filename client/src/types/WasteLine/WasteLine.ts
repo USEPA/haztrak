@@ -1,18 +1,18 @@
-export interface Waste {
+interface WasteLine {
   dotHazardous: boolean;
+  epaWaste: boolean;
+  pcb: boolean;
+  lineNumber: number;
   dotInformation?: DotInformation;
   wasteDescription?: string;
   quantity?: Quantity;
   brInfo?: BrInfo;
   br: boolean;
   hazardousWaste?: HazardousWaste;
-  pcb: boolean;
   pcbInfos?: PcbInfo[];
   discrepancyResidueInfo?: DiscrepancyResidueInfo;
   managementMethod?: CodeDescription;
   additionalInfo?: AdditionalInfo;
-  lineNumber: number;
-  epaWaste: boolean;
 }
 
 interface DotInformation {
@@ -55,25 +55,25 @@ interface QuantityUnitsOfMeasurement {
 }
 
 enum QuantityCode {
-  P,
-  T,
-  K,
-  M,
-  G,
-  L,
-  Y,
-  N,
+  P = 'P',
+  T = 'T',
+  K = 'K',
+  M = 'M',
+  G = 'G',
+  L = 'L',
+  Y = 'Y',
+  N = 'N',
 }
 
 enum QuantityDescription {
-  'Pounds',
-  'Tons (2000 Pounds)',
-  'Kilograms',
-  'Metric Tons (1000 Kilograms)',
-  'Gallons',
-  'Liters',
-  'Cubic Yards',
-  'Cubic Meters',
+  P = 'Pounds',
+  T = 'Tons (2000 Pounds)',
+  K = 'Kilograms',
+  M = 'Metric Tons (1000 Kilograms)',
+  G = 'Gallons',
+  L = 'Liters',
+  Y = 'Cubic Yards',
+  N = 'Cubic Meters',
 }
 
 interface ContainerType {
@@ -82,42 +82,42 @@ interface ContainerType {
 }
 
 enum ContainerCode {
-  BA,
-  DT,
-  CF,
-  DW,
-  CM,
-  HG,
-  CW,
-  TC,
-  CY,
-  TP,
-  DF,
-  TT,
-  DM,
+  BA = 'BA',
+  DT = 'DT',
+  CF = 'CF',
+  DW = 'DW',
+  CM = 'CM',
+  HG = 'HG',
+  CW = 'CW',
+  TC = 'TC',
+  CY = 'CY',
+  TP = 'TP',
+  DF = 'DF',
+  TT = 'TT',
+  DM = 'DM',
 }
 
 enum ContainerDescription {
-  'Burlap, cloth, paper, or plastic bags',
-  'Dump truck',
-  'Fiber or plastic boxes, cartons, cases',
-  'Wooden drums, barrels, kegs',
-  'Metal boxes, cartons, cases (including roll offs)',
-  'Hopper or gondola cars',
-  'Wooden boxes, cartons, cases',
-  'Tank cars',
-  'Cylinders',
-  'Portable tanks',
-  'Fiberboard or plastic drums, barrels, kegs',
-  'Cargo tanks (tank trucks)',
-  'Metal drums, barrels, kegs',
+  BA = 'Burlap, cloth, paper, or plastic bags',
+  DT = 'Dump truck',
+  CF = 'Fiber or plastic boxes, cartons, cases',
+  DW = 'Wooden drums, barrels, kegs',
+  CM = 'Metal boxes, cartons, cases (including roll offs)',
+  HG = 'Hopper or gondola cars',
+  CW = 'Wooden boxes, cartons, cases',
+  TC = 'Tank cars',
+  CY = 'Cylinders',
+  TP = 'Portable tanks',
+  DF = 'Fiberboard or plastic drums, barrels, kegs',
+  TT = 'Cargo tanks (tank trucks)',
+  DM = 'Metal drums, barrels, kegs',
 }
 
 interface HazardousWaste {
-  federalWasteCodes: CodeDescription[];
-  tsdfStateWasteCodes: CodeDescription[];
-  txWasteCodes: string;
-  generatorStateWasteCodes: CodeDescription[];
+  federalWasteCodes?: CodeDescription[];
+  tsdfStateWasteCodes?: CodeDescription[];
+  txWasteCodes?: string;
+  generatorStateWasteCodes?: CodeDescription[];
 }
 
 interface PcbInfo {
@@ -155,3 +155,18 @@ interface Comment {
   description: string;
   handlerId: string;
 }
+
+export {
+  ContainerCode as ContainerCodeValues,
+  ContainerDescription as ContainerDescriptionValues,
+  QuantityCode as QuantityCodeValues,
+  QuantityDescription as QuantityDescriptionValues,
+};
+export type {
+  WasteLine,
+  ContainerType,
+  ContainerCode,
+  ContainerDescription,
+  QuantityCode,
+  QuantityDescription,
+};

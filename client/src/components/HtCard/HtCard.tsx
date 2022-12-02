@@ -1,19 +1,15 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement } from 'react';
 import { Card } from 'react-bootstrap';
-import ErrorBoundary from '../ErrorBoundary';
-import HtSpinner from '../HtSpinner';
+import { CardProps } from 'react-bootstrap';
+import ErrorBoundary from 'components/ErrorBoundary';
+import HtSpinner from 'components/HtSpinner';
 
-interface Props {
-  id?: string;
-  children?: ReactNode;
-  className?: string;
-}
-
-interface HeaderProps extends Props {
+interface HeaderProps extends CardProps {
   title?: string;
+  size?: string;
 }
 
-interface SpinnerProps extends Props {
+interface SpinnerProps extends CardProps {
   message?: string;
 }
 
@@ -28,11 +24,16 @@ interface SpinnerProps extends Props {
  *   <HtCard.Footer>submit button here<HtCard.Footer>
  * </HtCard>
  */
-function HtCard({ id, children, className }: Props): ReactElement {
+function HtCard(props: CardProps): ReactElement {
+  const baseAttributes = `my-3 shadow-lg bg-light rounded ${props.className}`;
+  const classAttributes =
+    props.border || props.className?.includes('border')
+      ? baseAttributes
+      : `border-0 ${baseAttributes}`;
   return (
-    <div id={id} className={`my-3 shadow-lg bg-light rounded ${className}`}>
-      {children}
-    </div>
+    <Card {...props} className={classAttributes}>
+      {props.children}
+    </Card>
   );
 }
 
@@ -50,12 +51,19 @@ HtCard.Header = function ({
   className,
   title,
 }: HeaderProps): ReactElement {
+  // If the title prop is passed, we use a consistent styling. else,
+  // the children/content and it will be distributed evenly in the header.
+  const content = title ? (
+    <>
+      <p className={`mb-0 fs-5`}>{title}</p>
+      {children}
+    </>
+  ) : (
+    <>{children}</>
+  );
   return (
     <Card.Header className={`bg-primary text-light rounded-top ${className}`}>
-      <div className="d-flex justify-content-between p-1 px-2 py-1">
-        <div className="fw-bold h5">{title}</div>
-        <div>{children}</div>
-      </div>
+      <div className="d-flex justify-content-between p-1 pt-2">{content}</div>
     </Card.Header>
   );
 };
@@ -69,7 +77,7 @@ HtCard.Header = function ({
  *   <HtCard.Footer>Put button here!<HtCard.Footer>
  * </HtCard>
  */
-HtCard.Footer = function (props: Props): ReactElement {
+HtCard.Footer = function (props: CardProps): ReactElement {
   return (
     <Card.Footer className={`bg-gray ${props.className}`}>
       <div className="d-flex justify-content-start gap-2">{props.children}</div>
@@ -86,15 +94,10 @@ HtCard.Footer = function (props: Props): ReactElement {
  *   <HtCard.Body>Hello World!<HtCard.Body>
  * </HtCard>
  */
-HtCard.Body = function (props: Props): ReactElement {
-  // if (typeof props.className === undefined) {
-  //   props.className = '';
-  // }
+HtCard.Body = function (props: CardProps): ReactElement {
   return (
     <Card.Body className={props.className ? `${props.className}` : ''}>
-      <ErrorBoundary>
-        <div className="p-3">{props.children}</div>
-      </ErrorBoundary>
+      <ErrorBoundary>{props.children}</ErrorBoundary>
     </Card.Body>
   );
 };

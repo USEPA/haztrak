@@ -1,3 +1,4 @@
+import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import React, { useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
@@ -7,18 +8,18 @@ import {
   useFieldArray,
   useForm,
 } from 'react-hook-form';
-import { Manifest } from 'types';
+import { Handler, Manifest } from 'types';
 import HandlerForm from './HandlerForm';
 import { HandlerType } from 'types/Handler/Handler';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ManifestSchema from './ManifestSchema';
 import {
-  TransporterSearch,
+  AddTransporter,
   TransporterTable,
 } from 'components/ManifestForm/Transporter';
-import { Transporter } from 'types/Transporter/Transporter';
-import WasteLine from './WasteLine';
+import AddWasteLine from './WasteLine';
 import Tsdf from './Tsdf';
+import { WasteLine } from 'types/WasteLine';
 
 /**
  * Returns a form for, currently only, new uniform hazardous waste manifest.
@@ -31,16 +32,18 @@ function ManifestForm() {
   const methods = useForm<Manifest>({ resolver: yupResolver(ManifestSchema) });
   const {
     control,
-    formState: { errors },
+    // formState: { errors },
   } = methods;
-  const onSubmit: SubmitHandler<Manifest> = (data: Manifest) =>
+  const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
+    console.log('manifest onSubmit');
     console.log(data);
+  };
 
   // Transporter controls
   const [transFormShow, setTransFormShow] = useState<boolean>(false);
   const toggleTranSearchShow = () => setTransFormShow(!transFormShow);
-  const transporters: [Transporter] = methods.getValues('transporters');
-  const { append, remove } = useFieldArray<Manifest, 'transporters'>({
+  const transporters: Array<Handler> = methods.getValues('transporters');
+  const tranArrayMethods = useFieldArray<Manifest, 'transporters'>({
     control,
     name: 'transporters',
   });
@@ -48,6 +51,11 @@ function ManifestForm() {
   // WasteLine controls
   const [wlFormShow, setWlFormShow] = useState<boolean>(false);
   const toggleWlFormShow = () => setWlFormShow(!wlFormShow);
+  const wastes: Array<WasteLine> = methods.getValues('wastes');
+  const wasteArrayMethods = useFieldArray<Manifest, 'wastes'>({
+    control,
+    name: 'wastes',
+  });
 
   // Tsdf controls
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
@@ -80,11 +88,11 @@ function ManifestForm() {
           </HtCard>
           <HtCard id="transporter-form-card">
             <HtCard.Header title="Transporters" />
-            <HtCard.Body className="bg-light rounded py-4">
+            <HtCard.Body className="py-4">
               {/* List transporters */}
               <TransporterTable
                 transporters={transporters}
-                removeTransporter={remove}
+                removeTransporter={tranArrayMethods.remove}
               />
               <Row className="d-flex justify-content-center px-5">
                 <Col className="text-center">
@@ -97,7 +105,7 @@ function ManifestForm() {
           </HtCard>
           <HtCard id="waste-form-card">
             <HtCard.Header title="Waste" />
-            <HtCard.Body className="bg-light rounded py-4">
+            <HtCard.Body className="py-4">
               <Row className="d-flex justify-content-center px-5">
                 <Col className="text-center">
                   <Button variant="success" onClick={toggleWlFormShow}>
@@ -110,7 +118,7 @@ function ManifestForm() {
           <HtCard id="tsdf-form-card">
             {/* Where The Tsdf information is added and displayed */}
             <HtCard.Header title="Designated Facility" />
-            <HtCard.Body className="bg-light rounded py-4">
+            <HtCard.Body className="py-4">
               <Row className="d-flex justify-content-center px-5">
                 <Col className="text-center">
                   <Button variant="success" onClick={toggleTsdfFormShow}>
@@ -120,19 +128,33 @@ function ManifestForm() {
               </Row>
             </HtCard.Body>
           </HtCard>
+          <HtCard id="manifest-additional-info-card">
+            {/* Additional information for the manifest, such as reference information*/}
+            <HtCard.Header>
+              <h6>Special Handling Instructions and Additional info</h6>
+            </HtCard.Header>
+            <HtCard.Body className="px-4">
+              <AdditionalInfoForm />
+            </HtCard.Body>
+          </HtCard>
           <div className="mx-1 d-flex flex-row-reverse">
             <Button variant="success" type="submit">
               Create Manifest
             </Button>
           </div>
         </Form>
-        <TransporterSearch
+        <AddTransporter
           handleClose={toggleTranSearchShow}
           show={transFormShow}
           currentTransporters={transporters}
-          appendTransporter={append}
+          appendTransporter={tranArrayMethods.append}
         />
-        <WasteLine handleClose={toggleWlFormShow} show={wlFormShow} />
+        <AddWasteLine
+          appendWaste={wasteArrayMethods.append}
+          currentWastes={wastes}
+          handleClose={toggleWlFormShow}
+          show={wlFormShow}
+        />
         <Tsdf handleClose={toggleTsdfFormShow} show={tsdfFormShow} />
       </FormProvider>
     </>

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
 import HtDropdown from 'components/HtDropdown';
 import { Site } from 'types/Handler';
+import HtTooltip from 'components/HtTooltip';
 
 function SiteList() {
   const [siteData, setSiteData] = useState<[Site] | undefined>(undefined);
@@ -31,8 +32,7 @@ function SiteList() {
           <tr>
             <th>Site Alias</th>
             <th>EPA ID number</th>
-            <th style={{ width: '10%' }}></th>
-            <th style={{ width: '10%' }}></th>
+            <th className="d-grid justify-content-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -42,15 +42,19 @@ function SiteList() {
                 <tr key={i}>
                   <td>{site.name}</td>
                   <td>{site.siteHandler.epaSiteId}</td>
-                  <td>
-                    <Link to={`/site/${site.siteHandler.epaSiteId}`}>
-                      <i className="fa-solid fa-eye"></i>
-                    </Link>
-                  </td>
-                  <td>
-                    <Link to={`/site/${site.siteHandler.epaSiteId}/manifests`}>
-                      <i className="fa-solid fa-file-lines"></i>
-                    </Link>
+                  <td className="d-flex justify-content-evenly">
+                    <HtTooltip text={'Site Details'}>
+                      <Link to={`/site/${site.siteHandler.epaSiteId}`}>
+                        <i className="fa-solid fa-eye"></i>
+                      </Link>
+                    </HtTooltip>
+                    <HtTooltip text={`${site.name}'s manifest`}>
+                      <Link
+                        to={`/site/${site.siteHandler.epaSiteId}/manifests`}
+                      >
+                        <i className="fa-solid fa-file-lines"></i>
+                      </Link>
+                    </HtTooltip>
                   </td>
                 </tr>
               );

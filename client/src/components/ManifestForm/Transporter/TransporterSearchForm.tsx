@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import {
-  useForm,
-  useFormContext,
-  SubmitHandler,
-  UseFieldArrayAppend,
-} from 'react-hook-form';
+import { useForm, SubmitHandler, UseFieldArrayAppend } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import api from 'services';
 import { Transporter } from 'types/Transporter/Transporter';
@@ -13,7 +8,7 @@ import { Handler, Manifest } from 'types';
 
 interface Props {
   handleClose: () => void;
-  currentTransporters?: [Transporter];
+  currentTransporters?: Array<Handler>;
   tranAppend: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 
@@ -22,7 +17,7 @@ interface SearchCriteria {
   name: string | undefined;
 }
 
-interface FormValues {
+interface TranAppendValues {
   transporter: string;
   epaId: string;
   name: string;
@@ -33,10 +28,7 @@ function TransporterSearchForm({
   tranAppend,
   currentTransporters,
 }: Props) {
-  // The Transporter is a separate form, but is used in the context of a ManifestForm
-  const manifestForm = useFormContext();
-
-  const [tranOptions, setTranOptions] = useState<[Handler] | undefined>(
+  const [tranOptions, setTranOptions] = useState<Array<Handler> | undefined>(
     undefined
   );
 
@@ -45,7 +37,7 @@ function TransporterSearchForm({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<TranAppendValues>();
 
   /**
    This is the data that is sent to the RESTful api, it's automatically updated
@@ -77,7 +69,7 @@ function TransporterSearchForm({
   /**Use the value (string) set in the Form.Select to look up
    what transporter object was selected, add that transporter to the array field in the manifest form
    */
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<TranAppendValues> = (data) => {
     // Todo: error handling, check if tranOptions is zero length
     if (tranOptions !== undefined) {
       for (let i = 0; i < tranOptions?.length; i++) {
@@ -92,10 +84,10 @@ function TransporterSearchForm({
             ...tranOptions[i],
           };
           tranAppend(newTransporter);
-          // console.log(manifestForm.getValues()); // uncomment to see how the new transporter is added to the manifest
         }
       }
     }
+    // After the transporter is added, close the modal
     handleClose();
   };
 
