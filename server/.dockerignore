@@ -1,5 +1,5 @@
 **/README.md
-tests/*
+apps/trak/tests/*
 Dockerfile
 db.sqlite3
 *.bak

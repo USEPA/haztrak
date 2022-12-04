@@ -12,7 +12,7 @@ from apps.trak.models import Handler, Manifest, WasteLine
 from apps.trak.serializers import (HandlerSerializer, ManifestSerializer,
                                    WasteLineSerializer)
 
-JSON_DIR = os.path.dirname(os.path.abspath(__file__))
+JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + '/json'
 TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'
 TEST_HANDLER_JSON = f'{JSON_DIR}/test_site.json'
 TEST_ADDRESS_JSON = f'{JSON_DIR}/test_address.json'
@@ -48,9 +48,6 @@ class ManifestSerializerTests(SerializerBaseTests):
         except IntegrityError:
             cls.skipTest('integrity error placeholder')
 
-    def test_is_valid(self):
-        self.assertTrue(self.serializer.is_valid())
-
     def test_save(self):
         saved_manifest = self.serializer.save()
         self.assertIsInstance(saved_manifest, Manifest)
@@ -65,7 +62,7 @@ class ManifestSerializerTests(SerializerBaseTests):
         except KeyError:
             self.fail('Problem getting transporter data from JSON')
 
-    def test_create_transporter_field_contains_multiple(self):
+    def test_multiple_transporter_are_serialized(self):
         try:
             number_transporters = len(dict(self.json_data)['transporters'])
             saved_manifest = self.serializer.save()
@@ -74,7 +71,7 @@ class ManifestSerializerTests(SerializerBaseTests):
         except KeyError:
             self.fail('Problem getting transporter data from JSON')
 
-    def test_save_manifest_creates_waste_line(self):
+    def test_serializer_saves_first_wasteline(self):
         saved_manifest = self.serializer.save()
         waste_line = WasteLine.objects.filter(manifest=saved_manifest).first()
         self.assertIsInstance(waste_line, WasteLine)
