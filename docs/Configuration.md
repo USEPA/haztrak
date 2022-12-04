@@ -110,7 +110,6 @@ or [RabbitMQ](https://www.rabbitmq.com/).
 * `REACT_APP_HT_ENV`
     * Default: `PROD`
     * Options: `PROD`, `DEV`, `TEST`
-    * Description: The deployment environments, `TEST` and `DEV` will initiate some additional
-      things that you should be aware of.
-        * `TEST` will initiate our mock service worker that intercepts API calls and responds with
-          test data. It should be used for unit-testing purposes.
+    * Description: The deployment environments, `TEST` mock service worker that intercepts API calls
+      and responds with test data. It can be used for testing, but also to develop the React client
+      without the django server, however it is feature incomplete.
