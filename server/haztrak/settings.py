@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
     'apps.trak',
-    'apps.home',
     'apps.accounts',
 ]
 
@@ -138,7 +137,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-FIXTURE_DIRS = ['tests/fixtures']
+FIXTURE_DIRS = ['fixtures']
 
 # RCRAInfo environment
 if not os.getenv('RCRAINFO_ENV'):

@@ -5,7 +5,7 @@ from rest_framework.exceptions import ValidationError
 
 from apps.trak.models import Address
 from lib.rcrainfo.lookups import get_country_name, get_state_name
-from lib.serializers import TrakSerializer
+from .trak import TrakSerializer
 
 
 @extend_schema_field(OpenApiTypes.OBJECT)

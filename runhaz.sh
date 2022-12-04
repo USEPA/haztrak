@@ -52,12 +52,11 @@ print_usage() {
    echo
    echo "Syntax: $(basename "$0") <option>"
    echo "options:"
-   echo "-m, --migrate       Make django migrations and apply"
+   echo "-m, --migrate       Make django migrations and apply (makemigrations and migrate)"
    echo "-d, --dump          Dump data into fixtures files tests (if needed, migrate first)"
-   echo "-l, --load          load back end fixtures from test/fixtures/test_data.json"
+   echo "-l, --load          load initial database data from fixture files"
    echo "-t, --test          Run all tests, show output if exit status is not 0"
    echo "-p, --pre-commit    installs hooks, if necessary, and runs pre-commit run --all-files"
-   echo "-r, --run           Run haztrak (both client and server) locally"
    echo "-g, --generate      Generate the Open API Schema to /docs/API/"
    echo "-h, --help          Print this help message"
    echo
@@ -75,13 +74,12 @@ migrate_changes(){
 }
 
 dump_fixtures(){
-    # hardcoded (data)dumps (hehe) for fixture files used for unittests
-    # if more fixtures files are added, they will need to be added here
+    # hardcoded (data)dumps (hehe) for fixture files used for setting up a
+    # local development database
     exec_cmd="$base_py_cmd dumpdata"
-    fixture_dir="$server_dir/tests/fixtures"
+    fixtures_dir="$server_dir/fixtures"
     fixture_cmd=(
-    "-e contenttypes -e auth.permission -e admin.logentry -e sessions.session > $fixture_dir/test_data.json"
-    "trak.WasteLine --pks=1 > $fixture_dir/test_waste_line.json"
+    "-e contenttypes -e auth.permission -e admin.logentry -e sessions.session > $fixtures_dir/dev_data.json"
     )
     for i in "${fixture_cmd[@]}"
     do
@@ -93,8 +91,8 @@ dump_fixtures(){
 
 load_django_fixtures() {
     # load initial data, good if you need to drop the dev database
-    # creates users 'admin', 'testuser1', both with 'password1'
-    exec_cmd="$base_py_cmd loaddata $server_dir/tests/fixtures/test_data.json"
+    fixtures_dir="$server_dir/fixtures"
+    exec_cmd="$base_py_cmd loaddata $fixtures_dir/dev_data.json"
     eval "$exec_cmd"
     exit
 }
@@ -168,18 +166,6 @@ cleanup() {
 	exit
 }
 
-run_haztrak() {
-	# Run both the front end and server as subprocesses, SIGINT (Ctrl-c from Bash) will end both
-	trap "exit" INT TERM ERR
-	trap "cleanup" EXIT
-
-	eval "python $server_dir/manage.py runserver" &
-	eval "npm --prefix $client_dir run start" &
-
-	wait
-	exit
-}
-
 # Parse CLI argument
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -196,15 +182,13 @@ while [[ $# -gt 0 ]]; do
         ;;
     -t|--test)
 		test_django "$@"
-#		shift # past argument
-#		shift # past value
+		shift # past argument
+		shift # past value
+		exit 0
 		;;
     -p|--pre-commit)
         run_pre_commit
         ;;
-    -r|--run)
-		run_haztrak
-		;;
     -g|--generate)
 		generate_api_schema
 		;;

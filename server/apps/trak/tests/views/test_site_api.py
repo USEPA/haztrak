@@ -1,13 +1,12 @@
+from apps.accounts.models import Profile
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from apps.accounts.models import Profile
-
 
 class SiteAPITests(APITestCase):
     base_url = '/api/trak/site/'
-    fixtures = ['test_data.json']
+    fixtures = ['dev_data.json']
 
     def setUp(self) -> None:
         self.user = User.objects.get(username='testuser1')
@@ -47,7 +46,7 @@ class SiteAPITests(APITestCase):
 
 class SiteManifestTests(APITestCase):
     base_url = '/api/trak/site/'
-    fixtures = ['test_data.json']
+    fixtures = ['dev_data.json']
 
     def setUp(self) -> None:
         self.user = User.objects.get(username='testuser1')

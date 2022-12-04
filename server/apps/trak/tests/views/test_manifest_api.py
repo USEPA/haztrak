@@ -7,13 +7,13 @@ from rest_framework.test import APITestCase
 
 from apps.trak.models import Manifest
 
-JSON_DIR = os.path.dirname(os.path.abspath(__file__))
+JSON_DIR = f'{os.path.dirname(os.path.abspath(__file__))}/json'
 TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'
 
 
 class ManifestAPITests(APITestCase):
     base_url = '/api/trak/manifest/'
-    fixtures = ['test_data.json']
+    fixtures = ['dev_data.json']
 
     @classmethod
     def setUpTestData(cls):

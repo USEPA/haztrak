@@ -1,6 +1,7 @@
 # Deploying Haztrak
 
-Below is a list of built in options for deploying Haztrak yourself. Primarily, we focus on setting up a development environment.
+Below is a list of built in options for deploying Haztrak yourself. Primarily, we focus on setting
+up a development environment.
 
 ### Docker-compose
 
@@ -94,5 +95,5 @@ make use of the scripts exposed by django and create-react-app.
   create-react-app and django's commands.
     - It includes options to
       make [Django migrations](https://docs.djangoproject.com/en/4.1/topics/migrations/), and
-      load data from [fixture files](/server/tests/fixtures)
+      load data from [fixture files](/server/fixtures)
     - `$ runhaz.sh -h` to see usage.

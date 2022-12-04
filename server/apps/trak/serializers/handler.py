@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from apps.trak.models import Handler
 from apps.trak.serializers import AddressSerializer
-from lib.serializers import TrakSerializer
+from .trak import TrakSerializer
 
 
 class HandlerSerializer(TrakSerializer):
