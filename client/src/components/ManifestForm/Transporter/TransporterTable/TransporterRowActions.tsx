@@ -30,6 +30,7 @@ function TransporterRowActions({
     <div className="d-flex justify-content-between mx-0">
       {/* Move Transporter up (towards the front of the transporter list) */}
       <Button
+        title={`move-transporter-${index}-up-button`}
         // If first transporter, disable move up button and color gray
         disabled={isFirst}
         className={`${
@@ -43,7 +44,7 @@ function TransporterRowActions({
       </Button>
       {/* Move Transporter down (towards the back of the transporter list) */}
       <Button
-        id={`transporter-down-button-${index}`}
+        title={`move-transporter-${index}-down-button`}
         // If last transporter, disable move down button and color gray
         disabled={isLast}
         className={`${
@@ -57,6 +58,7 @@ function TransporterRowActions({
       </Button>
       {/* Remove Transporter */}
       <Button
+        title={`remove-transporter-${index}-button`}
         className="text-danger m-0 p-0 bg-transparent border-0"
         onClick={() => {
           removeTransporter(index);

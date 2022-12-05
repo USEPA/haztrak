@@ -74,14 +74,10 @@ const TRAN_ARRAY: Array<Transporter> = [
 ];
 
 describe('TransporterTable', () => {
-  test('renders transporter', () => {
-    /**
-     * We're not going to mock the useFieldArray, opt for integration test.
-     * This weak unit test just checks if an existing array of transporters is
-     * rendered in the table
-     */
-    const fakeArrayMethods = {};
-    const { debug } = renderWithProviders(
+  test('renders an array of transporter', () => {
+    // We're not going to mock the useFieldArray, opt for integration test.
+    const fakeArrayMethods = {}; // non-existent method placeholders
+    renderWithProviders(
       <TransporterTable
         // @ts-ignore
         arrayFieldMethods={fakeArrayMethods}
@@ -91,6 +87,62 @@ describe('TransporterTable', () => {
     );
     expect(screen.getByText(HANDLER_ID_1)).toBeInTheDocument();
     expect(screen.getByText(HANDLER_ID_2)).toBeInTheDocument();
-    debug(undefined, Infinity);
+    // debug(undefined, Infinity);
+  });
+  test('renders actions for each transporter', () => {
+    const fakeArrayMethods = {}; // non-existent method placeholders
+    const { debug } = renderWithProviders(
+      <TransporterTable
+        // @ts-ignore
+        arrayFieldMethods={fakeArrayMethods}
+        transporters={TRAN_ARRAY}
+      />,
+      {}
+    );
+    for (let i = 0; i < TRAN_ARRAY.length; i++) {
+      expect(
+        screen.getByTitle(`remove-transporter-${i}-button`)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTitle(`move-transporter-${i}-down-button`)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTitle(`move-transporter-${i}-up-button`)
+      ).toBeInTheDocument();
+    }
+    expect(
+      screen.getByTitle(`move-transporter-${TRAN_ARRAY.length - 1}-down-button`)
+    ).toBeDisabled();
+  });
+  test('first move-up and last move-down to be disabled', () => {
+    const fakeArrayMethods = {}; // non-existent method placeholders
+    const { debug } = renderWithProviders(
+      <TransporterTable
+        // @ts-ignore
+        arrayFieldMethods={fakeArrayMethods}
+        transporters={TRAN_ARRAY}
+      />,
+      {}
+    );
+    for (let i = 0; i < TRAN_ARRAY.length; i++) {
+      if (i === 0) {
+        expect(
+          screen.getByTitle(`move-transporter-${i}-up-button`)
+        ).toBeDisabled();
+      } else {
+        expect(
+          screen.getByTitle(`move-transporter-${i}-up-button`)
+        ).not.toBeDisabled();
+      }
+      if (i === TRAN_ARRAY.length - 1) {
+        expect(
+          screen.getByTitle(`move-transporter-${i}-down-button`)
+        ).toBeDisabled();
+      } else {
+        expect(
+          screen.getByTitle(`move-transporter-${i}-down-button`)
+        ).not.toBeDisabled();
+      }
+    }
   });
 });
