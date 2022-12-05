@@ -92,7 +92,7 @@ function ManifestForm() {
               {/* List transporters */}
               <TransporterTable
                 transporters={transporters}
-                removeTransporter={tranArrayMethods.remove}
+                arrayFieldMethods={tranArrayMethods}
               />
               <Row className="d-flex justify-content-center px-5">
                 <Col className="text-center">
