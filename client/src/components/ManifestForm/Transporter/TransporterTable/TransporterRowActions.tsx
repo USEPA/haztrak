@@ -43,6 +43,7 @@ function TransporterRowActions({
       </Button>
       {/* Move Transporter down (towards the back of the transporter list) */}
       <Button
+        id={`transporter-down-button-${index}`}
         // If last transporter, disable move down button and color gray
         disabled={isLast}
         className={`${
@@ -56,12 +57,12 @@ function TransporterRowActions({
       </Button>
       {/* Remove Transporter */}
       <Button
-        className="m-0 p-0 bg-transparent border-0"
+        className="text-danger m-0 p-0 bg-transparent border-0"
         onClick={() => {
           removeTransporter(index);
         }}
       >
-        <i className="text-danger fas fa-times-circle fa-xl"></i>
+        <i className="fas fa-times-circle fa-xl"></i>
       </Button>
     </div>
   );
