@@ -1,23 +1,20 @@
-from django.test import TestCase
+import re
+
+import pytest
 
 from apps.trak.models import Address
 
 
-def create_handler(address: str, st_num: str, city: str, country: str):
-    return Address.objects.create(address1=address, street_number=st_num,
-                                  country=country, city=city)
+@pytest.fixture
+def address_123_main(db) -> Address:
+    return Address.objects.create(address1='Main st.', street_number='123',
+                                  country='VA', city='Arlington')
 
 
-def create_address(address: str, st_num: str, city: str, country: str):
-    return Address.objects.create(address1=address, street_number=st_num,
-                                  country=country, city=city)
+class TestAddressModel:
 
+    def test_address_created(self, db, address_123_main: Address) -> None:
+        assert type(address_123_main) is Address
 
-class AddressModelTests(TestCase):
-
-    def test_address_creation(self):
-        address = 'main st.'
-        w = create_address(address=address, st_num='123', country='US',
-                           city='foo')
-        self.assertTrue(isinstance(w, Address))
-        self.assertEqual(w.address1, address)
+    def test_address_displays_address(self, address_123_main: Address) -> None:
+        assert re.match('main', address_123_main.address1, re.IGNORECASE)
