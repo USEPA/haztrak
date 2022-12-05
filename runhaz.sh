@@ -104,7 +104,7 @@ generate_api_schema() {
     exit
 }
 
-print_test_status() {
+print_test_status(){
         if [ "$1" -eq 0 ];
     then
         print_style "Passed!\n" "success";
@@ -120,7 +120,7 @@ test_django(){
     echo "Running Haztrak test..."
     printf "Testing Server: "
     cd "$server_dir" || exit
-    django_output="$(eval "$python_cmd $base_dir/server/manage.py test 2>&1")"
+    django_output="$(eval "pytest 2>&1")"
     django_exit_code=$?
     print_test_status $django_exit_code
     cd "$base_dir" || exit
