@@ -63,4 +63,4 @@ class WasteLineSerializer(TrakSerializer):
         ]
 
     def __str__(self):
-        return f'{self.lineNumber}'
+        return f'{self.data}'
