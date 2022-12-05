@@ -15,7 +15,11 @@ from apps.trak.serializers import SiteSerializer
 
 
 class SiteList(generics.ListAPIView):
-    """SiteList returns haztrak sites that a user has access to"""
+    """
+    SiteList is a ListAPIView that returns haztrak sites that the current
+    user has access to.
+
+    """
     serializer_class = SiteSerializer
 
     def get_queryset(self):

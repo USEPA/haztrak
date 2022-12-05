@@ -1,15 +1,19 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import permissions, status
 from rest_framework.exceptions import APIException
+from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from apps.trak.models import Handler
 from apps.trak.serializers import HandlerSerializer
 
 
-class HandlerView(APIView):
+class HandlerView(GenericAPIView):
+    """
+    HandlerView  provides https handlers for reading handlers from the haztrak database
+
+    """
     response = Response
     permission_classes = [permissions.IsAuthenticated]
 
