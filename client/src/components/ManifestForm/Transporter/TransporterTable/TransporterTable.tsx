@@ -1,17 +1,17 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import { Handler } from 'types';
+import { Handler, Manifest } from 'types';
 import { TransporterRowActions } from './TransporterRowActions';
-import { UseFieldArrayRemove } from 'react-hook-form';
+import { UseFieldArrayReturn } from 'react-hook-form';
 
 interface TransporterTableProps {
   transporters?: Array<Handler>;
-  removeTransporter: UseFieldArrayRemove;
+  arrayFieldMethods: UseFieldArrayReturn<Manifest, 'transporters', 'id'>;
 }
 
 function TransporterTable({
   transporters,
-  removeTransporter,
+  arrayFieldMethods,
 }: TransporterTableProps) {
   if (!transporters || transporters.length < 1) {
     return <></>;
@@ -43,8 +43,10 @@ function TransporterTable({
               <td>{transporter.canEsign ? 'yes' : 'no'}</td>
               <td>
                 <TransporterRowActions
-                  removeTransporter={removeTransporter}
-                  order={index}
+                  removeTransporter={arrayFieldMethods.remove}
+                  swapTransporter={arrayFieldMethods.swap}
+                  index={index}
+                  length={transporters?.length}
                 />
               </td>
             </tr>

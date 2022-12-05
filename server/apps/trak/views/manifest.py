@@ -6,7 +6,11 @@ from apps.trak.serializers import ManifestSerializer
 
 
 class ManifestView(viewsets.ModelViewSet):
-    """Uniform hazardous waste manifest by manifest tracking number (MTN)"""
+    """
+    A model view set for the Uniform hazardous waste manifest, manifest are queried by
+    the manifest tracking number (MTN)
+
+    """
     queryset = Manifest.objects.all()
     lookup_field = 'mtn'
     serializer_class = ManifestSerializer
