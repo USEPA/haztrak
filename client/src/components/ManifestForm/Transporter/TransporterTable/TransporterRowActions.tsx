@@ -9,35 +9,50 @@ interface TranRowActionProps {
   swapTransporter: UseFieldArraySwap;
 }
 
+/**
+ * TransporterRowActions uses index and length to disable and display
+ * different actions for eah row, expected to be part of a mapped table or list.
+ * @param index
+ * @param removeTransporter
+ * @param swapTransporter
+ * @param length
+ * @constructor
+ */
 function TransporterRowActions({
   index,
   removeTransporter,
   swapTransporter,
   length,
 }: TranRowActionProps) {
-  console.log(index);
-  console.log(length);
+  const isFirst = index === 0;
+  const isLast = index + 1 === length;
   return (
     <div className="d-flex justify-content-between mx-0">
       {/* Move Transporter up (towards the front of the transporter list) */}
       <Button
-        disabled={index === 0}
-        className="m-0 p-0 bg-transparent border-0"
+        // If first transporter, disable move up button and color gray
+        disabled={isFirst}
+        className={`${
+          isFirst ? 'text-secondary' : 'text-primary'
+        } m-0 p-0 border-0 bg-transparent`}
         onClick={() => {
           swapTransporter(index, index - 1);
         }}
       >
-        <i className="text-primary fas fa-arrow-circle-up fa-lg"></i>
+        <i className="fas fa-arrow-circle-up fa-xl"></i>
       </Button>
       {/* Move Transporter down (towards the back of the transporter list) */}
       <Button
-        disabled={index + 1 === length}
-        className="m-0 p-0 bg-transparent border-0"
+        // If last transporter, disable move down button and color gray
+        disabled={isLast}
+        className={`${
+          isLast ? 'text-secondary' : 'text-primary'
+        } m-0 p-0 border-0 bg-transparent`}
         onClick={() => {
           swapTransporter(index, index + 1);
         }}
       >
-        <i className="text-primary fas fa-arrow-circle-down fa-lg"></i>
+        <i className="fas fa-arrow-circle-down fa-xl"></i>
       </Button>
       {/* Remove Transporter */}
       <Button
@@ -46,7 +61,7 @@ function TransporterRowActions({
           removeTransporter(index);
         }}
       >
-        <i className="text-danger fas fa-times-circle fa-lg"></i>
+        <i className="text-danger fas fa-times-circle fa-xl"></i>
       </Button>
     </div>
   );
