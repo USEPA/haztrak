@@ -61,8 +61,3 @@ class HandlerAPITest(APITestCase):
         handler_key = self.Handler.pk
         response = self.client.get(f'{self.base_url}details/{handler_key}')
         self.assertEqual(response.data['epaSiteId'], my_site_id)
-
-
-class TestHandlerSearch:
-    def test_tests(self):
-        assert True

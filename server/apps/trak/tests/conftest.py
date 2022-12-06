@@ -1,10 +1,17 @@
 import json
 
 import pytest
+from django.contrib.auth.models import User
 
 from apps.trak.models import Address, Handler
 from apps.trak.serializers import WasteLineSerializer
 from apps.trak.tests.serializers.test_serializers import TEST_WASTE1_JSON
+
+
+@pytest.fixture
+def testuser1(db) -> User:
+    """Django user with username: 'testuser1', password: 'password1'"""
+    return User.objects.create_user(username='testuser1', email='testuser1@haztrak.net', password='password1')
 
 
 @pytest.fixture
@@ -14,7 +21,7 @@ def address_123_main(db) -> Address:
 
 
 @pytest.fixture
-def handler001(db, address_123_main) -> Handler:
+def generator001(db, address_123_main) -> Handler:
     return Handler.objects.create(epa_id='handler001', name='my_handler',
                                   site_type='Generator', site_address=address_123_main,
                                   mail_address=address_123_main, contact="{}")

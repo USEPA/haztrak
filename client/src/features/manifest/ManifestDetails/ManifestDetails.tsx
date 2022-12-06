@@ -1,10 +1,10 @@
+import HtCard from 'components/HtCard';
+import HtSpinner from 'components/HtSpinner';
 import React, { ReactElement, useEffect, useState } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import api from 'services';
 import { Manifest } from 'types';
-import { Col, Row } from 'react-bootstrap';
-import HtCard from 'components/HtCard';
-import HtSpinner from 'components/HtSpinner';
 
 /**
  * This React component displays an existing hazardous waste manifest.
@@ -32,12 +32,13 @@ function ManifestDetails(): ReactElement {
       .catch((error) => {
         // Todo: error handling if, e.g., mtn does not exist.
         setError(error);
-        // setLoading(false);
       });
   }, [mtn]);
 
+  // @ts-ignore
   const genPhone = manifestData?.generator.contact.phone.number;
   const genEmerPhone = manifestData?.generator.emergencyPhone.number;
+  // @ts-ignore
   const tsdPhone = manifestData?.designatedFacility.contact.phone.number;
   const tsdEmerPhone = manifestData?.designatedFacility.emergencyPhone.number;
 

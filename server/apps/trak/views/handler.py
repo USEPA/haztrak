@@ -49,8 +49,8 @@ class HandlerSearch(GenericAPIView):
                     handler_type = 'Any'
             else:
                 handler_type = 'Any'
-            epa_id = self.request.data['epaId']
-            name = self.request.data['name']
+            epa_id = self.request.data[self.epa_id_key]
+            name = self.request.data[self.name_key]
             if len(epa_id) < 3 and len(name) < 3:
                 return Response(status=HTTPStatus.UNPROCESSABLE_ENTITY)
             if handler_type == 'Any':
