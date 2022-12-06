@@ -3,15 +3,13 @@ import json
 import logging
 import os
 
-import pytest
 from django.db import IntegrityError
 from django.test import TestCase
 from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import JSONParser
 
 from apps.trak.models import Handler, Manifest, WasteLine
-from apps.trak.serializers import (HandlerSerializer, ManifestSerializer,
-                                   WasteLineSerializer)
+from apps.trak.serializers import HandlerSerializer, ManifestSerializer
 
 JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + '/json'
 TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'
@@ -92,13 +90,6 @@ class HandlerSerializerTests(SerializerBaseTests):
     def test_save(self):
         saved_site = self.serializer.save()
         self.assertIsInstance(saved_site, Handler)
-
-
-@pytest.fixture
-def waste_serializer(db) -> WasteLineSerializer:
-    with open(TEST_WASTE1_JSON, 'r') as f:
-        data = json.load(f)
-    return WasteLineSerializer(data=data)
 
 
 class TestWasteLineSerializer:
