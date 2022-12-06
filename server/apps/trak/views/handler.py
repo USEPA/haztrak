@@ -39,7 +39,8 @@ class HandlerSearch(GenericAPIView):
     )
     def post(self, request):
         try:
-            # Check if 'type' is in the POST body, and is one of the accepted handler types
+            # Check if 'type' is in the POST body, and is one of the accepted handler
+            # types
             if self.handler_type_key in self.request.data:
                 if self.request.data[
                     self.handler_type_key].lower() in self.accepted_handler_types:
