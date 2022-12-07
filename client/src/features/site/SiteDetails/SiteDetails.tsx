@@ -1,11 +1,12 @@
-import React, { ReactElement, useEffect, useState } from 'react';
 import HtCard from 'components/HtCard';
-import { useParams } from 'react-router-dom';
-import api from 'services';
-import { Col, Row } from 'react-bootstrap';
 import HtDropdown from 'components/HtDropdown';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { Col, Row } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
+import htApi from 'services';
+import { Site } from 'types/Handler';
 
-function renderSiteDetail({ siteHandler }: any): ReactElement {
+function renderSiteDetail({ siteHandler }: Site): ReactElement {
   const sa = siteHandler.siteAddress;
   const ma = siteHandler.mailingAddress;
   const siteAddress = `${sa.streetNumber} ${sa.address1}, ${sa.city} ${sa.state.code} ${sa.zip}`;
@@ -50,11 +51,11 @@ function SiteDetails(): ReactElement {
 
   useEffect(() => {
     setLoading(true);
-    api
-      .get(`trak/site/${params.siteId}`, null)
+    htApi
+      .get(`trak/site/${params.siteId}`)
       .then((response) => {
         setLoading(false);
-        setSiteData(response as any);
+        setSiteData(response.data);
       })
       .catch(setError);
   }, [params.siteId]);

@@ -1,3 +1,3 @@
-import api from './api';
+import htApi from 'services/HtApi';
 
-export default api;
+export default htApi;

@@ -2,7 +2,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
-import api from 'services';
+import htApi from 'services';
 import { Handler, Manifest } from 'types';
 import { Transporter } from 'types/Transporter/Transporter';
 
@@ -61,13 +61,17 @@ function TransporterSearchForm({
         typeof searchData.name === 'string'
       ) {
         if (searchData.epaId.length >= 3 || searchData.name.length >= 3) {
-          // todo: refactor the 'api' service interface less hacky way to accept body and url parameters
-          return await api.get('trak/handler/search', undefined, searchData);
+          const response = await htApi.get('trak/handler/search', {
+            params: searchData,
+          });
+          return response.data;
         }
       }
     }
 
-    fetchOptions().then((trans: [Handler]) => setTranOptions(trans));
+    fetchOptions()
+      .then((trans: Array<Handler>) => setTranOptions(trans))
+      .catch((error) => console.log(error));
   }, [watch('epaId'), watch('name')]);
 
   /**Use the value (string) set in the Form.Select to look up
