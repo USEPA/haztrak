@@ -1,19 +1,12 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { store } from 'redux/store';
-
-interface RequestOptions {
-  url: string;
-  method: string;
-  headers: object;
-  data: object | null;
-}
 
 function authToken() {
   return store.getState().user.token;
 }
 
 function authHeader(url: string) {
-  // return auth header with jwt if user is logged in and request is to the api url
+  // return auth header with jwt if logged in and request is to the haztrak server
   const token = authToken();
   const isLoggedIn = !!token;
   const haztrakURL = process.env.REACT_APP_HT_API_URL;
@@ -38,15 +31,21 @@ function authHeader(url: string) {
 
 function request(method: string) {
   const baseURL = `${process.env.REACT_APP_HT_API_URL}/api`;
-  return (url: string, body: object | null) => {
-    const requestOptions: RequestOptions = {
+  return (url: string, body?: object | null, params?: object | undefined) => {
+    // Configure the request
+    const requestOptions: AxiosRequestConfig = {
       url: `${baseURL}/${url}`,
       method,
       headers: authHeader(`${baseURL}/${url}`),
       data: null,
     };
+    // Set request parameters and body (when applicable)
+    console.log(method);
     if (body) {
       requestOptions.data = body;
+    }
+    if (params) {
+      requestOptions.params = params;
     }
     return axios(requestOptions as any).then((response) => {
       const { data } = response;
@@ -65,7 +64,6 @@ function request(method: string) {
   };
 }
 
-// eslint-disable-next-line import/prefer-default-export
 const api = {
   get: request('GET'),
   post: request('POST'),

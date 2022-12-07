@@ -1,10 +1,10 @@
+import { ErrorMessage } from '@hookform/error-message';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import { useForm, SubmitHandler, UseFieldArrayAppend } from 'react-hook-form';
-import { ErrorMessage } from '@hookform/error-message';
+import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import api from 'services';
-import { Transporter } from 'types/Transporter/Transporter';
 import { Handler, Manifest } from 'types';
+import { Transporter } from 'types/Transporter/Transporter';
 
 interface Props {
   handleClose: () => void;
@@ -15,6 +15,8 @@ interface Props {
 interface SearchCriteria {
   epaId: string | undefined;
   name: string | undefined;
+
+  siteType: string;
 }
 
 interface TranAppendValues {
@@ -46,6 +48,7 @@ function TransporterSearchForm({
   const searchData: SearchCriteria = {
     epaId: watch('epaId'),
     name: watch('name'),
+    siteType: 'Transporter',
   };
 
   /** This useEffect is responsible for watching the transporter search fields
@@ -58,7 +61,8 @@ function TransporterSearchForm({
         typeof searchData.name === 'string'
       ) {
         if (searchData.epaId.length >= 3 || searchData.name.length >= 3) {
-          return await api.post('trak/transporter/search', searchData);
+          // todo: refactor the 'api' service interface less hacky way to accept body and url parameters
+          return await api.get('trak/handler/search', undefined, searchData);
         }
       }
     }

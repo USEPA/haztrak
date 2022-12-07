@@ -150,7 +150,13 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    # I just keep this here for when I want to use browser to inspect the API for dev
+    # 'DEFAULT_PERMISSION_CLASSES': [],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ]
 }
 
 SPECTACULAR_SETTINGS = {
@@ -159,6 +165,11 @@ SPECTACULAR_SETTINGS = {
                    'management software can integrate with EPA\'s RCRAInfo',
     'VERSION': '0.1.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "displayOperationId": True,
+    },
 }
 
 HT_CELERY_BROKER_URL = os.getenv("HT_CELERY_BROKER_URL", "redis://localhost:6379")

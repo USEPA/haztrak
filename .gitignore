@@ -35,6 +35,7 @@ share/python-wheels/
 static/bak
 **/db.sqlite3
 **/*.rdb
+**/.pytest_cache/
 
 # client
 **/node_modules
