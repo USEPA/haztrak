@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { store } from 'redux/store';
 
 const htApi = axios.create({
-  baseURL: process.env.REACT_APP_HT_API_URL,
+  baseURL: `${process.env.REACT_APP_HT_API_URL}/api`,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
