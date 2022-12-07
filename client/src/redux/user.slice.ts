@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import htApi from 'services';
+import api from 'services';
+import htApi from 'services/HtApi';
 
 export interface UserState {
   user: string | undefined;
@@ -24,18 +25,20 @@ const initialState: UserState = {
 };
 
 export const getUser = createAsyncThunk('user/getUser', async () => {
-  const response = await htApi.get('user/profile');
-  return response.data as UserState;
+  const testResponse = await htApi.get('/api/user/profile');
+  console.log(testResponse);
+  const response: UserState = await api.get('user/profile/', null);
+  return response as UserState;
 });
 
 export const login = createAsyncThunk(
   'user/login',
   async ({ username, password }: { username: string; password: string }) => {
-    const response = await htApi.post('user/login/', {
+    const response = await api.post('user/login/', {
       username,
       password,
     });
-    return response.data as UserState;
+    return response as UserState;
   }
 );
 

@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { store } from 'redux/store';
 
 const htApi = axios.create({
-  baseURL: `${process.env.REACT_APP_HT_API_URL}/api`,
+  baseURL: process.env.REACT_APP_HT_API_URL,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -24,7 +24,6 @@ htApi.interceptors.request.use(
       config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
-    // ToDo: if token does not exists
   },
   (error) => {
     return Promise.reject(error);
