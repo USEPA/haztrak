@@ -5,7 +5,7 @@ on:
     paths:
       - "server/**"
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_call:
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
         working-directory: ./server
     strategy:
       matrix:
-        python-version: [ "3.8", "3.9", "3.10" ]
+        python-version: ["3.8", "3.9", "3.10"]
 
     steps:
       - uses: actions/checkout@v3
@@ -41,4 +41,4 @@ jobs:
           HT_RCRAINFO_ENV: preprod
           HT_DEBUG: true
         run: |
-          python manage.py test
+          pytest
