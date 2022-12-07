@@ -3,7 +3,7 @@ import HtSpinner from 'components/HtSpinner';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import api from 'services';
+import htApi from 'services';
 import { Manifest } from 'types';
 
 /**
@@ -23,11 +23,11 @@ function ManifestDetails(): ReactElement {
 
   useEffect(() => {
     setLoading(true);
-    api
-      .get(`trak/manifest/${mtn}`, null)
+    htApi
+      .get(`trak/manifest/${mtn}`)
       .then((response) => {
         setLoading(false);
-        setManifestData(response as Manifest);
+        setManifestData(response.data as Manifest);
       })
       .catch((error) => {
         // Todo: error handling if, e.g., mtn does not exist.

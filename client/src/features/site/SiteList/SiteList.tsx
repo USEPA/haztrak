@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import api from 'services';
 import HtCard from 'components/HtCard';
-import { Link } from 'react-router-dom';
-import { Table } from 'react-bootstrap';
 import HtDropdown from 'components/HtDropdown';
-import { Site } from 'types/Handler';
 import HtTooltip from 'components/HtTooltip';
+import React, { useEffect, useState } from 'react';
+import { Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import htApi from 'services';
+import { Site } from 'types/Handler';
 
 function SiteList() {
   const [siteData, setSiteData] = useState<[Site] | undefined>(undefined);
@@ -14,12 +14,12 @@ function SiteList() {
 
   useEffect(() => {
     setLoading(true);
-    api
-      .get('trak/site', null)
+    htApi
+      .get('trak/site')
       .then((response) => {
-        if (response.length > 0) {
+        if (response.data.length > 0) {
           setLoading(false);
-          setSiteData(response as [Site]);
+          setSiteData(response.data as [Site]);
         }
       })
       .catch(setError);

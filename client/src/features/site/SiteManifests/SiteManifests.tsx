@@ -1,9 +1,10 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import api from 'services';
-import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import HtCard from 'components/HtCard';
 import HtTooltip from 'components/HtTooltip';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { Button, Col, Container, Row, Table } from 'react-bootstrap';
+import { Simulate } from 'react-dom/test-utils';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import htApi from 'services';
 
 interface SiteManifest {
   generator: string[];
@@ -68,12 +69,13 @@ function SiteManifests(): ReactElement {
 
   useEffect(() => {
     setLoading(true);
-    api
-      .get(`trak/site/${params.siteId}/manifest`, null)
+    htApi
+      .get(`trak/site/${params.siteId}/manifest`)
       .then((response) => {
-        setSiteManifest(response as SiteManifest);
+        setSiteManifest(response.data as SiteManifest);
       })
-      .then(() => setLoading(false));
+      .then(() => setLoading(false))
+      .catch((error) => console.log(error));
   }, [params.siteId]);
 
   return (
