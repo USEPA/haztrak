@@ -25,10 +25,8 @@ const initialState: UserState = {
 };
 
 export const getUser = createAsyncThunk('user/getUser', async () => {
-  const testResponse = await htApi.get('/api/user/profile');
-  console.log(testResponse);
-  const response: UserState = await api.get('user/profile/', null);
-  return response as UserState;
+  const response = await htApi.get('user/profile');
+  return response.data as UserState;
 });
 
 export const login = createAsyncThunk(
