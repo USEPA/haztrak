@@ -2,7 +2,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
-import htApi from 'services/HtApi';
+import htApi from 'services';
 import { Handler, Manifest } from 'types';
 import { Transporter } from 'types/Transporter/Transporter';
 
@@ -70,9 +70,8 @@ function TransporterSearchForm({
     }
 
     fetchOptions()
-      // .then((response) => response!.data)
       .then((trans: Array<Handler>) => setTranOptions(trans))
-      .catch((reason) => console.log(reason));
+      .catch((error) => console.log(error));
   }, [watch('epaId'), watch('name')]);
 
   /**Use the value (string) set in the Form.Select to look up
