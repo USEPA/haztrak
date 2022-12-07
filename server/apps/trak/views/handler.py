@@ -23,7 +23,7 @@ class HandlerSearch(ListAPIView):
     serializer_class = HandlerSerializer
 
     def get_queryset(self):
-        queryset = self.queryset
+        queryset = Handler.objects.all()
         epa_id_param = self.request.query_params.get('epaId')
         name_param = self.request.query_params.get('siteName')
         site_type_param = self.request.query_params.get('siteType')
