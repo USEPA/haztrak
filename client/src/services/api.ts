@@ -40,7 +40,6 @@ function request(method: string) {
       data: null,
     };
     // Set request parameters and body (when applicable)
-    console.log(method);
     if (body) {
       requestOptions.data = body;
     }

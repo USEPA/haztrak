@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from 'services';
+import htApi from 'services/HtApi';
 
 export interface UserState {
   user: string | undefined;
@@ -24,6 +25,8 @@ const initialState: UserState = {
 };
 
 export const getUser = createAsyncThunk('user/getUser', async () => {
+  const testResponse = await htApi.get('/api/user/profile');
+  console.log(testResponse);
   const response: UserState = await api.get('user/profile/', null);
   return response as UserState;
 });
