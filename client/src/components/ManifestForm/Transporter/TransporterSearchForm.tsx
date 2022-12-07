@@ -16,7 +16,7 @@ interface SearchCriteria {
   epaId: string | undefined;
   name: string | undefined;
 
-  type: string;
+  siteType: string;
 }
 
 interface TranAppendValues {
@@ -48,7 +48,7 @@ function TransporterSearchForm({
   const searchData: SearchCriteria = {
     epaId: watch('epaId'),
     name: watch('name'),
-    type: 'transporter',
+    siteType: 'Transporter',
   };
 
   /** This useEffect is responsible for watching the transporter search fields
@@ -61,7 +61,8 @@ function TransporterSearchForm({
         typeof searchData.name === 'string'
       ) {
         if (searchData.epaId.length >= 3 || searchData.name.length >= 3) {
-          return await api.post('trak/handler/search', searchData);
+          // todo: refactor the 'api' service interface less hacky way to accept body and url parameters
+          return await api.get('trak/handler/search', undefined, searchData);
         }
       }
     }
