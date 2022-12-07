@@ -25,7 +25,7 @@ class ManifestAPITests(APITestCase):
 
     def setUp(self) -> None:
         self.user = User.objects.create_user('username', 'foo@bar.com', 'Pas$w0rd')
-        self.client.login(username='username', password='Pas$w0rd')
+        self.client.login(username=self.user.username, password=self.user.password)
         self.client.force_authenticate(self.user)
 
     def test_get_manifest_by_mtn_status(self):

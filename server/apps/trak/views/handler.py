@@ -10,19 +10,19 @@ from apps.trak.models import Handler
 from apps.trak.serializers import HandlerSerializer
 
 
-# HandlerView is a DRF generic API view that filters by URL parameters and
-# returns a single Handler, or an error
 @extend_schema(
     description='Retrieve details on a handler stored in the Haztrak database',
 )
 class HandlerView(RetrieveAPIView):
+    """
+    HandlerView returns details on a single Handler known to haztrak
+    """
     queryset = Handler.objects.all()
     serializer_class = HandlerSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
-# ToDo: this is POC source, should be able to replace with ListAPIView
-#  https://www.django-rest-framework.org/api-guide/filtering/
+# ToDo: this is POC source, move this logic to the Handler model and replace with ListAPIView
 class HandlerSearch(GenericAPIView):
     queryset = Handler.objects.all()
     accepted_handler_types = ['any', 'generator', 'transporter', 'tsdf']
@@ -39,8 +39,6 @@ class HandlerSearch(GenericAPIView):
     )
     def post(self, request):
         try:
-            # Check if 'type' is in the POST body, and is one of the accepted handler
-            # types
             if self.handler_type_key in self.request.data:
                 if self.request.data[
                     self.handler_type_key].lower() in self.accepted_handler_types:
