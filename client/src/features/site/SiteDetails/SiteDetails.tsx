@@ -1,9 +1,9 @@
 import HtCard from 'components/HtCard';
 import HtDropdown from 'components/HtDropdown';
-import React, { ReactElement, useEffect, useState } from 'react';
+import useHtAPI from 'hooks/useHtAPI';
+import React, { ReactElement } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import htApi from 'services';
 import { Site } from 'types/Handler';
 
 function renderSiteDetail({ siteHandler }: Site): ReactElement {
@@ -39,31 +39,17 @@ function renderSiteDetail({ siteHandler }: Site): ReactElement {
 }
 
 /**
- * Display details of the selected site model
+ * GET and Display details of the hazardous waste site specified in the URL
  * @constructor
  */
 function SiteDetails(): ReactElement {
-  // pull parameter ID from the URL
-  let params = useParams();
-  const [siteData, setSiteData] = useState();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    htApi
-      .get(`trak/site/${params.siteId}`)
-      .then((response) => {
-        setLoading(false);
-        setSiteData(response.data);
-      })
-      .catch(setError);
-  }, [params.siteId]);
+  let { siteId } = useParams();
+  const [siteData, loading, error] = useHtAPI<Site>(`trak/site/${siteId}`);
 
   return (
     <>
       <HtCard>
-        <HtCard.Header title={params.siteId}>
+        <HtCard.Header title={siteId}>
           <HtDropdown links={[{ name: 'hello', path: '#/blah/' }]} />
         </HtCard.Header>
         <HtCard.Body>
@@ -72,7 +58,7 @@ function SiteDetails(): ReactElement {
           ) : siteData ? (
             <>{renderSiteDetail(siteData)}</>
           ) : (
-            <p>{error}</p>
+            <p>{error?.message}</p>
           )}
         </HtCard.Body>
       </HtCard>
