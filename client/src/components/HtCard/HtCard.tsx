@@ -1,8 +1,7 @@
-import React, { ReactElement } from 'react';
-import { Card } from 'react-bootstrap';
-import { CardProps } from 'react-bootstrap';
 import ErrorBoundary from 'components/ErrorBoundary';
 import HtSpinner from 'components/HtSpinner';
+import React, { ReactElement } from 'react';
+import { Card, CardProps } from 'react-bootstrap';
 
 interface HeaderProps extends CardProps {
   title?: string;
@@ -79,7 +78,7 @@ HtCard.Header = function ({
  */
 HtCard.Footer = function (props: CardProps): ReactElement {
   return (
-    <Card.Footer className={`bg-gray ${props.className}`}>
+    <Card.Footer className={`p-2 bg-light ${props.className}`}>
       <div className="d-flex justify-content-start gap-2">{props.children}</div>
     </Card.Footer>
   );

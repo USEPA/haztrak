@@ -1,29 +1,14 @@
 import HtCard from 'components/HtCard';
 import HtDropdown from 'components/HtDropdown';
 import HtTooltip from 'components/HtTooltip';
-import React, { useEffect, useState } from 'react';
+import useHtAPI from 'hooks/useHtAPI';
+import React from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import htApi from 'services';
 import { Site } from 'types/Handler';
 
 function SiteList() {
-  const [siteData, setSiteData] = useState<[Site] | undefined>(undefined);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    htApi
-      .get('trak/site')
-      .then((response) => {
-        if (response.data.length > 0) {
-          setLoading(false);
-          setSiteData(response.data as [Site]);
-        }
-      })
-      .catch(setError);
-  }, []);
+  const [siteData, loading, error] = useHtAPI<Array<Site>>('trak/site/');
 
   function SitesTable() {
     return (
@@ -89,10 +74,9 @@ function SiteList() {
             SitesTable()
           ) : // else check if there's an error
           error ? (
-            // if error exist, display it
             <>
               <p>Sorry, we experienced a error fetching your sites</p>
-              <p>{error}</p>
+              <p>{error.message}</p>
             </>
           ) : (
             // lastly, if no error but siteData is empty, suggest

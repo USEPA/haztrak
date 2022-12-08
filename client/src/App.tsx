@@ -1,23 +1,24 @@
-import React, { ReactElement } from 'react';
-import { Route, Routes } from 'react-router-dom';
-
-import { Container } from 'react-bootstrap';
+import ErrorBoundary from 'components/ErrorBoundary';
+import HtCard from 'components/HtCard';
+import { Sidebar, TopNav } from 'components/Nav';
 import PrivateRoute from 'components/PrivateRoute';
+import About from 'features/help';
 import Home from 'features/home';
 import Login from 'features/login';
-import { Sidebar, TopNav } from 'components/Nav';
-import About from 'features/help';
+import Manifest from 'features/manifest';
 import Profile from 'features/profile';
 import Sites from 'features/site/Sites';
+import React, { ReactElement } from 'react';
+
+import { Button, Container } from 'react-bootstrap';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useAppSelector } from 'redux/hooks';
-import Manifest from 'features/manifest';
-import ErrorBoundary from 'components/ErrorBoundary';
 import { RootState } from 'redux/store';
-import HtError from './components/HtError';
 import './App.scss';
 
 function App(): ReactElement {
   const { user } = useAppSelector((state: RootState) => state.user);
+  const navigate = useNavigate();
 
   return (
     <div className="App">
@@ -61,7 +62,24 @@ function App(): ReactElement {
               />
               <Route path="/login" element={<Login />} />
               <Route path="/about" element={<About />} />
-              <Route path="*" element={<HtError httpError={404} />} />
+              {/* ToDo: navigate to error boundary(?)*/}
+              <Route
+                path="*"
+                element={
+                  <HtCard>
+                    <HtCard.Header title="This is not the page you're looking for..." />
+                    <HtCard.Body className="d-grid justify-content-center">
+                      <h1 className="display-1 d-flex justify-content-center">
+                        404
+                      </h1>
+                      <h4>Resource not found</h4>
+                    </HtCard.Body>
+                    <HtCard.Footer>
+                      <Button onClick={() => navigate(-1)}>Return</Button>
+                    </HtCard.Footer>
+                  </HtCard>
+                }
+              />
             </Routes>
           </ErrorBoundary>
         </Container>
