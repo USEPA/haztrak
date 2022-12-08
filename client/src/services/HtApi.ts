@@ -1,3 +1,6 @@
+/**
+ * @file axios (http) instance for haztrak restful API usage
+ */
 import axios, { AxiosRequestConfig } from 'axios';
 import { store } from 'redux/store';
 
@@ -15,7 +18,6 @@ const htApi = axios.create({
 htApi.interceptors.request.use(
   /**
    * Use the redux store to get the token and set Authorization header
-   * @param config {AxiosRequestConfig}
    */
   (config: AxiosRequestConfig) => {
     config.headers = config.headers ?? {};
@@ -24,7 +26,7 @@ htApi.interceptors.request.use(
       config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
-    // ToDo: if token does not exists
+    // ToDo: if token does not exist
   },
   (error) => {
     return Promise.reject(error);

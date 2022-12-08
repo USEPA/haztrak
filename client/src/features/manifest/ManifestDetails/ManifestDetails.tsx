@@ -1,9 +1,9 @@
 import HtCard from 'components/HtCard';
 import HtSpinner from 'components/HtSpinner';
-import React, { ReactElement, useEffect, useState } from 'react';
+import useHtAPI from 'hooks/useHtAPI';
+import React, { ReactElement } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import htApi from 'services';
 import { Manifest } from 'types';
 
 /**
@@ -15,25 +15,9 @@ import { Manifest } from 'types';
  */
 function ManifestDetails(): ReactElement {
   let { mtn } = useParams();
-  const [manifestData, setManifestData] = useState<Manifest | undefined>(
-    undefined
+  const [manifestData, loading, error] = useHtAPI<Manifest>(
+    `trak/manifest/${mtn}`
   );
-  const [loading, setLoading] = useState(false);
-  const [_error, setError] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    htApi
-      .get(`trak/manifest/${mtn}`)
-      .then((response) => {
-        setLoading(false);
-        setManifestData(response.data as Manifest);
-      })
-      .catch((error) => {
-        // Todo: error handling if, e.g., mtn does not exist.
-        setError(error);
-      });
-  }, [mtn]);
 
   // @ts-ignore
   const genPhone = manifestData?.generator.contact.phone.number;
@@ -41,6 +25,8 @@ function ManifestDetails(): ReactElement {
   // @ts-ignore
   const tsdPhone = manifestData?.designatedFacility.contact.phone.number;
   const tsdEmerPhone = manifestData?.designatedFacility.emergencyPhone.number;
+
+  if (error) throw error;
 
   return loading ? (
     <HtSpinner />

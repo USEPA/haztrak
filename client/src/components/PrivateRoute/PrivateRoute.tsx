@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 interface Props {
   children: any;
@@ -12,7 +12,6 @@ interface Props {
  * @constructor
  */
 function PrivateRoute({ children, authUser }: Props): ReactElement {
-  const navigate = useNavigate();
   if (!authUser) {
     // not logged in so redirect to login page with the return url
     return <Navigate to="/login" />;
