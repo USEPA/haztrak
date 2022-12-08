@@ -13,7 +13,7 @@ import htApi from 'services';
  * @return [data, loading, error]
  *
  * @example
- * const [data, loading , error ] = useHtApi(`/api/resource/path/${id}`)
+ * const [data, loading , error ] = useHtApi<MyType>(`/api/resource/path/${id}`)
  */
 export default function useHtAPI<T>(url: string) {
   const [data, setData] = useState<T | undefined>(undefined);
