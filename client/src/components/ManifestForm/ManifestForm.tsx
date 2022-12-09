@@ -1,10 +1,11 @@
+import AddButton from 'components/AddButton';
 import HandlerDetails from 'components/HandlerDetails';
 import HtCard from 'components/HtCard';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
 import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable/WasteLineTable';
 import React, { useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { Handler, Manifest } from 'types';
 import { HandlerType } from 'types/Handler/Handler';
@@ -82,27 +83,15 @@ function ManifestForm() {
                 transporters={transporters}
                 arrayFieldMethods={tranArrayMethods}
               />
-              <Row className="d-flex justify-content-center px-5">
-                <Col className="text-center">
-                  <Button variant="success" onClick={toggleTranSearchShow}>
-                    Add Transporter
-                  </Button>
-                </Col>
-              </Row>
+              <AddButton onClick={toggleTranSearchShow} children={'Add Transporter'} />
             </HtCard.Body>
           </HtCard>
           <HtCard id="waste-form-card">
             <HtCard.Header title="Waste" />
             <HtCard.Body className="pb-4">
-              <Row className="d-flex justify-content-center px-3">
-                {/* Table Showing current Waste Lines included on the manifest */}
-                <WasteLineTable wastes={wastes} />
-                <Col className="text-center">
-                  <Button variant="success" onClick={toggleWlFormShow}>
-                    Add Waste
-                  </Button>
-                </Col>
-              </Row>
+              {/* Table Showing current Waste Lines included on the manifest */}
+              <WasteLineTable wastes={wastes} />
+              <AddButton onClick={toggleWlFormShow} children={'Add Waste'} />
             </HtCard.Body>
           </HtCard>
           {/* Where The Tsdf information is added and displayed */}
@@ -110,13 +99,7 @@ function ManifestForm() {
             <HtCard.Header title="Designated Facility" />
             <HtCard.Body className="pb-4">
               {tsdf ? <HandlerDetails handler={tsdf} /> : <></>}
-              <Row className="d-flex justify-content-center py-2">
-                <Col className="text-center">
-                  <Button variant="success" onClick={toggleTsdfFormShow}>
-                    Add TSDF
-                  </Button>
-                </Col>
-              </Row>
+              <AddButton onClick={toggleWlFormShow} children={'Add TSDF'} />
             </HtCard.Body>
           </HtCard>
           <HtCard id="manifest-additional-info-card">
