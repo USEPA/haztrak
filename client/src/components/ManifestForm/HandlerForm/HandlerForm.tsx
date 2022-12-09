@@ -1,9 +1,10 @@
+import { ErrorMessage } from '@hookform/error-message';
+import { AddressForm } from 'components/ManifestForm/AddressForm';
+import { ReactElement, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
+import { Manifest } from 'types';
 import { AddressType, HandlerType } from 'types/Handler/Handler';
-import { ReactElement, useEffect, useState } from 'react';
-import { AddressForm } from 'components/ManifestForm/AddressForm';
-import { ErrorMessage } from '@hookform/error-message';
 
 interface Props {
   handlerType: HandlerType;
@@ -15,14 +16,23 @@ function HandlerForm({ handlerType }: Props): ReactElement {
     register,
     getValues,
     setValue,
+    watch,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext<Manifest>();
   useEffect(() => {
+    const siteAddress = getValues('generator.siteAddress');
     if (!mailCheck) {
-      const test = getValues('siteAddress');
-      setValue('mailingAddress', test);
+      setValue(`generator.mailingAddress`, siteAddress);
     }
-  }, [mailCheck]);
+    console.log('mailing address: ', getValues('generator.mailingAddress'));
+  }, [
+    mailCheck,
+    watch(`generator.siteAddress.streetNumber`),
+    watch(`generator.siteAddress.address1`),
+    watch(`generator.siteAddress.country`),
+    watch(`generator.siteAddress.city`),
+    watch(`generator.siteAddress.state`),
+  ]);
 
   return (
     <>
@@ -36,7 +46,7 @@ function HandlerForm({ handlerType }: Props): ReactElement {
               id="handlerEPAId"
               type="text"
               placeholder={'EPA ID number'}
-              {...register(`${handlerType}.epaSiteId`)}
+              {...register(`generator.epaSiteId`)}
             />
           </Form.Group>
         </Col>
@@ -49,7 +59,9 @@ function HandlerForm({ handlerType }: Props): ReactElement {
               id="handlerName"
               type="text"
               placeholder={`${handlerType} Name`}
-              {...register(`${handlerType}.name`)}
+              // register comes from react-hook-form, however haztrak leaves the
+              // validation to the dedicated 'yup' library which is more expressive
+              {...register(`generator.name`)}
             />
           </Form.Group>
         </Col>
@@ -66,22 +78,18 @@ function HandlerForm({ handlerType }: Props): ReactElement {
       </Row>
       <AddressForm addressType={AddressType.site} handlerType={handlerType} />
       <Row className="mb-2">
-        {handlerType === HandlerType.Generator ? (
-          <Col>
-            <Form.Check
-              defaultChecked={mailCheck}
-              onChange={(e) => {
-                setMailCheck(e.target.checked);
-              }}
-              name="mailCheck"
-              type="checkbox"
-              label="Separate Mailing address?"
-              id="addressEqual"
-            />
-          </Col>
-        ) : (
-          <></>
-        )}
+        <Col>
+          <Form.Check
+            defaultChecked={mailCheck}
+            onChange={(e) => {
+              setMailCheck(e.target.checked);
+            }}
+            name="mailCheck"
+            type="checkbox"
+            label="Separate Mailing address?"
+            id="addressEqual"
+          />
+        </Col>
         {mailCheck ? (
           <>
             <h4>Mailing Address</h4>

@@ -5,7 +5,7 @@ import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
 import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable/WasteLineTable';
 import React, { useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { Handler, Manifest } from 'types';
 import { HandlerType } from 'types/Handler/Handler';

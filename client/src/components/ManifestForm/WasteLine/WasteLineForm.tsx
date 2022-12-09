@@ -1,3 +1,4 @@
+import HtCard from 'components/HtCard';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import HazardousWasteForm from 'components/ManifestForm/WasteLine/HazardousWasteForm';
 import React from 'react';
@@ -6,7 +7,6 @@ import { FormProvider, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import { Manifest } from 'types';
 import { WasteLine } from 'types/WasteLine';
 import QuantityForm from './QuantityForm';
-import HtCard from 'components/HtCard';
 
 interface WasteLineFormProps {
   handleClose: () => void;
@@ -25,10 +25,11 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
   //  and pass the necessary methods to this component (like we did the TransporterForm)
   const onSubmit = (data: WasteLine) => {
     appendWaste(data);
+    console.log('WasteLine added: ', data);
     handleClose();
   };
   const wasteMethods = useForm<WasteLine>();
-  const { register, handleSubmit, setFocus } = wasteMethods;
+  const { register, handleSubmit } = wasteMethods;
 
   return (
     <FormProvider {...wasteMethods}>

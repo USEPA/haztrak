@@ -1,8 +1,8 @@
+import { ErrorMessage } from '@hookform/error-message';
 import { Col, Form, Row } from 'react-bootstrap';
-import StateSelect from './StateSelect';
 import { useFormContext } from 'react-hook-form';
 import { AddressType, HandlerType } from 'types/Handler/Handler';
-import { ErrorMessage } from '@hookform/error-message';
+import StateSelect from './StateSelect';
 
 interface Props {
   addressType: AddressType;
