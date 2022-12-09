@@ -26,17 +26,15 @@ function SiteList() {
               return (
                 <tr key={i}>
                   <td>{site.name}</td>
-                  <td>{site.siteHandler.epaSiteId}</td>
+                  <td>{site.handler.epaSiteId}</td>
                   <td className="d-flex justify-content-evenly">
                     <HtTooltip text={'Site Details'}>
-                      <Link to={`/site/${site.siteHandler.epaSiteId}`}>
+                      <Link to={`/site/${site.handler.epaSiteId}`}>
                         <i className="fa-solid fa-eye"></i>
                       </Link>
                     </HtTooltip>
                     <HtTooltip text={`${site.name}'s manifest`}>
-                      <Link
-                        to={`/site/${site.siteHandler.epaSiteId}/manifests`}
-                      >
+                      <Link to={`/site/${site.handler.epaSiteId}/manifests`}>
                         <i className="fa-solid fa-file-lines"></i>
                       </Link>
                     </HtTooltip>

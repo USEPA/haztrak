@@ -1,7 +1,8 @@
-from apps.accounts.models import Profile
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APITestCase
+
+from apps.accounts.models import Profile
 
 
 class SiteAPITests(APITestCase):
@@ -23,7 +24,7 @@ class SiteAPITests(APITestCase):
         response_sites = []
         try:
             for site in response.data:
-                response_sites.append(site['siteHandler']['epaSiteId'])
+                response_sites.append(site['handler']['epaSiteId'])
         except KeyError as error:
             self.fail(error)
         self.assertEqual(profile_sites, response_sites)

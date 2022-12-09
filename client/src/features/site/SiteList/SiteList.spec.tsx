@@ -1,9 +1,9 @@
-import React from 'react';
-import { renderWithProviders, screen, Screen } from 'test';
-import SiteList from './index';
-import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 import { cleanup } from '@testing-library/react';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+import React from 'react';
+import { renderWithProviders, screen } from 'test';
+import SiteList from './index';
 
 const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
 const HANDLER_EPA_ID = 'testSiteIdNumber';
@@ -65,43 +65,40 @@ const HANDLER_OBJECT = {
 const SITE_ARRAY = [
   {
     name: HANDLER_EPA_ID,
-    siteHandler: HANDLER_OBJECT,
+    handler: HANDLER_OBJECT,
   },
   {
     name: 'test site name',
-    siteHandler: HANDLER_OBJECT,
+    handler: HANDLER_OBJECT,
   },
 ];
 
 export const handlers = [
   rest.get(`${API_BASE_URL}/api/trak/site`, (req, res, ctx) => {
-    return res(
-      ctx.delay(), // random 'realistic' server response time
-      ctx.status(200),
-      ctx.json(SITE_ARRAY)
-    );
+    return res(ctx.delay(), ctx.status(200), ctx.json(SITE_ARRAY));
   }),
 ];
 
 const server = setupServer(...handlers);
 
-beforeAll(() => server.listen()); // setup mock http server
+// Arrange
+beforeAll(() => server.listen());
 afterEach(() => {
   server.resetHandlers();
   cleanup();
   jest.resetAllMocks();
 });
 afterAll(() => server.close()); // Disable API mocking after the tests are done.
+
 describe('SiteList component', () => {
   test('renders', () => {
     renderWithProviders(<SiteList />, {});
   });
   test('fetches sites a user has access to', async () => {
+    // Act
     renderWithProviders(<SiteList />);
-    // This is a weird workaround, but ok for now.
-    const findAllSiteIds = (screen: Screen) =>
-      screen.findAllByRole('cell', { name: HANDLER_EPA_ID });
-    let numIds = await findAllSiteIds(screen);
+    let numIds = await screen.findAllByRole('cell', { name: HANDLER_EPA_ID });
+    // Assert
     expect(numIds.length).toEqual(3);
   });
 });

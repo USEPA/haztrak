@@ -9,7 +9,7 @@ interface HandlerDetailsProps {
 
 function HandlerDetails({ handler }: HandlerDetailsProps) {
   return (
-    <>
+    <div className="py-2">
       <Row>
         <h4>{handler.name}</h4>
       </Row>
@@ -45,7 +45,7 @@ function HandlerDetails({ handler }: HandlerDetailsProps) {
           <AddressListGroup title="Mailing Address" address={handler.mailingAddress} />
         </Col>
       </Row>
-    </>
+    </div>
   );
 }
 
