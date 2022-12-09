@@ -1,6 +1,6 @@
+import TransporterSearchForm from 'components/ManifestForm/HandlerSearch/TransporterSearchForm';
 import React from 'react';
-import TransporterSearchForm from './TransporterSearchForm';
-import { Modal, Row, Col } from 'react-bootstrap';
+import { Col, Modal, Row } from 'react-bootstrap';
 import { UseFieldArrayAppend } from 'react-hook-form';
 import { Handler, Manifest } from 'types';
 

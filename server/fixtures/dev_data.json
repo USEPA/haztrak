@@ -112,20 +112,20 @@
     "model": "trak.address",
     "pk": 2,
     "fields": {
-      "street_number": "1111",
-      "address1": "tsd address st",
+      "street_number": "1123",
+      "address1": "TSD address st.",
       "address2": null,
       "city": "Portland",
       "state": "OR",
       "country": "US",
-      "zip": "11111"
+      "zip": "21345"
     }
   },
   {
     "model": "trak.handler",
     "pk": 1,
     "fields": {
-      "site_type": "Transporter",
+      "site_type": "transporter",
       "epa_id": "VATESTRAN03",
       "name": "VA TEST GEN 2021",
       "site_address": 1,
@@ -152,7 +152,7 @@
     "model": "trak.handler",
     "pk": 2,
     "fields": {
-      "site_type": "Transporter",
+      "site_type": "transporter",
       "epa_id": "VATEST000002",
       "name": "TEST TRANSPORTER 2 OF VA",
       "site_address": 1,
@@ -179,7 +179,7 @@
     "model": "trak.handler",
     "pk": 3,
     "fields": {
-      "site_type": "Tsdf",
+      "site_type": "designatedFacility",
       "epa_id": "VATESTTSDF03",
       "name": "VA TEST TSDF 2021",
       "site_address": 2,
@@ -206,7 +206,7 @@
     "model": "trak.handler",
     "pk": 4,
     "fields": {
-      "site_type": "Generator",
+      "site_type": "generator",
       "epa_id": "VATESTGEN001",
       "name": "TEST TRANSPORTER 2 OF VA",
       "site_address": 1,

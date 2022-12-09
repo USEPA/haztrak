@@ -1,15 +1,14 @@
 import { ErrorMessage } from '@hookform/error-message';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useFormContext } from 'react-hook-form';
 import htApi from 'services';
-import { Handler, Manifest } from 'types';
-import { Transporter } from 'types/Transporter/Transporter';
+import { Handler } from 'types';
+import { HandlerType } from 'types/Handler/Handler';
 
 interface Props {
   handleClose: () => void;
-  currentTransporters?: Array<Handler>;
-  tranAppend: UseFieldArrayAppend<Manifest, 'transporters'>;
+  handlerType: HandlerType;
 }
 
 interface SearchCriteria {
@@ -19,27 +18,31 @@ interface SearchCriteria {
   siteType: string;
 }
 
-interface TranAppendValues {
-  transporter: string;
+interface addHandlerForm {
+  handler: string;
   epaId: string;
   name: string;
 }
 
-function TransporterSearchForm({
-  handleClose,
-  tranAppend,
-  currentTransporters,
-}: Props) {
-  const [tranOptions, setTranOptions] = useState<Array<Handler> | undefined>(
-    undefined
-  );
-
+/**
+ * HandlerSearchForm is responsible for watching the input parameters, querying the
+ * server for known handlers (of specified type) rendering those options in a form
+ * @param handleClose
+ * @param handlerType {HandlerType}
+ * @constructor
+ */
+function HandlerSearchForm({ handleClose, handlerType }: Props) {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<TranAppendValues>();
+  } = useForm<addHandlerForm>();
+  const manifestMethods = useFormContext();
+  // const [handler, setHandler] = useState<Handler | undefined>(undefined);
+  const [handlerOptions, setHandlerOptions] = useState<Array<Handler> | undefined>(
+    undefined
+  );
 
   /**
    This is the data that is sent to the RESTful api, it's automatically updated
@@ -48,18 +51,16 @@ function TransporterSearchForm({
   const searchData: SearchCriteria = {
     epaId: watch('epaId'),
     name: watch('name'),
-    siteType: 'Transporter',
+    siteType: handlerType,
   };
 
-  /** This useEffect is responsible for watching the transporter search fields
-   and sending the search criteria to the server, set the field options upon return
+  /**
+   * This useEffect is responsible for watching the search fields
+   * and querying the server and set the field options upon return
    */
   useEffect(() => {
     async function fetchOptions() {
-      if (
-        typeof searchData.epaId === 'string' &&
-        typeof searchData.name === 'string'
-      ) {
+      if (typeof searchData.epaId === 'string' && typeof searchData.name === 'string') {
         if (searchData.epaId.length >= 3 || searchData.name.length >= 3) {
           const response = await htApi.get('trak/handler/search', {
             params: searchData,
@@ -70,32 +71,25 @@ function TransporterSearchForm({
     }
 
     fetchOptions()
-      .then((trans: Array<Handler>) => setTranOptions(trans))
+      .then((trans: Array<Handler>) => setHandlerOptions(trans))
       .catch((error) => console.log(error));
   }, [watch('epaId'), watch('name')]);
 
   /**Use the value (string) set in the Form.Select to look up
    what transporter object was selected, add that transporter to the array field in the manifest form
    */
-  const onSubmit: SubmitHandler<TranAppendValues> = (data) => {
-    // Todo: error handling, check if tranOptions is zero length
-    if (tranOptions !== undefined) {
-      for (let i = 0; i < tranOptions?.length; i++) {
-        if (tranOptions[i].epaSiteId === data.transporter) {
-          // append in run in the ManifestForm context, on the 'transporter' field
-          // const numberOfTransporter = currentTransporters?.length;
-          const numberOfTransporter = currentTransporters
-            ? currentTransporters.length
-            : 0;
-          const newTransporter: Transporter = {
-            order: numberOfTransporter + 1,
-            ...tranOptions[i],
+  const onSubmit: SubmitHandler<addHandlerForm> = (data) => {
+    if (handlerOptions !== undefined) {
+      for (let i = 0; i < handlerOptions?.length; i++) {
+        if (handlerOptions[i].epaSiteId === data.handler) {
+          const newTsdf: Handler = {
+            ...handlerOptions[i],
           };
-          tranAppend(newTransporter);
+          manifestMethods.setValue(handlerType, newTsdf);
         }
       }
     }
-    // After the transporter is added, close the modal
+    console.log('manifest values', manifestMethods.getValues());
     handleClose();
   };
 
@@ -127,9 +121,9 @@ function TransporterSearchForm({
           </Row>
           <Row>
             <Col>
-              {tranOptions ? (
-                <Form.Select {...register('transporter', { required: true })}>
-                  {tranOptions.map((option) => {
+              {handlerOptions ? (
+                <Form.Select {...register('handler', { required: true })}>
+                  {handlerOptions.map((option) => {
                     return (
                       <option
                         key={`tran-select-${option.epaSiteId}`}
@@ -150,9 +144,7 @@ function TransporterSearchForm({
             <ErrorMessage
               errors={errors}
               name={'epaId'}
-              render={({ message }) => (
-                <span className="text-danger">{message}</span>
-              )}
+              render={({ message }) => <span className="text-danger">{message}</span>}
             />
           </Row>
         </Modal.Body>
@@ -169,4 +161,4 @@ function TransporterSearchForm({
   );
 }
 
-export default TransporterSearchForm;
+export default HandlerSearchForm;

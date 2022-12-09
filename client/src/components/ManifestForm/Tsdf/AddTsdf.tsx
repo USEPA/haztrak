@@ -1,12 +1,14 @@
+import { HandlerSearchForm } from 'components/ManifestForm/HandlerSearch';
 import React from 'react';
-import { Modal, Row, Col } from 'react-bootstrap';
+import { Col, Modal, Row } from 'react-bootstrap';
+import { HandlerType } from 'types/Handler/Handler';
 
 interface Props {
   handleClose: () => void;
   show: boolean | undefined;
 }
 
-function Tsdf({ show, handleClose }: Props) {
+function AddTsdf({ show, handleClose }: Props) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -17,20 +19,17 @@ function Tsdf({ show, handleClose }: Props) {
           <Row>
             <i>
               <small>
-                The Treatment, Storage, or Disposal Facility the waste will
-                shipped to.
+                The Treatment, Storage, or Disposal Facility the waste will shipped to.
               </small>
             </i>
           </Row>
         </Col>
       </Modal.Header>
-      {/*Todo: add TsdfForm component to be added */}
-      {/*  here (should include the below modal body and footer)*/}
       <Modal.Body>
-        <p>TSDF form will show here</p>
+        <HandlerSearchForm handleClose={handleClose} handlerType={HandlerType.Tsd} />
       </Modal.Body>
     </Modal>
   );
 }
 
-export default Tsdf;
+export default AddTsdf;

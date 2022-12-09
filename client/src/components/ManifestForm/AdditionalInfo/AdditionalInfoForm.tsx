@@ -1,6 +1,6 @@
 import React from 'react';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Row, Form, Button, Col } from 'react-bootstrap';
 import { Manifest } from 'types';
 import { WasteLine } from 'types/WasteLine';
 
@@ -27,7 +27,7 @@ function AdditionalInfoForm() {
           {...register(`additionalInfo.handlingInstructions`)}
         />
       </Form.Group>
-      <p className="mb-0 fw-bold">Reference Information</p>
+      <p className="mb-0 ">Reference Information</p>
       <Col>
         <Row className="mb-3">
           {fields.map((field, index) => {
@@ -36,7 +36,9 @@ function AdditionalInfoForm() {
             return (
               <Row className="mb-3" key={`${keyBase}-row`}>
                 <Col xs={3} key={`${keyBase}-col1`}>
+                  {/* column for the Label field */}
                   <Form.Group key={`${keyBase}-label-group`}>
+                    {/* Only add a label if it's the first row*/}
                     {index === 0 ? <Form.Label>Label</Form.Label> : <></>}
                     <Form.Control
                       type="text"
@@ -49,6 +51,7 @@ function AdditionalInfoForm() {
                 <Col key={`${keyBase}-col2`}>
                   <Form.Group key={`${keyBase}-group`}>
                     {index === 0 ? <Form.Label>Description</Form.Label> : <></>}
+                    {/* column for the Description field */}
                     <Form.Control
                       type="text"
                       key={`${keyBase}-description-group`}
@@ -59,6 +62,7 @@ function AdditionalInfoForm() {
                 </Col>
                 <Col xs={1} key={`${keyBase}-col3`}>
                   {index === 0 ? <Form.Label>Remove</Form.Label> : <></>}
+                  {/* Users can remove a Reference/rows via this button */}
                   <Button
                     key={`${keyBase}-remove`}
                     className="m-0 p-0 bg-transparent border-0"

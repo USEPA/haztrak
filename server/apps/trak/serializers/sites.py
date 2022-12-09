@@ -8,7 +8,7 @@ class SiteSerializer(serializers.ModelSerializer):
     name = serializers.CharField(
         required=False
     )
-    siteHandler = HandlerSerializer(
+    handler = HandlerSerializer(
         source='epa_site'
     )
 
@@ -16,5 +16,5 @@ class SiteSerializer(serializers.ModelSerializer):
         model = Site
         fields = [
             'name',
-            'siteHandler'
+            'handler'
         ]

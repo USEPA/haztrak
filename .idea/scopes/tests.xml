@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="tests" pattern="file:server//test_*.py||file:server//conftest.py||file:client//*.spec.ts*||file:client//test//*" />
+</component>
