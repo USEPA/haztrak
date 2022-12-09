@@ -25,9 +25,8 @@ function Tsdf({ show, handleClose }: Props) {
           </Row>
         </Col>
       </Modal.Header>
-      <HandlerSearchForm handleClose={handleClose} handlerType={HandlerType.Tsd} />
       <Modal.Body>
-        <p>TSDF form will show here</p>
+        <HandlerSearchForm handleClose={handleClose} handlerType={HandlerType.Tsd} />
       </Modal.Body>
     </Modal>
   );

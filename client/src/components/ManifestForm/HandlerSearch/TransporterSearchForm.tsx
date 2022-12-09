@@ -4,6 +4,7 @@ import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import htApi from 'services';
 import { Handler, Manifest } from 'types';
+import { HandlerType } from 'types/Handler/Handler';
 import { Transporter } from 'types/Transporter/Transporter';
 
 interface Props {
@@ -30,9 +31,7 @@ function TransporterSearchForm({
   tranAppend,
   currentTransporters,
 }: Props) {
-  const [tranOptions, setTranOptions] = useState<Array<Handler> | undefined>(
-    undefined
-  );
+  const [tranOptions, setTranOptions] = useState<Array<Handler> | undefined>(undefined);
 
   const {
     register,
@@ -48,7 +47,7 @@ function TransporterSearchForm({
   const searchData: SearchCriteria = {
     epaId: watch('epaId'),
     name: watch('name'),
-    siteType: 'Transporter',
+    siteType: HandlerType.Transporter,
   };
 
   /** This useEffect is responsible for watching the transporter search fields
@@ -56,10 +55,7 @@ function TransporterSearchForm({
    */
   useEffect(() => {
     async function fetchOptions() {
-      if (
-        typeof searchData.epaId === 'string' &&
-        typeof searchData.name === 'string'
-      ) {
+      if (typeof searchData.epaId === 'string' && typeof searchData.name === 'string') {
         if (searchData.epaId.length >= 3 || searchData.name.length >= 3) {
           const response = await htApi.get('trak/handler/search', {
             params: searchData,
@@ -150,9 +146,7 @@ function TransporterSearchForm({
             <ErrorMessage
               errors={errors}
               name={'epaId'}
-              render={({ message }) => (
-                <span className="text-danger">{message}</span>
-              )}
+              render={({ message }) => <span className="text-danger">{message}</span>}
             />
           </Row>
         </Modal.Body>

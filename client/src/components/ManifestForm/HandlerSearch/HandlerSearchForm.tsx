@@ -1,7 +1,7 @@
 import { ErrorMessage } from '@hookform/error-message';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useFormContext } from 'react-hook-form';
 import htApi from 'services';
 import { Handler } from 'types';
 import { HandlerType } from 'types/Handler/Handler';
@@ -18,21 +18,31 @@ interface SearchCriteria {
   siteType: string;
 }
 
-interface handlerAppendForm {
-  transporter: string;
+interface addHandlerForm {
+  handler: string;
   epaId: string;
   name: string;
 }
 
+/**
+ * HandlerSearchForm is responsible for watching the input parameters, querying the
+ * server for known handlers (of specified type) rendering those options in a form
+ * @param handleClose
+ * @param handlerType {HandlerType}
+ * @constructor
+ */
 function HandlerSearchForm({ handleClose, handlerType }: Props) {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<handlerAppendForm>();
+  } = useForm<addHandlerForm>();
+  const manifestMethods = useFormContext();
   // const [handler, setHandler] = useState<Handler | undefined>(undefined);
-  const [handlerOptions, setHandlerOptions] = useState<Array<Handler> | undefined>(undefined);
+  const [handlerOptions, setHandlerOptions] = useState<Array<Handler> | undefined>(
+    undefined
+  );
 
   /**
    This is the data that is sent to the RESTful api, it's automatically updated
@@ -44,8 +54,9 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
     siteType: handlerType,
   };
 
-  /** This useEffect is responsible for watching the transporter search fields
-   and sending the search criteria to the server, set the field options upon return
+  /**
+   * This useEffect is responsible for watching the search fields
+   * and querying the server and set the field options upon return
    */
   useEffect(() => {
     async function fetchOptions() {
@@ -67,8 +78,20 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
   /**Use the value (string) set in the Form.Select to look up
    what transporter object was selected, add that transporter to the array field in the manifest form
    */
-  const onSubmit: SubmitHandler<handlerAppendForm> = (data) => {
-    console.log('submit');
+  const onSubmit: SubmitHandler<addHandlerForm> = (data) => {
+    if (handlerOptions !== undefined) {
+      for (let i = 0; i < handlerOptions?.length; i++) {
+        if (handlerOptions[i].epaSiteId === data.handler) {
+          // append in run in the ManifestForm context, on the 'transporter' field
+          // const numberOfTransporter = currentTransporters?.length;
+          const newTsdf: Handler = {
+            ...handlerOptions[i],
+          };
+          manifestMethods.setValue('designateFacility', newTsdf);
+        }
+      }
+    }
+    console.log('manifest values', manifestMethods.getValues());
     handleClose();
   };
 
@@ -80,23 +103,34 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
             <Col>
               <Form.Group className="mb-2">
                 <Form.Label className="mb-0">EPA ID Number</Form.Label>
-                <Form.Control type="text" placeholder="VATESTRAN03" {...register(`epaId`)} />
+                <Form.Control
+                  type="text"
+                  placeholder="VATESTRAN03"
+                  {...register(`epaId`)}
+                />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group className="mb-2">
                 <Form.Label className="mb-0">Name</Form.Label>
-                <Form.Control type="text" placeholder="VA TEST GEN 2021" {...register(`name`)} />
+                <Form.Control
+                  type="text"
+                  placeholder="VA TEST GEN 2021"
+                  {...register(`name`)}
+                />
               </Form.Group>
             </Col>
           </Row>
           <Row>
             <Col>
               {handlerOptions ? (
-                <Form.Select {...register('transporter', { required: true })}>
+                <Form.Select {...register('handler', { required: true })}>
                   {handlerOptions.map((option) => {
                     return (
-                      <option key={`tran-select-${option.epaSiteId}`} value={option.epaSiteId}>
+                      <option
+                        key={`tran-select-${option.epaSiteId}`}
+                        value={option.epaSiteId}
+                      >
                         {' '}
                         {option.epaSiteId} {' -- '} {option.name}{' '}
                       </option>
