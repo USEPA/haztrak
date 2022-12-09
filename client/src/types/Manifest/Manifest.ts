@@ -1,12 +1,12 @@
 // manifest type declaration
 
-import { AdditionalInfo } from 'types/Manifest/AdditionalInfo';
-import { Signer } from './Contact';
 import { Handler, Locality } from 'types/Handler/Handler';
+import { AdditionalInfo } from 'types/Manifest/AdditionalInfo';
+import { Transporter } from 'types/Transporter/Transporter';
+import { WasteLine } from 'types/WasteLine';
+import { Signer } from './Contact';
 import { CorrectionInfo, CorrectionRequest } from './Correction';
 import { RejectionInfo } from './Rejection';
-import { WasteLine } from 'types/WasteLine';
-import { Transporter } from 'types/Transporter/Transporter';
 
 interface Manifest {
   createdDate?: string;
@@ -23,7 +23,7 @@ interface Manifest {
   certifiedDate: string;
   certifiedBy: Signer;
   generator: Handler;
-  transporters: [Transporter];
+  transporters: Array<Transporter>;
   designatedFacility: Handler;
   broker?: Handler;
   wastes: WasteLine[];

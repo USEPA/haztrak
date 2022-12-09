@@ -12,6 +12,10 @@ interface Props {
 
 function HandlerForm({ handlerType }: Props): ReactElement {
   const [mailCheck, setMailCheck] = useState(false);
+  if (handlerType !== HandlerType.Generator) {
+    throw new Error();
+  }
+
   const {
     register,
     getValues,
@@ -19,19 +23,19 @@ function HandlerForm({ handlerType }: Props): ReactElement {
     watch,
     formState: { errors },
   } = useFormContext<Manifest>();
+
   useEffect(() => {
-    const siteAddress = getValues('generator.siteAddress');
+    const siteAddress = getValues(`${handlerType}.siteAddress`);
     if (!mailCheck) {
-      setValue(`generator.mailingAddress`, siteAddress);
+      setValue(`${handlerType}.mailingAddress`, siteAddress);
     }
-    console.log('mailing address: ', getValues('generator.mailingAddress'));
   }, [
     mailCheck,
-    watch(`generator.siteAddress.streetNumber`),
-    watch(`generator.siteAddress.address1`),
-    watch(`generator.siteAddress.country`),
-    watch(`generator.siteAddress.city`),
-    watch(`generator.siteAddress.state`),
+    watch(`${handlerType}.siteAddress.streetNumber`),
+    watch(`${handlerType}.siteAddress.address1`),
+    watch(`${handlerType}.siteAddress.country`),
+    watch(`${handlerType}.siteAddress.city`),
+    watch(`${handlerType}.siteAddress.state`),
   ]);
 
   return (

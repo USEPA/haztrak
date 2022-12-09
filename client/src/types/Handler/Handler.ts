@@ -19,17 +19,28 @@ export interface Handler {
   gisPrimary?: boolean;
 }
 
+/**
+ * Used to specify whether a handler is a generator, transporter, or tsdf.
+ */
 export enum HandlerType {
   Generator = 'generator',
   Tsd = 'designatedFacility',
   Transporter = 'transporter',
 }
 
+export type HandlerTypeString = `${HandlerType}`;
+
+/**
+ * Used to specify whether a siteAddress or mailingAddress
+ */
 export enum AddressType {
   site = 'siteAddress',
   mail = 'mailingAddress',
 }
 
+/**
+ * The RCRAInfo Address interface
+ */
 export interface Address {
   address1: string;
   city: string;
