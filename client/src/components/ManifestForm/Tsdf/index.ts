@@ -1,3 +1,3 @@
-import Tsdf from './Tsdf';
+import AddTsdf from 'components/ManifestForm/Tsdf/AddTsdf';
 
-export default Tsdf;
+export default AddTsdf;

@@ -82,12 +82,10 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
     if (handlerOptions !== undefined) {
       for (let i = 0; i < handlerOptions?.length; i++) {
         if (handlerOptions[i].epaSiteId === data.handler) {
-          // append in run in the ManifestForm context, on the 'transporter' field
-          // const numberOfTransporter = currentTransporters?.length;
           const newTsdf: Handler = {
             ...handlerOptions[i],
           };
-          manifestMethods.setValue('designateFacility', newTsdf);
+          manifestMethods.setValue(handlerType, newTsdf);
         }
       }
     }

@@ -1,3 +1,4 @@
+import HandlerDetails from 'components/HandlerDetails';
 import HtCard from 'components/HtCard';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
@@ -9,7 +10,7 @@ import { Handler, Manifest } from 'types';
 import { HandlerType } from 'types/Handler/Handler';
 import { WasteLine } from 'types/WasteLine';
 import HandlerForm from './HandlerForm';
-import Tsdf from './Tsdf';
+import AddTsdf from './Tsdf';
 import AddWasteLine from './WasteLine';
 
 /**
@@ -46,6 +47,7 @@ function ManifestForm() {
   // Tsdf controls
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
+  const tsdf: Handler = manifestMethods.getValues('designatedFacility');
 
   return (
     <>
@@ -103,11 +105,12 @@ function ManifestForm() {
               </Row>
             </HtCard.Body>
           </HtCard>
+          {/* Where The Tsdf information is added and displayed */}
           <HtCard id="tsdf-form-card">
-            {/* Where The Tsdf information is added and displayed */}
             <HtCard.Header title="Designated Facility" />
             <HtCard.Body className="pb-4">
-              <Row className="d-flex justify-content-center px-5">
+              {tsdf ? <HandlerDetails handler={tsdf} /> : <></>}
+              <Row className="d-flex justify-content-center py-2">
                 <Col className="text-center">
                   <Button variant="success" onClick={toggleTsdfFormShow}>
                     Add TSDF
@@ -143,7 +146,7 @@ function ManifestForm() {
           handleClose={toggleWlFormShow}
           show={wlFormShow}
         />
-        <Tsdf handleClose={toggleTsdfFormShow} show={tsdfFormShow} />
+        <AddTsdf handleClose={toggleTsdfFormShow} show={tsdfFormShow} />
       </FormProvider>
     </>
   );

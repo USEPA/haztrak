@@ -8,7 +8,7 @@ interface Props {
   show: boolean | undefined;
 }
 
-function Tsdf({ show, handleClose }: Props) {
+function AddTsdf({ show, handleClose }: Props) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -32,4 +32,4 @@ function Tsdf({ show, handleClose }: Props) {
   );
 }
 
-export default Tsdf;
+export default AddTsdf;

@@ -112,13 +112,13 @@
     "model": "trak.address",
     "pk": 2,
     "fields": {
-      "street_number": "1111",
-      "address1": "tsd address st",
+      "street_number": "1123",
+      "address1": "TSD address st.",
       "address2": null,
       "city": "Portland",
       "state": "OR",
       "country": "US",
-      "zip": "11111"
+      "zip": "21345"
     }
   },
   {
