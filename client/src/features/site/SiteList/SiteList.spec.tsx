@@ -3,64 +3,10 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { renderWithProviders, screen } from 'test';
+import { HANDLER_EPA_ID, HANDLER_OBJECT } from 'test/fixtures';
 import SiteList from './index';
 
 const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
-const HANDLER_EPA_ID = 'testSiteIdNumber';
-
-const HANDLER_OBJECT = {
-  epaSiteId: HANDLER_EPA_ID,
-  siteType: 'Generator',
-  name: 'TEST TRANSPORTER 2 OF VA',
-  siteAddress: {
-    streetNumber: '123',
-    address1: 'VA TEST GEN 2021 WAY',
-    city: 'Arlington',
-    state: {
-      code: 'VA',
-      name: 'Virginia',
-    },
-    country: {
-      code: 'US',
-      name: 'United States',
-    },
-    zip: '20022',
-  },
-  mailingAddress: {
-    streetNumber: '123',
-    address1: 'VA TEST GEN 2021 WAY',
-    city: 'Arlington',
-    state: {
-      code: 'VA',
-      name: 'Virginia',
-    },
-    country: {
-      code: 'US',
-      name: 'United States',
-    },
-    zip: '20022',
-  },
-  contact: {
-    phone: {
-      number: '703-308-0023',
-    },
-    email: 'Testing@EPA.GOV',
-  },
-  emergencyPhone: {
-    number: '888-456-1234',
-  },
-  electronicSignatureInfo: [
-    {
-      humanReadableDocument: {
-        name: 'human-readable.html',
-        size: 177949,
-        mimeType: 'TEXT_HTML',
-      },
-    },
-  ],
-  hasRegisteredEmanifestUser: true,
-  gisPrimary: false,
-};
 
 const SITE_ARRAY = [
   {
