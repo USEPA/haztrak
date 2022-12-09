@@ -20,8 +20,8 @@ export interface Handler {
 }
 
 export enum HandlerType {
-  Generator = 'generator',
-  Tsd = 'Designated Receiving Facility',
+  Generator = 'Generator',
+  Tsd = 'Tsdf',
   Transporter = 'Transporter',
 }
 
