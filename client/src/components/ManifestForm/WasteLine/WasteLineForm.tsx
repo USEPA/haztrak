@@ -1,8 +1,8 @@
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import HazardousWasteForm from 'components/ManifestForm/WasteLine/HazardousWasteForm';
 import React from 'react';
-import { Container, Form, Row, Button } from 'react-bootstrap';
-import { useForm, FormProvider, UseFieldArrayAppend } from 'react-hook-form';
+import { Button, Container, Form, Row } from 'react-bootstrap';
+import { FormProvider, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import { Manifest } from 'types';
 import { WasteLine } from 'types/WasteLine';
 import QuantityForm from './QuantityForm';
@@ -25,7 +25,6 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
   //  and pass the necessary methods to this component (like we did the TransporterForm)
   const onSubmit = (data: WasteLine) => {
     appendWaste(data);
-    console.log('WasteLine added: ', data);
     handleClose();
   };
   const wasteMethods = useForm<WasteLine>();
@@ -54,7 +53,8 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
                 </Row>
                 <Row>
                   <Form.Switch
-                    id="psbSwitch"
+                    id="pcbSwitch"
+                    aria-label="PCBWaste"
                     label="PCB waste?"
                     {...register('pcb')}
                   />
@@ -62,8 +62,11 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
               </Container>
               <Row>
                 <Form.Group>
-                  <Form.Label className="mb-0">Waste Description</Form.Label>
+                  <Form.Label className="mb-0" htmlFor="wasteDescription">
+                    Waste Description
+                  </Form.Label>
                   <Form.Control
+                    id="wasteDescription"
                     as="textarea"
                     {...register(`wasteDescription`)}
                   />

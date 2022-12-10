@@ -59,8 +59,11 @@ function ManifestForm() {
             <HtCard.Header title="General info" />
             <HtCard.Body>
               <Form.Group className="mb-2">
-                <Form.Label className="mb-0">MTN</Form.Label>
+                <Form.Label htmlFor="manifestTrackingNumber" className="mb-0">
+                  MTN
+                </Form.Label>
                 <Form.Control
+                  id="manifestTrackingNumber"
                   disabled
                   type="text"
                   placeholder={'Draft Manifest'}
