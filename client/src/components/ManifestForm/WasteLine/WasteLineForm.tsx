@@ -28,7 +28,8 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
     handleClose();
   };
   const wasteMethods = useForm<WasteLine>();
-  const { register, handleSubmit } = wasteMethods;
+  const { register, handleSubmit, setFocus } = wasteMethods;
+
   return (
     <FormProvider {...wasteMethods}>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -42,6 +43,7 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
                     id="dotHazardousSwitch"
                     label="DOT Hazardous Material?"
                     {...register('dotHazardous')}
+                    autoFocus
                   />
                 </Row>
                 <Row>

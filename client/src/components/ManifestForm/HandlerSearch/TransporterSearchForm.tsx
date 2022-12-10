@@ -37,6 +37,7 @@ function TransporterSearchForm({
     register,
     handleSubmit,
     watch,
+    setFocus,
     formState: { errors },
   } = useForm<TranAppendValues>();
 
@@ -107,6 +108,7 @@ function TransporterSearchForm({
                   type="text"
                   placeholder="VATESTRAN03"
                   {...register(`epaId`)}
+                  autoFocus
                 />
               </Form.Group>
             </Col>

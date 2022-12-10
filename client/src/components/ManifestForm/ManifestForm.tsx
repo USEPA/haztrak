@@ -4,7 +4,7 @@ import HtCard from 'components/HtCard';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
 import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable/WasteLineTable';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { Handler, Manifest } from 'types';
@@ -24,8 +24,11 @@ function ManifestForm() {
   // Top level ManifestForm methods and objects
   const manifestMethods = useForm<Manifest>();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
+    // ToDo: on submit, validate the user input and send to back end for processing.
     console.log('manifest onSubmit: ', data);
   };
+
+  useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
 
   // Transporter controls
   const [transFormShow, setTransFormShow] = useState<boolean>(false);
@@ -102,7 +105,7 @@ function ManifestForm() {
             <HtCard.Header title="Designated Facility" />
             <HtCard.Body className="pb-4">
               {tsdf ? <HandlerDetails handler={tsdf} /> : <></>}
-              <AddButton onClick={toggleWlFormShow} children={'Add TSDF'} />
+              <AddButton onClick={toggleTsdfFormShow} children={'Add TSDF'} />
             </HtCard.Body>
           </HtCard>
           <HtCard id="manifest-additional-info-card">

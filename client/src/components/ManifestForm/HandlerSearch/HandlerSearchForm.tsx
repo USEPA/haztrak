@@ -36,6 +36,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
     register,
     handleSubmit,
     watch,
+    setFocus,
     formState: { errors },
   } = useForm<addHandlerForm>();
   const manifestMethods = useFormContext();
@@ -108,6 +109,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
                   type="text"
                   placeholder="VATESTRAN03"
                   {...register(`epaId`)}
+                  autoFocus
                 />
               </Form.Group>
             </Col>
