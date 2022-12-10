@@ -2,6 +2,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { Manifest } from 'types';
 import { useParams } from 'react-router-dom';
 import ManifestForm from 'components/ManifestForm/ManifestForm';
+import useTitle from '../../../hooks/useTitle';
 
 interface Props {
   manifest?: Manifest;
@@ -19,7 +20,8 @@ type ManifestParams = {
 function ManifestEdit(props: Props): ReactElement {
   // we can get the desired manifest tracking number from the URL
   const { mtn } = useParams<ManifestParams>();
-  // Todo: get the manifest (by mtn) if it already exists in Haztrak
+  useTitle(`Edit ${mtn}`);
+  // Todo: GET the manifest (by mtn) if it already exists in Haztrak
 
   useEffect(() => {
     console.log(`manifest to check for: ${mtn}`);

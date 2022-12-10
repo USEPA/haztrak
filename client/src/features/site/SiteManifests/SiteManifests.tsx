@@ -1,10 +1,10 @@
 import HtCard from 'components/HtCard';
 import HtTooltip from 'components/HtTooltip';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement } from 'react';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
-import { Simulate } from 'react-dom/test-utils';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import htApi from 'services';
+import useHtAPI from '../../../hooks/useHtAPI';
+import useTitle from '../../../hooks/useTitle';
 
 interface SiteManifest {
   generator: string[];
@@ -12,9 +12,15 @@ interface SiteManifest {
   tsd: string[];
 }
 
+/**
+ * Returns a card with a table of manifests
+ * @param manifest
+ * @param title
+ */
 function manifestTable(manifest: string[], title: string): ReactElement | null {
   if (manifest.length === 0) {
-    return null;
+    // ToDo add something here that says 'this site has no known manifests'
+    return <></>;
   }
   return (
     <HtCard>
@@ -59,37 +65,28 @@ function manifestTable(manifest: string[], title: string): ReactElement | null {
   );
 }
 
+/**
+ * Fetch and display all the manifests, known by haztrak, associated with a site.
+ * @constructor
+ */
 function SiteManifests(): ReactElement {
-  let params = useParams();
+  let { siteId } = useParams();
+  useTitle(`${siteId} Manifest`);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [siteManifest, setSiteManifest] = useState<SiteManifest | undefined>(
-    undefined
-  );
 
-  useEffect(() => {
-    setLoading(true);
-    htApi
-      .get(`trak/site/${params.siteId}/manifest`)
-      .then((response) => {
-        setSiteManifest(response.data as SiteManifest);
-      })
-      .then(() => setLoading(false))
-      .catch((error) => console.log(error));
-  }, [params.siteId]);
+  const [siteManifest, loading, error] = useHtAPI<SiteManifest>(
+    `trak/site/${siteId}/manifest`
+  );
 
   return (
     <>
       <Container className="py-2">
         <Row className="d-flex justify-content-between">
           <Col className="d-flex justify-content-start">
-            <h2>{params.siteId}</h2>
+            <h2>{siteId}</h2>
           </Col>
           <Col className="d-flex justify-content-end">
-            <Button
-              variant="success"
-              onClick={() => navigate('/manifest/new/edit')}
-            >
+            <Button variant="success" onClick={() => navigate('/manifest/new/edit')}>
               New Manifest
             </Button>
           </Col>
@@ -102,11 +99,7 @@ function SiteManifests(): ReactElement {
           ) : (
             <></>
           )}
-          {siteManifest ? (
-            manifestTable(siteManifest.generator, 'Generator')
-          ) : (
-            <></>
-          )}
+          {siteManifest ? manifestTable(siteManifest.generator, 'Generator') : <></>}
           {siteManifest ? (
             manifestTable(siteManifest.transporter, 'Transporter')
           ) : (

@@ -6,3 +6,7 @@ README.md
 node_modules/
 **/*.spec.tsx
 **/*.spec.ts
+.idea
+.vscode
+**/*.bak
+

@@ -2,6 +2,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { getUser } from 'redux/store';
+import useTitle from 'hooks/useTitle';
 
 /**
  * Display user profile
@@ -11,6 +12,7 @@ function Profile(): ReactElement {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
   const profile = useAppSelector((state) => state.user);
+  useTitle('Profile');
 
   useEffect(() => {
     dispatch(getUser());
