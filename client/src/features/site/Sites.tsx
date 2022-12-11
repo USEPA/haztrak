@@ -16,11 +16,13 @@ interface Props {
 function Sites({ user }: Props): ReactElement {
   useTitle('Site');
   return (
-    <Routes>
-      <Route path="/" element={<SiteList />} />
-      <Route path=":siteId" element={<SiteDetails />} />
-      <Route path=":siteId/manifests" element={<SiteManifests />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<SiteList />} />
+        <Route path=":siteId" element={<SiteDetails />} />
+        <Route path=":siteId/manifests" element={<SiteManifests />} />
+      </Routes>
+    </>
   );
 }
 

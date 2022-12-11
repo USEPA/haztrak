@@ -1,8 +1,9 @@
 import React, { ReactElement, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { Card, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { getUser } from 'redux/store';
 import useTitle from 'hooks/useTitle';
+import HtCard from '../../components/HtCard';
 
 /**
  * Display user profile
@@ -20,20 +21,19 @@ function Profile(): ReactElement {
 
   return (
     <Container fluid className="py-3">
+      <h1 className="fw-bold">Profile</h1>
       <Row className="justify-content-center">
         <Col xs md={10} lg={9} xl={8}>
-          <Card className="shadow-lg">
-            <Card.Header className="bg-primary">
-              <p className="h4 text-light">{user} Profile</p>
-            </Card.Header>
-            <Card.Body className="bg-white">
+          <HtCard className="shadow-lg">
+            <HtCard.Header title={`${user}`} />
+            <HtCard.Body>
               hello this is a card body
               <p className="fw-bold">RCRAInfo API ID</p>
               <p>{profile.rcraAPIID}</p>
               <p className="fw-bold">Phone Number</p>
               <p>{profile.phoneNumber}</p>
-            </Card.Body>
-          </Card>
+            </HtCard.Body>
+          </HtCard>
         </Col>
       </Row>
     </Container>

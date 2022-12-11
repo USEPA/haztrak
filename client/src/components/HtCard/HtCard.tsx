@@ -45,13 +45,9 @@ function HtCard(props: CardProps): ReactElement {
  *   <HtCard.Header title="Card Title!">{top right dropdown button}<HtCard.Header>
  * </HtCard>
  */
-HtCard.Header = function ({
-  children,
-  className,
-  title,
-}: HeaderProps): ReactElement {
+HtCard.Header = function ({ children, className, title }: HeaderProps): ReactElement {
   // If the title prop is passed, we use a consistent styling. else,
-  // the children/content and it will be distributed evenly in the header.
+  // the children/content, and it will be distributed evenly in the header.
   const content = title ? (
     <>
       <p className={`mb-0 fs-5`}>{title}</p>
@@ -61,7 +57,7 @@ HtCard.Header = function ({
     <>{children}</>
   );
   return (
-    <Card.Header className={`bg-primary text-light rounded-top ${className}`}>
+    <Card.Header className={`bg-primary text-white rounded-top ${className}`}>
       <div className="d-flex justify-content-between p-1 pt-2">{content}</div>
     </Card.Header>
   );

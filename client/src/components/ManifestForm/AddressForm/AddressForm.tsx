@@ -80,8 +80,11 @@ export function AddressForm({ addressType, handlerType }: Props) {
       <Row className="mb-2">
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0">State</Form.Label>
+            <Form.Label className="mb-0" htmlFor="addressState">
+              State
+            </Form.Label>
             <Form.Select
+              id="addressState"
               placeholder="Select State"
               {...register(`${namePrefix}.state`)}
             >
@@ -91,8 +94,11 @@ export function AddressForm({ addressType, handlerType }: Props) {
         </Col>
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0">Zip</Form.Label>
+            <Form.Label className="mb-0" htmlFor="addressZip">
+              Zip
+            </Form.Label>
             <Form.Control
+              id="addressZip"
               type="text"
               placeholder="12345"
               {...register(`${namePrefix}.zip`)}

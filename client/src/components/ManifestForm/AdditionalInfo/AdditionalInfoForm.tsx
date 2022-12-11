@@ -20,8 +20,11 @@ function AdditionalInfoForm() {
   return (
     <>
       <Form.Group className="mb-2">
-        <Form.Label className="mb-0">Special Handling Instructions</Form.Label>
+        <Form.Label className="mb-0" htmlFor="specialHandlingInstructions">
+          Special Handling Instructions
+        </Form.Label>
         <Form.Control
+          id="specialHandlingInstructions"
           key={'handlingInstructions'}
           as="textarea"
           {...register(`additionalInfo.handlingInstructions`)}

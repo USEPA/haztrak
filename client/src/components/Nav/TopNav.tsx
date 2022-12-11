@@ -1,9 +1,8 @@
 import React from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-import { useNavigate } from 'react-router-dom';
 
 function TopNav() {
   const authUser = useSelector((state: RootState) => state.user.user);
@@ -28,6 +27,8 @@ function TopNav() {
           Haztrak
         </Link>
         <Button
+          aria-label="toggleSidebarNavigation"
+          aria-hidden={false}
           id="sidebarToggle"
           onClick={toggleSidebar}
           className="ms-5 btn-link btn btn-sm bg-transparent btn-outline-none btn-outline-dark"
@@ -39,6 +40,8 @@ function TopNav() {
         <li className="nav-item dropdown">
           <Dropdown>
             <Dropdown.Toggle
+              aria-label="userProfileDropDown"
+              aria-hidden={false}
               id="navbarDropdown"
               className="nav-link bg-transparent btn-dark btn-outline-none"
             >

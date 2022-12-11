@@ -110,9 +110,7 @@ function ManifestForm() {
           </HtCard>
           <HtCard id="manifest-additional-info-card">
             {/* Additional information for the manifest, such as reference information*/}
-            <HtCard.Header>
-              <h6>Special Handling Instructions and Additional info</h6>
-            </HtCard.Header>
+            <HtCard.Header title={'Additional info'} />
             <HtCard.Body className="px-3">
               <AdditionalInfoForm />
             </HtCard.Body>
