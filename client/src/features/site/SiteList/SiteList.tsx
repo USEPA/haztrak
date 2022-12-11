@@ -7,9 +7,14 @@ import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Site } from 'types/Handler';
 
+/**
+ * Returns a table displaying the users sites.
+ * @constructor
+ */
 function SiteList() {
   const [siteData, loading, error] = useHtAPI<Array<Site>>('trak/site/');
 
+  // ToDo: This is POC source, It needs to be refactored desperately
   function SitesTable() {
     return (
       <Table striped hover>
@@ -28,13 +33,19 @@ function SiteList() {
                   <td>{site.name}</td>
                   <td>{site.handler.epaSiteId}</td>
                   <td className="d-flex justify-content-evenly">
-                    <HtTooltip text={'Site Details'}>
-                      <Link to={`/site/${site.handler.epaSiteId}`}>
+                    <HtTooltip text={`${site.name} Details`}>
+                      <Link
+                        to={`/site/${site.handler.epaSiteId}`}
+                        aria-label={`${site.name}Details`}
+                      >
                         <i className="fa-solid fa-eye"></i>
                       </Link>
                     </HtTooltip>
                     <HtTooltip text={`${site.name}'s manifest`}>
-                      <Link to={`/site/${site.handler.epaSiteId}/manifests`}>
+                      <Link
+                        to={`/site/${site.handler.epaSiteId}/manifests`}
+                        aria-label={`${site.name}Manifests`}
+                      >
                         <i className="fa-solid fa-file-lines"></i>
                       </Link>
                     </HtTooltip>

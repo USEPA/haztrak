@@ -6,6 +6,7 @@ import { login } from 'redux/store';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
+import useTitle from '../../hooks/useTitle';
 
 interface Inputs {
   username: string;
@@ -17,6 +18,7 @@ interface Inputs {
  * @constructor
  */
 function Login(): ReactElement {
+  useTitle('Login');
   const dispatch = useAppDispatch();
   const useSelector = useAppSelector;
   const authUser = useSelector((state) => state.user.user);
@@ -67,9 +69,7 @@ function Login(): ReactElement {
                 type="text"
                 placeholder={'wary-walrus-123'}
                 {...register('username', {})}
-                className={`form-control ${
-                  errors.username ? 'is-invalid' : ''
-                }`}
+                className={`form-control ${errors.username ? 'is-invalid' : ''}`}
               />
               <div className="invalid-feedback">{errors.username?.message}</div>
             </Form.Group>
@@ -80,9 +80,7 @@ function Login(): ReactElement {
                 type="password"
                 placeholder="MyP@ssword123"
                 {...register('password', {})}
-                className={`form-control ${
-                  errors.password ? 'is-invalid' : ''
-                }`}
+                className={`form-control ${errors.password ? 'is-invalid' : ''}`}
               />
               <div className="invalid-feedback">{errors.password?.message}</div>
             </Form.Group>

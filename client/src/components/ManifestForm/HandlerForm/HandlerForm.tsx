@@ -29,8 +29,11 @@ function HandlerForm({ handlerType }: Props): ReactElement {
       <Row className="mb-2">
         <Col className="col-sm-4">
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0">Generator ID</Form.Label>
+            <Form.Label className="mb-0" htmlFor="handlerEPAId">
+              Generator ID
+            </Form.Label>
             <Form.Control
+              id="handlerEPAId"
               type="text"
               placeholder={'EPA ID number'}
               {...register(`${handlerType}.epaSiteId`)}
@@ -39,12 +42,13 @@ function HandlerForm({ handlerType }: Props): ReactElement {
         </Col>
         <Col className="col-sm-8">
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0">Site Name</Form.Label>
+            <Form.Label className="mb-0" htmlFor="handlerName">
+              Site Name
+            </Form.Label>
             <Form.Control
+              id="handlerName"
               type="text"
               placeholder={`${handlerType} Name`}
-              // register comes from react-hook-form, however haztrak leaves the
-              // validation to the dedicated 'yup' library which is more expressive
               {...register(`${handlerType}.name`)}
             />
           </Form.Group>
@@ -52,16 +56,12 @@ function HandlerForm({ handlerType }: Props): ReactElement {
         <ErrorMessage
           errors={errors}
           name={`epaSiteId`}
-          render={({ message }) => (
-            <span className="text-danger">{message}</span>
-          )}
+          render={({ message }) => <span className="text-danger">{message}</span>}
         />
         <ErrorMessage
           errors={errors}
           name={`name`}
-          render={({ message }) => (
-            <span className="text-danger">{message}</span>
-          )}
+          render={({ message }) => <span className="text-danger">{message}</span>}
         />
       </Row>
       <AddressForm addressType={AddressType.site} handlerType={handlerType} />
@@ -85,10 +85,7 @@ function HandlerForm({ handlerType }: Props): ReactElement {
         {mailCheck ? (
           <>
             <h4>Mailing Address</h4>
-            <AddressForm
-              addressType={AddressType.mail}
-              handlerType={handlerType}
-            />
+            <AddressForm addressType={AddressType.mail} handlerType={handlerType} />
           </>
         ) : (
           <></>

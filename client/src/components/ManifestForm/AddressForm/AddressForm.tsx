@@ -4,16 +4,17 @@ import { useFormContext } from 'react-hook-form';
 import { AddressType, HandlerType } from 'types/Handler/Handler';
 import { ErrorMessage } from '@hookform/error-message';
 
-// AddressForm can be used to set a Handler's mailingAddress or siteAddress
 interface Props {
   addressType: AddressType;
   handlerType: HandlerType;
 }
 
+/**
+ * AddressForm can be used to set a Handler's mailingAddress or siteAddress
+ * Needs to be used in the context of a FormProvider
+ */
 export function AddressForm({ addressType, handlerType }: Props) {
   const namePrefix = `${handlerType}.${addressType}`;
-  // AddressForm uses the react-hook-form useFormContext hook to avoid the need
-  // to pass the useForm methods via props. it needs to be used in a FormProvider
   const {
     register,
     formState: { errors },
@@ -23,8 +24,11 @@ export function AddressForm({ addressType, handlerType }: Props) {
       <Row className="mb-2">
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0">Street Number</Form.Label>
+            <Form.Label className="mb-0" htmlFor="addressStreetNumber">
+              Street Number
+            </Form.Label>
             <Form.Control
+              id="addressStreetNumber"
               type="text"
               placeholder="1234"
               {...register(`${namePrefix}.streetNumber`)}
@@ -33,8 +37,11 @@ export function AddressForm({ addressType, handlerType }: Props) {
         </Col>
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0">Street Name</Form.Label>
+            <Form.Label className="mb-0" htmlFor="addressStreetName">
+              Street Name
+            </Form.Label>
             <Form.Control
+              id="addressStreetName"
               type="text"
               placeholder="Main St."
               {...register(`${namePrefix}.address1`)}
@@ -43,8 +50,11 @@ export function AddressForm({ addressType, handlerType }: Props) {
         </Col>
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0">City</Form.Label>
+            <Form.Label className="mb-0" htmlFor="addressCity">
+              City
+            </Form.Label>
             <Form.Control
+              id="addressCity"
               type="text"
               placeholder="Springfield"
               {...register(`${namePrefix}.city`)}
@@ -54,30 +64,27 @@ export function AddressForm({ addressType, handlerType }: Props) {
         <ErrorMessage
           errors={errors}
           name={`${namePrefix}.address1`}
-          render={({ message }) => (
-            <span className="text-danger">{message}</span>
-          )}
+          render={({ message }) => <span className="text-danger">{message}</span>}
         />
         <ErrorMessage
           errors={errors}
           name={`${namePrefix}.streetNumber`}
-          render={({ message }) => (
-            <span className="text-danger">{message}</span>
-          )}
+          render={({ message }) => <span className="text-danger">{message}</span>}
         />
         <ErrorMessage
           errors={errors}
           name={`${namePrefix}.city`}
-          render={({ message }) => (
-            <span className="text-danger">{message}</span>
-          )}
+          render={({ message }) => <span className="text-danger">{message}</span>}
         />
       </Row>
       <Row className="mb-2">
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0">State</Form.Label>
+            <Form.Label className="mb-0" htmlFor="addressState">
+              State
+            </Form.Label>
             <Form.Select
+              id="addressState"
               placeholder="Select State"
               {...register(`${namePrefix}.state`)}
             >
@@ -87,8 +94,11 @@ export function AddressForm({ addressType, handlerType }: Props) {
         </Col>
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0">Zip</Form.Label>
+            <Form.Label className="mb-0" htmlFor="addressZip">
+              Zip
+            </Form.Label>
             <Form.Control
+              id="addressZip"
               type="text"
               placeholder="12345"
               {...register(`${namePrefix}.zip`)}
@@ -98,16 +108,12 @@ export function AddressForm({ addressType, handlerType }: Props) {
         <ErrorMessage
           errors={errors}
           name={`${namePrefix}.zip`}
-          render={({ message }) => (
-            <span className="text-danger">{message}</span>
-          )}
+          render={({ message }) => <span className="text-danger">{message}</span>}
         />
         <ErrorMessage
           errors={errors}
           name={`${namePrefix}.state`}
-          render={({ message }) => (
-            <span className="text-danger">{message}</span>
-          )}
+          render={({ message }) => <span className="text-danger">{message}</span>}
         />
       </Row>
     </>

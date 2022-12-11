@@ -36,6 +36,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
     register,
     handleSubmit,
     watch,
+    setFocus,
     formState: { errors },
   } = useForm<addHandlerForm>();
   const manifestMethods = useFormContext();
@@ -100,18 +101,25 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
           <Row>
             <Col>
               <Form.Group className="mb-2">
-                <Form.Label className="mb-0">EPA ID Number</Form.Label>
+                <Form.Label className="mb-0" htmlFor={`${handlerType}SearchEPAId`}>
+                  EPA ID Number
+                </Form.Label>
                 <Form.Control
+                  id={`${handlerType}SearchEPAId`}
                   type="text"
                   placeholder="VATESTRAN03"
                   {...register(`epaId`)}
+                  autoFocus
                 />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group className="mb-2">
-                <Form.Label className="mb-0">Name</Form.Label>
+                <Form.Label className="mb-0" htmlFor={`${handlerType}SearchName`}>
+                  Name
+                </Form.Label>
                 <Form.Control
+                  id={`${handlerType}SearchName`}
                   type="text"
                   placeholder="VA TEST GEN 2021"
                   {...register(`name`)}
@@ -129,8 +137,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
                         key={`tran-select-${option.epaSiteId}`}
                         value={option.epaSiteId}
                       >
-                        {' '}
-                        {option.epaSiteId} {' -- '} {option.name}{' '}
+                        {`${option.epaSiteId} -- ${option.name} `}
                       </option>
                     );
                   })}

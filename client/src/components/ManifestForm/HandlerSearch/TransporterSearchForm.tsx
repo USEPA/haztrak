@@ -37,6 +37,7 @@ function TransporterSearchForm({
     register,
     handleSubmit,
     watch,
+    setFocus,
     formState: { errors },
   } = useForm<TranAppendValues>();
 
@@ -102,18 +103,25 @@ function TransporterSearchForm({
           <Row>
             <Col>
               <Form.Group className="mb-2">
-                <Form.Label className="mb-0">EPA ID Number</Form.Label>
+                <Form.Label className="mb-0" htmlFor="transporterEPAId">
+                  EPA ID Number
+                </Form.Label>
                 <Form.Control
+                  id="transporterEPAId"
                   type="text"
                   placeholder="VATESTRAN03"
                   {...register(`epaId`)}
+                  autoFocus
                 />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group className="mb-2">
-                <Form.Label className="mb-0">Name</Form.Label>
+                <Form.Label className="mb-0" htmlFor="transporterName">
+                  Name
+                </Form.Label>
                 <Form.Control
+                  id="transporterName"
                   type="text"
                   placeholder="VA TEST GEN 2021"
                   {...register(`name`)}
@@ -124,19 +132,27 @@ function TransporterSearchForm({
           <Row>
             <Col>
               {tranOptions ? (
-                <Form.Select {...register('transporter', { required: true })}>
-                  {tranOptions.map((option) => {
-                    return (
-                      <option
-                        key={`tran-select-${option.epaSiteId}`}
-                        value={option.epaSiteId}
-                      >
-                        {' '}
-                        {option.epaSiteId} {' -- '} {option.name}{' '}
-                      </option>
-                    );
-                  })}
-                </Form.Select>
+                <>
+                  <Form.Label className="mb-0" htmlFor="transporterSelect">
+                    Select Transporter
+                  </Form.Label>
+                  <Form.Select
+                    {...register('transporter', { required: true })}
+                    id="transporterSelect"
+                  >
+                    {tranOptions.map((option) => {
+                      return (
+                        <option
+                          key={`tran-select-${option.epaSiteId}`}
+                          value={option.epaSiteId}
+                        >
+                          {' '}
+                          {option.epaSiteId} {' -- '} {option.name}{' '}
+                        </option>
+                      );
+                    })}
+                  </Form.Select>
+                </>
               ) : (
                 <></>
               )}

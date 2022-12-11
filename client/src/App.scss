@@ -3,21 +3,62 @@
     --bs-card-cap-padding-y: 0;
 }
 
-
-// Override Bootstrap
-//$primary: #1fafa8;
+// Override Bootstrap styles
 $card-cap-padding-y: 0.1rem;
 $card-cap-spacer-y: 0;
 $card-cap-spacer-x: 0;
-$border-widths: (
-    0: 0px,
-    1: 1px,
-    2: 2px,
-    3: 3px,
-    4: 4px,
-    5: 5px,
-);
 
+// Haztrak custom styles
+.btn-circle {
+    width: 25px !important;
+    height: 25px !important;
+    border-radius: 50px !important;
+    border-width: 0 !important;
+    padding: 0 !important;
+}
+
+.btn-circle.btn-lg {
+    width: 50px !important;
+    height: 50px !important;
+}
+
+.btn-circle.btn-xl {
+    width: 70px !important;
+    height: 70px !important;
+}
+
+/* Haztrak */
+.rotate-90-cc {
+    transform: rotate(-90deg);
+}
+
+.app-container {
+    min-height: 350px;
+}
+
+.ht-ellipsis::after {
+    display: none !important;
+}
+
+button.ht-ellipsis {
+    border: none;
+    box-shadow: none;
+}
+
+button.ht-ellipsis:hover {
+    color: var(--bs-gray-dark);
+}
+
+button.ht-ellipsis:active {
+    color: var(--bs-gray-dark);
+}
+
+.modal-90w {
+    width: 90% !important;
+    max-width: none !important;
+}
+
+// boilerplate
 @media (prefers-reduced-motion: no-preference) {
     :root {
         scroll-behavior: smooth;
@@ -35,6 +76,7 @@ body {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+// ToDo: remove this and replace with more
 // Styles inherited from the initial template (sb-admin)
 #layoutSidenav {
     display: flex;
@@ -280,35 +322,5 @@ body {
     background-color: #e9ecef;
 }
 
-/* Haztrak */
-.rotate-90-cc {
-    transform: rotate(-90deg);
-}
-
-.app-container {
-    min-height: 350px;
-}
-
-.ht-ellipsis::after {
-    display: none !important;
-}
-
-button.ht-ellipsis {
-    border: none;
-    box-shadow: none;
-}
-
-button.ht-ellipsis:hover {
-    color: var(--bs-gray-dark);
-}
-
-button.ht-ellipsis:active {
-    color: var(--bs-gray-dark);
-}
-
-.modal-90w {
-    width: 90% !important;
-    max-width: none !important;
-}
 
 @import "bootstrap/scss/bootstrap.scss";
