@@ -33,38 +33,36 @@ function TransporterRowActions({
         title={`move-transporter-${index}-up-button`}
         // If first transporter, disable move up button and color gray
         disabled={isFirst}
-        className={`${
-          isFirst ? 'text-secondary' : 'text-primary'
-        } m-0 p-0 border-0 bg-transparent`}
+        variant={isFirst ? 'secondary' : 'primary'}
+        className="btn-circle"
         onClick={() => {
           swapTransporter(index, index - 1);
         }}
       >
-        <i className="fas fa-arrow-circle-up fa-xl"></i>
+        <i className="fas fa-arrow-up fa-lg"></i>
       </Button>
       {/* Move Transporter down (towards the back of the transporter list) */}
       <Button
         title={`move-transporter-${index}-down-button`}
         // If last transporter, disable move down button and color gray
         disabled={isLast}
-        className={`${
-          isLast ? 'text-secondary' : 'text-primary'
-        } m-0 p-0 border-0 bg-transparent`}
+        variant={isLast ? 'secondary' : 'primary'}
+        className="btn-circle"
         onClick={() => {
           swapTransporter(index, index + 1);
         }}
       >
-        <i className="fas fa-arrow-circle-down fa-xl"></i>
+        <i className="fas fa-arrow-down fa-lg"></i>
       </Button>
-      {/* Remove Transporter */}
       <Button
         title={`remove-transporter-${index}-button`}
-        className="text-danger m-0 p-0 bg-transparent border-0"
+        className="btn-circle"
+        variant="danger"
         onClick={() => {
           removeTransporter(index);
         }}
       >
-        <i className="fas fa-times-circle fa-xl"></i>
+        <i className="fas fa-times fa-lg"></i>
       </Button>
     </div>
   );
