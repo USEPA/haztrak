@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { Col, Container, Row } from 'react-bootstrap';
-import { getUser } from 'redux/store';
+import { getUser } from 'store/store';
 import useTitle from 'hooks/useTitle';
 import HtCard from '../../components/HtCard';
 

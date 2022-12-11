@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
+import { RootState } from 'store/store';
 
 function TopNav() {
   const authUser = useSelector((state: RootState) => state.user.user);

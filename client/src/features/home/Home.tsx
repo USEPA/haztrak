@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react';
-import { getUser, RootState } from 'redux/store';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { getUser, RootState } from 'store/store';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import useTitle from '../../hooks/useTitle';
 
 /**
