@@ -1,9 +1,10 @@
 import React from 'react';
 import { Badge, Button, Dropdown } from 'react-bootstrap';
-import { useAppSelector } from 'store';
+import { removeMsg, useAppDispatch, useAppSelector } from 'store';
 
 function Notification() {
   const notificationState = useAppSelector((state) => state.notification);
+  const dispatch = useAppDispatch();
   const numberAlerts = notificationState.alert.length;
 
   return (
@@ -30,10 +31,11 @@ function Notification() {
                   <div className="d-flex align-items-center justify-content-between">
                     <div className="me-5 text-truncate">{alert.message}</div>
                     <Button
-                      className="border-0 bg-transparent"
-                      onClick={() => console.log('click: ', alert.message)}
+                      variant="success"
+                      className="btn-circle"
+                      onClick={() => dispatch(removeMsg(alert))}
                     >
-                      <i className="fas fa-check fa-lg text-success "></i>
+                      <i className="fas fa-check fa-lg text-white"></i>
                     </Button>
                   </div>
                 </Dropdown.ItemText>

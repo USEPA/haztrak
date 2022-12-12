@@ -22,11 +22,14 @@ $card-cap-spacer-x: 0;
 
 .alert-mw {
     max-width: 20rem !important;
+    min-width: 20rem !important;
 }
 
 .btn-circle {
     width: 25px !important;
     height: 25px !important;
+    min-height: 25px !important;
+    min-width: 25px !important;
     border-radius: 50px !important;
     border-width: 0 !important;
     padding: 0 !important;
