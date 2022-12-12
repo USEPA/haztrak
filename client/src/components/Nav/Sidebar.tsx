@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button, Collapse } from 'react-bootstrap';
-import { RootState } from 'store/store';
+import { RootState } from 'store';
 
 /**
  * Vertical sidebar for navigation that disappears when the viewport is small

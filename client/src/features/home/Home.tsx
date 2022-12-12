@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect } from 'react';
-import { addMsg, getUser, RootState } from 'store/store';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { addMsg, getUser, RootState, useAppDispatch, useAppSelector } from 'store';
 import useTitle from '../../hooks/useTitle';
 import { Button } from 'react-bootstrap';
 

@@ -12,8 +12,7 @@ import React, { ReactElement } from 'react';
 
 import { Button, Container } from 'react-bootstrap';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { useAppSelector } from 'store/hooks';
-import { RootState } from 'store/store';
+import { RootState, useAppSelector } from 'store';
 import './App.scss';
 
 function App(): ReactElement {
