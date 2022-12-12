@@ -11,6 +11,7 @@ $card-cap-spacer-x: 0;
 // Haztrak custom styles
 
 .badge-top-right {
+    min-width: 1.5rem !important;
     top: -0.75rem !important;
     left: -0.25rem !important;
 }
