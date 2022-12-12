@@ -1,7 +1,8 @@
 import React, { ReactElement, useEffect } from 'react';
-import { getUser, RootState } from 'store/store';
+import { addMsg, getUser, RootState } from 'store/store';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import useTitle from '../../hooks/useTitle';
+import { Button } from 'react-bootstrap';
 
 /**
  * Home page for logged-in user, currently does not really include anything
@@ -20,6 +21,7 @@ function Home(): ReactElement {
   return (
     <div>
       <h1>{`Hello ${user}!`}</h1>
+      <Button onClick={() => dispatch(addMsg('test'))}>Click me</Button>
     </div>
   );
 }
