@@ -2,7 +2,8 @@ import React from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
+import { RootState } from 'store';
+import Notification from 'components/Notification';
 
 function TopNav() {
   const authUser = useSelector((state: RootState) => state.user.user);
@@ -36,6 +37,7 @@ function TopNav() {
           <i className="fas fa-bars" />
         </Button>
       </div>
+      <Notification />
       <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li className="nav-item dropdown">
           <Dropdown>

@@ -2,7 +2,7 @@
  * @file axios (http) instance for haztrak restful API usage
  */
 import axios, { AxiosRequestConfig } from 'axios';
-import { store } from 'redux/store';
+import { store } from 'store/store';
 
 const htApi = axios.create({
   baseURL: `${process.env.REACT_APP_HT_API_URL}/api`,

@@ -1,9 +1,8 @@
 import React, { ReactElement, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { getUser, useAppDispatch, useAppSelector } from 'store';
 import { Col, Container, Row } from 'react-bootstrap';
-import { getUser } from 'redux/store';
 import useTitle from 'hooks/useTitle';
-import HtCard from '../../components/HtCard';
+import HtCard from 'components/HtCard';
 
 /**
  * Display user profile

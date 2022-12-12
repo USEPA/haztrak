@@ -1,7 +1,7 @@
 import { handlers } from './mock/handlers';
 import React, { PropsWithChildren, ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
-import { AppStore, RootState, setupStore } from 'redux/store';
+import { AppStore, RootState, setupStore } from 'store';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { PreloadedState } from '@reduxjs/toolkit';

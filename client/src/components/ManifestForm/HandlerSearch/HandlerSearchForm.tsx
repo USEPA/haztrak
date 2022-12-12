@@ -36,7 +36,6 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
     register,
     handleSubmit,
     watch,
-    setFocus,
     formState: { errors },
   } = useForm<addHandlerForm>();
   const manifestMethods = useFormContext();

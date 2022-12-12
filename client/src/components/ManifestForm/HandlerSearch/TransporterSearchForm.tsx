@@ -37,7 +37,6 @@ function TransporterSearchForm({
     register,
     handleSubmit,
     watch,
-    setFocus,
     formState: { errors },
   } = useForm<TranAppendValues>();
 

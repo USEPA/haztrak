@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect } from 'react';
-import { getUser, RootState } from 'redux/store';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { addMsg, getUser, RootState, useAppDispatch, useAppSelector } from 'store';
 import useTitle from '../../hooks/useTitle';
+import { Button } from 'react-bootstrap';
 
 /**
  * Home page for logged-in user, currently does not really include anything
@@ -20,6 +20,23 @@ function Home(): ReactElement {
   return (
     <div>
       <h1>{`Hello ${user}!`}</h1>
+      <Button
+        onClick={() =>
+          dispatch(
+            addMsg({
+              uniqueId: Date.now(),
+              createdDate: new Date().toISOString(),
+              message:
+                'que paso? blah blah blah alskdjfa;lskdjf asd;lkfj asdlkja sdalskdjfalskdfja;lskfjalskfjsa',
+              alertType: 'Error',
+              read: false,
+              timeout: 5000,
+            })
+          )
+        }
+      >
+        Click me
+      </Button>
     </div>
   );
 }
