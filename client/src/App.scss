@@ -9,6 +9,12 @@ $card-cap-spacer-y: 0;
 $card-cap-spacer-x: 0;
 
 // Haztrak custom styles
+
+.badge-top-right {
+    top: -0.75rem !important;
+    left: -0.25rem !important;
+}
+
 .btn-circle {
     width: 25px !important;
     height: 25px !important;
@@ -27,7 +33,6 @@ $card-cap-spacer-x: 0;
     height: 70px !important;
 }
 
-/* Haztrak */
 .rotate-90-cc {
     transform: rotate(-90deg);
 }
