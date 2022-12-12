@@ -1,18 +1,25 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NotificationState } from 'types/store';
+import { Alert, NotificationState } from 'types/store';
 
 const initialState: NotificationState = {
-  alert: ['Hello World'],
+  alert: [
+    {
+      read: false,
+      alertType: 'Info',
+      message: 'Welcome to Haztrak',
+      timeout: 5000,
+    },
+  ],
 };
 
 const NotificationSlice = createSlice({
   name: 'notification',
   initialState,
   reducers: {
-    addMsg: (state: NotificationState, action: PayloadAction<string>) => {
+    addMsg: (state: NotificationState, action: PayloadAction<Alert>) => {
       state.alert.push(action.payload);
     },
-    readMsg: (state: NotificationState, action: PayloadAction<string>) => {
+    readMsg: (state: NotificationState, action: PayloadAction<Alert>) => {
       state.alert.push(action.payload);
     },
   },

@@ -1,5 +1,5 @@
 export interface NotificationState {
-  alert: Array<string>;
+  alert: Array<Alert>;
 }
 
 /**

@@ -20,7 +20,20 @@ function Home(): ReactElement {
   return (
     <div>
       <h1>{`Hello ${user}!`}</h1>
-      <Button onClick={() => dispatch(addMsg('test'))}>Click me</Button>
+      <Button
+        onClick={() =>
+          dispatch(
+            addMsg({
+              message: 'que paso?',
+              alertType: 'Error',
+              read: false,
+              timeout: 5000,
+            })
+          )
+        }
+      >
+        Click me
+      </Button>
     </div>
   );
 }

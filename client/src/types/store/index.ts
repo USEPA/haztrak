@@ -1,3 +1,3 @@
-import { NotificationState } from 'types/store/notificationSlice';
+import { Alert, NotificationState } from 'types/store/notificationSlice';
 
-export type { NotificationState };
+export type { NotificationState, Alert };
