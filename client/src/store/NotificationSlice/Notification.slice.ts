@@ -1,15 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface NotificationState {
-  msg: Array<string>;
-  alert?: Array<string>;
-  warning?: Array<string>;
-}
+import { NotificationState } from 'types/store';
 
 const initialState: NotificationState = {
-  msg: ['Hello World'],
-  alert: [],
-  warning: [],
+  alert: ['Hello World'],
 };
 
 const NotificationSlice = createSlice({
@@ -17,7 +10,10 @@ const NotificationSlice = createSlice({
   initialState,
   reducers: {
     addMsg: (state: NotificationState, action: PayloadAction<string>) => {
-      state.msg.push(action.payload);
+      state.alert.push(action.payload);
+    },
+    readMsg: (state: NotificationState, action: PayloadAction<string>) => {
+      state.alert.push(action.payload);
     },
   },
 });
