@@ -1,4 +1,5 @@
 import HtCard from 'components/HtCard';
+import HtSpinner from 'components/HtSpinner';
 import HtTooltip from 'components/HtTooltip';
 import React, { ReactElement } from 'react';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
@@ -31,8 +32,7 @@ function manifestTable(manifest: string[], title: string): ReactElement | null {
             <tr>
               <th>Manifest Tracking Number</th>
               <th>Status</th>
-              <th></th>
-              <th></th>
+              <th className="d-flex justify-content-center">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -42,18 +42,24 @@ function manifestTable(manifest: string[], title: string): ReactElement | null {
                   <td>{mtn}</td>
                   <td>status</td>
                   <td>
-                    <HtTooltip text={`View: ${mtn}`}>
-                      <Link to={`/manifest/${mtn}/view`}>
-                        <i className="fa-solid fa-eye"></i>
-                      </Link>
-                    </HtTooltip>
-                  </td>
-                  <td>
-                    <HtTooltip text={`Edit ${mtn}`}>
-                      <Link to={`/manifest/${mtn}/edit`}>
-                        <i className="fa-solid fa-file-lines"></i>
-                      </Link>
-                    </HtTooltip>
+                    <div className="d-flex justify-content-evenly">
+                      <HtTooltip text={`View: ${mtn}`}>
+                        <Link
+                          to={`/manifest/${mtn}/view`}
+                          aria-label={`viewManifest${mtn}`}
+                        >
+                          <i className="fa-solid fa-eye"></i>
+                        </Link>
+                      </HtTooltip>
+                      <HtTooltip text={`Edit ${mtn}`}>
+                        <Link
+                          to={`/manifest/${mtn}/edit`}
+                          aria-label={`editManifest${mtn}`}
+                        >
+                          <i className="fa-solid fa-file-lines"></i>
+                        </Link>
+                      </HtTooltip>
+                    </div>
                   </td>
                 </tr>
               );
@@ -77,6 +83,12 @@ function SiteManifests(): ReactElement {
   const [siteManifest, loading, error] = useHtAPI<SiteManifest>(
     `trak/site/${siteId}/manifest`
   );
+
+  if (error) throw error;
+
+  if (loading) {
+    return <HtSpinner />;
+  }
 
   return (
     <>
