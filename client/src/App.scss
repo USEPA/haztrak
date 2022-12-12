@@ -9,11 +9,15 @@ $card-cap-spacer-y: 0;
 $card-cap-spacer-x: 0;
 
 // Haztrak custom styles
-
 .badge-top-right {
     min-width: 1.5rem !important;
     top: -0.75rem !important;
     left: -0.25rem !important;
+}
+
+// need to bump notification dropdown menu up by 1 px.
+.mt-n1 {
+    margin-top: -1px !important;
 }
 
 .btn-circle {

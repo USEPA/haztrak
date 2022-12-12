@@ -19,7 +19,10 @@ function Notification() {
           </Badge>
           <span className="visually-hidden">unread messages</span>
         </Dropdown.Toggle>
-        <Dropdown.Menu key="laksjfalsdkfj">
+        <Dropdown.Menu className="pt-0">
+          <Dropdown.Header className="bg-secondary text-white rounded-top mt-n1">
+            Dropdown header
+          </Dropdown.Header>
           {notificationState.alert.map((alert, index) => {
             return (
               <React.Fragment key={`alertId${index}`}>
