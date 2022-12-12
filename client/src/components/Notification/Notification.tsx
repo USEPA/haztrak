@@ -1,5 +1,5 @@
 import React from 'react';
-import { Badge, Dropdown } from 'react-bootstrap';
+import { Badge, Button, Dropdown } from 'react-bootstrap';
 import { useAppSelector } from 'store';
 
 function Notification() {
@@ -8,7 +8,7 @@ function Notification() {
 
   return (
     <div className="mx-3">
-      <Dropdown drop="start">
+      <Dropdown drop="start" className="shadow">
         <Dropdown.Toggle
           className="bg-transparent border-0 text-primary"
           bsPrefix="p-0"
@@ -19,14 +19,25 @@ function Notification() {
           </Badge>
           <span className="visually-hidden">unread messages</span>
         </Dropdown.Toggle>
-        <Dropdown.Menu className="pt-0">
-          <Dropdown.Header className="bg-secondary text-white rounded-top mt-n1">
-            Dropdown header
+        <Dropdown.Menu className="pt-0 alert-mw">
+          <Dropdown.Header className="bg-primary text-white rounded-top mt-n1">
+            Notification Center
           </Dropdown.Header>
           {notificationState.alert.map((alert, index) => {
             return (
               <React.Fragment key={`alertId${index}`}>
-                <Dropdown.Item>{alert.message}</Dropdown.Item>
+                <Dropdown.ItemText className="text-nowrap">
+                  <div className="d-flex align-items-center justify-content-between">
+                    <div className="me-5 text-truncate">{alert.message}</div>
+                    <Button
+                      className="border-0 bg-transparent"
+                      onClick={() => console.log('click: ', alert.message)}
+                    >
+                      <i className="fas fa-check fa-lg text-success "></i>
+                    </Button>
+                  </div>
+                </Dropdown.ItemText>
+                {/* If it's the last one, do not include a divider */}
                 {index + 1 === numberAlerts ? (
                   <></>
                 ) : (

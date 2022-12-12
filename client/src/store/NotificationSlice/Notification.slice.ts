@@ -4,6 +4,8 @@ import { Alert, NotificationState } from 'types/store';
 const initialState: NotificationState = {
   alert: [
     {
+      uniqueId: Date.now(),
+      createdDate: new Date().toISOString(),
       read: false,
       alertType: 'Info',
       message: 'Welcome to Haztrak',

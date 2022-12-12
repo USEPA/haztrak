@@ -24,7 +24,10 @@ function Home(): ReactElement {
         onClick={() =>
           dispatch(
             addMsg({
-              message: 'que paso?',
+              uniqueId: Date.now(),
+              createdDate: new Date().toISOString(),
+              message:
+                'que paso? blah blah blah alskdjfa;lskdjf asd;lkfj asdlkja sdalskdjfalskdfja;lskfjalskfjsa',
               alertType: 'Error',
               read: false,
               timeout: 5000,
