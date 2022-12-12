@@ -3,13 +3,12 @@ import { Badge, Dropdown } from 'react-bootstrap';
 import { useAppSelector } from 'store';
 
 function Notification() {
-  const selector = useAppSelector((state) => state.notification);
-  const numberAlerts = selector.alert.length;
-  console.log(numberAlerts);
+  const notificationState = useAppSelector((state) => state.notification);
+  const numberAlerts = notificationState.alert.length;
 
   return (
     <div className="mx-3">
-      <Dropdown>
+      <Dropdown drop="start">
         <Dropdown.Toggle
           className="bg-transparent border-0 text-primary"
           bsPrefix="p-0"
@@ -20,10 +19,22 @@ function Notification() {
           </Badge>
           <span className="visually-hidden">unread messages</span>
         </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+        <Dropdown.Menu key="laksjfalsdkfj">
+          {notificationState.alert.map((alert, index) => {
+            return (
+              <React.Fragment key={`alertId${index}`}>
+                <Dropdown.Item>{alert.message}</Dropdown.Item>
+                {index + 1 === numberAlerts ? (
+                  <></>
+                ) : (
+                  <Dropdown.Divider
+                    key={`notificationDivider${index}`}
+                    className="my-0"
+                  />
+                )}
+              </React.Fragment>
+            );
+          })}
         </Dropdown.Menu>
       </Dropdown>
     </div>
