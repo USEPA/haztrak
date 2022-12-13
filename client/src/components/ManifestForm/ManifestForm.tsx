@@ -16,7 +16,6 @@ import AddWasteLine from './WasteLine';
 
 /**
  * Returns a form for, currently only, new uniform hazardous waste manifest.
- *
  * @constructor
  */
 // ToDo: accept an existing manifest (Manifest type) and set as default value
@@ -61,18 +60,95 @@ function ManifestForm() {
           <HtCard id="general-form-card">
             <HtCard.Header title="General info" />
             <HtCard.Body>
-              <Form.Group className="mb-2">
-                <Form.Label htmlFor="manifestTrackingNumber" className="mb-0">
-                  MTN
-                </Form.Label>
-                <Form.Control
-                  id="manifestTrackingNumber"
-                  disabled
-                  type="text"
-                  placeholder={'Draft Manifest'}
-                  {...manifestMethods.register('manifestTrackingNumber')}
-                />
-              </Form.Group>
+              <Row>
+                <Col>
+                  <Form.Group className="mb-2">
+                    <Form.Label htmlFor="manifestTrackingNumber" className="mb-0">
+                      MTN
+                    </Form.Label>
+                    <Form.Control
+                      id="manifestTrackingNumber"
+                      disabled
+                      type="text"
+                      placeholder={'Draft Manifest'}
+                      {...manifestMethods.register('manifestTrackingNumber')}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group className="mb-2">
+                    <Form.Label htmlFor="status" className="mb-0">
+                      Status
+                    </Form.Label>
+                    <Form.Select
+                      id="status"
+                      aria-label="manifestStatus"
+                      {...manifestMethods.register('status')}
+                    >
+                      <option value="draft">Draft</option>
+                      <option value="pending">Pending</option>
+                      <option value="scheduled">Scheduled</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group className="mb-2">
+                    <Form.Label htmlFor="createdDate" className="mb-0">
+                      Created Date
+                    </Form.Label>
+                    <Form.Control
+                      id="createdDate"
+                      disabled
+                      type="date"
+                      {...manifestMethods.register('createdDate')}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group className="mb-2">
+                    <Form.Label htmlFor="updatedDate" className="mb-0">
+                      Last Update Date
+                    </Form.Label>
+                    <Form.Control
+                      id="updatedDate"
+                      disabled
+                      type="date"
+                      {...manifestMethods.register('updatedDate')}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group className="mb-2">
+                    <Form.Label htmlFor="shippedDate" className="mb-0">
+                      Shipped Date
+                    </Form.Label>
+                    <Form.Control
+                      id="shippedDate"
+                      disabled
+                      type="date"
+                      {...manifestMethods.register('shippedDate')}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Check
+                    type="checkbox"
+                    id="import"
+                    label="Imported Waste?"
+                    {...manifestMethods.register('import')}
+                  />
+                  <Form.Check
+                    type="checkbox"
+                    id="rejection"
+                    label="Rejected Waste?"
+                    {...manifestMethods.register('rejection')}
+                  />
+                </Col>
+              </Row>
             </HtCard.Body>
           </HtCard>
           <HtCard id="generator-form-card">

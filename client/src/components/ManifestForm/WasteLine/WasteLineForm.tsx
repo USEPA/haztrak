@@ -62,6 +62,14 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
                     {...register('pcb')}
                   />
                 </Row>
+                <Row>
+                  <Form.Switch
+                    id="brSwitch"
+                    aria-label="biennialReport"
+                    label="Supply Biennial Report (BR) data?"
+                    {...register('br')}
+                  />
+                </Row>
               </Container>
               <Row>
                 <Form.Group>
