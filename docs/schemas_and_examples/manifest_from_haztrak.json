@@ -1,23 +1,23 @@
 {
-  "status": "pending",
+  "status": "Pending",
   "import": false,
   "rejection": false,
   "generator": {
-    "epaSiteId": "1234",
-    "name": "1234",
+    "epaSiteId": "asdfasdf",
+    "name": "asdfasdf",
     "siteAddress": {
-      "streetNumber": "1234",
-      "address1": "1234",
-      "city": "1234",
-      "state": "{\"code\":\"AK\",\"description\":\"Alaska\"}",
-      "zip": "1234"
+      "streetNumber": "asdf",
+      "address1": "asdf",
+      "city": "asdf",
+      "state": "{\"code\":\"VA\",\"description\":\"Virginia\"}",
+      "zip": "asdf"
     },
     "mailingAddress": {
-      "streetNumber": "1234",
-      "address1": "1234",
-      "city": "1234",
-      "state": "{\"code\":\"AK\",\"description\":\"Alaska\"}",
-      "zip": ""
+      "streetNumber": "asdf",
+      "address1": "asdf",
+      "city": "asdf",
+      "state": "{\"code\":\"VA\",\"description\":\"Virginia\"}",
+      "zip": "asdf"
     }
   },
   "additionalInfo": {
@@ -77,20 +77,26 @@
       "epaWaste": true,
       "pcb": false,
       "br": false,
-      "wasteDescription": "",
+      "wasteDescription": "asdfasdf",
       "quantity": {
-        "containerNumber": 2,
+        "containerNumber": 3,
         "containerType": "BA",
-        "quantity": 2,
+        "quantity": 3,
         "unitOfMeasurement": "P"
       },
       "hazardousWaste": {
         "federalWasteCodes": [
           {
-            "code": "D001",
-            "label": "D001"
+            "code": "D002",
+            "description": "D002"
+          },
+          {
+            "code": "D004",
+            "description": "D004"
           }
-        ]
+        ],
+        "generatorStateWasteCodes": [],
+        "tsdfStateWasteCodes": []
       },
       "additionalInfo": {
         "handlingInstructions": "",

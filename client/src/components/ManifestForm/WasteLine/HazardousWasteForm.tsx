@@ -5,14 +5,14 @@ import Select from 'react-select';
 
 // ToDo: For development, replace with hook to fetch real codes
 const options = [
-  { value: 'D001', label: 'D001' },
-  { value: 'D002', label: 'D002' },
-  { value: 'D003', label: 'D003' },
-  { value: 'D004', label: 'D004' },
-  { value: 'D005', label: 'D005' },
-  { value: 'F001', label: 'F001' },
-  { value: 'F002', label: 'F002' },
-  { value: 'F003', label: 'F003' },
+  { code: 'D001', description: 'D001' },
+  { code: 'D002', description: 'D002' },
+  { code: 'D003', description: 'D003' },
+  { code: 'D004', description: 'D004' },
+  { code: 'D005', description: 'D005' },
+  { code: 'F001', description: 'F001' },
+  { code: 'F002', description: 'F002' },
+  { code: 'F003', description: 'F003' },
 ];
 
 function HazardousWasteForm() {
@@ -34,14 +34,9 @@ function HazardousWasteForm() {
                 return (
                   <Select
                     {...field}
-                    onChange={(e) => {
-                      let codes: Array<any> = [];
-                      for (let i = 0; i < e.length; i++) {
-                        codes.push({ code: e[i].value, label: e[i].value });
-                      }
-                      field.onChange(codes);
-                    }}
                     options={options}
+                    getOptionLabel={(option) => option.code}
+                    getOptionValue={(option) => option.code}
                     openMenuOnFocus={false}
                     isMulti
                     isClearable
@@ -60,15 +55,9 @@ function HazardousWasteForm() {
                 return (
                   <Select
                     {...field}
-                    // @ts-ignore
-                    onChange={(e) => {
-                      let codes: Array<any> = [];
-                      for (let i = 0; i < e.length; i++) {
-                        codes.push({ code: e[i].value, label: e[i].value });
-                      }
-                      field.onChange(codes);
-                    }}
                     options={options}
+                    getOptionLabel={(option) => option.code}
+                    getOptionValue={(option) => option.code}
                     openMenuOnFocus={false}
                     isMulti
                     isClearable
@@ -87,14 +76,8 @@ function HazardousWasteForm() {
                 return (
                   <Select
                     {...field}
-                    onChange={(e) => {
-                      let codes: Array<any> = [];
-                      console.log(field.value);
-                      for (let i = 0; i < e.length; i++) {
-                        codes.push({ code: e[i].value, label: e[i].value });
-                      }
-                      field.onChange(codes);
-                    }}
+                    getOptionLabel={(option) => option.code}
+                    getOptionValue={(option) => option.code}
                     options={options}
                     openMenuOnFocus={false}
                     isMulti
