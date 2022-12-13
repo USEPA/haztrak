@@ -1,6 +1,6 @@
-import { Row, Form, Col } from 'react-bootstrap';
 import React from 'react';
-import { useFormContext, Controller } from 'react-hook-form';
+import { Col, Form, Row } from 'react-bootstrap';
+import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 
 // ToDo: For development, replace with hook to fetch real codes
@@ -31,11 +31,16 @@ function HazardousWasteForm() {
               control={control}
               name="hazardousWaste.federalWasteCodes"
               render={({ field, fieldState, formState }) => {
-                // There's not a good way to assign just the value from the
-                // options, we need to clean the data before sending to the server
                 return (
                   <Select
-                    {...field} // spread the onChange, onBlur, value, and ref fields
+                    {...field}
+                    onChange={(e) => {
+                      let codes: Array<any> = [];
+                      for (let i = 0; i < e.length; i++) {
+                        codes.push({ code: e[i].value, label: e[i].value });
+                      }
+                      field.onChange(codes);
+                    }}
                     options={options}
                     openMenuOnFocus={false}
                     isMulti
@@ -47,9 +52,7 @@ function HazardousWasteForm() {
             ></Controller>
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label className="mb-0">
-              Generator State Waste Codes
-            </Form.Label>
+            <Form.Label className="mb-0">Generator State Waste Codes</Form.Label>
             <Controller
               control={control}
               name="hazardousWaste.generatorStateWasteCodes"
@@ -57,6 +60,14 @@ function HazardousWasteForm() {
                 return (
                   <Select
                     {...field}
+                    // @ts-ignore
+                    onChange={(e) => {
+                      let codes: Array<any> = [];
+                      for (let i = 0; i < e.length; i++) {
+                        codes.push({ code: e[i].value, label: e[i].value });
+                      }
+                      field.onChange(codes);
+                    }}
                     options={options}
                     openMenuOnFocus={false}
                     isMulti
@@ -68,9 +79,7 @@ function HazardousWasteForm() {
             ></Controller>
           </Form.Group>
           <Form.Group>
-            <Form.Label className="mb-0">
-              Destination State Waste Codes
-            </Form.Label>
+            <Form.Label className="mb-0">Destination State Waste Codes</Form.Label>
             <Controller
               control={control}
               name="hazardousWaste.tsdfStateWasteCodes"
@@ -78,6 +87,14 @@ function HazardousWasteForm() {
                 return (
                   <Select
                     {...field}
+                    onChange={(e) => {
+                      let codes: Array<any> = [];
+                      console.log(field.value);
+                      for (let i = 0; i < e.length; i++) {
+                        codes.push({ code: e[i].value, label: e[i].value });
+                      }
+                      field.onChange(codes);
+                    }}
                     options={options}
                     openMenuOnFocus={false}
                     isMulti

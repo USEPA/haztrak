@@ -37,7 +37,7 @@ interface DensityUnitOfMeasurement {
   description: string;
 }
 
-interface CodeDescription {
+export interface CodeDescription {
   code: string;
   description?: string;
 }

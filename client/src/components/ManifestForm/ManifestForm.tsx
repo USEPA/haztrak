@@ -85,9 +85,9 @@ function ManifestForm() {
                       aria-label="manifestStatus"
                       {...manifestMethods.register('status')}
                     >
-                      <option value="draft">Draft</option>
-                      <option value="pending">Pending</option>
-                      <option value="scheduled">Scheduled</option>
+                      <option value="Draft">Draft</option>
+                      <option value="Pending">Pending</option>
+                      <option value="Scheduled">Scheduled</option>
                     </Form.Select>
                   </Form.Group>
                 </Col>
