@@ -1,6 +1,22 @@
 import { rest } from 'msw';
+import { HANDLER_EPA_ID, HANDLER_OBJECT } from '../fixtures';
 
 const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
+
+const SITE_ARRAY = [
+  {
+    name: HANDLER_EPA_ID,
+    handler: HANDLER_OBJECT,
+  },
+  {
+    name: HANDLER_EPA_ID,
+    handler: HANDLER_OBJECT,
+  },
+];
+
+const SITE_DETAILS: Site = {
+  na,
+};
 
 export const handlers = [
   rest.post(`${API_BASE_URL}/api/user/login`, (req, res, ctx) => {
@@ -32,5 +48,8 @@ export const handlers = [
         error: undefined,
       })
     );
+  }),
+  rest.get(`${API_BASE_URL}/api/trak/site`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(SITE_ARRAY));
   }),
 ];
