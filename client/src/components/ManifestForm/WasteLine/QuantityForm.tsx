@@ -1,16 +1,33 @@
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
-import { ContainerCode, QuantityCode } from 'types/WasteLine';
-import {
-  ContainerCodeValues,
-  ContainerDescriptionValues,
-  QuantityCodeValues,
-  QuantityDescriptionValues,
-} from 'types/WasteLine/WasteLine';
 
-type CC = keyof typeof ContainerCode;
-type QC = keyof typeof QuantityCode;
+const unitsOfMeasurements = [
+  { code: 'P', description: 'Pounds' },
+  { code: 'T', description: 'Tons (2000 Pounds)' },
+  { code: 'K', description: 'Kilograms' },
+  { code: 'M', description: 'Metric Tons (1000 Kilograms)' },
+  { code: 'G', description: 'Gallons' },
+  { code: 'L', description: 'Liters' },
+  { code: 'Y', description: 'Cubic Yards' },
+  { code: 'N', description: 'Cubic Meters' },
+];
+
+const containerTypes = [
+  { code: 'BA', description: 'Burlap, cloth, paper, or plastic bags' },
+  { code: 'DT', description: 'Dump truck' },
+  { code: 'CF', description: 'Fiber or plastic boxes, cartons, cases' },
+  { code: 'DW', description: 'Wooden drums, barrels, kegs' },
+  { code: 'CM', description: 'Metal boxes, cartons, cases (including roll offs)' },
+  { code: 'HG', description: 'Hopper or gondola cars' },
+  { code: 'CW', description: 'Wooden boxes, cartons, cases' },
+  { code: 'TC', description: 'Tank cars' },
+  { code: 'CY', description: 'Cylinders' },
+  { code: 'TP', description: 'Portable tanks' },
+  { code: 'DF', description: 'Fiberboard or plastic drums, barrels, kegs' },
+  { code: 'TT', description: 'Cargo tanks (tank trucks)' },
+  { code: 'DM', description: 'Metal drums, barrels, kegs' },
+];
 
 function QuantityForm() {
   const { register } = useFormContext();
@@ -31,11 +48,10 @@ function QuantityForm() {
           <Form.Group className="mb-2">
             <Form.Label className="mb-0">Container Type</Form.Label>
             <Form.Select {...register(`quantity.containerType`)}>
-              {(Object.keys(ContainerCodeValues) as Array<CC>).map((cc, index) => {
-                const contDescription = ContainerDescriptionValues[cc];
+              {containerTypes.map((unit, index) => {
                 return (
-                  <option key={`cc-${index}`} value={String(cc)}>
-                    {`${String(cc)} - ${contDescription}`}
+                  <option key={`cd-${index}`} value={String(unit.code)}>
+                    {`${unit.code} - ${unit.description}`}
                   </option>
                 );
               })}
@@ -60,11 +76,10 @@ function QuantityForm() {
           <Form.Group className="mb-2">
             <Form.Label className="mb-0">Units</Form.Label>
             <Form.Select {...register(`quantity.unitOfMeasurement`)}>
-              {(Object.keys(QuantityCodeValues) as Array<QC>).map((qc, index) => {
-                const quantityDescription = QuantityDescriptionValues[qc];
+              {unitsOfMeasurements.map((unit, index) => {
                 return (
-                  <option key={`cc-${index}`} value={String(qc)}>
-                    {`${String(qc)} - ${quantityDescription}`}
+                  <option key={`cd-${index}`} value={unit.code}>
+                    {`${unit.code} - ${unit.description}`}
                   </option>
                 );
               })}

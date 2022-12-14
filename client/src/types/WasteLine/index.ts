@@ -1,14 +1,11 @@
 import {
-  ContainerType,
-  WasteLine,
   ContainerCode,
+  ContainerType,
   QuantityCode,
   QuantityDescription,
-  ContainerCodeValues,
-  ContainerDescriptionValues,
+  WasteLine,
 } from 'types/WasteLine/WasteLine';
 
-export { ContainerCodeValues, ContainerDescriptionValues };
 export type {
   WasteLine,
   ContainerType,

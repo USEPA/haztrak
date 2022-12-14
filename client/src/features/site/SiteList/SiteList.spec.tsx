@@ -3,19 +3,19 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { renderWithProviders, screen } from 'test';
-import { HANDLER_EPA_ID, HANDLER_OBJECT } from 'test/fixtures';
+import { MOCK_EPA_ID, MOCK_HANDLER } from 'test/fixtures';
 import SiteList from './index';
 
 const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
 
 const SITE_ARRAY = [
   {
-    name: HANDLER_EPA_ID,
-    handler: HANDLER_OBJECT,
+    name: MOCK_EPA_ID,
+    handler: MOCK_HANDLER,
   },
   {
     name: 'test site name',
-    handler: HANDLER_OBJECT,
+    handler: MOCK_HANDLER,
   },
 ];
 
@@ -43,7 +43,7 @@ describe('SiteList component', () => {
   test('fetches sites a user has access to', async () => {
     // Act
     renderWithProviders(<SiteList />);
-    let numIds = await screen.findAllByRole('cell', { name: HANDLER_EPA_ID });
+    let numIds = await screen.findAllByRole('cell', { name: MOCK_EPA_ID });
     // Assert
     expect(numIds.length).toEqual(3);
   });

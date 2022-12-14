@@ -12,16 +12,25 @@ interface Manifest {
   createdDate?: string;
   updatedDate?: string;
   manifestTrackingNumber?: string;
-  status?: Status;
+  status?:
+    | 'NotAssigned'
+    | 'Pending'
+    | 'Scheduled'
+    | 'InTransit'
+    | 'ReadyForSignature'
+    | 'Signed'
+    | 'Corrected'
+    | 'UnderCorrection'
+    | 'MtnValidationFailed';
   isPublic?: boolean;
-  submissionType?: SubmissionType;
-  signatureStatus: boolean;
-  originType?: OriginType;
-  shippedDate: string;
+  submissionType?: 'FullElectronic' | 'DataImage5Copy' | 'Hybrid' | 'Image';
+  signatureStatus?: boolean;
+  originType?: 'Web' | 'Service' | 'Mail';
+  shippedDate?: string;
   potentialShipDate: string;
-  receivedDate: string;
-  certifiedDate: string;
-  certifiedBy: Signer;
+  receivedDate?: string;
+  certifiedDate?: string;
+  certifiedBy?: Signer;
   generator: Handler;
   transporters: Array<Transporter>;
   designatedFacility: Handler;
@@ -36,40 +45,21 @@ interface Manifest {
   importInfo?: ImportInfo;
   correctionRequests?: CorrectionRequest[];
   containsPreviousRejectOrResidue: boolean;
-  printedDocument: Document;
-  formDocument: Document;
+  printedDocument?: Document;
+  formDocument?: Document;
   additionalInfo?: AdditionalInfo;
   correctionInfo?: CorrectionInfo;
-  ppcStatus: PpcStatus;
+  ppcStatus?:
+    | 'Draft'
+    | 'PendingDataEntry'
+    | 'DataEntryInProgress'
+    | 'PendingDataQc'
+    | 'PendingDataQa'
+    | 'DataQaCompleted';
   // mtnValidationInfo
-  provideImageGeneratorInfo: boolean;
+  provideImageGeneratorInfo?: boolean;
   locked: boolean;
-  lockReason: LockReason;
-}
-
-enum Status {
-  NotAssigned = 'Not Assigned',
-  Pending = 'Pending',
-  Scheduled = 'Pending',
-  InTransit = 'In Transit',
-  ReadyForSignature = 'Ready for Signature',
-  Signed = 'Signed',
-  Corrected = 'Corrected',
-  UnderCorrection = 'Under Correction',
-  MtnValidationFailed = 'MTN Validation Failed',
-}
-
-enum SubmissionType {
-  FullElectronic,
-  DataImage5Copy,
-  Hybrid,
-  Image,
-}
-
-enum OriginType {
-  Web,
-  Service,
-  Mail,
+  lockReason?: 'AsyncSign' | 'EpaChangeBiller' | 'EpaCorrection';
 }
 
 interface ImportInfo {
@@ -82,30 +72,10 @@ interface PortOfEntry {
   cityPort: string;
 }
 
-enum PpcStatus {
-  Draft,
-  PendingDataEntry,
-  DataEntryInProgress,
-  PendingDataQc,
-  PendingDataQa,
-  DataQaCompleted,
-}
-
 interface Document {
   name: string;
   size: number;
-  mimeType: FileType;
-}
-
-enum FileType {
-  APPLICATION_PDF,
-  TEXT_HTML,
-}
-
-enum LockReason {
-  AsyncSign,
-  EpaChangeBiller,
-  EpaCorrection,
+  mimeType: 'APPLICATION_PDF' | 'TEXT_HTML';
 }
 
 export default Manifest;

@@ -156,12 +156,6 @@ interface Comment {
   handlerId: string;
 }
 
-export {
-  ContainerCode as ContainerCodeValues,
-  ContainerDescription as ContainerDescriptionValues,
-  QuantityCode as QuantityCodeValues,
-  QuantityDescription as QuantityDescriptionValues,
-};
 export type {
   WasteLine,
   ContainerType,

@@ -1,3 +1,3 @@
-import { HANDLER_EPA_ID, HANDLER_OBJECT } from 'test/fixtures/mockHandler';
+import { MOCK_EPA_ID, MOCK_HANDLER } from 'test/fixtures/mockHandler';
 
-export { HANDLER_OBJECT, HANDLER_EPA_ID };
+export { MOCK_HANDLER, MOCK_EPA_ID };

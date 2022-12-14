@@ -1,22 +1,14 @@
 import { rest } from 'msw';
-import { HANDLER_EPA_ID, HANDLER_OBJECT } from '../fixtures';
+import { MOCK_EPA_ID, MOCK_HANDLER } from '../fixtures';
 
 const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
 
-const SITE_ARRAY = [
-  {
-    name: HANDLER_EPA_ID,
-    handler: HANDLER_OBJECT,
-  },
-  {
-    name: HANDLER_EPA_ID,
-    handler: HANDLER_OBJECT,
-  },
-];
-
-const SITE_DETAILS: Site = {
-  na,
+const Site_OBJECT = {
+  name: MOCK_EPA_ID,
+  handler: MOCK_HANDLER,
 };
+
+const SITE_ARRAY = [Site_OBJECT, Site_OBJECT];
 
 export const handlers = [
   rest.post(`${API_BASE_URL}/api/user/login`, (req, res, ctx) => {
@@ -52,4 +44,13 @@ export const handlers = [
   rest.get(`${API_BASE_URL}/api/trak/site`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(SITE_ARRAY));
   }),
+  rest.get(`${API_BASE_URL}/api/trak/site/${MOCK_EPA_ID}`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(Site_OBJECT));
+  }),
+  rest.get(
+    `${API_BASE_URL}/api/trak/site/${MOCK_EPA_ID}/manifest`,
+    (req, res, ctx) => {
+      return res(ctx.status(200), ctx.json(Site_OBJECT));
+    }
+  ),
 ];
