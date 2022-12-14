@@ -2,6 +2,7 @@ import AddButton from 'components/AddButton';
 import HandlerDetails from 'components/HandlerDetails';
 import HtCard from 'components/HtCard';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
+import ContactForm from 'components/ManifestForm/ContactForm';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
 import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable/WasteLineTable';
 import React, { useEffect, useState } from 'react';
@@ -182,6 +183,7 @@ function ManifestForm() {
             <HtCard.Header title="Generator" />
             <HtCard.Body>
               <HandlerForm handlerType={HandlerType.Generator} />
+              <ContactForm />
             </HtCard.Body>
           </HtCard>
           <HtCard id="transporter-form-card">
