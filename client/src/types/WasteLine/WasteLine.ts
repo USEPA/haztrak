@@ -85,8 +85,6 @@ interface ContainerType {
   description?: ContainerDescription;
 }
 
-enum ContainerCode {}
-
 enum ContainerDescription {
   BA = 'Burlap, cloth, paper, or plastic bags',
   DT = 'Dump truck',
@@ -144,7 +142,6 @@ interface Comment {
 export type {
   WasteLine,
   ContainerType,
-  ContainerCode,
   ContainerDescription,
   QuantityCode,
   QuantityDescription,

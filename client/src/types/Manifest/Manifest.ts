@@ -1,13 +1,18 @@
-// manifest type declaration
+/**
+ * Manifest related type declarations
+ */
 
 import { Handler, Locality } from 'types/Handler/Handler';
+import { Transporter } from 'types/Handler/Transporter';
 import { AdditionalInfo } from 'types/Manifest/AdditionalInfo';
-import { Transporter } from 'types/Transporter/Transporter';
 import { WasteLine } from 'types/WasteLine';
 import { Signer } from './Contact';
 import { CorrectionInfo, CorrectionRequest } from './Correction';
 import { RejectionInfo } from './Rejection';
 
+/**
+ * Type definition for the uniform hazardous waste manifest
+ */
 interface Manifest {
   createdDate?: string;
   updatedDate?: string;
@@ -62,16 +67,25 @@ interface Manifest {
   lockReason?: 'AsyncSign' | 'EpaChangeBiller' | 'EpaCorrection';
 }
 
+/**
+ * Details required if the hazardous waste is internationally imported
+ */
 interface ImportInfo {
   importGenerator: Handler;
   portOfEntry: PortOfEntry;
 }
 
+/**
+ * Location info on imported waste
+ */
 interface PortOfEntry {
   state: Locality;
   cityPort: string;
 }
 
+/**
+ * Metadata for the manifest file (PDFs, HTML)
+ */
 interface Document {
   name: string;
   size: number;

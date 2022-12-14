@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import React from 'react';
 import { renderWithProviders } from 'test';
 import { MOCK_HANDLER } from 'test/fixtures';
-import { Transporter } from 'types/Transporter/Transporter';
+import { Transporter } from 'types/Handler/Transporter';
 import { TransporterTable } from './index';
 
 const HANDLER_ID_1 = 'siteId1';

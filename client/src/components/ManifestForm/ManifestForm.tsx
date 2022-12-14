@@ -138,13 +138,13 @@ function ManifestForm() {
                   <Form.Check
                     type="checkbox"
                     id="import"
-                    label="Imported Waste?"
+                    label="Imported Waste"
                     {...manifestMethods.register('import')}
                   />
                   <Form.Check
                     type="checkbox"
                     id="rejection"
-                    label="Rejected Waste?"
+                    label="Rejected Waste"
                     {...manifestMethods.register('rejection')}
                   />
                 </Col>

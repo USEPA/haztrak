@@ -1,9 +1,6 @@
 import { Handler } from './Handler';
 
 /**
- *  The Site type encapsulates the Handler model as well as other details specific to
- *  that hazardous waste site.
- *
  *  @description
  *  The Site type encapsulates the Handler model as well as other details specific to
  *  that hazardous waste site. It is not directly associated with the EPA RCRAInfo system

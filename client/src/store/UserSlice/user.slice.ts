@@ -1,16 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import htApi from 'services';
-
-export interface UserState {
-  user: string | undefined;
-  token: string | undefined;
-  rcraAPIID?: string;
-  rcraAPIKey?: string;
-  epaSites?: string[];
-  phoneNumber?: string;
-  loading: boolean;
-  error?: string | undefined;
-}
+import { UserState } from 'types/store';
 
 const initialState: UserState = {
   user: JSON.parse(localStorage.getItem('user') || 'null') || null,
