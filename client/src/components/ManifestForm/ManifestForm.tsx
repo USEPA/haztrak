@@ -85,9 +85,24 @@ function ManifestForm() {
                       aria-label="manifestStatus"
                       {...manifestMethods.register('status')}
                     >
-                      <option value="Draft">Draft</option>
+                      <option value="NotAssigned">Draft</option>
                       <option value="Pending">Pending</option>
                       <option value="Scheduled">Scheduled</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group className="mb-2">
+                    <Form.Label htmlFor="submissionType" className="mb-0">
+                      Manifest Type
+                    </Form.Label>
+                    <Form.Select
+                      id="submissionType"
+                      aria-label="submissionType"
+                      {...manifestMethods.register('submissionType')}
+                    >
+                      <option value="FullElectronic">Electronic</option>
+                      <option value="Hybrid">Hybrid</option>
                     </Form.Select>
                   </Form.Group>
                 </Col>
@@ -147,6 +162,18 @@ function ManifestForm() {
                     label="Rejected Waste"
                     {...manifestMethods.register('rejection')}
                   />
+                </Col>
+                <Col>
+                  <Form.Group className="mb-2">
+                    <Form.Label htmlFor="potentialShipDate" className="mb-0">
+                      Potential Shipped Date
+                    </Form.Label>
+                    <Form.Control
+                      id="potentialShipDate"
+                      type="date"
+                      {...manifestMethods.register('potentialShipDate')}
+                    />
+                  </Form.Group>
                 </Col>
               </Row>
             </HtCard.Body>
