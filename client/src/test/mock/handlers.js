@@ -1,5 +1,6 @@
 import { rest } from 'msw';
 import { MOCK_EPA_ID, MOCK_HANDLER } from '../fixtures';
+import { MOCK_MANIFEST, MOCK_MTN } from '../fixtures/mockManifest';
 
 const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
 
@@ -7,6 +8,8 @@ const Site_OBJECT = {
   name: MOCK_EPA_ID,
   handler: MOCK_HANDLER,
 };
+
+const MANIFESTS_ARRAY = [MOCK_MANIFEST, MOCK_MANIFEST];
 
 const SITE_ARRAY = [Site_OBJECT, Site_OBJECT];
 
@@ -50,7 +53,17 @@ export const handlers = [
   rest.get(
     `${API_BASE_URL}/api/trak/site/${MOCK_EPA_ID}/manifest`,
     (req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(Site_OBJECT));
+      return res(
+        ctx.status(200),
+        ctx.json({
+          generator: MANIFESTS_ARRAY.map((mtn) => mtn.manifestTrackingNumber),
+          transporter: [],
+          tsd: [],
+        })
+      );
     }
   ),
+  rest.get(`${API_BASE_URL}/api/trak/manifest/${MOCK_MTN}`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(MOCK_MANIFEST));
+  }),
 ];

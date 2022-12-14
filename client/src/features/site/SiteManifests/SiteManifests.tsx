@@ -4,8 +4,8 @@ import HtTooltip from 'components/HtTooltip';
 import React, { ReactElement } from 'react';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import useHtAPI from '../../../hooks/useHtAPI';
-import useTitle from '../../../hooks/useTitle';
+import useHtAPI from 'hooks/useHtAPI';
+import useTitle from 'hooks/useTitle';
 
 interface SiteManifest {
   generator: string[];
@@ -18,6 +18,7 @@ interface SiteManifest {
  * @param manifest
  * @param title
  */
+// ToDo refactor to component
 function manifestTable(manifest: string[], title: string): ReactElement | null {
   if (manifest.length === 0) {
     // ToDo add something here that says 'this site has no known manifests'
@@ -83,6 +84,7 @@ function SiteManifests(): ReactElement {
   const [siteManifest, loading, error] = useHtAPI<SiteManifest>(
     `trak/site/${siteId}/manifest`
   );
+  console.log(siteManifest);
 
   if (error) throw error;
 
