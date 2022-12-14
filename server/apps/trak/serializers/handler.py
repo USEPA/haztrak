@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from apps.trak.models import Handler
 from apps.trak.serializers import AddressSerializer
+
 from .trak import TrakSerializer
 
 
@@ -9,9 +10,9 @@ class HandlerSerializer(TrakSerializer):
     epaSiteId = serializers.CharField(
         source='epa_id',
     )
-    siteType = serializers.CharField(
-        source='site_type',
-    )
+    # siteType = serializers.CharField(
+    #     source='site_type',
+    # )
     modified = serializers.BooleanField(
         allow_null=True,
         default=False,
@@ -68,7 +69,7 @@ class HandlerSerializer(TrakSerializer):
         model = Handler
         fields = [
             'epaSiteId',
-            'siteType',
+            # 'siteType',
             'modified',
             'name',
             'siteAddress',
