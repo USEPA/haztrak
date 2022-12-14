@@ -83,7 +83,7 @@ export function AddressForm({ addressType, handlerType }: Props) {
       <Row className="mb-2">
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="addressState">
+            <Form.Label className="mb-0" htmlFor={`${namePrefix}State`}>
               State
             </Form.Label>
             <Controller
@@ -92,6 +92,7 @@ export function AddressForm({ addressType, handlerType }: Props) {
               render={({ field, fieldState, formState }) => {
                 return (
                   <Select
+                    id={`${namePrefix}State`}
                     {...field}
                     options={StateCode}
                     getOptionLabel={(option) => option.name}
@@ -100,7 +101,7 @@ export function AddressForm({ addressType, handlerType }: Props) {
                   />
                 );
               }}
-            ></Controller>
+            />
           </Form.Group>
         </Col>
         <Col>

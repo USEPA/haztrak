@@ -23,16 +23,19 @@ function HazardousWasteForm() {
       <Row className="mb-2">
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0">Federal Waste Codes</Form.Label>
+            <Form.Label className="mb-0" htmlFor="hazardousWasteFederalWasteCodes">
+              Federal Waste Codes
+            </Form.Label>
             {/* We need to use 'Controller' to wrap
               around React-Select's controlled component */}
             {/*https://react-hook-form.com/api/usecontroller/controller*/}
             <Controller
               control={control}
               name="hazardousWaste.federalWasteCodes"
-              render={({ field, fieldState, formState }) => {
+              render={({ field }) => {
                 return (
                   <Select
+                    id="hazardousWasteFederalWasteCodes"
                     {...field}
                     options={options}
                     getOptionLabel={(option) => option.code}
@@ -47,13 +50,16 @@ function HazardousWasteForm() {
             ></Controller>
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label className="mb-0">Generator State Waste Codes</Form.Label>
+            <Form.Label className="mb-0" htmlFor="hazardousWasteGeneratorStateCodes">
+              Generator State Waste Codes
+            </Form.Label>
             <Controller
               control={control}
               name="hazardousWaste.generatorStateWasteCodes"
               render={({ field }) => {
                 return (
                   <Select
+                    id="hazardousWasteGeneratorStateCodes"
                     {...field}
                     options={options}
                     getOptionLabel={(option) => option.code}
@@ -68,13 +74,16 @@ function HazardousWasteForm() {
             ></Controller>
           </Form.Group>
           <Form.Group>
-            <Form.Label className="mb-0">Destination State Waste Codes</Form.Label>
+            <Form.Label className="mb-0" htmlFor="hazardousWasteTsdfCodes">
+              Destination State Waste Codes
+            </Form.Label>
             <Controller
               control={control}
               name="hazardousWaste.tsdfStateWasteCodes"
               render={({ field }) => {
                 return (
                   <Select
+                    id="hazardousWasteTsdfCodes"
                     {...field}
                     getOptionLabel={(option) => option.code}
                     getOptionValue={(option) => option.code}

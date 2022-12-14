@@ -1,6 +1,7 @@
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
+import Select from 'react-select';
 
 const unitsOfMeasurements = [
   { code: 'P', description: 'Pounds' },
@@ -30,7 +31,7 @@ const containerTypes = [
 ];
 
 function QuantityForm() {
-  const { register } = useFormContext();
+  const { register, control } = useFormContext();
 
   return (
     <>
@@ -46,16 +47,25 @@ function QuantityForm() {
         </Col>
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0">Container Type</Form.Label>
-            <Form.Select {...register(`quantity.containerType`)}>
-              {containerTypes.map((unit, index) => {
+            <Form.Label className="mb-0" htmlFor="quantityContainerType">
+              Container Type
+            </Form.Label>
+            <Controller
+              control={control}
+              name={`quantity.containerType`}
+              render={({ field }) => {
                 return (
-                  <option key={`cd-${index}`} value={String(unit.code)}>
-                    {`${unit.code} - ${unit.description}`}
-                  </option>
+                  <Select
+                    id="quantityContainerType"
+                    {...field}
+                    options={containerTypes}
+                    getOptionLabel={(option) => option.description}
+                    getOptionValue={(option) => option.code}
+                    openMenuOnFocus={false}
+                  />
                 );
-              })}
-            </Form.Select>
+              }}
+            />
           </Form.Group>
         </Col>
       </Row>
@@ -74,16 +84,25 @@ function QuantityForm() {
         </Col>
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0">Units</Form.Label>
-            <Form.Select {...register(`quantity.unitOfMeasurement`)}>
-              {unitsOfMeasurements.map((unit, index) => {
+            <Form.Label className="mb-0" htmlFor="quantityUnitOfMeasurement">
+              Units
+            </Form.Label>
+            <Controller
+              control={control}
+              name={`quantity.unitOfMeasurement`}
+              render={({ field }) => {
                 return (
-                  <option key={`cd-${index}`} value={unit.code}>
-                    {`${unit.code} - ${unit.description}`}
-                  </option>
+                  <Select
+                    id="quantityUnitOfMeasurement"
+                    {...field}
+                    options={unitsOfMeasurements}
+                    getOptionLabel={(option) => option.description}
+                    getOptionValue={(option) => option.code}
+                    openMenuOnFocus={false}
+                  />
                 );
-              })}
-            </Form.Select>
+              }}
+            />
           </Form.Group>
         </Col>
       </Row>
