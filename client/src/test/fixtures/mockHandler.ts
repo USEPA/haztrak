@@ -59,3 +59,10 @@ export const MOCK_HANDLER = {
   hasRegisteredEmanifestUser: true,
   gisPrimary: false,
 };
+
+export const MOCK_SITE_OBJECT = {
+  name: 'mySiteName',
+  handler: MOCK_HANDLER,
+};
+
+export const MOCK_SITE_ARRAY = [MOCK_SITE_OBJECT, MOCK_SITE_OBJECT];

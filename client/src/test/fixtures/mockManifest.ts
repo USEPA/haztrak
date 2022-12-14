@@ -23,3 +23,5 @@ export const MOCK_MANIFEST: Manifest = {
     { ...MOCK_WASTE, lineNumber: 2 },
   ],
 };
+
+export const MOCK_MANIFESTS_ARRAY = [MOCK_MANIFEST, MOCK_MANIFEST];

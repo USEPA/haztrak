@@ -1,29 +1,11 @@
 import { cleanup } from '@testing-library/react';
-import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { renderWithProviders, screen } from 'test';
-import { MOCK_EPA_ID, MOCK_HANDLER } from 'test/fixtures';
+import { handlers } from 'test/mock/handlers';
+import { MOCK_EPA_ID } from 'test/fixtures';
 import SiteList from './index';
-
-const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
-
-const SITE_ARRAY = [
-  {
-    name: MOCK_EPA_ID,
-    handler: MOCK_HANDLER,
-  },
-  {
-    name: 'test site name',
-    handler: MOCK_HANDLER,
-  },
-];
-
-export const handlers = [
-  rest.get(`${API_BASE_URL}/api/trak/site`, (req, res, ctx) => {
-    return res(ctx.delay(), ctx.status(200), ctx.json(SITE_ARRAY));
-  }),
-];
+import { MOCK_SITE_ARRAY } from 'test/fixtures/mockHandler';
 
 const server = setupServer(...handlers);
 
@@ -42,9 +24,10 @@ describe('SiteList component', () => {
   });
   test('fetches sites a user has access to', async () => {
     // Act
-    renderWithProviders(<SiteList />);
+    const { debug } = renderWithProviders(<SiteList />);
     let numIds = await screen.findAllByRole('cell', { name: MOCK_EPA_ID });
     // Assert
-    expect(numIds.length).toEqual(3);
+    debug(undefined, Infinity);
+    expect(numIds.length).toEqual(MOCK_SITE_ARRAY.length);
   });
 });
