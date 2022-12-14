@@ -1,8 +1,10 @@
 import { ErrorMessage } from '@hookform/error-message';
+import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
+import Select from 'react-select';
 import { AddressType, HandlerType } from 'types/Handler/Handler';
-import StateSelect from './StateSelect';
+import { StateCode } from './StateSelect';
 
 interface Props {
   addressType: AddressType;
@@ -16,6 +18,7 @@ interface Props {
 export function AddressForm({ addressType, handlerType }: Props) {
   const namePrefix = `${handlerType}.${addressType}`;
   const {
+    control,
     register,
     formState: { errors },
   } = useFormContext();
@@ -83,13 +86,21 @@ export function AddressForm({ addressType, handlerType }: Props) {
             <Form.Label className="mb-0" htmlFor="addressState">
               State
             </Form.Label>
-            <Form.Select
-              id="addressState"
-              placeholder="Select State"
-              {...register(`${namePrefix}.state`)}
-            >
-              <StateSelect />
-            </Form.Select>
+            <Controller
+              control={control}
+              name={`${namePrefix}.state`}
+              render={({ field, fieldState, formState }) => {
+                return (
+                  <Select
+                    {...field}
+                    options={StateCode}
+                    getOptionLabel={(option) => option.name}
+                    getOptionValue={(option) => option.code}
+                    openMenuOnFocus={false}
+                  />
+                );
+              }}
+            ></Controller>
           </Form.Group>
         </Col>
         <Col>

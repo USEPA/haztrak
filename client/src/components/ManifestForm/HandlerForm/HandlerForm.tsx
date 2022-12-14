@@ -24,6 +24,8 @@ function HandlerForm({ handlerType }: Props): ReactElement {
     formState: { errors },
   } = useFormContext<Manifest>();
 
+  // Watch for When the user sets the site address copy to mailing address
+  // unless that is also supplied
   useEffect(() => {
     const siteAddress = getValues(`${handlerType}.siteAddress`);
     if (!mailCheck) {
