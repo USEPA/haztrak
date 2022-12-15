@@ -55,5 +55,4 @@ export function renderWithProviders(
 
 export * from '@testing-library/react';
 
-// replace @testing-library/React's render function with our own custom render
-export { handlers, renderWithProviders as render };
+export { handlers };

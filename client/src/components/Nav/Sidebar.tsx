@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { Button, Collapse } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { RootState } from 'store';
 
 /**

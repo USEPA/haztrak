@@ -1,11 +1,10 @@
-import { cleanup } from '@testing-library/react';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { renderWithProviders, screen } from 'test';
-import { handlers } from 'test/mock/handlers';
+import { cleanup, renderWithProviders, screen } from 'test';
 import { MOCK_EPA_ID } from 'test/fixtures';
-import SiteList from './index';
 import { MOCK_SITE_ARRAY } from 'test/fixtures/mockHandler';
+import { handlers } from 'test/mock/handlers';
+import SiteList from './index';
 
 const server = setupServer(...handlers);
 
