@@ -183,7 +183,8 @@ function ManifestForm() {
             <HtCard.Header title="Generator" />
             <HtCard.Body>
               <HandlerForm handlerType={HandlerType.Generator} />
-              <ContactForm />
+              <h4>Emergency Contact Information</h4>
+              <ContactForm handlerFormType="generator" />
             </HtCard.Body>
           </HtCard>
           <HtCard id="transporter-form-card">
