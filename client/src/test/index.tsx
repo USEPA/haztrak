@@ -1,20 +1,27 @@
-import { handlers } from './mock/handlers';
-import React, { PropsWithChildren, ReactElement } from 'react';
+import { PreloadedState } from '@reduxjs/toolkit';
 import { render, RenderOptions } from '@testing-library/react';
-import { AppStore, RootState, setupStore } from 'store';
+import React, { PropsWithChildren, ReactElement } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { PreloadedState } from '@reduxjs/toolkit';
+import { AppStore, RootState, setupStore } from 'store';
+import { handlers } from './mock/handlers';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: PreloadedState<RootState>;
   store?: AppStore;
+  defaultValues?: object;
 }
 
-/** utility wrapper for @testing-library/react, so we do not need to
+/**
+ *
+ * @description
+ * utility wrapper for @testing-library/react, so we do not need to
  * use Redux store Provider and BrowserRouter in all tests, see
  * https://testing-library.com/docs/react-testing-library/setup/#custom-render
  *
+ * for components expected to be rendered within FormProvider context,
+ * see https://github.com/react-hook-form/react-hook-form/discussions/3815
  * @example
  *describe('HelloWorld Test Suite', () => {
  *  test('test name', () => {
@@ -27,15 +34,18 @@ export function renderWithProviders(
   ui: React.ReactElement,
   {
     preloadedState = {},
-    // Automatically create a store instance if no store was passed in
-    store = setupStore(preloadedState),
+    defaultValues = {}, // for Forms
+    store = setupStore(preloadedState), // Automatically create a store instance if no store was passed in
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) {
   function Wrapper({ children }: PropsWithChildren<{}>): ReactElement {
+    const formMethods = useForm({ defaultValues });
     return (
       <Provider store={store}>
-        <BrowserRouter>{children}</BrowserRouter>
+        <BrowserRouter>
+          <FormProvider {...formMethods}>{children}</FormProvider>
+        </BrowserRouter>
       </Provider>
     );
   }
@@ -45,5 +55,4 @@ export function renderWithProviders(
 
 export * from '@testing-library/react';
 
-// replace @testing-library/React's render function with our own custom render
-export { handlers, renderWithProviders as render };
+export { handlers };

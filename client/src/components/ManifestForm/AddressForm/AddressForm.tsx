@@ -1,8 +1,10 @@
-import { Col, Form, Row } from 'react-bootstrap';
-import StateSelect from './StateSelect';
-import { useFormContext } from 'react-hook-form';
-import { AddressType, HandlerType } from 'types/Handler/Handler';
 import { ErrorMessage } from '@hookform/error-message';
+import React from 'react';
+import { Col, Form, Row } from 'react-bootstrap';
+import { Controller, useFormContext } from 'react-hook-form';
+import Select from 'react-select';
+import { AddressType, HandlerType } from 'types/Handler/Handler';
+import { StateCode } from './StateSelect';
 
 interface Props {
   addressType: AddressType;
@@ -16,6 +18,7 @@ interface Props {
 export function AddressForm({ addressType, handlerType }: Props) {
   const namePrefix = `${handlerType}.${addressType}`;
   const {
+    control,
     register,
     formState: { errors },
   } = useFormContext();
@@ -80,16 +83,25 @@ export function AddressForm({ addressType, handlerType }: Props) {
       <Row className="mb-2">
         <Col>
           <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="addressState">
+            <Form.Label className="mb-0" htmlFor={`${namePrefix}State`}>
               State
             </Form.Label>
-            <Form.Select
-              id="addressState"
-              placeholder="Select State"
-              {...register(`${namePrefix}.state`)}
-            >
-              <StateSelect />
-            </Form.Select>
+            <Controller
+              control={control}
+              name={`${namePrefix}.state`}
+              render={({ field, fieldState, formState }) => {
+                return (
+                  <Select
+                    id={`${namePrefix}State`}
+                    {...field}
+                    options={StateCode}
+                    getOptionLabel={(option) => option.name}
+                    getOptionValue={(option) => option.code}
+                    openMenuOnFocus={false}
+                  />
+                );
+              }}
+            />
           </Form.Group>
         </Col>
         <Col>

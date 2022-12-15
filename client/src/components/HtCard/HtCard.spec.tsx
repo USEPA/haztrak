@@ -1,6 +1,6 @@
-import React from 'react';
-import { render, cleanup, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import React from 'react';
+import { cleanup, render, screen } from 'test';
 import HtCard from './HtCard';
 
 afterEach(() => {

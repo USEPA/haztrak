@@ -1,0 +1,152 @@
+{
+  "status": "Pending",
+  "import": false,
+  "rejection": false,
+  "generator": {
+    "epaSiteId": "asdfasdf",
+    "name": "asdfasdf",
+    "siteAddress": {
+      "streetNumber": "asdf",
+      "address1": "asdf",
+      "city": "asdf",
+      "state": "{\"code\":\"VA\",\"description\":\"Virginia\"}",
+      "zip": "asdf"
+    },
+    "mailingAddress": {
+      "streetNumber": "asdf",
+      "address1": "asdf",
+      "city": "asdf",
+      "state": "{\"code\":\"VA\",\"description\":\"Virginia\"}",
+      "zip": "asdf"
+    }
+  },
+  "additionalInfo": {
+    "handlingInstructions": "",
+    "comments": []
+  },
+  "transporters": [
+    {
+      "order": 1,
+      "epaSiteId": "VATESTRAN03",
+      "siteType": "Transporter",
+      "name": "VA TEST GEN 2021",
+      "siteAddress": {
+        "streetNumber": "123",
+        "address1": "VA TEST GEN 2021 WAY",
+        "city": "Arlington",
+        "state": {
+          "code": "VA",
+          "name": "Virginia"
+        },
+        "country": {
+          "code": "US",
+          "name": "United States"
+        },
+        "zip": "20022"
+      },
+      "mailingAddress": {
+        "streetNumber": "123",
+        "address1": "VA TEST GEN 2021 WAY",
+        "city": "Arlington",
+        "state": {
+          "code": "VA",
+          "name": "Virginia"
+        },
+        "country": {
+          "code": "US",
+          "name": "United States"
+        },
+        "zip": "20022"
+      },
+      "contact": {
+        "phone": {
+          "number": "703-308-0023"
+        },
+        "email": "Testing@EPA.GOV"
+      },
+      "emergencyPhone": {
+        "number": "703-308-0023"
+      },
+      "hasRegisteredEmanifestUser": false,
+      "gisPrimary": false
+    }
+  ],
+  "wastes": [
+    {
+      "dotHazardous": false,
+      "epaWaste": true,
+      "pcb": false,
+      "br": false,
+      "wasteDescription": "asdfasdf",
+      "quantity": {
+        "containerNumber": 3,
+        "containerType": "BA",
+        "quantity": 3,
+        "unitOfMeasurement": "P"
+      },
+      "hazardousWaste": {
+        "federalWasteCodes": [
+          {
+            "code": "D002",
+            "description": "D002"
+          },
+          {
+            "code": "D004",
+            "description": "D004"
+          }
+        ],
+        "generatorStateWasteCodes": [],
+        "tsdfStateWasteCodes": []
+      },
+      "additionalInfo": {
+        "handlingInstructions": "",
+        "comments": []
+      },
+      "lineNumber": 1
+    }
+  ],
+  "designatedFacility": {
+    "epaSiteId": "VATESTTSDF03",
+    "siteType": "Tsdf",
+    "name": "VA TEST TSDF 2021",
+    "siteAddress": {
+      "streetNumber": "1123",
+      "address1": "TSD address st.",
+      "city": "Portland",
+      "state": {
+        "code": "OR",
+        "name": "Oregon"
+      },
+      "country": {
+        "code": "US",
+        "name": "United States"
+      },
+      "zip": "21345"
+    },
+    "mailingAddress": {
+      "streetNumber": "1123",
+      "address1": "TSD address st.",
+      "city": "Portland",
+      "state": {
+        "code": "OR",
+        "name": "Oregon"
+      },
+      "country": {
+        "code": "US",
+        "name": "United States"
+      },
+      "zip": "21345"
+    },
+    "contact": {
+      "phone": {
+        "number": "703-308-0023"
+      },
+      "email": "Testing@EPA.GOV"
+    },
+    "emergencyPhone": {
+      "number": "703-308-0023"
+    },
+    "hasRegisteredEmanifestUser": false,
+    "gisPrimary": false
+  }
+}

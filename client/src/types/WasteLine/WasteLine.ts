@@ -37,7 +37,7 @@ interface DensityUnitOfMeasurement {
   description: string;
 }
 
-interface CodeDescription {
+export interface CodeDescription {
   code: string;
   description?: string;
 }
@@ -50,20 +50,11 @@ interface Quantity {
 }
 
 interface QuantityUnitsOfMeasurement {
-  code: QuantityCode;
+  code: 'P' | 'T' | 'K' | 'M' | 'G' | 'L' | 'Y' | 'N';
   description?: QuantityDescription;
 }
 
-enum QuantityCode {
-  P = 'P',
-  T = 'T',
-  K = 'K',
-  M = 'M',
-  G = 'G',
-  L = 'L',
-  Y = 'Y',
-  N = 'N',
-}
+enum QuantityCode {}
 
 enum QuantityDescription {
   P = 'Pounds',
@@ -77,24 +68,21 @@ enum QuantityDescription {
 }
 
 interface ContainerType {
-  code: ContainerCode;
+  code:
+    | 'BA'
+    | 'DT'
+    | 'CF'
+    | 'DW'
+    | 'CM'
+    | 'HG'
+    | 'CW'
+    | 'TC'
+    | 'CY'
+    | 'TP'
+    | 'DF'
+    | 'TT'
+    | 'DM';
   description?: ContainerDescription;
-}
-
-enum ContainerCode {
-  BA = 'BA',
-  DT = 'DT',
-  CF = 'CF',
-  DW = 'DW',
-  CM = 'CM',
-  HG = 'HG',
-  CW = 'CW',
-  TC = 'TC',
-  CY = 'CY',
-  TP = 'TP',
-  DF = 'DF',
-  TT = 'TT',
-  DM = 'DM',
 }
 
 enum ContainerDescription {
@@ -139,15 +127,10 @@ interface DiscrepancyResidueInfo {
 
 interface AdditionalInfo {
   originalManifestTrackingNumbers: string[];
-  newManifestDestination: NewDestination;
+  newManifestDestination: 'OriginalGenerator' | 'Tsdf';
   consentNumber: string;
   comments: Comment[];
   handlingInstructions: string;
-}
-
-enum NewDestination {
-  OriginalGenerator,
-  Tsdf,
 }
 
 interface Comment {
@@ -156,16 +139,9 @@ interface Comment {
   handlerId: string;
 }
 
-export {
-  ContainerCode as ContainerCodeValues,
-  ContainerDescription as ContainerDescriptionValues,
-  QuantityCode as QuantityCodeValues,
-  QuantityDescription as QuantityDescriptionValues,
-};
 export type {
   WasteLine,
   ContainerType,
-  ContainerCode,
   ContainerDescription,
   QuantityCode,
   QuantityDescription,

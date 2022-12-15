@@ -52,6 +52,7 @@ function AdditionalInfoForm() {
                     <Form.Control
                       type="text"
                       id={`additionalInfoLabel${index}`}
+                      aria-label={`additionalInfoLabel${index}`}
                       key={`${keyBase}-label`}
                       // @ts-ignore
                       {...register(`${baseFieldName}[${index}].label`)}
@@ -70,6 +71,7 @@ function AdditionalInfoForm() {
                     {/* column for the Description field */}
                     <Form.Control
                       id={`additionalInfoDescription${index}`}
+                      aria-label={`additionalInfoDescription${index}`}
                       type="text"
                       key={`${keyBase}-description-group`}
                       // @ts-ignore
@@ -79,7 +81,10 @@ function AdditionalInfoForm() {
                 </Col>
                 <Col xs={1} key={`${keyBase}-col3`}>
                   {index === 0 ? (
-                    <Form.Label htmlFor={`additionalInfoRemoveButton${index}`}>
+                    <Form.Label
+                      htmlFor={`additionalInfoRemoveButton${index}`}
+                      aria-label={`additionalInfoRemoveButton${index}`}
+                    >
                       Remove
                     </Form.Label>
                   ) : (
@@ -95,6 +100,7 @@ function AdditionalInfoForm() {
                     }}
                   >
                     <i
+                      title="Remove Reference Button"
                       key={`${keyBase}-remove-btn`}
                       className="text-danger fas fa-times-circle fa-lg"
                     ></i>

@@ -1,30 +1,21 @@
-import React, { ReactElement, useEffect } from 'react';
-import { Manifest } from 'types';
-import { useParams } from 'react-router-dom';
 import ManifestForm from 'components/ManifestForm/ManifestForm';
-import useTitle from '../../../hooks/useTitle';
-
-interface Props {
-  manifest?: Manifest;
-}
+import React, { ReactElement, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 type ManifestParams = {
   mtn?: string;
 };
 
 /**
- * Used for editing a manifest via ManifestForm, the mtn to edit is known from
- * the MTN entered into the URL
+ * Used for editing a manifest via ManifestForm, existing manifest should be retrieved from server
  * @constructor
  */
-function ManifestEdit(props: Props): ReactElement {
+function ManifestEdit(): ReactElement {
   // we can get the desired manifest tracking number from the URL
   const { mtn } = useParams<ManifestParams>();
-  useTitle(`Edit ${mtn}`);
-  // Todo: GET the manifest (by mtn) if it already exists in Haztrak
 
   useEffect(() => {
-    console.log(`manifest to check for: ${mtn}`);
+    // ToDo: use URL parameter to get existing manifest object and pass to ManifestForm
   }, [mtn]);
   return <ManifestForm />;
 }

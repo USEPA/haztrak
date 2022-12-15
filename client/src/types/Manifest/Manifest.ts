@@ -1,29 +1,43 @@
-// manifest type declaration
+/**
+ * Manifest related type declarations
+ */
 
-import { AdditionalInfo } from 'types/Manifest/AdditionalInfo';
-import { Signer } from './Contact';
 import { Handler, Locality } from 'types/Handler/Handler';
+import { Transporter } from 'types/Handler/Transporter';
+import { AdditionalInfo } from 'types/Manifest/AdditionalInfo';
+import { WasteLine } from 'types/WasteLine';
+import { Signer } from './Contact';
 import { CorrectionInfo, CorrectionRequest } from './Correction';
 import { RejectionInfo } from './Rejection';
-import { WasteLine } from 'types/WasteLine';
-import { Transporter } from 'types/Transporter/Transporter';
 
+/**
+ * Type definition for the uniform hazardous waste manifest
+ */
 interface Manifest {
   createdDate?: string;
   updatedDate?: string;
   manifestTrackingNumber?: string;
-  status?: Status;
+  status?:
+    | 'NotAssigned'
+    | 'Pending'
+    | 'Scheduled'
+    | 'InTransit'
+    | 'ReadyForSignature'
+    | 'Signed'
+    | 'Corrected'
+    | 'UnderCorrection'
+    | 'MtnValidationFailed';
   isPublic?: boolean;
-  submissionType?: SubmissionType;
-  signatureStatus: boolean;
-  originType?: OriginType;
-  shippedDate: string;
+  submissionType?: 'FullElectronic' | 'DataImage5Copy' | 'Hybrid' | 'Image';
+  signatureStatus?: boolean;
+  originType?: 'Web' | 'Service' | 'Mail';
+  shippedDate?: string;
   potentialShipDate: string;
-  receivedDate: string;
-  certifiedDate: string;
-  certifiedBy: Signer;
+  receivedDate?: string;
+  certifiedDate?: string;
+  certifiedBy?: Signer;
   generator: Handler;
-  transporters: [Transporter];
+  transporters: Array<Transporter>;
   designatedFacility: Handler;
   broker?: Handler;
   wastes: WasteLine[];
@@ -36,76 +50,46 @@ interface Manifest {
   importInfo?: ImportInfo;
   correctionRequests?: CorrectionRequest[];
   containsPreviousRejectOrResidue: boolean;
-  printedDocument: Document;
-  formDocument: Document;
+  printedDocument?: Document;
+  formDocument?: Document;
   additionalInfo?: AdditionalInfo;
   correctionInfo?: CorrectionInfo;
-  ppcStatus: PpcStatus;
+  ppcStatus?:
+    | 'Draft'
+    | 'PendingDataEntry'
+    | 'DataEntryInProgress'
+    | 'PendingDataQc'
+    | 'PendingDataQa'
+    | 'DataQaCompleted';
   // mtnValidationInfo
-  provideImageGeneratorInfo: boolean;
+  provideImageGeneratorInfo?: boolean;
   locked: boolean;
-  lockReason: LockReason;
+  lockReason?: 'AsyncSign' | 'EpaChangeBiller' | 'EpaCorrection';
 }
 
-enum Status {
-  NotAssigned = 'Not Assigned',
-  Pending = 'Pending',
-  Scheduled = 'Pending',
-  InTransit = 'In Transit',
-  ReadyForSignature = 'Ready for Signature',
-  Signed = 'Signed',
-  Corrected = 'Corrected',
-  UnderCorrection = 'Under Correction',
-  MtnValidationFailed = 'MTN Validation Failed',
-}
-
-enum SubmissionType {
-  FullElectronic,
-  DataImage5Copy,
-  Hybrid,
-  Image,
-}
-
-enum OriginType {
-  Web,
-  Service,
-  Mail,
-}
-
+/**
+ * Details required if the hazardous waste is internationally imported
+ */
 interface ImportInfo {
   importGenerator: Handler;
   portOfEntry: PortOfEntry;
 }
 
+/**
+ * Location info on imported waste
+ */
 interface PortOfEntry {
   state: Locality;
   cityPort: string;
 }
 
-enum PpcStatus {
-  Draft,
-  PendingDataEntry,
-  DataEntryInProgress,
-  PendingDataQc,
-  PendingDataQa,
-  DataQaCompleted,
-}
-
+/**
+ * Metadata for the manifest file (PDFs, HTML)
+ */
 interface Document {
   name: string;
   size: number;
-  mimeType: FileType;
-}
-
-enum FileType {
-  APPLICATION_PDF,
-  TEXT_HTML,
-}
-
-enum LockReason {
-  AsyncSign,
-  EpaChangeBiller,
-  EpaCorrection,
+  mimeType: 'APPLICATION_PDF' | 'TEXT_HTML';
 }
 
 export default Manifest;

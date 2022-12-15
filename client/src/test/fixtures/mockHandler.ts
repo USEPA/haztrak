@@ -1,13 +1,13 @@
 /**
  * A mock handler ID, use by the mock handler object, for tests
  */
-export const HANDLER_EPA_ID = 'testSiteIdNumber';
+export const MOCK_EPA_ID = 'testSiteIdNumber';
 
 /**
  * A mock handler object for tests
  */
-export const HANDLER_OBJECT = {
-  epaSiteId: HANDLER_EPA_ID,
+export const MOCK_HANDLER = {
+  epaSiteId: MOCK_EPA_ID,
   siteType: 'Generator',
   name: 'TEST TRANSPORTER 2 OF VA',
   siteAddress: {
@@ -59,3 +59,10 @@ export const HANDLER_OBJECT = {
   hasRegisteredEmanifestUser: true,
   gisPrimary: false,
 };
+
+export const MOCK_SITE_OBJECT = {
+  name: 'mySiteName',
+  handler: MOCK_HANDLER,
+};
+
+export const MOCK_SITE_ARRAY = [MOCK_SITE_OBJECT, MOCK_SITE_OBJECT];

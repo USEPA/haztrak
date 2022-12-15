@@ -5,7 +5,7 @@ import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import htApi from 'services';
 import { Handler, Manifest } from 'types';
 import { HandlerType } from 'types/Handler/Handler';
-import { Transporter } from 'types/Transporter/Transporter';
+import { Transporter } from 'types/Handler/Transporter';
 
 interface Props {
   handleClose: () => void;

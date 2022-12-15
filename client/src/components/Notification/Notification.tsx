@@ -15,10 +15,14 @@ function Notification() {
           bsPrefix="p-0"
         >
           <i className="fa-regular fa-envelope fa-lg"></i>
-          <Badge pill bg="danger px-1" bsPrefix="badge badge-top-right">
+          <Badge
+            pill
+            bg="danger px-1"
+            bsPrefix="badge badge-top-right"
+            aria-label="unread Messages"
+          >
             {numberAlerts < 9 ? `${numberAlerts}` : '9+'}
           </Badge>
-          <span className="visually-hidden">unread messages</span>
         </Dropdown.Toggle>
         <Dropdown.Menu className="pt-0 alert-mw">
           <Dropdown.Header className="bg-primary text-white rounded-top mt-n1">

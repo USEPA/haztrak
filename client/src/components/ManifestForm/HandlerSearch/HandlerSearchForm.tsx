@@ -89,7 +89,6 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
         }
       }
     }
-    console.log('manifest values', manifestMethods.getValues());
     handleClose();
   };
 
