@@ -18,7 +18,7 @@ class Manifest(models.Model):
     status = models.CharField(
         max_length=25,
         choices=lu.STATUS,
-        default='notAssigned',
+        default='NotAssigned',
     )
     submission_type = models.CharField(
         max_length=25,

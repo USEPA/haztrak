@@ -4,7 +4,7 @@ import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 import { AddressType, HandlerType } from 'types/Handler/Handler';
-import { StateCode } from './StateSelect';
+import { CountryCode, StateCode } from './StateSelect';
 
 interface Props {
   addressType: AddressType;
@@ -114,6 +114,30 @@ export function AddressForm({ addressType, handlerType }: Props) {
               type="text"
               placeholder="12345"
               {...register(`${namePrefix}.zip`)}
+            />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group className="mb-2">
+            <Form.Label className="mb-0" htmlFor={`${namePrefix}Country`}>
+              Country
+            </Form.Label>
+            <Controller
+              control={control}
+              name={`${namePrefix}.country`}
+              render={({ field, fieldState, formState }) => {
+                return (
+                  <Select
+                    id={`${namePrefix}Country`}
+                    {...field}
+                    defaultValue={CountryCode[0]}
+                    options={CountryCode}
+                    getOptionLabel={(option) => option.name}
+                    getOptionValue={(option) => option.code}
+                    openMenuOnFocus={false}
+                  />
+                );
+              }}
             />
           </Form.Group>
         </Col>

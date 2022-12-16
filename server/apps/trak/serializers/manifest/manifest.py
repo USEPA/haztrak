@@ -11,24 +11,29 @@ from rest_framework import serializers
 
 from apps.trak.models import Handler, Manifest, WasteLine
 from apps.trak.serializers.handler import HandlerSerializer
+
+from ..trak import TrakSerializer
 from .transporter import TransporterSerializer
 from .waste_line import WasteLineSerializer
-from ..trak import TrakSerializer
 
 
 class ManifestSerializer(TrakSerializer):
     createdDate = serializers.DateTimeField(
         source='created_date',
+        required=False,
     )
     updatedDate = serializers.DateTimeField(
         source='update_date',
+        required=False,
     )
     manifestTrackingNumber = serializers.CharField(
         source='mtn',
+        required=False,
     )
     # status
     submissionType = serializers.CharField(
         source='submission_type',
+        required=False,
     )
     signatureStatus = serializers.BooleanField(
         source='signature_status',
@@ -37,6 +42,7 @@ class ManifestSerializer(TrakSerializer):
     )
     originType = serializers.CharField(
         source='origin_type',
+        required=False,
     )
     shippedDate = serializers.DateTimeField(
         source='shipped_date',
@@ -52,11 +58,13 @@ class ManifestSerializer(TrakSerializer):
     )
     certifiedDate = serializers.DateTimeField(
         source='certified_date',
+        required=False,
         allow_null=True,
         default=None,
     )
     certifiedBy = serializers.JSONField(
         source='certified_by',
+        required=False,
         allow_null=True,
         default=None,
     )
@@ -70,6 +78,7 @@ class ManifestSerializer(TrakSerializer):
     # rejection
     rejectionInfo = serializers.JSONField(
         source='rejection_info',
+        required=False,
         allow_null=True,
         default=None,
     )
@@ -77,51 +86,62 @@ class ManifestSerializer(TrakSerializer):
     # residue
     residueNewManifestTrackingNumbers = serializers.JSONField(
         source='residue_new_mtn',
+        required=False,
         default=[],
     )
     # import, see .to_representation() and .to_internal_value() methods
     importInfo = serializers.JSONField(
         source='import_info',
+        required=False,
         allow_null=True,
         default=None,
     )
     containsPreviousRejectOrResidue = serializers.BooleanField(
         source='contains_residue_or_rejection',
+        required=False,
+        default=False
     )
     printedDocument = serializers.JSONField(
         source='printed_document',
+        required=False,
         allow_null=True,
         default=None,
     )
     formDocument = serializers.JSONField(
         source='form_document',
+        required=False,
         allow_null=True,
         default=None,
     )
     additionalInfo = serializers.JSONField(
         source='additional_info',
+        required=False,
         allow_null=True,
         default=None,
     )
     correctionInfo = serializers.JSONField(
         source='correction_info',
+        required=False,
         allow_null=True,
         default=None,
     )
     ppcStatus = serializers.JSONField(
         source='ppc_status',
+        required=False,
         allow_null=True,
         default=None,
     )
     # mtnValidationInfo
     # provideImageGeneratorInfo
     locked = serializers.BooleanField(
+        required=False,
         allow_null=True,
         default=False,
     )
 
     lockedReason = serializers.CharField(
         source='locked_reason',
+        required=False,
         allow_null=True,
         default=None,
     )
