@@ -5,7 +5,7 @@ from django.db import models
 from lib.rcrainfo import lookups as lu
 
 
-def default_mtn():
+def draft_mtn():
     return str(f'draft-{datetime.now().strftime("%Y-%m-%d-%H:%M:%S")}')
 
 
@@ -20,7 +20,7 @@ class Manifest(models.Model):
     mtn = models.CharField(
         verbose_name='manifest Tracking Number',
         max_length=15,
-        default=default_mtn
+        default=draft_mtn
     )
     status = models.CharField(
         max_length=25,
