@@ -9,7 +9,7 @@ on:
   workflow_call:
 
 jobs:
-  Test:
+  test:
     runs-on: ubuntu-latest
     defaults:
       run:

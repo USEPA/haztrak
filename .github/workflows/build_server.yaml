@@ -1,0 +1,27 @@
+name: Build  Server Container
+
+on:
+  pull-request:
+    branches:
+      - "main"
+
+jobs:
+  test_server:
+    uses: ./.github/workflows/test_server.yml
+
+  dockerBuild:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        # Would normally log in to DockerHub here
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: false
+          tags: USEPA/haztrak:latest
