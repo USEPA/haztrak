@@ -4,14 +4,22 @@ on:
       - "v*.*.*"
 
 jobs:
-  test-server:
+  test_server:
     uses: ./.github/workflows/test_server.yaml
 
-  test-client:
+  test_client:
     uses: ./.github/workflows/test_client.yaml
 
-  create-release:
-    needs: [test-client, test-server]
+  build_server:
+    needs: [test_server]
+    uses: ./.github/workflows/build_server.yaml
+
+  build_client:
+    needs: [test_client]
+    uses: ./.github/workflows/build_client.yaml
+
+  create_release:
+    needs: [build_server, build_client]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
