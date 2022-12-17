@@ -1,3 +1,9 @@
+export const CountryCode = [
+  { code: 'US', name: 'United States' },
+  { code: 'MX', name: 'Mexico' },
+  { code: 'CA', name: 'Canada' },
+];
+
 export const StateCode = [
   { code: 'AK', name: 'Alaska' },
   { code: 'AL', name: 'Alabama' },

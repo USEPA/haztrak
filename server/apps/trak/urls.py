@@ -1,13 +1,15 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 
-from .views import (HandlerSearch, HandlerView, ManifestView, SiteApi,
-                    SiteList, SiteManifest)
+from .views import (HandlerSearch, HandlerView, SiteApi,
+                    SiteList, SiteManifest, ManifestView)
+
+manifest_router = routers.SimpleRouter()
+manifest_router.register(r'manifest', ManifestView)
 
 urlpatterns = [
     # Manifest
-    path('manifest/<str:mtn>',
-         ManifestView.as_view(
-             {'get': 'retrieve', 'post': 'create', 'delete': 'destroy'})),
+    path('', include(manifest_router.urls)),
     # Site
     path('site/', SiteList.as_view()),
     path('site/<str:epa_id>', SiteApi.as_view()),

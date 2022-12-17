@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect } from 'react';
+import { Button } from 'react-bootstrap';
 import { addMsg, getUser, RootState, useAppDispatch, useAppSelector } from 'store';
 import useTitle from '../../hooks/useTitle';
-import { Button } from 'react-bootstrap';
 
 /**
  * Home page for logged-in user, currently does not really include anything
@@ -26,8 +26,7 @@ function Home(): ReactElement {
             addMsg({
               uniqueId: Date.now(),
               createdDate: new Date().toISOString(),
-              message:
-                'que paso? blah blah blah alskdjfa;lskdjf asd;lkfj asdlkja sdalskdjfalskdfja;lskfjalskfjsa',
+              message: 'que paso? blah blah blah',
               alertType: 'Error',
               read: false,
               timeout: 5000,

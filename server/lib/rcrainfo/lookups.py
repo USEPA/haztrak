@@ -1,6 +1,6 @@
 # Choices presented by RCRAinfo and utility functions for easy access to values
 STATUS = [
-    ('notAssigned', 'Not Assigned'),
+    ('NotAssigned', 'Not Assigned'),
     ('Pending', 'Pending'),
     ('Scheduled', 'Scheduled'),
     ('InTransit', 'In Transit'),

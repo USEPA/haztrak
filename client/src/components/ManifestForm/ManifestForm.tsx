@@ -1,3 +1,4 @@
+import { AxiosError, AxiosResponse } from 'axios';
 import AddButton from 'components/AddButton';
 import HandlerDetails from 'components/HandlerDetails';
 import HtCard from 'components/HtCard';
@@ -8,6 +9,8 @@ import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import htApi from 'services';
+import { addMsg, useAppDispatch } from 'store';
 import { Handler, Manifest } from 'types';
 import { HandlerType } from 'types/Handler/Handler';
 import { WasteLine } from 'types/WasteLine';
@@ -23,9 +26,36 @@ import AddWasteLine from './WasteLine';
 function ManifestForm() {
   // Top level ManifestForm methods and objects
   const manifestMethods = useForm<Manifest>();
+  const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
-    // ToDo: on submit, validate the user input and send to back end for processing.
+    // ToDo: on submit, validate the user input
     console.log('manifest onSubmit: ', data);
+    htApi
+      .post('/trak/manifest/', data)
+      .then((response: AxiosResponse) => {
+        dispatch(
+          addMsg({
+            uniqueId: Date.now(),
+            createdDate: new Date().toISOString(),
+            message: `${response.data.manifestTrackingNumber} ${response.statusText}`,
+            alertType: 'Info',
+            read: false,
+            timeout: 5000,
+          })
+        );
+      })
+      .catch((error: AxiosError) => {
+        dispatch(
+          addMsg({
+            uniqueId: Date.now(),
+            createdDate: new Date().toISOString(),
+            message: `${error.message}`,
+            alertType: 'Error',
+            read: false,
+            timeout: 5000,
+          })
+        );
+      });
   };
 
   useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);

@@ -29,9 +29,9 @@ class ManifestAPITests(APITestCase):
         self.client.force_authenticate(self.user)
 
     def test_get_manifest_by_mtn_status(self):
-        response = self.client.get(f'{self.base_url}{self.first_mtn}')
+        response = self.client.get(f'{self.base_url}{self.first_mtn}/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_non_existent_returns_404(self):
-        response = self.client.get(f'{self.base_url}000000111FOO')
+        response = self.client.get(f'{self.base_url}000000111FOO/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

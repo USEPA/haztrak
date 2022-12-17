@@ -1,6 +1,12 @@
+from datetime import datetime
+
 from django.db import models
 
 from lib.rcrainfo import lookups as lu
+
+
+def draft_mtn():
+    return str(f'draft-{datetime.now().strftime("%Y-%m-%d-%H:%M:%S")}')
 
 
 class Manifest(models.Model):
@@ -14,11 +20,12 @@ class Manifest(models.Model):
     mtn = models.CharField(
         verbose_name='manifest Tracking Number',
         max_length=15,
+        default=draft_mtn
     )
     status = models.CharField(
         max_length=25,
         choices=lu.STATUS,
-        default='notAssigned',
+        default='NotAssigned',
     )
     submission_type = models.CharField(
         max_length=25,
