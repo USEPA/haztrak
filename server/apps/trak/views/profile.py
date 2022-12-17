@@ -1,25 +1,27 @@
+import http
+
+from celery.exceptions import CeleryError
+from django.contrib.auth.models import User
 from django.db import IntegrityError, InternalError
-from rest_framework import permissions, status
+from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.accounts.models import Profile
-from apps.accounts.serializers import ProfileSerializer
-from apps.accounts.tasks import hello
+from apps.trak.models import RcraProfile
+from apps.trak.serializers import ProfileSerializer
+from apps.trak.tasks import sync_user_sites
 
 
 class ProfileView(GenericAPIView):
-    queryset = Profile.objects.all()
+    queryset = RcraProfile.objects.all()
     response = Response
-    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request: Request) -> Response:
         try:
             user = request.user
-            profile = Profile.objects.get(user=user)
+            profile = RcraProfile.objects.get(user=user)
             profile_serializer = ProfileSerializer(profile)
-            hello()  # this is just here as POC for using celery tasks
             return self.response(profile_serializer.data, status=status.HTTP_200_OK)
         except TypeError:
             raise InternalError
@@ -31,3 +33,20 @@ class ProfileView(GenericAPIView):
             return self.response(status=status.HTTP_400_BAD_REQUEST,
                                  data={
                                      'error': 'username taken, please choose another'})
+
+
+class SyncProfile(GenericAPIView):
+    queryset = None
+    response = Response
+
+    def get(self, request: Request) -> Response:
+        try:
+            user = User.objects.get(username=request.user)
+            task = sync_user_sites.delay(user.username)
+            return self.response({'task': task.id})
+        except User.DoesNotExist:
+            return self.response(data=None,
+                                 status=http.HTTPStatus.INTERNAL_SERVER_ERROR)
+        except CeleryError:
+            return self.response(data=None,
+                                 status=http.HTTPStatus.INTERNAL_SERVER_ERROR)

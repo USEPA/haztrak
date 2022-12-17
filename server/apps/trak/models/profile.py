@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from apps.trak.models import Site
+from .sites import Site
 
 
-class Profile(models.Model):
+class RcraProfile(models.Model):
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
@@ -17,6 +17,10 @@ class Profile(models.Model):
     rcra_api_id = models.CharField(
         max_length=128,
         null=True,
+        blank=True,
+    )
+    rcra_user_name = models.CharField(
+        max_length=128,
         blank=True,
     )
     epa_sites = models.ManyToManyField(

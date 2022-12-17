@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.accounts.models import Profile
+from apps.trak.models import RcraProfile
 
 
 class ProfileSerializer(ModelSerializer):
@@ -25,7 +25,7 @@ class ProfileSerializer(ModelSerializer):
     )
 
     class Meta:
-        model = Profile
+        model = RcraProfile
         fields = [
             'user',
             'rcraAPIID',

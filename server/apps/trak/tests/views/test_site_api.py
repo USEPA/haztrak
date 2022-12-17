@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from apps.accounts.models import Profile
+from apps.trak.models import RcraProfile
 
 
 class SiteAPITests(APITestCase):
@@ -11,7 +11,7 @@ class SiteAPITests(APITestCase):
 
     def setUp(self) -> None:
         self.user = User.objects.get(username='testuser1')
-        self.profile = Profile.objects.get(user=self.user)
+        self.profile = RcraProfile.objects.get(user=self.user)
         self.client.force_authenticate(self.user)
 
     def test_responds_200(self):
@@ -51,7 +51,7 @@ class SiteManifestTests(APITestCase):
 
     def setUp(self) -> None:
         self.user = User.objects.get(username='testuser1')
-        self.profile = Profile.objects.get(user=self.user)
+        self.profile = RcraProfile.objects.get(user=self.user)
         self.client.force_authenticate(self.user)
 
     def test_site_manifest_returns_200(self):

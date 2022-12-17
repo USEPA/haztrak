@@ -20,7 +20,7 @@ export const handlers = [
       })
     );
   }),
-  rest.get(`${API_BASE_URL}/api/user/profile`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/trak/profile`, (req, res, ctx) => {
     return res(
       // Respond with a 200 status code
       ctx.status(200),

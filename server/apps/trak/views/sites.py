@@ -9,8 +9,8 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.accounts.models import Profile
 from apps.trak.models import Manifest, Site, Transporter
+from apps.trak.models import RcraProfile
 from apps.trak.serializers import SiteSerializer
 
 
@@ -24,7 +24,7 @@ class SiteList(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Profile.objects.get(user=user).epa_sites.all()
+        return RcraProfile.objects.get(user=user).epa_sites.all()
 
 
 class SiteApi(generics.RetrieveAPIView):
@@ -51,7 +51,7 @@ class SiteManifest(APIView):
     def get(self, request: Request, epa_id: str = None) -> Response:
         try:
             profile_sites = [str(i) for i in
-                             Profile.objects.get(user=request.user).epa_sites.all()]
+                             RcraProfile.objects.get(user=request.user).epa_sites.all()]
             if epa_id not in profile_sites:
                 raise PermissionDenied
             tsd_manifests = [str(i) for i in

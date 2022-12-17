@@ -10,7 +10,7 @@ const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
 const username = 'testuser1';
 
 export const handlers = [
-  rest.get(`${API_BASE_URL}/api/user/profile`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/trak/profile`, (req, res, ctx) => {
     return res(
       ctx.delay(), // random 'realistic' server response time
       ctx.status(200),

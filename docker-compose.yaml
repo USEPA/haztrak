@@ -6,6 +6,8 @@ services:
     build: ./server
     ports:
       - "8000:8000"
+    volumes:
+      - ./server:/app
     environment:
       HT_HOST: "localhost"
       HT_SECRET_KEY: ${HT_SECRET_KEY}
@@ -13,14 +15,22 @@ services:
       HT_TIMEZONE: ${HT_TIMEZONE}
       HT_RCRAINFO_ENV: ${HT_RCRAINFO_ENV}
       HT_CORS_DOMAIN: ${HT_CORS_DOMAIN}
-      HT_CELERY_BROKER_URL: ${HT_CELERY_BROKER_URL}
-      HT_CELERY_RESULT_BACKEND: ${HT_CELERY_RESULT_BACKEND}
-  #       HT_DB_ENGINE: ${HT_DB_ENGINE}
-  #       HT_DB_NAME: ${HT_DB_NAME}
-  #       HT_DB_USER: ${HT_DB_USER}
-  #       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
-  #       HT_DB_HOST: ${HT_DB_HOST}
-  #       HT_DB_PORT: ${HT_DB_PORT}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+      HT_DB_ENGINE: ${HT_DB_ENGINE}
+      HT_DB_NAME: ${HT_DB_NAME}
+      HT_DB_USER: ${HT_DB_USER}
+      HT_DB_PASSWORD: ${HT_DB_PASSWORD}
+      HT_DB_HOST: postgres
+      HT_DB_PORT: ${HT_DB_PORT}
+    command: |
+      sh -c "
+      python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py loaddata dev_data.json &&
+      python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - postgres
 
   redis:
     container_name: redis
@@ -29,25 +39,36 @@ services:
       - "6379:6379"
 
   celery:
+    restart: always
     container_name: celery
     build: ./server
-    command: celery -A haztrak worker -l info
+    volumes:
+      - ./server:/app
     environment:
-      HT_CELERY_BROKER_URL: redis://redis:6379
-      HT_CELERY_RESULT_BACKEND: redis://redis:6379
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+      HT_DB_ENGINE: ${HT_DB_ENGINE}
+      HT_DB_NAME: ${HT_DB_NAME}
+      HT_DB_USER: ${HT_DB_USER}
+      HT_DB_PASSWORD: ${HT_DB_PASSWORD}
+      HT_DB_HOST: postgres
+      HT_DB_PORT: ${HT_DB_PORT}
+    command: python manage.py celery_worker
+    #    command: celery -A haztrak worker -l info -E
     depends_on:
       - redis
       - server
 
 
-  #  postgres:
-  #    container_name: postgres
-  #    image: "postgres:14"
-  #    environment:
-  #      - POSTGRES_USER=${HT_POSTGRES_USER}
-  #      - POSTGRES_PASSWORD=${HT_POSTGRES_PASSWORD}
-  #    ports:
-  #      - "5432:5432"
+  postgres:
+    container_name: postgres
+    image: "postgres:14"
+    environment:
+      POSTGRES_DB: ${HT_DB_NAME}
+      POSTGRES_USER: ${HT_DB_USER}
+      POSTGRES_PASSWORD: ${HT_DB_PASSWORD}
+    ports:
+      - "5432:5432"
   #    volumes:
   #      - development:/var/lib/postgresql/data
 
@@ -60,6 +81,8 @@ services:
     environment:
       REACT_APP_HT_API_URL: ${REACT_APP_HT_API_URL}
       REACT_APP_HT_ENV: ${REACT_APP_HT_ENV}
+    command: |
+      sh -c "apk add --update npm && cd /app && npm run start"
 
 volumes:
   development:

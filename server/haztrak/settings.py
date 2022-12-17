@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_spectacular',
     'corsheaders',
+    'django_celery_results',
     'apps.trak',
     'apps.accounts',
 ]
@@ -172,6 +173,6 @@ SPECTACULAR_SETTINGS = {
     },
 }
 
-HT_CELERY_BROKER_URL = os.getenv("HT_CELERY_BROKER_URL", "redis://localhost:6379")
-HT_CELERY_RESULT_BACKEND = os.getenv("HT_CELERY_RESULT_BACKEND", "redis://localhost"
-                                                                 ":6379")
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost"
+                                                           ":6379")

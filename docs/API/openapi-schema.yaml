@@ -106,7 +106,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthToken'
           description: ''
-  /api/user/profile/:
+  /api/trak/profile/:
     get:
       operationId: user_profile_retrieve
       tags:

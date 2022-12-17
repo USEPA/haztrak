@@ -91,13 +91,13 @@ may not be recommended for production, but this is an example web application.
 
 #### Celery
 
-Haztrak is offloads expensive tasks to a task queue, [Celery](https://docs.celeryq.dev/en/stable/).
+Haztrak offloads expensive tasks to a task queue, [Celery](https://docs.celeryq.dev/en/stable/).
 It requires access to a message broker like [Redis](https://redis.io/)
 or [RabbitMQ](https://www.rabbitmq.com/).
 
-* `HT_CELERY_BROKER_URL`
+* `CELERY_BROKER_URL`
     * default: `redis://localhost:6379`
-* `HT_CELERY_RESULT_BACKEND`
+* `CELERY_RESULT_BACKEND`
     * default: `redis://localhost:6379`
 
 ## Client

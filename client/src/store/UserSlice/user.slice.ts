@@ -14,7 +14,7 @@ const initialState: UserState = {
 };
 
 export const getUser = createAsyncThunk('user/getUser', async () => {
-  const response = await htApi.get('user/profile');
+  const response = await htApi.get('trak/profile');
   return response.data as UserState;
 });
 
