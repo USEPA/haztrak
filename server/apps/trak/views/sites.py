@@ -1,6 +1,7 @@
 import logging
 
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.http import Http404
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, permissions, status
 from rest_framework.exceptions import APIException
@@ -31,11 +32,15 @@ class SiteApi(generics.RetrieveAPIView):
     """Haztrak Site encompasses EPA and haztrak relevant information on a location"""
     serializer_class = SiteSerializer
     lookup_url_kwarg = 'epa_id'
+    queryset = Site.objects.all()
 
     def retrieve(self, request, *args, **kwargs):
-        queryset = Site.objects.all()
+        profile = RcraProfile.objects.get(user=self.request.user)
+        site_ids = [str(i) for i in profile.epa_sites.all()]
         epa_id = self.kwargs['epa_id']
-        site = get_object_or_404(queryset, epa_site__epa_id=epa_id)
+        if epa_id not in site_ids:
+            raise Http404
+        site = get_object_or_404(self.queryset, epa_site__epa_id=epa_id)
         serializer = SiteSerializer(site)
         return Response(serializer.data)
 
