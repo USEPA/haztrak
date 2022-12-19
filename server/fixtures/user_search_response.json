@@ -1,0 +1,297 @@
+{
+  "totalNumberOfUsers": 1,
+  "totalNumberOfPages": 1,
+  "currentPageNumber": 1,
+  "warnings": [],
+  "searchedParameters": [
+    {
+      "field": "userId",
+      "value": "dpgraham4401"
+    }
+  ],
+  "users": [
+    {
+      "userId": "DPGRAHAM4401",
+      "firstName": "David",
+      "lastName": "Graham",
+      "email": "dpgraham4401@gmail.com",
+      "phone": {
+        "number": "555-555-5555"
+      },
+      "esaStatus": "Received",
+      "lastLoginDate": "2022-12-17T02:56:11.357+00:00",
+      "sites": [
+        {
+          "siteId": "VAB000535062",
+          "siteName": "TEST BROKER 5-28-2020",
+          "permissions": [
+            {
+              "level": "Active",
+              "module": "SiteManagement"
+            },
+            {
+              "level": "Certifier",
+              "module": "AnnualReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "BiennialReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "eManifest"
+            },
+            {
+              "level": "Certifier",
+              "module": "myRCRAid"
+            },
+            {
+              "level": "Certifier",
+              "module": "WIETS"
+            }
+          ]
+        },
+        {
+          "siteId": "VATESTGEN001",
+          "siteName": "VA TEST GEN 2021",
+          "permissions": [
+            {
+              "level": "Active",
+              "module": "SiteManagement"
+            },
+            {
+              "level": "Certifier",
+              "module": "AnnualReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "BiennialReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "eManifest"
+            },
+            {
+              "level": "Certifier",
+              "module": "myRCRAid"
+            },
+            {
+              "level": "Certifier",
+              "module": "WIETS"
+            }
+          ]
+        },
+        {
+          "siteId": "VATEST000001",
+          "siteName": "TEST TRANSPORTER 1 OF VA",
+          "permissions": [
+            {
+              "level": "Active",
+              "module": "SiteManagement"
+            },
+            {
+              "level": "Certifier",
+              "module": "AnnualReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "BiennialReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "eManifest"
+            },
+            {
+              "level": "Certifier",
+              "module": "myRCRAid"
+            },
+            {
+              "level": "Certifier",
+              "module": "WIETS"
+            }
+          ]
+        },
+        {
+          "siteId": "VATEST000002",
+          "siteName": "TEST TRANSPORTER 2 OF VA",
+          "permissions": [
+            {
+              "level": "Active",
+              "module": "SiteManagement"
+            },
+            {
+              "level": "Certifier",
+              "module": "AnnualReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "BiennialReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "eManifest"
+            },
+            {
+              "level": "Certifier",
+              "module": "myRCRAid"
+            },
+            {
+              "level": "Certifier",
+              "module": "WIETS"
+            }
+          ]
+        },
+        {
+          "siteId": "VATESTRAN02",
+          "siteName": "VA TEST TRAN 2021",
+          "permissions": [
+            {
+              "level": "Active",
+              "module": "SiteManagement"
+            },
+            {
+              "level": "Certifier",
+              "module": "AnnualReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "BiennialReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "eManifest"
+            },
+            {
+              "level": "Certifier",
+              "module": "myRCRAid"
+            },
+            {
+              "level": "Certifier",
+              "module": "WIETS"
+            }
+          ]
+        },
+        {
+          "siteId": "VA988177803",
+          "siteName": "HEATING AND OIL",
+          "permissions": [
+            {
+              "level": "Active",
+              "module": "SiteManagement"
+            },
+            {
+              "level": "Certifier",
+              "module": "AnnualReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "BiennialReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "eManifest"
+            },
+            {
+              "level": "Certifier",
+              "module": "myRCRAid"
+            },
+            {
+              "level": "Certifier",
+              "module": "WIETS"
+            }
+          ]
+        },
+        {
+          "siteId": "VAD041283342",
+          "siteName": "UNIVAR SOLUTIONS USA INC.",
+          "permissions": [
+            {
+              "level": "Active",
+              "module": "SiteManagement"
+            },
+            {
+              "level": "Certifier",
+              "module": "AnnualReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "BiennialReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "eManifest"
+            },
+            {
+              "level": "Certifier",
+              "module": "myRCRAid"
+            },
+            {
+              "level": "Certifier",
+              "module": "WIETS"
+            }
+          ]
+        },
+        {
+          "siteId": "VAD000532119",
+          "siteName": "TEST TSDF OF VA",
+          "permissions": [
+            {
+              "level": "Active",
+              "module": "SiteManagement"
+            },
+            {
+              "level": "Certifier",
+              "module": "AnnualReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "BiennialReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "eManifest"
+            },
+            {
+              "level": "Certifier",
+              "module": "myRCRAid"
+            },
+            {
+              "level": "Certifier",
+              "module": "WIETS"
+            }
+          ]
+        },
+        {
+          "siteId": "VATESTTSDF03",
+          "siteName": "VA TEST TSDF 2021",
+          "permissions": [
+            {
+              "level": "Active",
+              "module": "SiteManagement"
+            },
+            {
+              "level": "Certifier",
+              "module": "AnnualReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "BiennialReport"
+            },
+            {
+              "level": "Certifier",
+              "module": "eManifest"
+            },
+            {
+              "level": "Certifier",
+              "module": "myRCRAid"
+            },
+            {
+              "level": "Certifier",
+              "module": "WIETS"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

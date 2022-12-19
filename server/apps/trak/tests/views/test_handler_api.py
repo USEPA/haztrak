@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase
 
 from apps.trak.models import Address, Handler
 
-# test data
+# test data (for UnitTest based unit tests)
 my_site_id = 'my_epa_id'
 handler_test_object = {
     "site_type": 'Generator',
@@ -53,8 +53,6 @@ class HandlerAPITest(APITestCase):
     def test_valid_request_returns_ok(self):
         handler_key = self.Handler.pk
         response = self.client.get(f'{self.base_url}details/{handler_key}')
-        # print(response)
-        # print(response.data['epaSiteId'])
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_valid_contains_serialized_handler(self):

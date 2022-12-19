@@ -1,13 +1,16 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from .views import (HandlerSearch, HandlerView, SiteApi,
-                    SiteList, SiteManifest, ManifestView)
+from .views import (HandlerSearch, HandlerView, SiteApi, SyncProfile,
+                    ProfileView, SiteList, SiteManifest, ManifestView)
 
 manifest_router = routers.SimpleRouter()
 manifest_router.register(r'manifest', ManifestView)
 
 urlpatterns = [
+    # Rcra Profile
+    path('profile', ProfileView.as_view()),
+    path('site/sync', SyncProfile.as_view()),
     # Manifest
     path('', include(manifest_router.urls)),
     # Site
