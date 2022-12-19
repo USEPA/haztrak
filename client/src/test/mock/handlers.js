@@ -3,7 +3,7 @@ import { MOCK_EPA_ID, MOCK_MANIFEST, MOCK_MTN } from '../fixtures';
 import { MOCK_SITE_ARRAY, MOCK_SITE_OBJECT } from '../fixtures/mockHandler';
 import { MOCK_MANIFESTS_ARRAY } from '../fixtures/mockManifest';
 
-const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
+export const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
 
 export const handlers = [
   rest.post(`${API_BASE_URL}/api/user/login`, (req, res, ctx) => {

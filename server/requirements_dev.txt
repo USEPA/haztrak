@@ -1,4 +1,3 @@
 pytest==7.2.0
 pytest-django==4.5.2
 -r requirements.txt
-watchdog==2.2.0

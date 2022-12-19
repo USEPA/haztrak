@@ -61,7 +61,8 @@ const userSlice = createSlice({
         state.rcraAPIID = action.payload.rcraAPIID;
         state.rcraAPIKey = action.payload.rcraAPIKey;
         state.phoneNumber = action.payload.phoneNumber;
-        state.epaSites = action.payload.epaSites;
+        // state.epaSites = action.payload.epaSites;
+        state.epaSites = ['blah', 'blah'];
         state.error = undefined;
       })
       .addCase(getUser.rejected, (state, action) => {

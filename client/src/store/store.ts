@@ -1,12 +1,6 @@
-import {
-  Action,
-  combineReducers,
-  configureStore,
-  PreloadedState,
-  ThunkAction,
-} from '@reduxjs/toolkit';
-import userReducers, { getUser, login } from './UserSlice';
+import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
 import notificationReducers from './NotificationSlice';
+import userReducers, { getUser, login } from './UserSlice';
 
 const rootReducer = combineReducers({
   user: userReducers,
@@ -28,10 +22,3 @@ export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 export { store, getUser, login, setupStore };
-// Todo: see if I need to keep this
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->;
