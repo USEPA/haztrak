@@ -1,9 +1,9 @@
 import HtCard from 'components/HtCard';
-import RcraProfileView from 'features/profile/RcraProfileView';
-import UserView from 'features/profile/UserView';
+import RcraProfile from 'features/profile/RcraProfile';
+import UserProfile from 'features/profile/UserProfile';
 import useTitle from 'hooks/useTitle';
 import React, { ReactElement, useEffect } from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { getUser, useAppDispatch, useAppSelector } from 'store';
 import { UserState } from 'types/store';
 
@@ -32,17 +32,13 @@ function Profile(): ReactElement {
           <HtCard>
             <HtCard.Header title="User Profile" />
             <HtCard.Body>
-              <UserView profile={profile} />
-              <div className="mx-1 d-flex flex-row-reverse">
-                {/* ToDo: onClick modal-form to add/edit haztrak user information*/}
-                <Button variant="success">Edit User Profile</Button>
-              </div>
+              <UserProfile profile={profile} />
             </HtCard.Body>
           </HtCard>
           <HtCard>
             <HtCard.Header title="RCRAInfo Profile" />
             <HtCard.Body>
-              <RcraProfileView profile={profile} />
+              <RcraProfile profile={profile} />
             </HtCard.Body>
           </HtCard>
         </Col>

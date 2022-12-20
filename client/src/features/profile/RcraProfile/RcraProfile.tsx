@@ -7,7 +7,7 @@ interface ProfileViewProps {
   profile: UserState;
 }
 
-function RcraProfileView({ profile }: ProfileViewProps) {
+function RcraProfile({ profile }: ProfileViewProps) {
   const [editable, setEditable] = useState(false);
   const { register, reset, handleSubmit } = useForm<UserState>();
   return (
@@ -15,23 +15,6 @@ function RcraProfileView({ profile }: ProfileViewProps) {
       <Form onSubmit={handleSubmit((data) => console.log('onSubmit: \n', data))}>
         <Container>
           <Row className="mb-2">
-            <Col>
-              <Form.Group>
-                <Form.Label className="fw-bold mb-0" htmlFor="profileRcraAPIID">
-                  RCRAInfo API ID
-                </Form.Label>
-                <Form.Control
-                  plaintext={!editable}
-                  readOnly={!editable}
-                  defaultValue={profile.rcraAPIID}
-                  id="profileRcraAPIID"
-                  {...register('rcraAPIID')}
-                  placeholder={
-                    profile.rcraUsername ? profile.rcraUsername : 'Not Provided'
-                  }
-                />
-              </Form.Group>
-            </Col>
             <Col>
               <Form.Group>
                 <Form.Label className="fw-bold mb-0" htmlFor="profileRcraUsername">
@@ -49,6 +32,23 @@ function RcraProfileView({ profile }: ProfileViewProps) {
                 />
               </Form.Group>
             </Col>
+            <Col>
+              <Form.Group>
+                <Form.Label className="fw-bold mb-0" htmlFor="profileRcraAPIID">
+                  RCRAInfo API ID
+                </Form.Label>
+                <Form.Control
+                  plaintext={!editable}
+                  readOnly={!editable}
+                  defaultValue={profile.rcraAPIID}
+                  id="profileRcraAPIID"
+                  {...register('rcraAPIID')}
+                  placeholder={
+                    profile.rcraUsername ? profile.rcraUsername : 'Not Provided'
+                  }
+                />
+              </Form.Group>
+            </Col>
           </Row>
           <Row className="mb-2">
             <Col>
@@ -60,7 +60,6 @@ function RcraProfileView({ profile }: ProfileViewProps) {
                   type="password"
                   plaintext={!editable}
                   readOnly={!editable}
-                  defaultValue={profile.rcraAPIKey}
                   id="profileRcraAPIKey"
                   {...register('rcraAPIKey')}
                   placeholder="●●●●●●●●●●●"
@@ -135,4 +134,4 @@ function RcraProfileView({ profile }: ProfileViewProps) {
   );
 }
 
-export default RcraProfileView;
+export default RcraProfile;

@@ -5,8 +5,7 @@ import { UserState } from 'types/store';
 const initialState: UserState = {
   user: JSON.parse(localStorage.getItem('user') || 'null') || null,
   token: JSON.parse(localStorage.getItem('token') || 'null') || null,
-  rcraAPIID: '',
-  rcraAPIKey: '',
+  rcraAPIID: undefined,
   rcraUsername: undefined,
   epaSites: [],
   phoneNumber: undefined,
@@ -15,8 +14,11 @@ const initialState: UserState = {
   error: undefined,
 };
 
-export const getUser = createAsyncThunk('user/getUser', async () => {
-  const response = await htApi.get('trak/profile');
+export const getUser = createAsyncThunk('user/getUser', async (arg, { getState }) => {
+  const state = getState();
+  // @ts-ignore
+  const username = state.user.user;
+  const response = await htApi.get(`trak/profile/${username}`);
   return response.data as UserState;
 });
 
@@ -65,7 +67,7 @@ const userSlice = createSlice({
         return {
           ...state,
           ...action.payload,
-          epaSites: ['blah', 'blah'], // Temporary: Remove
+          // epaSites: ['blah', 'blah'], // Temporary: Remove
           error: undefined,
           loading: false,
         };

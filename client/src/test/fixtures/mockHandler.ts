@@ -2,6 +2,7 @@
  * A mock handler ID, use by the mock handler object, for tests
  */
 export const MOCK_EPA_ID = 'testSiteIdNumber';
+export const MOCK_USERNAME = 'testuser1';
 
 /**
  * A mock handler object for tests
