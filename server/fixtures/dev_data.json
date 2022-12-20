@@ -50,9 +50,10 @@
       "user": 2,
       "rcra_api_key": "fakeRCRAInfoAPIKey",
       "rcra_api_id": "fakeRCRAInfoAPIId",
-      "rcra_user_name": "dpgraham4401",
+      "rcra_username": "dpgraham4401",
       "phone_number": null,
-      "epa_sites": []
+      "epa_sites": [],
+      "email": "test.user@haztrak.net"
     }
   }
 ]

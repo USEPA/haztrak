@@ -7,8 +7,10 @@ const initialState: UserState = {
   token: JSON.parse(localStorage.getItem('token') || 'null') || null,
   rcraAPIID: '',
   rcraAPIKey: '',
+  rcraUsername: undefined,
   epaSites: [],
   phoneNumber: undefined,
+  email: undefined,
   loading: false,
   error: undefined,
 };
@@ -52,42 +54,52 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getUser.pending, (state) => {
-        state.loading = true;
-        state.error = undefined;
+        return {
+          ...state,
+          loading: true,
+          error: undefined,
+        };
       })
       .addCase(getUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload.user;
-        state.rcraAPIID = action.payload.rcraAPIID;
-        state.rcraAPIKey = action.payload.rcraAPIKey;
-        state.phoneNumber = action.payload.phoneNumber;
-        // state.epaSites = action.payload.epaSites;
-        state.epaSites = ['blah', 'blah'];
-        state.error = undefined;
+        console.log('getUser: \n', action.payload);
+        return {
+          ...state,
+          ...action.payload,
+          epaSites: ['blah', 'blah'], // Temporary: Remove
+          error: undefined,
+          loading: false,
+        };
       })
       .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
-        // Todo
+        // Todo: remove ts-ignore
         // @ts-ignore
         state.error = action.payload.error;
+        return state;
       })
       .addCase(login.pending, (state, action) => {
-        state.error = undefined;
-        state.loading = true;
+        return {
+          ...state,
+          error: undefined,
+          loading: true,
+        };
       })
       .addCase(login.fulfilled, (state, action) => {
         const authResponse = action.payload;
         // Todo: currently, we store username and jwt token in local storage so
-        //  the user stays logged in between page refreshes. This is a vulnerability
+        //  the user stays logged in between page refreshes. This is a known vulnerability to be
+        //  fixed in the future. For now, it's a development convenience.
         localStorage.setItem('user', JSON.stringify(authResponse.user));
         localStorage.setItem('token', JSON.stringify(authResponse.token));
         state.user = authResponse.user;
         state.token = authResponse.token;
+        return state;
       })
       .addCase(login.rejected, (state, action) => {
         // Todo
         // @ts-ignore
         state.error = action.error.message;
+        return state;
       });
   },
 });

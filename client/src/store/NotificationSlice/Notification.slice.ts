@@ -2,16 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Alert, NotificationState } from 'types/store';
 
 const initialState: NotificationState = {
-  alert: [
-    // {
-    //   uniqueId: Date.now(),
-    //   createdDate: new Date().toISOString(),
-    //   read: false,
-    //   alertType: 'Info',
-    //   message: 'Welcome to Haztrak',
-    //   timeout: 5000,
-    // },
-  ],
+  alert: [],
 };
 
 const NotificationSlice = createSlice({
@@ -20,9 +11,11 @@ const NotificationSlice = createSlice({
   reducers: {
     addMsg: (state: NotificationState, action: PayloadAction<Alert>) => {
       state.alert.push(action.payload);
+      return state;
     },
     readMsg: (state: NotificationState, action: PayloadAction<Alert>) => {
       state.alert.push(action.payload);
+      return state;
     },
     removeMsg: (state: NotificationState, action: PayloadAction<Alert>) => {
       const idToDelete = action.payload.uniqueId;
@@ -31,6 +24,7 @@ const NotificationSlice = createSlice({
           state.alert.splice(i, 1);
         }
       }
+      return state;
     },
   },
 });

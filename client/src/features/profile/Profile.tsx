@@ -28,7 +28,7 @@ function Profile(): ReactElement {
         </Row>
       </Container>
       <Container fluid className="py-3 d-flex justify-content-center">
-        <Col xs md={10} lg={9} xl={8} className="justify-content-center">
+        <Col xs={12} md={11} lg={10} xl={8} className="justify-content-center">
           <HtCard>
             <HtCard.Header title="User Profile" />
             <HtCard.Body>
@@ -43,23 +43,6 @@ function Profile(): ReactElement {
             <HtCard.Header title="RCRAInfo Profile" />
             <HtCard.Body>
               <RcraProfileView profile={profile} />
-              <div className="mx-1 d-flex flex-row-reverse">
-                {/* ToDo: onClick modal-form to add/edit Rcrainfo user information*/}
-                <Button
-                  className="mx-2"
-                  variant="success"
-                  onClick={() => console.log('ToDo: toggleModal for form')}
-                >
-                  Edit Profile
-                </Button>
-                <Button
-                  className="mx-2"
-                  variant="primary"
-                  onClick={() => console.log('ToDo: hit sync user site endpoint')}
-                >
-                  Sync Site Permissions
-                </Button>
-              </div>
             </HtCard.Body>
           </HtCard>
         </Col>
