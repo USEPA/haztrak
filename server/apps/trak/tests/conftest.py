@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, date
+from datetime import date, datetime
 
 import pytest
 from django.contrib.auth.models import User
@@ -73,7 +73,7 @@ def manifest_elc(db, address_123_main, generator001, tsd001) -> Manifest:
 def test_user_profile(db, site_generator001, testuser1) -> RcraProfile:
     profile = RcraProfile.objects.create(rcra_api_id='rcraApiId',
                                          rcra_api_key='rcraApikey',
-                                         rcra_user_name='dpgraham4401',
+                                         rcra_username='dpgraham4401',
                                          user=testuser1)
     profile.epa_sites.add(site_generator001)
     profile.save()

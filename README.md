@@ -1,11 +1,11 @@
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
-[![Server Test](https://github.com/USEPA/haztrak/actions/workflows/test_server.yml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_server.yml)
-[![Client Tests](https://github.com/USEPA/haztrak/actions/workflows/test_client.yml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_client.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Server Tests](https://github.com/USEPA/haztrak/actions/workflows/test_server.yaml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_server.yml)
+[![Client Tests](https://github.com/USEPA/haztrak/actions/workflows/test_client.yaml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_client.yml)
 ___
 
 # Haztrak :recycle:
 
-Haztrak is a example web-application that aims to showcase
+Haztrak is an example web-application that aims to illustrate
 how [hazardous waste](https://www.epa.gov/hw) management software can interface with and leverage
 the resources exposed by EPA's [RCRAInfo](https://rcrainfo.epa.gov/)
 and [e-Manifest](https://github.com/USEPA/e-manifest) systems.
@@ -19,12 +19,12 @@ for tracking hazardous waste from cradle to grave while saving valuable time, re
 for industry and states.
 
 e-Manifest, a modular component of [RCRAInfo](https://rcrainfo.epa.gov/), can be accessed by
-it's users a few ways...
+its users a few ways...
 
 1. Through your favorite web browser at https://rcrainfo.epa.gov/
 2. Via the RCRAInfo RESTful application programming interface (API)
 
-Haztrak aims to showcase how hazardous waste handlers can utilize the later in their own waste
+Haztrak aims to showcase how hazardous waste handlers can utilize the latter in their own waste
 management software.
 In Particular, using electronic manifest without the need to log into RCRAInfo through a browser.
 
@@ -36,8 +36,8 @@ This project would not be possible without the work of the EPA e-Manifest Team.
 
 ## Getting Started :rocket:
 
-- looking to try haztrak or setup a local development
-  environment? [See our documentation on built-in options to deploy](docs/README.md#deploying-haztrak)
+- looking to try haztrak or set up a local development
+  environment? [See our documentation on built-in options to deploy](docs/README.md#deployment)
 
 Looking to contribute?
 
@@ -52,11 +52,11 @@ Looking to contribute?
 
 ## Documentation :page_facing_up:
 
-See the READMEs in the [server](server/README.md) and [client](client/README.md) directories for a
+See the README's in the [server](server/README.md) and [client](client/README.md) directories for a
 high level
 overview.
 
-We plan on additional developer documentation in the [docs](./docs) directory, which contain
+We plan on more robust developer documentation in the [./docs](./docs) directory, which contain
 theoretical workflows for using the RCRAInfo services.
 
 Lastly, since this is intended to be first and foremost an example web application,
@@ -73,13 +73,13 @@ the freedom to use, modify, redistribute, even develop proprietary derivative wo
 
 ## Disclaimer
 
-The United States Environmental Protection Agency (EPA) GitHub project code 
-is provided on an "as is" basis and the user assumes responsibility for its 
-use. EPA has relinquished control of the information and no longer has 
-responsibility to protect the integrity, confidentiality, or availability 
-of the information. Any reference to specific commercial products, 
-processes, or services by service mark, trademark, manufacturer, or 
-otherwise, does not constitute or imply their endorsement, recommendation 
-or favoring by EPA. The EPA seal and logo shall not be used in any manner 
+The United States Environmental Protection Agency (EPA) GitHub project code
+is provided on an "as is" basis and the user assumes responsibility for its
+use. EPA has relinquished control of the information and no longer has
+responsibility to protect the integrity, confidentiality, or availability
+of the information. Any reference to specific commercial products,
+processes, or services by service mark, trademark, manufacturer, or
+otherwise, does not constitute or imply their endorsement, recommendation
+or favoring by EPA. The EPA seal and logo shall not be used in any manner
 to imply endorsement of any commercial product or activity by EPA or
 the United States Government.

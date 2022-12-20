@@ -4,7 +4,11 @@ from rest_framework.serializers import ModelSerializer
 from apps.trak.models import RcraProfile
 
 
-class ProfileSerializer(ModelSerializer):
+class ProfileGetSerializer(ModelSerializer):
+    """
+    Provides the user's RcraProfile information, excluding their RCRAInfo
+    API key (see ProfileUpdateSerializer)
+    """
     user = serializers.StringRelatedField()
     epaSites = serializers.StringRelatedField(
         required=False,
@@ -19,6 +23,27 @@ class ProfileSerializer(ModelSerializer):
         required=False,
         source='rcra_api_id',
     )
+    rcraUsername = serializers.CharField(
+        required=False,
+        source='rcra_username',
+    )
+
+    class Meta:
+        model = RcraProfile
+        fields = [
+            'user',
+            'rcraAPIID',
+            'rcraUsername',
+            'epaSites',
+            'phoneNumber',
+        ]
+
+
+class ProfileUpdateSerializer(ProfileGetSerializer):
+    """
+    Adds the users RCRAInfo API Key to the trak Profile serializer to be used
+    for post and update request (not for GET requests).
+    """
     rcraAPIKey = serializers.CharField(
         required=False,
         source='rcra_api_key',
@@ -30,6 +55,7 @@ class ProfileSerializer(ModelSerializer):
             'user',
             'rcraAPIID',
             'rcraAPIKey',
+            'rcraUsername',
             'epaSites',
             'phoneNumber',
         ]

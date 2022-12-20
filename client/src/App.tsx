@@ -36,7 +36,7 @@ function App(): ReactElement {
                 }
               />
               <Route
-                path="/profile"
+                path="/profile/*"
                 element={
                   <PrivateRoute authUser={user}>
                     <Profile />

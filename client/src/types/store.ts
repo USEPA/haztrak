@@ -6,8 +6,10 @@ export interface UserState {
   token: string | undefined;
   rcraAPIID?: string;
   rcraAPIKey?: string;
+  rcraUsername?: string;
   epaSites?: string[];
   phoneNumber?: string;
+  email?: string;
   loading: boolean;
   error?: string | undefined;
 }

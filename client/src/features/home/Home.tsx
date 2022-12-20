@@ -1,7 +1,7 @@
+import useTitle from 'hooks/useTitle';
 import React, { ReactElement, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { addMsg, getUser, RootState, useAppDispatch, useAppSelector } from 'store';
-import useTitle from '../../hooks/useTitle';
 
 /**
  * Home page for logged-in user, currently does not really include anything

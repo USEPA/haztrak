@@ -19,7 +19,7 @@ class RcraProfile(models.Model):
         null=True,
         blank=True,
     )
-    rcra_user_name = models.CharField(
+    rcra_username = models.CharField(
         max_length=128,
         blank=True,
     )
@@ -33,6 +33,7 @@ class RcraProfile(models.Model):
         null=True,
         blank=True,
     )
+    email = models.EmailField()
 
     def __str__(self):
         return f'{self.user.username}'

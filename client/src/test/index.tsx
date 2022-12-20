@@ -5,7 +5,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { AppStore, RootState, setupStore } from 'store';
-import { handlers } from './mock/handlers';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: PreloadedState<RootState>;
@@ -54,5 +53,3 @@ export function renderWithProviders(
 }
 
 export * from '@testing-library/react';
-
-export { handlers };

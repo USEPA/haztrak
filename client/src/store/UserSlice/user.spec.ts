@@ -17,7 +17,7 @@ describe('User Slice tests', () => {
   const userPayload = {
     user: 'testuser1',
     rcraAPIID: 'asdfasdfasdf',
-    rcraAPIKey: 'blah lbha',
+    rcraUsername: 'dpgraham4401',
     epaSites: ['VATESTGEN001'],
     phoneNumber: '2142555555',
   };

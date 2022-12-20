@@ -1,30 +1,10 @@
 import '@testing-library/jest-dom';
-import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test';
+import { MOCK_USERNAME } from 'test/fixtures/mockHandler';
+import { handlers } from 'test/mock/handlers';
 import Home from './index';
-
-const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
-
-const username = 'testuser1';
-
-export const handlers = [
-  rest.get(`${API_BASE_URL}/api/trak/profile`, (req, res, ctx) => {
-    return res(
-      ctx.delay(), // random 'realistic' server response time
-      ctx.status(200),
-      ctx.json({
-        token: 'fake_token',
-        user: username,
-        epaSites: ['VATESTRAN003', 'VATESTGEN001'],
-        phoneNumber: undefined,
-        loading: false,
-        error: undefined,
-      })
-    );
-  }),
-];
 
 const server = setupServer(...handlers);
 
@@ -43,7 +23,16 @@ describe('Home component', () => {
   });
   test('User information is retrieved', async () => {
     // This is mostly just a placeholder. As the Home component expands we ce build on this
-    renderWithProviders(<Home />, {});
+    renderWithProviders(<Home />, {
+      preloadedState: {
+        user: {
+          user: MOCK_USERNAME,
+          token: 'fake_token',
+          loading: false,
+          error: undefined,
+        },
+      },
+    });
     expect(await screen.findByText('Hello testuser1!')).toBeInTheDocument();
   });
 });

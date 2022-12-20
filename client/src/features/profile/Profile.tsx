@@ -1,8 +1,11 @@
-import React, { ReactElement, useEffect } from 'react';
-import { getUser, useAppDispatch, useAppSelector } from 'store';
-import { Col, Container, Row } from 'react-bootstrap';
-import useTitle from 'hooks/useTitle';
 import HtCard from 'components/HtCard';
+import RcraProfile from 'features/profile/RcraProfile';
+import UserProfile from 'features/profile/UserProfile';
+import useTitle from 'hooks/useTitle';
+import React, { ReactElement, useEffect } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
+import { getUser, useAppDispatch, useAppSelector } from 'store';
+import { UserState } from 'types/store';
 
 /**
  * Display user profile
@@ -10,32 +13,37 @@ import HtCard from 'components/HtCard';
  */
 function Profile(): ReactElement {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.user);
-  const profile = useAppSelector((state) => state.user);
+  const profile = useAppSelector<UserState>((state) => state.user);
   useTitle('Profile');
 
   useEffect(() => {
     dispatch(getUser());
-  }, [user]);
+  }, [profile.user]);
 
   return (
-    <Container fluid className="py-3">
-      <h1 className="fw-bold">Profile</h1>
-      <Row className="justify-content-center">
-        <Col xs md={10} lg={9} xl={8}>
-          <HtCard className="shadow-lg">
-            <HtCard.Header title={`${user}`} />
+    <>
+      <Container className="py-2">
+        <Row className="d-flex justify-content-start">
+          <h1 className="fw-bold">Profile</h1>
+        </Row>
+      </Container>
+      <Container fluid className="py-3 d-flex justify-content-center">
+        <Col xs={12} md={11} lg={10} xl={8} className="justify-content-center">
+          <HtCard>
+            <HtCard.Header title="User Profile" />
             <HtCard.Body>
-              hello this is a card body
-              <p className="fw-bold">RCRAInfo API ID</p>
-              <p>{profile.rcraAPIID}</p>
-              <p className="fw-bold">Phone Number</p>
-              <p>{profile.phoneNumber}</p>
+              <UserProfile profile={profile} />
+            </HtCard.Body>
+          </HtCard>
+          <HtCard>
+            <HtCard.Header title="RCRAInfo Profile" />
+            <HtCard.Body>
+              <RcraProfile profile={profile} />
             </HtCard.Body>
           </HtCard>
         </Col>
-      </Row>
-    </Container>
+      </Container>
+    </>
   );
 }
 
