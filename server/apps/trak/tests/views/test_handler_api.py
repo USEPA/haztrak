@@ -39,6 +39,9 @@ handler_address = {
 
 
 class HandlerAPITest(APITestCase):
+    """
+    Test related to endpoints for the Handler model, serializers, and business logic
+    """
     base_url = '/api/trak/handler/'
 
     def setUp(self) -> None:

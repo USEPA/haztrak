@@ -3,6 +3,7 @@ from datetime import date, datetime
 
 import pytest
 from django.contrib.auth.models import User
+from rest_framework.test import APIClient
 
 from apps.trak.models import Address, Handler, Manifest, RcraProfile, Site
 from apps.trak.serializers import WasteLineSerializer
@@ -89,3 +90,43 @@ def other_user_profile(db, site_tsd001, other_user) -> RcraProfile:
     profile.epa_sites.add(site_tsd001)
     profile.save()
     return profile
+
+
+@pytest.fixture
+def api_client(db, testuser1) -> APIClient:
+    client = APIClient()
+    client.force_authenticate(user=testuser1)
+    return client
+
+
+class TestApiClient:
+    f"""
+    This is a base class for Haztrak's other test suites.
+    It includes a number of fixtures already...
+    1. testuser1 {User} django's user model
+    2. test_user_profile {RcraProfile} testuser1's RcraProfile
+    3. generator001 {Handler} handler model testuser1 has access to
+    4. site_generator001 {Site} Site with generator001 as it's handler
+    5. api_client {APIClient} pre authenticated (testuser1) APIClient
+
+    """
+
+    @pytest.fixture(autouse=True)
+    def _profile(self, test_user_profile):
+        self.profile = test_user_profile
+
+    @pytest.fixture(autouse=True)
+    def _generator(self, generator001):
+        self.generator = generator001
+
+    @pytest.fixture(autouse=True)
+    def _site(self, site_generator001):
+        self.site = site_generator001
+
+    @pytest.fixture(autouse=True)
+    def _test_user(self, testuser1):
+        self.user = testuser1
+
+    @pytest.fixture(autouse=True)
+    def _api_client(self, api_client):
+        self.client = api_client
