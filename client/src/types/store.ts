@@ -32,3 +32,17 @@ export interface Alert {
   alertType: 'Warning' | 'Error' | 'Info' | String;
   timeout: number;
 }
+
+/**
+ * The stored information on the current haztrak user
+ */
+export interface RcraProfileState {
+  user: string | undefined;
+  rcraAPIID?: string;
+  rcraAPIKey?: string;
+  rcraUsername?: string;
+  epaSites?: string[];
+  phoneNumber?: string;
+  loading: boolean;
+  error?: string | undefined;
+}

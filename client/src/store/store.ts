@@ -1,10 +1,12 @@
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
+import rcraProfileReducers from 'store/rcraProfileSlice';
 import notificationReducers from './notificationSlice';
 import userReducers, { getUser, login } from './userSlice';
 
 const rootReducer = combineReducers({
   user: userReducers,
   notification: notificationReducers,
+  rcraProfile: rcraProfileReducers,
 });
 
 // Primarily use this for test to simulate the Redux store

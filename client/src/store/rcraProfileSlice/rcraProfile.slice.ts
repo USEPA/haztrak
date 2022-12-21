@@ -1,33 +1,20 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Alert, NotificationState } from 'types/store';
+import { createSlice } from '@reduxjs/toolkit';
+import { RcraProfileState } from 'types/store';
 
-const initialState: NotificationState = {
-  alert: [],
+const initialState: RcraProfileState = {
+  user: undefined,
+  rcraAPIID: undefined,
+  rcraUsername: undefined,
+  epaSites: [],
+  phoneNumber: undefined,
+  loading: false,
+  error: undefined,
 };
 
 const rcraProfileSlice = createSlice({
-  name: 'notification',
+  name: 'rcraProfile',
   initialState,
-  reducers: {
-    addMsg: (state: NotificationState, action: PayloadAction<Alert>) => {
-      state.alert.push(action.payload);
-      return state;
-    },
-    readMsg: (state: NotificationState, action: PayloadAction<Alert>) => {
-      state.alert.push(action.payload);
-      return state;
-    },
-    removeMsg: (state: NotificationState, action: PayloadAction<Alert>) => {
-      const idToDelete = action.payload.uniqueId;
-      for (let i = 0; i < state.alert.length; i++) {
-        if (state.alert[i].uniqueId === idToDelete) {
-          state.alert.splice(i, 1);
-        }
-      }
-      return state;
-    },
-  },
+  reducers: {},
 });
 
 export default rcraProfileSlice.reducer;
-export const { addMsg, removeMsg } = rcraProfileSlice.actions;

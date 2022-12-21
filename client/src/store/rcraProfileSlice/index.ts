@@ -1,7 +1,3 @@
-import notificationReducer, {
-  addMsg,
-  removeMsg,
-} from 'store/rcraProfileSlice/rcraProfile.slice';
+import rcraProfileReducers from './rcraProfile.slice';
 
-export default notificationReducer;
-export { addMsg, removeMsg };
+export default rcraProfileReducers;
