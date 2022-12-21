@@ -22,7 +22,7 @@ class RcraProfileView(RetrieveUpdateAPIView):
     response = Response
 
     def get_serializer_class(self):
-        if self.request.method == 'POST':
+        if self.request.method == 'PUT':
             return ProfileUpdateSerializer
         else:
             return ProfileGetSerializer
