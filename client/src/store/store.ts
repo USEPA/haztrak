@@ -1,6 +1,6 @@
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
-import notificationReducers from './NotificationSlice';
-import userReducers, { getUser, login } from './UserSlice';
+import notificationReducers from './notificationSlice';
+import userReducers, { getUser, login } from './userSlice';
 
 const rootReducer = combineReducers({
   user: userReducers,
