@@ -37,6 +37,6 @@ export interface RcraProfileState {
   rcraUsername?: string;
   epaSites?: string[];
   phoneNumber?: string;
-  loading: boolean;
-  error?: string | undefined;
+  loading?: boolean;
+  error?: string;
 }
