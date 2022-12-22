@@ -1,9 +1,12 @@
 /**
  * Test for the notification reduc slice
  */
-import NotificationReducer, { addMsg, removeMsg } from './Notification.slice';
-import { NotificationState } from 'types/store';
 import { cleanup } from '@testing-library/react';
+import NotificationReducer, {
+  addMsg,
+  removeMsg,
+} from 'store/notificationSlice/notification.slice';
+import { NotificationState } from 'types/store';
 
 const initialState: NotificationState = {
   alert: [],

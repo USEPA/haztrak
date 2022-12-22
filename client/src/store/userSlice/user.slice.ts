@@ -5,22 +5,9 @@ import { UserState } from 'types/store';
 const initialState: UserState = {
   user: JSON.parse(localStorage.getItem('user') || 'null') || null,
   token: JSON.parse(localStorage.getItem('token') || 'null') || null,
-  rcraAPIID: undefined,
-  rcraUsername: undefined,
-  epaSites: [],
-  phoneNumber: undefined,
-  email: undefined,
   loading: false,
   error: undefined,
 };
-
-export const getUser = createAsyncThunk('user/getUser', async (arg, { getState }) => {
-  const state = getState();
-  // @ts-ignore
-  const username = state.user.user;
-  const response = await htApi.get(`trak/profile/${username}`);
-  return response.data as UserState;
-});
 
 export const login = createAsyncThunk(
   'user/login',
@@ -55,31 +42,7 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getUser.pending, (state) => {
-        return {
-          ...state,
-          loading: true,
-          error: undefined,
-        };
-      })
-      .addCase(getUser.fulfilled, (state, action) => {
-        console.log('getUser: \n', action.payload);
-        return {
-          ...state,
-          ...action.payload,
-          // epaSites: ['blah', 'blah'], // Temporary: Remove
-          error: undefined,
-          loading: false,
-        };
-      })
-      .addCase(getUser.rejected, (state, action) => {
-        state.loading = false;
-        // Todo: remove ts-ignore
-        // @ts-ignore
-        state.error = action.payload.error;
-        return state;
-      })
-      .addCase(login.pending, (state, action) => {
+      .addCase(login.pending, (state) => {
         return {
           ...state,
           error: undefined,
@@ -93,15 +56,22 @@ const userSlice = createSlice({
         //  fixed in the future. For now, it's a development convenience.
         localStorage.setItem('user', JSON.stringify(authResponse.user));
         localStorage.setItem('token', JSON.stringify(authResponse.token));
-        state.user = authResponse.user;
-        state.token = authResponse.token;
-        return state;
+        return {
+          loading: false,
+          error: undefined,
+          ...authResponse,
+        };
       })
       .addCase(login.rejected, (state, action) => {
-        // Todo
         // @ts-ignore
-        state.error = action.error.message;
-        return state;
+        // state.error = action.error.message;
+        console.log(action.error);
+        return {
+          ...state,
+          // @ts-ignore
+          error: action.payload.error,
+          loading: false,
+        };
       });
   },
 });
