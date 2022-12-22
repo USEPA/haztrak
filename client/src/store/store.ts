@@ -9,7 +9,10 @@ const rootReducer = combineReducers({
   rcraProfile: rcraProfileReducers,
 });
 
-// Primarily use this for test to simulate the Redux store
+/**
+ * A utility function to initialize the store with preloaded state.
+ * Often used for testing
+ */
 const setupStore = (preloadedState?: PreloadedState<RootState>) => {
   return configureStore({
     reducer: rootReducer,
@@ -21,6 +24,9 @@ const setupStore = (preloadedState?: PreloadedState<RootState>) => {
 const store = setupStore();
 
 export type AppDispatch = typeof store.dispatch;
+/**
+ * A TypeScript definition for our (Haztrak) RootState
+ */
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 export { store, getUser, login, setupStore };
