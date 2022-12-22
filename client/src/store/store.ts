@@ -1,7 +1,7 @@
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
 import rcraProfileReducers from 'store/rcraProfileSlice';
 import notificationReducers from './notificationSlice';
-import userReducers, { getUser, login } from './userSlice';
+import userReducers, { login } from './userSlice';
 
 const rootReducer = combineReducers({
   user: userReducers,
@@ -29,4 +29,4 @@ export type AppDispatch = typeof store.dispatch;
  */
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
-export { store, getUser, login, setupStore };
+export { store, login, setupStore };

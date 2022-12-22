@@ -3,6 +3,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { addMsg, RootState, useAppDispatch, useAppSelector } from 'store';
 import { getProfile } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { UserState } from 'types/store';
 
 /**
  * Home page for logged-in user, currently does not really include anything
@@ -11,7 +12,7 @@ import { getProfile } from 'store/rcraProfileSlice/rcraProfile.slice';
 function Home(): ReactElement {
   useTitle(`Haztrak`, false, true);
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state: RootState) => state.rcraProfile);
+  const { user } = useAppSelector<UserState>((state: RootState) => state.user);
 
   useEffect(() => {
     // get user profile information when the user changes

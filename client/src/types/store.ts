@@ -2,16 +2,10 @@
  * The stored information on the current haztrak user
  */
 export interface UserState {
-  user: string | undefined;
-  token: string | undefined;
-  rcraAPIID?: string;
-  rcraAPIKey?: string;
-  rcraUsername?: string;
-  epaSites?: string[];
-  phoneNumber?: string;
-  email?: string;
-  loading: boolean;
-  error?: string | undefined;
+  user?: string;
+  token?: string;
+  loading?: boolean;
+  error?: string;
 }
 
 /**
