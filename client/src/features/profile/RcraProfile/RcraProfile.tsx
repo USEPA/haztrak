@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { UserState } from 'types/store';
+import { RcraProfileState } from 'types/store';
 
 interface ProfileViewProps {
-  profile: UserState;
+  profile: RcraProfileState;
 }
 
 function RcraProfile({ profile }: ProfileViewProps) {
   const [editable, setEditable] = useState(false);
-  const { register, reset, handleSubmit } = useForm<UserState>();
+  const { register, reset, handleSubmit } = useForm<RcraProfileState>();
   return (
     <>
       <Form onSubmit={handleSubmit((data) => console.log('onSubmit: \n', data))}>

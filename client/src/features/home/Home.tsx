@@ -1,7 +1,8 @@
 import useTitle from 'hooks/useTitle';
 import React, { ReactElement, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import { addMsg, getUser, RootState, useAppDispatch, useAppSelector } from 'store';
+import { addMsg, RootState, useAppDispatch, useAppSelector } from 'store';
+import { getProfile } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 /**
  * Home page for logged-in user, currently does not really include anything
@@ -10,11 +11,11 @@ import { addMsg, getUser, RootState, useAppDispatch, useAppSelector } from 'stor
 function Home(): ReactElement {
   useTitle(`Haztrak`, false, true);
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state: RootState) => state.user);
+  const { user } = useAppSelector((state: RootState) => state.rcraProfile);
 
   useEffect(() => {
     // get user profile information when the user changes
-    dispatch(getUser());
+    dispatch(getProfile());
   }, [user]);
 
   return (

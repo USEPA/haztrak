@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Container } from 'react-bootstrap';
-import { UserState } from 'types/store';
+import { RcraProfileState } from 'types/store';
 
 interface ProfileViewProps {
-  profile: UserState;
+  profile: RcraProfileState;
 }
 
 function UserProfile({ profile }: ProfileViewProps) {
