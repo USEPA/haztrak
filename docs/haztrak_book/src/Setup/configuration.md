@@ -14,13 +14,14 @@
 ## Overview
 
 haztrak expects configurations in form of environment variables supplied at runtime, Yay!
-For non-containerized local development, you can place '.env' files in the [server](/server)
-and [client](/client) directories, with the outlined values below and the values will be
+For non-containerized local development, you can place '.env' files in the [server](/)
+and [client](/) directories, with the outlined values below and the values will be
 automatically added. You can find [example configs here](/configs).
 
 Haztrak also comes with Dockerfiles and docker-compose files,
 including [docker-compose.dev.yaml](/docker-compose.dev.yaml). Environment variables can be passed
-to a using [docker-composes --env-file flag](https://docs.docker.com/compose/environment-variables/#using-the---env-file--option)
+to a
+using [docker-composes --env-file flag](https://docs.docker.com/compose/environment-variables/#using-the---env-file--option)
 like so.
 
 ```shell
@@ -66,7 +67,7 @@ The follow variables are required, haztrak will gracefully exit if not present.
 #### Database
 
 Technically these are optional. If these environment variables are not found, Haztrak will fall back
-to a [SQLite3](https://www.sqlite.org/index.html) database in the [server](/server) directory, which
+to a [SQLite3](https://www.sqlite.org/index.html) database in the [server](/) directory, which
 may not be recommended for production, but this is an example web application.
 
 * `HT_DB_ENGINE`

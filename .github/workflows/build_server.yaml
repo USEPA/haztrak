@@ -7,7 +7,7 @@ on:
 
 jobs:
   test_server:
-    uses: ./.github/workflows/test_server.yml
+    uses: ./.github/workflows/test_server.yaml
 
   dockerBuild:
     runs-on: ubuntu-latest
