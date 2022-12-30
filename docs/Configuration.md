@@ -20,12 +20,11 @@ automatically added. You can find [example configs here](/configs).
 
 Haztrak also comes with Dockerfiles and docker-compose files,
 including [docker-compose.dev.yaml](/docker-compose.dev.yaml). Environment variables can be passed
-to a
-using [docker-composes --env-file flag](https://docs.docker.com/compose/environment-variables/#using-the---env-file--option)
+to a using [docker-composes --env-file flag](https://docs.docker.com/compose/environment-variables/#using-the---env-file--option)
 like so.
 
 ```shell
-$ docker-compose --env-file configs/.env.dev -f docker-compose.yaml -f docker-compose.dev.yaml up --build
+$ docker-compose --env-file configs/.env.dev up --build
 ```
 
 ## Server

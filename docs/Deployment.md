@@ -5,44 +5,40 @@ development environment.
 
 ### Docker-compose
 
-- The easiest way to deploy on your local workstation is to
+- The easiest way to set up a local development environment is to 
   use [docker-compose](https://docs.docker.com/compose/gettingstarted/)
-    - You can either export Haztrak's expected [environment variables](./Configuration.md) to
-      the terminal before deploying or use a [config files](/configs)
+    - We recommend using the [config files](/configs) to provide Haztrak's expected [environment variables](./Configuration.md).
+    - This docker-compose file is for development only as it overrides the client and server's [Dockerfile]() commands and mounts the source for hto reload. 
 
 ```shell
 $ docker-compose --env-file configs/.env.dev up --build
 ```
 
-- The [docker-compose.dev.yaml](/docker-compose.dev.yaml) is an override file. It runs the React
-  client and Django server as mounted volumes that allow for the app to be hot reloaded after
-  change, in addition to the other services expected by the http server.
 - It also loads fixtures to the configured database on start, namely 2 users which can be used for
   development purposes.
-    1. username: testuser1, password: password1
-    2. username: admin, password: password1
+    1. A user to login and test
+        - username: testuser1
+        - password: password1
+    2. An admin user (mostly used for the backend)
+        - username: admin
+        - password: password1
        The admin user has superuser privileges and can also log in to
        the [django admin portal](https://docs.djangoproject.com/en/4.1/ref/contrib/admin/).
-- To run docker-compose.dev.yaml...
-
-```shell
-$ docker-compose --env-file configs/.env.dev -f docker-compose.yaml -f docker-compose.dev.yaml up --build
-```
 
 - Instead of docker-compose, you could Build and deploy the containers with
   the [client](/client/Dockerfile), and [server](/server/Dockerfile) Dockerfiles.
-    - [environment variables expected](/docs/Configuration.md)
+    - See [environment variables expected](/docs/Configuration.md)
     - Maybe we'll include helm charts in the future.
 
 ### NPM and Django scripts
 
 If you don't have a way to build and run containers, or you're a gluten for punishment, you can
-make use of the scripts exposed by django and create-react-app.
+make use of the scripts exposed by django and create-react-app to set up a local development environment.
 
 We have removed functionality to run haztrak from runhaz.sh since the number of services
 that needs to run has grown beyond what's practical in a shell script.
 
-#### Deploying the Django http server
+#### Deploying the Django http server locally
 
 Prerequisites
 
@@ -78,22 +74,29 @@ Prerequisites
 
 ### Deploying The React client locally
 
-Prerequisites
-Node.js
+We have development options if you would like to run the front end (client) locally 
+but are not experienced with django or cannot run containers on your workstation. 
 
-1. Install dependencies
+Prerequisites
+  - Node.js
+
+1. Install the dependencies
     ```shell
     $ cd ./client && npm install .
     ```
 2. Configure the client with an .env in [client/.env](/docs/Configuration.md), or ensure your
-   terminal
-   has the appropriate variables.
-    - We have a couple services covered by [mock-service-worker](https://mswjs.io/) which will
+   terminal has the appropriate variables.
+    - If the `REACT_APP_HT_ENV` environment variable is set to `TEST`, [mock-service-worker](https://mswjs.io/) handlers 
       intercept http requests from the browser and return test data. see the config docs.
+    ```shell
+    $ export REACT_APP_HT_ENV=TEST
+    $ export REACT_APP_HT_API_URL='http://localhost:8000'
+    ```
 3. Start the local development server
     ```shell
     $ npm run start
     ```
+4. You can log in with the [testuser]() username and password. 
 
 ### Runhaz.sh
 
