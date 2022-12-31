@@ -71,7 +71,8 @@ services:
   #      - development:/var/lib/postgresql/data
 
   client:
-    build: ./client
+    image: "node:18"
+    working_dir: /app
     ports:
       - "3000:3000"
     volumes:
@@ -84,7 +85,7 @@ services:
       REACT_APP_HT_API_URL: ${REACT_APP_HT_API_URL}
       REACT_APP_HT_ENV: ${REACT_APP_HT_ENV}
     command: |
-      sh -c "apk add --update npm && cd /app && npm install . && npm run start"
+      sh -c "npm ci && npm run start"
 
 volumes:
   development:
