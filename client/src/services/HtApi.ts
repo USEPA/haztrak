@@ -23,6 +23,9 @@ htApi.interceptors.request.use(
     config.headers = config.headers ?? {};
     const token = store.getState().user.token;
     if (token) {
+      // ToDo: type error from axios see here https://github.com/axios/axios/issues/5416
+      //  December 31, 2022
+      // @ts-ignore
       config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;

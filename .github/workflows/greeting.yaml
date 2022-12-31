@@ -1,6 +1,6 @@
 name: Greetings
 
-on: [pull_request, issues]
+on: [ pull_request, issues ]
 
 jobs:
   greeting:
@@ -27,5 +27,4 @@ jobs:
             Thank you for your first Pull Request!
             If you're submitting a fix or a new feature, please ensure that you've also implemented tests so we know it's working.
 
-            Thanks again, enjoy
-            [this picture of an adorable puppy](https://media.4-paws.org/1/e/d/6/1ed6da75afe37d82757142dc7c6633a532f53a7d/VIER%20PFOTEN_2019-03-15_001-2886x1999-1920x1330.jpg)!
+            Thanks again
