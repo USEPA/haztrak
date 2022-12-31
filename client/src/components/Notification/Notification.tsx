@@ -21,7 +21,7 @@ function Notification() {
             bsPrefix="badge badge-top-right"
             aria-label="unread Messages"
           >
-            {numberAlerts < 9 ? `${numberAlerts}` : '9+'}
+            {numberAlerts > 0 ? (numberAlerts < 9 ? `${numberAlerts}` : '9+') : null}
           </Badge>
         </Dropdown.Toggle>
         <Dropdown.Menu className="pt-0 alert-mw">
