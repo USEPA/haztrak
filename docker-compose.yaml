@@ -71,7 +71,7 @@ services:
   #      - development:/var/lib/postgresql/data
 
   client:
-    build: ./client
+    image: "node:16"
     ports:
       - "3000:3000"
     volumes:
