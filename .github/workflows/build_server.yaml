@@ -1,14 +1,9 @@
 name: Build  Server Container
 
 on:
-  pull-request:
-    branches:
-      - "main"
+  workflow_call:
 
 jobs:
-  test_server:
-    uses: ./.github/workflows/test_server.yaml
-
   dockerBuild:
     runs-on: ubuntu-latest
     defaults:
