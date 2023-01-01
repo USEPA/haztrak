@@ -10,6 +10,7 @@
     - [Manifests](rcrainfo_integration/manifest.md)
         - [Update Manifest](rcrainfo_integration/update_manifest.md)
         - [Sync Site's Manifests](rcrainfo_integration/sync-site-manifest.md)
-- [Setup and Deployment](./contributing.md)
+- [Setup and Deployment](./Setup/index.md)
+    - [Contributing](Setup/contributing.md)
     - [Local Development Environment](Setup/local_dev_setup.md)
     - [Configuration](Setup/configuration.md)
