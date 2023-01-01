@@ -79,8 +79,7 @@ services:
     environment:
       REACT_APP_HT_API_URL: ${REACT_APP_HT_API_URL}
       REACT_APP_HT_ENV: ${REACT_APP_HT_ENV}
-    command: |
-      sh -c "apk add --update npm && cd /app && npm install . && npm run start"
+    command: sh -c "cd /app; npm install; npm start"
 
 volumes:
   development:
