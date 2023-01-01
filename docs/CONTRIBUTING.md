@@ -1,5 +1,6 @@
-How to contribute to `haztrak`
-================================
+# How to contribute to `haztrak`
+
+You are cordially invited to contribute to haztrak.
 
 ### Bugs or Questions?
 
