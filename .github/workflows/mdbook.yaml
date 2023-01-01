@@ -1,15 +1,11 @@
-name: github pages
+name: Github Pages
 
 on:
   push:
     branches:
       - main
-    paths:
-      - "./docs/haztrak_book/**"
   pull_request:
     types: [ closed ]
-    paths:
-      - "./docs/haztrak_book/**"
 
 jobs:
   build_docs:
