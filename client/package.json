@@ -20,7 +20,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.36.1",
     "react-redux": "^8.0.2",
-    "react-router-dom": "^6.4.0",
+    "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
     "react-select": "^5.6.1",
     "sass": "^1.56.1",
@@ -28,7 +28,7 @@
     "typescript": "^4.8.3",
     "web-vitals": "^3.0.2",
     "yup": "^0.32.11",
-    "msw": "^0.49.1",
+    "msw": "^0.49.2",
     "prettier": "^2.7.1"
   },
   "scripts": {
