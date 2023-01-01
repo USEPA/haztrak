@@ -7,6 +7,7 @@ on:
     paths:
       - "./docs/haztrak_book/*"
   pull_request:
+    types: [ closed ]
     paths:
       - "./docs/haztrak_book/*"
 
