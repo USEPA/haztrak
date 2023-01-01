@@ -1,0 +1,36 @@
+name: github pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "./docs/haztrak_book/*"
+  pull_request:
+    paths:
+      - "./docs/haztrak_book/*"
+
+jobs:
+  build_docs:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docs/haztrak_book
+    steps:
+      - name: Setup
+        uses: actions/checkout@v2
+
+      - name: Setup mdBook
+        uses: peaceiris/actions-mdbook@v1
+        with:
+          mdbook-version: "latest"
+
+      - name: Build Documentation
+        run: mdbook build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/haztrak_book/book

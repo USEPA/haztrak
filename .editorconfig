@@ -16,29 +16,15 @@ max_line_length = 88
 [*.html]
 indent_size = 2
 
-[*.js]
-indent_size = 2
-
-[*.jsx]
-indent_size = 2
-
-[*.ts]
-indent_size = 2
-max_line_length = 88
-
-[*.tsx]
+[*.{ts,tsx,js,jsx}]
 indent_size = 2
 max_line_length = 88
 
 [*.json]
 indent_size = 2
-max_line_length = 200
 
 [*.md]
-max_line_length = 100
+max_line_length = 88
 
-[*.yaml]
-indent_size = 2
-
-[*.yml]
+[*.{yaml,yml}]
 indent_size = 2
