@@ -9,7 +9,6 @@ from rest_framework.response import Response
 from apps.trak.models import RcraProfile
 from apps.trak.serializers import ProfileUpdateSerializer
 from apps.trak.serializers.rcra_profile import ProfileGetSerializer
-from apps.trak.tasks import sync_user_sites
 
 
 class RcraProfileView(RetrieveUpdateAPIView):
@@ -48,9 +47,9 @@ class SyncProfile(GenericAPIView):
 
     def get(self, request: Request, user: str = None) -> Response:
         try:
-            user_object = User.objects.get(username=user)
-            task = sync_user_sites.delay(user_object.username)
+            profile = RcraProfile.objects.get(user=request.user)
+            task = profile.sync()
             return self.response({'task': task.id})
         except (User.DoesNotExist, CeleryError) as e:
-            return self.response(data=e,
+            return self.response(data='error',
                                  status=http.HTTPStatus.INTERNAL_SERVER_ERROR)

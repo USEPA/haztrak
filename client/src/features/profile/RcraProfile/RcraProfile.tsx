@@ -3,6 +3,7 @@ import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { RcraProfileState } from 'types/store';
 import htApi from 'services';
+import { Link } from 'react-router-dom';
 
 interface ProfileViewProps {
   profile: RcraProfileState;
@@ -70,7 +71,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
             <Col>{/* Other RcraProfile form inputs here*/}</Col>
           </Row>
           <h4>Site Permissions</h4>
-          <Table striped bordered hover>
+          <Table striped bordered hover responsive>
             <thead>
               <tr>
                 <th>EPA ID</th>
@@ -85,7 +86,9 @@ function RcraProfile({ profile }: ProfileViewProps) {
               {profile.epaSites?.map((epa_id, index) => {
                 return (
                   <tr key={`permissionsRow${epa_id}${index}`}>
-                    <td>{epa_id}</td>
+                    <td>
+                      <Link to={`/site/${epa_id}`}>{epa_id}</Link>
+                    </td>
                     <td>tmp</td>
                     <td>tmp</td>
                     <td>tmp</td>
