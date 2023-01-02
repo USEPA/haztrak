@@ -1,36 +1,50 @@
-name: github pages
+name: Github Pages
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "./docs/haztrak_book/*"
   pull_request:
-    paths:
-      - "./docs/haztrak_book/*"
+    types: [ closed ]
 
 jobs:
-  build_docs:
+  build:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./docs/haztrak_book
     steps:
+
       - name: Setup
         uses: actions/checkout@v2
 
       - name: Setup mdBook
-        uses: peaceiris/actions-mdbook@v1
-        with:
-          mdbook-version: "latest"
+        run: |
+          mkdir bin
+          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.25/mdbook-v0.4.25-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
+
+      - name: inspect
+        run: tree -L 2
 
       - name: Build Documentation
-        run: mdbook build
+        run: bin/mdbook build
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/main' }}
+      - name: inspect
+        run: tree -L 2
+
+      - name: upload Docs
+        uses: actions/upload-pages-artifact@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/haztrak_book/book
+          path: ./docs/haztrak_book/book
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
