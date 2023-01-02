@@ -63,9 +63,6 @@ const userSlice = createSlice({
         };
       })
       .addCase(login.rejected, (state, action) => {
-        // @ts-ignore
-        // state.error = action.error.message;
-        console.log(action.error);
         return {
           ...state,
           // @ts-ignore

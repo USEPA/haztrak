@@ -14,8 +14,8 @@ from apps.trak.tasks import sync_user_sites
 
 class RcraProfileView(RetrieveUpdateAPIView):
     """
-    Responsible for CRUD operations related to the user RcraProfile, which maintains information
-    necessary for actions that interface with RCRAInfo
+    Responsible for CRUD operations related to the user RcraProfile, which maintains
+    information necessary for actions that interface with RCRAInfo
     """
     queryset = RcraProfile.objects.all()
     serializer_class = ProfileUpdateSerializer
@@ -42,16 +42,14 @@ class SyncProfile(GenericAPIView):
     """
     This endpoint launches a task to sync the logged-in user's RCRAInfo profile
     with their haztrak (Rcra)profile.
-
-    It seems a little hacky, contributions welcome.
     """
     queryset = None
     response = Response
 
-    def get(self, request: Request) -> Response:
+    def get(self, request: Request, user: str = None) -> Response:
         try:
-            user = User.objects.get(username=request.user)
-            task = sync_user_sites.delay(user.username)
+            user_object = User.objects.get(username=user)
+            task = sync_user_sites.delay(user_object.username)
             return self.response({'task': task.id})
         except (User.DoesNotExist, CeleryError) as e:
             return self.response(data=e,

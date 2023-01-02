@@ -1,8 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-
-function appendSuffix(initialTitle: string) {
-  return `${initialTitle} | Haztrak'}`;
-}
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * Hook to set document title

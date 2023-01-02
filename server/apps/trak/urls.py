@@ -11,7 +11,7 @@ manifest_router.register(r'manifest', ManifestView)
 urlpatterns = [
     # Rcra Profile
     path('profile/<str:user>', RcraProfileView.as_view()),
-    path('site/sync', SyncProfile.as_view()),
+    path('profile/<str:user>/sync', SyncProfile.as_view()),
     # Manifest
     path('', include(manifest_router.urls)),
     # Site

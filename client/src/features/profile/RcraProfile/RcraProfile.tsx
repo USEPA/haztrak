@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { RcraProfileState } from 'types/store';
+import htApi from 'services';
 
 interface ProfileViewProps {
   profile: RcraProfileState;
@@ -85,11 +86,11 @@ function RcraProfile({ profile }: ProfileViewProps) {
                 return (
                   <tr key={`permissionsRow${epa_id}${index}`}>
                     <td>{epa_id}</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
-                    <td>temp</td>
+                    <td>tmp</td>
+                    <td>tmp</td>
+                    <td>tmp</td>
+                    <td>tmp</td>
+                    <td>tmp</td>
                   </tr>
                 );
               })}
@@ -124,7 +125,12 @@ function RcraProfile({ profile }: ProfileViewProps) {
           <Button
             className="mx-2"
             variant="primary"
-            onClick={() => console.log('ToDo: send GET request to site-sync')}
+            onClick={() =>
+              htApi
+                .get(`trak/profile/${profile.user}/sync`)
+                .then((r) => console.log(r))
+                .catch((r) => console.log(r))
+            }
           >
             Sync Site Permissions
           </Button>

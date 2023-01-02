@@ -18,7 +18,6 @@ class SiteList(generics.ListAPIView):
     """
     SiteList is a ListAPIView that returns haztrak sites that the current
     user has access to.
-
     """
     serializer_class = SiteSerializer
 
@@ -28,7 +27,9 @@ class SiteList(generics.ListAPIView):
 
 
 class SiteApi(generics.RetrieveAPIView):
-    """Haztrak Site encompasses EPA and haztrak relevant information on a location"""
+    """
+    View to GET a Haztrak Site, which encapsulates the EPA Handler plus some.
+    """
     serializer_class = SiteSerializer
     lookup_url_kwarg = 'epa_id'
     queryset = Site.objects.all()

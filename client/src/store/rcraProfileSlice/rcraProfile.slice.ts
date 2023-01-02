@@ -30,7 +30,6 @@ const rcraProfileSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getProfile.pending, (state) => {
-        console.log(state);
         return {
           ...state,
           loading: true,
