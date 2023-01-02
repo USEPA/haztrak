@@ -1,6 +1,4 @@
-# How to contribute to `haztrak`
-
-You are cordially invited to contribute to haztrak.
+# Contributing
 
 ### Bugs or Questions?
 
@@ -59,5 +57,5 @@ If you're looking to contribute code or documentation, here's the general proces
       the
       front end for now. If you're using an IDE, it likely have a prettier plugin
       available.
-    * The configs are found in [.prettierrc.json](/client/.prettierrc.json)
-      and [.prettierignore](/client/.prettierignore)
+    * The configs are found in [.prettierrc.json](/.prettierrc.json)
+      and [.prettierignore](/.prettierignore)
