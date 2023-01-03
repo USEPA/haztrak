@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import date, datetime
 
 import pytest
@@ -7,7 +8,11 @@ from rest_framework.test import APIClient
 
 from apps.trak.models import Address, Handler, Manifest, RcraProfile, Site
 from apps.trak.serializers import WasteLineSerializer
+from apps.trak.serializers.contact import ContactSerializer
 from apps.trak.tests.serializers.test_serializers import TEST_WASTE1_JSON
+
+JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + '/serializers/json'
+TEST_CONTACT_JSON = f'{JSON_DIR}/contact/good_contact.json'
 
 
 @pytest.fixture
@@ -60,6 +65,13 @@ def waste_serializer(db) -> WasteLineSerializer:
     with open(TEST_WASTE1_JSON, 'r') as f:
         data = json.load(f)
     return WasteLineSerializer(data=data)
+
+
+@pytest.fixture
+def contact_serializer(db) -> ContactSerializer:
+    with open(TEST_CONTACT_JSON, 'r') as f:
+        data = json.load(f)
+    return ContactSerializer(data=data)
 
 
 @pytest.fixture
