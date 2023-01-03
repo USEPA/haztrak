@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.trak.models import Contact
+
 
 class Handler(models.Model):
     site_type = models.CharField(max_length=20,
@@ -35,8 +37,13 @@ class Handler(models.Model):
         null=True,
         blank=True,
     )
-    contact = models.JSONField(
-        verbose_name='Contact information')
+    contact = models.ForeignKey(
+        Contact,
+        on_delete=models.CASCADE,
+        verbose_name='Contact Information',
+    )
+    # contact = models.JSONField(
+    #     verbose_name='Contact information')
     emergency_phone = models.JSONField(
         null=True,
         blank=True,

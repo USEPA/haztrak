@@ -32,7 +32,7 @@ class ContactSerializer(TrakSerializer):
         required=False,
     )
     phone = EpaPhoneSerializer(
-        required=False
+        required=False,
     )
     email = serializers.CharField(
         required=False,

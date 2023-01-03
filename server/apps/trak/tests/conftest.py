@@ -6,13 +6,15 @@ import pytest
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
-from apps.trak.models import Address, Handler, Manifest, RcraProfile, Site
+from apps.trak.models import (Address, Contact, EpaPhone, Handler, Manifest,
+                              RcraProfile, Site)
 from apps.trak.serializers import WasteLineSerializer
-from apps.trak.serializers.contact import ContactSerializer
-from apps.trak.tests.serializers.test_serializers import TEST_WASTE1_JSON
+from apps.trak.serializers.contact import ContactSerializer, EpaPhoneSerializer
 
 JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + '/serializers/json'
 TEST_CONTACT_JSON = f'{JSON_DIR}/contact/good_contact.json'
+TEST_PHONE_JSON = f'{JSON_DIR}/contact/phone.json'
+TEST_WASTE1_JSON = f'{JSON_DIR}/test_wasteline1.json'
 
 
 @pytest.fixture
@@ -37,10 +39,28 @@ def address_123_main(db) -> Address:
 
 
 @pytest.fixture
-def generator001(db, address_123_main) -> Handler:
+def epa_phone(db) -> EpaPhone:
+    return EpaPhone.objects.create(number='123-123-1234', extension='123')
+
+
+@pytest.fixture
+def handler_contact(db, epa_phone) -> Contact:
+    return Contact.objects.create(first_name='test', middle_initial='M', last_name='User', email='testuser@haztrak.net',
+                                  phone=epa_phone)
+
+
+@pytest.fixture
+def generator001(db, address_123_main, handler_contact) -> Handler:
     return Handler.objects.create(epa_id='handler001', name='my_handler',
                                   site_type='Generator', site_address=address_123_main,
-                                  mail_address=address_123_main, contact="{}")
+                                  mail_address=address_123_main, contact=handler_contact)
+
+
+@pytest.fixture
+def tsd001(db, address_123_main, handler_contact) -> Handler:
+    return Handler.objects.create(epa_id='tsd001', name='my_tsd',
+                                  site_type='Tsd', site_address=address_123_main,
+                                  mail_address=address_123_main, contact=handler_contact)
 
 
 @pytest.fixture
@@ -51,13 +71,6 @@ def site_generator001(db, generator001) -> Site:
 @pytest.fixture
 def site_tsd001(db, tsd001) -> Site:
     return Site.objects.create(epa_site=tsd001, name=tsd001.name)
-
-
-@pytest.fixture
-def tsd001(db, address_123_main) -> Handler:
-    return Handler.objects.create(epa_id='tsd001', name='my_tsd',
-                                  site_type='Tsd', site_address=address_123_main,
-                                  mail_address=address_123_main, contact="{}")
 
 
 @pytest.fixture
@@ -72,6 +85,13 @@ def contact_serializer(db) -> ContactSerializer:
     with open(TEST_CONTACT_JSON, 'r') as f:
         data = json.load(f)
     return ContactSerializer(data=data)
+
+
+@pytest.fixture
+def phone_serializer(db) -> EpaPhoneSerializer:
+    with open(TEST_PHONE_JSON, 'r') as f:
+        data = json.load(f)
+    return EpaPhoneSerializer(data=data)
 
 
 @pytest.fixture
