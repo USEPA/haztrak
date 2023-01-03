@@ -1,0 +1,10 @@
+{
+  "firstName": "Tester",
+  "middleInitial": "M",
+  "lastName": "User",
+  "phone": {
+    "number": "703-308-0023"
+  },
+  "email": "Testing@EPA.GOV",
+  "companyName": "Waste Inc."
+}
