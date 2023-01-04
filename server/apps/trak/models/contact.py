@@ -32,7 +32,20 @@ class EpaPhone(models.Model):
             return f'{self.number}'
 
 
+class ContactManager(models.Manager):
+
+    def create_with_phone(self, **contact_data):
+        if 'phone' in contact_data:
+            phone_data = contact_data.pop('phone')
+            phone = EpaPhone.objects.create(**phone_data)
+            return self.create(**contact_data, phone=phone)
+        else:
+            return self.create(**contact_data)
+
+
 class Contact(models.Model):
+    objects = ContactManager()
+
     first_name = models.CharField(
         max_length=38,
         null=True,
