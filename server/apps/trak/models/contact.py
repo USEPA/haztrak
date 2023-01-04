@@ -34,13 +34,16 @@ class EpaPhone(models.Model):
 
 class ContactManager(models.Manager):
 
-    def create_with_phone(self, **contact_data):
+    def create(self, **contact_data):
         if 'phone' in contact_data:
             phone_data = contact_data.pop('phone')
-            phone = EpaPhone.objects.create(**phone_data)
-            return self.create(**contact_data, phone=phone)
+            if isinstance(phone_data, EpaPhone):
+                phone = phone_data
+            else:
+                phone = EpaPhone.objects.create(**phone_data)
+            return super().create(**contact_data, phone=phone)
         else:
-            return self.create(**contact_data)
+            return super().create(**contact_data)
 
 
 class Contact(models.Model):

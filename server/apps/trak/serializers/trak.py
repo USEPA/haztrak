@@ -20,7 +20,7 @@ class TrakBaseSerializer(serializers.ModelSerializer):
     def create_handler(self, **handler_data) -> Handler:
         handler_contact = handler_data.pop('contact')
         if 'phone' in handler_contact:
-            new_contact = Contact.objects.create_with_phone(**handler_contact)
+            new_contact = Contact.objects.create(**handler_contact)
         else:
             new_contact = Contact.objects.create(**handler_contact)
         handler_dict = self.pop_addresses(**handler_data)
