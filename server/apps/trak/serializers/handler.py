@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.trak.models import Contact, EpaPhone, Handler
+from apps.trak.models import Contact, Handler
 from apps.trak.serializers import AddressSerializer
 
 from .contact import ContactSerializer
@@ -63,14 +63,7 @@ class HandlerSerializer(TrakBaseSerializer):
     )
 
     def create(self, validated_data):
-        handler_contact = validated_data.pop('contact')
-        print(handler_contact)
-        if 'phone' in handler_contact:
-            phone_data = handler_contact.pop('phone')
-            new_phone = EpaPhone.objects.create(**phone_data)
-            new_contact = Contact.objects.create(**handler_contact, phone=new_phone)
-        else:
-            new_contact = Contact.objects.create(**handler_contact)
+        new_contact = Contact.objects.create(**validated_data.pop('contact'))
         handler_dict = self.pop_addresses(**validated_data)
         new_handler = Handler.objects.create(site_address=handler_dict['site_address'],
                                              mail_address=handler_dict['mail_address'],

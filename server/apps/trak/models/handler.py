@@ -3,7 +3,15 @@ from django.db import models
 from apps.trak.models import Contact
 
 
+class HandlerManager(models.Manager):
+
+    def create_with_mail(self, **kwargs):
+        pass
+
+
 class Handler(models.Model):
+    objects = HandlerManager()
+
     site_type = models.CharField(max_length=20,
                                  choices=[
                                      ('designatedFacility', 'Tsdf'),
