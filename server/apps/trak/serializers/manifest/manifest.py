@@ -1,15 +1,6 @@
-# Any serialization of deserialization of Haztrak objects to or from JSON
-# goes through these django-rest-framework serializers
-# this way if changes to the model occur, we don't need to change another
-# utility function that just reads JSON and create model instances
-
-# Comments are included in each serializer where fields were not implemented
-# this is either because ModelSerializer's defaults are sufficient or work is needed to
-# be done
-
 from rest_framework import serializers
 
-from apps.trak.models import Manifest, WasteLine
+from apps.trak.models import Manifest, Transporter, WasteLine
 from apps.trak.serializers.handler import HandlerSerializer
 
 from ..trak import TrakBaseSerializer
@@ -153,15 +144,14 @@ class ManifestSerializer(TrakBaseSerializer):
         for waste_line in waste_data:
             WasteLine.objects.create(manifest=manifest, **waste_line)
         for transporter in trans_data:
-            # ToDo: remove this method from TrakBaseSerializer
-            self.create_transporter(manifest, **transporter)
+            transporter['manifest'] = manifest
+            Transporter.objects.create_with_related(**transporter)
         return manifest
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
     def to_representation(self, instance) -> str:
         """
-        We need to use the Python keyword 'import' in our JSON to e-Manifest.
-        This method replaces 'import_flag' with 'import' before serializing
+        Replace 'import_flag' with expected Python Keyword 'import' in JSON
         """
         data = super(ManifestSerializer, self).to_representation(instance)
         data['import'] = instance.import_flag
@@ -169,8 +159,7 @@ class ManifestSerializer(TrakBaseSerializer):
 
     def to_internal_value(self, data):
         """
-        We need to use the Python keyword 'import' in our JSON to e-Manifest.
-        This method replaces 'import_flag' with 'import' before deserializing
+        Replace 'import_flag' with expected Python Keyword 'import' in JSON
         """
         instance = super(ManifestSerializer, self).to_internal_value(data)
         try:

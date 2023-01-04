@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import permissions, viewsets
 
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
@@ -12,6 +12,7 @@ class ManifestView(viewsets.ModelViewSet):
     queryset = Manifest.objects.all()
     lookup_field = 'mtn'
     serializer_class = ManifestSerializer
+    permission_classes = [permissions.AllowAny]
 
     # def get_queryset(self):
     #     return Manifest.objects.get(mtn=self.kwargs['mtn'])
