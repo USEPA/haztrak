@@ -5,7 +5,8 @@ from rest_framework.exceptions import ValidationError
 
 from apps.trak.models import Address
 from lib.rcrainfo.lookups import get_country_name, get_state_name
-from .trak import TrakSerializer
+
+from .trak import TrakBaseSerializer
 
 
 @extend_schema_field(OpenApiTypes.OBJECT)
@@ -32,7 +33,7 @@ class LocalityField(serializers.Field):
         return representation
 
 
-class AddressSerializer(TrakSerializer):
+class AddressSerializer(TrakBaseSerializer):
     streetNumber = serializers.CharField(
         source='street_number',
         required=False,

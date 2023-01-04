@@ -4,10 +4,10 @@ from apps.trak.models import Contact, EpaPhone, Handler
 from apps.trak.serializers import AddressSerializer
 
 from .contact import ContactSerializer
-from .trak import TrakSerializer
+from .trak import TrakBaseSerializer
 
 
-class HandlerSerializer(TrakSerializer):
+class HandlerSerializer(TrakBaseSerializer):
     epaSiteId = serializers.CharField(
         source='epa_id',
     )

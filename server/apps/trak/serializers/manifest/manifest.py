@@ -12,12 +12,12 @@ from rest_framework import serializers
 from apps.trak.models import Handler, Manifest, WasteLine
 from apps.trak.serializers.handler import HandlerSerializer
 
-from ..trak import TrakSerializer
+from ..trak import TrakBaseSerializer
 from .transporter import TransporterSerializer
 from .waste_line import WasteLineSerializer
 
 
-class ManifestSerializer(TrakSerializer):
+class ManifestSerializer(TrakBaseSerializer):
     createdDate = serializers.DateTimeField(
         source='created_date',
         required=False,

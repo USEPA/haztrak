@@ -4,7 +4,7 @@ from apps.trak.models import (Address, Contact, EpaPhone, Handler, Manifest,
                               Transporter)
 
 
-class TrakSerializer(serializers.ModelSerializer):
+class TrakBaseSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         """ Remove null fields when serializing """

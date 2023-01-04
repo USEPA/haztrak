@@ -1,10 +1,10 @@
 from rest_framework import serializers
 
 from apps.trak.models import Contact
-from apps.trak.serializers.trak import TrakSerializer
+from apps.trak.serializers.trak import TrakBaseSerializer
 
 
-class EpaPhoneSerializer(TrakSerializer):
+class EpaPhoneSerializer(TrakBaseSerializer):
     number = serializers.CharField()
     extension = serializers.CharField(
         required=False,
@@ -18,7 +18,7 @@ class EpaPhoneSerializer(TrakSerializer):
         ]
 
 
-class ContactSerializer(TrakSerializer):
+class ContactSerializer(TrakBaseSerializer):
     firstName = serializers.CharField(
         source='first_name',
         required=False,

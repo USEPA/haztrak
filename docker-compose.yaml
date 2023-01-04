@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   server:
-    container_name: server
+    container_name: ht_server
     build: ./server
     ports:
       - "8000:8000"
@@ -32,14 +32,14 @@ services:
       - postgres
 
   redis:
-    container_name: redis
+    container_name: ht_redis
     image: "redis:alpine"
     ports:
       - "6379:6379"
 
   celery:
     restart: always
-    container_name: celery
+    container_name: ht_celery
     build: ./server
     volumes:
       - ./server:/app
@@ -53,13 +53,12 @@ services:
       HT_DB_HOST: postgres
       HT_DB_PORT: ${HT_DB_PORT}
     command: python manage.py celery_worker
-    #    command: celery -A haztrak worker -l info -E
     depends_on:
       - redis
       - server
 
   postgres:
-    container_name: postgres
+    container_name: ht_postgres
     image: "postgres:14"
     environment:
       POSTGRES_DB: ${HT_DB_NAME}
@@ -71,6 +70,7 @@ services:
   #      - development:/var/lib/postgresql/data
 
   client:
+    container_name: ht_client
     image: "node:16"
     ports:
       - "3000:3000"
