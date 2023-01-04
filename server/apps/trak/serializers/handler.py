@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.trak.models import Contact, Handler
+from apps.trak.models import Handler
 from apps.trak.serializers import AddressSerializer
 
 from .contact import ContactSerializer
@@ -63,13 +63,7 @@ class HandlerSerializer(TrakBaseSerializer):
     )
 
     def create(self, validated_data):
-        new_contact = Contact.objects.create(**validated_data.pop('contact'))
-        handler_dict = self.pop_addresses(**validated_data)
-        new_handler = Handler.objects.create(site_address=handler_dict['site_address'],
-                                             mail_address=handler_dict['mail_address'],
-                                             **handler_dict['handler_data'],
-                                             contact=new_contact)
-        return new_handler
+        return Handler.objects.create_with_related(**validated_data)
 
     class Meta:
         model = Handler

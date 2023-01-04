@@ -34,7 +34,9 @@ class EpaPhone(models.Model):
 
 class ContactManager(models.Manager):
 
-    def create(self, **contact_data):
+    def create(self, contact=None, **contact_data):
+        if isinstance(contact, Contact):
+            return contact
         if 'phone' in contact_data:
             phone_data = contact_data.pop('phone')
             if isinstance(phone_data, EpaPhone):

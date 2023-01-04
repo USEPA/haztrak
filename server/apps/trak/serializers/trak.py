@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.trak.models import Address, Contact, Handler, Manifest, Transporter
+from apps.trak.models import Address, Contact, Manifest, Transporter
 
 
 class TrakBaseSerializer(serializers.ModelSerializer):
@@ -16,15 +16,8 @@ class TrakBaseSerializer(serializers.ModelSerializer):
                 pass
         return data
 
-    def create_handler(self, **handler_data) -> Handler:
-        new_contact = Contact.objects.create(**handler_data.pop('contact'))
-        handler_dict = self.pop_addresses(**handler_data)
-        new_handler = Handler.objects.create(site_address=handler_dict['site_address'],
-                                             mail_address=handler_dict['mail_address'],
-                                             **handler_dict['handler_data'],
-                                             contact=new_contact)
-        return new_handler
-
+    # ToDo: remove this. Move logic to Transporter model and serializer after Transporter model
+    #  Is refactored to include ForeignKey to Handler model.
     def create_transporter(self, manifest: Manifest,
                            **transporter_data: dict) -> Transporter:
         new_contact = Contact.objects.create(**transporter_data.pop('contact'))

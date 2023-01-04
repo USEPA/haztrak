@@ -9,7 +9,7 @@
 
 from rest_framework import serializers
 
-from apps.trak.models import Handler, Manifest, WasteLine
+from apps.trak.models import Manifest, WasteLine
 from apps.trak.serializers.handler import HandlerSerializer
 
 from ..trak import TrakBaseSerializer
@@ -147,38 +147,31 @@ class ManifestSerializer(TrakBaseSerializer):
     )
 
     def create(self, validated_data) -> Manifest:
-        # pop foreign table data
         waste_data = validated_data.pop('wastes')
         trans_data = validated_data.pop('transporters')
-        tsd_data = validated_data.pop('tsd')
-        gen_data = validated_data.pop('generator')
-        # Secondary foreign table data
-        if Handler.objects.filter(epa_id=gen_data['epa_id']).exists():
-            gen_object = Handler.objects.get(epa_id=gen_data['epa_id'])
-        else:
-            gen_object = self.create_handler(**gen_data)
-        if Handler.objects.filter(epa_id=tsd_data['epa_id']).exists():
-            tsd_object = Handler.objects.get(epa_id=tsd_data['epa_id'])
-        else:
-            tsd_object = self.create_handler(**tsd_data)
-
-        # Create model instances
-        manifest = Manifest.objects.create(generator=gen_object,
-                                           tsd=tsd_object,
-                                           **validated_data)
-        for transporter in trans_data:
-            self.create_transporter(manifest, **transporter)
+        manifest = Manifest.objects.create_with_related(validated_data)
         for waste_line in waste_data:
             WasteLine.objects.create(manifest=manifest, **waste_line)
+        for transporter in trans_data:
+            # ToDo: remove this method from TrakBaseSerializer
+            self.create_transporter(manifest, **transporter)
         return manifest
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
     def to_representation(self, instance) -> str:
+        """
+        We need to use the Python keyword 'import' in our JSON to e-Manifest.
+        This method replaces 'import_flag' with 'import' before serializing
+        """
         data = super(ManifestSerializer, self).to_representation(instance)
         data['import'] = instance.import_flag
         return data
 
     def to_internal_value(self, data):
+        """
+        We need to use the Python keyword 'import' in our JSON to e-Manifest.
+        This method replaces 'import_flag' with 'import' before deserializing
+        """
         instance = super(ManifestSerializer, self).to_internal_value(data)
         try:
             instance.import_flag = data.get('import')
