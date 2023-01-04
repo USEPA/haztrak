@@ -15,7 +15,6 @@ JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + '/json'
 TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'
 TEST_HANDLER_JSON = f'{JSON_DIR}/test_site.json'
 TEST_ADDRESS_JSON = f'{JSON_DIR}/test_address.json'
-TEST_WASTE1_JSON = f'{JSON_DIR}/test_wasteline1.json'
 
 
 class SerializerBaseTests(TestCase):
@@ -90,19 +89,6 @@ class HandlerSerializerTests(SerializerBaseTests):
     def test_save(self):
         saved_site = self.serializer.save()
         self.assertIsInstance(saved_site, Handler)
-
-
-class TestWasteLineSerializer:
-    def test_waste_line_json_deserializes(self, waste_serializer) -> None:
-        assert waste_serializer.is_valid() is True
-
-    def test_deserialized_waste_line_saves(self, waste_serializer) -> None:
-        # waste_serializer.is_valid()
-        # saved_waste_line = waste_serializer.save()
-        # assert type(saved_waste_line) is WasteLine
-        # ToDo: we need a manifest pytest.fuxture that we can assign to
-        #  manifest_id field on the wasteline
-        assert True
 
 
 def bytes_from_json(json_file: str) -> bytes:

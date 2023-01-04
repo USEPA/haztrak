@@ -23,6 +23,7 @@ htApi.interceptors.request.use(
     config.headers = config.headers ?? {};
     const token = store.getState().user.token;
     if (token) {
+      // @ts-ignore
       config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;

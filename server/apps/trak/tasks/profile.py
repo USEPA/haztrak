@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from emanifest import client as em
 from requests import RequestException
 
-from apps.trak.models import RcraProfile, Site, Handler
+from apps.trak.models import Handler, RcraProfile, Site
 from apps.trak.serializers import HandlerSerializer
 
 
@@ -22,14 +22,14 @@ def sync_user_sites(username: str) -> None:
     rcrainfo_env = os.getenv('HT_RCRAINFO_ENV', 'preprod')
     try:
         profile = RcraProfile.objects.get(user__username=username)
-        if not profile.rcra_user_name or not profile.rcra_api_id or not profile.rcra_api_key:
+        if not profile.rcra_username or not profile.rcra_api_id or not profile.rcra_api_key:
             raise Exception('missing attribute(s) from RcraProfile')
     except RcraProfile.DoesNotExist:
         RcraProfile.objects.create(user=User.objects.get(username=username))
         raise Exception('RcraProfile is non existent... creating. Needs attributes')
     rcra_client = em.new_client(rcrainfo_env)
     rcra_client.Auth(profile.rcra_api_id, profile.rcra_api_key)
-    data = request_user_date(profile.rcra_user_name, rcra_client.token)
+    data = request_user_date(profile.rcra_username, rcra_client.token)
     sites_ids = parse_site_ids(data)
     handlers = []
     sites = []

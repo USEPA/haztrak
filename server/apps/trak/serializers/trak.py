@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from apps.trak.models import Address, Handler, Manifest, Transporter
+from apps.trak.models import (Address, Contact, EpaPhone, Handler, Manifest,
+                              Transporter)
 
 
 class TrakSerializer(serializers.ModelSerializer):
@@ -17,21 +18,38 @@ class TrakSerializer(serializers.ModelSerializer):
         return data
 
     def create_handler(self, **handler_data) -> Handler:
+        handler_contact = handler_data.pop('contact')
+        if 'phone' in handler_contact:
+            phone_data = handler_contact.pop('phone')
+            new_phone = EpaPhone.objects.create(**phone_data)
+            new_contact = Contact.objects.create(**handler_contact, phone=new_phone)
+        else:
+            new_contact = Contact.objects.create(**handler_contact)
         handler_dict = self.pop_addresses(**handler_data)
         new_handler = Handler.objects.create(site_address=handler_dict['site_address'],
                                              mail_address=handler_dict['mail_address'],
-                                             **handler_dict['handler_data'])
+                                             **handler_dict['handler_data'],
+                                             contact=new_contact)
         return new_handler
 
     def create_transporter(self, manifest: Manifest,
                            **transporter_data: dict) -> Transporter:
+        """ToDo(!!!) remove redundancies like this"""
+        handler_contact = transporter_data.pop('contact')
+        if 'phone' in handler_contact:
+            phone_data = handler_contact.pop('phone')
+            new_phone = EpaPhone.objects.create(**phone_data)
+            new_contact = Contact.objects.create(**handler_contact, phone=new_phone)
+        else:
+            new_contact = Contact.objects.create(**handler_contact)
         handler_parsed = self.pop_addresses(**transporter_data)
         new_transporter = Transporter.objects.create(manifest=manifest,
                                                      site_address=handler_parsed[
                                                          'site_address'],
                                                      mail_address=handler_parsed[
                                                          'mail_address'],
-                                                     **handler_parsed['handler_data'])
+                                                     **handler_parsed['handler_data'],
+                                                     contact=new_contact)
         return new_transporter
 
     @staticmethod
