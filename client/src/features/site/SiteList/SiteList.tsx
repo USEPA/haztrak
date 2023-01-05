@@ -2,10 +2,11 @@ import HtCard from 'components/HtCard';
 import HtDropdown from 'components/HtDropdown';
 import HtTooltip from 'components/HtTooltip';
 import useHtAPI from 'hooks/useHtAPI';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Site } from 'types/Handler';
+import { Modal } from 'react-bootstrap';
 
 /**
  * Returns a table displaying the users sites.
@@ -13,6 +14,15 @@ import { Site } from 'types/Handler';
  */
 function SiteList() {
   const [siteData, loading, error] = useHtAPI<Array<Site>>('trak/site/');
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
+  useEffect(() => {
+    if (error) setShowErrorModal(true);
+  }, [error]);
+
+  const handleClose = () => {
+    setShowErrorModal(false);
+  };
 
   // ToDo: This is POC source, It needs to be refactored desperately
   function SitesTable() {
@@ -75,7 +85,7 @@ function SiteList() {
         </HtCard.Header>
         <HtCard.Body>
           {/* if loading, show HtCard spinner component*/}
-          {loading ? (
+          {loading && !error ? (
             <HtCard.Spinner message="Loading your sites..." />
           ) : //  else check if siteData is present
           siteData ? (
@@ -84,8 +94,19 @@ function SiteList() {
           ) : // else check if there's an error
           error ? (
             <>
-              <p>Sorry, we experienced a error fetching your sites</p>
-              <p>{error.message}</p>
+              <Modal show={showErrorModal} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title style={{ color: 'red' }}>
+                    Error retrieving site list
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <p style={{ color: 'red' }}>
+                    Something went wrong. Please try again sometime later
+                  </p>
+                </Modal.Body>
+              </Modal>
+              {SitesTable()}
             </>
           ) : (
             // lastly, if no error but siteData is empty, suggest
