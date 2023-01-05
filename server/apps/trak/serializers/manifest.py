@@ -2,13 +2,16 @@ from rest_framework import serializers
 
 from apps.trak.models import Manifest, Transporter, WasteLine
 from apps.trak.serializers.handler import HandlerSerializer
+from apps.trak.serializers.trak import TrakBaseSerializer
 
-from ..trak import TrakBaseSerializer
 from .transporter import TransporterSerializer
 from .waste_line import WasteLineSerializer
 
 
 class ManifestSerializer(TrakBaseSerializer):
+    """
+    Manifest modal serializer for JSON marshalling/unmarshalling
+    """
     createdDate = serializers.DateTimeField(
         source='created_date',
         required=False,

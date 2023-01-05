@@ -6,7 +6,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 class EpaPhoneNumber(models.CharField):
-
     def validate(self, value, model_instance):
         if not re.match(r'^\d{3}-\d{3}-\d{4}$', value):
             raise ValidationError(
@@ -16,6 +15,10 @@ class EpaPhoneNumber(models.CharField):
 
 
 class EpaPhone(models.Model):
+    """
+    RCRAInfo phone model, stores phones in ###-###-#### format
+    along with up to 6 digit extension.
+    """
     number = EpaPhoneNumber(
         max_length=12,
     )
@@ -33,8 +36,15 @@ class EpaPhone(models.Model):
 
 
 class ContactManager(models.Manager):
+    """
+    Inter-modal related functionality for Contact Modal
+    """
 
     def create(self, contact=None, **contact_data):
+        """
+        Create Contact instance in database, create related phone instance if applicable,
+        and return the new instance.
+        """
         if isinstance(contact, Contact):
             return contact
         if 'phone' in contact_data:
@@ -49,6 +59,10 @@ class ContactManager(models.Manager):
 
 
 class Contact(models.Model):
+    """
+    RCRAInfo contact including personnel information such as name, email, company,
+    includes a phone related field.
+    """
     objects = ContactManager()
 
     first_name = models.CharField(

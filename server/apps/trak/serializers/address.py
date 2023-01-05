@@ -11,6 +11,13 @@ from .trak import TrakBaseSerializer
 
 @extend_schema_field(OpenApiTypes.OBJECT)
 class LocalityField(serializers.Field):
+    """
+    Locality is defined, in RCRAInfo, as an object used to describe region (state, nation)
+    {
+      "code": "TX",
+      "name": "Texas"
+    }
+    """
 
     def __init__(self, locality_type):
         super().__init__()
@@ -34,6 +41,9 @@ class LocalityField(serializers.Field):
 
 
 class AddressSerializer(TrakBaseSerializer):
+    """
+    Address modal serializer for JSON marshalling/unmarshalling
+    """
     streetNumber = serializers.CharField(
         source='street_number',
         required=False,

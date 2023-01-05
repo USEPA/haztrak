@@ -8,6 +8,9 @@ from .trak import TrakBaseSerializer
 
 
 class HandlerSerializer(TrakBaseSerializer):
+    """
+    Handler modal serializer for JSON marshalling/unmarshalling
+    """
     epaSiteId = serializers.CharField(
         source='epa_id',
     )

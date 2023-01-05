@@ -1,10 +1,12 @@
-from rest_framework import serializers
-
 from apps.trak.models import Transporter
 from apps.trak.serializers.handler import HandlerSerializer
+from apps.trak.serializers.trak import TrakBaseSerializer
 
 
-class TransporterSerializer(serializers.ModelSerializer):
+class TransporterSerializer(TrakBaseSerializer):
+    """
+    Transporter modal serializer for JSON marshalling/unmarshalling
+    """
     handler = HandlerSerializer()
 
     class Meta:

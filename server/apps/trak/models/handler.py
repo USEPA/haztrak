@@ -4,6 +4,9 @@ from apps.trak.models import Address, Contact
 
 
 class HandlerManager(models.Manager):
+    """
+    Inter-modal related functionality for Handler Modal
+    """
 
     def __init__(self):
         self.handler_data = None
@@ -28,6 +31,9 @@ class HandlerManager(models.Manager):
 
 
 class Handler(models.Model):
+    """
+    RCRAInfo Handler modal definition for entities on the uniform hazardous waste manifests
+    """
     objects = HandlerManager()
 
     site_type = models.CharField(max_length=20,

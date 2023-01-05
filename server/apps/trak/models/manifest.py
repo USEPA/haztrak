@@ -15,6 +15,9 @@ def draft_mtn():
 
 
 class ManifestManager(models.Manager):
+    """
+    Inter-modal related functionality for Manifest Modal
+    """
 
     @staticmethod
     def create_with_related(manifest_data):
@@ -39,6 +42,9 @@ class ManifestManager(models.Manager):
 
 
 class Manifest(models.Model):
+    """
+    Modal definition the e-Manifest Uniform Hazardous Waste Manifest
+    """
     objects = ManifestManager()
 
     created_date = models.DateTimeField(

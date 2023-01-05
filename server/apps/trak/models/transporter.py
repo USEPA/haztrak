@@ -4,6 +4,9 @@ from . import Handler, Manifest
 
 
 class TransporterManager(models.Manager):
+    """
+    Inter-modal related functionality for Transporter Modal
+    """
 
     @staticmethod
     def create_with_related(manifest: Manifest, **data):
@@ -13,6 +16,9 @@ class TransporterManager(models.Manager):
 
 
 class Transporter(models.Model):
+    """
+    Modal definition for entities listed as transporters of hazardous waste on the manifest.
+    """
     objects = TransporterManager()
 
     handler = models.ForeignKey(

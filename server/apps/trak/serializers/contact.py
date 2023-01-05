@@ -5,6 +5,9 @@ from apps.trak.serializers.trak import TrakBaseSerializer
 
 
 class EpaPhoneSerializer(TrakBaseSerializer):
+    """
+    EpaPhone modal serializer for JSON marshalling/unmarshalling
+    """
     number = serializers.CharField()
     extension = serializers.CharField(
         required=False,
@@ -19,6 +22,9 @@ class EpaPhoneSerializer(TrakBaseSerializer):
 
 
 class ContactSerializer(TrakBaseSerializer):
+    """
+    Contact modal serializer for JSON marshalling/unmarshalling
+    """
     firstName = serializers.CharField(
         source='first_name',
         required=False,

@@ -6,8 +6,7 @@ from apps.trak.models import RcraProfile
 
 class ProfileGetSerializer(ModelSerializer):
     """
-    Provides the user's RcraProfile information, excluding their RCRAInfo
-    API key (see ProfileUpdateSerializer)
+    Rcra Profile modal serializer for JSON marshalling/unmarshalling
     """
     user = serializers.StringRelatedField()
     epaSites = serializers.StringRelatedField(
