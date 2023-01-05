@@ -1,23 +1,17 @@
-# Any serialization of deserialization of Haztrak objects to or from JSON
-# goes through these django-rest-framework serializers
-# this way if changes to the model occur, we don't need to change another
-# utility function that just reads JSON and create model instances
-
-# Comments are included in each serializer where fields were not implemented
-# this is either because ModelSerializer's defaults are sufficient or work is needed to
-# be done
-
 from rest_framework import serializers
 
-from apps.trak.models import Handler, Manifest, WasteLine
+from apps.trak.models import Manifest, Transporter, WasteLine
 from apps.trak.serializers.handler import HandlerSerializer
+from apps.trak.serializers.trak import TrakBaseSerializer
 
-from ..trak import TrakSerializer
 from .transporter import TransporterSerializer
 from .waste_line import WasteLineSerializer
 
 
-class ManifestSerializer(TrakSerializer):
+class ManifestSerializer(TrakBaseSerializer):
+    """
+    Manifest modal serializer for JSON marshalling/unmarshalling
+    """
     createdDate = serializers.DateTimeField(
         source='created_date',
         required=False,
@@ -147,38 +141,29 @@ class ManifestSerializer(TrakSerializer):
     )
 
     def create(self, validated_data) -> Manifest:
-        # pop foreign table data
         waste_data = validated_data.pop('wastes')
         trans_data = validated_data.pop('transporters')
-        tsd_data = validated_data.pop('tsd')
-        gen_data = validated_data.pop('generator')
-        # Secondary foreign table data
-        if Handler.objects.filter(epa_id=gen_data['epa_id']).exists():
-            gen_object = Handler.objects.get(epa_id=gen_data['epa_id'])
-        else:
-            gen_object = self.create_handler(**gen_data)
-        if Handler.objects.filter(epa_id=tsd_data['epa_id']).exists():
-            tsd_object = Handler.objects.get(epa_id=tsd_data['epa_id'])
-        else:
-            tsd_object = self.create_handler(**tsd_data)
-
-        # Create model instances
-        manifest = Manifest.objects.create(generator=gen_object,
-                                           tsd=tsd_object,
-                                           **validated_data)
-        for transporter in trans_data:
-            self.create_transporter(manifest, **transporter)
+        manifest = Manifest.objects.create_with_related(validated_data)
         for waste_line in waste_data:
             WasteLine.objects.create(manifest=manifest, **waste_line)
+        for transporter in trans_data:
+            transporter['manifest'] = manifest
+            Transporter.objects.create_with_related(**transporter)
         return manifest
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
     def to_representation(self, instance) -> str:
+        """
+        Replace 'import_flag' with expected Python Keyword 'import' in JSON
+        """
         data = super(ManifestSerializer, self).to_representation(instance)
         data['import'] = instance.import_flag
         return data
 
     def to_internal_value(self, data):
+        """
+        Replace 'import_flag' with expected Python Keyword 'import' in JSON
+        """
         instance = super(ManifestSerializer, self).to_internal_value(data)
         try:
             instance.import_flag = data.get('import')

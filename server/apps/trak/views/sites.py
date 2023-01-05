@@ -10,8 +10,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.trak.models import Manifest, Site, Transporter
-from apps.trak.models import RcraProfile
+from apps.trak.models import Manifest, RcraProfile, Site, Transporter
 from apps.trak.serializers import SiteSerializer
 
 
@@ -64,7 +63,7 @@ class SiteManifest(APIView):
             gen_manifests = [str(i) for i in
                              Manifest.objects.filter(generator__epa_id=epa_id)]
             tran_manifests = [str(i) for i in
-                              Transporter.objects.filter(epa_id=epa_id).values_list(
+                              Transporter.objects.filter(handler__epa_id=epa_id).values_list(
                                   'manifest__mtn', flat=True)]
             return self.response(status=status.HTTP_200_OK,
                                  data={'tsd': tsd_manifests,

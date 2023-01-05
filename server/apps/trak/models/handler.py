@@ -1,9 +1,41 @@
 from django.db import models
 
-from apps.trak.models import Contact
+from apps.trak.models import Address, Contact
+
+
+class HandlerManager(models.Manager):
+    """
+    Inter-modal related functionality for Handler Modal
+    """
+
+    def __init__(self):
+        self.handler_data = None
+        super().__init__()
+
+    def create_with_related(self, **handler_data):
+        self.handler_data = handler_data
+        new_contact = Contact.objects.create(self.handler_data.pop('contact'))
+        site_address = self.get_address('site_address')
+        mail_address = self.get_address('mail_address')
+        return super().create(site_address=site_address,
+                              mail_address=mail_address,
+                              **self.handler_data,
+                              contact=new_contact)
+
+    def get_address(self, key) -> Address:
+        address = self.handler_data.pop(key)
+        if isinstance(address, Address):
+            return address
+        else:
+            return Address.objects.create(**address)
 
 
 class Handler(models.Model):
+    """
+    RCRAInfo Handler modal definition for entities on the uniform hazardous waste manifests
+    """
+    objects = HandlerManager()
+
     site_type = models.CharField(max_length=20,
                                  choices=[
                                      ('designatedFacility', 'Tsdf'),
@@ -20,12 +52,12 @@ class Handler(models.Model):
         max_length=200,
     )
     site_address = models.ForeignKey(
-        'Address',
+        Address,
         on_delete=models.CASCADE,
         related_name='site_address',
     )
     mail_address = models.ForeignKey(
-        'Address',
+        Address,
         on_delete=models.CASCADE,
         related_name='mail_address',
     )

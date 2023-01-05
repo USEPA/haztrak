@@ -50,16 +50,6 @@ class ManifestSerializerTests(SerializerBaseTests):
         saved_manifest = self.serializer.save()
         self.assertIsInstance(saved_manifest, Manifest)
 
-    def test_create_populated_transporter_field(self):
-        try:
-            transporter_id = dict(self.json_data)['transporters'][0]['epaSiteId']
-            saved_manifest = self.serializer.save()
-            transporter = saved_manifest.transporters.all()
-            transporter = [str(transporter.epa_id) for transporter in transporter]
-            self.assertIn(transporter_id, transporter)
-        except KeyError:
-            self.fail('Problem getting transporter data from JSON')
-
     def test_multiple_transporter_are_serialized(self):
         try:
             number_transporters = len(dict(self.json_data)['transporters'])

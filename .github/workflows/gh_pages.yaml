@@ -2,7 +2,17 @@ name: Github Pages
 
 on:
   pull_request:
-    types: [ closed ]
+    types: [closed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -11,8 +21,7 @@ jobs:
       run:
         working-directory: ./docs/haztrak_book
     steps:
-
-      - name: Setup
+      - name: Checkout
         uses: actions/checkout@v2
 
       - name: Setup mdBook
@@ -20,14 +29,8 @@ jobs:
           mkdir bin
           curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.25/mdbook-v0.4.25-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
 
-      - name: inspect
-        run: tree -L 2
-
       - name: Build Documentation
         run: bin/mdbook build
-
-      - name: inspect
-        run: tree -L 2
 
       - name: upload Docs
         uses: actions/upload-pages-artifact@v1
@@ -36,15 +39,11 @@ jobs:
 
   deploy:
     needs: build
-    permissions:
-      pages: write
-      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1

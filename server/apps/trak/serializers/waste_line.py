@@ -1,10 +1,13 @@
 from rest_framework import serializers
 
 from apps.trak.models import WasteLine
-from ..trak import TrakSerializer
+from apps.trak.serializers.trak import TrakBaseSerializer
 
 
-class WasteLineSerializer(TrakSerializer):
+class WasteLineSerializer(TrakBaseSerializer):
+    """
+    Waste Line modal serializer for JSON marshalling/unmarshalling
+    """
     lineNumber = serializers.IntegerField(
         source='line_number',
     )
