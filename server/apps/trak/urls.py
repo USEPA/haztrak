@@ -3,6 +3,7 @@ from rest_framework import routers
 
 from .views import (HandlerSearch, HandlerView, ManifestView, RcraProfileView,
                     SiteApi, SiteList, SiteManifest, SyncProfile)
+from .views.handler import TransporterView
 
 manifest_router = routers.SimpleRouter()
 manifest_router.register(r'manifest', ManifestView)
@@ -20,4 +21,5 @@ urlpatterns = [
     # Handler
     path('handler/search', HandlerSearch.as_view()),
     path('handler/details/<int:pk>', HandlerView.as_view()),
+    path('transporter/<int:pk>', TransporterView.as_view()),
 ]

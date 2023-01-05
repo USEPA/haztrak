@@ -5,6 +5,11 @@ from .sites import Site
 
 
 class RcraProfile(models.Model):
+    """
+    Provides the user's RcraProfile information, excluding their RCRAInfo
+    API key (see ProfileUpdateSerializer). Has a one-to-one relationship with
+    the User model.
+    """
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,

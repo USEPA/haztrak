@@ -2,9 +2,13 @@ from rest_framework import serializers
 
 from apps.trak.models import Site
 from apps.trak.serializers import HandlerSerializer
+from apps.trak.serializers.trak import TrakBaseSerializer
 
 
-class SiteSerializer(serializers.ModelSerializer):
+class SiteSerializer(TrakBaseSerializer):
+    """
+    Site modal serializer for JSON marshalling/unmarshalling
+    """
     name = serializers.CharField(
         required=False
     )

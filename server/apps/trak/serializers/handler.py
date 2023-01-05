@@ -1,13 +1,16 @@
 from rest_framework import serializers
 
-from apps.trak.models import Contact, EpaPhone, Handler
+from apps.trak.models import Handler
 from apps.trak.serializers import AddressSerializer
 
 from .contact import ContactSerializer
-from .trak import TrakSerializer
+from .trak import TrakBaseSerializer
 
 
-class HandlerSerializer(TrakSerializer):
+class HandlerSerializer(TrakBaseSerializer):
+    """
+    Handler modal serializer for JSON marshalling/unmarshalling
+    """
     epaSiteId = serializers.CharField(
         source='epa_id',
     )
@@ -63,20 +66,7 @@ class HandlerSerializer(TrakSerializer):
     )
 
     def create(self, validated_data):
-        handler_contact = validated_data.pop('contact')
-        print(handler_contact)
-        if 'phone' in handler_contact:
-            phone_data = handler_contact.pop('phone')
-            new_phone = EpaPhone.objects.create(**phone_data)
-            new_contact = Contact.objects.create(**handler_contact, phone=new_phone)
-        else:
-            new_contact = Contact.objects.create(**handler_contact)
-        handler_dict = self.pop_addresses(**validated_data)
-        new_handler = Handler.objects.create(site_address=handler_dict['site_address'],
-                                             mail_address=handler_dict['mail_address'],
-                                             **handler_dict['handler_data'],
-                                             contact=new_contact)
-        return new_handler
+        return Handler.objects.create_with_related(**validated_data)
 
     class Meta:
         model = Handler

@@ -4,6 +4,9 @@ from lib.rcrainfo import lookups as lu
 
 
 class Address(models.Model):
+    """
+    Used to capture RCRAInfo address instances (mail, site).
+    """
     street_number = models.CharField(
         max_length=12,
         null=True,

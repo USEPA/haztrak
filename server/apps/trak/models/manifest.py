@@ -2,14 +2,51 @@ from datetime import datetime
 
 from django.db import models
 
+from apps.trak.models import Handler
 from lib.rcrainfo import lookups as lu
 
 
 def draft_mtn():
+    """
+    A callable that returns a timestamped draft MTN in lieu of an
+    official MTN from e-Manifest
+    """
     return str(f'draft-{datetime.now().strftime("%Y-%m-%d-%H:%M:%S")}')
 
 
+class ManifestManager(models.Manager):
+    """
+    Inter-modal related functionality for Manifest Modal
+    """
+
+    @staticmethod
+    def create_with_related(manifest_data):
+        # pop foreign table data
+        tsd_data = manifest_data.pop('tsd')
+        gen_data = manifest_data.pop('generator')
+        # Secondary foreign table data
+        if Handler.objects.filter(epa_id=gen_data['epa_id']).exists():
+            gen_object = Handler.objects.get(epa_id=gen_data['epa_id'])
+        else:
+            gen_object = Handler.objects.create_with_related(**gen_data)
+        if Handler.objects.filter(epa_id=tsd_data['epa_id']).exists():
+            tsd_object = Handler.objects.get(epa_id=tsd_data['epa_id'])
+        else:
+            tsd_object = Handler.objects.create_with_related(**tsd_data)
+
+        # Create model instances
+        manifest = Manifest.objects.create(generator=gen_object,
+                                           tsd=tsd_object,
+                                           **manifest_data)
+        return manifest
+
+
 class Manifest(models.Model):
+    """
+    Modal definition the e-Manifest Uniform Hazardous Waste Manifest
+    """
+    objects = ManifestManager()
+
     created_date = models.DateTimeField(
         null=True,
         auto_now=True,
@@ -63,13 +100,13 @@ class Manifest(models.Model):
         blank=True,
     )
     generator = models.ForeignKey(
-        'Handler',
+        Handler,
         on_delete=models.PROTECT,
         related_name='generator',
     )
     # transporters
     tsd = models.ForeignKey(
-        'Handler',
+        Handler,
         verbose_name='Designated facility',
         on_delete=models.PROTECT,
         related_name='designated_facility',

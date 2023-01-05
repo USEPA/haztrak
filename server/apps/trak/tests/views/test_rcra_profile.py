@@ -14,6 +14,7 @@ class TestRcraProfileEndpoint(TestApiClient):
     def test_returns_user_profile(self):
         # response: Response = self.client.get(f'{self.url}/{self.user.username}')
         response: Response = self.client.get(f'{self.url}/{self.user.username}')
+        print(response.data)
         assert response.headers['Content-Type'] == 'application/json'
         assert response.status_code == 200
         assert response.data['user'] == self.user.username
