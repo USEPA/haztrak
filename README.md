@@ -65,9 +65,7 @@ Looking to contribute?
 You can find Haztrak's documentation hosted at https://usepa.github.io/haztrak/
 
 We also have guidance on [contributing](), a [code of conduct](), See the README's in
-the [server]
-(server/README.md) and [client]
-(client/README.md)
+the [server](server/README.md) and [client](client/README.md)
 directories for a
 high level
 overview.
