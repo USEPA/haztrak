@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { useAppDispatch } from 'store';
+import { updateProfile } from 'store/rcraProfileSlice';
 import { RcraProfileState } from 'types/store';
 import htApi from 'services';
 import { Link } from 'react-router-dom';
@@ -11,8 +13,9 @@ interface ProfileViewProps {
 
 function RcraProfile({ profile }: ProfileViewProps) {
   const [editable, setEditable] = useState(false);
-  const [profileSubmit, setProfileSubmit] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(false);
   const { error, epaSites, loading, ...formValues } = profile;
+  const dispatch = useAppDispatch();
 
   const { register, reset, handleSubmit } = useForm<RcraProfileState>({
     values: formValues,
@@ -25,22 +28,16 @@ function RcraProfile({ profile }: ProfileViewProps) {
   const onSubmit = (data: RcraProfileState) => {
     const { rcraAPIID, rcraUsername, rcraAPIKey } = data;
     const updateData = { rcraAPIID, rcraUsername, rcraAPIKey };
-    removeEmptyFields(updateData);
-    setProfileSubmit(!profileSubmit);
+    const newUpdateData = removeEmptyFields(updateData);
+    setProfileLoading(!profileLoading);
     htApi
-      .put(`/trak/profile/${profile.user}`, updateData)
-      .then((r) => console.log('Response:\n', r))
-      .then(() => setProfileSubmit(!profileSubmit))
+      .put(`/trak/profile/${profile.user}`, newUpdateData)
+      .then((r) => {
+        dispatch(updateProfile(r.data));
+      })
+      .then(() => setProfileLoading(!profileLoading))
       .catch((r) => console.error(r));
   };
-
-  function removeEmptyFields(data: any) {
-    Object.keys(data).forEach((key) => {
-      if (data[key] === '' || data[key] == null) {
-        delete data[key];
-      }
-    });
-  }
 
   return (
     <>
@@ -173,6 +170,15 @@ function RcraProfile({ profile }: ProfileViewProps) {
       </div>
     </>
   );
+}
+
+function removeEmptyFields(data: any) {
+  Object.keys(data).forEach((key) => {
+    if (data[key] === '' || data[key] == null) {
+      delete data[key];
+    }
+  });
+  return data;
 }
 
 export default RcraProfile;
