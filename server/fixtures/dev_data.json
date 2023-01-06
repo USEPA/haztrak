@@ -50,10 +50,73 @@
       "user": 2,
       "rcra_api_key": "fakeRCRAInfoAPIKey",
       "rcra_api_id": "fakeRCRAInfoAPIId",
-      "rcra_username": "dpgraham4401",
+      "rcra_username": "testuser1",
       "phone_number": null,
-      "epa_sites": [],
+      "epa_sites": [
+        1
+      ],
       "email": "test.user@haztrak.net"
+    }
+  },
+  {
+    "model": "trak.handler",
+    "pk": 1,
+    "fields": {
+      "site_type": "",
+      "epa_id": "VATESTGEN001",
+      "name": "VA TEST GEN 2021",
+      "site_address": 1,
+      "mail_address": 1,
+      "modified": false,
+      "registered": false,
+      "contact": 1,
+      "emergency_phone": null,
+      "electronic_signatures_info": null,
+      "gis_primary": false,
+      "can_esign": true,
+      "limited_esign": true,
+      "registered_emanifest_user": true
+    }
+  },
+  {
+    "model": "trak.site",
+    "pk": 1,
+    "fields": {
+      "name": "VA TEST GEN 2021",
+      "epa_site": 1
+    }
+  },
+  {
+    "model": "trak.contact",
+    "pk": 1,
+    "fields": {
+      "first_name": "David",
+      "middle_initial": "P",
+      "last_name": "Graham",
+      "phone": 1,
+      "email": "testuser1@haztrak.net",
+      "company_name": "haztrak"
+    }
+  },
+  {
+    "model": "trak.epaphone",
+    "pk": 1,
+    "fields": {
+      "number": "321-321-3214",
+      "extension": null
+    }
+  },
+  {
+    "model": "trak.address",
+    "pk": 1,
+    "fields": {
+      "street_number": null,
+      "address1": "123 VA TEST GEN 2021 WAY",
+      "address2": null,
+      "city": "ARLINGTON",
+      "state": "VA",
+      "country": "US",
+      "zip": "22202"
     }
   }
 ]
