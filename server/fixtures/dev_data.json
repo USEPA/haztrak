@@ -90,12 +90,20 @@
     "model": "trak.contact",
     "pk": 1,
     "fields": {
-      "first_name": null,
-      "middle_initial": null,
-      "last_name": null,
-      "phone": null,
-      "email": "",
-      "company_name": null
+      "first_name": "David",
+      "middle_initial": "P",
+      "last_name": "Graham",
+      "phone": 1,
+      "email": "testuser1@haztrak.net",
+      "company_name": "haztrak"
+    }
+  },
+  {
+    "model": "trak.epaphone",
+    "pk": 1,
+    "fields": {
+      "number": "321-321-3214",
+      "extension": null
     }
   },
   {
