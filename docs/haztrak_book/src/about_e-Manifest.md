@@ -23,6 +23,8 @@ If you're looking for background information on the e-Manifest Program, you can 
 up-to-date information on the [United States Environmental Protection Agency's e-Manifest
 page](https://www.epa.gov/e-manifest).
 
+If you're new to e-Manifest, you may want to review the [Terminology page](./e-Manifest_terminology.md).
+
 The e-Manifest and RCRAInfo team also communicates changes to the e-Manifest system
 with biweekly virtual user calls
 and [monthly webinars](https://www.epa.gov/e-manifest/monthly-webinars-about-hazardous-waste-electronic-manifest-e-manifest).
