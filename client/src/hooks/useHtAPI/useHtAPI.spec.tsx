@@ -17,7 +17,6 @@ interface exampleProps {
 function TestComponent({ url }: exampleProps) {
   const [data, loading, error] = useHtAPI<exampleData>(url);
   if (error) {
-    console.log(error.message);
     return (
       <>
         <p>{error.message}</p>

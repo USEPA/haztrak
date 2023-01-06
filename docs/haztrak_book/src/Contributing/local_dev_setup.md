@@ -13,7 +13,7 @@ local development environment.
       server's [Dockerfile]() commands and mounts the source for hto reload.
 
 ```shell
-$ docker-compose --env-file configs/.env.dev up --build
+$ docker-compose --env-file configs/.env.bak.dev up --build
 ```
 
 - It also loads fixtures to the configured database on start, namely 2 users which can

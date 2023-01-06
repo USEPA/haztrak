@@ -42,3 +42,8 @@ class RcraProfile(models.Model):
 
     def __str__(self):
         return f'{self.user.username}'
+
+    def sync(self):
+        from ..tasks import sync_user_sites
+        task = sync_user_sites.delay(str(self.user.username))
+        return task

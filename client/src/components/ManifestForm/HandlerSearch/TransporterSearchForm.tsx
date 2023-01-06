@@ -67,7 +67,7 @@ function TransporterSearchForm({
 
     fetchOptions()
       .then((trans: Array<Handler>) => setTranOptions(trans))
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   }, [watch('epaId'), watch('name')]);
 
   /**Use the value (string) set in the Form.Select to look up

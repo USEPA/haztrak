@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import htApi from 'services';
 import { RcraProfileState } from 'types/store';
 
@@ -26,11 +26,20 @@ export const getProfile = createAsyncThunk(
 const rcraProfileSlice = createSlice({
   name: 'rcraProfile',
   initialState,
-  reducers: {},
+  reducers: {
+    updateProfile: (
+      state: RcraProfileState,
+      action: PayloadAction<RcraProfileState>
+    ) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getProfile.pending, (state) => {
-        console.log(state);
         return {
           ...state,
           loading: true,
@@ -56,3 +65,4 @@ const rcraProfileSlice = createSlice({
 });
 
 export default rcraProfileSlice.reducer;
+export const { updateProfile } = rcraProfileSlice.actions;
