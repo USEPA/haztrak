@@ -16,13 +16,23 @@ function RcraProfile({ profile }: ProfileViewProps) {
   const { register, reset, handleSubmit } = useForm<RcraProfileState>({
     values: formValues,
   });
+
+  /**
+   * Run upon submitting the RcraProfile form.
+   * @param data {RcraProfileState}
+   */
+  const onSubmit = (data: RcraProfileState) => {
+    const { rcraAPIID, rcraUsername, rcraAPIKey } = data;
+    const updateData = { rcraAPIID, rcraUsername, rcraAPIKey };
+    htApi
+      .put(`/trak/profile/${profile.user}`, updateData)
+      .then((r) => console.log(r))
+      .catch((r) => console.error(r));
+  };
+
   return (
     <>
-      <Form
-        onSubmit={handleSubmit((data) => {
-          console.log('onSubmit:\n', data);
-        })}
-      >
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Container>
           <Row className="mb-2">
             <Col>
