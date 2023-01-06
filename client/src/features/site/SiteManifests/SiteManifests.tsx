@@ -84,7 +84,6 @@ function SiteManifests(): ReactElement {
   const [siteManifest, loading, error] = useHtAPI<SiteManifest>(
     `trak/site/${siteId}/manifest`
   );
-  console.log(siteManifest);
 
   if (error) throw error;
 

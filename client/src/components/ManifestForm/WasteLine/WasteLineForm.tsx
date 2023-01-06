@@ -25,7 +25,6 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
   //  and pass the necessary methods to this component (like we did the TransporterForm)
   const onSubmit = (data: WasteLine) => {
     appendWaste(data);
-    console.log('WasteLine added: ', data);
     handleClose();
   };
   const wasteMethods = useForm<WasteLine>();

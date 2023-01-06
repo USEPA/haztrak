@@ -29,7 +29,6 @@ function ManifestForm() {
   const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     // ToDo: on submit, validate the user input
-    console.log('manifest onSubmit: ', data);
     htApi
       .post('/trak/manifest/', data)
       .then((response: AxiosResponse) => {

@@ -11,10 +11,18 @@ interface ProfileViewProps {
 
 function RcraProfile({ profile }: ProfileViewProps) {
   const [editable, setEditable] = useState(false);
-  const { register, reset, handleSubmit } = useForm<RcraProfileState>();
+  const { error, epaSites, loading, ...formValues } = profile;
+
+  const { register, reset, handleSubmit } = useForm<RcraProfileState>({
+    values: formValues,
+  });
   return (
     <>
-      <Form onSubmit={handleSubmit((data) => console.log('onSubmit: \n', data))}>
+      <Form
+        onSubmit={handleSubmit((data) => {
+          console.log('onSubmit:\n', data);
+        })}
+      >
         <Container>
           <Row className="mb-2">
             <Col>
@@ -25,7 +33,6 @@ function RcraProfile({ profile }: ProfileViewProps) {
                 <Form.Control
                   plaintext={!editable}
                   readOnly={!editable}
-                  defaultValue={profile.rcraUsername}
                   id="profileRcraUsername"
                   {...register('rcraUsername')}
                   placeholder={
@@ -42,12 +49,9 @@ function RcraProfile({ profile }: ProfileViewProps) {
                 <Form.Control
                   plaintext={!editable}
                   readOnly={!editable}
-                  defaultValue={profile.rcraAPIID}
                   id="profileRcraAPIID"
                   {...register('rcraAPIID')}
-                  placeholder={
-                    profile.rcraUsername ? profile.rcraUsername : 'Not Provided'
-                  }
+                  placeholder={profile.rcraAPIID ? profile.rcraAPIID : 'Not Provided'}
                 />
               </Form.Group>
             </Col>
@@ -55,7 +59,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
           <Row className="mb-2">
             <Col>
               <Form.Group>
-                <Form.Label className="fw-bold mb-0" htmlFor="profileRcraUsername">
+                <Form.Label className="fw-bold mb-0" htmlFor="profileRcraAPIKey">
                   RCRAInfo API Key
                 </Form.Label>
                 <Form.Control
@@ -70,75 +74,81 @@ function RcraProfile({ profile }: ProfileViewProps) {
             </Col>
             <Col>{/* Other RcraProfile form inputs here*/}</Col>
           </Row>
-          <h4>Site Permissions</h4>
-          <Table striped bordered hover responsive>
-            <thead>
-              <tr>
-                <th>EPA ID</th>
-                <th>e-Manifest</th>
-                <th>Biennial Report</th>
-                <th>Annual Report</th>
-                <th>WIETS</th>
-                <th>my RCRA ID</th>
-              </tr>
-            </thead>
-            <tbody>
-              {profile.epaSites?.map((epa_id, index) => {
-                return (
-                  <tr key={`permissionsRow${epa_id}${index}`}>
-                    <td>
-                      <Link to={`/site/${epa_id}`}>{epa_id}</Link>
-                    </td>
-                    <td>tmp</td>
-                    <td>tmp</td>
-                    <td>tmp</td>
-                    <td>tmp</td>
-                    <td>tmp</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
+          <Row>
+            <div className="mx-1 d-flex flex-row-reverse">
+              <Button
+                className="mx-2"
+                variant="success"
+                type={editable ? 'button' : 'submit'}
+                onClick={() => {
+                  setEditable(!editable);
+                }}
+              >
+                {!editable ? 'Edit' : 'Save'}
+              </Button>
+              {!editable ? (
+                <></>
+              ) : (
+                <Button
+                  className="mx-2"
+                  variant="danger"
+                  onClick={() => {
+                    setEditable(!editable);
+                    reset();
+                  }}
+                >
+                  Cancel
+                </Button>
+              )}
+            </div>
+          </Row>
         </Container>
-        <div className="mx-1 d-flex flex-row-reverse">
-          {!editable ? (
-            <></>
-          ) : (
-            <Button
-              className="mx-2"
-              variant="danger"
-              onClick={() => {
-                setEditable(!editable);
-                reset();
-              }}
-            >
-              Cancel
-            </Button>
-          )}
-          <Button
-            className="mx-2"
-            variant="success"
-            type={editable ? 'button' : 'submit'}
-            onClick={() => {
-              setEditable(!editable);
-            }}
-          >
-            {!editable ? 'Edit' : 'Save'}
-          </Button>
-          <Button
-            className="mx-2"
-            variant="primary"
-            onClick={() =>
-              htApi
-                .get(`trak/profile/${profile.user}/sync`)
-                .then((r) => console.log(r))
-                .catch((r) => console.log(r))
-            }
-          >
-            Sync Site Permissions
-          </Button>
-        </div>
       </Form>
+      <Container>
+        <h4>Site Permissions</h4>
+        <Table striped bordered hover responsive>
+          <thead>
+            <tr>
+              <th>EPA ID</th>
+              <th>e-Manifest</th>
+              <th>Biennial Report</th>
+              <th>Annual Report</th>
+              <th>WIETS</th>
+              <th>my RCRA ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            {profile.epaSites?.map((epa_id, index) => {
+              return (
+                <tr key={`permissionsRow${epa_id}${index}`}>
+                  <td>
+                    <Link to={`/site/${epa_id}`}>{epa_id}</Link>
+                  </td>
+                  <td>tmp</td>
+                  <td>tmp</td>
+                  <td>tmp</td>
+                  <td>tmp</td>
+                  <td>tmp</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </Container>
+      <div className="mx-1 d-flex flex-row-reverse">
+        <Button
+          className="mx-2"
+          variant="primary"
+          onClick={() =>
+            htApi
+              .get(`trak/profile/${profile.user}/sync`)
+              .then((r) => console.log('ToDo: replace this\n', r))
+              .catch((r) => console.error(r))
+          }
+        >
+          Sync Site Permissions
+        </Button>
+      </div>
     </>
   );
 }
