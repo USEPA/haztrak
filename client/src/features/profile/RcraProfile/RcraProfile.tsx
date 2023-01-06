@@ -11,6 +11,7 @@ interface ProfileViewProps {
 
 function RcraProfile({ profile }: ProfileViewProps) {
   const [editable, setEditable] = useState(false);
+  const [profileSubmit, setProfileSubmit] = useState(false);
   const { error, epaSites, loading, ...formValues } = profile;
 
   const { register, reset, handleSubmit } = useForm<RcraProfileState>({
@@ -24,11 +25,22 @@ function RcraProfile({ profile }: ProfileViewProps) {
   const onSubmit = (data: RcraProfileState) => {
     const { rcraAPIID, rcraUsername, rcraAPIKey } = data;
     const updateData = { rcraAPIID, rcraUsername, rcraAPIKey };
+    removeEmptyFields(updateData);
+    setProfileSubmit(!profileSubmit);
     htApi
       .put(`/trak/profile/${profile.user}`, updateData)
-      .then((r) => console.log(r))
+      .then((r) => console.log('Response:\n', r))
+      .then(() => setProfileSubmit(!profileSubmit))
       .catch((r) => console.error(r));
   };
+
+  function removeEmptyFields(data: any) {
+    Object.keys(data).forEach((key) => {
+      if (data[key] === '' || data[key] == null) {
+        delete data[key];
+      }
+    });
+  }
 
   return (
     <>
