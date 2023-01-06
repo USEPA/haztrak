@@ -5,7 +5,7 @@ ___
 
 # Haztrak :recycle:
 
-Haztrak is an example web-application that aims to illustrate
+Haztrak is an example web application that aims to illustrate
 how [hazardous waste](https://www.epa.gov/hw) management software can interface with and
 leverage
 the resources exposed by EPA's [RCRAInfo](https://rcrainfo.epa.gov/)
@@ -24,7 +24,7 @@ for industry and states.
 
 e-Manifest, a modular component of [RCRAInfo](https://rcrainfo.epa.gov/), can be
 accessed by
-its users a few ways...
+its users in two ways:
 
 1. Through your favorite web browser at https://rcrainfo.epa.gov/
 2. Via the RCRAInfo RESTful application programming interface (API)
@@ -43,8 +43,9 @@ This project would not be possible without the work of the EPA e-Manifest Team.
 
 ## Getting Started :rocket:
 
-- looking to try haztrak or set up a local development
-  environment? [See our documentation on built-in options to deploy](docs/README.md#deployment)
+Looking to try haztrak or set up a local development environment? 
+
+- [See our documentation on built-in options to deploy](docs/README.md#deployment)
 
 Looking to contribute?
 
@@ -64,9 +65,7 @@ Looking to contribute?
 You can find Haztrak's documentation hosted at https://usepa.github.io/haztrak/
 
 We also have guidance on [contributing](), a [code of conduct](), See the README's in
-the [server]
-(server/README.md) and [client]
-(client/README.md)
+the [server](server/README.md) and [client](client/README.md)
 directories for a
 high level
 overview.

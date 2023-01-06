@@ -2,6 +2,7 @@
 
 - [Haztrak Introduction](./introduction.md)
 - [About e-Manifest](./about_e-Manifest.md)
+- [e-Manifest Terminology](./e-Manifest_terminology.md)
 - [Project Overview](Overview/index.md)
     - [Design](Overview/design.md)
     - [Source Roadmap](Overview/source_structure.md)
