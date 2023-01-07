@@ -1,6 +1,7 @@
+import HtModal from 'components/HtModal';
 import { HandlerSearchForm } from 'components/ManifestForm/HandlerSearch';
 import React from 'react';
-import { Col, Modal, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { HandlerType } from 'types/Handler/Handler';
 
 interface Props {
@@ -10,11 +11,11 @@ interface Props {
 
 function AddTsdf({ show, handleClose }: Props) {
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
+    <HtModal showModal={show ? show : false} handleClose={handleClose}>
+      <HtModal.Header closeButton>
         <Col>
           <Row>
-            <Modal.Title>Designated Facility</Modal.Title>
+            <HtModal.Title title="Designated Facility" />
           </Row>
           <Row>
             <i>
@@ -24,11 +25,11 @@ function AddTsdf({ show, handleClose }: Props) {
             </i>
           </Row>
         </Col>
-      </Modal.Header>
-      <Modal.Body>
+      </HtModal.Header>
+      <HtModal.Body>
         <HandlerSearchForm handleClose={handleClose} handlerType={HandlerType.Tsd} />
-      </Modal.Body>
-    </Modal>
+      </HtModal.Body>
+    </HtModal>
   );
 }
 

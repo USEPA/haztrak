@@ -1,9 +1,10 @@
 import React from 'react';
-import { Modal, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import WasteLineForm from './WasteLineForm';
 import { UseFieldArrayAppend } from 'react-hook-form';
 import { Manifest } from 'types';
 import { WasteLine } from 'types/WasteLine';
+import HtModal from 'components/HtModal';
 
 interface Props {
   handleClose: () => void;
@@ -17,36 +18,33 @@ interface Props {
  * pleasant to look at modal.
  * @constructor
  */
-function AddWasteLine({
-  show,
-  handleClose,
-  appendWaste,
-  currentWastes,
-}: Props) {
+function AddWasteLine({ show, handleClose, appendWaste, currentWastes }: Props) {
   return (
-    <Modal show={show} onHide={handleClose} dialogClassName="modal-90w">
-      <Modal.Header closeButton>
+    <HtModal
+      showModal={show ? show : false}
+      handleClose={handleClose}
+      dialogClassName="modal-90w"
+    >
+      <HtModal.Header closeButton>
         <Col>
           <Row>
-            <Modal.Title>Add Waste Line</Modal.Title>
+            <HtModal.Title title="Add Waste Line" />
           </Row>
           <Row>
             <i>
-              <small>
-                A waste line should be added for each unique waste stream.
-              </small>
+              <small>A waste line should be added for each unique waste stream.</small>
             </i>
           </Row>
         </Col>
-      </Modal.Header>
-      <Modal.Body>
+      </HtModal.Header>
+      <HtModal.Body>
         <WasteLineForm
           appendWaste={appendWaste}
           currentWastes={currentWastes}
           handleClose={handleClose}
         />
-      </Modal.Body>
-    </Modal>
+      </HtModal.Body>
+    </HtModal>
   );
 }
 

@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Site } from 'types/Handler';
-import { Modal } from 'react-bootstrap';
+import HtModal from 'components/HtModal';
 
 /**
  * Returns a table displaying the users sites.
@@ -94,18 +94,19 @@ function SiteList() {
           ) : // else check if there's an error
           error ? (
             <>
-              <Modal show={showErrorModal} onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title style={{ color: 'red' }}>
-                    Error retrieving site list
-                  </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+              <HtModal showModal={showErrorModal} handleClose={handleClose}>
+                <HtModal.Header closeButton>
+                  <HtModal.Title
+                    style={{ color: 'red' }}
+                    title="Error retrieving site list"
+                  />
+                </HtModal.Header>
+                <HtModal.Body>
                   <p style={{ color: 'red' }}>
                     Something went wrong. Please try again sometime later
                   </p>
-                </Modal.Body>
-              </Modal>
+                </HtModal.Body>
+              </HtModal>
               {SitesTable()}
             </>
           ) : (
