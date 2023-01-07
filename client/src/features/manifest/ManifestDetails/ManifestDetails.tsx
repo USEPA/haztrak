@@ -5,7 +5,7 @@ import React, { ReactElement } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { Manifest } from 'types';
-import useTitle from '../../../hooks/useTitle';
+import useTitle from 'hooks/useTitle';
 
 /**
  * This React component displays an existing hazardous waste manifest.

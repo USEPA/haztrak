@@ -4,6 +4,8 @@ import useHtAPI from 'hooks/useHtAPI';
 import React, { ReactElement } from 'react';
 import { useParams } from 'react-router-dom';
 import { Site } from 'types/Handler';
+import { Button } from 'react-bootstrap';
+import htApi from 'services';
 
 /**
  * GET and Display details of the hazardous waste site specified in the URL
@@ -28,6 +30,18 @@ function SiteDetails(): ReactElement {
           )}
         </HtCard.Body>
       </HtCard>
+      <div className="mx-1 d-flex flex-row-reverse">
+        <Button
+          onClick={() =>
+            htApi
+              .get(`/trak/site/${siteId}/manifest/sync`)
+              .then((r) => console.log(r))
+              .catch((r) => console.log(r))
+          }
+        >
+          Sync Manifest
+        </Button>
+      </div>
     </>
   );
 }

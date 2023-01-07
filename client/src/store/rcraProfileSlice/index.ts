@@ -1,4 +1,7 @@
-import rcraProfileReducers, { getProfile } from './rcraProfile.slice';
+import rcraProfileReducers, {
+  getProfile,
+  updateProfile,
+} from 'store/rcraProfileSlice/rcraProfile.slice';
 
 export default rcraProfileReducers;
-export { getProfile };
+export { getProfile, updateProfile };

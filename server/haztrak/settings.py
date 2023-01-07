@@ -166,6 +166,7 @@ SPECTACULAR_SETTINGS = {
                    'management software can integrate with EPA\'s RCRAInfo',
     'VERSION': '0.1.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'SCHEMA_PATH_PREFIX': r'/api/[a-zA-Z]*/',
     "SWAGGER_UI_SETTINGS": {
         "deepLinking": True,
         "persistAuthorization": True,
