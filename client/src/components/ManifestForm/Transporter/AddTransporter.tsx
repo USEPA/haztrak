@@ -1,6 +1,7 @@
+import HtModal from 'components/HtModal';
 import TransporterSearchForm from 'components/ManifestForm/HandlerSearch/TransporterSearchForm';
 import React from 'react';
-import { Col, Modal, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { UseFieldArrayAppend } from 'react-hook-form';
 import { Handler, Manifest } from 'types';
 
@@ -18,11 +19,11 @@ function AddTransporter({
   currentTransporters,
 }: Props) {
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
+    <HtModal showModal={show ? show : false} handleClose={handleClose}>
+      <HtModal.Header closeButton>
         <Col>
           <Row>
-            <Modal.Title>Transporter Search</Modal.Title>
+            <HtModal.Title title="Transporter Search" />
           </Row>
           <Row>
             <i>
@@ -32,13 +33,13 @@ function AddTransporter({
             </i>
           </Row>
         </Col>
-      </Modal.Header>
+      </HtModal.Header>
       <TransporterSearchForm
         handleClose={handleClose}
         tranAppend={appendTransporter}
         currentTransporters={currentTransporters}
       />
-    </Modal>
+    </HtModal>
   );
 }
 

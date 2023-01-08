@@ -1,6 +1,7 @@
 import { ErrorMessage } from '@hookform/error-message';
+import HtModal from 'components/HtModal';
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import htApi from 'services';
 import { Handler, Manifest } from 'types';
@@ -98,7 +99,7 @@ function TransporterSearchForm({
   return (
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Modal.Body>
+        <HtModal.Body>
           <Row>
             <Col>
               <Form.Group className="mb-2">
@@ -164,15 +165,15 @@ function TransporterSearchForm({
               render={({ message }) => <span className="text-danger">{message}</span>}
             />
           </Row>
-        </Modal.Body>
-        <Modal.Footer>
+        </HtModal.Body>
+        <HtModal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
           <Button variant="success" type="submit">
             Add
           </Button>
-        </Modal.Footer>
+        </HtModal.Footer>
       </Form>
     </>
   );
