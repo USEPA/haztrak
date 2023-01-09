@@ -6,7 +6,7 @@ from apps.trak.serializers.trak import TrakBaseSerializer
 
 class WasteLineSerializer(TrakBaseSerializer):
     """
-    Waste Line modal serializer for JSON marshalling/unmarshalling
+    Waste Line model serializer for JSON marshalling/unmarshalling
     """
     lineNumber = serializers.IntegerField(
         source='line_number',

@@ -2,13 +2,16 @@ import http
 
 from celery.exceptions import CeleryError
 from django.contrib.auth.models import User
-from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
+from rest_framework import permissions
+from rest_framework.generics import (GenericAPIView, RetrieveAPIView,
+                                     RetrieveUpdateAPIView)
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.trak.models import RcraProfile
+from apps.trak.models import RcraProfile, SitePermission
 from apps.trak.serializers import ProfileUpdateSerializer
-from apps.trak.serializers.rcra_profile import ProfileGetSerializer
+from apps.trak.serializers.rcra_profile import (ProfileGetSerializer,
+                                                SitePermissionSerializer)
 
 
 class RcraProfileView(RetrieveUpdateAPIView):
@@ -51,5 +54,14 @@ class SyncProfile(GenericAPIView):
             task = profile.sync()
             return self.response({'task': task.id})
         except (User.DoesNotExist, CeleryError) as e:
-            return self.response(data='error',
+            return self.response(data=e,
                                  status=http.HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
+class SitePermissionView(RetrieveAPIView):
+    """
+    HandlerView returns details on a single Handler known to haztrak
+    """
+    queryset = SitePermission.objects.all()
+    serializer_class = SitePermissionSerializer
+    permission_classes = [permissions.AllowAny]

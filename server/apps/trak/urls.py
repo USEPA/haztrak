@@ -4,6 +4,7 @@ from rest_framework import routers
 from .views import (HandlerSearch, HandlerView, ManifestView, RcraProfileView,
                     SiteApi, SiteList, SiteManifest, SyncProfile,
                     TransporterView)
+from .views.rcra_profile import SitePermissionView
 
 manifest_router = routers.SimpleRouter()
 manifest_router.register(r'manifest', ManifestView)
@@ -12,6 +13,7 @@ urlpatterns = [
     # Rcra Profile
     path('profile/<str:user>/sync', SyncProfile.as_view()),
     path('profile/<str:user>', RcraProfileView.as_view()),
+    path('permission/<int:pk>', SitePermissionView.as_view()),
     # Manifest
     path('', include(manifest_router.urls)),
     # Site

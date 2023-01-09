@@ -2,11 +2,12 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from apps.trak.models import RcraProfile
+from apps.trak.serializers.trak import TrakBaseSerializer
 
 
 class ProfileGetSerializer(ModelSerializer):
     """
-    Rcra Profile modal serializer for JSON marshalling/unmarshalling
+    Rcra Profile model serializer for JSON marshalling/unmarshalling
     """
     user = serializers.StringRelatedField()
     epaSites = serializers.StringRelatedField(
@@ -57,4 +58,41 @@ class ProfileUpdateSerializer(ProfileGetSerializer):
             'rcraUsername',
             'epaSites',
             'phoneNumber',
+        ]
+
+
+class SitePermissionSerializer(TrakBaseSerializer):
+    """
+    SitePermission model serializer for JSON marshalling/unmarshalling
+    """
+    site = serializers.CharField()
+    siteManagement = serializers.BooleanField(
+        source='site_manager'
+    )
+    annualReport = serializers.CharField(
+        source='annual_report',
+    )
+    biennialReport = serializers.CharField(
+        source='biennial_report',
+    )
+    eManifest = serializers.CharField(
+        source='e_manifest',
+    )
+    WIETS = serializers.CharField(
+        source='wiets',
+    )
+    myRCRAid = serializers.CharField(
+        source='my_rcra_id',
+    )
+
+    class Meta:
+        model = RcraProfile
+        fields = [
+            'site',
+            'siteManagement',
+            'annualReport',
+            'biennialReport',
+            'eManifest',
+            'WIETS',
+            'myRCRAid'
         ]

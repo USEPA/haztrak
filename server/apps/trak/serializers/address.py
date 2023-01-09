@@ -42,7 +42,7 @@ class LocalityField(serializers.Field):
 
 class AddressSerializer(TrakBaseSerializer):
     """
-    Address modal serializer for JSON marshalling/unmarshalling
+    Address model serializer for JSON marshalling/unmarshalling
     """
     streetNumber = serializers.CharField(
         source='street_number',

@@ -5,7 +5,7 @@ from apps.trak.serializers.trak import TrakBaseSerializer
 
 class TransporterSerializer(TrakBaseSerializer):
     """
-    Transporter modal serializer for JSON marshalling/unmarshalling
+    Transporter model serializer for JSON marshalling/unmarshalling
     """
     handler = HandlerSerializer()
 
