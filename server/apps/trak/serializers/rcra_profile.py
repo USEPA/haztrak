@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.trak.models import RcraProfile
+from apps.trak.models import RcraProfile, SitePermission
 from apps.trak.serializers.trak import TrakBaseSerializer
 
 
@@ -64,8 +64,9 @@ class ProfileUpdateSerializer(ProfileGetSerializer):
 class SitePermissionSerializer(TrakBaseSerializer):
     """
     SitePermission model serializer for JSON marshalling/unmarshalling
+    We use this internally because it's easier to handle, Haztrak has a separate
+    serializer for user permissions from RCRAInfo. See EpaPermissionSerializer.
     """
-    site = serializers.CharField()
     siteManagement = serializers.BooleanField(
         source='site_manager'
     )
@@ -86,10 +87,65 @@ class SitePermissionSerializer(TrakBaseSerializer):
     )
 
     class Meta:
-        model = RcraProfile
+        model = SitePermission
         fields = [
-            'site',
             'siteManagement',
+            'annualReport',
+            'biennialReport',
+            'eManifest',
+            'WIETS',
+            'myRCRAid'
+        ]
+
+
+class SitePermissionField(serializers.Field):
+
+    def to_representation(self, value):
+        print(self.field_name)
+        ret = {
+            "module": f'{self.field_name}',
+            "level": value
+        }
+        return ret
+
+
+class EpaPermissionSerializer(SitePermissionSerializer):
+    """
+    SitePermission model serializer specifically for reading a user's site permissions
+    from RCRAInfo
+    """
+    siteId = serializers.CharField(
+        source='site'
+    )
+    annualReport = SitePermissionField(
+        source='annual_report',
+    )
+    biennialReport = SitePermissionField(
+        source='biennial_report',
+    )
+    eManifest = SitePermissionField(
+        source='e_manifest',
+    )
+    WIETS = SitePermissionField(
+        source='wiets',
+    )
+    myRCRAid = SitePermissionField(
+        source='my_rcra_id',
+    )
+
+    def to_representation(self, instance: SitePermission):
+        ret = super().to_representation(instance)
+        modules = ['annualReport', 'biennialReport', 'eManifest', 'myRCRAid', 'WIETS']
+        ret['permissions'] = []
+        for module in modules:
+            permission = ret.pop(module)
+            ret['permissions'].append(permission)
+        return ret
+
+    class Meta:
+        model = SitePermission
+        fields = [
+            'siteId',
             'annualReport',
             'biennialReport',
             'eManifest',

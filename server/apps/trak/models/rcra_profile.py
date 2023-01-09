@@ -50,9 +50,9 @@ class RcraProfile(models.Model):
 
 
 EPA_PERMISSION_LEVEL = [
-    ('C', 'Certifier'),
-    ('P', 'Preparer'),
-    ('V', 'Viewer'),
+    ('Certifier', 'Certifier'),
+    ('Preparer', 'Preparer'),
+    ('Viewer', 'Viewer'),
 ]
 
 
@@ -73,23 +73,23 @@ class SitePermission(models.Model):
         default=False
     )
     annual_report = models.CharField(
-        max_length=1,
+        max_length=12,
         choices=EPA_PERMISSION_LEVEL
     )
     biennial_report = models.CharField(
-        max_length=1,
+        max_length=12,
         choices=EPA_PERMISSION_LEVEL
     )
     e_manifest = models.CharField(
-        max_length=1,
+        max_length=12,
         choices=EPA_PERMISSION_LEVEL
     )
     my_rcra_id = models.CharField(
-        max_length=1,
+        max_length=12,
         choices=EPA_PERMISSION_LEVEL
     )
     wiets = models.CharField(
-        max_length=1,
+        max_length=12,
         choices=EPA_PERMISSION_LEVEL
     )
 

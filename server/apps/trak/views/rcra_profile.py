@@ -10,7 +10,8 @@ from rest_framework.response import Response
 
 from apps.trak.models import RcraProfile, SitePermission
 from apps.trak.serializers import ProfileUpdateSerializer
-from apps.trak.serializers.rcra_profile import (ProfileGetSerializer,
+from apps.trak.serializers.rcra_profile import (EpaPermissionSerializer,
+                                                ProfileGetSerializer,
                                                 SitePermissionSerializer)
 
 
@@ -64,4 +65,13 @@ class SitePermissionView(RetrieveAPIView):
     """
     queryset = SitePermission.objects.all()
     serializer_class = SitePermissionSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+class EpaPermissionView(RetrieveAPIView):
+    """
+    HandlerView returns details on a single Handler known to haztrak
+    """
+    queryset = SitePermission.objects.all()
+    serializer_class = EpaPermissionSerializer
     permission_classes = [permissions.AllowAny]
