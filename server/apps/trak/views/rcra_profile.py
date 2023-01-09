@@ -61,7 +61,8 @@ class SyncProfile(GenericAPIView):
 
 class SitePermissionView(RetrieveAPIView):
     """
-    HandlerView returns details on a single Handler known to haztrak
+    For Viewing a user's Site Permissions in haztrak's internal JSON structure.
+    This is not included in the current URL configs, but kept here for documentation.
     """
     queryset = SitePermission.objects.all()
     serializer_class = SitePermissionSerializer
@@ -70,7 +71,9 @@ class SitePermissionView(RetrieveAPIView):
 
 class EpaPermissionView(RetrieveAPIView):
     """
-    HandlerView returns details on a single Handler known to haztrak
+    For Viewing a user's Site Permissions in the same JSON structure as RCRAInfo.
+
+    This is not included in the current URL configs, but kept here for documentation.
     """
     queryset = SitePermission.objects.all()
     serializer_class = EpaPermissionSerializer
