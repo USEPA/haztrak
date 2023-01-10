@@ -66,9 +66,9 @@ class ProfileUpdateSerializer(ProfileGetSerializer):
 
 class SitePermissionSerializer(TrakBaseSerializer):
     """
-    SitePermission model serializer for JSON marshalling/unmarshalling
-    We use this internally because it's easier to handle, Haztrak has a separate
-    serializer for user permissions from RCRAInfo. See EpaPermissionSerializer.
+    SitePermission model serializer
+    We use this internally because it's easier to handle, using consistent naming,
+    Haztrak has a separate serializer for user permissions from RCRAInfo. See EpaPermissionSerializer.
     """
     siteManagement = serializers.BooleanField(
         source='site_manager'
@@ -110,9 +110,11 @@ class EpaPermissionField(serializers.Field):
 
     def to_representation(self, value):
         if value:
+            # convert boolean to 'Active' or 'Inactive' when talking to RcraInfo
             value = 'Active'
         elif not value:
             value = 'InActive'
+        # RcraInfo gives us an array of object with module and level keys
         ret = {
             "module": f'{self.field_name}',
             "level": value
@@ -120,6 +122,10 @@ class EpaPermissionField(serializers.Field):
         return ret
 
     def to_internal_value(self, data):
+        """
+        Convert the json object {"module" : string, "level": string}
+        to Haztrak's internal representation
+        """
         data = data['level']
         if data == 'Active':
             data = True
@@ -129,7 +135,7 @@ class EpaPermissionField(serializers.Field):
 
 
 class EpaPermissionSerializer(SitePermissionSerializer):
-    modules = ['AnnualReport', 'BiennialReport', 'eManifest', 'myRCRAid', 'WIETS', 'SiteManagement']
+    rcrainfo_modules = ['AnnualReport', 'BiennialReport', 'eManifest', 'myRCRAid', 'WIETS', 'SiteManagement']
     """
     SitePermission model serializer specifically for reading a user's site permissions
     from RCRAInfo
@@ -157,12 +163,17 @@ class EpaPermissionSerializer(SitePermissionSerializer):
     )
 
     def to_representation(self, instance: SitePermission):
+        """
+        This method reproduces a user's site specific permissions in a JSON
+        structure that mimics RcraInfo's (although we never post this info
+        to RcraInfo).
+        """
         try:
             ret = super().to_representation(instance)
             ret['name'] = ret['siteId']['name']
             ret['siteId'] = ret['siteId']['handler']['epaSiteId']
             ret['permissions'] = []
-            for module in self.modules:
+            for module in self.rcrainfo_modules:
                 permission = ret.pop(module)
                 ret['permissions'].append(permission)
             return ret
@@ -170,6 +181,11 @@ class EpaPermissionSerializer(SitePermissionSerializer):
             raise APIException(f'malformed JSON {e}')
 
     def to_internal_value(self, data):
+        """
+        This method converts a user's site specific permissions provided by RcraInfo
+        into Haztrak's internal representation. Namely, converting the permission per module
+        into a key-object structure.
+        """
         site_id = ''
         try:
             site_id = data.pop('siteId')
@@ -188,6 +204,7 @@ class EpaPermissionSerializer(SitePermissionSerializer):
 
     class Meta:
         model = SitePermission
+        # Note the Pascal case, instead of camel case for (some) Rcrainfo modules.
         fields = [
             'siteId',
             'SiteManagement',
