@@ -1,17 +1,20 @@
-# Add 'test' label to any change to *.spec.js files within the source dir
+# This file will apply these (already existing) labels to PR upon opening.
 test:
-  - client/src/**/*.spec.js
-  - server/tests/**/*.py
+  - client/src/**/*.spec.ts
+  - client/src/**/*.spec.tsx
+  - server/apps/trak/tests/**/*
 
 django:
-  - server/**/*.py
+  - server/**/*
 
 reactjs:
-  - client/src/**/*.ts
-  - client/src/**/*.tsx
+  - client/**/*
+
+CI/CD:
+  - .github/workflows/**.yaml
 
 documentation:
-  - any: [ "docs/**/*", "**/README.md" ]
+  - any: ["docs/**/*", "**/README.md"]
 
 dependencies:
   - any:
@@ -22,4 +25,4 @@ dependencies:
       ]
 
 database:
-  - server/**/migrations/*.py
+  - server/apps/**/migrations/*.py
