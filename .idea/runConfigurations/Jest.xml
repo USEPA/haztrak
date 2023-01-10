@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Test Client" type="JavaScriptTestRunnerJest">
+  <configuration default="false" name="Jest" type="JavaScriptTestRunnerJest">
     <node-interpreter value="project" />
     <node-options value="" />
     <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />

@@ -5,8 +5,6 @@ from rest_framework.serializers import ModelSerializer
 from apps.trak.models import RcraProfile, Site, SitePermission
 from apps.trak.serializers.trak import TrakBaseSerializer
 
-from .sites import SiteSerializer
-
 
 class ProfileGetSerializer(ModelSerializer):
     """
@@ -44,8 +42,8 @@ class ProfileGetSerializer(ModelSerializer):
 
 class ProfileUpdateSerializer(ProfileGetSerializer):
     """
-    Adds the users RCRAInfo API Key to the trak Profile serializer to be used
-    for post and update request (not for GET requests).
+    Subclasses the ProfileGetSerializer and adds the users RCRAInfo API Key
+    to be used for updating the user's RcraProfile (not for GET requests).
     """
     rcraAPIKey = serializers.CharField(
         required=False,
@@ -140,8 +138,12 @@ class EpaPermissionSerializer(SitePermissionSerializer):
     SitePermission model serializer specifically for reading a user's site permissions
     from RCRAInfo
     """
-    siteId = SiteSerializer(
-        source='site'
+    siteId = serializers.StringRelatedField(
+        source='site',
+    )
+    name = serializers.StringRelatedField(
+        source='site.epa_site.name',
+        required=False,
     )
     SiteManagement = EpaPermissionField(
         source='site_manager'
@@ -170,8 +172,6 @@ class EpaPermissionSerializer(SitePermissionSerializer):
         """
         try:
             ret = super().to_representation(instance)
-            ret['name'] = ret['siteId']['name']
-            ret['siteId'] = ret['siteId']['handler']['epaSiteId']
             ret['permissions'] = []
             for module in self.rcrainfo_modules:
                 permission = ret.pop(module)
@@ -207,6 +207,7 @@ class EpaPermissionSerializer(SitePermissionSerializer):
         # Note the Pascal case, instead of camel case for (some) Rcrainfo modules.
         fields = [
             'siteId',
+            'name',
             'SiteManagement',
             'AnnualReport',
             'BiennialReport',
