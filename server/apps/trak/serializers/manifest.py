@@ -10,7 +10,7 @@ from .waste_line import WasteLineSerializer
 
 class ManifestSerializer(TrakBaseSerializer):
     """
-    Manifest modal serializer for JSON marshalling/unmarshalling
+    Manifest model serializer for JSON marshalling/unmarshalling
     """
     createdDate = serializers.DateTimeField(
         source='created_date',

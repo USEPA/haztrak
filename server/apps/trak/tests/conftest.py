@@ -7,14 +7,18 @@ from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
 from apps.trak.models import (Address, Contact, EpaPhone, Handler, Manifest,
-                              RcraProfile, Site)
-from apps.trak.serializers import WasteLineSerializer
+                              RcraProfile, Site, SitePermission)
+from apps.trak.serializers import (EpaPermissionSerializer,
+                                   SitePermissionSerializer,
+                                   WasteLineSerializer)
 from apps.trak.serializers.contact import ContactSerializer, EpaPhoneSerializer
 
 JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + '/serializers/json'
 TEST_CONTACT_JSON = f'{JSON_DIR}/contact/good_contact.json'
 TEST_PHONE_JSON = f'{JSON_DIR}/contact/phone.json'
 TEST_WASTE1_JSON = f'{JSON_DIR}/test_wasteline1.json'
+TEST_SITE_PERM_JSON = f'{JSON_DIR}/site_permission.json'
+TEST_EPA_PERM_JSON = f'{JSON_DIR}/epa_permission.json'
 
 
 @pytest.fixture
@@ -34,23 +38,27 @@ def other_user(db) -> User:
 
 @pytest.fixture
 def address_123_main(db) -> Address:
+    """A Address model instance"""
     return Address.objects.create(address1='Main st.', street_number='123',
                                   country='VA', city='Arlington')
 
 
 @pytest.fixture
 def epa_phone(db) -> EpaPhone:
+    """A EpaPhone model instance"""
     return EpaPhone.objects.create(number='123-123-1234', extension='123')
 
 
 @pytest.fixture
 def handler_contact(db, epa_phone) -> Contact:
+    """A Contact model instance"""
     return Contact.objects.create(first_name='test', middle_initial='M', last_name='User', email='testuser@haztrak.net',
                                   phone=epa_phone)
 
 
 @pytest.fixture
 def generator001(db, address_123_main, handler_contact) -> Handler:
+    """A Handler instance named generator001"""
     return Handler.objects.create(epa_id='handler001', name='my_handler',
                                   site_type='Generator', site_address=address_123_main,
                                   mail_address=address_123_main, contact=handler_contact)
@@ -58,6 +66,7 @@ def generator001(db, address_123_main, handler_contact) -> Handler:
 
 @pytest.fixture
 def tsd001(db, address_123_main, handler_contact) -> Handler:
+    """Returns a Handler instance named tsd001"""
     return Handler.objects.create(epa_id='tsd001', name='my_tsd',
                                   site_type='Tsd', site_address=address_123_main,
                                   mail_address=address_123_main, contact=handler_contact)
@@ -65,12 +74,22 @@ def tsd001(db, address_123_main, handler_contact) -> Handler:
 
 @pytest.fixture
 def site_generator001(db, generator001) -> Site:
+    """A Site model instance with generator001 as the handler"""
     return Site.objects.create(epa_site=generator001, name=generator001.name)
 
 
 @pytest.fixture
 def site_tsd001(db, tsd001) -> Site:
+    """A Site model instance with tsd001 as the handler"""
     return Site.objects.create(epa_site=tsd001, name=tsd001.name)
+
+
+@pytest.fixture
+def site_permission(db, site_generator001, test_user_profile) -> SitePermission:
+    """Returns SitePermission model containing testuser1's permissions to site_generator"""
+    return SitePermission.objects.create(site=site_generator001, profile=test_user_profile, site_manager=True,
+                                         annual_report='Certifier', biennial_report='Certifier', e_manifest='Certifier',
+                                         wiets='Certifier', my_rcra_id='Certifier')
 
 
 @pytest.fixture
@@ -85,6 +104,20 @@ def contact_serializer(db) -> ContactSerializer:
     with open(TEST_CONTACT_JSON, 'r') as f:
         data = json.load(f)
     return ContactSerializer(data=data)
+
+
+@pytest.fixture
+def site_permission_serializer(db) -> SitePermissionSerializer:
+    with open(TEST_SITE_PERM_JSON, 'r') as f:
+        data = json.load(f)
+    return SitePermissionSerializer(data=data)
+
+
+@pytest.fixture
+def epa_permission_serializer(db) -> EpaPermissionSerializer:
+    with open(TEST_EPA_PERM_JSON, 'r') as f:
+        data = json.load(f)
+    return EpaPermissionSerializer(data=data)
 
 
 @pytest.fixture

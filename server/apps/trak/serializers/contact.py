@@ -6,7 +6,7 @@ from apps.trak.serializers.trak import TrakBaseSerializer
 
 class EpaPhoneSerializer(TrakBaseSerializer):
     """
-    EpaPhone modal serializer for JSON marshalling/unmarshalling
+    EpaPhone model serializer for JSON marshalling/unmarshalling
     """
     number = serializers.CharField()
     extension = serializers.CharField(

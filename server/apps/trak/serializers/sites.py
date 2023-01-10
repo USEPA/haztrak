@@ -7,7 +7,7 @@ from apps.trak.serializers.trak import TrakBaseSerializer
 
 class SiteSerializer(TrakBaseSerializer):
     """
-    Site modal serializer for JSON marshalling/unmarshalling
+    Site model serializer for JSON marshalling/unmarshalling
     """
     name = serializers.CharField(
         required=False

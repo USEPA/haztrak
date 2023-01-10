@@ -18,7 +18,6 @@ urlpatterns = [
     path('site/', SiteList.as_view()),
     path('site/<str:epa_id>', SiteApi.as_view()),
     path('site/<str:epa_id>/manifest', SiteManifest.as_view()),
-    # path('site/<str:epa_id>/manifest/sync', SiteManifestSync.as_view()),
     # Handler
     path('handler/search', HandlerSearch.as_view()),
     path('handler/details/<int:pk>', HandlerView.as_view()),

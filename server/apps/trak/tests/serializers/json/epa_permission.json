@@ -1,0 +1,30 @@
+{
+  "siteId": "handler001",
+  "siteName": "TEST BROKER 5-28-2020",
+  "permissions": [
+    {
+      "level": "Active",
+      "module": "SiteManagement"
+    },
+    {
+      "level": "Certifier",
+      "module": "AnnualReport"
+    },
+    {
+      "level": "Certifier",
+      "module": "BiennialReport"
+    },
+    {
+      "level": "Certifier",
+      "module": "eManifest"
+    },
+    {
+      "level": "Certifier",
+      "module": "myRCRAid"
+    },
+    {
+      "level": "Certifier",
+      "module": "WIETS"
+    }
+  ]
+}
