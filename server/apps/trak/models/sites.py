@@ -15,7 +15,7 @@ class Site(models.Model):
         max_length=200,
     )
     epa_site = models.OneToOneField(
-        verbose_name=Handler,
+        verbose_name='Handler',
         to=Handler,
         on_delete=models.CASCADE,
     )

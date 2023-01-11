@@ -15,7 +15,7 @@ jobs:
         working-directory: ./client
     strategy:
       matrix:
-        node: [ 16 ]
+        node: [ 16, 18 ]
     steps:
       - uses: actions/checkout@v3
 
