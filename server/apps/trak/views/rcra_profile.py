@@ -22,6 +22,7 @@ class RcraProfileView(RetrieveUpdateAPIView):
     """
     queryset = RcraProfile.objects.all()
     serializer_class = ProfileUpdateSerializer
+    permission_classes = [permissions.AllowAny]  # temporary, remove me
     response = Response
 
     def get_serializer_class(self):

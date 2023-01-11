@@ -1,8 +1,7 @@
 import json
 
 from apps.trak.models import SitePermission
-from apps.trak.serializers import (EpaPermissionSerializer,
-                                   SitePermissionSerializer)
+from apps.trak.serializers import SitePermissionSerializer
 
 
 class TestSitePermissionSerializer:
@@ -24,12 +23,10 @@ class TestEpaPermissionSerializer:
     """
     This Test suite is for Haztrak's serializer for communication with
     RCRAInfo for a user's site permissions.
-    """
 
-    def test_serializes_permissions_object(self, site_permission) -> None:
-        serializer = EpaPermissionSerializer(site_permission)
-        epa_permission_json = json.dumps(serializer.data, indent=2)
-        assert 'permissions' in epa_permission_json
+    We don't use EPaPermissionSerializer to communicate internally, so
+    currently we don't serialize, only deserialize
+    """
 
     def test_deserializes_epa_permissions(self, epa_permission_serializer, test_user_profile,
                                           site_generator001) -> None:

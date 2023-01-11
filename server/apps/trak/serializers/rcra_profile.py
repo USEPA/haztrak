@@ -6,68 +6,18 @@ from apps.trak.models import RcraProfile, Site, SitePermission
 from apps.trak.serializers.trak import TrakBaseSerializer
 
 
-class ProfileGetSerializer(ModelSerializer):
-    """
-    Rcra Profile model serializer for JSON marshalling/unmarshalling
-    """
-    user = serializers.StringRelatedField()
-    epaSites = serializers.StringRelatedField(
-        required=False,
-        source='epa_sites',
-        many=True,
-    )
-    phoneNumber = serializers.CharField(
-        required=False,
-        source='phone_number',
-    )
-    rcraAPIID = serializers.CharField(
-        required=False,
-        source='rcra_api_id',
-    )
-    rcraUsername = serializers.CharField(
-        required=False,
-        source='rcra_username',
-    )
-
-    class Meta:
-        model = RcraProfile
-        fields = [
-            'user',
-            'rcraAPIID',
-            'rcraUsername',
-            'epaSites',
-            'phoneNumber',
-        ]
-
-
-class ProfileUpdateSerializer(ProfileGetSerializer):
-    """
-    Subclasses the ProfileGetSerializer and adds the users RCRAInfo API Key
-    to be used for updating the user's RcraProfile (not for GET requests).
-    """
-    rcraAPIKey = serializers.CharField(
-        required=False,
-        source='rcra_api_key',
-    )
-
-    class Meta:
-        model = RcraProfile
-        fields = [
-            'user',
-            'rcraAPIID',
-            'rcraAPIKey',
-            'rcraUsername',
-            'epaSites',
-            'phoneNumber',
-        ]
-
-
 class SitePermissionSerializer(TrakBaseSerializer):
     """
     SitePermission model serializer
     We use this internally because it's easier to handle, using consistent naming,
     Haztrak has a separate serializer for user permissions from RCRAInfo. See EpaPermissionSerializer.
     """
+
+    rcrainfo_modules = ['siteManagement', 'annualReport', 'biennialReport', 'eManifest', 'WIETS', 'myRCRAid']
+
+    epaId = serializers.StringRelatedField(
+        source='site'
+    )
     siteManagement = serializers.BooleanField(
         source='site_manager'
     )
@@ -87,9 +37,17 @@ class SitePermissionSerializer(TrakBaseSerializer):
         source='my_rcra_id',
     )
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['permissions'] = {}
+        for module in self.rcrainfo_modules:
+            ret['permissions'][module] = ret.pop(module)
+        return ret
+
     class Meta:
         model = SitePermission
         fields = [
+            'epaId',
             'siteManagement',
             'annualReport',
             'biennialReport',
@@ -136,7 +94,7 @@ class EpaPermissionSerializer(SitePermissionSerializer):
     rcrainfo_modules = ['AnnualReport', 'BiennialReport', 'eManifest', 'myRCRAid', 'WIETS', 'SiteManagement']
     """
     SitePermission model serializer specifically for reading a user's site permissions
-    from RCRAInfo
+    from RCRAInfo. It's not used for serializing, only deserializing permissions from RCRAinfo
     """
     siteId = serializers.StringRelatedField(
         source='site',
@@ -163,22 +121,6 @@ class EpaPermissionSerializer(SitePermissionSerializer):
     myRCRAid = EpaPermissionField(
         source='my_rcra_id',
     )
-
-    def to_representation(self, instance: SitePermission):
-        """
-        This method reproduces a user's site specific permissions in a JSON
-        structure that mimics RcraInfo's (although we never post this info
-        to RcraInfo).
-        """
-        try:
-            ret = super().to_representation(instance)
-            ret['permissions'] = []
-            for module in self.rcrainfo_modules:
-                permission = ret.pop(module)
-                ret['permissions'].append(permission)
-            return ret
-        except KeyError as e:
-            raise APIException(f'malformed JSON {e}')
 
     def to_internal_value(self, data):
         """
@@ -214,4 +156,65 @@ class EpaPermissionSerializer(SitePermissionSerializer):
             'eManifest',
             'WIETS',
             'myRCRAid'
+        ]
+
+
+class ProfileGetSerializer(ModelSerializer):
+    """
+    Rcra Profile model serializer for JSON marshalling/unmarshalling
+    """
+    user = serializers.StringRelatedField()
+    epaSites = serializers.StringRelatedField(
+        required=False,
+        source='epa_sites',
+        many=True,
+    )
+    sites = SitePermissionSerializer(
+        source='site_permission',
+        many=True
+    )
+    phoneNumber = serializers.CharField(
+        required=False,
+        source='phone_number',
+    )
+    rcraAPIID = serializers.CharField(
+        required=False,
+        source='rcra_api_id',
+    )
+    rcraUsername = serializers.CharField(
+        required=False,
+        source='rcra_username',
+    )
+
+    class Meta:
+        model = RcraProfile
+        fields = [
+            'user',
+            'rcraAPIID',
+            'rcraUsername',
+            'epaSites',
+            'sites',
+            'phoneNumber',
+        ]
+
+
+class ProfileUpdateSerializer(ProfileGetSerializer):
+    """
+    Subclasses the ProfileGetSerializer and adds the users RCRAInfo API Key
+    to be used for updating the user's RcraProfile (not for GET requests).
+    """
+    rcraAPIKey = serializers.CharField(
+        required=False,
+        source='rcra_api_key',
+    )
+
+    class Meta:
+        model = RcraProfile
+        fields = [
+            'user',
+            'rcraAPIID',
+            'rcraAPIKey',
+            'rcraUsername',
+            'epaSites',
+            'phoneNumber',
         ]
