@@ -35,8 +35,21 @@ export interface RcraProfileState {
   rcraAPIID?: string;
   rcraAPIKey?: string;
   rcraUsername?: string;
-  epaSites?: string[];
+  epaSites?: Array<ProfileEpaSite>;
+  // sites?: string[];
   phoneNumber?: string;
   loading?: boolean;
   error?: string;
+}
+
+export interface ProfileEpaSite {
+  epaId: string;
+  permissions: {
+    siteManagement: boolean;
+    annualReport: string;
+    biennialReport: string;
+    eManifest: string;
+    WIETS: string;
+    myRCRAid: string;
+  };
 }

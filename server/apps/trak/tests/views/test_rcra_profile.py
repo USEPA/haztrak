@@ -25,6 +25,7 @@ class TestRcraProfileEndpoint(TestApiClient):
         put_data = json.dumps({"rcraAPIID": new_api_id, "rcraUsername": new_username})
         response: Response = self.client.put(f'{self.url}/{self.user.username}', data=put_data,
                                              content_type="application/json")
+        print(response.data)
         assert response.status_code == 200
         assert response.data['rcraAPIID'] == new_api_id
         assert response.data['rcraUsername'] == new_username

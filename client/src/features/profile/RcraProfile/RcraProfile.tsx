@@ -137,17 +137,17 @@ function RcraProfile({ profile }: ProfileViewProps) {
             </tr>
           </thead>
           <tbody>
-            {profile.epaSites?.map((epa_id, index) => {
+            {profile.epaSites?.map((epaSite, index) => {
               return (
-                <tr key={`permissionsRow${epa_id}${index}`}>
+                <tr key={`permissionsRow${epaSite.epaId}${index}`}>
                   <td>
-                    <Link to={`/site/${epa_id}`}>{epa_id}</Link>
+                    <Link to={`/site/${epaSite.epaId}`}>{epaSite.epaId}</Link>
                   </td>
-                  <td>tmp</td>
-                  <td>tmp</td>
-                  <td>tmp</td>
-                  <td>tmp</td>
-                  <td>tmp</td>
+                  <td>{epaSite.permissions.eManifest}</td>
+                  <td>{epaSite.permissions.biennialReport}</td>
+                  <td>{epaSite.permissions.annualReport}</td>
+                  <td>{epaSite.permissions.WIETS}</td>
+                  <td>{epaSite.permissions.myRCRAid}</td>
                 </tr>
               );
             })}

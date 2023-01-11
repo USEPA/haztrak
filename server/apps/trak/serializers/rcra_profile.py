@@ -164,26 +164,27 @@ class ProfileGetSerializer(ModelSerializer):
     Rcra Profile model serializer for JSON marshalling/unmarshalling
     """
     user = serializers.StringRelatedField()
-    epaSites = serializers.StringRelatedField(
-        required=False,
-        source='epa_sites',
-        many=True,
-    )
-    sites = SitePermissionSerializer(
+    # epaSites = serializers.StringRelatedField(
+    #     required=False,
+    #     source='epa_sites',
+    #     many=True,
+    # )
+    epaSites = SitePermissionSerializer(
         source='site_permission',
+        required=False,
         many=True
     )
     phoneNumber = serializers.CharField(
-        required=False,
         source='phone_number',
+        required=False,
     )
     rcraAPIID = serializers.CharField(
-        required=False,
         source='rcra_api_id',
+        required=False,
     )
     rcraUsername = serializers.CharField(
-        required=False,
         source='rcra_username',
+        required=False,
     )
 
     class Meta:
@@ -193,7 +194,7 @@ class ProfileGetSerializer(ModelSerializer):
             'rcraAPIID',
             'rcraUsername',
             'epaSites',
-            'sites',
+            # 'sites',
             'phoneNumber',
         ]
 
@@ -204,8 +205,8 @@ class ProfileUpdateSerializer(ProfileGetSerializer):
     to be used for updating the user's RcraProfile (not for GET requests).
     """
     rcraAPIKey = serializers.CharField(
-        required=False,
         source='rcra_api_key',
+        required=False,
     )
 
     class Meta:
