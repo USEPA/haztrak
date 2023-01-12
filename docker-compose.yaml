@@ -77,7 +77,7 @@ services:
 
   client:
     container_name: ht_client
-    image: "node:16"
+    image: "node:18"
     ports:
       - "3000:3000"
     volumes:
