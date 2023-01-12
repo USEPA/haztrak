@@ -1,6 +1,6 @@
 # Mutlistage dockerize dpgraham.com react.js front end
 # Build stage
-FROM node:16-alpine as builder
+FROM node:18-alpine as builder
 WORKDIR /app
 COPY . .
 RUN npm ci --silent
