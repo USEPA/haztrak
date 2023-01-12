@@ -59,6 +59,20 @@
     }
   },
   {
+    "model": "trak.sitepermission",
+    "pk": 1,
+    "fields": {
+      "site": 1,
+      "profile": 1,
+      "site_manager": true,
+      "annual_report": "Certifier",
+      "biennial_report": "Certifier",
+      "wiets": "Certifier",
+      "e_manifest": "Certifier",
+      "my_rcra_id": "Certifier"
+    }
+  },
+  {
     "model": "trak.handler",
     "pk": 1,
     "fields": {

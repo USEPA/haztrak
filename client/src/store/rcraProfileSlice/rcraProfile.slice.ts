@@ -7,6 +7,7 @@ const initialState: RcraProfileState = {
   rcraAPIID: undefined,
   rcraUsername: undefined,
   epaSites: [],
+  // sites: [],
   phoneNumber: undefined,
   loading: false,
   error: undefined,

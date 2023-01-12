@@ -1,77 +1,132 @@
-import json
 import os
 
-import requests
-from celery import shared_task
+from celery import shared_task, Task, states
+from celery.exceptions import Ignore
 from django.contrib.auth.models import User
 from emanifest import client as em
-from requests import RequestException
+from emanifest.client import RcrainfoClient
+from emanifest.client import RcrainfoResponse
 
-from apps.trak.models import Handler, RcraProfile, Site
-from apps.trak.serializers import HandlerSerializer
+from apps.trak.models import Handler, RcraProfile, Site, SitePermission
+from apps.trak.serializers import EpaPermissionSerializer, HandlerSerializer
 
 
-@shared_task(name="sync_user_sites")
-def sync_user_sites(username: str) -> None:
-    """
-    This task pulls the current user's sites they have access to in RCRAInfo and
-    saves it to their profile.
+class RcraProfileTasks(Task):
+    """RcraProfileTasks acts as our base Celery class that encapsulate all logic related
+    to a user's RCRAInfo profile"""
+    username: str
+    profile: RcraProfile
+    site_permissions: list = []
+    handlers: list = []
+    user_response: dict
+    ri: RcrainfoClient
+    sites: list = []
 
-    User's RcraProfile needs to have an API ID, Key, and their exact RCRAInfo username
-    """
-    rcrainfo_env = os.getenv('HT_RCRAINFO_ENV', 'preprod')
-    try:
-        profile = RcraProfile.objects.get(user__username=username)
-        if not profile.rcra_username or not profile.rcra_api_id or not profile.rcra_api_key:
-            raise Exception('missing attribute(s) from RcraProfile')
-    except RcraProfile.DoesNotExist:
-        RcraProfile.objects.create(user=User.objects.get(username=username))
-        raise Exception('RcraProfile is non existent... creating. Needs attributes')
-    rcra_client = em.new_client(rcrainfo_env)
-    rcra_client.Auth(profile.rcra_api_id, profile.rcra_api_key)
-    data = request_user_date(profile.rcra_username, rcra_client.token)
-    sites_ids = parse_site_ids(data)
-    handlers = []
-    sites = []
-    for site_id in sites_ids:
+    @property
+    def number_users_returned(self):
+        if not self.user_response:
+            return 0
+        else:
+            return len(self.user_response['users'])
+
+    def get_or_create_profile(self):
+        """Retrieve the requested user's RcraProfile based on their haztrak username"""
         try:
-            existing_handler = check_handler_exist(site_id)
-            handlers.append(existing_handler)
-        except Handler.DoesNotExist:
-            response = rcra_client.GetSiteDetails(site_id)
-            if response.response.ok:
-                new_handler = save_handler(response.response.json())
-                if new_handler:
-                    handlers.append(new_handler)
-    for handler in handlers:
+            self.profile = RcraProfile.objects.get(user__username=self.username)
+        except RcraProfile.DoesNotExist:
+            RcraProfile.objects.create(user=User.objects.get(username=self.username))
+        self._check_api_credentials()
+
+    def get_rcrainfo_user(self):
+        """
+        Retrieve a user's site permissions from RCRAInfo, It expects the
+        haztrak user to have their unique RCRAInfo user and API credentials in their
+        RcraProfile
+        """
         try:
-            existing_site = Site.objects.get(epa_site=handler)
-            sites.append(existing_site)
-        except Site.DoesNotExist:
-            sites.append(handler_to_site_with_user(handler, profile))
+            self.ri = em.new_client(os.getenv('HT_RCRAINFO_ENV', 'preprod'))
+            self.ri.Auth(self.profile.rcra_api_id, self.profile.rcra_api_key)
+            response: RcrainfoResponse = self.ri.UserSearch(
+                userId=self.profile.rcra_username)
+            self.user_response = response.json
+            print(self.user_response)
+        except (ConnectionError, TimeoutError):
+            self.update_state(
+                state=states.FAILURE,
+                meta=f'There was a problem connecting to Rcrainfo'
+            )
+            # ToDo: on network error, retry (see Celery exceptions)
+            raise Ignore()
 
+    def parse_response(self):
+        try:
+            if self.number_users_returned == 1:
+                for site_permission in self.user_response['users'][0]['sites']:
+                    self.site_permissions.append(site_permission)
+            else:
+                self.update_state(
+                    state=states.FAILURE,
+                    meta=f'More than one (or zero) users were returned from RCRAInfo.'
+                         f'Check haztrak {self.profile}\'s RCRAInfo username'
+                )
+                raise Ignore()
+        except KeyError:
+            raise Ignore()
 
-def parse_site_ids(data):
-    number_users = len(data['users'])
-    site_ids = []
-    if number_users == 1:
-        for i in data['users'][0]['sites']:
-            site_ids.append(i['siteId'])
-    return site_ids
+    def create_or_get_handlers(self):
+        try:
+            for site_permission in self.site_permissions:
+                try:
+                    existing_handler = check_handler_exist(site_permission['siteId'])
+                    self.handlers.append(
+                        {'handler': existing_handler, 'permissions': site_permission})
+                except Handler.DoesNotExist:
+                    response = self.ri.GetSiteDetails(site_permission['siteId'])
+                    if response.response.ok:
+                        new_handler = save_handler(response.response.json())
+                        if new_handler:
+                            self.handlers.append(
+                                {'handler': new_handler,
+                                 'permissions': site_permission})
+        except KeyError:
+            raise Ignore()
 
+    def add_sites_to_profile(self):
+        for handler_info in self.handlers:
+            try:
+                existing_site = Site.objects.get(epa_site=handler_info['handler'])
+                permission_serializer = EpaPermissionSerializer(
+                    data=handler_info['permissions'])
+                if permission_serializer.is_valid():
+                    SitePermission.objects.create(
+                        **permission_serializer.validated_data,
+                        site=existing_site,
+                        profile=self.profile)
+                self.sites.append(existing_site)
+            except Site.DoesNotExist:
+                new_site = handler_to_site_with_user(handler_info['handler'],
+                                                     self.profile)
+                permission_serializer = EpaPermissionSerializer(
+                    data=handler_info['permissions'])
+                if permission_serializer.is_valid():
+                    SitePermission.objects.create(
+                        **permission_serializer.validated_data,
+                        site=new_site,
+                        profile=self.profile)
+                self.sites.append(new_site)
 
-def request_user_date(username: str, token: str):
-    """ToDO remove this in exchange for emanifest library after PR"""
-    response = requests.post(
-        'https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/user/user-search',
-        headers={'Content-Type': 'text/plain',
-                 'Accept': 'application/json',
-                 'Authorization': 'Bearer ' + token},
-        data=json.dumps({'userId': username}), timeout=(5.0, 30.0))
-    if response.ok:
-        return response.json()
-    else:
-        raise RequestException(response.json())
+    def _check_api_credentials(self):
+        p = self.profile
+        if not p.rcra_username or not p.rcra_api_id or not p.rcra_api_key:
+            self.update_state(
+                state=states.FAILURE,
+                meta=f'Haztrak user \'{self.profile}\' Does not have all necessary '
+                     f'RCRAInfo credentials (username, API ID and key)'
+            )
+            raise Ignore()
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 def save_handler(handler_data) -> Handler:
@@ -81,12 +136,35 @@ def save_handler(handler_data) -> Handler:
         return new_handler
 
 
-def handler_to_site_with_user(handler_object: Handler, profile: RcraProfile) -> None:
+def handler_to_site_with_user(handler_object: Handler, profile: RcraProfile) -> Site:
     new_site = Site.objects.create(epa_site=handler_object, name=handler_object.name)
     profile.epa_sites.add(new_site)
+    return new_site
 
 
 def check_handler_exist(site_id: str) -> Handler:
     handler = Handler.objects.get(epa_id=site_id)
     if handler:
         return handler
+
+
+@shared_task(name="sync profile (replacement)", base=RcraProfileTasks, bind=True)
+def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
+    """
+    This idempotent Task does a few things including:
+    1. Create a user profile if non-existent
+    2. Retrieves a user's RCRAInfo Site permissions
+    3. If not present, retrieve and create a Handler, Site, and SitePermission for each
+       site the user has access to in RCRAInfo.
+
+    ToDo: While this is an improvement, I believe this task could still be refactored,
+        into smaller tasks (such as retrieve Handler info from RCRAInfo) and some of
+        the logic moved into the trak app models. For now this is OK, but as we add tasks...
+    """
+    self.username = username
+    self.get_or_create_profile()
+    self.get_rcrainfo_user()
+    self.parse_response()
+    self.create_or_get_handlers()
+    self.add_sites_to_profile()
+    print(self.sites)

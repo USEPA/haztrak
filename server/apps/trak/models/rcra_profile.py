@@ -67,7 +67,8 @@ class SitePermission(models.Model):
     )
     profile = models.ForeignKey(
         RcraProfile,
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
+        related_name='site_permission'
     )
     site_manager = models.BooleanField(
         default=False

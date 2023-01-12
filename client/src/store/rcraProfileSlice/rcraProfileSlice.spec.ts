@@ -1,7 +1,7 @@
 /**
  *  RcraProfile tests
  */
-import { RcraProfileState } from 'types/store';
+import { ProfileEpaSite, RcraProfileState } from 'types/store';
 import rcraProfileReducer, { getProfile } from './rcraProfile.slice';
 
 const initialState: RcraProfileState = {
@@ -14,11 +14,23 @@ const initialState: RcraProfileState = {
   error: undefined,
 };
 
+const mySite: ProfileEpaSite = {
+  epaId: 'testId',
+  permissions: {
+    siteManagement: true,
+    annualReport: 'Certifier',
+    biennialReport: 'Certifier',
+    eManifest: 'Certifier',
+    myRCRAid: 'Certifier',
+    WIETS: 'Certifier',
+  },
+};
+
 const profilePayload: RcraProfileState = {
   user: 'testuser1',
   rcraAPIID: 'mockRcraApiId',
   rcraUsername: undefined,
-  epaSites: ['testId', 'testId'],
+  epaSites: [mySite],
   phoneNumber: undefined,
 };
 
