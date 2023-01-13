@@ -1,11 +1,10 @@
 import os
 
-from celery import shared_task, Task, states
+from celery import Task, shared_task, states
 from celery.exceptions import Ignore
 from django.contrib.auth.models import User
 from emanifest import client as em
-from emanifest.client import RcrainfoClient
-from emanifest.client import RcrainfoResponse
+from emanifest.client import RcrainfoClient, RcrainfoResponse
 
 from apps.trak.models import Handler, RcraProfile, Site, SitePermission
 from apps.trak.serializers import EpaPermissionSerializer, HandlerSerializer
@@ -53,7 +52,7 @@ class RcraProfileTasks(Task):
         except (ConnectionError, TimeoutError):
             self.update_state(
                 state=states.FAILURE,
-                meta=f'There was a problem connecting to Rcrainfo'
+                meta='There was a problem connecting to Rcrainfo'
             )
             # ToDo: on network error, retry (see Celery exceptions)
             raise Ignore()
@@ -148,7 +147,7 @@ def check_handler_exist(site_id: str) -> Handler:
         return handler
 
 
-@shared_task(name="sync profile (replacement)", base=RcraProfileTasks, bind=True)
+@shared_task(name="sync profile", base=RcraProfileTasks, bind=True)
 def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
     """
     This idempotent Task does a few things including:
