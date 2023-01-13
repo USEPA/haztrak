@@ -7,6 +7,7 @@ import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import useHtAPI from 'hooks/useHtAPI';
 import useTitle from 'hooks/useTitle';
+import htApi from 'services';
 
 interface SiteManifest {
   generator: string[];
@@ -104,6 +105,10 @@ function SiteManifests(): ReactElement {
               className="mx-2"
               onClick={() => {
                 setSyncingMtn(!syncingMtn);
+                htApi
+                  .post('/trak/manifest/sync', { siteId: `${siteId}` })
+                  .then((r) => console.log(r))
+                  .catch((reason) => console.log(reason));
                 console.log('ToDo: send request');
               }}
             >

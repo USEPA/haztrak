@@ -4,7 +4,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.trak.models import Manifest
+from apps.trak.models import Manifest, RcraProfile
 from apps.trak.serializers import ManifestSerializer
 from apps.trak.tasks import sync_site_manifests
 
@@ -34,6 +34,7 @@ class SyncManifest(GenericAPIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request: Request) -> Response:
-        print(request.data)
-        task = sync_site_manifests.delay()
+        task = sync_site_manifests.delay(site_id=request.data['siteId'],
+                                         user=str(RcraProfile.objects.get(
+                                             user=request.user)))
         return self.response({'task': task.id})
