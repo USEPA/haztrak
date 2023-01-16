@@ -76,7 +76,7 @@ class RcraProfileTasks(Task):
                 permission_serializer = EpaPermissionSerializer(
                     data=handler_info['permissions'])
                 if permission_serializer.is_valid():
-                    SitePermission.objects.create(
+                    SitePermission.objects.update_or_create(
                         **permission_serializer.validated_data,
                         site=existing_site,
                         profile=self.profile)

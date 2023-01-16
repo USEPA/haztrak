@@ -6,7 +6,7 @@ from emanifest import client as em
 
 # Prototyping functions
 def get_mtns(site_id: str) -> em.RcrainfoResponse:
-    ri = em.new_client(os.getenv('RCRAINFO_ENV'))
+    ri = em.new_client(os.getenv('RCRAINFO_ENV', ))
     ri.Auth(os.getenv('RCRAINFO_API_ID'), os.getenv('RCRAINFO_API_KEY'))
     resp = ri.GetMTNBySite(site_id)
     if not resp.ok:
@@ -15,7 +15,7 @@ def get_mtns(site_id: str) -> em.RcrainfoResponse:
 
 
 def get_manifest(mtn: str) -> em.RcrainfoResponse:
-    ri = em.new_client(os.getenv('RCRAINFO_ENV'))
+    ri = em.new_client(os.getenv('RCRAINFO_ENV', 'prod'))
     ri.Auth(os.getenv('RCRAINFO_API_ID'), os.getenv('RCRAINFO_API_KEY'))
     resp = ri.GetManByMTN(mtn)
     return resp
