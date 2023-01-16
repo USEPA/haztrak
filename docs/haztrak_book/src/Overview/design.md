@@ -13,9 +13,7 @@ This document provides a high-level overview of the Haztrak's system architectur
 7. [Packaging](#versioning-packaging-and-containerization)
 8. [Timeline](#timeline)
 
-We also hope this document serves as food-for-thought for anyone scoping a project that will need to interface with the U.S. Environmental Protection Agency's [RCRAInfo]() and [e-Manifest]() systems.
-
-We don't go into technical implementation details here, so you won't find any mention of languages, frameworks, or the like. For more information on Haztrak's technical implantation, please see [TBD]()
+We also hope this document serves as food-for-thought for anyone scoping a project that will need to interface with the U.S. Environmental Protection Agency's [RCRAInfo](https://rcrainfo.epa.gov/rcrainfoprod/action/secured/login) and [e-Manifest](https://www.epa.gov/e-manifest) systems.
 
 ## Purpose of Haztrak
 
@@ -62,7 +60,7 @@ The client is, fundamentally, responsible for rendering the user interface and p
 
 ### Back End
 
-The back end is partitioned into the first four of the services discussed [above]().
+The back end is partitioned into the first four of the services discussed [above](#architecture).
 
 #### Relational Database
 
@@ -72,11 +70,11 @@ The database schema is maintained in version control via a series of 'migration'
 
 #### In-memory Database
 
-The in memory database acts as a  [broker]() for Haztrak's [task queue]() as well as a cache for the [http server]() to help cut down on latency for recently requested resources.
+The in memory database acts as a broker for Haztrak's [task queue](#task-queue) as well as a cache for the [http server](#http-server) to help cut down on latency for recently requested resources.
 
 #### Task Queue
 
-The task queue is responsible for jobs/scripts/tasks that shouldn't occur during the [http lifecycle](). For Haztrak, a large part of this is communicating with RCRAInfo via its [public web services](), a well documented RESTful API. Offloading these external API calls keeps our user experience feeling snappy and protects our [http server]() from network errors cause by downtime in external systems.
+The task queue is responsible for jobs/scripts/tasks that shouldn't occur during the [http request-response cycle](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol). For Haztrak, a large part of this is communicating with RCRAInfo via its [public web services](https://github.com/USEPA/e-manifest), a well documented RESTful API. Offloading these external API calls keeps our user experience feeling snappy and protects our [http server](#http-server) from network errors cause by downtime in external systems.
 
 #### HTTP server
 
@@ -98,4 +96,4 @@ How Haztrak is delivered in its various forms.
 
 ## Timeline
 
-It's difficult to say when this project will be complete since it's highly dependent on our workload, Haztrak is often put on the back burner when other pragmatic priorities arise. With that being said, we plan on finishing all features listed in the [scope]() section by the end of 2023.
+It's difficult to say when this project will be complete since it's highly dependent on our workload, Haztrak is often put on the back burner when other pragmatic priorities arise. With that being said, we plan on finishing all features listed in the [scope](#scope) section by the end of 2023.
