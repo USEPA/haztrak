@@ -26,6 +26,7 @@ class RcraProfile(models.Model):
     )
     rcra_username = models.CharField(
         max_length=128,
+        null=True,
         blank=True,
     )
     epa_sites = models.ManyToManyField(
@@ -47,3 +48,9 @@ class RcraProfile(models.Model):
         from ..tasks import sync_user_sites
         task = sync_user_sites.delay(str(self.user.username))
         return task
+
+    def is_api_user(self):
+        if self.rcra_username and self.rcra_api_id and self.rcra_api_key:
+            return True
+        else:
+            return False

@@ -23,7 +23,7 @@ class EpaPhoneSerializer(TrakBaseSerializer):
 
 class ContactSerializer(TrakBaseSerializer):
     """
-    Contact modal serializer for JSON marshalling/unmarshalling
+    Contact model serializer for JSON marshalling/unmarshalling
     """
     firstName = serializers.CharField(
         source='first_name',

@@ -37,7 +37,7 @@ class EpaPhone(models.Model):
 
 class ContactManager(models.Manager):
     """
-    Inter-modal related functionality for Contact Modal
+    Inter-model related functionality for Contact Model
     """
 
     def create(self, contact=None, **contact_data):
