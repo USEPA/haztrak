@@ -2,7 +2,6 @@ import os
 
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore
-from django.contrib.auth.models import User
 from emanifest import client as em
 from emanifest.client import RcrainfoClient, RcrainfoResponse
 
@@ -27,14 +26,6 @@ class RcraProfileTasks(Task):
             return 0
         else:
             return len(self.user_response['users'])
-
-    def get_or_create_profile(self):
-        """Retrieve the requested user's RcraProfile based on their haztrak username"""
-        try:
-            self.profile = RcraProfile.objects.get(user__username=self.username)
-        except RcraProfile.DoesNotExist:
-            RcraProfile.objects.create(user=User.objects.get(username=self.username))
-        self._check_api_credentials()
 
     def get_rcrainfo_user(self):
         """
@@ -114,7 +105,7 @@ class RcraProfileTasks(Task):
                         profile=self.profile)
                 self.sites.append(new_site)
 
-    def _check_api_credentials(self):
+    def check_api_credentials(self):
         p = self.profile
         if not p.rcra_username or not p.rcra_api_id or not p.rcra_api_key:
             self.update_state(
@@ -157,11 +148,12 @@ def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
        site the user has access to in RCRAInfo.
 
     ToDo: While this is an improvement, I believe this task could still be refactored,
-        into smaller tasks (such as retrieve Handler info from RCRAInfo) and some of
-        the logic moved into the trak app models. For now this is OK, but as we add tasks...
+        e.g., logic moved into the trak app models. For now this is OK, but as we add tasks...
     """
     self.username = username
     self.get_or_create_profile()
+    self.profile = RcraProfile.objects.get_or_create(user__username=self.username)
+    self.check_api_credentials()
     self.get_rcrainfo_user()
     self.parse_response()
     self.create_or_get_handlers()

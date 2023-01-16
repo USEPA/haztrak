@@ -20,7 +20,7 @@ class ManifestTask(Task):
         super().__init__()
 
 
-@shared_task(bind=True, base=ManifestTask, name='sync manifests')
+@shared_task(bind=True, base=ManifestTask, name='sync manifests', retry_backoff=True)
 def sync_site_manifests(self: ManifestTask, *args, **kwargs):
     try:
         print(kwargs)
