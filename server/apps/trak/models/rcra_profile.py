@@ -49,7 +49,8 @@ class RcraProfile(models.Model):
         task = sync_user_sites.delay(str(self.user.username))
         return task
 
-    def is_api_user(self):
+    @property
+    def is_api_user(self) -> bool:
         if self.rcra_username and self.rcra_api_id and self.rcra_api_key:
             return True
         else:
