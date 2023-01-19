@@ -5,7 +5,7 @@
 - [e-Manifest Terminology](./e-Manifest_terminology.md)
 - [Project Overview](Overview/index.md)
     - [Source Design Document](Overview/design.md)
-        - [To add a "service layer" or not](Overview/service_layer.md)
+        - [To add a "service layer" or not](Overview/server_architecture.md)
     - [Project Navigation](Overview/source_structure.md)
 - [Setup](./Contributing/index.md)
     - [Setting up a Local Development Environment](Setup/local_dev_setup.md)

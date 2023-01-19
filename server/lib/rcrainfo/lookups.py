@@ -1,27 +1,21 @@
 # Choices presented by RCRAinfo and utility functions for easy access to values
-STATUS = [
-    ('NotAssigned', 'Not Assigned'),
-    ('Pending', 'Pending'),
-    ('Scheduled', 'Scheduled'),
-    ('InTransit', 'In Transit'),
-    ('ReadyForSignature', 'Ready for Signature'),
-    ('Signed', 'Signed'),
-    ('Corrected', 'Corrected'),
-    ('UnderCorrection', 'Under Correction'),
-    ('MtnValidationFailed', 'MTN Validation Failed'),
+
+SITE_TYPE = [
+    ('GEN', 'Generator'),
+    ('TRAN', 'Transporter'),
+    ('TSD', 'Receiving Facility'),
 ]
 
-SUB_TYPE = [
-    ('FullElectronic', 'Full Electronic'),
-    ('DataImage5Copy', 'Data + Image'),
-    ('Hybrid', 'Hybrid'),
-    ('Image', 'Image'),
+GEN_STATUS = [
+    ('SQG', 'SQG'),
+    ('LQG', 'LQG'),
+    ('VSQG', 'VSQG'),
 ]
 
-ORIGIN_TYPE = [
-    ('Web', 'Web'),
-    ('Service', 'Service'),
-    ('Mail', 'Mail'),
+COUNTRIES = [
+    ('US', 'United States'),
+    ('MX', 'Mexico'),
+    ('CA', 'Canada'),
 ]
 
 STATES = [
@@ -90,57 +84,6 @@ STATES = [
     ('XH', 'REGION 08 PURVIEW'),
     ('XI', 'REGION 09 PURVIEW'),
     ('XJ', 'REGION 10 PURVIEW'),
-]
-
-SITE_TYPE = [
-    ('GEN', 'Generator'),
-    ('TRAN', 'Transporter'),
-    ('TSD', 'Receiving Facility'),
-]
-
-GEN_STATUS = [
-    ('SQG', 'SQG'),
-    ('LQG', 'LQG'),
-    ('VSQG', 'VSQG'),
-]
-
-LOCKED_REASON = [
-    ('AsyncSign', 'Asynchronous signature'),
-    ('EpaChangeBiller', 'EPA change biller'),
-    ('EpaCorrection', 'EPA corrections'),
-]
-
-COUNTRIES = [
-    ('US', 'United States'),
-    ('MX', 'Mexico'),
-    ('CA', 'Canada'),
-]
-
-CONTAINERS = [
-    ('BA', 'Burlap, cloth, paper, or plastic bags'),
-    ('DT', 'Dump truck'),
-    ('CF', 'Fiber or plastic boxes, cartons, cases'),
-    ('DW', 'Wooden drums, barrels, kegs'),
-    ('CM', 'Metal boxes, cartons, cases (including roll offs)'),
-    ('HG', 'Hopper or gondola cars'),
-    ('CW', 'Wooden boxes, cartons, cases'),
-    ('TC', 'Tank cars'),
-    ('CY', 'Cylinders'),
-    ('TP', 'Portable tanks'),
-    ('DF', 'Fiberboard or plastic drums, barrels, kegs'),
-    ('TT', 'Cargo tanks (tank trucks)'),
-    ('DM', 'Metal drums, barrels, kegs'),
-]
-
-UOM = [
-    ('P', 'Pounds'),
-    ('T', 'Tons (2000 Pounds)'),
-    ('K', 'Kilograms'),
-    ('M', 'Metric Tons (1000 Kilograms)'),
-    ('G', 'Gallons'),
-    ('L', 'Liters'),
-    ('Y', 'Cubic Yards'),
-    ('N', 'Cubic Meters'),
 ]
 
 

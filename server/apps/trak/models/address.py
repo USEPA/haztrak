@@ -44,6 +44,14 @@ class Address(models.Model):
         max_length=5,
     )
 
+    @property
+    def state_display(self):
+        return self.get_state_display()
+
+    @property
+    def country_display(self):
+        return self.get_country_display()
+
     def __str__(self):
         if self.street_number:
             return f'{self.street_number} {self.address1}'
