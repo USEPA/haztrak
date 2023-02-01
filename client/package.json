@@ -5,7 +5,7 @@
   "dependencies": {
     "@hookform/error-message": "^2.0.0",
     "@hookform/resolvers": "^2.9.10",
-    "@reduxjs/toolkit": "^1.9.1",
+    "@reduxjs/toolkit": "^1.9.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
