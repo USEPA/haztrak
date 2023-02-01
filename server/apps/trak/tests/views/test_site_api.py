@@ -3,8 +3,8 @@ import http
 import pytest
 from django.contrib.auth.models import User
 from rest_framework import status
-from rest_framework.test import APITestCase, APIRequestFactory, force_authenticate, \
-    APIClient
+from rest_framework.test import (APIClient, APIRequestFactory, APITestCase,
+                                 force_authenticate)
 
 from apps.trak.models import RcraProfile
 from apps.trak.views import SiteManifest
@@ -21,7 +21,7 @@ class SiteAPITests(APITestCase):
 
     def test_responds_200(self):
         response = self.client.get(f'{self.base_url}')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        assert response.status_code == status.HTTP_200_OK
 
     def test_returns_list_of_users_sites(self):
         response = self.client.get(f'{self.base_url}')
@@ -32,12 +32,12 @@ class SiteAPITests(APITestCase):
                 response_sites.append(site['handler']['epaSiteId'])
         except KeyError as error:
             self.fail(error)
-        self.assertEqual(profile_sites, response_sites)
+        assert profile_sites == response_sites
 
     def test_unauthenticated_returns_401(self):
         self.client.logout()
         response = self.client.get(f'{self.base_url}')
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
 class TestSiteDetailsApi:
@@ -109,4 +109,4 @@ class TestSiteManifest:
         request = factory.get(f'{self.url}/{self.generator.epa_id}/manifest')
         force_authenticate(request, self.user)
         response = SiteManifest.as_view()(request, self.generator.epa_id)
-        assert response.status_code is 200
+        assert response.status_code == http.HTTPStatus.OK

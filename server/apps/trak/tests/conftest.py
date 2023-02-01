@@ -8,7 +8,8 @@ from rest_framework.test import APIClient
 
 from apps.trak.models import (Address, Contact, EpaPhone, Handler, Manifest,
                               RcraProfile, Site, SitePermission)
-from apps.trak.serializers import (EpaPermissionSerializer,
+from apps.trak.serializers import (EpaPermissionSerializer, HandlerSerializer,
+                                   ManifestSerializer,
                                    SitePermissionSerializer,
                                    WasteLineSerializer)
 from apps.trak.serializers.contact import ContactSerializer, EpaPhoneSerializer
@@ -17,8 +18,10 @@ JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + '/serializers/json'
 TEST_CONTACT_JSON = f'{JSON_DIR}/contact/good_contact.json'
 TEST_PHONE_JSON = f'{JSON_DIR}/contact/phone.json'
 TEST_WASTE1_JSON = f'{JSON_DIR}/test_wasteline1.json'
+TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'
 TEST_SITE_PERM_JSON = f'{JSON_DIR}/site_permission.json'
 TEST_EPA_PERM_JSON = f'{JSON_DIR}/epa_permission.json'
+TEST_HANDLER_JSON = f'{JSON_DIR}/test_site.json'
 
 
 @pytest.fixture
@@ -97,6 +100,20 @@ def waste_serializer(db) -> WasteLineSerializer:
     with open(TEST_WASTE1_JSON, 'r') as f:
         data = json.load(f)
     return WasteLineSerializer(data=data)
+
+
+@pytest.fixture
+def manifest_serializer(db) -> ManifestSerializer:
+    with open(TEST_MANIFEST_JSON, 'r') as f:
+        data = json.load(f)
+    return ManifestSerializer(data=data)
+
+
+@pytest.fixture
+def handler_serializer(db) -> HandlerSerializer:
+    with open(TEST_HANDLER_JSON, 'r') as f:
+        data = json.load(f)
+    return HandlerSerializer(data=data)
 
 
 @pytest.fixture

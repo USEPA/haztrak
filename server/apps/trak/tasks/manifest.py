@@ -1,7 +1,7 @@
 import os
 
 import emanifest.client as em
-from celery import shared_task, Task, states
+from celery import Task, shared_task, states
 from celery.exceptions import Ignore
 from emanifest.client import RcrainfoClient
 
@@ -23,7 +23,6 @@ class ManifestTask(Task):
 @shared_task(bind=True, base=ManifestTask, name='sync manifests', retry_backoff=True)
 def sync_site_manifests(self: ManifestTask, *args, **kwargs):
     try:
-        print(kwargs)
         self.rcra_profile = RcraProfile.objects.get(user__username=kwargs['user'])
         self.ri.Auth(api_id=self.rcra_profile.rcra_api_id,
                      api_key=self.rcra_profile.rcra_api_key)
