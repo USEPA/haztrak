@@ -10,6 +10,10 @@ from apps.trak.serializers import ManifestSerializer
 
 
 class ManifestTask(Task):
+    """
+    ManifestTask is Haztrak's interface for initiating Celery tasks that deal with
+    either compute intensive jobs related to manifests or interfacing with RCRAInfo.
+    """
     mtn: list
     serializer_class = ManifestSerializer
     ri: RcrainfoClient

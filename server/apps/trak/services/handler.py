@@ -11,10 +11,6 @@ class HandlerService:
     def __init__(self, *, user: str):
         self.user = user
 
-    @staticmethod
-    def say_hi():
-        print('hello')
-
     @transaction.atomic
     def retrieve_rcra_handler(self, *, site_id: str):
         """
