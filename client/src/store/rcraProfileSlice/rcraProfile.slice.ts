@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import htApi from 'services';
+import axios from 'axios';
 import { RcraProfileState } from 'types/store';
 
 const initialState: RcraProfileState = {
@@ -7,7 +7,6 @@ const initialState: RcraProfileState = {
   rcraAPIID: undefined,
   rcraUsername: undefined,
   epaSites: [],
-  // sites: [],
   phoneNumber: undefined,
   loading: false,
   error: undefined,
@@ -19,7 +18,9 @@ export const getProfile = createAsyncThunk(
     const state = getState();
     // @ts-ignore
     const username = state.user.user;
-    const response = await htApi.get(`trak/profile/${username}`);
+    const response = await axios.get(
+      `${process.env.REACT_APP_HT_API_URL}/api/trak/profile/${username}`
+    );
     return response.data as RcraProfileState;
   }
 );

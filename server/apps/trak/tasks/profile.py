@@ -125,7 +125,7 @@ def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
         self.username = username
         self.profile, created = RcraProfile.objects.get_or_create(
             user__username=self.username)
-        if not self.profile.is_api_user():
+        if not self.profile.is_api_user:
             self.update_state(
                 state=states.FAILURE,
                 meta=f'{self.profile} does not have API credentials'
