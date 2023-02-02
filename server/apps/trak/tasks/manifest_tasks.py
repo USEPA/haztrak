@@ -1,12 +1,8 @@
-import os
-
-import emanifest.client as em
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore
-from emanifest.client import RcrainfoClient
 
 from apps.trak.models import RcraProfile
-from apps.trak.serializers import ManifestSerializer
+from apps.trak.services import ManifestService
 
 
 class ManifestTask(Task):
@@ -14,14 +10,6 @@ class ManifestTask(Task):
     ManifestTask is Haztrak's interface for initiating Celery tasks that deal with
     either compute intensive jobs related to manifests or interfacing with RCRAInfo.
     """
-    mtn: list
-    serializer_class = ManifestSerializer
-    ri: RcrainfoClient
-    rcra_profile: RcraProfile
-
-    def __init__(self):
-        self.ri = em.new_client(os.getenv('HT_RCRAINFO_ENV', 'preprod'))
-        super().__init__()
 
 
 @shared_task(bind=True, base=ManifestTask, name='sync manifests', retry_backoff=True)
@@ -39,3 +27,9 @@ def sync_site_manifests(self: ManifestTask, *args, **kwargs):
             meta=f'Malformed arguments passed to task {self.name}'
         )
         raise Ignore()
+
+
+@shared_task(name="sync manifest")
+def sync_manifest(*, mtn: str, user: str):
+    manifest_service = ManifestService(user=user)
+    manifest_service.retrieve_rcra_manifest(mtn=mtn)
