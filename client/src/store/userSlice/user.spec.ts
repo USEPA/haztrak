@@ -1,6 +1,6 @@
 // test userSlice
 import { UserState } from 'types/store';
-import userReducers, { login } from './user.slice';
+import userReducers, { login } from 'store/userSlice';
 
 jest.spyOn(Storage.prototype, 'setItem');
 const initialState: UserState = {

@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { store } from 'store';
+import { rootStore } from 'store';
 import App from './App';
 
 // initiate the mock service worker if deployed in TEST environment
@@ -20,7 +20,7 @@ const root = createRoot(container);
 
 root.render(
   // <React.StrictMode>
-  <Provider store={store}>
+  <Provider store={rootStore}>
     <BrowserRouter>
       <App />
     </BrowserRouter>

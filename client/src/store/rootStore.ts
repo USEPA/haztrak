@@ -1,7 +1,7 @@
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
-import rcraProfileReducers from 'store/rcraProfileSlice';
-import notificationReducers from './notificationSlice';
-import userReducers, { login } from './userSlice';
+import rcraProfileReducers from 'store/rcraProfileSlice/index';
+import notificationReducers from 'store/notificationSlice';
+import userReducers, { login } from 'store/userSlice';
 
 const rootReducer = combineReducers({
   user: userReducers,
@@ -21,12 +21,12 @@ const setupStore = (preloadedState?: PreloadedState<RootState>) => {
 };
 
 // The central Redux store
-const store = setupStore();
+const rootStore = setupStore();
 
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = typeof rootStore.dispatch;
 /**
  * A TypeScript definition for our (Haztrak) RootState
  */
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
-export { store, login, setupStore };
+export { rootStore, login, setupStore };

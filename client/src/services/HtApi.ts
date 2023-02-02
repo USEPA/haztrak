@@ -2,7 +2,7 @@
  * @file axios (http) instance for haztrak restful API usage
  */
 import axios, { AxiosRequestConfig } from 'axios';
-import { store } from 'store/store';
+import { rootStore } from 'store/rootStore';
 
 const htApi = axios.create({
   baseURL: `${process.env.REACT_APP_HT_API_URL}/api`,
@@ -21,7 +21,7 @@ htApi.interceptors.request.use(
    */
   (config: AxiosRequestConfig) => {
     config.headers = config.headers ?? {};
-    const token = store.getState().user.token;
+    const token = rootStore.getState().user.token;
     if (token) {
       // @ts-ignore
       config.headers['Authorization'] = `Bearer ${token}`;
