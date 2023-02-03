@@ -62,6 +62,7 @@ class RcraProfileTasks(Task):
                      'permissions': site_permission})
             else:
                 response = self.ri.GetSiteDetails(site_permission['siteId'])
+                # handler_service = HandlerService(username=self.username)
                 if response.response.ok:
                     new_handler = save_handler(response.response.json())
                     if new_handler:

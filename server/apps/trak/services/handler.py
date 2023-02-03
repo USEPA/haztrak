@@ -8,15 +8,14 @@ from apps.trak.serializers import HandlerSerializer
 
 
 class HandlerService:
-    def __init__(self, *, user: str):
-        self.user = user
+    def __init__(self, *, username: str):
+        self.username = username
 
-    @transaction.atomic
     def retrieve_rcra_handler(self, *, site_id: str):
         """
         Retrieve a site/handler from Rcrainfo and save to the database.
         """
-        profile = RcraProfile.objects.get(user__username=self.user)
+        profile = RcraProfile.objects.get(user__username=self.username)
         # ToDo, refactor when emanifest 3.0 python package is released
         rcrainfo = new_client(os.getenv('HT_RCRAINFO_ENV', 'preprod'))
         rcrainfo.Auth(profile.rcra_api_id, profile.rcra_api_key)
@@ -26,7 +25,12 @@ class HandlerService:
         else:
             response = rcrainfo.GetSiteDetails(site_id)
             if response.ok:
-                serializer = HandlerSerializer(data=response.json)
-                if serializer.is_valid():
-                    new_handler: Handler = serializer.save()
-                    return new_handler
+                self.save_handler(response.response.json())
+
+    @staticmethod
+    @transaction.atomic
+    def save_handler(handler_data) -> Handler:
+        serializer = HandlerSerializer(data=handler_data)
+        if serializer.is_valid():
+            new_handler: Handler = serializer.save()
+            return new_handler
