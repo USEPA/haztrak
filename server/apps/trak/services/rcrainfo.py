@@ -1,3 +1,5 @@
+import os
+
 from emanifest import RcrainfoClient
 
 from apps.trak.models import RcraProfile
@@ -5,9 +7,11 @@ from apps.trak.models import RcraProfile
 
 class RcrainfoService(RcrainfoClient):
 
-    def __init__(self, base_url: str, username: str, *args, **kwargs):
+    def __init__(self, username: str, rcrainfo_env: str = None, *args, **kwargs):
         self.username = username
-        super().__init__(base_url, *args, **kwargs)
+        if rcrainfo_env is None:
+            rcrainfo_env = os.getenv('HT_RCRAINFO_ENV', 'preprod')
+        super().__init__(rcrainfo_env, *args, **kwargs)
 
     def retrieve_id(self, api_id=None) -> str:
         if RcraProfile.objects.filter(user__username=self.username).exists():
