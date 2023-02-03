@@ -2,8 +2,7 @@ import os
 
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
-from emanifest import client as em
-from emanifest.client import RcrainfoClient, RcrainfoResponse
+from emanifest import RcrainfoClient, RcrainfoResponse
 from requests import RequestException
 
 from apps.trak.models import Handler, RcraProfile, Site, SitePermission
@@ -34,11 +33,11 @@ class RcraProfileTasks(Task):
         haztrak user to have their unique RCRAInfo user and API credentials in their
         RcraProfile
         """
-        self.ri = em.new_client(os.getenv('HT_RCRAINFO_ENV', 'preprod'))
-        self.ri.Auth(self.profile.rcra_api_id, self.profile.rcra_api_key)
-        response: RcrainfoResponse = self.ri.UserSearch(
+        self.ri = RcrainfoClient(os.getenv('HT_RCRAINFO_ENV', 'preprod'))
+        self.ri.authenticate(self.profile.rcra_api_id, self.profile.rcra_api_key)
+        response: RcrainfoResponse = self.ri.search_users(
             userId=self.profile.rcra_username)
-        self.user_response = response.json
+        self.user_response = response.json()
 
     def parse_response(self):
         if self.number_users_returned == 1:
@@ -61,7 +60,7 @@ class RcraProfileTasks(Task):
                     {'handler': existing_handler,
                      'permissions': site_permission})
             else:
-                response = self.ri.GetSiteDetails(site_permission['siteId'])
+                response = self.ri.get_site(site_permission['siteId'])
                 # handler_service = HandlerService(username=self.username)
                 if response.response.ok:
                     new_handler = save_handler(response.response.json())

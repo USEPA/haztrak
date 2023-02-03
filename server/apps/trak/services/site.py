@@ -1,7 +1,7 @@
 import os
 
 from django.db import transaction
-from emanifest.client import new_client
+from emanifest import RcrainfoClient
 
 from apps.trak.models import RcraProfile
 
@@ -17,8 +17,8 @@ class SiteService:
         """
         profile = RcraProfile.objects.get(user__username=self.user)
         # ToDo, refactor when emanifest 3.0 python package is released
-        rcrainfo = new_client(os.getenv('HT_RCRAINFO_ENV', 'preprod'))
-        rcrainfo.Auth(profile.rcra_api_id, profile.rcra_api_key)
-        response = rcrainfo.GetMTNBySite(site_id)
+        rcrainfo = RcrainfoClient(os.getenv('HT_RCRAINFO_ENV', 'preprod'))
+        rcrainfo.authenticate(profile.rcra_api_id, profile.rcra_api_key)
+        response = rcrainfo.get_manifest(site_id)
         print(response.response.json())
         return response
