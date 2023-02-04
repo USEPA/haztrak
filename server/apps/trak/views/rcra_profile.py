@@ -13,7 +13,7 @@ from apps.trak.serializers import ProfileUpdateSerializer
 from apps.trak.serializers.rcra_profile import (EpaPermissionSerializer,
                                                 ProfileGetSerializer,
                                                 SitePermissionSerializer)
-from apps.trak.tasks.profile import sync_user_sites
+from apps.trak.tasks.handler_tasks import get_handler
 
 
 class RcraProfileView(RetrieveUpdateAPIView):
@@ -71,7 +71,8 @@ class SitePermissionView(RetrieveAPIView):
     permission_classes = [permissions.AllowAny]
 
     def retrieve(self, request, *args, **kwargs):
-        sync_user_sites.delay(str(request.user))
+        # sync_user_sites.delay('testuser1')
+        get_handler.delay(site_id='VATESTGEN001', username='testuser1')
         return super().retrieve(request, *args, **kwargs)
 
 

@@ -1,1 +1,0 @@
-# Sync Site's Manifests

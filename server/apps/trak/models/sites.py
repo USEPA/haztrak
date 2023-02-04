@@ -1,11 +1,11 @@
 from django.db import models
 
-from apps.trak.models import Handler
+from .handler import Handler
 
 
 class Site(models.Model):
     """
-    Haztrak Site modal used to control access to Handler object.
+    Haztrak Site model used to control access to Handler object.
 
     Not to be confused with what are frequently called 'sites' in RCRAInfo, for that,
     see the Handler model.

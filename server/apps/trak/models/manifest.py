@@ -3,7 +3,37 @@ from datetime import datetime
 from django.db import models
 
 from apps.trak.models import Handler
-from lib.rcrainfo import lookups as lu
+
+STATUS = [
+    ('NotAssigned', 'Not Assigned'),
+    ('Pending', 'Pending'),
+    ('Scheduled', 'Scheduled'),
+    ('InTransit', 'In Transit'),
+    ('ReadyForSignature', 'Ready for Signature'),
+    ('Signed', 'Signed'),
+    ('Corrected', 'Corrected'),
+    ('UnderCorrection', 'Under Correction'),
+    ('MtnValidationFailed', 'MTN Validation Failed'),
+]
+
+SUB_TYPE = [
+    ('FullElectronic', 'Full Electronic'),
+    ('DataImage5Copy', 'Data + Image'),
+    ('Hybrid', 'Hybrid'),
+    ('Image', 'Image'),
+]
+
+ORIGIN_TYPE = [
+    ('Web', 'Web'),
+    ('Service', 'Service'),
+    ('Mail', 'Mail'),
+]
+
+LOCKED_REASON = [
+    ('AsyncSign', 'Asynchronous signature'),
+    ('EpaChangeBiller', 'EPA change biller'),
+    ('EpaCorrection', 'EPA corrections'),
+]
 
 
 def draft_mtn():
@@ -16,7 +46,7 @@ def draft_mtn():
 
 class ManifestManager(models.Manager):
     """
-    Inter-modal related functionality for Manifest Modal
+    Inter-model related functionality for Manifest Model
     """
 
     @staticmethod
@@ -43,7 +73,7 @@ class ManifestManager(models.Manager):
 
 class Manifest(models.Model):
     """
-    Modal definition the e-Manifest Uniform Hazardous Waste Manifest
+    Model definition the e-Manifest Uniform Hazardous Waste Manifest
     """
     objects = ManifestManager()
 
@@ -56,17 +86,17 @@ class Manifest(models.Model):
     )
     mtn = models.CharField(
         verbose_name='manifest Tracking Number',
-        max_length=15,
+        max_length=30,
         default=draft_mtn
     )
     status = models.CharField(
         max_length=25,
-        choices=lu.STATUS,
+        choices=STATUS,
         default='NotAssigned',
     )
     submission_type = models.CharField(
         max_length=25,
-        choices=lu.SUB_TYPE,
+        choices=SUB_TYPE,
         default='FullElectronic',
     )
     signature_status = models.BooleanField(
@@ -75,7 +105,7 @@ class Manifest(models.Model):
     )
     origin_type = models.CharField(
         max_length=25,
-        choices=lu.ORIGIN_TYPE,
+        choices=ORIGIN_TYPE,
         default='Service',
     )
     shipped_date = models.DateTimeField(
@@ -178,7 +208,7 @@ class Manifest(models.Model):
     )
     locked_reason = models.CharField(
         max_length=25,
-        choices=lu.LOCKED_REASON,
+        choices=LOCKED_REASON,
         null=True,
         blank=True,
     )
@@ -194,7 +224,7 @@ class Manifest(models.Model):
     original_sub_type = models.CharField(
         verbose_name='Original Submission Type',
         max_length=25,
-        choices=lu.SUB_TYPE,
+        choices=SUB_TYPE,
         null=True,
     )
     transfer_count = models.IntegerField(

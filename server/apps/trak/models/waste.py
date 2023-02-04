@@ -3,7 +3,7 @@ from django.db import models
 
 class WasteLine(models.Model):
     """
-    Modal definition for hazardous waste listed on a uniform hazardous waste manifest.
+    Model definition for hazardous waste listed on a uniform hazardous waste manifest.
     """
     manifest = models.ForeignKey(
         'Manifest',

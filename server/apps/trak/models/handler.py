@@ -5,7 +5,7 @@ from apps.trak.models import Address, Contact
 
 class HandlerManager(models.Manager):
     """
-    Inter-modal related functionality for Handler Modal
+    Inter-model related functionality for Handler Model
     """
 
     def __init__(self):
@@ -32,7 +32,7 @@ class HandlerManager(models.Manager):
 
 class Handler(models.Model):
     """
-    RCRAInfo Handler modal definition for entities on the uniform hazardous waste manifests
+    RCRAInfo Handler model definition for entities on the uniform hazardous waste manifests
     """
     objects = HandlerManager()
 

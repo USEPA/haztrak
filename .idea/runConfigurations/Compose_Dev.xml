@@ -3,7 +3,6 @@
     <deployment type="docker-compose.yml">
       <settings>
         <option name="envFilePath" value="$PROJECT_DIR$/configs/.env.dev" />
-        <option name="commandLineOptions" value="--build" />
         <option name="sourceFilePath" value="docker-compose.yaml" />
         <option name="upDetach" value="false" />
       </settings>
