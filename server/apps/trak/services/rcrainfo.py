@@ -28,3 +28,16 @@ class RcrainfoService(RcrainfoClient):
             profile = RcraProfile.objects.get(user__username=self.username)
             if profile.is_api_user:
                 return super().retrieve_id(profile.rcra_api_key)
+
+    def get_rcrainfo_user_profile(self, username: str = None):
+        """
+        Retrieve a user's site permissions from RCRAInfo, It expects the
+        haztrak user to have their unique RCRAInfo user and API credentials in their
+        RcraProfile
+        """
+        if username:
+            profile = RcraProfile.objects.get(user__username=username)
+        else:
+            profile = RcraProfile.objects.get(user__username=self.username)
+        response = self.search_users(userId=profile.rcra_username)
+        return response.json()

@@ -4,7 +4,6 @@ from rest_framework import routers
 from .views import (HandlerSearch, HandlerView, ManifestView, RcraProfileView,
                     SiteApi, SiteList, SiteManifest, SyncProfile,
                     TransporterView)
-from .views.manifest import SyncManifest
 from .views.rcra_profile import SitePermissionView
 
 manifest_router = routers.SimpleRouter()
@@ -17,7 +16,6 @@ urlpatterns = [
     path('permission/<int:pk>', SitePermissionView.as_view()),
     # Manifest
     path('', include(manifest_router.urls)),
-    path('manifest/sync', SyncManifest.as_view()),
     # Site
     path('site/', SiteList.as_view()),
     path('site/<str:epa_id>', SiteApi.as_view()),

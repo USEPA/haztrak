@@ -2,7 +2,7 @@ from django.db import transaction
 
 from apps.trak.models import Handler
 from apps.trak.serializers import HandlerSerializer
-from apps.trak.services import RcrainfoService
+from .rcrainfo import RcrainfoService
 
 
 class HandlerService:

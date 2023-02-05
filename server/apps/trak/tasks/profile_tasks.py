@@ -7,6 +7,7 @@ from requests import RequestException
 
 from apps.trak.models import Handler, RcraProfile, Site, SitePermission
 from apps.trak.serializers import EpaPermissionSerializer, HandlerSerializer
+from apps.trak.services import RcrainfoService
 
 
 class RcraProfileTasks(Task):
@@ -131,7 +132,7 @@ def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
                 meta=f'{self.profile} does not have API credentials'
             )
             raise Ignore()
-        self.get_rcrainfo_user()
+        self.user_response = RcrainfoService(self.username)
         self.parse_response()
         self.create_or_get_handlers()
         self.add_sites_to_profile()
