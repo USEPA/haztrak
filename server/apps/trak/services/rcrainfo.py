@@ -6,6 +6,10 @@ from apps.trak.models import RcraProfile
 
 
 class RcrainfoService(RcrainfoClient):
+    """
+    RcrainfoService is our IO interface for communicating with the EPA RCRAInfo
+    web services.
+    """
 
     def __init__(self, username: str, rcrainfo_env: str = None, *args, **kwargs):
         self.username = username
@@ -16,9 +20,11 @@ class RcrainfoService(RcrainfoClient):
     def retrieve_id(self, api_id=None) -> str:
         if RcraProfile.objects.filter(user__username=self.username).exists():
             profile = RcraProfile.objects.get(user__username=self.username)
-            return super().retrieve_id(profile.rcra_api_id)
+            if profile.is_api_user:
+                return super().retrieve_id(profile.rcra_api_id)
 
     def retrieve_key(self, api_key=None) -> str:
         if RcraProfile.objects.filter(user__username=self.username).exists():
             profile = RcraProfile.objects.get(user__username=self.username)
-            return super().retrieve_id(profile.rcra_api_key)
+            if profile.is_api_user:
+                return super().retrieve_id(profile.rcra_api_key)
