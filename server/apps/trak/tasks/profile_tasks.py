@@ -1,13 +1,10 @@
-import os
-
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
-from emanifest import RcrainfoClient, RcrainfoResponse
 from requests import RequestException
 
 from apps.trak.models import Handler, RcraProfile, Site, SitePermission
 from apps.trak.serializers import EpaPermissionSerializer, HandlerSerializer
-from apps.trak.services import RcrainfoService
+from apps.trak.services import RcrainfoService, HandlerService
 
 
 class RcraProfileTasks(Task):
@@ -18,7 +15,6 @@ class RcraProfileTasks(Task):
     site_permissions: list = []
     handlers: list = []
     user_response: dict
-    ri: RcrainfoClient
     sites: list = []
 
     @property
@@ -27,48 +23,6 @@ class RcraProfileTasks(Task):
             return 0
         else:
             return len(self.user_response['users'])
-
-    def get_rcrainfo_user(self):
-        """
-        Retrieve a user's site permissions from RCRAInfo, It expects the
-        haztrak user to have their unique RCRAInfo user and API credentials in their
-        RcraProfile
-        """
-        self.ri = RcrainfoClient(os.getenv('HT_RCRAINFO_ENV', 'preprod'))
-        self.ri.authenticate(self.profile.rcra_api_id, self.profile.rcra_api_key)
-        response: RcrainfoResponse = self.ri.search_users(
-            userId=self.profile.rcra_username)
-        self.user_response = response.json()
-
-    def parse_response(self):
-        if self.number_users_returned == 1:
-            for site_permission in self.user_response['users'][0]['sites']:
-                self.site_permissions.append(site_permission)
-        else:
-            self.update_state(
-                state=states.FAILURE,
-                meta=f'More than one (or zero) users were returned from RCRAInfo.'
-                     f'Check haztrak {self.profile}\'s RCRAInfo username'
-            )
-            raise Ignore()
-
-    def create_or_get_handlers(self):
-        for site_permission in self.site_permissions:
-            site_id = site_permission['siteId']
-            if Handler.objects.filter(epa_id=site_id).exists():
-                existing_handler = Handler.objects.get(epa_id=site_id)
-                self.handlers.append(
-                    {'handler': existing_handler,
-                     'permissions': site_permission})
-            else:
-                response = self.ri.get_site(site_permission['siteId'])
-                # handler_service = HandlerService(username=self.username)
-                if response.response.ok:
-                    new_handler = save_handler(response.response.json())
-                    if new_handler:
-                        self.handlers.append(
-                            {'handler': new_handler,
-                             'permissions': site_permission})
 
     def add_sites_to_profile(self):
         for handler_info in self.handlers:
@@ -132,10 +86,21 @@ def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
                 meta=f'{self.profile} does not have API credentials'
             )
             raise Ignore()
-        self.user_response = RcrainfoService(self.username)
-        self.parse_response()
-        self.create_or_get_handlers()
+        self.rcrainfo = RcrainfoService(self.username)
+        self.handler_service = HandlerService(username=self.username)
+        self.user_response = self.rcrainfo.get_rcrainfo_user_profile()
+        for site_permission in self.user_response['users'][0]['sites']:
+            self.site_permissions.append(site_permission)
+        for site_permission in self.site_permissions:
+            handler = self.handler_service.get_or_retrieve_handler(
+                site_permission['siteId'])
+            self.handlers.append({'handler': handler,
+                                  'permissions': site_permission})
         self.add_sites_to_profile()
+        self.handlers.clear()
+        self.user_response.clear()
+        self.sites.clear()
+        self.rcrainfo = None
     except KeyError:
         raise Reject()
     except (ConnectionError, RequestException, TimeoutError):
