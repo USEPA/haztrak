@@ -11,11 +11,11 @@ class RcrainfoService(RcrainfoClient):
     web services.
     """
 
-    def __init__(self, username: str, rcrainfo_env: str = None, *args, **kwargs):
+    def __init__(self, *, username: str, rcrainfo_env: str = None, **kwargs):
         self.username = username
         if rcrainfo_env is None:
             rcrainfo_env = os.getenv('HT_RCRAINFO_ENV', 'preprod')
-        super().__init__(rcrainfo_env, *args, **kwargs)
+        super().__init__(rcrainfo_env, **kwargs)
 
     def retrieve_id(self, api_id=None) -> str:
         if RcraProfile.objects.filter(user__username=self.username).exists():
