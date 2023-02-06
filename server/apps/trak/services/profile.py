@@ -1,4 +1,4 @@
-from apps.trak.models import RcraProfile, SitePermission
+from apps.trak.models import RcraProfile, Site, SitePermission
 from apps.trak.serializers import EpaPermissionSerializer
 from apps.trak.services import HandlerService, RcrainfoService, SiteService
 
@@ -32,13 +32,7 @@ class RcraProfileService:
                              'permissions': site_permission})
         for handler in handlers:
             site = site_service.get_or_create_site(handler=handler['handler'])
-            permission_serializer = EpaPermissionSerializer(
-                data=handler['permissions'])
-            if permission_serializer.is_valid():
-                SitePermission.objects.update_or_create(
-                    **permission_serializer.validated_data,
-                    site=site,
-                    profile=self.profile)
+            self.create_or_update_rcra_permission(epa_permission=handler.get('permissions'), site=site)
 
     @staticmethod
     def parse_rcra_response(*, rcra_response: dict) -> list[dict]:
@@ -46,3 +40,12 @@ class RcraProfileService:
         for permission_json in rcra_response['users'][0]['sites']:
             permissions.append(permission_json)
         return permissions
+
+    def create_or_update_rcra_permission(self, *, epa_permission: dict, site: Site) -> SitePermission:
+        permission_serializer = EpaPermissionSerializer(data=epa_permission)
+        if permission_serializer.is_valid():
+            return SitePermission.objects.update_or_create(**permission_serializer.validated_data,
+                                                           site=site,
+                                                           profile=self.profile)
+        else:
+            raise Exception('Error Attempting to create SitePermission')
