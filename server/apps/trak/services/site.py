@@ -24,10 +24,12 @@ class SiteService:
         pass
 
     @transaction.atomic
-    def create_site(self, *, handler: Handler, site_name: str = None) -> Site:
+    def get_or_create_site(self, *, handler: Handler, site_name: str = None) -> Site:
         if site_name is None:
             site_name = handler.name
         if Site.objects.filter(epa_site__epa_id=handler.epa_id).exists():
-            return Site.objects.get(epa_site__epa_id=handler.epa_id)
+            site = Site.objects.get(epa_site__epa_id=handler.epa_id)
+            print('site from get_or_create: ', site)
+            return site
         else:
-            Site.objects.create(epa_site=handler, name=site_name)
+            return Site.objects.create(epa_site=handler, name=site_name)
