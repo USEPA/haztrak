@@ -1,7 +1,7 @@
 from django.db import transaction
 
-from .rcrainfo import RcrainfoService
 from ..models import Handler, Site
+from .rcrainfo import RcrainfoService
 
 
 class SiteService:
@@ -13,10 +13,9 @@ class SiteService:
     def sync_site_manifest(self, *, site_id: str):
         """
         ToDo:
-        Retrieve a manifest from Rcrainfo and save to the database.
+        Retrieve a site's manifest from Rcrainfo and save to the database.
         """
         response = self.rcrainfo.get_manifest(site_id)
-        print(response.response.json())
         return response
 
     @transaction.atomic
@@ -29,7 +28,6 @@ class SiteService:
             site_name = handler.name
         if Site.objects.filter(epa_site__epa_id=handler.epa_id).exists():
             site = Site.objects.get(epa_site__epa_id=handler.epa_id)
-            print('site from get_or_create: ', site)
             return site
         else:
             return Site.objects.create(epa_site=handler, name=site_name)
