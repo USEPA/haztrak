@@ -25,6 +25,13 @@ class RcraProfileService:
         else:
             self.rcrainfo = None
 
+    @property
+    def can_access_rcrainfo(self) -> bool:
+        if self.rcrainfo is not None:
+            return True
+        else:
+            return False
+
     def update_rcra_profile(self, *, username: str = None):
         """
         This high level function makes several calls to RCRAInfo to pull the following info...

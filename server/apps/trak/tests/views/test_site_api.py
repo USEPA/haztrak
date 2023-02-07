@@ -51,6 +51,10 @@ class TestSiteDetailsApi:
         self.profile = test_user_profile
 
     @pytest.fixture(autouse=True)
+    def _site_permission(self, site_permission):
+        self.site_permission = site_permission
+
+    @pytest.fixture(autouse=True)
     def _generator(self, generator001):
         self.generator = generator001
 
@@ -62,7 +66,7 @@ class TestSiteDetailsApi:
     def _test_user(self, testuser1):
         self.user = testuser1
 
-    def test_endpoint_returns_site(self):
+    def test_returns_site(self):
         client = APIClient()
         client.force_authenticate(user=self.user)
         response = client.get(f'{self.url}/{self.generator.epa_id}')
