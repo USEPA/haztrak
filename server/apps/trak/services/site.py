@@ -12,15 +12,10 @@ class SiteService:
     @transaction.atomic
     def sync_site_manifest(self, *, site_id: str):
         """
-        ToDo:
         Retrieve a site's manifest from Rcrainfo and save to the database.
         """
         response = self.rcrainfo.get_manifest(site_id)
         return response
-
-    @transaction.atomic
-    def add_site_to_profile(self, username: str = None):
-        pass
 
     @transaction.atomic
     def get_or_create_site(self, *, handler: Handler, site_name: str = None) -> Site:
