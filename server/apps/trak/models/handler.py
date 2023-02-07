@@ -74,8 +74,6 @@ class Handler(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Contact Information',
     )
-    # contact = models.JSONField(
-    #     verbose_name='Contact information')
     emergency_phone = models.JSONField(
         null=True,
         blank=True,

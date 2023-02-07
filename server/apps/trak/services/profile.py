@@ -5,6 +5,14 @@ from apps.trak.serializers import EpaPermissionSerializer
 from apps.trak.services import HandlerService, RcrainfoService, SiteService
 
 
+class RcraServiceError(Exception):
+    """Exception for errors specific to the RcraProfileService"""
+
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(self.message)
+
+
 class RcraProfileService:
     def __init__(self, *, username: str, api_user: str = None):
         self.username = username
