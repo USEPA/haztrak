@@ -47,6 +47,7 @@ class Handler(models.Model):
     epa_id = models.CharField(
         verbose_name='EPA Id number',
         max_length=25,
+        unique=True,
     )
     name = models.CharField(
         max_length=200,

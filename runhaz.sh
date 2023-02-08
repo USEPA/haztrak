@@ -40,10 +40,10 @@ print_style() {
         COLOR="0m";
     fi
 
-    STARTCOLOR="\e[$COLOR";
-    ENDCOLOR="\e[0m";
+    START_COLOR="\e[$COLOR";
+    END_COLOR="\e[0m";
 
-    printf "$STARTCOLOR%b$ENDCOLOR" "$1";
+    printf "$START_COLOR%b$END_COLOR" "$1";
 }
 
 print_usage() {
@@ -58,6 +58,7 @@ print_usage() {
    echo "-t, --test          Run all tests, show output if exit status is not 0"
    echo "-p, --pre-commit    installs hooks, if necessary, and runs pre-commit run --all-files"
    echo "-g, --generate      Generate the Open API Schema to /docs/API/"
+   echo "-e, --erd           Graph the django models to an entity relationship diagram (ERD), requires graphviz"
    echo "-h, --help          Print this help message"
    echo
 }
@@ -100,6 +101,14 @@ load_django_fixtures() {
 generate_api_schema() {
     print_style "Generating Open API schema...\n" "success";
     exec_cmd="$base_py_cmd spectacular --file $base_dir/docs/API/openapi-schema.yaml"
+    eval "$exec_cmd"
+    exit
+}
+
+
+graph_models() {
+    print_style "Generating Entity Relationship Diagram...\n" "success";
+    exec_cmd="$base_py_cmd graph_models trak -g --rankdir=LR --arrow-shape=normal -o $base_dir/docs/haztrak_book/src/assets/erd.png"
     eval "$exec_cmd"
     exit
 }
@@ -191,6 +200,9 @@ while [[ $# -gt 0 ]]; do
         ;;
     -g|--generate)
 		generate_api_schema
+		;;
+    -e|--erd)
+	  graph_models
 		;;
     *)
       echo "Unknown option $1"

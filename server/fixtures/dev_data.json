@@ -52,9 +52,6 @@
       "rcra_api_id": "fakeRCRAInfoAPIId",
       "rcra_username": "testuser1",
       "phone_number": null,
-      "epa_sites": [
-        1
-      ],
       "email": "test.user@haztrak.net"
     }
   },

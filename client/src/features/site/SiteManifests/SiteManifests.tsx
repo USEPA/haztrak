@@ -9,10 +9,15 @@ import useHtAPI from 'hooks/useHtAPI';
 import useTitle from 'hooks/useTitle';
 import htApi from 'services';
 
+interface ManifestDetails {
+  mtn: string;
+  status: string;
+}
+
 interface SiteManifest {
-  generator: string[];
-  transporter: string[];
-  tsd: string[];
+  generator: Array<ManifestDetails>;
+  transporter: Array<ManifestDetails>;
+  tsd: Array<ManifestDetails>;
 }
 
 /**
@@ -21,7 +26,10 @@ interface SiteManifest {
  * @param title
  */
 // ToDo refactor to component
-function manifestTable(manifest: string[], title: string): ReactElement | null {
+function manifestTable(
+  manifest: Array<ManifestDetails>,
+  title: string
+): ReactElement | null {
   if (manifest.length === 0) {
     // ToDo add something here that says 'this site has no known manifests'
     return <></>;
@@ -39,11 +47,11 @@ function manifestTable(manifest: string[], title: string): ReactElement | null {
             </tr>
           </thead>
           <tbody>
-            {manifest.map((mtn, i) => {
+            {manifest.map(({ mtn, status }, i) => {
               return (
                 <tr key={i}>
                   <td>{mtn}</td>
-                  <td>status</td>
+                  <td>{status}</td>
                   <td>
                     <div className="d-flex justify-content-evenly">
                       <HtTooltip text={`View: ${mtn}`}>

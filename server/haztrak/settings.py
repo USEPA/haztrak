@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_spectacular',
     'corsheaders',
+    'django_extensions',
     'django_celery_results',
     'apps.trak',
     'apps.core',

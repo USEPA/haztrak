@@ -9,7 +9,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.trak.models import Manifest, RcraProfile, Site, Transporter
+from apps.trak.models import Manifest, Site
 from apps.trak.serializers import SiteSerializer
 
 
@@ -52,17 +52,13 @@ class SiteManifest(APIView):
     def get(self, request: Request, epa_id: str = None) -> Response:
         try:
             profile_sites = [str(i) for i in
-                             RcraProfile.objects.get(user=request.user).epa_sites.all()]
+                             Site.objects.filter(sitepermission__profile__user=request.user)]
             if epa_id not in profile_sites:
                 raise PermissionDenied
-            tsd_manifests = [str(i) for i in
-                             Manifest.objects.filter(tsd__epa_id=epa_id)]
-            gen_manifests = [str(i) for i in
-                             Manifest.objects.filter(generator__epa_id=epa_id)]
-            tran_manifests = [str(i) for i in
-                              Transporter.objects.filter(
-                                  handler__epa_id=epa_id).values_list(
-                                  'manifest__mtn', flat=True)]
+            tsd_manifests = Manifest.objects.filter(tsd__epa_id=epa_id).values('mtn', 'status')
+            gen_manifests = Manifest.objects.filter(tsd__epa_id=epa_id).values('mtn', 'status')
+            tran_manifests = Manifest.objects.filter(transporters__handler__epa_id__contains=epa_id).values('mtn',
+                                                                                                            'status')
             return self.response(status=status.HTTP_200_OK,
                                  data={'tsd': tsd_manifests,
                                        'generator': gen_manifests,

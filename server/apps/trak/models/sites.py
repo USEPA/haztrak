@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from .handler import Handler
@@ -13,6 +14,7 @@ class Site(models.Model):
     name = models.CharField(
         verbose_name='site Alias',
         max_length=200,
+        validators=[MinValueValidator(2, 'site aliases must be longer than 2 characters')]
     )
     epa_site = models.OneToOneField(
         verbose_name='Handler',
