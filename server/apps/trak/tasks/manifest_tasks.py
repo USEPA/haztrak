@@ -7,7 +7,7 @@ from apps.trak.services.manifest import ManifestService
 @shared_task(name="pull manifest", bind=True, acks_late=True)
 def pull_manifest(self: Task, *, mtn: [str], username: str) -> dict:
     """
-    This task initiates a call to the RcraProfileService to pull a manifest by MTN
+    This task initiates a call to the ManifestService to pull a manifest by MTN
     """
     try:
         manifest_service = ManifestService(username=username)

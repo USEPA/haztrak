@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import transaction
 
 from apps.trak.models import Manifest
@@ -13,10 +15,10 @@ class ManifestService:
 
     def __init__(self, *, username: str):
         self.username = username
+        self.rcrainfo = RcrainfoService(username=self.username)
 
     def _retrieve_manifest(self, mtn: str):
-        rcrainfo = RcrainfoService(username=self.username)
-        response = rcrainfo.get_manifest(mtn)
+        response = self.rcrainfo.get_manifest(mtn)
         if response.ok:
             return response.json()
         else:
@@ -30,6 +32,10 @@ class ManifestService:
         else:
             raise Exception(serializer.errors)
 
+    def search_rcra_manifest(self, *, site_id: str = None, start_date: str | datetime = None,
+                             end_date: str | datetime = None, status: str = None, **kwargs):
+        print(kwargs)
+
     def pull_manifests(self, tracking_numbers: list) -> dict:
         results = {'success': [], 'error': []}
         for mtn in tracking_numbers:
@@ -40,3 +46,6 @@ class ManifestService:
             except Exception:
                 results['error'].append(mtn)
         return results
+
+    def pull_recent_manifest(self):
+        pass

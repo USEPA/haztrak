@@ -4,7 +4,7 @@ from rest_framework import routers
 from .views import (HandlerSearch, HandlerView, ManifestView, RcraProfileView,
                     SiteApi, SiteList, SiteManifest, SyncProfile,
                     TransporterView)
-from .views.manifest import PullManifest
+from .views.manifest import PullManifest, SyncSiteManifest
 from .views.rcra_profile import SitePermissionView
 
 manifest_router = routers.SimpleRouter()
@@ -22,6 +22,7 @@ urlpatterns = [
     path('site/', SiteList.as_view()),
     path('site/<str:epa_id>', SiteApi.as_view()),
     path('site/<str:epa_id>/manifest', SiteManifest.as_view()),
+    path('site/manifest/sync', SyncSiteManifest.as_view()),
     # Handler
     path('handler/search', HandlerSearch.as_view()),
     path('handler/details/<int:pk>', HandlerView.as_view()),

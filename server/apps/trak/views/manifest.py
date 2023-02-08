@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
 from apps.trak.tasks.manifest_tasks import pull_manifest
+from apps.trak.tasks.site_tasks import sync_site_manifests
 
 
 @extend_schema(
@@ -36,6 +37,21 @@ class PullManifest(GenericAPIView):
         try:
             mtn = request.data['mtn']
             task = pull_manifest.delay(mtn=mtn, username=str(request.user))
+            return self.response(data={'task': task.id}, status=HTTPStatus.OK)
+        except KeyError:
+            return self.response(data={'error': 'malformed payload'}, status=HTTPStatus.BAD_REQUEST)
+
+
+class SyncSiteManifest(GenericAPIView):
+    """
+    This endpoint launches a task to pull a site's manifests that are out of sync with RCRAINfo
+    """
+    queryset = None
+    response = Response
+
+    def post(self, request: Request) -> Response:
+        try:
+            task = sync_site_manifests.delay(site_id='blah', username=str(request.user))
             return self.response(data={'task': task.id}, status=HTTPStatus.OK)
         except KeyError:
             return self.response(data={'error': 'malformed payload'}, status=HTTPStatus.BAD_REQUEST)
