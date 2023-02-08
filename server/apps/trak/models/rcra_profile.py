@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from .sites import Site
-
 
 class RcraProfile(models.Model):
     """
@@ -29,11 +27,6 @@ class RcraProfile(models.Model):
         null=True,
         blank=True,
     )
-    epa_sites = models.ManyToManyField(
-        Site,
-        related_name='sites',
-        blank=True,
-    )
     phone_number = models.CharField(
         max_length=15,
         null=True,
@@ -45,6 +38,7 @@ class RcraProfile(models.Model):
         return f'{self.user.username}'
 
     def sync(self):
+        # ToDo: having this here is out of place with the projects standards
         from ..tasks import sync_user_sites
         task = sync_user_sites.delay(str(self.user.username))
         return task

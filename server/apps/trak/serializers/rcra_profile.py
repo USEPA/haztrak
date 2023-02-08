@@ -166,11 +166,6 @@ class ProfileGetSerializer(ModelSerializer):
     Rcra Profile model serializer for JSON marshalling/unmarshalling
     """
     user = serializers.StringRelatedField()
-    # epaSites = serializers.StringRelatedField(
-    #     required=False,
-    #     source='epa_sites',
-    #     many=True,
-    # )
     epaSites = SitePermissionSerializer(
         source='site_permission',
         required=False,

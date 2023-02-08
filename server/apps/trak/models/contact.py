@@ -47,7 +47,7 @@ class ContactManager(models.Manager):
         """
         if isinstance(contact, Contact):
             return contact
-        if 'phone' in contact_data:
+        elif 'phone' in contact_data:
             phone_data = contact_data.pop('phone')
             if isinstance(phone_data, EpaPhone):
                 phone = phone_data

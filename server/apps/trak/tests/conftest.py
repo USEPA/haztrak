@@ -154,24 +154,18 @@ def manifest_elc(db, address_123_main, generator001, tsd001) -> Manifest:
 
 @pytest.fixture
 def test_user_profile(db, site_generator001, testuser1) -> RcraProfile:
-    profile = RcraProfile.objects.create(rcra_api_id='rcraApiId',
-                                         rcra_api_key='rcraApikey',
-                                         rcra_username='dpgraham4401',
-                                         user=testuser1)
-    profile.epa_sites.add(site_generator001)
-    profile.save()
-    return profile
+    return RcraProfile.objects.create(rcra_api_id='rcraApiId',
+                                      rcra_api_key='rcraApikey',
+                                      rcra_username='dpgraham4401',
+                                      user=testuser1)
 
 
 @pytest.fixture
 def other_user_profile(db, site_tsd001, other_user) -> RcraProfile:
-    profile = RcraProfile.objects.create(rcra_api_id='rcraApiId',
-                                         rcra_api_key='rcraApikey',
-                                         rcra_user_name='other_user',
-                                         user=other_user)
-    profile.epa_sites.add(site_tsd001)
-    profile.save()
-    return profile
+    return RcraProfile.objects.create(rcra_api_id='rcraApiId',
+                                      rcra_api_key='rcraApikey',
+                                      rcra_user_name='other_user',
+                                      user=other_user)
 
 
 @pytest.fixture

@@ -7,5 +7,5 @@ to look for a certain component or piece of code, this is the place to look.
 ### Table of Contents
 
 1. [Source Structure](./source_structure.md)
-2. [Source design Document](./design.md)
-    1. [To Service layer, or not](./server_architecture.md)
+2. [Source Design Document](./sdd.md)
+    1. [Server Architecture](./server_architecture.md)

@@ -31,7 +31,7 @@ Instead of docker-compose, you could Build and deploy the containers with
 the [client](/Dockerfile), and [server](/Dockerfile) Dockerfiles.
 Maybe we'll include helm charts in the future.
 
-See [environment variables](/docs/haztrak_book/src/Setup/configuration.md) expected by
+See [environment variables](/docs/haztrak_book/src/Deploy/configuration.md) expected by
 haztrak.
 
 ### NPM and Django scripts
@@ -94,7 +94,7 @@ Prerequisites
     $ cd ./client && npm install .
     ```
 2. Configure the client with an .env
-   in [client/.env](/docs/haztrak_book/src/Setup/configuration.md), or
+   in [client/.env](/docs/haztrak_book/src/Deploy/configuration.md), or
    ensure your
    terminal has the appropriate variables.
     - If the `REACT_APP_HT_ENV` environment variable is set
