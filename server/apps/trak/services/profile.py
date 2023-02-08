@@ -47,24 +47,24 @@ class RcraProfileService:
             else:
                 user_to_update = self.username
             user_profile_response = self.rcrainfo.get_user_profile(username=user_to_update)
-            permissions = self.parse_rcra_response(rcra_response=user_profile_response)
+            permissions = self._parse_rcra_response(rcra_response=user_profile_response)
             for site_permission in permissions:
                 handler_json = handler_service.get_or_retrieve_handler(
                     site_permission['siteId'])
                 site = site_service.get_or_create_site(handler=handler_json)
-                self.create_or_update_rcra_permission(epa_permission=site_permission, site=site)
+                self._create_or_update_rcra_permission(epa_permission=site_permission, site=site)
         except (RcraProfile.DoesNotExist, Site.DoesNotExist) as e:
             raise Exception(e)
 
     @staticmethod
-    def parse_rcra_response(*, rcra_response: dict) -> list[dict]:
+    def _parse_rcra_response(*, rcra_response: dict) -> list[dict]:
         permissions = []
         for permission_json in rcra_response['users'][0]['sites']:
             permissions.append(permission_json)
         return permissions
 
     @transaction.atomic
-    def create_or_update_rcra_permission(self, *, epa_permission: dict, site: Site) -> SitePermission:
+    def _create_or_update_rcra_permission(self, *, epa_permission: dict, site: Site) -> SitePermission:
         permission_serializer = EpaPermissionSerializer(data=epa_permission)
         if permission_serializer.is_valid():
             return SitePermission.objects.update_or_create(**permission_serializer.validated_data,
