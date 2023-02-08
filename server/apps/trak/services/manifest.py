@@ -30,7 +30,7 @@ class ManifestService:
         else:
             raise Exception(serializer.errors)
 
-    def pull_manifests(self, tracking_numbers: list[str]) -> dict:
+    def pull_manifests(self, tracking_numbers: list) -> dict:
         results = {'success': [], 'error': []}
         for mtn in tracking_numbers:
             try:

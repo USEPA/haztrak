@@ -57,7 +57,7 @@ class RcraProfileService:
             raise Exception(e)
 
     @staticmethod
-    def _parse_rcra_response(*, rcra_response: dict) -> list[dict]:
+    def _parse_rcra_response(*, rcra_response: dict) -> list:
         permissions = []
         for permission_json in rcra_response['users'][0]['sites']:
             permissions.append(permission_json)
