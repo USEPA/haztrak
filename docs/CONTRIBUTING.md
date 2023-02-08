@@ -5,7 +5,7 @@ You are cordially invited to contribute to haztrak.
 ### Bugs or Questions?
 
 * Submit [an Issues](https://github.com/USEPA/haztrak/issues),
-  we love input in general and we're happy to answer any questions.
+  we love input in general, and we're happy to answer any questions.
 * It's best to ask clarifying questions, via an issue or discussion, before starting
   work or submitting a PR. we also welcome draft PRs.
 

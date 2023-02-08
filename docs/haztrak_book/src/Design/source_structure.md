@@ -21,11 +21,19 @@ directory.
 │       └── /types          : Project Type definitions
 └── /server                 : Root for the Django http server
     ├── /apps               : Container for django 'apps'
-    │   ├── /accounts       : User management
-    │   └── /trak           : Everything needed to interface with RCRAInfo
-    ├── /fixtures           : initial data used
-    ├── /haztrak            : Django setting module
-    └── /lib                : High livel RCRAInfo interfacing logic
+    │   ├── /core           : Django related items used by all apps, such as auth
+    │   │   ├── exceptions.py : Universal custom error handlers
+    │   │   └── managemet   : Custom Haztrak manage.py commands
+    │   └── /trak           : HW tracking Django app
+    │       ├── migrations  : Database migration
+    │       ├── models      : Table/Model definitions for database persistence
+    │       ├── serializers : DRF serializers for model to/from JSON representation
+    │       ├── services    : Business logic for our app
+    │       ├── tasks       : Celery tasks, used to asynch interface with RCRAInfo
+    │       ├── tests       : Our Django app specific tests
+    │       └── views       : Our Django (DRF) views
+    ├── /fixtures           : Initial data loaded on start
+    └── /haztrak            : Django setting module
 ```
 
 ## Notable Directories
