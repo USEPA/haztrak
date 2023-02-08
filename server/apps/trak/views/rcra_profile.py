@@ -71,7 +71,6 @@ class SitePermissionView(RetrieveAPIView):
     permission_classes = [permissions.AllowAny]
 
     def retrieve(self, request, *args, **kwargs):
-        # sync_user_sites.delay('testuser1')
         get_handler.delay(site_id='VATESTGEN001', username='testuser1')
         return super().retrieve(request, *args, **kwargs)
 

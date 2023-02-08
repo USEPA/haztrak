@@ -1,32 +1,42 @@
-import os
-
 from django.db import transaction
-from emanifest import RcrainfoClient
 
-from apps.trak.models import Manifest, RcraProfile
+from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
+from apps.trak.services import RcrainfoService
 
 
 class ManifestService:
-    def __init__(self, *, user: str):
-        self.user = user
+    """
+    ManifestService encapsulates logic and exposes methods
+    corresponding to uniform hazardous waste manifest use cases.
+    """
+
+    def __init__(self, *, username: str):
+        self.username = username
+
+    def _retrieve_manifest(self, mtn: str):
+        rcrainfo = RcrainfoService(username=self.username)
+        response = rcrainfo.get_manifest(mtn)
+        if response.ok:
+            return response.json()
+        else:
+            raise Exception(response.json())
 
     @transaction.atomic
-    def retrieve_rcra_manifest(self, *, mtn: str):
-        """
-        Retrieve a manifest from Rcrainfo and save to the database.
-        """
-        profile = RcraProfile.objects.get(user__username=self.user)
-        # ToDo, refactor when emanifest 3.0 python package is released
-        rcrainfo = RcrainfoClient(os.getenv('HT_RCRAINFO_ENV', 'preprod'))
-        rcrainfo.authenticate(profile.rcra_api_id, profile.rcra_api_key)
-        if Manifest.objects.filter(mtn=mtn).exists():
-            existing_manifest = Manifest.objects.get(mtn=mtn)
-            return {'epaId': existing_manifest.mtn, 'status': 'updated'}
+    def _save_manifest(self, manifest_json: dict) -> Manifest:
+        serializer = ManifestSerializer(data=manifest_json)
+        if serializer.is_valid():
+            return serializer.save()
         else:
-            response = rcrainfo.get_manifest(mtn)
-            if response.ok:
-                serializer = ManifestSerializer(data=response.json)
-                if serializer.is_valid():
-                    new_manifest: Manifest = serializer.save()
-                    return new_manifest
+            raise Exception(serializer.errors)
+
+    def pull_manifests(self, tracking_numbers: list) -> dict:
+        results = {'success': [], 'error': []}
+        for mtn in tracking_numbers:
+            try:
+                manifest_json: dict = self._retrieve_manifest(mtn)
+                manifest = self._save_manifest(manifest_json)
+                results['success'].append(manifest.mtn)
+            except Exception:
+                results['error'].append(mtn)
+        return results

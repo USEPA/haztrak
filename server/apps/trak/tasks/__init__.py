@@ -1,2 +1,2 @@
-from .manifest_tasks import sync_site_manifests
+from .handler_tasks import get_handler
 from .profile_tasks import sync_user_sites

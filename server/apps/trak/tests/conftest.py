@@ -190,12 +190,15 @@ class TestApiClient:
     3. generator001 {Handler} handler model testuser1 has access to
     4. site_generator001 {Site} Site with generator001 as it's handler
     5. api_client {APIClient} pre authenticated (testuser1) APIClient
-
     """
 
     @pytest.fixture(autouse=True)
     def _profile(self, test_user_profile):
         self.profile = test_user_profile
+
+    @pytest.fixture(autouse=True)
+    def _site_permission(self, site_permission):
+        self.site_permission = site_permission
 
     @pytest.fixture(autouse=True)
     def _generator(self, generator001):

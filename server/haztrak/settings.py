@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_celery_results',
     'apps.trak',
-    'apps.accounts',
+    'apps.core',
 ]
 
 MIDDLEWARE = [
@@ -157,7 +157,8 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
-    ]
+    ],
+    'EXCEPTION_HANDLER': 'apps.core.exceptions.haztrak_exception_handler'
 }
 
 SPECTACULAR_SETTINGS = {

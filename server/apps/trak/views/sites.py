@@ -1,7 +1,6 @@
 import logging
 
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-from django.http import Http404
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, permissions, status
 from rest_framework.exceptions import APIException
@@ -23,7 +22,7 @@ class SiteList(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return RcraProfile.objects.get(user=user).epa_sites.all()
+        return Site.objects.filter(sitepermission__profile__user=user)
 
 
 class SiteApi(generics.RetrieveAPIView):
@@ -35,12 +34,9 @@ class SiteApi(generics.RetrieveAPIView):
     queryset = Site.objects.all()
 
     def retrieve(self, request, *args, **kwargs):
-        profile = RcraProfile.objects.get(user=self.request.user)
-        site_ids = [str(i) for i in profile.epa_sites.all()]
         epa_id = self.kwargs['epa_id']
-        if epa_id not in site_ids:
-            raise Http404
-        site = get_object_or_404(self.queryset, epa_site__epa_id=epa_id)
+        site = get_object_or_404(self.queryset, epa_site__epa_id=epa_id,
+                                 sitepermission__profile__user=request.user)
         serializer = SiteSerializer(site)
         return Response(serializer.data)
 
@@ -64,7 +60,8 @@ class SiteManifest(APIView):
             gen_manifests = [str(i) for i in
                              Manifest.objects.filter(generator__epa_id=epa_id)]
             tran_manifests = [str(i) for i in
-                              Transporter.objects.filter(handler__epa_id=epa_id).values_list(
+                              Transporter.objects.filter(
+                                  handler__epa_id=epa_id).values_list(
                                   'manifest__mtn', flat=True)]
             return self.response(status=status.HTTP_200_OK,
                                  data={'tsd': tsd_manifests,

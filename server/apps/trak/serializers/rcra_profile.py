@@ -13,7 +13,8 @@ class SitePermissionSerializer(TrakBaseSerializer):
     Haztrak has a separate serializer for user permissions from RCRAInfo. See EpaPermissionSerializer.
     """
 
-    rcrainfo_modules = ['siteManagement', 'annualReport', 'biennialReport', 'eManifest', 'WIETS', 'myRCRAid']
+    rcrainfo_modules = ['siteManagement', 'annualReport', 'biennialReport', 'eManifest',
+                        'WIETS', 'myRCRAid']
 
     epaId = serializers.StringRelatedField(
         source='site'
@@ -91,7 +92,8 @@ class EpaPermissionField(serializers.Field):
 
 
 class EpaPermissionSerializer(SitePermissionSerializer):
-    rcrainfo_modules = ['AnnualReport', 'BiennialReport', 'eManifest', 'myRCRAid', 'WIETS', 'SiteManagement']
+    rcrainfo_modules = ['AnnualReport', 'BiennialReport', 'eManifest', 'myRCRAid',
+                        'WIETS', 'SiteManagement']
     """
     SitePermission model serializer specifically for reading a user's site permissions
     from RCRAInfo. It's not used for serializing, only deserializing permissions from RCRAinfo

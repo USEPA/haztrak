@@ -1,36 +1,46 @@
-import os
-
 from django.db import transaction
-from emanifest import RcrainfoClient
 
-from apps.trak.models import Handler, RcraProfile
+from apps.trak.models import Handler
 from apps.trak.serializers import HandlerSerializer
+
+from .rcrainfo import RcrainfoService
 
 
 class HandlerService:
     def __init__(self, *, username: str):
         self.username = username
 
-    def retrieve_rcra_handler(self, *, site_id: str):
+    def pull_handler(self, *, site_id: str) -> HandlerSerializer:
         """
-        Retrieve a site/handler from Rcrainfo and save to the database.
+        Retrieve a site/handler from Rcrainfo and return HandlerSerializer
         """
-        profile = RcraProfile.objects.get(user__username=self.username)
-        # ToDo, refactor when emanifest 3.0 python package is released
-        rcrainfo_env = os.getenv('HT_RCRAINFO_ENV', 'preprod')
-        rcrainfo = RcrainfoClient(rcrainfo_env, api_id=profile.rcra_api_id, api_key=profile.rcra_api_key)
-        if Handler.objects.filter(epa_id=site_id).exists():
-            existing_handler = Handler.objects.get(epa_id=site_id)
-            return {'epaId': existing_handler.epa_id, 'status': 'updated'}
-        else:
-            response = rcrainfo.get_site(site_id)
-            if response.ok:
-                self.save_handler(response.response.json())
+        rcrainfo = RcrainfoService(username=self.username)
+        response = rcrainfo.get_site(site_id)
+        if response.ok:
+            handler_serializer = HandlerSerializer(data=response.json())
+            if handler_serializer.is_valid():
+                return handler_serializer
 
-    @staticmethod
-    @transaction.atomic
-    def save_handler(handler_data) -> Handler:
+    def _save_handler_from_json(self, *, handler_data: str) -> Handler:
         serializer = HandlerSerializer(data=handler_data)
         if serializer.is_valid():
-            new_handler: Handler = serializer.save()
-            return new_handler
+            return self._create_or_update_handler(
+                handler_data=serializer.validated_data)
+
+    @transaction.atomic
+    def _create_or_update_handler(self, *, handler_data: dict) -> Handler:
+        handler_epa_id = handler_data.get('epa_id')
+        if Handler.objects.filter(epa_id=handler_epa_id).exists():
+            return Handler.objects.get(epa_id=handler_epa_id)
+        else:
+            return Handler.objects.create_with_related(**handler_data)
+
+    def get_or_retrieve_handler(self, site_id: str) -> Handler:
+        if Handler.objects.filter(epa_id=site_id).exists():
+            return Handler.objects.get(epa_id=site_id)
+        else:
+            rcrainfo = RcrainfoService(username=self.username)
+            response = rcrainfo.get_site(site_id)
+            if response.response.ok:
+                return self._save_handler_from_json(
+                    handler_data=response.response.json())
