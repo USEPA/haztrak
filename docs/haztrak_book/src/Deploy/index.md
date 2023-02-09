@@ -12,3 +12,9 @@ following services are expected to be present...
 The containers are configured through environmental variables. You can find a
 list of the expected environmental variables, and their defaults
 in chapter on [configuration](./configuration.md)
+
+## Content
+
+1. [Setting up a Local Development environment](local_dev_setup.md)
+2. [Configuration](configuration.md)
+3. [Testing](testing.md)
