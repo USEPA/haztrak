@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+from typing import List
 
 from django.db import transaction
 
@@ -32,9 +33,49 @@ class ManifestService:
         else:
             raise Exception(serializer.errors)
 
-    def search_rcra_manifest(self, *, site_id: str = None, start_date: str | datetime = None,
-                             end_date: str | datetime = None, status: str = None, **kwargs):
-        print(kwargs)
+    def search_rcra_mtn(self, *, site_id: str = None, start_date: datetime = None,
+                        end_date: datetime = None, status: str = None, date_type: str = 'UpdatedDate',
+                        state_code: str = None, site_type: str = None) -> List[str]:
+        """
+        Search RCRAInfo for manifests, an abstraction over the RcrainfoService's search_mtn
+
+        Keyword Args:
+            site_id (str): EPA ID a site.
+            start_date (datetime): start of search window, defaults to 3 years ago.
+            end_date (datetime): end of search window, defaults to now.
+            status (str): manifest status in RCRAInfo.
+            date_type (str): RCRAInfo date search type "CertifiedDate|ReceivedDate|ShippedDate|UpdatedDate"
+            state_code (str): Two-letter code representing a state (e.g., "TX", "CA")
+            site_type (str): RCRAInfo site type "Generator|Tsdf|Transporter|RejectionInfo_AlternateTsdf"
+        """
+        date_format = '%Y-%m-%dT%H:%M:%SZ'
+        if end_date:
+            end_date = end_date.replace(tzinfo=timezone.utc).strftime(date_format)
+        else:
+            end_date = datetime.utcnow().replace(tzinfo=timezone.utc).strftime(date_format)
+
+        if start_date:
+            start_date = start_date.replace(tzinfo=timezone.utc).strftime(date_format)
+        else:
+            # If no start date is specified, retrieve for last 3 years (doesn't need be exact, hope it's not leap year)
+            start_date = datetime.utcnow().replace(tzinfo=timezone.utc) - timedelta(minutes=60 * 24 * 30 * 12)
+            start_date = start_date.strftime(date_format)
+
+        # map our keyword arguments to names expected by RCRAInfo
+        search_params = {
+            'stateCode': state_code,
+            'siteId': site_id,
+            'status': status,
+            'dateType': date_type,
+            'siteType': site_type,
+            'endDate': end_date,
+            'startDate': start_date,
+        }
+        filtered_params = {k: v for k, v in search_params.items() if v is not None}
+
+        response = self.rcrainfo.search_mtn(**filtered_params)
+        if response.ok:
+            return response.json()
 
     def pull_manifests(self, tracking_numbers: list) -> dict:
         results = {'success': [], 'error': []}

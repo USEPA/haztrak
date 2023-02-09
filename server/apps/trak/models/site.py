@@ -21,6 +21,11 @@ class Site(models.Model):
         to=Handler,
         on_delete=models.CASCADE,
     )
+    last_rcra_sync = models.DateTimeField(
+        verbose_name='Last Sync with RCRAInfo',
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return f'{self.epa_site.epa_id}'

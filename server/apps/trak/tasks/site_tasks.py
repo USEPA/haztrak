@@ -8,7 +8,7 @@ from apps.trak.services import SiteService
 def sync_site_manifests(self, *, site_id: str, username: str):
     try:
         site_service = SiteService(username=username)
-        site_service.sync_site_manifest(site_id=site_id)
+        site_service.sync_rcra_manifest(site_id=site_id)
     except Exception as e:
         self.update_state(
             state=states.FAILURE,
