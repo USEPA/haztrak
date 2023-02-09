@@ -11,6 +11,7 @@ requests-toolbelt==0.10.1
 sqlparse==0.4.3
 tzdata==2022.7
 whitenoise==6.3.0
+python-dotenv==0.21.1
 celery==5.2.7
 redis==4.4.2
 drf-spectacular==0.25.1

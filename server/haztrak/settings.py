@@ -4,6 +4,8 @@ Django settings for haztrak project.
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # Expected environment keywords
 ht_host = "HT_HOST"
 ht_debug = "HT_DEBUG"
@@ -12,6 +14,8 @@ ht_timezone = "HT_TIMEZONE"
 ht_test_db_name = 'HT_TEST_DB_NAME'
 ht_cors_domain = 'HT_CORS_DOMAIN'
 rcrainfo_env = 'RCRAINFO_ENV'
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
