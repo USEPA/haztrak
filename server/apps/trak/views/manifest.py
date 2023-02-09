@@ -51,7 +51,8 @@ class SyncSiteManifest(GenericAPIView):
 
     def post(self, request: Request) -> Response:
         try:
-            task = sync_site_manifests.delay(site_id='blah', username=str(request.user))
+            site_id = request.data['siteId']
+            task = sync_site_manifests.delay(site_id=site_id, username=str(request.user))
             return self.response(data={'task': task.id}, status=HTTPStatus.OK)
         except KeyError:
             return self.response(data={'error': 'malformed payload'}, status=HTTPStatus.BAD_REQUEST)

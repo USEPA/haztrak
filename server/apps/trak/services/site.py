@@ -14,7 +14,10 @@ class SiteService:
         """
         Retrieve a site's manifest from Rcrainfo and save to the database.
         """
-        response = self.rcrainfo.get_manifest(site_id)
+        response = self.rcrainfo.search_mtn(siteId=site_id, endDate="2022-01-01T01:01:01Z",
+                                            startDate="2020-01-01T01:01:01Z", dateType="UpdatedDate")
+        print(site_id)
+        print(response.json())
         return response
 
     @transaction.atomic
