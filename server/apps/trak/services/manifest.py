@@ -76,6 +76,8 @@ class ManifestService:
         response = self.rcrainfo.search_mtn(**filtered_params)
         if response.ok:
             return response.json()
+        else:
+            return []
 
     def pull_manifests(self, tracking_numbers: list) -> dict:
         results = {'success': [], 'error': []}

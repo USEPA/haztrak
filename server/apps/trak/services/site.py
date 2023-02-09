@@ -1,3 +1,5 @@
+from typing import Dict, List
+
 from django.db import transaction
 
 from ..models import Handler, Site
@@ -20,8 +22,7 @@ class SiteService:
         if site_id:
             self.site = Site.objects.get(epa_site__epa_id=site_id)
 
-    @transaction.atomic
-    def sync_rcra_manifest(self, *, site_id: str = None):
+    def sync_rcra_manifest(self, *, site_id: str = None) -> Dict:
         """
         Retrieve a site's manifest from Rcrainfo and save to the database.
 
@@ -29,7 +30,8 @@ class SiteService:
             site_id (str): the epa_id of the Site to sync with RCRAInfo's manifest. Defaults to None, uses self.site instead.
         """
         manifest_service = ManifestService(username=self.username)
-        manifest_service.search_rcra_mtn(site_id=site_id)
+        tracking_numbers: List[str] = manifest_service.search_rcra_mtn(site_id=site_id)
+        return manifest_service.pull_manifests(tracking_numbers=tracking_numbers)
 
     @transaction.atomic
     def get_or_create_site(self, *, handler: Handler, site_name: str = None) -> Site:
