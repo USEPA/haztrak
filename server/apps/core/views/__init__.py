@@ -1,1 +1,1 @@
-from .auth import Login, SignUp
+from .auth import Login

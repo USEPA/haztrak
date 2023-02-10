@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 import responses
 from emanifest import RcrainfoClient
 
-from apps.trak.services.rcrainfo import RcrainfoService
+from apps.trak.services import RcrainfoService
 
 
 class TestRcrainfoService:

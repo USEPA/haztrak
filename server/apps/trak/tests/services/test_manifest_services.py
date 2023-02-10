@@ -1,8 +1,7 @@
 import pytest
 import responses
 
-from apps.trak.services import RcrainfoService
-from apps.trak.services.manifest import ManifestService
+from apps.trak.services import ManifestService, RcrainfoService
 
 
 class TestManifestService:
@@ -18,8 +17,8 @@ class TestManifestService:
                                                  '123456789ELC')
 
     @responses.activate
-    def test_gets_pull_manifests(self):
-        """Test our overridden retrieve_id() and retrieve_key() function as expected"""
+    def test_pull_manifests(self):
+        """Test retrieves a manifest from RCRAInfo"""
         rcrainfo = RcrainfoService(username=self.user.username, auto_renew=False)
         manifest_service = ManifestService(username=self.user.username,
                                            rcrainfo=rcrainfo)

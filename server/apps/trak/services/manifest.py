@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta, timezone
-from typing import List, Dict
+from typing import Dict, List
 
 from django.db import transaction
 
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
-from apps.trak.services import RcrainfoService
+
+from .rcrainfo import RcrainfoService
 
 
 class ManifestService:

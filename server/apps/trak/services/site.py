@@ -10,19 +10,18 @@ from .rcrainfo import RcrainfoService
 class SiteService:
     """
     Use cases for the Site domain
-
-    Args:
-        username (str): EPA site ID
-
     """
 
-    def __init__(self, *, username: str, site_id: str = None):
+    def __init__(self, *, username: str, site_id: str = None, rcrainfo: RcrainfoService = None):
         self.username = username
-        self.rcrainfo = RcrainfoService(username=username)
+        if rcrainfo is not None:
+            self.rcrainfo = rcrainfo
+        else:
+            self.rcrainfo = RcrainfoService(username=username)
         if site_id:
             self.site = Site.objects.get(epa_site__epa_id=site_id)
 
-    def sync_rcra_manifest(self, *, site_id: str = None) -> Dict:
+    def sync_rcra_manifest(self, *, site_id: str = None) -> Dict[str, List[str]]:
         """
         Retrieve a site's manifest from Rcrainfo and save to the database.
 
