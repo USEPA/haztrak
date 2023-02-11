@@ -1,9 +1,11 @@
 import json
 import os
 from datetime import date, datetime
+from http import HTTPStatus
 from typing import Dict
 
 import pytest
+import responses
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
@@ -14,12 +16,13 @@ from apps.trak.serializers import (EpaPermissionSerializer, HandlerSerializer,
                                    SitePermissionSerializer,
                                    WasteLineSerializer)
 from apps.trak.serializers.contact import ContactSerializer, EpaPhoneSerializer
+from apps.trak.services import RcrainfoService
 
-JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + '/serializers/json'
+JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + '/resources/json'
 TEST_CONTACT_JSON = f'{JSON_DIR}/contact/good_contact.json'
 TEST_PHONE_JSON = f'{JSON_DIR}/contact/phone.json'
 TEST_WASTE1_JSON = f'{JSON_DIR}/test_wasteline1.json'
-TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest.json'
+TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest_100033134ELC.json'
 TEST_SITE_PERM_JSON = f'{JSON_DIR}/site_permission.json'
 TEST_EPA_PERM_JSON = f'{JSON_DIR}/epa_permission.json'
 TEST_HANDLER_JSON = f'{JSON_DIR}/test_site.json'
@@ -102,16 +105,9 @@ def site_permission(db, site_generator001, test_user_profile) -> SitePermission:
                                          wiets='Certifier', my_rcra_id='Certifier')
 
 
-@pytest.fixture
-def waste_serializer(db) -> WasteLineSerializer:
-    with open(TEST_WASTE1_JSON, 'r') as f:
-        data = json.load(f)
-    return WasteLineSerializer(data=data)
-
-
 # JSON fixtures, fixtures that return a Dict from our test files
 @pytest.fixture
-def manifest_json() -> Dict:
+def json_100031134elc() -> Dict:
     with open(TEST_MANIFEST_JSON, 'r') as f:
         return json.load(f)
 
@@ -140,10 +136,21 @@ def epa_permission_json(db) -> Dict:
         return json.load(f)
 
 
+@pytest.fixture
+def wasteline_json() -> Dict:
+    with open(TEST_WASTE1_JSON, 'r') as f:
+        return json.load(f)
+
+
 # Serializer fixtures, build on JSON fixtures to produce serializers
 @pytest.fixture
-def manifest_serializer(db, manifest_json) -> ManifestSerializer:
-    return ManifestSerializer(data=manifest_json)
+def manifest_serializer(db, json_100031134elc) -> ManifestSerializer:
+    return ManifestSerializer(data=json_100031134elc)
+
+
+@pytest.fixture
+def waste_serializer(db, wasteline_json) -> WasteLineSerializer:
+    return WasteLineSerializer(data=wasteline_json)
 
 
 @pytest.fixture
@@ -238,3 +245,17 @@ class TestApiClient:
     @pytest.fixture(autouse=True)
     def _api_client(self, api_client):
         self.client = api_client
+
+
+@pytest.fixture
+def manifest_100033134elc_response(testuser1, json_100031134elc):
+    with responses.RequestsMock() as mock:
+        rcrainfo = RcrainfoService(api_username=testuser1.username,
+                                   rcrainfo_env='preprod')
+        mock.get(
+            url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{json_100031134elc.get("manifestTrackingNumber")}',
+            content_type="application/json",
+            json=json_100031134elc,
+            status=HTTPStatus.OK
+        )
+        yield mock

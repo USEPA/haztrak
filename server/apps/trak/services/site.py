@@ -30,7 +30,8 @@ class SiteService:
         Keyword Args:
             site_id (str): the epa_id to sync with RCRAInfo's manifest. Defaults self.site.
         """
-        manifest_service = ManifestService(username=self.username)
+        manifest_service = ManifestService(username=self.username,
+                                           rcrainfo=self.rcrainfo)
         tracking_numbers: List[str] = manifest_service.search_rcra_mtn(site_id=site_id)
         return manifest_service.pull_manifests(tracking_numbers=tracking_numbers)
 
