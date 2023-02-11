@@ -19,7 +19,7 @@ class TestHandlerService:
     @responses.activate
     def test_pull_rcra_handler(self):
         """test pulling a handler's information from rcrainfo"""
-        rcrainfo = RcrainfoService(username=self.user.username, auto_renew=False)
+        rcrainfo = RcrainfoService(api_username=self.user.username, auto_renew=False)
         handler_service = HandlerService(username=self.user.username,
                                          rcrainfo=rcrainfo)
         handler_url = f'{rcrainfo.base_url}/api/v1/site-details/{self.epa_id}'

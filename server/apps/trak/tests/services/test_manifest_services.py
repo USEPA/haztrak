@@ -19,7 +19,7 @@ class TestManifestService:
     @responses.activate
     def test_pull_manifests(self):
         """Test retrieves a manifest from RCRAInfo"""
-        rcrainfo = RcrainfoService(username=self.user.username, auto_renew=False)
+        rcrainfo = RcrainfoService(api_username=self.user.username, auto_renew=False)
         manifest_service = ManifestService(username=self.user.username,
                                            rcrainfo=rcrainfo)
         manifest_url = f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{self.tracking_number}'

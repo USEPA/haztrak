@@ -18,8 +18,8 @@ def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
     and update that information in Haztrak.
     """
     try:
-        profile = RcraProfileService(username=username)
-        profile.update_rcra_profile()
+        profile_service = RcraProfileService(username=username)
+        profile_service.pull_rcra_profile()
     except (ConnectionError, RequestException, TimeoutError):
         # ToDo retry if network error, see celery docs
         raise Reject()

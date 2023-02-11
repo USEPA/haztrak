@@ -5,7 +5,6 @@ from rest_framework.exceptions import ValidationError
 
 from apps.trak.models import Handler
 from apps.trak.serializers import HandlerSerializer
-
 from .rcrainfo import RcrainfoService
 
 
@@ -21,13 +20,30 @@ class HandlerService:
         if rcrainfo is not None:
             self.rcrainfo = rcrainfo
         else:
-            self.rcrainfo = RcrainfoService(username=self.username)
+            self.rcrainfo = RcrainfoService(api_username=self.username)
+
+    def pull_rcra_handler(self, *, site_id: str) -> Handler:
+        """
+        Retrieve a site/handler from Rcrainfo and return HandlerSerializer
+        """
+        handler_data = self._pull_handler(site_id=site_id)
+        handler_serializer = self._deserialize_handler(handler_data=handler_data)
+        return self._create_or_update_handler(
+            handler_data=handler_serializer.validated_data)
+
+    # ToDo: this is a bad method. Bad Method, Bad!
+    def get_or_retrieve_handler(self, site_id: str) -> Handler:
+        if Handler.objects.filter(epa_id=site_id).exists():
+            return Handler.objects.get(epa_id=site_id)
+        else:
+            self.pull_rcra_handler(site_id=site_id)
 
     def _pull_handler(self, *, site_id: str) -> Dict:
         """
         Pull a handler's information from RCRAInfo.
         """
-        # EPA calls sites "sites", we reserve the term "site" for handlers that the user has access to
+        # In contrast to EPA, we reserve the term "site" for
+        # handlers that the user has access to
         response = self.rcrainfo.get_site(site_id)
         return response.json()
 
@@ -47,18 +63,3 @@ class HandlerService:
             # ToDo: update the handler to reflect what's in RCRAInfo
         else:
             return Handler.objects.create_with_related(**handler_data)
-
-    def pull_rcra_handler(self, *, site_id: str) -> Handler:
-        """
-        Retrieve a site/handler from Rcrainfo and return HandlerSerializer
-        """
-        handler_data = self._pull_handler(site_id=site_id)
-        handler_serializer = self._deserialize_handler(handler_data=handler_data)
-        return self._create_or_update_handler(handler_data=handler_serializer.validated_data)
-
-    # ToDo: this is a bad method. Bad Method, Bad!
-    def get_or_retrieve_handler(self, site_id: str) -> Handler:
-        if Handler.objects.filter(epa_id=site_id).exists():
-            return Handler.objects.get(epa_id=site_id)
-        else:
-            self.pull_rcra_handler(site_id=site_id)

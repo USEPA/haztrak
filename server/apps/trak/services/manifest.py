@@ -5,14 +5,13 @@ from django.db import transaction
 
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
-
 from .rcrainfo import RcrainfoService
 
 
 class ManifestService:
     """
-    ManifestService encapsulates logic and exposes methods
-    corresponding to uniform hazardous waste manifest use cases.
+    ManifestServices encapsulates the uniform hazardous waste manifest subdomain
+    business logic and exposes methods corresponding to use cases.
     """
 
     def __init__(self, *, username: str, rcrainfo: RcrainfoService = None):
@@ -20,7 +19,7 @@ class ManifestService:
         if rcrainfo is not None:
             self.rcrainfo = rcrainfo
         else:
-            self.rcrainfo = RcrainfoService(username=self.username)
+            self.rcrainfo = RcrainfoService(api_username=self.username)
 
     def _retrieve_manifest(self, mtn: str):
         response = self.rcrainfo.get_manifest(mtn)
@@ -63,7 +62,7 @@ class ManifestService:
         if start_date:
             start_date = start_date.replace(tzinfo=timezone.utc).strftime(date_format)
         else:
-            # If no start date is specified, retrieve for last 3 years
+            # If no start date is specified, retrieve for ~last 3 years
             # (doesn't need be exact, hope it's not leap year)
             start_date = datetime.utcnow().replace(tzinfo=timezone.utc) - timedelta(
                 minutes=60 * 24 * 30 * 12)
@@ -79,6 +78,7 @@ class ManifestService:
             'endDate': end_date,
             'startDate': start_date,
         }
+        # Remove arguments that are None
         filtered_params = {k: v for k, v in search_params.items() if v is not None}
 
         response = self.rcrainfo.search_mtn(**filtered_params)

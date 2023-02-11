@@ -24,6 +24,9 @@ def sign_rcra_manifest(self, mtn: str):
     pass
 ```
 
+We also reserve the term `push` and `pull` for `<actions>` that make requests to RCRAInfo, usually to indicate that
+we're either updating/creating a local (haztrak) or remote (RCRAInfo) resource.
+
 3. There are exceptions. For example, the RcrainfoService is really just a wrapper (inherits) around the emanifest PyPI
    package's RcrainfoClient class used to send http requests to RCRAInfo/e-Manifest. This service is only used a
    dependency for other use cases.
