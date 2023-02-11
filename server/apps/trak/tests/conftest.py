@@ -25,7 +25,7 @@ TEST_WASTE1_JSON = f'{JSON_DIR}/test_wasteline1.json'
 TEST_MANIFEST_JSON = f'{JSON_DIR}/test_manifest_100033134ELC.json'
 TEST_SITE_PERM_JSON = f'{JSON_DIR}/site_permission.json'
 TEST_EPA_PERM_JSON = f'{JSON_DIR}/epa_permission.json'
-TEST_HANDLER_JSON = f'{JSON_DIR}/test_site.json'
+TEST_HANDLER_JSON = f'{JSON_DIR}/test_handler.json'
 
 
 @pytest.fixture
@@ -249,9 +249,9 @@ class TestApiClient:
 
 @pytest.fixture
 def manifest_100033134elc_response(db, json_100031134elc):
+    rcrainfo = RcrainfoService(api_username='testuser1',
+                               rcrainfo_env='preprod')
     with responses.RequestsMock() as mock:
-        rcrainfo = RcrainfoService(api_username='testuser1',
-                                   rcrainfo_env='preprod')
         mock.get(
             url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{json_100031134elc.get("manifestTrackingNumber")}',
             content_type="application/json",
@@ -263,9 +263,9 @@ def manifest_100033134elc_response(db, json_100031134elc):
 
 @pytest.fixture
 def search_site_mtn_response(json_100031134elc):
+    rcrainfo = RcrainfoService(api_username='testuser1',
+                               rcrainfo_env='preprod')
     with responses.RequestsMock() as mock:
-        rcrainfo = RcrainfoService(api_username='testuser1',
-                                   rcrainfo_env='preprod')
         mock.post(
             url=f'{rcrainfo.base_url}/api/v1/emanifest/search',
             content_type="application/json",
