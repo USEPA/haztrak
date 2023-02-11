@@ -248,14 +248,28 @@ class TestApiClient:
 
 
 @pytest.fixture
-def manifest_100033134elc_response(testuser1, json_100031134elc):
+def manifest_100033134elc_response(db, json_100031134elc):
     with responses.RequestsMock() as mock:
-        rcrainfo = RcrainfoService(api_username=testuser1.username,
+        rcrainfo = RcrainfoService(api_username='testuser1',
                                    rcrainfo_env='preprod')
         mock.get(
             url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{json_100031134elc.get("manifestTrackingNumber")}',
             content_type="application/json",
             json=json_100031134elc,
+            status=HTTPStatus.OK
+        )
+        yield mock
+
+
+@pytest.fixture
+def search_site_mtn_response(json_100031134elc):
+    with responses.RequestsMock() as mock:
+        rcrainfo = RcrainfoService(api_username='testuser1',
+                                   rcrainfo_env='preprod')
+        mock.post(
+            url=f'{rcrainfo.base_url}/api/v1/emanifest/search',
+            content_type="application/json",
+            json=[json_100031134elc.get('manifestTrackingNumber')],
             status=HTTPStatus.OK
         )
         yield mock

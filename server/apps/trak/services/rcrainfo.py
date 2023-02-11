@@ -1,6 +1,5 @@
 import os
 
-from django.contrib.auth.models import User
 from emanifest import RcrainfoClient
 
 from apps.trak.models import RcraProfile
@@ -17,8 +16,7 @@ class RcrainfoService(RcrainfoClient):
         if RcraProfile.objects.filter(user__username=self.api_user).exists():
             self.profile = RcraProfile.objects.get(user__username=self.api_user)
         else:
-            user = User.objects.get(username=api_username)
-            self.profile = RcraProfile.objects.create(user=user)
+            self.profile = None
         if rcrainfo_env is None:
             rcrainfo_env = os.getenv('HT_RCRAINFO_ENV', 'preprod')
         super().__init__(rcrainfo_env, **kwargs)
