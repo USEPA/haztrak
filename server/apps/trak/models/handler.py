@@ -19,6 +19,9 @@ class HandlerManager(models.Manager):
         super().__init__()
 
     def create_with_related(self, **handler_data):
+        epa_id = handler_data.get('epa_id')
+        if Handler.objects.filter(epa_id=epa_id).exists():
+            return Handler.objects.get(epa_id=epa_id)
         self.handler_data = handler_data
         new_contact = Contact.objects.create(self.handler_data.pop('contact'))
         emergency_phone = self.get_emergency_phone()

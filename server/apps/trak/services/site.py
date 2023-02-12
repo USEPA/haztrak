@@ -1,3 +1,4 @@
+import logging
 from typing import Dict, List
 
 from django.db import transaction
@@ -5,6 +6,8 @@ from django.db import transaction
 from .manifest import ManifestService
 from .rcrainfo import RcrainfoService
 from ..models import Handler, Site
+
+logger = logging.getLogger(__name__)
 
 
 class SiteService:
@@ -33,6 +36,9 @@ class SiteService:
         manifest_service = ManifestService(username=self.username,
                                            rcrainfo=self.rcrainfo)
         tracking_numbers: List[str] = manifest_service.search_rcra_mtn(site_id=site_id)
+        # for now lets limit the number of manifest to sync at a time to 10
+        tracking_numbers = tracking_numbers[0:9]
+        logger.debug('debug log tracking numbers', tracking_numbers)
         return manifest_service.pull_manifests(tracking_numbers=tracking_numbers)
 
     @transaction.atomic
