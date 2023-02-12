@@ -1,6 +1,12 @@
+import logging
+from typing import Union
+
+from django.core.exceptions import ValidationError
 from django.db import models
 
-from apps.trak.models import Address, Contact
+from apps.trak.models import Address, Contact, EpaPhone
+
+logger = logging.getLogger(__name__)
 
 
 class HandlerManager(models.Manager):
@@ -15,19 +21,37 @@ class HandlerManager(models.Manager):
     def create_with_related(self, **handler_data):
         self.handler_data = handler_data
         new_contact = Contact.objects.create(self.handler_data.pop('contact'))
+        emergency_phone = self.get_emergency_phone()
         site_address = self.get_address('site_address')
         mail_address = self.get_address('mail_address')
         return super().create(site_address=site_address,
                               mail_address=mail_address,
-                              **self.handler_data,
-                              contact=new_contact)
+                              emergency_phone=emergency_phone,
+                              contact=new_contact,
+                              **self.handler_data)
+
+    def get_emergency_phone(self) -> Union[EpaPhone, None]:
+        """Check if emergency phone is present and create an EpaPhone row"""
+        try:
+            emergency_phone_data = self.handler_data.pop('emergency_phone')
+            if emergency_phone_data is not None:
+                return EpaPhone.objects.create(**emergency_phone_data)
+            else:
+                return None
+        except KeyError as e:
+            logger.debug(e)
+            return None
 
     def get_address(self, key) -> Address:
-        address = self.handler_data.pop(key)
-        if isinstance(address, Address):
-            return address
-        else:
-            return Address.objects.create(**address)
+        try:
+            address = self.handler_data.pop(key)
+            if isinstance(address, Address):
+                return address
+            else:
+                return Address.objects.create(**address)
+        except KeyError as e:
+            logger.warning(e)
+            raise ValidationError(e)
 
 
 class Handler(models.Model):
@@ -75,8 +99,9 @@ class Handler(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Contact Information',
     )
-    emergency_phone = models.JSONField(
-        # ToDo use foreign key to EpaPhone model instance
+    emergency_phone = models.ForeignKey(
+        EpaPhone,
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
