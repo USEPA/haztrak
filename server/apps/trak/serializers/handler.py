@@ -65,7 +65,7 @@ class HandlerSerializer(TrakBaseSerializer):
     )
 
     def create(self, validated_data):
-        return Handler.objects.create_with_related(**validated_data)
+        return Handler.objects.create_handler(**validated_data)
 
     class Meta:
         model = Handler

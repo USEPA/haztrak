@@ -18,20 +18,32 @@ class HandlerManager(models.Manager):
         self.handler_data = None
         super().__init__()
 
-    def create_with_related(self, **handler_data):
-        epa_id = handler_data.get('epa_id')
-        if Handler.objects.filter(epa_id=epa_id).exists():
-            return Handler.objects.get(epa_id=epa_id)
-        self.handler_data = handler_data
-        new_contact = Contact.objects.create(self.handler_data.pop('contact'))
-        emergency_phone = self.get_emergency_phone()
-        site_address = self.get_address('site_address')
-        mail_address = self.get_address('mail_address')
-        return super().create(site_address=site_address,
-                              mail_address=mail_address,
-                              emergency_phone=emergency_phone,
-                              contact=new_contact,
-                              **self.handler_data)
+    def create_handler(self, **handler_data):
+        """
+        Create a handler and its related fields
+
+        Keyword Args:
+            contact (dict): Contact data in (ordered)dict format
+            site_address (dict): Site address data dict
+            mail_address (dict): mailing address data dict
+            emergency_phone (dict): optional Phone dict
+        """
+        try:
+            epa_id = handler_data.get('epa_id')
+            if Handler.objects.filter(epa_id=epa_id).exists():
+                return Handler.objects.get(epa_id=epa_id)
+            self.handler_data = handler_data
+            new_contact = Contact.objects.create(self.handler_data.pop('contact'))
+            emergency_phone = self.get_emergency_phone()
+            site_address = self.get_address('site_address')
+            mail_address = self.get_address('mail_address')
+            return super().create(site_address=site_address,
+                                  mail_address=mail_address,
+                                  emergency_phone=emergency_phone,
+                                  contact=new_contact,
+                                  **self.handler_data)
+        except KeyError as e:
+            logger.warning(f'error while creating handler {e}')
 
     def get_emergency_phone(self) -> Union[EpaPhone, None]:
         """Check if emergency phone is present and create an EpaPhone row"""

@@ -61,5 +61,5 @@ class HandlerService:
             handler = Handler.objects.get(epa_id=epa_id)
             return handler
         else:
-            handler = Handler.objects.create_with_related(**handler_data)
+            handler = Handler.objects.create_handler(**handler_data)
             return handler

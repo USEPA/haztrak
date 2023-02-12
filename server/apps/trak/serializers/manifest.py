@@ -3,7 +3,6 @@ from rest_framework import serializers
 from apps.trak.models import Manifest, Transporter, WasteLine
 from apps.trak.serializers.handler import HandlerSerializer
 from apps.trak.serializers.trak import TrakBaseSerializer
-
 from .transporter import TransporterSerializer
 from .waste_line import WasteLineSerializer
 
@@ -143,12 +142,12 @@ class ManifestSerializer(TrakBaseSerializer):
     def create(self, validated_data) -> Manifest:
         waste_data = validated_data.pop('wastes')
         trans_data = validated_data.pop('transporters')
-        manifest = Manifest.objects.create_with_related(validated_data)
+        manifest = Manifest.objects.create_manifest(validated_data)
         for waste_line in waste_data:
             WasteLine.objects.create(manifest=manifest, **waste_line)
         for transporter in trans_data:
             transporter['manifest'] = manifest
-            Transporter.objects.create_with_related(**transporter)
+            Transporter.objects.create_transporter(**transporter)
         return manifest
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
