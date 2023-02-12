@@ -24,10 +24,10 @@ class RcraProfileService:
         self.username = username
         self.profile, created = RcraProfile.objects.get_or_create(
             user__username=self.username)
-        if rcrainfo is None:
-            self.rcrainfo = RcrainfoService(api_username=self.username)
-        else:
+        if rcrainfo is not None:
             self.rcrainfo = rcrainfo
+        else:
+            self.rcrainfo = RcrainfoService(api_username=self.username)
 
     @property
     def can_access_rcrainfo(self) -> bool:
@@ -56,11 +56,12 @@ class RcraProfileService:
                 username=user_to_update)
             permissions = self._parse_rcra_response(rcra_response=user_profile_response)
             for site_permission in permissions:
-                handler_json = handler_service.get_or_retrieve_handler(
+                handler = handler_service.get_or_pull_handler(
                     site_permission['siteId'])
-                site = site_service.create_or_update_site(handler=handler_json)
+                site = site_service.create_or_update_site(handler=handler)
                 self._create_or_update_rcra_permission(epa_permission=site_permission,
                                                        site=site)
+
         except (RcraProfile.DoesNotExist, Site.DoesNotExist) as e:
             raise Exception(e)
 

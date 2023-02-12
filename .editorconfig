@@ -11,7 +11,7 @@ charset = utf-8
 max_line_length = 80
 
 [*.py]
-max_line_length = 88
+max_line_length = 99
 
 [*.html]
 indent_size = 2

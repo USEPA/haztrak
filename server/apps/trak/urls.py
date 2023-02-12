@@ -3,8 +3,7 @@ from rest_framework import routers
 
 from .views import (HandlerSearch, HandlerView, ManifestView, RcraProfileView,
                     SiteApi, SiteList, SiteManifest, SyncProfile,
-                    TransporterView)
-from .views.manifest import PullManifest, SyncSiteManifest
+                    TransporterView, SyncSiteManifest, PullManifest)
 from .views.rcra_profile import SitePermissionView
 
 manifest_router = routers.SimpleRouter()
