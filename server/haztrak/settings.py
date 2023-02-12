@@ -6,30 +6,37 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+# Expected environment keywords
 ht_host = "HT_HOST"
 ht_debug = "HT_DEBUG"
 ht_secret = "HT_SECRET_KEY"
 ht_timezone = "HT_TIMEZONE"
 ht_test_db_name = 'HT_TEST_DB_NAME'
 ht_cors_domain = 'HT_CORS_DOMAIN'
+rcrainfo_env = 'RCRAINFO_ENV'
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv()
+# set RCRAInfo environment if not present
+if not os.getenv(rcrainfo_env):
+    os.environ[rcrainfo_env] = 'PREPROD'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv(ht_secret)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.getenv(ht_debug):
-    if os.getenv(ht_debug).upper() == 'TRUE':
-        DEBUG = True
+debug = os.getenv(ht_debug, 'FALSE').upper()
+if debug == 'TRUE':
+    DEBUG = True
 else:
     DEBUG = False
 
-allowed_host = os.getenv(ht_host, 'localhost')
-ALLOWED_HOSTS = [allowed_host]
+ALLOWED_HOST = [os.getenv(ht_host, 'localhost')]
+
+WSGI_APPLICATION = 'haztrak.wsgi.application'
 
 # Application definition
 INSTALLED_APPS = [
@@ -61,18 +68,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-APPEND_SLASH = True
-
+# CORS
 CORS_ALLOW_CREDENTIALS = True
-
 CORS_ORIGIN_WHITELIST = [os.getenv(ht_cors_domain, 'http://localhost:3000')]
 
+# URLs
 ROOT_URLCONF = 'haztrak.urls'
+APPEND_SLASH = True
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,8 +90,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'haztrak.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -102,6 +106,8 @@ DATABASES = {
         }
     }
 }
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+FIXTURE_DIRS = ['fixtures']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -123,27 +129,16 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = os.getenv(ht_timezone, 'UTC')
-
 USE_I18N = False
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'apps/core/static'),
 ]
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-FIXTURE_DIRS = ['fixtures']
-
-# RCRAInfo environment
-if not os.getenv('RCRAINFO_ENV'):
-    os.environ['RCRAINFO_ENV'] = 'PREPROD'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -176,6 +171,7 @@ SPECTACULAR_SETTINGS = {
     },
 }
 
+# Celery
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost"
                                                            ":6379")

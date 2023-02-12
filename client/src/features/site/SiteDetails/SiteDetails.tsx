@@ -4,8 +4,8 @@ import useHtAPI from 'hooks/useHtAPI';
 import React, { ReactElement } from 'react';
 import { useParams } from 'react-router-dom';
 import { Site } from 'types/Handler';
-import { Button } from 'react-bootstrap';
-import htApi from 'services';
+import SyncManifestBtn from 'components/SyncManifestBtn';
+import { Container } from 'react-bootstrap';
 
 /**
  * GET and Display details of the hazardous waste site specified in the URL
@@ -17,7 +17,10 @@ function SiteDetails(): ReactElement {
 
   if (error) throw error;
   return (
-    <>
+    <Container className="py-3">
+      <div className="mx-1 d-flex flex-row-reverse">
+        <SyncManifestBtn siteId={siteId ? siteId : ''} />
+      </div>
       <HtCard>
         <HtCard.Header title={siteId} />
         <HtCard.Body>
@@ -30,19 +33,7 @@ function SiteDetails(): ReactElement {
           )}
         </HtCard.Body>
       </HtCard>
-      <div className="mx-1 d-flex flex-row-reverse">
-        <Button
-          onClick={() =>
-            htApi
-              .get(`/trak/site/${siteId}/manifest/sync`)
-              .then((r) => console.log(r))
-              .catch((r) => console.log(r))
-          }
-        >
-          Sync Manifest
-        </Button>
-      </div>
-    </>
+    </Container>
   );
 }
 

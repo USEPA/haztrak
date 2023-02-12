@@ -1,7 +1,7 @@
 from django.db import models
 
 from .rcra_profile import RcraProfile
-from .sites import Site
+from .site import Site
 
 EPA_PERMISSION_LEVEL = [
     ('Certifier', 'Certifier'),

@@ -1,13 +1,12 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HtCard from 'components/HtCard';
 import HtSpinner from 'components/HtSpinner';
 import HtTooltip from 'components/HtTooltip';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import useHtAPI from 'hooks/useHtAPI';
 import useTitle from 'hooks/useTitle';
-import htApi from 'services';
+import SyncManifestBtn from 'components/SyncManifestBtn';
 
 interface ManifestDetails {
   mtn: string;
@@ -88,7 +87,6 @@ function SiteManifests(): ReactElement {
   let { siteId } = useParams();
   useTitle(`${siteId} Manifest`);
   const navigate = useNavigate();
-  const [syncingMtn, setSyncingMtn] = useState(false);
 
   const [siteManifest, loading, error] = useHtAPI<SiteManifest>(
     `trak/site/${siteId}/manifest`
@@ -108,20 +106,7 @@ function SiteManifests(): ReactElement {
             <h2>{siteId}</h2>
           </Col>
           <Col className="d-flex justify-content-end">
-            <Button
-              variant="primary"
-              className="mx-2"
-              onClick={() => {
-                setSyncingMtn(!syncingMtn);
-                htApi
-                  .post('/trak/manifest/sync', { siteId: `${siteId}` })
-                  .then((r) => console.log(r))
-                  .catch((reason) => console.log(reason));
-                console.log('ToDo: send request');
-              }}
-            >
-              Sync <FontAwesomeIcon icon="sync" spin={syncingMtn} />
-            </Button>
+            <SyncManifestBtn siteId={siteId ? siteId : ''} disabled={!!siteId} />
             <Button variant="success" onClick={() => navigate('/manifest/new/edit')}>
               New
             </Button>

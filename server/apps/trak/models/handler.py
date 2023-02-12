@@ -76,6 +76,7 @@ class Handler(models.Model):
         verbose_name='Contact Information',
     )
     emergency_phone = models.JSONField(
+        # ToDo use foreign key to EpaPhone model instance
         null=True,
         blank=True,
     )

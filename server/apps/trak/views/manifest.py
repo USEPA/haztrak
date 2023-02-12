@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
-from apps.trak.tasks.manifest_tasks import pull_manifest
+from apps.trak.tasks import pull_manifest
 
 
 @extend_schema(
@@ -38,4 +38,5 @@ class PullManifest(GenericAPIView):
             task = pull_manifest.delay(mtn=mtn, username=str(request.user))
             return self.response(data={'task': task.id}, status=HTTPStatus.OK)
         except KeyError:
-            return self.response(data={'error': 'malformed payload'}, status=HTTPStatus.BAD_REQUEST)
+            return self.response(data={'error': 'malformed payload'},
+                                 status=HTTPStatus.BAD_REQUEST)
