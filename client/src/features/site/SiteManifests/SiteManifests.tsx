@@ -106,7 +106,7 @@ function SiteManifests(): ReactElement {
             <h2>{siteId}</h2>
           </Col>
           <Col className="d-flex justify-content-end">
-            <SyncManifestBtn siteId={siteId ? siteId : ''} disabled={!!siteId} />
+            <SyncManifestBtn siteId={siteId ? siteId : ''} />
             <Button variant="success" onClick={() => navigate('/manifest/new/edit')}>
               New
             </Button>

@@ -1,3 +1,5 @@
+from typing import Dict
+
 from django.db import models
 
 from . import Handler, Manifest
@@ -9,9 +11,10 @@ class TransporterManager(models.Manager):
     """
 
     @staticmethod
-    def create_with_related(manifest: Manifest, **data):
+    def create_transporter(manifest: Manifest, **data: Dict):
+        """Create a Transporter from a manifest instance and handler dict"""
         handler_data = data.pop('handler')
-        new_handler = Handler.objects.create_with_related(**handler_data)
+        new_handler = Handler.objects.create_handler(**handler_data)
         return Transporter.objects.create(handler=new_handler, manifest=manifest,
                                           **data)
 

@@ -50,7 +50,7 @@ class ManifestManager(models.Manager):
     """
 
     @staticmethod
-    def create_with_related(manifest_data):
+    def create_manifest(manifest_data):
         # pop foreign table data
         tsd_data = manifest_data.pop('tsd')
         gen_data = manifest_data.pop('generator')
@@ -58,11 +58,11 @@ class ManifestManager(models.Manager):
         if Handler.objects.filter(epa_id=gen_data['epa_id']).exists():
             gen_object = Handler.objects.get(epa_id=gen_data['epa_id'])
         else:
-            gen_object = Handler.objects.create_with_related(**gen_data)
+            gen_object = Handler.objects.create_handler(**gen_data)
         if Handler.objects.filter(epa_id=tsd_data['epa_id']).exists():
             tsd_object = Handler.objects.get(epa_id=tsd_data['epa_id'])
         else:
-            tsd_object = Handler.objects.create_with_related(**tsd_data)
+            tsd_object = Handler.objects.create_handler(**tsd_data)
 
         # Create model instances
         manifest = Manifest.objects.create(generator=gen_object,

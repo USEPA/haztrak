@@ -2,8 +2,7 @@ from rest_framework import serializers
 
 from apps.trak.models import Handler
 from apps.trak.serializers import AddressSerializer
-
-from .contact import ContactSerializer
+from .contact import ContactSerializer, EpaPhoneSerializer
 from .trak import TrakBaseSerializer
 
 
@@ -29,7 +28,7 @@ class HandlerSerializer(TrakBaseSerializer):
         source='site_address',
     )
     contact = ContactSerializer()
-    emergencyPhone = serializers.JSONField(
+    emergencyPhone = EpaPhoneSerializer(
         source='emergency_phone',
         allow_null=True,
         default=None,
@@ -66,7 +65,7 @@ class HandlerSerializer(TrakBaseSerializer):
     )
 
     def create(self, validated_data):
-        return Handler.objects.create_with_related(**validated_data)
+        return Handler.objects.create_handler(**validated_data)
 
     class Meta:
         model = Handler
