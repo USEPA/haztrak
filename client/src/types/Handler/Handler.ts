@@ -1,4 +1,4 @@
-import { Contact, EmergencyPhone } from 'types/Manifest/Contact';
+import { Contact, Phone } from 'types/Manifest/Contact';
 
 export interface Handler {
   name: string;
@@ -6,7 +6,7 @@ export interface Handler {
   mailingAddress: Address;
   siteAddress: Address;
   contact: Contact;
-  emergencyPhone: EmergencyPhone;
+  emergencyPhone: Phone;
   // paperSignatureInfo: PaperSignature
   // electronicSignatureInfo?: ElectronicSignature[]
   order?: number;

@@ -19,13 +19,6 @@ function ManifestDetails(): ReactElement {
   useTitle(`View ${mtn}`);
   const [manifestData, loading, error] = useHtAPI<Manifest>(`trak/manifest/${mtn}`);
 
-  // @ts-ignore
-  const genPhone = manifestData?.generator.contact.phone.number;
-  const genEmerPhone = manifestData?.generator.emergencyPhone.number;
-  // @ts-ignore
-  const tsdPhone = manifestData?.designatedFacility.contact.phone.number;
-  const tsdEmerPhone = manifestData?.designatedFacility.emergencyPhone.number;
-
   if (error) throw error;
 
   return loading ? (
@@ -39,7 +32,7 @@ function ManifestDetails(): ReactElement {
           <Row>
             <Col>
               <p className="fw-bold mb-1">Alias</p>
-              <p>Note: extend manifest model to include alias</p>
+              <p>ToDo: add alias field</p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Submission Type</p>
@@ -109,11 +102,19 @@ function ManifestDetails(): ReactElement {
           <Row>
             <Col>
               <p className="fw-bold mb-1">Emergency Phone</p>
-              <p>{genEmerPhone ? genEmerPhone : ''}</p>
+              <p>
+                {manifestData.generator.emergencyPhone
+                  ? manifestData.generator.emergencyPhone.number
+                  : ''}
+              </p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Contact Phone</p>
-              <p>{genPhone ? genPhone : ''}</p>
+              <p>
+                {manifestData.generator.contact.phone
+                  ? manifestData.generator.contact.phone.number
+                  : ''}
+              </p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Email</p>
@@ -170,12 +171,12 @@ function ManifestDetails(): ReactElement {
           </Row>
           <Row>
             <Col>
-              <p className="fw-bold mb-1">Emergency Phone</p>
-              <p>{tsdEmerPhone ? tsdEmerPhone : ''}</p>
-            </Col>
-            <Col>
               <p className="fw-bold mb-1">Contact Phone</p>
-              <p>{tsdPhone ? tsdPhone : ''}</p>
+              <p>
+                {manifestData.designatedFacility.contact?.phone
+                  ? manifestData.designatedFacility.contact.phone.number
+                  : ''}
+              </p>
             </Col>
             <Col>
               <p className="fw-bold mb-1">Email</p>

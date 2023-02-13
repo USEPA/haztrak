@@ -4,12 +4,13 @@
 
 - [Overview](#Overview)
 - [Server Configuration](#Server)
-    - [Required](#required-server)
-    - [Optional](#optional-server)
+    - [Required](#required--server-)
+    - [Optional](#optional--server-)
         - [Database](#Database)
-        - [Database](#Celery)
+        - [Celery](#Celery)
+        - [Logging](#logging)
 - [Client Configuration](#Client)
-    - [Required Parameters](#required-client)
+    - [Required Parameters](#required--client-)
 
 ## Overview
 
@@ -18,8 +19,8 @@ For non-containerized local development, you can place '.env' files in the [serv
 and [client](/) directories, with the outlined values below and the values will be
 automatically added. You can find [example configs here](/configs).
 
-Haztrak also comes with Dockerfiles and docker-compose files,
-including [docker-compose.dev.yaml](/docker-compose.dev.yaml). Environment variables can be passed
+Haztrak also comes with Dockerfiles and a docker-compose files,
+including [docker-compose.yaml](/docker-compose.yaml). Environment variables can be passed
 to a
 using [docker-composes --env-file flag](https://docs.docker.com/compose/environment-variables/#using-the---env-file--option)
 like so.
@@ -32,7 +33,7 @@ $ docker-compose --env-file configs/.env.dev up --build
 
 ### Required (server)
 
-The follow variables are required, haztrak will gracefully exit if not present.
+The follow variables are required, haztrak will exit if not present.
 `HT_SECRET_KEY`: Salt for cryptographic hashing,
 [required by Django](https://docs.djangoproject.com/en/4.1/ref/settings/#secret-key)
 
@@ -61,7 +62,7 @@ The follow variables are required, haztrak will gracefully exit if not present.
     * Description: RCRAInfo environment that Haztrak will interface with per
       the [e-Manifest API Client Library](https://github.com/USEPA/e-manifest/tree/master/emanifest-py)
 * `HT_CORS_DOMAIN`
-    * Value for cross origin resource sharing, the domain that the react app is deployed
+    * Value for cross-origin resource sharing, the domain that the React app is deployed
     * Example for local development: should be something like `http://localhost:3000'
 
 #### Database
@@ -99,6 +100,26 @@ or [RabbitMQ](https://www.rabbitmq.com/).
     * default: `redis://localhost:6379`
 * `CELERY_RESULT_BACKEND`
     * default: `redis://localhost:6379`
+
+#### Logging
+
+These configurations control the format and level of logging for our task queue and http server.
+
+* `HT_LOG_FORMAT`
+    * Value: string corresponding to a formatter, `simple`, `verbose`, `superverbose`. See `server/haztrak/settings.py`
+      LOGGING section for details.
+    * default: `verbose`
+
+logging can be filtered to only include logs that exceed a threshold. We use the
+python standard library logging module, levels can be found in their documentation here
+https://docs.python.org/3/library/logging.html#logging-levels
+
+* `HT_DJANGO_LOG_LEVEL`
+    * default: `INFO`
+* `HT_TRAK_LOG_LEVEL`
+    * default: `INFO`
+* `HT_CORE_LOG_LEVEL`
+    * default: `INFO`
 
 ## Client
 
