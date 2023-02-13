@@ -28,7 +28,3 @@ enum ContactType {
   Text,
   Voice,
 }
-
-export interface EmergencyPhone {
-  number: string;
-}
