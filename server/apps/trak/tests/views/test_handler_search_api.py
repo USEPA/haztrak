@@ -1,6 +1,5 @@
 import pytest
-from rest_framework.test import (APIClient, APIRequestFactory,
-                                 force_authenticate)
+from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
 from apps.trak.views import HandlerSearch
 

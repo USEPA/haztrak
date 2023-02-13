@@ -24,22 +24,22 @@ class SerializerBaseTests(TestCase):
 class TestManifestSerializer:
     serializer_class = ManifestSerializer
 
-    def test_save(self, manifest_serializer):
+    def test_save(self, manifest_10003114elc_serializer):
         manifest = None
-        if manifest_serializer.is_valid():
-            manifest = manifest_serializer.save()
+        if manifest_10003114elc_serializer.is_valid():
+            manifest = manifest_10003114elc_serializer.save()
         assert isinstance(manifest, Manifest)
 
-    def test_multiple_transporter_are_serialized(self, manifest_serializer):
-        manifest_serializer.is_valid()
-        saved_manifest = manifest_serializer.save()
-        number_transporters = len(manifest_serializer.data['transporters'])
+    def test_multiple_transporter_are_serialized(self, manifest_10003114elc_serializer):
+        manifest_10003114elc_serializer.is_valid()
+        saved_manifest = manifest_10003114elc_serializer.save()
+        number_transporters = len(manifest_10003114elc_serializer.data['transporters'])
         transporter = saved_manifest.transporters.all()
         assert len(transporter), number_transporters
 
-    def test_serializer_saves_first_wasteline(self, manifest_serializer):
-        manifest_serializer.is_valid()
-        saved_manifest = manifest_serializer.save()
+    def test_serializer_saves_first_wasteline(self, manifest_10003114elc_serializer):
+        manifest_10003114elc_serializer.is_valid()
+        saved_manifest = manifest_10003114elc_serializer.save()
         waste_line = WasteLine.objects.filter(manifest=saved_manifest).first()
         assert isinstance(waste_line, WasteLine)
 
