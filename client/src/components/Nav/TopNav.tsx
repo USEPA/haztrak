@@ -4,6 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import Notification from 'components/Notification';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faArrowRightFromBracket,
+  faBars,
+  faGear,
+  faTruckFast,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
 
 function TopNav() {
   const authUser = useSelector((state: RootState) => state.user.user);
@@ -24,7 +32,7 @@ function TopNav() {
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex">
       <div className="flex-grow-1 ps-2">
         <Link to="/" className="navbar-brand ps-3 pe-5">
-          <i className="fa-solid fa-truck-fast pe-2" />
+          <FontAwesomeIcon icon={faTruckFast} className="pe-2" />
           Haztrak
         </Link>
         <Button
@@ -34,7 +42,7 @@ function TopNav() {
           onClick={toggleSidebar}
           className="ms-5 btn-link btn btn-sm bg-transparent btn-outline-none btn-outline-dark"
         >
-          <i className="fas fa-bars" />
+          <FontAwesomeIcon icon={faBars} />
         </Button>
       </div>
       <Notification />
@@ -47,20 +55,23 @@ function TopNav() {
               id="navbarDropdown"
               className="nav-link bg-transparent btn-dark btn-outline-none"
             >
-              <i className="fas fa-user fa-fw" />
+              <FontAwesomeIcon icon={faUser} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item as={Link} to="settings/">
-                <i className="text-primary fa-solid fa-gear pe-2" />
+                <FontAwesomeIcon icon={faGear} className="pe-2 text-primary" />
                 Settings
               </Dropdown.Item>
               <Dropdown.Item as={Link} to="profile/">
-                <i className="text-primary fa-solid fa-user pe-2" />
+                <FontAwesomeIcon icon={faUser} className="pe-2 text-primary" />
                 Profile
               </Dropdown.Item>
               <hr className="dropdown-divider" />
               <Dropdown.Item onClick={logout}>
-                <i className="text-danger fa-solid fa-arrow-right-from-bracket pe-2" />
+                <FontAwesomeIcon
+                  icon={faArrowRightFromBracket}
+                  className="pe-2 text-danger"
+                />
                 Logout
               </Dropdown.Item>
             </Dropdown.Menu>

@@ -6,6 +6,8 @@ import { login, useAppDispatch, useAppSelector } from 'store';
 import { useNavigate } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 import useTitle from '../../hooks/useTitle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTruckFast } from '@fortawesome/free-solid-svg-icons';
 
 interface Inputs {
   username: string;
@@ -54,7 +56,7 @@ function Login(): ReactElement {
   return (
     <div className="col-md-6 offset-md-3 mt-5">
       <p className="h1 mb-4 text-center">
-        <i className="fa-solid fa-truck-fast pe-2" />
+        <FontAwesomeIcon icon={faTruckFast} className="pe-2" />
         Haztrak
       </p>
       <div className="card" id="login-card">

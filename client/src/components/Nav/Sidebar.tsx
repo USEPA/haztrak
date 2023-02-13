@@ -3,6 +3,14 @@ import { Button, Collapse } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from 'store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faAngleDown,
+  faArrowUpRightFromSquare,
+  faCircleInfo,
+  faFile,
+  faLocationDot,
+} from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Vertical sidebar for navigation that disappears when the viewport is small
@@ -27,6 +35,7 @@ function Sidebar(): ReactElement | null {
             <div className="sb-sidenav-menu-heading">Apps</div>
             <Link className="nav-link" to="/">
               <i className="sb-nav-link-icon text-primary fas fa-tachometer-alt" />
+              <FontAwesomeIcon icon={faAngleDown} />
               Dashboard
             </Link>
             <Button
@@ -36,13 +45,14 @@ function Sidebar(): ReactElement | null {
               aria-expanded={siteNav}
             >
               <i className="sb-nav-link-icon text-primary fa-solid fa-map-location-dot" />
+              <FontAwesomeIcon icon={faAngleDown} />
               Sites
               <div
                 className={`sb-sidenav-collapse-arrow ${
                   siteNav ? '' : 'rotate-90-cc'
                 } `}
               >
-                <i className="fas fa-angle-down" />
+                <FontAwesomeIcon icon={faAngleDown} />
               </div>
             </Button>
             <Collapse in={siteNav}>
@@ -52,7 +62,10 @@ function Sidebar(): ReactElement | null {
                   id="sidenavAccordionPages"
                 >
                   <Link className="nav-link" to="/site">
-                    <i className="sb-nav-link-icon text-primary fa-solid fa-location-dot" />
+                    <FontAwesomeIcon
+                      icon={faLocationDot}
+                      className="text-info sb-nav-link-icon"
+                    />{' '}
                     My Sites
                   </Link>
                   <a
@@ -61,10 +74,10 @@ function Sidebar(): ReactElement | null {
                     href="https://rcrainfopreprod.epa.gov"
                     rel="noreferrer"
                   >
-                    <i
-                      className="sb-nav-link-icon text-danger fa-solid
-                    fa-arrow-up-right-from-square"
-                    />
+                    <FontAwesomeIcon
+                      icon={faArrowUpRightFromSquare}
+                      className="text-danger sb-nav-link-icon"
+                    />{' '}
                     RCRAInfo
                   </a>
                 </nav>
@@ -77,14 +90,17 @@ function Sidebar(): ReactElement | null {
               aria-controls="collapseHelp"
               aria-expanded={helpNav}
             >
-              <i className="sb-nav-link-icon text-primary fa-solid fa-circle-info" />
+              <FontAwesomeIcon
+                icon={faCircleInfo}
+                className="text-primary sb-nav-link-icon"
+              />
               Help
               <div
                 className={`sb-sidenav-collapse-arrow ${
                   helpNav ? '' : 'rotate-90-cc'
                 } `}
               >
-                <i className="fas fa-angle-down" />
+                <FontAwesomeIcon icon={faAngleDown} />
               </div>
             </Button>
             <Collapse in={helpNav}>
@@ -94,7 +110,10 @@ function Sidebar(): ReactElement | null {
                   id="sidenavAccordionPages"
                 >
                   <Link className="nav-link" to="/about">
-                    <i className="sb-nav-link-icon text-primary fa-regular fa-file"></i>
+                    <FontAwesomeIcon
+                      icon={faFile}
+                      className="text-primary sb-nav-link-icon"
+                    />{' '}
                     About
                   </Link>
                   <a
@@ -104,6 +123,7 @@ function Sidebar(): ReactElement | null {
                     rel="noreferrer"
                   >
                     <i className="sb-nav-link-icon text-primary fa-solid fa-network-wired" />
+                    <FontAwesomeIcon icon={faAngleDown} />
                     Swagger UI
                   </a>
                 </nav>

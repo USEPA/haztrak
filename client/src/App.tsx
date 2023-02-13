@@ -9,15 +9,10 @@ import Manifest from 'features/manifest';
 import Profile from 'features/profile';
 import Sites from 'features/site/Sites';
 import React, { ReactElement } from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-import { faCheckSquare, faCoffee, faSync } from '@fortawesome/free-solid-svg-icons';
 import { Button, Container } from 'react-bootstrap';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { RootState, useAppSelector } from 'store';
 import './App.scss';
-
-library.add(fab, faCheckSquare, faCoffee, faSync);
 
 function App(): ReactElement {
   const { user } = useAppSelector((state: RootState) => state.user);

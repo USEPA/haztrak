@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { UseFieldArrayRemove, UseFieldArraySwap } from 'react-hook-form';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown, faArrowUp, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 interface TranRowActionProps {
   index: number;
@@ -39,7 +41,7 @@ function TransporterRowActions({
           swapTransporter(index, index - 1);
         }}
       >
-        <i className="fas fa-arrow-up fa-lg"></i>
+        <FontAwesomeIcon icon={faArrowUp} />
       </Button>
       {/* Move Transporter down (towards the back of the transporter list) */}
       <Button
@@ -52,7 +54,7 @@ function TransporterRowActions({
           swapTransporter(index, index + 1);
         }}
       >
-        <i className="fas fa-arrow-down fa-lg"></i>
+        <FontAwesomeIcon icon={faArrowDown} />
       </Button>
       <Button
         title={`remove-transporter-${index}-button`}
@@ -62,7 +64,7 @@ function TransporterRowActions({
           removeTransporter(index);
         }}
       >
-        <i className="fas fa-times fa-lg"></i>
+        <FontAwesomeIcon icon={faTimes} />
       </Button>
     </div>
   );

@@ -1,5 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Dropdown } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
   keyName?: string;
@@ -28,7 +30,7 @@ function HtDropdown({ keyName, links }: Props): ReactElement {
   return (
     <Dropdown>
       <Dropdown.Toggle className="bg-transparent ht-ellipsis shadow-none">
-        <i className="fas fa-ellipsis-v fa-sm fa-fw h5 mb-0"></i>
+        <FontAwesomeIcon icon={faEllipsis} className="pe-2 shadow-none h5" />
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {links.map((link, index) => {
