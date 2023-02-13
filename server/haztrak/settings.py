@@ -1,6 +1,8 @@
 """
 Django settings for haztrak project.
 """
+import json
+import logging
 import os
 from pathlib import Path
 
@@ -176,3 +178,50 @@ CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost"
                                                            ":6379")
 CELERY_RESULT_EXTENDED = True
+
+# See logging module format args here
+# https://docs.python.org/3/library/logging.html#logrecord-attributes
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'superverbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s:%(lineno)d %(process)d '
+                      '%(thread)d %(message)s'
+        },
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s:%(lineno)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': os.getenv('HT_LOG_FORMAT', 'verbose'),
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+        'formatter': 'verbose',
+    },
+    'loggers': {
+        'django': {
+            'level': os.getenv('HT_DJANGO_LOG_LEVEL', 'INFO'),
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'apps.trak': {
+            'level': os.getenv('HT_TRAK_LOG_LEVEL', 'INFO'),
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'apps.core': {
+            'level': os.getenv('HT_CORE_LOG_LEVEL', 'INFO'),
+            'handlers': ['console'],
+            'propagate': False,
+        },
+    }
+}
