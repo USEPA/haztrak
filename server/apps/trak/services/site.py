@@ -1,3 +1,4 @@
+import datetime
 import logging
 from typing import Dict, List
 
@@ -33,13 +34,22 @@ class SiteService:
         Keyword Args:
             site_id (str): the epa_id to sync with RCRAInfo's manifest. Defaults self.site.
         """
-        manifest_service = ManifestService(username=self.username,
-                                           rcrainfo=self.rcrainfo)
-        tracking_numbers: List[str] = manifest_service.search_rcra_mtn(site_id=site_id)
-        # for now lets limit the number of manifest to sync at a time to 10
-        tracking_numbers = tracking_numbers[0:9]
-        logger.debug('debug log tracking numbers', tracking_numbers)
-        return manifest_service.pull_manifests(tracking_numbers=tracking_numbers)
+        try:
+            manifest_service = ManifestService(username=self.username,
+                                               rcrainfo=self.rcrainfo)
+            site = Site.objects.get(epa_site__epa_id=site_id)
+            tracking_numbers: List[str] = manifest_service.search_rcra_mtn(site_id=site_id,
+                                                                           start_date=site.last_rcra_sync)
+            # limit the number of manifest to sync at a time to 10
+            tracking_numbers = tracking_numbers[0:9]
+            results: Dict[str, List[str]] = manifest_service.pull_manifests(
+                tracking_numbers=tracking_numbers)
+            site.last_rcra_sync = datetime.datetime.now()
+            site.save()
+            return results
+        except Site.DoesNotExist:
+            logger.warning(f'Site Does not exists {site_id}')
+            raise Exception
 
     @transaction.atomic
     def create_or_update_site(self, *, handler: Handler, site_name: str = None) -> Site:
