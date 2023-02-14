@@ -1,5 +1,5 @@
 import ErrorBoundary from 'components/ErrorBoundary';
-import HtSpinner from 'components/HtSpinner';
+import HtSpinner from 'components/Ht/HtSpinner';
 import React, { ReactElement } from 'react';
 import { Card, CardProps } from 'react-bootstrap';
 

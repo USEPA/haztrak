@@ -1,12 +1,9 @@
-import HtCard from 'components/HtCard';
-import HtDropdown from 'components/HtDropdown';
-import HtTooltip from 'components/HtTooltip';
+import { HtCard, HtDropdown, HtModal, HtTooltip } from 'components/Ht';
 import useHtAPI from 'hooks/useHtAPI';
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Site } from 'types/Handler';
-import HtModal from 'components/HtModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faFileLines } from '@fortawesome/free-solid-svg-icons';
 

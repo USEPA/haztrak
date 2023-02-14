@@ -1,5 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
-import HtModal from 'components/HtModal';
+import { HtModal } from 'components/Ht';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm, useFormContext } from 'react-hook-form';

@@ -1,4 +1,4 @@
-import HtCard from 'components/HtCard';
+import { HtCard } from 'components/Ht';
 import RcraProfile from 'features/profile/RcraProfile';
 import UserProfile from 'features/profile/UserProfile';
 import useTitle from 'hooks/useTitle';

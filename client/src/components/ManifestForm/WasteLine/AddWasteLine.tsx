@@ -1,10 +1,10 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import WasteLineForm from './WasteLineForm';
 import { UseFieldArrayAppend } from 'react-hook-form';
 import { Manifest } from 'types';
 import { WasteLine } from 'types/WasteLine';
-import HtModal from 'components/HtModal';
+import { HtModal } from 'components/Ht';
 
 interface Props {
   handleClose: () => void;

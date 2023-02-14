@@ -1,4 +1,4 @@
-import HtCard from 'components/HtCard';
+import { HtCard } from 'components/Ht';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import HazardousWasteForm from 'components/ManifestForm/WasteLine/HazardousWasteForm';
 import React from 'react';

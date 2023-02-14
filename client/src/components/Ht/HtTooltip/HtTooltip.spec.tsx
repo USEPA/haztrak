@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, cleanup, screen, fireEvent } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import HtTooltip from './index';
+import HtTooltip from 'components/Ht/HtTooltip/index';
 
 afterEach(() => {
   cleanup();

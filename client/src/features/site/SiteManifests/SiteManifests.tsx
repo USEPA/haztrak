@@ -1,6 +1,4 @@
-import HtCard from 'components/HtCard';
-import HtSpinner from 'components/HtSpinner';
-import HtTooltip from 'components/HtTooltip';
+import { HtCard, HtSpinner, HtTooltip } from 'components/Ht';
 import React, { ReactElement } from 'react';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';

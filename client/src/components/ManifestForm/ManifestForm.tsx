@@ -1,7 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import AddButton from 'components/AddButton';
 import HandlerDetails from 'components/HandlerDetails';
-import HtCard from 'components/HtCard';
+import { HtCard } from 'components/Ht';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import ContactForm from 'components/ManifestForm/ContactForm';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
