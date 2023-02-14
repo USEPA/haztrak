@@ -9,7 +9,9 @@ import {
   faArrowUpRightFromSquare,
   faCircleInfo,
   faFile,
+  faLocationArrow,
   faLocationDot,
+  faTachometerAlt,
 } from '@fortawesome/free-solid-svg-icons';
 
 /**
@@ -34,8 +36,10 @@ function Sidebar(): ReactElement | null {
           <div className="nav">
             <div className="sb-sidenav-menu-heading">Apps</div>
             <Link className="nav-link" to="/">
-              <i className="sb-nav-link-icon text-primary fas fa-tachometer-alt" />
-              <FontAwesomeIcon icon={faAngleDown} />
+              <FontAwesomeIcon
+                icon={faTachometerAlt}
+                className="sb-nav-link-icon text-primary"
+              />
               Dashboard
             </Link>
             <Button
@@ -44,8 +48,10 @@ function Sidebar(): ReactElement | null {
               aria-controls="collapseSite"
               aria-expanded={siteNav}
             >
-              <i className="sb-nav-link-icon text-primary fa-solid fa-map-location-dot" />
-              <FontAwesomeIcon icon={faAngleDown} />
+              <FontAwesomeIcon
+                icon={faLocationArrow}
+                className="sb-nav-link-icon text-primary"
+              />
               Sites
               <div
                 className={`sb-sidenav-collapse-arrow ${
@@ -64,7 +70,7 @@ function Sidebar(): ReactElement | null {
                   <Link className="nav-link" to="/site">
                     <FontAwesomeIcon
                       icon={faLocationDot}
-                      className="text-info sb-nav-link-icon"
+                      className="text-primary sb-nav-link-icon"
                     />{' '}
                     My Sites
                   </Link>
