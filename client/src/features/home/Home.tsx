@@ -1,9 +1,9 @@
 import useTitle from 'hooks/useTitle';
 import React, { ReactElement, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
 import { addMsg, RootState, useAppDispatch, useAppSelector } from 'store';
 import { getProfile } from 'store/rcraProfileSlice/rcraProfile.slice';
 import { UserState } from 'types/store';
+import { HtButton } from 'components/Ht';
 
 /**
  * Home page for logged-in user, currently does not really include anything
@@ -22,7 +22,8 @@ function Home(): ReactElement {
   return (
     <div>
       <h1>{`Hello ${user}!`}</h1>
-      <Button
+      <HtButton
+        align="start"
         onClick={() =>
           dispatch(
             addMsg({
@@ -37,7 +38,7 @@ function Home(): ReactElement {
         }
       >
         Click me
-      </Button>
+      </HtButton>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import AddButton from 'components/AddButton';
+import { HtButton, HtCard } from 'components/Ht';
 import HandlerDetails from 'components/HandlerDetails';
-import { HtCard } from 'components/Ht';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import ContactForm from 'components/ManifestForm/ContactForm';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
@@ -224,7 +223,11 @@ function ManifestForm() {
                 transporters={transporters}
                 arrayFieldMethods={tranArrayMethods}
               />
-              <AddButton onClick={toggleTranSearchShow} children={'Add Transporter'} />
+              <HtButton
+                onClick={toggleTranSearchShow}
+                children={'Add Transporter'}
+                variant="success"
+              />
             </HtCard.Body>
           </HtCard>
           <HtCard id="waste-form-card">
@@ -232,7 +235,11 @@ function ManifestForm() {
             <HtCard.Body className="pb-4">
               {/* Table Showing current Waste Lines included on the manifest */}
               <WasteLineTable wastes={wastes} />
-              <AddButton onClick={toggleWlFormShow} children={'Add Waste'} />
+              <HtButton
+                onClick={toggleWlFormShow}
+                children={'Add Waste'}
+                variant="success"
+              />
             </HtCard.Body>
           </HtCard>
           {/* Where The Tsdf information is added and displayed */}
@@ -240,7 +247,11 @@ function ManifestForm() {
             <HtCard.Header title="Designated Facility" />
             <HtCard.Body className="pb-4">
               {tsdf ? <HandlerDetails handler={tsdf} /> : <></>}
-              <AddButton onClick={toggleTsdfFormShow} children={'Add TSDF'} />
+              <HtButton
+                onClick={toggleTsdfFormShow}
+                children={'Add TSDF'}
+                variant="success"
+              />
             </HtCard.Body>
           </HtCard>
           <HtCard id="manifest-additional-info-card">
