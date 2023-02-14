@@ -144,7 +144,7 @@ def wasteline_json() -> Dict:
 
 # Serializer fixtures, build on JSON fixtures to produce serializers
 @pytest.fixture
-def manifest_serializer(db, json_100031134elc) -> ManifestSerializer:
+def manifest_10003114elc_serializer(db, json_100031134elc) -> ManifestSerializer:
     return ManifestSerializer(data=json_100031134elc)
 
 
@@ -248,7 +248,7 @@ class TestApiClient:
 
 
 @pytest.fixture
-def manifest_100033134elc_response(db, json_100031134elc):
+def manifest_100033134elc_rcra_response(db, json_100031134elc):
     rcrainfo = RcrainfoService(api_username='testuser1',
                                rcrainfo_env='preprod')
     with responses.RequestsMock() as mock:
@@ -262,7 +262,7 @@ def manifest_100033134elc_response(db, json_100031134elc):
 
 
 @pytest.fixture
-def search_site_mtn_response(json_100031134elc):
+def search_site_mtn_rcra_response(json_100031134elc):
     rcrainfo = RcrainfoService(api_username='testuser1',
                                rcrainfo_env='preprod')
     with responses.RequestsMock() as mock:

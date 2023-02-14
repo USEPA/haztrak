@@ -7,6 +7,8 @@ import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Site } from 'types/Handler';
 import HtModal from 'components/HtModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faFileLines } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Returns a table displaying the users sites.
@@ -48,7 +50,7 @@ function SiteList() {
                         to={`/site/${site.handler.epaSiteId}`}
                         aria-label={`${site.name}Details`}
                       >
-                        <i className="fa-solid fa-eye"></i>
+                        <FontAwesomeIcon icon={faEye} />
                       </Link>
                     </HtTooltip>
                     <HtTooltip text={`${site.name}'s manifest`}>
@@ -56,7 +58,7 @@ function SiteList() {
                         to={`/site/${site.handler.epaSiteId}/manifests`}
                         aria-label={`${site.name}Manifests`}
                       >
-                        <i className="fa-solid fa-file-lines"></i>
+                        <FontAwesomeIcon icon={faFileLines} />
                       </Link>
                     </HtTooltip>
                   </td>

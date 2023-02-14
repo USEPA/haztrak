@@ -12,9 +12,7 @@ class TestRcraProfileEndpoint(TestApiClient):
     url = '/api/trak/profile'
 
     def test_returns_user_profile(self):
-        # response: Response = self.client.get(f'{self.url}/{self.user.username}')
         response: Response = self.client.get(f'{self.url}/{self.user.username}')
-        print(response.data)
         assert response.headers['Content-Type'] == 'application/json'
         assert response.status_code == 200
         assert response.data['user'] == self.user.username
@@ -25,7 +23,6 @@ class TestRcraProfileEndpoint(TestApiClient):
         put_data = json.dumps({"rcraAPIID": new_api_id, "rcraUsername": new_username})
         response: Response = self.client.put(f'{self.url}/{self.user.username}', data=put_data,
                                              content_type="application/json")
-        print(response.data)
         assert response.status_code == 200
         assert response.data['rcraAPIID'] == new_api_id
         assert response.data['rcraUsername'] == new_username

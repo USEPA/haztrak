@@ -7,6 +7,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import useHtAPI from 'hooks/useHtAPI';
 import useTitle from 'hooks/useTitle';
 import SyncManifestBtn from 'components/SyncManifestBtn';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 interface ManifestDetails {
   mtn: string;
@@ -58,7 +60,7 @@ function manifestTable(
                           to={`/manifest/${mtn}/view`}
                           aria-label={`viewManifest${mtn}`}
                         >
-                          <i className="fa-solid fa-eye"></i>
+                          <FontAwesomeIcon icon={faEye} />
                         </Link>
                       </HtTooltip>
                       <HtTooltip text={`Edit ${mtn}`}>

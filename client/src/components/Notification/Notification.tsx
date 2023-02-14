@@ -1,6 +1,8 @@
 import React from 'react';
 import { Badge, Button, Dropdown } from 'react-bootstrap';
 import { removeMsg, useAppDispatch, useAppSelector } from 'store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 function Notification() {
   const notificationState = useAppSelector((state) => state.notification);
@@ -14,7 +16,7 @@ function Notification() {
           className="bg-transparent border-0 text-primary"
           bsPrefix="p-0"
         >
-          <i className="fa-regular fa-envelope fa-lg"></i>
+          <FontAwesomeIcon icon={faEnvelope} size="lg" />
           <Badge
             pill
             bg="danger px-1"
@@ -39,7 +41,11 @@ function Notification() {
                       className="btn-circle"
                       onClick={() => dispatch(removeMsg(alert))}
                     >
-                      <i className="fas fa-check fa-lg text-white"></i>
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        size="lg"
+                        className="text-white"
+                      />
                     </Button>
                   </div>
                 </Dropdown.ItemText>

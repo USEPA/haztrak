@@ -6,6 +6,8 @@ import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { Manifest } from 'types';
 import useTitle from 'hooks/useTitle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * This React component displays an existing hazardous waste manifest.
@@ -53,9 +55,9 @@ function ManifestDetails(): ReactElement {
                 Was the waste on this manifest imported from another country?
               </p>
               {manifestData.import ? (
-                <i className="fa-solid fa-check text-success"></i>
+                <FontAwesomeIcon icon={faCheck} className="text-success" size="lg" />
               ) : (
-                <i className="fa-solid fa-x text-danger"></i>
+                <FontAwesomeIcon icon={faTimes} className="text-danger" size="lg" />
               )}
             </Col>
           </Row>
@@ -123,9 +125,9 @@ function ManifestDetails(): ReactElement {
             <Col>
               <p className="fw-bold mb-1">Can use electronic manifests?</p>
               {manifestData.generator.hasRegisteredEmanifestUser ? (
-                <i className="fa-solid fa-check text-success"></i>
+                <FontAwesomeIcon icon={faCheck} className="text-success" size="lg" />
               ) : (
-                <i className="fa-solid fa-x text-danger"></i>
+                <FontAwesomeIcon icon={faTimes} className="text-danger" size="lg" />
               )}
             </Col>
           </Row>
@@ -185,9 +187,9 @@ function ManifestDetails(): ReactElement {
             <Col>
               <p className="fw-bold mb-1">Can use electronic manifests?</p>
               {manifestData.designatedFacility.hasRegisteredEmanifestUser ? (
-                <i className="fa-solid fa-check text-success"></i>
+                <FontAwesomeIcon icon={faCheck} className="text-success" size="lg" />
               ) : (
-                <i className="fa-solid fa-x text-danger"></i>
+                <FontAwesomeIcon icon={faTimes} className="text-danger" size="lg" />
               )}
             </Col>
           </Row>
