@@ -1,4 +1,4 @@
-import HtModal from 'components/HtModal';
+import { HtModal } from 'components/Ht';
 import { HandlerSearchForm } from 'components/ManifestForm/HandlerSearch';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';

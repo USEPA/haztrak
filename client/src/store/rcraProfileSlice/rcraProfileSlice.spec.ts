@@ -8,7 +8,7 @@ const initialState: RcraProfileState = {
   user: undefined,
   rcraAPIID: undefined,
   rcraUsername: undefined,
-  epaSites: [],
+  epaSites: {},
   phoneNumber: undefined,
   loading: false,
   error: undefined,
@@ -30,7 +30,7 @@ const profilePayload: RcraProfileState = {
   user: 'testuser1',
   rcraAPIID: 'mockRcraApiId',
   rcraUsername: undefined,
-  epaSites: [mySite],
+  epaSites: { [mySite.epaId]: mySite },
   phoneNumber: undefined,
 };
 

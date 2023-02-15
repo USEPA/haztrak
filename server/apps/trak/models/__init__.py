@@ -1,3 +1,6 @@
+"""
+Model definitions for the trak domain
+"""
 from .address import Address
 from .contact import Contact, EpaPhone
 from .handler import Handler

@@ -1,27 +1,46 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { RcraProfileState } from 'types/store';
+import { ProfileEpaSite, RcraProfileState } from 'types/store';
+import { RootState } from 'store/rootStore';
 
 const initialState: RcraProfileState = {
   user: undefined,
   rcraAPIID: undefined,
   rcraUsername: undefined,
-  epaSites: [],
+  epaSites: {},
   phoneNumber: undefined,
   loading: false,
   error: undefined,
 };
 
-export const getProfile = createAsyncThunk(
+interface RcraProfileResponse {
+  user: undefined;
+  rcraAPIID: undefined;
+  rcraUsername: undefined;
+  epaSites?: Array<ProfileEpaSite>;
+  phoneNumber: undefined;
+  loading: false;
+  error: undefined;
+}
+
+export const getProfile = createAsyncThunk<RcraProfileState>(
   'rcraProfile/getProfile',
-  async (arg, { getState }) => {
-    const state = getState();
-    // @ts-ignore
+  async (arg, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
     const username = state.user.user;
     const response = await axios.get(
       `${process.env.REACT_APP_HT_API_URL}/api/trak/profile/${username}`
     );
-    return response.data as RcraProfileState;
+    const { epaSites, ...rest } = response.data as RcraProfileResponse;
+    let profile: RcraProfileState = { ...rest };
+    profile.epaSites = epaSites?.reduce(
+      (obj, site) => ({
+        ...obj,
+        [site.epaId]: site,
+      }),
+      {}
+    );
+    return profile;
   }
 );
 

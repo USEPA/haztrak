@@ -31,10 +31,12 @@ class RcraProfileService:
 
     @property
     def can_access_rcrainfo(self) -> bool:
+        """
+        Whether the service has a RcrainfoService class associated with it that can access RCRAInfo
+        """
         if self.rcrainfo is not None:
             return True
-        else:
-            return False
+        return False
 
     def pull_rcra_profile(self, *, username: str = None):
         """
@@ -62,8 +64,8 @@ class RcraProfileService:
                 self._create_or_update_rcra_permission(epa_permission=site_permission,
                                                        site=site)
 
-        except (RcraProfile.DoesNotExist, Site.DoesNotExist) as e:
-            raise Exception(e)
+        except (RcraProfile.DoesNotExist, Site.DoesNotExist) as exc:
+            raise Exception(exc)
 
     @staticmethod
     def _parse_rcra_response(*, rcra_response: dict) -> list:
@@ -81,5 +83,4 @@ class RcraProfileService:
                 **permission_serializer.validated_data,
                 site=site,
                 profile=self.profile)
-        else:
-            raise Exception('Error Attempting to create SitePermission')
+        raise Exception('Error Attempting to create SitePermission')

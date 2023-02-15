@@ -1,14 +1,11 @@
-import HtCard from 'components/HtCard';
-import HtSpinner from 'components/HtSpinner';
-import HtTooltip from 'components/HtTooltip';
+import { HtSpinner } from 'components/Ht';
 import React, { ReactElement } from 'react';
-import { Button, Col, Container, Row, Table } from 'react-bootstrap';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Button, Col, Container, Row } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
 import useHtAPI from 'hooks/useHtAPI';
 import useTitle from 'hooks/useTitle';
 import SyncManifestBtn from 'components/SyncManifestBtn';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import ManifestTable from 'components/ManifestTable';
 
 interface ManifestDetails {
   mtn: string;
@@ -19,66 +16,6 @@ interface SiteManifest {
   generator: Array<ManifestDetails>;
   transporter: Array<ManifestDetails>;
   tsd: Array<ManifestDetails>;
-}
-
-/**
- * Returns a card with a table of manifests
- * @param manifest
- * @param title
- */
-// ToDo refactor to component
-function manifestTable(
-  manifest: Array<ManifestDetails>,
-  title: string
-): ReactElement | null {
-  if (manifest.length === 0) {
-    // ToDo add something here that says 'this site has no known manifests'
-    return <></>;
-  }
-  return (
-    <HtCard>
-      <HtCard.Header title={title} />
-      <HtCard.Body>
-        <Table hover>
-          <thead>
-            <tr>
-              <th>Manifest Tracking Number</th>
-              <th>Status</th>
-              <th className="d-flex justify-content-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {manifest.map(({ mtn, status }, i) => {
-              return (
-                <tr key={i}>
-                  <td>{mtn}</td>
-                  <td>{status}</td>
-                  <td>
-                    <div className="d-flex justify-content-evenly">
-                      <HtTooltip text={`View: ${mtn}`}>
-                        <Link
-                          to={`/manifest/${mtn}/view`}
-                          aria-label={`viewManifest${mtn}`}
-                        >
-                          <FontAwesomeIcon icon={faEye} />
-                        </Link>
-                      </HtTooltip>
-                      <HtTooltip text={`Edit ${mtn}`}>
-                        <Link
-                          to={`/manifest/${mtn}/edit`}
-                          aria-label={`editManifest${mtn}`}
-                        ></Link>
-                      </HtTooltip>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
-      </HtCard.Body>
-    </HtCard>
-  );
 }
 
 /**
@@ -118,13 +55,13 @@ function SiteManifests(): ReactElement {
       <Container>
         <Col>
           {siteManifest ? (
-            manifestTable(siteManifest.tsd, 'Designated Receiving Facility')
+            ManifestTable(siteManifest.tsd, 'Designated Receiving Facility')
           ) : (
             <></>
           )}
-          {siteManifest ? manifestTable(siteManifest.generator, 'Generator') : <></>}
+          {siteManifest ? ManifestTable(siteManifest.generator, 'Generator') : <></>}
           {siteManifest ? (
-            manifestTable(siteManifest.transporter, 'Transporter')
+            ManifestTable(siteManifest.transporter, 'Transporter')
           ) : (
             <></>
           )}

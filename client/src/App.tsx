@@ -1,5 +1,5 @@
 import ErrorBoundary from 'components/ErrorBoundary';
-import HtCard from 'components/HtCard';
+import { HtCard } from 'components/Ht';
 import { Sidebar, TopNav } from 'components/Nav';
 import PrivateRoute from 'components/PrivateRoute';
 import About from 'features/help';

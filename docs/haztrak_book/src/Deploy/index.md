@@ -15,6 +15,6 @@ in chapter on [configuration](./configuration.md)
 
 ## Content
 
-1. [Setting up a Local Development environment](local_dev_setup.md)
+1. [Setting up a Local Development environment](local-development.md)
 2. [Configuration](configuration.md)
 3. [Testing](testing.md)

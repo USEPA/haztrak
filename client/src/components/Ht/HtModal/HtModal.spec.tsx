@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { cleanup, render, screen } from 'test';
-import HtModal from './HtModal';
+import HtModal from 'components/Ht/HtModal/HtModal';
 
 afterEach(() => {
   cleanup();

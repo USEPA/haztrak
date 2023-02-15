@@ -35,8 +35,7 @@ export interface RcraProfileState {
   rcraAPIID?: string;
   rcraAPIKey?: string;
   rcraUsername?: string;
-  epaSites?: Array<ProfileEpaSite>;
-  // sites?: string[];
+  epaSites?: Record<string, ProfileEpaSite>;
   phoneNumber?: string;
   loading?: boolean;
   error?: string;

@@ -5,6 +5,7 @@ from django.db import transaction
 
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
+
 from .rcrainfo import RcrainfoService
 
 
@@ -25,16 +26,14 @@ class ManifestService:
         response = self.rcrainfo.get_manifest(mtn)
         if response.ok:
             return response.json()
-        else:
-            raise Exception(response.json())
+        raise Exception(response.json())
 
     @transaction.atomic
     def _save_manifest(self, manifest_json: dict) -> Manifest:
         serializer = ManifestSerializer(data=manifest_json)
         if serializer.is_valid():
             return serializer.save()
-        else:
-            raise Exception(serializer.errors)
+        raise Exception(serializer.errors)
 
     def search_rcra_mtn(self, *, site_id: str = None, start_date: datetime = None,
                         end_date: datetime = None, status: str = None,
@@ -84,10 +83,16 @@ class ManifestService:
         response = self.rcrainfo.search_mtn(**filtered_params)
         if response.ok:
             return response.json()
-        else:
-            return []
+        return []
 
     def pull_manifests(self, tracking_numbers: List[str]) -> Dict[str, List[str]]:
+        """
+        Pull a list of manifest from RCRAInfo
+
+        Returns:
+            results (Dict): with 2 members, 'success' and 'error' each is a list of MTN
+            that corresponds to what manifest where successfully pulled or not.
+        """
         results = {'success': [], 'error': []}
         for mtn in tracking_numbers:
             try:
@@ -97,6 +102,3 @@ class ManifestService:
             except Exception:
                 results['error'].append(mtn)
         return results
-
-    def pull_recent_manifest(self):
-        pass

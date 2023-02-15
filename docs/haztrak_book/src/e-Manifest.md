@@ -23,7 +23,7 @@ If you're looking for background information on the e-Manifest Program, you can 
 up-to-date information on the [United States Environmental Protection Agency's e-Manifest
 page](https://www.epa.gov/e-manifest).
 
-If you're new to e-Manifest, you may want to review the [Terminology page](./e-Manifest_terminology.md).
+If you're new to e-Manifest, you may want to review the [Terminology page](./terminology.md).
 
 The e-Manifest and RCRAInfo team also communicates changes to the e-Manifest system
 with biweekly virtual user calls
@@ -38,7 +38,7 @@ at [USEPA/e-Manifest](https://github.com/USEPA/e-manifest) that contains
 documentation on the RCRAInfo web services, as well as
 the [emanifest](https://pypi.org/project/emanifest/) python
 library to help use the RCRAInfo web services.
- For help, please visit the repo or contact the
+For help, please visit the repo or contact the
 [e-Manifest Team](https://www.epa.gov/e-manifest/forms/contact-us-about-hazardous-waste-electronic-manifest-system)
 .
 

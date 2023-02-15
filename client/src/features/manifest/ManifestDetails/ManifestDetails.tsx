@@ -1,5 +1,4 @@
-import HtCard from 'components/HtCard';
-import HtSpinner from 'components/HtSpinner';
+import { HtCard, HtSpinner } from 'components/Ht';
 import useHtAPI from 'hooks/useHtAPI';
 import React, { ReactElement } from 'react';
 import { Col, Row } from 'react-bootstrap';

@@ -1,46 +1,44 @@
 """
-Django settings for haztrak project.
+Haztrak project settings.
 """
-import json
-import logging
 import os
 from pathlib import Path
 
 from dotenv import load_dotenv
 
-# Expected environment keywords
-ht_host = "HT_HOST"
-ht_debug = "HT_DEBUG"
-ht_secret = "HT_SECRET_KEY"
-ht_timezone = "HT_TIMEZONE"
-ht_test_db_name = 'HT_TEST_DB_NAME'
-ht_cors_domain = 'HT_CORS_DOMAIN'
-rcrainfo_env = 'RCRAINFO_ENV'
+# Environment variable mappings
+HOST_ENV = "HT_HOST"
+DEBUG_ENV = "HT_DEBUG"
+SECRET_ENV = "HT_SECRET_KEY"
+TIMEZONE_ENV = "HT_TIMEZONE"
+TEST_DB_NAME_ENV = 'HT_TEST_DB_NAME'
+CORS_DOMAIN_ENV = 'HT_CORS_DOMAIN'
+RCRAINFO_ENV = 'HT_RCRAINFO_ENV'
 
-load_dotenv()
+load_dotenv()  # ToDo: remove this (and the python-dotenv dep)
+# this is here for unit test (with a .env file)
+# we should find a more reproducible way across dev workstations
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# set RCRAInfo environment if not present
-if not os.getenv(rcrainfo_env):
-    os.environ[rcrainfo_env] = 'PREPROD'
+if not os.getenv(RCRAINFO_ENV):
+    os.environ[RCRAINFO_ENV] = 'PREPROD'
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv(ht_secret)
+SECRET_KEY = os.getenv(SECRET_ENV)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-debug = os.getenv(ht_debug, 'FALSE').upper()
+debug = os.getenv(DEBUG_ENV, 'FALSE').upper()
 if debug == 'TRUE':
     DEBUG = True
 else:
     DEBUG = False
 
-ALLOWED_HOST = [os.getenv(ht_host, 'localhost')]
+ALLOWED_HOST = [os.getenv(HOST_ENV, 'localhost')]
 
 WSGI_APPLICATION = 'haztrak.wsgi.application'
 
-# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -70,9 +68,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# CORS
+# Cross Origin Resource Sharing (CORS)
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = [os.getenv(ht_cors_domain, 'http://localhost:3000')]
+CORS_ORIGIN_WHITELIST = [os.getenv(CORS_DOMAIN_ENV, 'http://localhost:3000')]
 
 # URLs
 ROOT_URLCONF = 'haztrak.urls'
@@ -131,12 +129,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = os.getenv(ht_timezone, 'UTC')
+TIME_ZONE = os.getenv(TIMEZONE_ENV, 'UTC')
 USE_I18N = False
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'apps/core/static'),
@@ -149,7 +146,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-    # I just keep this here for when I want to use browser to inspect the API for dev
+    # uncomment to use browser to inspect the API for dev
     # 'DEFAULT_PERMISSION_CLASSES': [],
     # 'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
@@ -175,11 +172,10 @@ SPECTACULAR_SETTINGS = {
 
 # Celery
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379")
-CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost"
-                                                           ":6379")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost"":6379")
 CELERY_RESULT_EXTENDED = True
 
-# See logging module format args here
+# Logging
 # https://docs.python.org/3/library/logging.html#logrecord-attributes
 LOGGING = {
     'version': 1,

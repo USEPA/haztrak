@@ -1,4 +1,4 @@
-import http
+from http import HTTPStatus
 
 from celery.exceptions import CeleryError
 from django.contrib.auth.models import User
@@ -28,8 +28,7 @@ class RcraProfileView(RetrieveUpdateAPIView):
     def get_serializer_class(self):
         if self.request.method == 'PUT':
             return ProfileUpdateSerializer
-        else:
-            return ProfileGetSerializer
+        return ProfileGetSerializer
 
     def get_queryset(self):
         """
@@ -51,13 +50,14 @@ class SyncProfile(GenericAPIView):
     response = Response
 
     def get(self, request: Request, user: str = None) -> Response:
+        """Sync Profile GET method handler"""
         try:
             profile = RcraProfile.objects.get(user=request.user)
             task = profile.sync()
             return self.response({'task': task.id})
-        except (User.DoesNotExist, CeleryError) as e:
-            return self.response(data=e,
-                                 status=http.HTTPStatus.INTERNAL_SERVER_ERROR)
+        except (User.DoesNotExist, CeleryError) as exc:
+            return self.response(data=exc,
+                                 status=HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 class SitePermissionView(RetrieveAPIView):

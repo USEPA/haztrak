@@ -1,7 +1,10 @@
-from rest_framework import authentication
+"""
+Haztrak's authentication settings
+"""
+from rest_framework.authentication import TokenAuthentication
 
 
-class BearerAuthentication(authentication.TokenAuthentication):
+class BearerAuthentication(TokenAuthentication):
     """
     BearerAuthentication changes Authorization Header's value from
     'Token {token}' to 'Bearer {token}'

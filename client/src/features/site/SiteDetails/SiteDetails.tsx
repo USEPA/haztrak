@@ -1,5 +1,5 @@
 import HandlerDetails from 'components/HandlerDetails';
-import HtCard from 'components/HtCard';
+import { HtCard } from 'components/Ht';
 import useHtAPI from 'hooks/useHtAPI';
 import React, { ReactElement } from 'react';
 import { useParams } from 'react-router-dom';
