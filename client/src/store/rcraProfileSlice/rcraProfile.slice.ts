@@ -7,8 +7,7 @@ const initialState: RcraProfileState = {
   user: undefined,
   rcraAPIID: undefined,
   rcraUsername: undefined,
-  epaSites: [],
-  sites: {},
+  epaSites: {},
   phoneNumber: undefined,
   loading: false,
   error: undefined,
@@ -32,10 +31,9 @@ export const getProfile = createAsyncThunk<RcraProfileState>(
     const response = await axios.get(
       `${process.env.REACT_APP_HT_API_URL}/api/trak/profile/${username}`
     );
-    let { epaSites, ...crossOver } = response.data as RcraProfileResponse;
-    let profile: RcraProfileState = { ...crossOver };
-    console.log(profile);
-    profile.sites = epaSites?.reduce(
+    const { epaSites, ...rest } = response.data as RcraProfileResponse;
+    let profile: RcraProfileState = { ...rest };
+    profile.epaSites = epaSites?.reduce(
       (obj, site) => ({
         ...obj,
         [site.epaId]: site,
