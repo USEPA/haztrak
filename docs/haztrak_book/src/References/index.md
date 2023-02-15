@@ -1,4 +1,4 @@
 # Reference
 
-- [Future maintainer Notes](./future_maintainers.md)
+- [Future maintainer Notes](./future-maintainers.md)
 - [Demonstrations](./demos.md)

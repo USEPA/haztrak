@@ -10,7 +10,7 @@ and [e-Manifest](https://github.com/USEPA/e-manifest) systems.
 ## Getting Started
 
 - [High-level overview of the project](Design/index.md).
-- [Setting up a local development environment](Deploy/local_dev_setup.md).
+- [Setting up a local development environment](Deploy/local-development.md).
 - We also have a [guide on submitting a PR](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
 - We
   appreciate [bug reports and feature requests, or find something to work on](https://github.com/USEPA/haztrak/issues).

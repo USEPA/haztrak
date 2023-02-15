@@ -12,17 +12,16 @@ cradle-to-grave.
 
 ## Getting Started :rocket:
 
-Looking to contribute?
+Looking to deploy or set up a local development environment?
 
 See our [documentation at https://usepa.github.io/haztrak/](https://usepa.github.io/haztrak/).
 
-- See the [guide on submit a PR](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
+Specifically...
+
+- [documentation on deploying locally with docker compose](https://usepa.github.io/haztrak/deploy/local-development.html)
+- [guide on submit a PR](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
 - [Report an issue, request a feature, or find something to work on](https://github.com/USEPA/haztrak/issues)
-  .
-    - Just starting out? We try to keep
-      the [Good First Issue](https://github.com/USEPA/haztrak/labels/good%20first%20issue)
-      label up
-      to date
+    - Just starting out? We try to keep the [Good First Issue](https://github.com/USEPA/haztrak/labels/good%20first%20issue) label up to date
 
 ### About e-Manifest
 
@@ -69,7 +68,8 @@ we will work to keep a healthy dose of inline comments in the codebase.
 
 ## Development Status :warning:
 
-Haztrak is **NOT** intended to be a polished, ready-to-ship, web app. it's intended
+Haztrak is **NOT
+** intended to be a polished, ready-to-ship, web app. it's intended
 audience are
 those seeking
 a working example with the technical expertise to leverage the source for their own

@@ -6,6 +6,6 @@ to look for a certain component or piece of code, this is the place to look.
 
 ### Table of Contents
 
-1. [Source Structure](./source_structure.md)
+1. [Source Structure](./source-structure.md)
 2. [Source Design Document](./sdd.md)
-    1. [Server Architecture](./server_architecture.md)
+    1. [Server Architecture](./server-architecture.md)
