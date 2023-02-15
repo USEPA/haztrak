@@ -51,6 +51,7 @@ class ManifestManager(models.Manager):
 
     @staticmethod
     def create_manifest(manifest_data):
+        """Create a manifest with its related models instances"""
         # pop foreign table data
         tsd_data = manifest_data.pop('tsd')
         gen_data = manifest_data.pop('generator')
@@ -237,10 +238,6 @@ class Manifest(models.Model):
         null=True,
         blank=True,
     )
-
-    def get_absolute_url(self):
-        from django.urls import reverse
-        return reverse('manifest_details', kwargs={'pk': self.pk})
 
     def __str__(self):
         return f'{self.mtn}'

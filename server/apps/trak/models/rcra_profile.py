@@ -38,14 +38,14 @@ class RcraProfile(models.Model):
         return f'{self.user.username}'
 
     def sync(self):
-        # ToDo: having this here is out of place with the projects standards
+        """Launch task to sync use profile. ToDo: remove this method"""
         from ..tasks import sync_user_sites
         task = sync_user_sites.delay(str(self.user.username))
         return task
 
     @property
     def is_api_user(self) -> bool:
+        """Returns true if the use has Rcrainfo API credentials"""
         if self.rcra_username and self.rcra_api_id and self.rcra_api_key:
             return True
-        else:
-            return False
+        return False

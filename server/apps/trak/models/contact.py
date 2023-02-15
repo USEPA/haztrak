@@ -1,4 +1,4 @@
-import re
+from re import match
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -6,8 +6,12 @@ from django.utils.translation import gettext_lazy as _
 
 
 class EpaPhoneNumber(models.CharField):
+    """
+    EpaPhoneNumber encapsulates RCRAInfo's representation of a phone (not including extensions)
+    """
+
     def validate(self, value, model_instance):
-        if not re.match(r'^\d{3}-\d{3}-\d{4}$', value):
+        if not match(r'^\d{3}-\d{3}-\d{4}$', value):
             raise ValidationError(
                 _('%(value)s should be a phone with format ###-###-####'),
                 params={'value': value},
@@ -31,8 +35,7 @@ class EpaPhone(models.Model):
     def __str__(self):
         if self.extension:
             return f'{self.number} Ext. {self.extension}'
-        else:
-            return f'{self.number}'
+        return f'{self.number}'
 
 
 class ContactManager(models.Manager):
@@ -47,15 +50,14 @@ class ContactManager(models.Manager):
         """
         if isinstance(contact, Contact):
             return contact
-        elif 'phone' in contact_data:
+        if 'phone' in contact_data:
             phone_data = contact_data.pop('phone')
             if isinstance(phone_data, EpaPhone):
                 phone = phone_data
             else:
                 phone = EpaPhone.objects.create(**phone_data)
             return super().create(**contact_data, phone=phone)
-        else:
-            return super().create(**contact_data)
+        return super().create(**contact_data)
 
 
 class Contact(models.Model):
@@ -98,7 +100,8 @@ class Contact(models.Model):
             first = self.first_name if self.first_name else ''
             middle = self.middle_initial if self.middle_initial else ''
             last = self.last_name if self.last_name else ''
-            return f'contact {self.pk}: {first.capitalize()} {middle.capitalize()} {last.capitalize()}'
+            return f'contact {self.pk}: {first.capitalize()} {middle.capitalize()} ' \
+                   f'{last.capitalize()}'
         except AttributeError:
             return f'contact {self.pk}: {self.first_name} {self.middle_initial} {self.last_name}'
 

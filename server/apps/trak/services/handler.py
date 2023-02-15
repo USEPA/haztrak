@@ -5,6 +5,7 @@ from rest_framework.exceptions import ValidationError
 
 from apps.trak.models import Handler
 from apps.trak.serializers import HandlerSerializer
+
 from .rcrainfo import RcrainfoService
 
 
@@ -33,10 +34,13 @@ class HandlerService:
             handler_data=handler_serializer.validated_data)
 
     def get_or_pull_handler(self, site_id: str) -> Handler:
+        """
+        Retrieves a handler from the database or Pull it from RCRAInfo.
+        This may be trying to do too much
+        """
         if Handler.objects.filter(epa_id=site_id).exists():
             return Handler.objects.get(epa_id=site_id)
-        else:
-            return self.pull_rcra_handler(site_id=site_id)
+        return self.pull_rcra_handler(site_id=site_id)
 
     def _pull_handler(self, *, site_id: str) -> Dict:
         """
@@ -51,8 +55,7 @@ class HandlerService:
         serializer = HandlerSerializer(data=handler_data)
         if serializer.is_valid():
             return serializer
-        else:
-            raise ValidationError(serializer.errors)
+        raise ValidationError(serializer.errors)
 
     @transaction.atomic
     def _create_or_update_handler(self, *, handler_data: dict) -> Handler:
@@ -60,6 +63,5 @@ class HandlerService:
         if Handler.objects.filter(epa_id=epa_id).exists():
             handler = Handler.objects.get(epa_id=epa_id)
             return handler
-        else:
-            handler = Handler.objects.create_handler(**handler_data)
-            return handler
+        handler = Handler.objects.create_handler(**handler_data)
+        return handler

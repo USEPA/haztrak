@@ -5,11 +5,24 @@ ___
 
 # Haztrak :recycle:
 
-Haztrak is an example web application that aims to illustrate
-how [hazardous waste](https://www.epa.gov/hw) management software can interface with and
-leverage
-the resources exposed by EPA's [RCRAInfo](https://rcrainfo.epa.gov/)
-and [e-Manifest](https://github.com/USEPA/e-manifest) systems.
+Haztrak is a web application that aims to illustrate
+how [hazardous waste](https://www.epa.gov/hw) management software can interface with
+EPA's [e-Manifest](https://github.com/USEPA/e-manifest) systems to track hazardous waste electronically from
+cradle-to-grave.
+
+## Getting Started :rocket:
+
+Looking to contribute?
+
+See our [documentation at https://usepa.github.io/haztrak/](https://usepa.github.io/haztrak/).
+
+- See the [guide on submit a PR](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
+- [Report an issue, request a feature, or find something to work on](https://github.com/USEPA/haztrak/issues)
+  .
+    - Just starting out? We try to keep
+      the [Good First Issue](https://github.com/USEPA/haztrak/labels/good%20first%20issue)
+      label up
+      to date
 
 ### About e-Manifest
 
@@ -40,25 +53,6 @@ For more information on using the RCRAInfo and e-Manifest web services, please s
 [e-Manifest Team](https://www.epa.gov/e-manifest/forms/contact-us-about-hazardous-waste-electronic-manifest-system).
 
 This project would not be possible without the work of the EPA e-Manifest Team.
-
-## Getting Started :rocket:
-
-Looking to try haztrak or set up a local development environment? 
-
-- [See our documentation on built-in options to deploy](docs/README.md#deployment)
-
-Looking to contribute?
-
-- For a high level overview of the project components, configuration, diagrams, see
-  our [documentation](https://github.com/USEPA/haztrak/tree/main/docs).
-- See
-  the [guide on submit a PR](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
-- [Report an issue, request a feature, or find something to work on](https://github.com/USEPA/haztrak/issues)
-  .
-    - Just starting out? We try to keep
-      the [Good First Issue](https://github.com/USEPA/haztrak/labels/good%20first%20issue)
-      label up
-      to date
 
 ## Documentation :page_facing_up:
 

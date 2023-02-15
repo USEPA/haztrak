@@ -30,11 +30,13 @@ class RcrainfoService(RcrainfoClient):
         """Override RcrainfoClient method to retrieve API ID for authentication"""
         if self.has_api_user:
             return super().retrieve_id(self.profile.rcra_api_id)
+        return super().retrieve_key()
 
     def retrieve_key(self, api_key=None) -> str:
         """Override RcrainfoClient method to retrieve API key to authentication"""
         if self.has_api_user:
             return super().retrieve_key(self.profile.rcra_api_key)
+        return super().retrieve_key()
 
     def get_user_profile(self, username: str = None):
         """

@@ -6,18 +6,24 @@ local development environment.
 ### Docker-compose
 
 - The easiest way to set up a local development environment is to
-  use [docker-compose](https://docs.docker.com/compose/gettingstarted/)
-    - We recommend using the [config files](/configs) to provide Haztrak's
-      expected [environment variables](./configuration.md).
-    - This docker-compose file is for development only as it overrides the client and
-      server's Dockerfile commands and mounts the source for hot reload.
+  use [docker compose](https://docs.docker.com/compose/gettingstarted/)
+    - You can use one of our [config file](/configs) to inject the
+      [environment variables](./configuration.md) needed to configure Haztrak (
+      see [docker composes' documentation on environment files](https://docs.docker.com/compose/environment-variables/set-environment-variables/)).
+    - You can either use the `--env-file` flag
 
 ```shell
-$ docker-compose --env-file configs/.env.bak.dev up --build
+$ docker compose --env-file configs/.env.dev up --build
 ```
 
-- It also loads fixtures to the configured database on start, namely 2 users which can
-  be used for development purposes.
+or copy the config file to the project root as a `.env` file, modify it if needed, and docker will apply it by default.
+
+```shell
+$ cp ./configs/.env.dev .env
+$ docker compose up --build
+```
+
+- On start, fixtures will be loaded to the database, including 2 users to aid local development.
 
 | username  | password  |
 |-----------|-----------|
@@ -27,28 +33,15 @@ $ docker-compose --env-file configs/.env.bak.dev up --build
 - The admin user has superuser privileges and can also log in to
   the [django admin portal](https://docs.djangoproject.com/en/4.1/ref/contrib/admin/).
 
-Instead of docker-compose, you could Build and deploy the containers with
-the [client](/client/Dockerfile), and [server](/server/Dockerfile) Dockerfiles.
-Maybe we'll include helm charts in the future.
-
-See [environment variables](/docs/haztrak_book/src/Deploy/configuration.md) expected by
-haztrak.
-
 ### Local development scripts
 
-If you don't have a way to build and run containers, or you're a gluten for punishment,
-you can make use of the scripts exposed by django and create-react-app to set up a local
-development environment.
-
-We have removed functionality to run haztrak from runhaz.sh since the number of services
-that needs to run has grown beyond what's practical to maintain in a shell script.
-
-If you'd like to do this, you'll need experience with the services you'd like to run. You can still use
-Create-React-Apps npm scripts, and Django's `runserver` command, however it's not recommended.
+If you don't have a way to build and run containers, or you're a gluten for punishment, you can make use of the Django
+management scripts and Create-React-App's npm scripts to set up a local
+development environment, however it's not recommended.
 
 ### Working on the React client locally
 
-We understand many are interested in contributing to the (React JS) front end but are not experienced with django or
+Since many have expressed interest in contributing to the (React JS) front end but are not experienced with django or
 cannot run containers
 on your workstation. We have an option for you. The `haztrak/client/` directory
 has [Mock Service Worker (MWS)](https://mswjs.io/) as a
@@ -63,19 +56,19 @@ You can log in with the [testuser](#docker-compose) username and password.
 
 ### Development tools
 
-* To make life a little easier, we've included a couple configs to help get a
-  development environment setup.
+* Haztrak includes a couple configs to help ensure contributions use a consistent style guide. Most popular IDEs have a
+  plugin to support these configs.
+* `pre-commit`
+    * If you're writing any Python, please install these git hooks.
+    * ```shell
+      $ pip install -r requirements_dev.txt
+      $ pre-commit install
+      ```
+    * [pre-commit](https://pre-commit.com/) hooks are set to run a number of linting and formatting checks before
+      commits on any branch is accepted.
 * `.editorconfig`
     * Universal IDE configs for formatting files, most IDEs will have a plugin you can
       install that will apply these configs.
-
-* pre-commit
-    * [pre-commit](https://pre-commit.com/) hooks are set to run a number
-      of linting and formatting checks before commits on any branch is
-      accepted.
-    * Install [pre-commit](https://pre-commit.com/) on your workstation
-    * In the root directory, run `$ pre-commit install`
-        * Alternatively, `$ ./runhaz.sh -p` will install and run the hooks
 
 * `runhaz.sh`
     * A bash script to help with development

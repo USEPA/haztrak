@@ -116,24 +116,7 @@ class Address(models.Model):
         max_length=5,
     )
 
-    @property
-    def state_display(self):
-        return self.get_state_display()
-
-    @property
-    def country_display(self):
-        return self.get_country_display()
-
-    def get_country_name(self) -> str:
-        try:
-            for country in COUNTRIES:
-                if country[0] == self.country:
-                    return str(country[1])
-        except KeyError:
-            pass
-
     def __str__(self):
         if self.street_number:
             return f'{self.street_number} {self.address1}'
-        else:
-            return f' {self.address1}'
+        return f' {self.address1}'

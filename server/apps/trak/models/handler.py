@@ -42,8 +42,8 @@ class HandlerManager(models.Manager):
                                   emergency_phone=emergency_phone,
                                   contact=new_contact,
                                   **self.handler_data)
-        except KeyError as e:
-            logger.warning(f'error while creating handler {e}')
+        except KeyError as exc:
+            logger.warning(f'error while creating handler {exc}')
 
     def get_emergency_phone(self) -> Union[EpaPhone, None]:
         """Check if emergency phone is present and create an EpaPhone row"""
@@ -51,22 +51,20 @@ class HandlerManager(models.Manager):
             emergency_phone_data = self.handler_data.pop('emergency_phone')
             if emergency_phone_data is not None:
                 return EpaPhone.objects.create(**emergency_phone_data)
-            else:
-                return None
-        except KeyError as e:
-            logger.debug(e)
+        except KeyError as exc:
+            logger.debug(exc)
             return None
 
     def get_address(self, key) -> Address:
+        """Remove Address data and create if necessary"""
         try:
             address = self.handler_data.pop(key)
             if isinstance(address, Address):
                 return address
-            else:
-                return Address.objects.create(**address)
-        except KeyError as e:
-            logger.warning(e)
-            raise ValidationError(e)
+            return Address.objects.create(**address)
+        except KeyError as exc:
+            logger.warning(exc)
+            raise ValidationError(exc)
 
 
 class Handler(models.Model):
