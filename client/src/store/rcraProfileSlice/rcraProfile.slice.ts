@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { RcraProfileState } from 'types/store';
+import { ProfileEpaSite, RcraProfileState } from 'types/store';
 import { RootState } from 'store/rootStore';
 
 const initialState: RcraProfileState = {
@@ -8,10 +8,21 @@ const initialState: RcraProfileState = {
   rcraAPIID: undefined,
   rcraUsername: undefined,
   epaSites: [],
+  sites: {},
   phoneNumber: undefined,
   loading: false,
   error: undefined,
 };
+
+interface RcraProfileResponse {
+  user: undefined;
+  rcraAPIID: undefined;
+  rcraUsername: undefined;
+  epaSites?: Array<ProfileEpaSite>;
+  phoneNumber: undefined;
+  loading: false;
+  error: undefined;
+}
 
 export const getProfile = createAsyncThunk<RcraProfileState>(
   'rcraProfile/getProfile',
@@ -21,7 +32,17 @@ export const getProfile = createAsyncThunk<RcraProfileState>(
     const response = await axios.get(
       `${process.env.REACT_APP_HT_API_URL}/api/trak/profile/${username}`
     );
-    return response.data as RcraProfileState;
+    let { epaSites, ...crossOver } = response.data as RcraProfileResponse;
+    let profile: RcraProfileState = { ...crossOver };
+    console.log(profile);
+    profile.sites = epaSites?.reduce(
+      (obj, site) => ({
+        ...obj,
+        [site.epaId]: site,
+      }),
+      {}
+    );
+    return profile;
   }
 );
 
