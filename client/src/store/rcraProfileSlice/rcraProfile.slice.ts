@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RcraProfileState } from 'types/store';
+import { RootState } from 'store/rootStore';
 
 const initialState: RcraProfileState = {
   user: undefined,
@@ -12,11 +13,10 @@ const initialState: RcraProfileState = {
   error: undefined,
 };
 
-export const getProfile = createAsyncThunk(
+export const getProfile = createAsyncThunk<RcraProfileState>(
   'rcraProfile/getProfile',
-  async (arg, { getState }) => {
-    const state = getState();
-    // @ts-ignore
+  async (arg, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
     const username = state.user.user;
     const response = await axios.get(
       `${process.env.REACT_APP_HT_API_URL}/api/trak/profile/${username}`
