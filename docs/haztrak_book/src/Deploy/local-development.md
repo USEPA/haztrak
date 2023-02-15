@@ -1,9 +1,21 @@
 # Local Development Environment
 
-Below is a list of built-in options for setting up a
-local development environment.
+This chapter provides everything you need to know to set up a local development environment
+to work on Haztrak.
 
-### Docker-compose
+If you find something missing or inaccurate, please submit an issue
+[here](https://github.com/USEPA/haztrak/issues)
+
+## Contents
+
+1. [Set up with Docker Compose](#docker-compose)
+2. [Fixtures](#fixtures)
+3. [Using RCRAInfo interfacing features](#rcrainfo-api-credentials)
+4. [Development Configs](#development-configs)
+5. [Developing without Docker](#local-development-without-docker)
+    - [Developing React without the backend](#working-on-the-react-client-locally)
+
+## Docker Compose
 
 - The easiest way to set up a local development environment is to
   use [docker compose](https://docs.docker.com/compose/gettingstarted/)
@@ -23,6 +35,8 @@ $ cp ./configs/.env.dev .env
 $ docker compose up --build
 ```
 
+## Fixtures
+
 - On start, fixtures will be loaded to the database, including 2 users to aid local development.
 
 | username  | password  |
@@ -33,28 +47,24 @@ $ docker compose up --build
 - The admin user has superuser privileges and can also log in to
   the [django admin portal](https://docs.djangoproject.com/en/4.1/ref/contrib/admin/).
 
-### Local development scripts
+## RCRAInfo API credentials
 
-If you don't have a way to build and run containers, or you're a gluten for punishment, you can make use of the Django
-management scripts and Create-React-App's npm scripts to set up a local
-development environment, however it's not recommended.
+Haztrak's [docker-compose](/docker-compose.yaml) file will load fixtures, however this data is limited.
+If you'd like to start using features that push/pull information from RCRAInfo/e-Manifest, you will
+need API credentials to the appropriate RCRAInfo deployment (e.g., 'preproduction').
 
-### Working on the React client locally
+For development, **ONLY USE THE PREPRODUCTION
+** environment. See [Haztrak's config documentation](./configuration.md).
 
-Since many have expressed interest in contributing to the (React JS) front end but are not experienced with django or
-cannot run containers
-on your workstation. We have an option for you. The `haztrak/client/` directory
-has [Mock Service Worker (MWS)](https://mswjs.io/) as a
-dev dependency. When run, MSW will intercept http requests to the back end and return with mock data.
+The general steps for obtaining an API ID and key (in preprod) are as follows.
 
-To run MSW, ensure the following environment variables are set
+1. Register for an account in [RCRAInfo (PreProduction)]()
+2. Request access to one fo the test site EPA IDs (e.g., VATESTGEN001)
+    - You'll need 'Site Manager' level access to obtain API credentials
+    - Await approval, or contact EPA via the "Feedback/Report an issue".
+3. Login after approval, generate your API Key.
 
-* `REACT_APP_HT_ENV=TEST`
-* `REACT_APP_HT_API_URL=http://localhost:8000`
-
-You can log in with the [testuser](#docker-compose) username and password.
-
-### Development tools
+## Development Configs
 
 * Haztrak includes a couple configs to help ensure contributions use a consistent style guide. Most popular IDEs have a
   plugin to support these configs.
@@ -79,3 +89,24 @@ You can log in with the [testuser](#docker-compose) username and password.
       the front end for now. If you're using an IDE, it will likely have a prettier plugin available.
     * The configs are found in [.prettierrc.json](/client/.prettierrc.json)
       and [.prettierignore](/client/.prettierignore)
+
+## Local Development Without Docker
+
+If you don't have a way to build and run containers, or you're a gluten for punishment, you can make use of the Django
+management scripts and Create-React-App's npm scripts to set up a local
+development environment, however it's not recommended.
+
+### Working on the React Client Locally
+
+Since many have expressed interest in contributing to the (React JS) front end but are not experienced with django or
+cannot run containers
+on your workstation. We have an option for you. The `haztrak/client/` directory
+has [Mock Service Worker (MWS)](https://mswjs.io/) as a
+dev dependency. When run, MSW will intercept http requests to the back end and return with mock data.
+
+To run MSW, ensure the following environment variables are set
+
+* `REACT_APP_HT_ENV=TEST`
+* `REACT_APP_HT_API_URL=http://localhost:8000`
+
+You can log in with the [testuser](#docker-compose) username and password.
