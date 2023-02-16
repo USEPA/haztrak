@@ -44,8 +44,11 @@ class HandlerService:
         This may be trying to do too much
         """
         if Handler.objects.filter(epa_id=site_id).exists():
+            self.logger.debug(f'using existing handler {site_id}')
             return Handler.objects.get(epa_id=site_id)
-        return self.pull_rcra_handler(site_id=site_id)
+        new_handler = self.pull_rcra_handler(site_id=site_id)
+        self.logger.debug(f'pulled new handler {new_handler}')
+        return new_handler
 
     def _pull_handler(self, *, site_id: str) -> Dict:
         """
@@ -53,13 +56,15 @@ class HandlerService:
         """
         # In contrast to EPA, we reserve the term "site" for handlers that the user has access to
         response = self.rcrainfo.get_site(site_id)
+        if not response.ok:
+            self.logger.warning(response.response.json())
         return response.json()
 
-    @staticmethod
-    def _deserialize_handler(*, handler_data: dict) -> HandlerSerializer:
+    def _deserialize_handler(self, *, handler_data: dict) -> HandlerSerializer:
         serializer = HandlerSerializer(data=handler_data)
         if serializer.is_valid():
             return serializer
+        self.logger.error(serializer.errors)
         raise ValidationError(serializer.errors)
 
     @transaction.atomic
