@@ -17,12 +17,17 @@ import HandlerForm from './HandlerForm';
 import AddTsdf from './Tsdf';
 import AddWasteLine from './WasteLine';
 
+interface ManifestFormProps {
+  readOnly?: boolean;
+  manifestData?: Manifest;
+}
+
 /**
  * Returns a form for, currently only, new uniform hazardous waste manifest.
  * @constructor
  */
 // ToDo: accept an existing manifest (Manifest type) and set as default value
-function ManifestForm() {
+function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
   // Top level ManifestForm methods and objects
   const manifestMethods = useForm<Manifest>();
   const dispatch = useAppDispatch();
