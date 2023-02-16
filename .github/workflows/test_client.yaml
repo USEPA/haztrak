@@ -6,6 +6,7 @@ on:
     paths:
       - "client/**"
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   test:
