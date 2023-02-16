@@ -1,11 +1,12 @@
+import logging
 from datetime import datetime, timedelta, timezone
+from logging import Logger
 from typing import Dict, List
 
 from django.db import transaction
 
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
-
 from .rcrainfo import RcrainfoService
 
 
@@ -15,12 +16,16 @@ class ManifestService:
     business logic and exposes methods corresponding to use cases.
     """
 
-    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None):
+    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None, logger: Logger = None):
         self.username = username
         if rcrainfo is not None:
             self.rcrainfo = rcrainfo
         else:
             self.rcrainfo = RcrainfoService(api_username=self.username)
+        if logger:
+            self.logger = logger
+        else:
+            self.logger = logging.getLogger(__name__)
 
     def _retrieve_manifest(self, mtn: str):
         response = self.rcrainfo.get_manifest(mtn)
@@ -99,6 +104,7 @@ class ManifestService:
                 manifest_json: dict = self._retrieve_manifest(mtn)
                 manifest = self._save_manifest(manifest_json)
                 results['success'].append(manifest.mtn)
-            except Exception:
+            except Exception as exc:
+                self.logger.warning(exc)
                 results['error'].append(mtn)
         return results

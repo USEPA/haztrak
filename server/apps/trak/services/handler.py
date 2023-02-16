@@ -1,3 +1,5 @@
+import logging
+from logging import Logger
 from typing import Dict
 
 from django.db import transaction
@@ -5,7 +7,6 @@ from rest_framework.exceptions import ValidationError
 
 from apps.trak.models import Handler
 from apps.trak.serializers import HandlerSerializer
-
 from .rcrainfo import RcrainfoService
 
 
@@ -16,12 +17,16 @@ class HandlerService:
     directly relate to use cases.
     """
 
-    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None):
+    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None, logger: Logger = None):
         self.username = username
         if rcrainfo is not None:
             self.rcrainfo = rcrainfo
         else:
             self.rcrainfo = RcrainfoService(api_username=self.username)
+        if logger:
+            self.logger = logger
+        else:
+            self.logger = logging.getLogger(__name__)
 
     def pull_rcra_handler(self, *, site_id: str) -> Handler:
         """

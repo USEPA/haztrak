@@ -1,4 +1,3 @@
-import datetime
 import logging
 from typing import Dict, List
 
@@ -44,7 +43,7 @@ class SiteService:
             tracking_numbers = tracking_numbers[0:9]
             results: Dict[str, List[str]] = manifest_service.pull_manifests(
                 tracking_numbers=tracking_numbers)
-            site.last_rcra_sync = datetime.datetime.now()
+            # site.last_rcra_sync = datetime.now().replace(tzinfo=timezone.utc)
             site.save()
             return results
         except Site.DoesNotExist:
