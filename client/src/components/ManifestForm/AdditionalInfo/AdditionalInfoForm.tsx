@@ -1,13 +1,19 @@
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Manifest } from 'types';
 import { WasteLine } from 'types/WasteLine';
 
+interface AdditionalFormProps {
+  readOnly?: boolean;
+}
+
 // ToDo: this is POC source, clean up work appreciated
 //  see this example from react-hook-form
 //  https://codesandbox.io/s/6j1760jkjk
-function AdditionalInfoForm() {
+function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
   const { register, control } = useFormContext<Manifest | WasteLine>();
   const { fields, append, remove } = useFieldArray<
     Manifest | WasteLine,
@@ -25,6 +31,8 @@ function AdditionalInfoForm() {
         </Form.Label>
         <Form.Control
           id="specialHandlingInstructions"
+          plaintext={readOnly}
+          readOnly={readOnly}
           key={'handlingInstructions'}
           as="textarea"
           {...register(`additionalInfo.handlingInstructions`)}
@@ -54,6 +62,8 @@ function AdditionalInfoForm() {
                       id={`additionalInfoLabel${index}`}
                       aria-label={`additionalInfoLabel${index}`}
                       key={`${keyBase}-label`}
+                      readOnly={readOnly}
+                      plaintext={readOnly}
                       // @ts-ignore
                       {...register(`${baseFieldName}[${index}].label`)}
                     />
@@ -73,6 +83,8 @@ function AdditionalInfoForm() {
                       id={`additionalInfoDescription${index}`}
                       aria-label={`additionalInfoDescription${index}`}
                       type="text"
+                      readOnly={readOnly}
+                      plaintext={readOnly}
                       key={`${keyBase}-description-group`}
                       // @ts-ignore
                       {...register(`${baseFieldName}[${index}].description`)}
@@ -94,16 +106,16 @@ function AdditionalInfoForm() {
                   <Button
                     id={`additionalInfoRemoveButton${index}`}
                     key={`${keyBase}-remove`}
+                    disabled={readOnly}
                     className="m-0 p-0 bg-transparent border-0"
                     onClick={() => {
                       remove(index);
                     }}
                   >
-                    <i
-                      title="Remove Reference Button"
-                      key={`${keyBase}-remove-btn`}
-                      className="text-danger fas fa-times-circle fa-lg"
-                    ></i>
+                    <FontAwesomeIcon
+                      icon={faTimesCircle}
+                      className="fa-lg text-danger"
+                    />
                   </Button>
                 </Col>
               </Row>

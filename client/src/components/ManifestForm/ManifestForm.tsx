@@ -29,7 +29,7 @@ interface ManifestFormProps {
 // ToDo: accept an existing manifest (Manifest type) and set as default value
 function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
   // Top level ManifestForm methods and objects
-  const manifestMethods = useForm<Manifest>();
+  const manifestMethods = useForm<Manifest>({ values: manifestData });
   const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     // ToDo: on submit, validate the user input
@@ -97,12 +97,16 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
               <Row>
                 <Col>
                   <Form.Group className="mb-2">
-                    <Form.Label htmlFor="manifestTrackingNumber" className="mb-0">
+                    <Form.Label
+                      htmlFor="manifestTrackingNumber"
+                      className="mb-0 fw-bold"
+                    >
                       MTN
                     </Form.Label>
                     <Form.Control
                       id="manifestTrackingNumber"
-                      disabled
+                      plaintext={readOnly}
+                      readOnly={readOnly}
                       type="text"
                       placeholder={'Draft Manifest'}
                       {...manifestMethods.register('manifestTrackingNumber')}
@@ -116,6 +120,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                     </Form.Label>
                     <Form.Select
                       id="status"
+                      disabled={readOnly}
                       aria-label="manifestStatus"
                       {...manifestMethods.register('status')}
                     >
@@ -162,7 +167,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                     </Form.Label>
                     <Form.Control
                       id="updatedDate"
-                      disabled
+                      disabled={readOnly}
                       type="date"
                       {...manifestMethods.register('updatedDate')}
                     />
@@ -175,7 +180,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                     </Form.Label>
                     <Form.Control
                       id="shippedDate"
-                      disabled
+                      disabled={readOnly}
                       type="date"
                       {...manifestMethods.register('shippedDate')}
                     />
@@ -187,6 +192,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                   <Form.Check
                     type="checkbox"
                     id="import"
+                    disabled={readOnly}
                     label="Imported Waste"
                     {...manifestMethods.register('import')}
                   />
@@ -204,6 +210,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                     </Form.Label>
                     <Form.Control
                       id="potentialShipDate"
+                      disabled={readOnly}
                       type="date"
                       {...manifestMethods.register('potentialShipDate')}
                     />
@@ -215,9 +222,9 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
           <HtCard id="generator-form-card">
             <HtCard.Header title="Generator" />
             <HtCard.Body>
-              <HandlerForm handlerType={HandlerType.Generator} />
+              <HandlerForm handlerType={HandlerType.Generator} readOnly={readOnly} />
               <h4>Emergency Contact Information</h4>
-              <ContactForm handlerFormType="generator" />
+              <ContactForm handlerFormType="generator" readOnly={readOnly} />
             </HtCard.Body>
           </HtCard>
           <HtCard id="transporter-form-card">
@@ -263,7 +270,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
             {/* Additional information for the manifest, such as reference information*/}
             <HtCard.Header title={'Additional info'} />
             <HtCard.Body className="px-3">
-              <AdditionalInfoForm />
+              <AdditionalInfoForm readOnly={readOnly} />
             </HtCard.Body>
           </HtCard>
           <div className="mx-1 d-flex flex-row-reverse">

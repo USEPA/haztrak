@@ -9,13 +9,14 @@ import { CountryCode, StateCode } from './StateSelect';
 interface Props {
   addressType: AddressType;
   handlerType: HandlerType;
+  readOnly?: boolean;
 }
 
 /**
  * AddressForm can be used to set a Handler's mailingAddress or siteAddress
  * Needs to be used in the context of a FormProvider
  */
-export function AddressForm({ addressType, handlerType }: Props) {
+export function AddressForm({ addressType, handlerType, readOnly }: Props) {
   const namePrefix = `${handlerType}.${addressType}`;
   const {
     control,
@@ -33,6 +34,8 @@ export function AddressForm({ addressType, handlerType }: Props) {
             <Form.Control
               id="addressStreetNumber"
               type="text"
+              plaintext={readOnly}
+              readOnly={readOnly}
               placeholder="1234"
               {...register(`${namePrefix}.streetNumber`)}
             />
@@ -46,6 +49,8 @@ export function AddressForm({ addressType, handlerType }: Props) {
             <Form.Control
               id="addressStreetName"
               type="text"
+              plaintext={readOnly}
+              readOnly={readOnly}
               placeholder="Main St."
               {...register(`${namePrefix}.address1`)}
             />
@@ -59,6 +64,8 @@ export function AddressForm({ addressType, handlerType }: Props) {
             <Form.Control
               id="addressCity"
               type="text"
+              plaintext={readOnly}
+              readOnly={readOnly}
               placeholder="Springfield"
               {...register(`${namePrefix}.city`)}
             />
@@ -98,6 +105,7 @@ export function AddressForm({ addressType, handlerType }: Props) {
                     getOptionLabel={(option) => option.name}
                     getOptionValue={(option) => option.code}
                     openMenuOnFocus={false}
+                    isDisabled={readOnly}
                   />
                 );
               }}
@@ -112,6 +120,8 @@ export function AddressForm({ addressType, handlerType }: Props) {
             <Form.Control
               id="addressZip"
               type="text"
+              plaintext={readOnly}
+              readOnly={readOnly}
               placeholder="12345"
               {...register(`${namePrefix}.zip`)}
             />
@@ -135,6 +145,7 @@ export function AddressForm({ addressType, handlerType }: Props) {
                     getOptionLabel={(option) => option.name}
                     getOptionValue={(option) => option.code}
                     openMenuOnFocus={false}
+                    isDisabled={readOnly}
                   />
                 );
               }}

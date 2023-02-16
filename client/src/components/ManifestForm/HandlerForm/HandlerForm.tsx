@@ -6,11 +6,12 @@ import { useFormContext } from 'react-hook-form';
 import { Manifest } from 'types';
 import { AddressType, HandlerType } from 'types/Handler/Handler';
 
-interface Props {
+interface HandlerFormProps {
   handlerType: HandlerType;
+  readOnly?: boolean;
 }
 
-function HandlerForm({ handlerType }: Props): ReactElement {
+function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement {
   const [mailCheck, setMailCheck] = useState(false);
   if (handlerType !== HandlerType.Generator) {
     throw new Error();
@@ -51,6 +52,8 @@ function HandlerForm({ handlerType }: Props): ReactElement {
             <Form.Control
               id="handlerEPAId"
               type="text"
+              plaintext={readOnly}
+              readOnly={readOnly}
               placeholder={'EPA ID number'}
               {...register(`generator.epaSiteId`)}
             />
@@ -63,6 +66,8 @@ function HandlerForm({ handlerType }: Props): ReactElement {
             </Form.Label>
             <Form.Control
               id="handlerName"
+              plaintext={readOnly}
+              readOnly={readOnly}
               type="text"
               placeholder={`${handlerType} Name`}
               // register comes from react-hook-form, however haztrak leaves the
@@ -82,7 +87,11 @@ function HandlerForm({ handlerType }: Props): ReactElement {
           render={({ message }) => <span className="text-danger">{message}</span>}
         />
       </Row>
-      <AddressForm addressType={AddressType.site} handlerType={handlerType} />
+      <AddressForm
+        addressType={AddressType.site}
+        handlerType={handlerType}
+        readOnly={readOnly}
+      />
       <Row className="mb-2">
         <Col>
           <Form.Check
@@ -92,6 +101,7 @@ function HandlerForm({ handlerType }: Props): ReactElement {
             }}
             name="mailCheck"
             type="checkbox"
+            disabled={readOnly}
             label="Separate Mailing address?"
             id="addressEqual"
           />
@@ -99,7 +109,11 @@ function HandlerForm({ handlerType }: Props): ReactElement {
         {mailCheck ? (
           <>
             <h4>Mailing Address</h4>
-            <AddressForm addressType={AddressType.mail} handlerType={handlerType} />
+            <AddressForm
+              addressType={AddressType.mail}
+              handlerType={handlerType}
+              readOnly={readOnly}
+            />
           </>
         ) : (
           <></>
