@@ -2,7 +2,7 @@
 name: "🚀 Feature Request"
 about: "Suggest an idea or possible new feature."
 title: ""
-labels: "Type: enhancement"
+labels: "Type: feature"
 ---
 
 # 🚀 Feature Request

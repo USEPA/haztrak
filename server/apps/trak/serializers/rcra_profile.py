@@ -130,21 +130,15 @@ class EpaPermissionSerializer(SitePermissionSerializer):
         into Haztrak's internal representation. Namely, converting the permission per module
         into a key-object structure.
         """
-        # site_id = ''
         try:
-            # site_id = data.pop('siteId')
             data.pop('siteName')
             permissions = data.pop('permissions')
-            # site = Site.objects.get(epa_site__epa_id=site_id)
             for i in permissions:
                 rcrainfo_module = i['module']
                 data[rcrainfo_module] = i
-            # data['siteId'] = site
             return super().to_internal_value(data)
-        # except Site.DoesNotExist as e:
-        #     raise APIException(f'Could not get site: {site_id}') from e
-        except KeyError as e:
-            raise APIException(f'malformed JSON: {e}')
+        except KeyError as exc:
+            raise APIException(f'malformed JSON: {exc}')
 
     class Meta:
         model = SitePermission

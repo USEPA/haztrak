@@ -73,7 +73,7 @@
     "model": "trak.handler",
     "pk": 1,
     "fields": {
-      "site_type": "",
+      "site_type": "Generator",
       "epa_id": "VATESTGEN001",
       "name": "VA TEST GEN 2021",
       "site_address": 1,

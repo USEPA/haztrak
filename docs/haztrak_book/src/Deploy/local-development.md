@@ -58,11 +58,14 @@ For development, **ONLY USE THE PREPRODUCTION
 
 The general steps for obtaining an API ID and key (in preprod) are as follows.
 
-1. Register for an account in [RCRAInfo (PreProduction)]()
+1. Register for an account in [RCRAInfo (PreProduction)](https://rcrainfopreprod.epa.gov/rcrainfo/action/secured/login)
 2. Request access to one fo the test site EPA IDs (e.g., VATESTGEN001)
     - You'll need 'Site Manager' level access to obtain API credentials
     - Await approval, or contact EPA via the "Feedback/Report an issue".
 3. Login after approval, generate your API Key.
+
+For additional information on obtaining API credentials, see the
+[USEPA/e-Manifest GitHub repository](https://github.com/USEPA/e-manifest)
 
 ## Development Configs
 

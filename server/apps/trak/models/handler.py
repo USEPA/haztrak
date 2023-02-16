@@ -73,14 +73,16 @@ class Handler(models.Model):
     """
     objects = HandlerManager()
 
-    site_type = models.CharField(max_length=20,
-                                 choices=[
-                                     ('designatedFacility', 'Tsdf'),
-                                     ('generator', 'Generator'),
-                                     ('transporter', 'Transporter'),
-                                     ('broker', 'Broker')
-                                 ])
-
+    site_type = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+        choices=[
+            ('Tsdf', 'Tsdf'),
+            ('Generator', 'Generator'),
+            ('Transporter', 'Transporter'),
+            ('Broker', 'Broker')
+        ])
     epa_id = models.CharField(
         verbose_name='EPA Id number',
         max_length=25,

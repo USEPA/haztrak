@@ -1,3 +1,6 @@
+import logging
+from logging import Logger
+
 from django.db import transaction
 
 from apps.trak.models import RcraProfile, Site, SitePermission
@@ -20,7 +23,7 @@ class RcraProfileService:
     of a and exposes method corresponding to use cases.
     """
 
-    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None):
+    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None, logger: Logger = None):
         self.username = username
         self.profile, created = RcraProfile.objects.get_or_create(
             user__username=self.username)
@@ -28,6 +31,10 @@ class RcraProfileService:
             self.rcrainfo = rcrainfo
         else:
             self.rcrainfo = RcrainfoService(api_username=self.username)
+        if logger:
+            self.logger = logger
+        else:
+            self.logger = logging.getLogger(__name__)
 
     @property
     def can_access_rcrainfo(self) -> bool:
