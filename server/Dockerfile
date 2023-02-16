@@ -1,4 +1,4 @@
-FROM python:3.10.8-alpine3.16
+FROM python:3.11.2-alpine3.17
 
 # Starting environment varibles
 ENV APP_DIRECTORY=/app/
