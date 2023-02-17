@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useHtAPI from 'hooks/useHtAPI';
 import useTitle from 'hooks/useTitle';
 import SyncManifestBtn from 'components/SyncManifestBtn';
-import ManifestTable from 'components/ManifestTable';
+import MtnTable from 'components/MtnTable';
 
 interface ManifestDetails {
   mtn: string;
@@ -57,13 +57,9 @@ function ManifestList(): ReactElement {
       </Container>
       <Container>
         <Col>
-          {manifests ? (
-            ManifestTable(manifests.tsd, 'Designated Receiving Facility')
-          ) : (
-            <></>
-          )}
-          {manifests ? ManifestTable(manifests.generator, 'Generator') : <></>}
-          {manifests ? ManifestTable(manifests.transporter, 'Transporter') : <></>}
+          {manifests ? MtnTable(manifests.tsd, 'Designated Receiving Facility') : <></>}
+          {manifests ? MtnTable(manifests.generator, 'Generator') : <></>}
+          {manifests ? MtnTable(manifests.transporter, 'Transporter') : <></>}
         </Col>
       </Container>
     </>

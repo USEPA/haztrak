@@ -15,7 +15,7 @@ interface ManifestDetails {
  * @param manifest
  * @param title
  */
-function ManifestTable(
+function MtnTable(
   manifest: Array<ManifestDetails>,
   title: string
 ): ReactElement | null {
@@ -64,4 +64,4 @@ function ManifestTable(
   );
 }
 
-export default ManifestTable;
+export default MtnTable;
