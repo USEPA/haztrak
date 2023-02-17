@@ -1,7 +1,7 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { HtModal } from 'components/Ht';
+import { HtForm, HtModal } from 'components/Ht';
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import htApi from 'services';
 import { Handler, Manifest } from 'types';
@@ -98,45 +98,42 @@ function TransporterSearchForm({
 
   return (
     <>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <HtForm onSubmit={handleSubmit(onSubmit)}>
         <HtModal.Body>
           <Row>
             <Col>
-              <Form.Group className="mb-2">
-                <Form.Label className="mb-0" htmlFor="transporterEPAId">
-                  EPA ID Number
-                </Form.Label>
-                <Form.Control
+              <HtForm.Group>
+                <HtForm.Label htmlFor="transporterEPAId">EPA ID Number</HtForm.Label>
+                <HtForm.Control
                   id="transporterEPAId"
                   type="text"
                   placeholder="VATESTRAN03"
                   {...register(`epaId`)}
+                  // @ts-ignore
                   autoFocus
                 />
-              </Form.Group>
+              </HtForm.Group>
             </Col>
             <Col>
-              <Form.Group className="mb-2">
-                <Form.Label className="mb-0" htmlFor="transporterName">
-                  Name
-                </Form.Label>
-                <Form.Control
+              <HtForm.Group>
+                <HtForm.Label htmlFor="transporterName">Name</HtForm.Label>
+                <HtForm.Control
                   id="transporterName"
                   type="text"
                   placeholder="VA TEST GEN 2021"
                   {...register(`name`)}
                 />
-              </Form.Group>
+              </HtForm.Group>
             </Col>
           </Row>
           <Row>
             <Col>
               {tranOptions ? (
                 <>
-                  <Form.Label className="mb-0" htmlFor="transporterSelect">
+                  <HtForm.Label className="mb-0" htmlFor="transporterSelect">
                     Select Transporter
-                  </Form.Label>
-                  <Form.Select
+                  </HtForm.Label>
+                  <HtForm.Select
                     {...register('transporter', { required: true })}
                     id="transporterSelect"
                   >
@@ -151,7 +148,7 @@ function TransporterSearchForm({
                         </option>
                       );
                     })}
-                  </Form.Select>
+                  </HtForm.Select>
                 </>
               ) : (
                 <></>
@@ -174,7 +171,7 @@ function TransporterSearchForm({
             Add
           </Button>
         </HtModal.Footer>
-      </Form>
+      </HtForm>
     </>
   );
 }

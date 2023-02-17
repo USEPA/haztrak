@@ -1,6 +1,7 @@
 import { ErrorMessage } from '@hookform/error-message';
+import { HtForm } from 'components/Ht';
 import React from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 import { AddressType, HandlerType } from 'types/Handler/Handler';
@@ -27,11 +28,9 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
     <>
       <Row className="mb-2">
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="addressStreetNumber">
-              Street Number
-            </Form.Label>
-            <Form.Control
+          <HtForm.Group>
+            <HtForm.Label htmlFor="addressStreetNumber">Street Number</HtForm.Label>
+            <HtForm.Control
               id="addressStreetNumber"
               type="text"
               plaintext={readOnly}
@@ -39,14 +38,12 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
               placeholder="1234"
               {...register(`${namePrefix}.streetNumber`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="addressStreetName">
-              Street Name
-            </Form.Label>
-            <Form.Control
+          <HtForm.Group>
+            <HtForm.Label htmlFor="addressStreetName">Street Name</HtForm.Label>
+            <HtForm.Control
               id="addressStreetName"
               type="text"
               plaintext={readOnly}
@@ -54,14 +51,12 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
               placeholder="Main St."
               {...register(`${namePrefix}.address1`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="addressCity">
-              City
-            </Form.Label>
-            <Form.Control
+          <HtForm.Group>
+            <HtForm.Label htmlFor="addressCity">City</HtForm.Label>
+            <HtForm.Control
               id="addressCity"
               type="text"
               plaintext={readOnly}
@@ -69,7 +64,7 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
               placeholder="Springfield"
               {...register(`${namePrefix}.city`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <ErrorMessage
           errors={errors}
@@ -89,10 +84,10 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
       </Row>
       <Row className="mb-2">
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor={`${namePrefix}State`}>
+          <HtForm.Group className="mb-2">
+            <HtForm.Label className="mb-0" htmlFor={`${namePrefix}State`}>
               State
-            </Form.Label>
+            </HtForm.Label>
             <Controller
               control={control}
               name={`${namePrefix}.state`}
@@ -110,14 +105,14 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
                 );
               }}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="addressZip">
+          <HtForm.Group>
+            <HtForm.Label className="mb-0" htmlFor="addressZip">
               Zip
-            </Form.Label>
-            <Form.Control
+            </HtForm.Label>
+            <HtForm.Control
               id="addressZip"
               type="text"
               plaintext={readOnly}
@@ -125,13 +120,13 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
               placeholder="12345"
               {...register(`${namePrefix}.zip`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor={`${namePrefix}Country`}>
+          <HtForm.Group className="mb-2">
+            <HtForm.Label className="mb-0" htmlFor={`${namePrefix}Country`}>
               Country
-            </Form.Label>
+            </HtForm.Label>
             <Controller
               control={control}
               name={`${namePrefix}.country`}
@@ -150,7 +145,7 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
                 );
               }}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <ErrorMessage
           errors={errors}

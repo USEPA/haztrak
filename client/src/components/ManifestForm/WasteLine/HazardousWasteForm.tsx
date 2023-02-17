@@ -1,5 +1,6 @@
+import { HtForm } from 'components/Ht';
 import React from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 
@@ -22,10 +23,10 @@ function HazardousWasteForm() {
     <>
       <Row className="mb-2">
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="hazardousWasteFederalWasteCodes">
+          <HtForm.Group className="mb-2">
+            <HtForm.Label className="mb-0" htmlFor="hazardousWasteFederalWasteCodes">
               Federal Waste Codes
-            </Form.Label>
+            </HtForm.Label>
             {/* We need to use 'Controller' to wrap
               around React-Select's controlled component */}
             {/*https://react-hook-form.com/api/usecontroller/controller*/}
@@ -48,11 +49,11 @@ function HazardousWasteForm() {
                 );
               }}
             ></Controller>
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label className="mb-0" htmlFor="hazardousWasteGeneratorStateCodes">
+          </HtForm.Group>
+          <HtForm.Group className="mb-3">
+            <HtForm.Label className="mb-0" htmlFor="hazardousWasteGeneratorStateCodes">
               Generator State Waste Codes
-            </Form.Label>
+            </HtForm.Label>
             <Controller
               control={control}
               name="hazardousWaste.generatorStateWasteCodes"
@@ -72,11 +73,11 @@ function HazardousWasteForm() {
                 );
               }}
             ></Controller>
-          </Form.Group>
-          <Form.Group>
-            <Form.Label className="mb-0" htmlFor="hazardousWasteTsdfCodes">
+          </HtForm.Group>
+          <HtForm.Group>
+            <HtForm.Label className="mb-0" htmlFor="hazardousWasteTsdfCodes">
               Destination State Waste Codes
-            </Form.Label>
+            </HtForm.Label>
             <Controller
               control={control}
               name="hazardousWaste.tsdfStateWasteCodes"
@@ -96,7 +97,7 @@ function HazardousWasteForm() {
                 );
               }}
             ></Controller>
-          </Form.Group>
+          </HtForm.Group>
         </Col>
       </Row>
     </>

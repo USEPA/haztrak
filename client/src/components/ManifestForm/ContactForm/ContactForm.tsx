@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Manifest } from 'types';
+import { HtForm } from 'components/Ht';
 
 interface ContactFormProps {
   handlerFormType: 'generator' | 'designatedFacility';
@@ -16,11 +17,9 @@ export default function ContactForm({ handlerFormType, readOnly }: ContactFormPr
     <>
       <Row className="mb-2">
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor={`${namePrefix}FirstName`}>
-              First name
-            </Form.Label>
-            <Form.Control
+          <HtForm.Group>
+            <HtForm.Label htmlFor={`${namePrefix}FirstName`}>First name</HtForm.Label>
+            <HtForm.Control
               id={`${namePrefix}FirstName`}
               type="text"
               plaintext={readOnly}
@@ -28,14 +27,14 @@ export default function ContactForm({ handlerFormType, readOnly }: ContactFormPr
               placeholder="John"
               {...register(`${handlerFormType}.contact.firstName`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor={`${namePrefix}MiddleInitial`}>
+          <HtForm.Group>
+            <HtForm.Label htmlFor={`${namePrefix}MiddleInitial`}>
               Middle Initial
-            </Form.Label>
-            <Form.Control
+            </HtForm.Label>
+            <HtForm.Control
               id={`${namePrefix}MiddleInitial`}
               type="text"
               plaintext={readOnly}
@@ -43,14 +42,12 @@ export default function ContactForm({ handlerFormType, readOnly }: ContactFormPr
               placeholder="G"
               {...register(`${handlerFormType}.contact.middleInitial`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor={`${namePrefix}LastName`}>
-              Last Name
-            </Form.Label>
-            <Form.Control
+          <HtForm.Group>
+            <HtForm.Label htmlFor={`${namePrefix}LastName`}>Last Name</HtForm.Label>
+            <HtForm.Control
               id={`${namePrefix}LastName`}
               type="text"
               plaintext={readOnly}
@@ -58,16 +55,14 @@ export default function ContactForm({ handlerFormType, readOnly }: ContactFormPr
               placeholder="Doe"
               {...register(`${handlerFormType}.contact.firstName`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
       </Row>
       <Row className="mb-2">
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor={`${namePrefix}Email`}>
-              e-mail
-            </Form.Label>
-            <Form.Control
+          <HtForm.Group>
+            <HtForm.Label htmlFor={`${namePrefix}Email`}>e-mail</HtForm.Label>
+            <HtForm.Control
               id={`${namePrefix}Email`}
               type="email"
               plaintext={readOnly}
@@ -75,14 +70,12 @@ export default function ContactForm({ handlerFormType, readOnly }: ContactFormPr
               placeholder="john.doe@haztrak.net"
               {...register(`${handlerFormType}.contact.email`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor={`${namePrefix}CompanyName`}>
-              Company
-            </Form.Label>
-            <Form.Control
+          <HtForm.Group>
+            <HtForm.Label htmlFor={`${namePrefix}CompanyName`}>Company</HtForm.Label>
+            <HtForm.Control
               id={`${namePrefix}CompanyName`}
               type="text"
               plaintext={readOnly}
@@ -90,7 +83,7 @@ export default function ContactForm({ handlerFormType, readOnly }: ContactFormPr
               placeholder="HazTek LLC."
               {...register(`${handlerFormType}.contact.companyName`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
       </Row>
     </>

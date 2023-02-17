@@ -1,8 +1,8 @@
-import { HtCard } from 'components/Ht';
+import { HtCard, HtForm } from 'components/Ht';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import HazardousWasteForm from 'components/ManifestForm/WasteLine/HazardousWasteForm';
 import React from 'react';
-import { Button, Container, Form, Row } from 'react-bootstrap';
+import { Button, Container, Row } from 'react-bootstrap';
 import { FormProvider, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import { Manifest } from 'types';
 import { WasteLine } from 'types/WasteLine';
@@ -32,14 +32,14 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
 
   return (
     <FormProvider {...wasteMethods}>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <HtForm onSubmit={handleSubmit(onSubmit)}>
         <Container>
           <HtCard border={'secondary'}>
             <HtCard.Body>
               <h5>General Information</h5>
               <Container className="ms-2">
                 <Row>
-                  <Form.Switch
+                  <HtForm.Switch
                     id="dotHazardousSwitch"
                     label="DOT Hazardous Material?"
                     {...register('dotHazardous')}
@@ -47,14 +47,14 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
                   />
                 </Row>
                 <Row>
-                  <Form.Switch
+                  <HtForm.Switch
                     id="epaWasteSwitch"
                     label="EPA Hazardous Waste?"
                     {...register('epaWaste')}
                   />
                 </Row>
                 <Row>
-                  <Form.Switch
+                  <HtForm.Switch
                     id="pcbSwitch"
                     aria-label="PCBWaste"
                     label="PCB waste?"
@@ -62,7 +62,7 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
                   />
                 </Row>
                 <Row>
-                  <Form.Switch
+                  <HtForm.Switch
                     id="brSwitch"
                     aria-label="biennialReport"
                     label="Supply Biennial Report (BR) data?"
@@ -71,16 +71,16 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
                 </Row>
               </Container>
               <Row>
-                <Form.Group>
-                  <Form.Label className="mb-0" htmlFor="wasteDescription">
+                <HtForm.Group>
+                  <HtForm.Label htmlFor="wasteDescription">
                     Waste Description
-                  </Form.Label>
-                  <Form.Control
+                  </HtForm.Label>
+                  <HtForm.Control
                     id="wasteDescription"
                     as="textarea"
                     {...register(`wasteDescription`)}
                   />
-                </Form.Group>
+                </HtForm.Group>
               </Row>
             </HtCard.Body>
           </HtCard>
@@ -119,7 +119,7 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
             Add Waste Line
           </Button>
         </div>
-      </Form>
+      </HtForm>
     </FormProvider>
   );
 }

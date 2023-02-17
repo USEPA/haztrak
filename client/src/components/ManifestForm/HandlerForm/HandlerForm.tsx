@@ -1,4 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
+import { HtForm } from 'components/Ht';
 import { AddressForm } from 'components/ManifestForm/AddressForm';
 import { ReactElement, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
@@ -45,11 +46,9 @@ function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement 
     <>
       <Row className="mb-2">
         <Col className="col-sm-4">
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="handlerEPAId">
-              Generator ID
-            </Form.Label>
-            <Form.Control
+          <HtForm.Group>
+            <HtForm.Label htmlFor="handlerEPAId">Generator ID</HtForm.Label>
+            <HtForm.Control
               id="handlerEPAId"
               type="text"
               plaintext={readOnly}
@@ -57,14 +56,12 @@ function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement 
               placeholder={'EPA ID number'}
               {...register(`generator.epaSiteId`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <Col className="col-sm-8">
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="handlerName">
-              Site Name
-            </Form.Label>
-            <Form.Control
+          <HtForm.Group>
+            <HtForm.Label htmlFor="handlerName">Site Name</HtForm.Label>
+            <HtForm.Control
               id="handlerName"
               plaintext={readOnly}
               readOnly={readOnly}
@@ -74,7 +71,7 @@ function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement 
               // validation to the dedicated 'yup' library which is more expressive
               {...register(`generator.name`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <ErrorMessage
           errors={errors}
@@ -94,7 +91,7 @@ function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement 
       />
       <Row className="mb-2">
         <Col>
-          <Form.Check
+          <HtForm.Check
             defaultChecked={mailCheck}
             onChange={(e) => {
               setMailCheck(e.target.checked);

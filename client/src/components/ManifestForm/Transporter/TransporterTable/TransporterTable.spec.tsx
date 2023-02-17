@@ -43,6 +43,7 @@ describe('TransporterTable', () => {
         // @ts-ignore
         arrayFieldMethods={emptyArrayFieldMethods}
         transporters={TRAN_ARRAY}
+        readOnly={false}
       />,
       {}
     );

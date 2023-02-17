@@ -45,14 +45,14 @@ function TransporterTable({
               <td>{transporter.canEsign ? 'yes' : 'no'}</td>
               <td>
                 {readOnly ? (
+                  <></>
+                ) : (
                   <TransporterRowActions
                     removeTransporter={arrayFieldMethods.remove}
                     swapTransporter={arrayFieldMethods.swap}
                     index={index}
                     length={transporters?.length}
                   />
-                ) : (
-                  <></>
                 )}
               </td>
             </tr>

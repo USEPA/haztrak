@@ -1,5 +1,6 @@
+import { HtForm } from 'components/Ht';
 import React, { useState } from 'react';
-import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
+import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from 'store';
 import { updateProfile } from 'store/rcraProfileSlice';
@@ -41,15 +42,15 @@ function RcraProfile({ profile }: ProfileViewProps) {
 
   return (
     <>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <HtForm onSubmit={handleSubmit(onSubmit)}>
         <Container>
           <Row className="mb-2">
             <Col>
-              <Form.Group>
-                <Form.Label className="fw-bold mb-0" htmlFor="profileRcraUsername">
+              <HtForm.Group>
+                <HtForm.Label htmlFor="profileRcraUsername">
                   RCRAInfo Username
-                </Form.Label>
-                <Form.Control
+                </HtForm.Label>
+                <HtForm.Control
                   plaintext={!editable}
                   readOnly={!editable}
                   id="profileRcraUsername"
@@ -58,30 +59,28 @@ function RcraProfile({ profile }: ProfileViewProps) {
                     profile.rcraUsername ? profile.rcraUsername : 'Not Provided'
                   }
                 />
-              </Form.Group>
+              </HtForm.Group>
             </Col>
             <Col>
-              <Form.Group>
-                <Form.Label className="fw-bold mb-0" htmlFor="profileRcraAPIID">
-                  RCRAInfo API ID
-                </Form.Label>
-                <Form.Control
+              <HtForm.Group>
+                <HtForm.Label htmlFor="profileRcraAPIID">RCRAInfo API ID</HtForm.Label>
+                <HtForm.Control
                   plaintext={!editable}
                   readOnly={!editable}
                   id="profileRcraAPIID"
                   {...register('rcraAPIID')}
                   placeholder={profile.rcraAPIID ? profile.rcraAPIID : 'Not Provided'}
                 />
-              </Form.Group>
+              </HtForm.Group>
             </Col>
           </Row>
           <Row className="mb-2">
             <Col>
-              <Form.Group>
-                <Form.Label className="fw-bold mb-0" htmlFor="profileRcraAPIKey">
+              <HtForm.Group>
+                <HtForm.Label htmlFor="profileRcraAPIKey">
                   RCRAInfo API Key
-                </Form.Label>
-                <Form.Control
+                </HtForm.Label>
+                <HtForm.Control
                   type="password"
                   plaintext={!editable}
                   readOnly={!editable}
@@ -89,7 +88,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
                   {...register('rcraAPIKey')}
                   placeholder="●●●●●●●●●●●"
                 />
-              </Form.Group>
+              </HtForm.Group>
             </Col>
             <Col>{/* Other RcraProfile form inputs here*/}</Col>
           </Row>
@@ -122,7 +121,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
             </div>
           </Row>
         </Container>
-      </Form>
+      </HtForm>
       <Container>
         <h4>Site Permissions</h4>
         <Table striped bordered hover responsive>

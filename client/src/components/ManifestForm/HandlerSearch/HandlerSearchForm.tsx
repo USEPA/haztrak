@@ -1,7 +1,7 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { HtModal } from 'components/Ht';
+import { HtForm, HtModal } from 'components/Ht';
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm, useFormContext } from 'react-hook-form';
 import htApi from 'services';
 import { Handler } from 'types';
@@ -95,41 +95,40 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
 
   return (
     <>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <HtForm onSubmit={handleSubmit(onSubmit)}>
         <HtModal.Body>
           <Row>
             <Col>
-              <Form.Group className="mb-2">
-                <Form.Label className="mb-0" htmlFor={`${handlerType}SearchEPAId`}>
+              <HtForm.Group>
+                <HtForm.Label htmlFor={`${handlerType}SearchEPAId`}>
                   EPA ID Number
-                </Form.Label>
-                <Form.Control
+                </HtForm.Label>
+                <HtForm.Control
                   id={`${handlerType}SearchEPAId`}
                   type="text"
                   placeholder="VATESTRAN03"
                   {...register(`epaId`)}
+                  // @ts-ignore
                   autoFocus
                 />
-              </Form.Group>
+              </HtForm.Group>
             </Col>
             <Col>
-              <Form.Group className="mb-2">
-                <Form.Label className="mb-0" htmlFor={`${handlerType}SearchName`}>
-                  Name
-                </Form.Label>
-                <Form.Control
+              <HtForm.Group>
+                <HtForm.Label htmlFor={`${handlerType}SearchName`}>Name</HtForm.Label>
+                <HtForm.Control
                   id={`${handlerType}SearchName`}
                   type="text"
                   placeholder="VA TEST GEN 2021"
                   {...register(`name`)}
                 />
-              </Form.Group>
+              </HtForm.Group>
             </Col>
           </Row>
           <Row>
             <Col>
               {handlerOptions ? (
-                <Form.Select {...register('handler', { required: true })}>
+                <HtForm.Select {...register('handler', { required: true })}>
                   {handlerOptions.map((option) => {
                     return (
                       <option
@@ -140,7 +139,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
                       </option>
                     );
                   })}
-                </Form.Select>
+                </HtForm.Select>
               ) : (
                 <></>
               )}
@@ -162,7 +161,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
             Add
           </Button>
         </HtModal.Footer>
-      </Form>
+      </HtForm>
     </>
   );
 }

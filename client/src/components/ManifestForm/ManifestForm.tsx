@@ -1,11 +1,11 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { HtButton, HtCard } from 'components/Ht';
+import { HtButton, HtCard, HtForm } from 'components/Ht';
 import HandlerDetails from 'components/HandlerDetails';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import ContactForm from 'components/ManifestForm/ContactForm';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
 import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable/WasteLineTable';
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import htApi from 'services';
@@ -88,7 +88,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
   return (
     <>
       <FormProvider {...manifestMethods}>
-        <Form onSubmit={manifestMethods.handleSubmit(onSubmit)}>
+        <HtForm onSubmit={manifestMethods.handleSubmit(onSubmit)}>
           <h2 className="fw-bold">{`${
             manifestData?.manifestTrackingNumber || 'Draft'
           } Manifest`}</h2>
@@ -97,14 +97,9 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
             <HtCard.Body>
               <Row>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label
-                      htmlFor="manifestTrackingNumber"
-                      className="mb-0 fw-bold"
-                    >
-                      MTN
-                    </Form.Label>
-                    <Form.Control
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="manifestTrackingNumber">MTN</HtForm.Label>
+                    <HtForm.Control
                       id="manifestTrackingNumber"
                       plaintext={readOnly}
                       readOnly={readOnly}
@@ -112,14 +107,14 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                       placeholder={'Draft Manifest'}
                       {...manifestMethods.register('manifestTrackingNumber')}
                     />
-                  </Form.Group>
+                  </HtForm.Group>
                 </Col>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="status" className="mb-0">
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="status" className="mb-0">
                       Status
-                    </Form.Label>
-                    <Form.Select
+                    </HtForm.Label>
+                    <HtForm.Select
                       id="status"
                       disabled={readOnly}
                       aria-label="manifestStatus"
@@ -128,15 +123,15 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                       <option value="NotAssigned">Draft</option>
                       <option value="Pending">Pending</option>
                       <option value="Scheduled">Scheduled</option>
-                    </Form.Select>
-                  </Form.Group>
+                    </HtForm.Select>
+                  </HtForm.Group>
                 </Col>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="submissionType" className="mb-0">
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="submissionType" className="mb-0">
                       Manifest Type
-                    </Form.Label>
-                    <Form.Select
+                    </HtForm.Label>
+                    <HtForm.Select
                       id="submissionType"
                       disabled={readOnly}
                       aria-label="submissionType"
@@ -144,61 +139,55 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                     >
                       <option value="FullElectronic">Electronic</option>
                       <option value="Hybrid">Hybrid</option>
-                    </Form.Select>
-                  </Form.Group>
+                    </HtForm.Select>
+                  </HtForm.Group>
                 </Col>
               </Row>
               <Row>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="createdDate" className="mb-0">
-                      Created Date
-                    </Form.Label>
-                    <Form.Control
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="createdDate">Created Date</HtForm.Label>
+                    <HtForm.Control
                       id="createdDate"
                       disabled
                       type="date"
                       {...manifestMethods.register('createdDate')}
                     />
-                  </Form.Group>
+                  </HtForm.Group>
                 </Col>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="updatedDate" className="mb-0">
-                      Last Update Date
-                    </Form.Label>
-                    <Form.Control
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="updatedDate">Last Update Date</HtForm.Label>
+                    <HtForm.Control
                       id="updatedDate"
                       disabled={readOnly}
                       type="date"
                       {...manifestMethods.register('updatedDate')}
                     />
-                  </Form.Group>
+                  </HtForm.Group>
                 </Col>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="shippedDate" className="mb-0">
-                      Shipped Date
-                    </Form.Label>
-                    <Form.Control
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="shippedDate">Shipped Date</HtForm.Label>
+                    <HtForm.Control
                       id="shippedDate"
                       disabled={readOnly}
                       type="date"
                       {...manifestMethods.register('shippedDate')}
                     />
-                  </Form.Group>
+                  </HtForm.Group>
                 </Col>
               </Row>
               <Row>
                 <Col>
-                  <Form.Check
+                  <HtForm.Check
                     type="checkbox"
                     id="import"
                     disabled={readOnly}
                     label="Imported Waste"
                     {...manifestMethods.register('import')}
                   />
-                  <Form.Check
+                  <HtForm.Check
                     type="checkbox"
                     id="rejection"
                     disabled={readOnly}
@@ -207,17 +196,17 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                   />
                 </Col>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="potentialShipDate" className="mb-0">
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="potentialShipDate">
                       Potential Shipped Date
-                    </Form.Label>
-                    <Form.Control
+                    </HtForm.Label>
+                    <HtForm.Control
                       id="potentialShipDate"
                       disabled={readOnly}
                       type="date"
                       {...manifestMethods.register('potentialShipDate')}
                     />
-                  </Form.Group>
+                  </HtForm.Group>
                 </Col>
               </Row>
             </HtCard.Body>
@@ -237,6 +226,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
               <TransporterTable
                 transporters={transporters}
                 arrayFieldMethods={tranArrayMethods}
+                readOnly={readOnly}
               />
               {readOnly ? (
                 <></>
@@ -297,7 +287,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
               </Button>
             )}
           </div>
-        </Form>
+        </HtForm>
         <AddTransporter
           handleClose={toggleTranSearchShow}
           show={transFormShow}
