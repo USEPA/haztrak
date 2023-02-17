@@ -7,11 +7,13 @@ import { UseFieldArrayReturn } from 'react-hook-form';
 interface TransporterTableProps {
   transporters?: Array<Handler>;
   arrayFieldMethods: UseFieldArrayReturn<Manifest, 'transporters', 'id'>;
+  readOnly?: boolean;
 }
 
 function TransporterTable({
   transporters,
   arrayFieldMethods,
+  readOnly,
 }: TransporterTableProps) {
   if (!transporters || transporters.length < 1) {
     return <></>;
@@ -42,12 +44,16 @@ function TransporterTable({
               <td>{transporter.name}</td>
               <td>{transporter.canEsign ? 'yes' : 'no'}</td>
               <td>
-                <TransporterRowActions
-                  removeTransporter={arrayFieldMethods.remove}
-                  swapTransporter={arrayFieldMethods.swap}
-                  index={index}
-                  length={transporters?.length}
-                />
+                {readOnly ? (
+                  <TransporterRowActions
+                    removeTransporter={arrayFieldMethods.remove}
+                    swapTransporter={arrayFieldMethods.swap}
+                    index={index}
+                    length={transporters?.length}
+                  />
+                ) : (
+                  <></>
+                )}
               </td>
             </tr>
           );

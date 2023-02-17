@@ -124,10 +124,13 @@ function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
         </Row>
       </Col>
       <div>
-        {/* ToDo: convert this to separate function*/}
-        <Button onClick={() => append({ description: '', label: '' })}>
-          Add Reference
-        </Button>
+        {readOnly ? (
+          <></>
+        ) : (
+          <Button onClick={() => append({ description: '', label: '' })}>
+            Add Reference
+          </Button>
+        )}
       </div>
     </>
   );

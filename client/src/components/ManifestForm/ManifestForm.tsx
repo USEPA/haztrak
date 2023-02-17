@@ -137,6 +137,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                     </Form.Label>
                     <Form.Select
                       id="submissionType"
+                      disabled={readOnly}
                       aria-label="submissionType"
                       {...manifestMethods.register('submissionType')}
                     >
@@ -199,6 +200,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                   <Form.Check
                     type="checkbox"
                     id="rejection"
+                    disabled={readOnly}
                     label="Rejected Waste"
                     {...manifestMethods.register('rejection')}
                   />
@@ -235,11 +237,15 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                 transporters={transporters}
                 arrayFieldMethods={tranArrayMethods}
               />
-              <HtButton
-                onClick={toggleTranSearchShow}
-                children={'Add Transporter'}
-                variant="success"
-              />
+              {readOnly ? (
+                <></>
+              ) : (
+                <HtButton
+                  onClick={toggleTranSearchShow}
+                  children={'Add Transporter'}
+                  variant="success"
+                />
+              )}
             </HtCard.Body>
           </HtCard>
           <HtCard id="waste-form-card">
@@ -247,11 +253,15 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
             <HtCard.Body className="pb-4">
               {/* Table Showing current Waste Lines included on the manifest */}
               <WasteLineTable wastes={wastes} />
-              <HtButton
-                onClick={toggleWlFormShow}
-                children={'Add Waste'}
-                variant="success"
-              />
+              {readOnly ? (
+                <></>
+              ) : (
+                <HtButton
+                  onClick={toggleWlFormShow}
+                  children={'Add Waste'}
+                  variant="success"
+                />
+              )}
             </HtCard.Body>
           </HtCard>
           {/* Where The Tsdf information is added and displayed */}
@@ -259,11 +269,15 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
             <HtCard.Header title="Designated Facility" />
             <HtCard.Body className="pb-4">
               {tsdf ? <HandlerDetails handler={tsdf} /> : <></>}
-              <HtButton
-                onClick={toggleTsdfFormShow}
-                children={'Add TSDF'}
-                variant="success"
-              />
+              {readOnly ? (
+                <></>
+              ) : (
+                <HtButton
+                  onClick={toggleTsdfFormShow}
+                  children={'Add TSDF'}
+                  variant="success"
+                />
+              )}
             </HtCard.Body>
           </HtCard>
           <HtCard id="manifest-additional-info-card">
@@ -274,9 +288,13 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
             </HtCard.Body>
           </HtCard>
           <div className="mx-1 d-flex flex-row-reverse">
-            <Button variant="success" type="submit">
-              Create Manifest
-            </Button>
+            {readOnly ? (
+              <></>
+            ) : (
+              <Button variant="success" type="submit">
+                Create Manifest
+              </Button>
+            )}
           </div>
         </Form>
         <AddTransporter
