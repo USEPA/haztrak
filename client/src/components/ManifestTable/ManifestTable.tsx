@@ -3,7 +3,7 @@ import { HtCard, HtTooltip } from 'components/Ht';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faPen } from '@fortawesome/free-solid-svg-icons';
 
 interface ManifestDetails {
   mtn: string;
@@ -43,18 +43,14 @@ function ManifestTable(
                   <td>
                     <div className="d-flex justify-content-evenly">
                       <HtTooltip text={`View: ${mtn}`}>
-                        <Link
-                          to={`/manifest/${mtn}/view`}
-                          aria-label={`viewManifest${mtn}`}
-                        >
+                        <Link to={`./${mtn}/view`} aria-label={`viewManifest${mtn}`}>
                           <FontAwesomeIcon icon={faEye} />
                         </Link>
                       </HtTooltip>
                       <HtTooltip text={`Edit ${mtn}`}>
-                        <Link
-                          to={`/manifest/${mtn}/edit`}
-                          aria-label={`editManifest${mtn}`}
-                        ></Link>
+                        <Link to={`./${mtn}/edit`} aria-label={`editManifest${mtn}`}>
+                          <FontAwesomeIcon icon={faPen} />
+                        </Link>
                       </HtTooltip>
                     </div>
                   </td>

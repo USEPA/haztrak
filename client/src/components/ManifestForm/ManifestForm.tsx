@@ -23,10 +23,9 @@ interface ManifestFormProps {
 }
 
 /**
- * Returns a form for, currently only, new uniform hazardous waste manifest.
+ * Returns a form for the uniform hazardous waste manifest.
  * @constructor
  */
-// ToDo: accept an existing manifest (Manifest type) and set as default value
 function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
   // Top level ManifestForm methods and objects
   const manifestMethods = useForm<Manifest>({ values: manifestData });
@@ -90,7 +89,9 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
     <>
       <FormProvider {...manifestMethods}>
         <Form onSubmit={manifestMethods.handleSubmit(onSubmit)}>
-          <h2 className="fw-bold">{'Draft Manifest'}</h2>
+          <h2 className="fw-bold">{`${
+            manifestData?.manifestTrackingNumber || 'Draft'
+          } Manifest`}</h2>
           <HtCard id="general-form-card">
             <HtCard.Header title="General info" />
             <HtCard.Body>
@@ -292,7 +293,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
               <></>
             ) : (
               <Button variant="success" type="submit">
-                Create Manifest
+                Save Manifest
               </Button>
             )}
           </div>

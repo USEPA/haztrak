@@ -22,7 +22,7 @@ interface SiteManifest {
  * Fetch and display all the manifests, known by haztrak, associated with a site.
  * @constructor
  */
-function SiteManifests(): ReactElement {
+function ManifestList(): ReactElement {
   let { siteId } = useParams();
   useTitle(`${siteId} Manifest`);
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ function SiteManifests(): ReactElement {
           </Col>
           <Col className="d-flex justify-content-end">
             <SyncManifestBtn siteId={siteId ? siteId : ''} />
-            <Button variant="success" onClick={() => navigate('/manifest/new/edit')}>
+            <Button variant="success" onClick={() => navigate('./new')}>
               New
             </Button>
           </Col>
@@ -71,4 +71,4 @@ function SiteManifests(): ReactElement {
   );
 }
 
-export default SiteManifests;
+export default ManifestList;

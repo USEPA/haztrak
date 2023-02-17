@@ -1,8 +1,8 @@
+import Manifest from 'features/manifest';
 import React, { ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import SiteList from './SiteList';
 import SiteDetails from './SiteDetails';
-import SiteManifests from './SiteManifests';
 
 interface Props {
   user: string;
@@ -18,7 +18,7 @@ function Sites({ user }: Props): ReactElement {
       <Routes>
         <Route path="/" element={<SiteList />} />
         <Route path=":siteId" element={<SiteDetails />} />
-        <Route path=":siteId/manifests" element={<SiteManifests />} />
+        <Route path=":siteId/manifest/*" element={<Manifest />} />
       </Routes>
     </>
   );

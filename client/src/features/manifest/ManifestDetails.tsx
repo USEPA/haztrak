@@ -1,14 +1,14 @@
 import { HtSpinner } from 'components/Ht';
-import ManifestForm from 'components/ManifestForm/ManifestForm';
+import ManifestForm from 'components/ManifestForm';
 import useHtAPI from 'hooks/useHtAPI';
 import useTitle from 'hooks/useTitle';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Manifest } from 'types';
 
-function ManifestPage() {
+function ManifestDetails() {
   const { mtn, action } = useParams();
-  useTitle(`View ${mtn}`);
+  useTitle(`${mtn}`);
   const [manifestData, loading, error] = useHtAPI<Manifest>(`trak/manifest/${mtn}`);
 
   let readOnly = true;
@@ -27,4 +27,4 @@ function ManifestPage() {
   );
 }
 
-export default ManifestPage;
+export default ManifestDetails;

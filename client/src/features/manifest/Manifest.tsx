@@ -1,17 +1,17 @@
-import ManifestPage from 'features/manifest/ManifestPage';
+import ManifestDetails from 'features/manifest/ManifestDetails';
+import ManifestList from 'features/manifest/ManifestList';
+import ManifestNew from 'features/manifest/ManifestNew';
 import React, { ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
-// import ManifestDetails from './ManifestDetails/ManifestDetails';
-// import ManifestEdit from './ManifestEdit';
 import { Container } from 'react-bootstrap';
 
 function Manifest(): ReactElement {
   return (
     <Container fluid className="py-2">
       <Routes>
-        {/*<Route path=":mtn/view" element={<ManifestDetails />} />*/}
-        {/*<Route path=":mtn/edit" element={<ManifestEdit />} />*/}
-        <Route path=":mtn/:action" element={<ManifestPage />} />
+        <Route path="" element={<ManifestList />} />
+        <Route path="new" element={<ManifestNew />} />
+        <Route path=":mtn/:action" element={<ManifestDetails />} />
       </Routes>
     </Container>
   );
