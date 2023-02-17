@@ -19,17 +19,20 @@ interface SiteManifest {
 }
 
 /**
- * Fetch and display all the manifests, known by haztrak, associated with a site.
+ * Fetch and display all the manifest tracking number (MTN) known by haztrak
  * @constructor
  */
 function ManifestList(): ReactElement {
   let { siteId } = useParams();
-  useTitle(`${siteId} Manifest`);
+  useTitle(`${siteId || ''} Manifest`);
   const navigate = useNavigate();
 
-  const [siteManifest, loading, error] = useHtAPI<SiteManifest>(
-    `trak/site/${siteId}/manifest`
-  );
+  let getUrl = 'trak/manifest';
+  if (siteId) {
+    getUrl = `trak/site/${siteId}/manifest`;
+  }
+
+  const [manifests, loading, error] = useHtAPI<SiteManifest>(getUrl);
 
   if (error) throw error;
 
@@ -54,17 +57,13 @@ function ManifestList(): ReactElement {
       </Container>
       <Container>
         <Col>
-          {siteManifest ? (
-            ManifestTable(siteManifest.tsd, 'Designated Receiving Facility')
+          {manifests ? (
+            ManifestTable(manifests.tsd, 'Designated Receiving Facility')
           ) : (
             <></>
           )}
-          {siteManifest ? ManifestTable(siteManifest.generator, 'Generator') : <></>}
-          {siteManifest ? (
-            ManifestTable(siteManifest.transporter, 'Transporter')
-          ) : (
-            <></>
-          )}
+          {manifests ? ManifestTable(manifests.generator, 'Generator') : <></>}
+          {manifests ? ManifestTable(manifests.transporter, 'Transporter') : <></>}
         </Col>
       </Container>
     </>

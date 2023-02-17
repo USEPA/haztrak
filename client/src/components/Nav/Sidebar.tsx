@@ -11,6 +11,7 @@ import {
   faFile,
   faLocationArrow,
   faLocationDot,
+  faNetworkWired,
   faTachometerAlt,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -128,8 +129,10 @@ function Sidebar(): ReactElement | null {
                     href={`${process.env.REACT_APP_HT_API_URL}/api/schema/swagger-ui`}
                     rel="noreferrer"
                   >
-                    <i className="sb-nav-link-icon text-primary fa-solid fa-network-wired" />
-                    <FontAwesomeIcon icon={faAngleDown} />
+                    <FontAwesomeIcon
+                      icon={faNetworkWired}
+                      className="sb-nav-link-icon text-primary"
+                    />
                     Swagger UI
                   </a>
                 </nav>
