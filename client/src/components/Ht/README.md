@@ -1,6 +1,7 @@
 # HT
 
-This directory contains a number of UI components for use in higher level components.
+This directory contains a number of UI components that wrap around lower level components to provide default styling or
+functionality.
 
 ## Overview
 

@@ -52,7 +52,7 @@ function SiteList() {
                     </HtTooltip>
                     <HtTooltip text={`${site.name}'s manifest`}>
                       <Link
-                        to={`/site/${site.handler.epaSiteId}/manifests`}
+                        to={`/site/${site.handler.epaSiteId}/manifest`}
                         aria-label={`${site.name}Manifests`}
                       >
                         <FontAwesomeIcon icon={faFileLines} />

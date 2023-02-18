@@ -9,8 +9,10 @@ import {
   faArrowUpRightFromSquare,
   faCircleInfo,
   faFile,
+  faFileLines,
   faLocationArrow,
   faLocationDot,
+  faNetworkWired,
   faTachometerAlt,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -22,6 +24,7 @@ import {
 function Sidebar(): ReactElement | null {
   const [siteNav, setSiteNav] = useState(false);
   const [helpNav, setHelpNav] = useState(false);
+  const [mtnNav, setMtnNav] = useState(false);
 
   const authUser = useSelector((state: RootState) => state.user.user);
   if (!authUser) return null;
@@ -89,6 +92,40 @@ function Sidebar(): ReactElement | null {
                 </nav>
               </div>
             </Collapse>
+            <Button
+              className="bg-dark border-0 nav-link shadow-none"
+              onClick={() => setMtnNav(!mtnNav)}
+              aria-controls="collapseHelp"
+              aria-expanded={mtnNav}
+            >
+              <FontAwesomeIcon
+                icon={faFileLines}
+                className="text-primary sb-nav-link-icon"
+              />
+              Manifests
+              <div
+                className={`sb-sidenav-collapse-arrow ${mtnNav ? '' : 'rotate-90-cc'} `}
+              >
+                <FontAwesomeIcon icon={faAngleDown} />
+              </div>
+            </Button>
+            <Collapse in={mtnNav}>
+              <div id="collapseHelp">
+                <nav
+                  className="sb-sidenav-menu-nested nav accordion"
+                  id="sidenavAccordionPages"
+                >
+                  <Link className="nav-link" to="/manifest">
+                    <FontAwesomeIcon
+                      icon={faFile}
+                      className="text-primary sb-nav-link-icon"
+                    />{' '}
+                    Your Manifest
+                  </Link>
+                </nav>
+              </div>
+            </Collapse>
+
             <div className="sb-sidenav-menu-heading">Core</div>
             <Button
               className="bg-dark border-0 nav-link shadow-none"
@@ -128,8 +165,10 @@ function Sidebar(): ReactElement | null {
                     href={`${process.env.REACT_APP_HT_API_URL}/api/schema/swagger-ui`}
                     rel="noreferrer"
                   >
-                    <i className="sb-nav-link-icon text-primary fa-solid fa-network-wired" />
-                    <FontAwesomeIcon icon={faAngleDown} />
+                    <FontAwesomeIcon
+                      icon={faNetworkWired}
+                      className="sb-nav-link-icon text-primary"
+                    />
                     Swagger UI
                   </a>
                 </nav>

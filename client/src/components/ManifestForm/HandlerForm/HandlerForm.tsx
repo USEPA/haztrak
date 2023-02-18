@@ -1,4 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
+import { HtForm } from 'components/Ht';
 import { AddressForm } from 'components/ManifestForm/AddressForm';
 import { ReactElement, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
@@ -6,11 +7,12 @@ import { useFormContext } from 'react-hook-form';
 import { Manifest } from 'types';
 import { AddressType, HandlerType } from 'types/Handler/Handler';
 
-interface Props {
+interface HandlerFormProps {
   handlerType: HandlerType;
+  readOnly?: boolean;
 }
 
-function HandlerForm({ handlerType }: Props): ReactElement {
+function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement {
   const [mailCheck, setMailCheck] = useState(false);
   if (handlerType !== HandlerType.Generator) {
     throw new Error();
@@ -44,32 +46,32 @@ function HandlerForm({ handlerType }: Props): ReactElement {
     <>
       <Row className="mb-2">
         <Col className="col-sm-4">
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="handlerEPAId">
-              Generator ID
-            </Form.Label>
-            <Form.Control
+          <HtForm.Group>
+            <HtForm.Label htmlFor="handlerEPAId">Generator ID</HtForm.Label>
+            <HtForm.Control
               id="handlerEPAId"
               type="text"
+              plaintext={readOnly}
+              readOnly={readOnly}
               placeholder={'EPA ID number'}
               {...register(`generator.epaSiteId`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <Col className="col-sm-8">
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="handlerName">
-              Site Name
-            </Form.Label>
-            <Form.Control
+          <HtForm.Group>
+            <HtForm.Label htmlFor="handlerName">Site Name</HtForm.Label>
+            <HtForm.Control
               id="handlerName"
+              plaintext={readOnly}
+              readOnly={readOnly}
               type="text"
               placeholder={`${handlerType} Name`}
               // register comes from react-hook-form, however haztrak leaves the
               // validation to the dedicated 'yup' library which is more expressive
               {...register(`generator.name`)}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <ErrorMessage
           errors={errors}
@@ -82,16 +84,21 @@ function HandlerForm({ handlerType }: Props): ReactElement {
           render={({ message }) => <span className="text-danger">{message}</span>}
         />
       </Row>
-      <AddressForm addressType={AddressType.site} handlerType={handlerType} />
+      <AddressForm
+        addressType={AddressType.site}
+        handlerType={handlerType}
+        readOnly={readOnly}
+      />
       <Row className="mb-2">
         <Col>
-          <Form.Check
+          <HtForm.Check
             defaultChecked={mailCheck}
             onChange={(e) => {
               setMailCheck(e.target.checked);
             }}
             name="mailCheck"
             type="checkbox"
+            disabled={readOnly}
             label="Separate Mailing address?"
             id="addressEqual"
           />
@@ -99,7 +106,11 @@ function HandlerForm({ handlerType }: Props): ReactElement {
         {mailCheck ? (
           <>
             <h4>Mailing Address</h4>
-            <AddressForm addressType={AddressType.mail} handlerType={handlerType} />
+            <AddressForm
+              addressType={AddressType.mail}
+              handlerType={handlerType}
+              readOnly={readOnly}
+            />
           </>
         ) : (
           <></>

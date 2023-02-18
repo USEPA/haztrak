@@ -1,12 +1,13 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { HtButton, HtCard } from 'components/Ht';
+import { HtButton, HtCard, HtForm } from 'components/Ht';
 import HandlerDetails from 'components/HandlerDetails';
+import HtP from 'components/Ht/HtP';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import ContactForm from 'components/ManifestForm/ContactForm';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
 import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable/WasteLineTable';
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import htApi from 'services';
 import { addMsg, useAppDispatch } from 'store';
@@ -17,14 +18,18 @@ import HandlerForm from './HandlerForm';
 import AddTsdf from './Tsdf';
 import AddWasteLine from './WasteLine';
 
+interface ManifestFormProps {
+  readOnly?: boolean;
+  manifestData?: Manifest;
+}
+
 /**
- * Returns a form for, currently only, new uniform hazardous waste manifest.
+ * Returns a form for the uniform hazardous waste manifest.
  * @constructor
  */
-// ToDo: accept an existing manifest (Manifest type) and set as default value
-function ManifestForm() {
+function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
   // Top level ManifestForm methods and objects
-  const manifestMethods = useForm<Manifest>();
+  const manifestMethods = useForm<Manifest>({ values: manifestData });
   const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     // ToDo: on submit, validate the user input
@@ -84,125 +89,133 @@ function ManifestForm() {
   return (
     <>
       <FormProvider {...manifestMethods}>
-        <Form onSubmit={manifestMethods.handleSubmit(onSubmit)}>
-          <h2 className="fw-bold">{'Draft Manifest'}</h2>
+        <HtForm onSubmit={manifestMethods.handleSubmit(onSubmit)}>
+          <h2 className="fw-bold">{`${
+            manifestData?.manifestTrackingNumber || 'Draft'
+          } Manifest`}</h2>
           <HtCard id="general-form-card">
             <HtCard.Header title="General info" />
             <HtCard.Body>
               <Row>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="manifestTrackingNumber" className="mb-0">
-                      MTN
-                    </Form.Label>
-                    <Form.Control
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="manifestTrackingNumber">MTN</HtForm.Label>
+                    <HtForm.Control
                       id="manifestTrackingNumber"
-                      disabled
+                      plaintext={readOnly}
+                      readOnly={readOnly}
                       type="text"
                       placeholder={'Draft Manifest'}
                       {...manifestMethods.register('manifestTrackingNumber')}
                     />
-                  </Form.Group>
+                  </HtForm.Group>
                 </Col>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="status" className="mb-0">
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="status" className="mb-0">
                       Status
-                    </Form.Label>
-                    <Form.Select
-                      id="status"
-                      aria-label="manifestStatus"
-                      {...manifestMethods.register('status')}
-                    >
-                      <option value="NotAssigned">Draft</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Scheduled">Scheduled</option>
-                    </Form.Select>
-                  </Form.Group>
+                    </HtForm.Label>
+                    {readOnly ? (
+                      <HtP>{manifestData?.status}</HtP>
+                    ) : (
+                      <HtForm.Select
+                        id="status"
+                        disabled={readOnly}
+                        aria-label="manifestStatus"
+                        {...manifestMethods.register('status')}
+                      >
+                        <option value="NotAssigned">Draft</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Scheduled">Scheduled</option>
+                      </HtForm.Select>
+                    )}
+                  </HtForm.Group>
                 </Col>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="submissionType" className="mb-0">
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="submissionType" className="mb-0">
                       Manifest Type
-                    </Form.Label>
-                    <Form.Select
-                      id="submissionType"
-                      aria-label="submissionType"
-                      {...manifestMethods.register('submissionType')}
-                    >
-                      <option value="FullElectronic">Electronic</option>
-                      <option value="Hybrid">Hybrid</option>
-                    </Form.Select>
-                  </Form.Group>
+                    </HtForm.Label>
+                    {readOnly ? (
+                      <HtP>{manifestData?.submissionType}</HtP>
+                    ) : (
+                      <HtForm.Select
+                        id="submissionType"
+                        disabled={readOnly}
+                        aria-label="submissionType"
+                        {...manifestMethods.register('submissionType')}
+                      >
+                        <option value="FullElectronic">Electronic</option>
+                        <option value="Hybrid">Hybrid</option>
+                      </HtForm.Select>
+                    )}
+                  </HtForm.Group>
                 </Col>
               </Row>
               <Row>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="createdDate" className="mb-0">
-                      Created Date
-                    </Form.Label>
-                    <Form.Control
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="createdDate">Created Date</HtForm.Label>
+                    <HtForm.Control
                       id="createdDate"
                       disabled
                       type="date"
                       {...manifestMethods.register('createdDate')}
                     />
-                  </Form.Group>
+                  </HtForm.Group>
                 </Col>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="updatedDate" className="mb-0">
-                      Last Update Date
-                    </Form.Label>
-                    <Form.Control
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="updatedDate">Last Update Date</HtForm.Label>
+                    <HtForm.Control
                       id="updatedDate"
-                      disabled
+                      disabled={readOnly}
                       type="date"
                       {...manifestMethods.register('updatedDate')}
                     />
-                  </Form.Group>
+                  </HtForm.Group>
                 </Col>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="shippedDate" className="mb-0">
-                      Shipped Date
-                    </Form.Label>
-                    <Form.Control
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="shippedDate">Shipped Date</HtForm.Label>
+                    <HtForm.Control
                       id="shippedDate"
-                      disabled
+                      disabled={readOnly}
                       type="date"
                       {...manifestMethods.register('shippedDate')}
                     />
-                  </Form.Group>
+                  </HtForm.Group>
                 </Col>
               </Row>
               <Row>
                 <Col>
-                  <Form.Check
+                  <HtForm.Check
                     type="checkbox"
                     id="import"
+                    disabled={readOnly}
                     label="Imported Waste"
                     {...manifestMethods.register('import')}
                   />
-                  <Form.Check
+                  <HtForm.Check
                     type="checkbox"
                     id="rejection"
+                    disabled={readOnly}
                     label="Rejected Waste"
                     {...manifestMethods.register('rejection')}
                   />
                 </Col>
                 <Col>
-                  <Form.Group className="mb-2">
-                    <Form.Label htmlFor="potentialShipDate" className="mb-0">
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="potentialShipDate">
                       Potential Shipped Date
-                    </Form.Label>
-                    <Form.Control
+                    </HtForm.Label>
+                    <HtForm.Control
                       id="potentialShipDate"
+                      disabled={readOnly}
                       type="date"
                       {...manifestMethods.register('potentialShipDate')}
                     />
-                  </Form.Group>
+                  </HtForm.Group>
                 </Col>
               </Row>
             </HtCard.Body>
@@ -210,9 +223,9 @@ function ManifestForm() {
           <HtCard id="generator-form-card">
             <HtCard.Header title="Generator" />
             <HtCard.Body>
-              <HandlerForm handlerType={HandlerType.Generator} />
+              <HandlerForm handlerType={HandlerType.Generator} readOnly={readOnly} />
               <h4>Emergency Contact Information</h4>
-              <ContactForm handlerFormType="generator" />
+              <ContactForm handlerFormType="generator" readOnly={readOnly} />
             </HtCard.Body>
           </HtCard>
           <HtCard id="transporter-form-card">
@@ -222,12 +235,17 @@ function ManifestForm() {
               <TransporterTable
                 transporters={transporters}
                 arrayFieldMethods={tranArrayMethods}
+                readOnly={readOnly}
               />
-              <HtButton
-                onClick={toggleTranSearchShow}
-                children={'Add Transporter'}
-                variant="success"
-              />
+              {readOnly ? (
+                <></>
+              ) : (
+                <HtButton
+                  onClick={toggleTranSearchShow}
+                  children={'Add Transporter'}
+                  variant="success"
+                />
+              )}
             </HtCard.Body>
           </HtCard>
           <HtCard id="waste-form-card">
@@ -235,11 +253,15 @@ function ManifestForm() {
             <HtCard.Body className="pb-4">
               {/* Table Showing current Waste Lines included on the manifest */}
               <WasteLineTable wastes={wastes} />
-              <HtButton
-                onClick={toggleWlFormShow}
-                children={'Add Waste'}
-                variant="success"
-              />
+              {readOnly ? (
+                <></>
+              ) : (
+                <HtButton
+                  onClick={toggleWlFormShow}
+                  children={'Add Waste'}
+                  variant="success"
+                />
+              )}
             </HtCard.Body>
           </HtCard>
           {/* Where The Tsdf information is added and displayed */}
@@ -247,26 +269,34 @@ function ManifestForm() {
             <HtCard.Header title="Designated Facility" />
             <HtCard.Body className="pb-4">
               {tsdf ? <HandlerDetails handler={tsdf} /> : <></>}
-              <HtButton
-                onClick={toggleTsdfFormShow}
-                children={'Add TSDF'}
-                variant="success"
-              />
+              {readOnly ? (
+                <></>
+              ) : (
+                <HtButton
+                  onClick={toggleTsdfFormShow}
+                  children={'Add TSDF'}
+                  variant="success"
+                />
+              )}
             </HtCard.Body>
           </HtCard>
           <HtCard id="manifest-additional-info-card">
             {/* Additional information for the manifest, such as reference information*/}
             <HtCard.Header title={'Additional info'} />
             <HtCard.Body className="px-3">
-              <AdditionalInfoForm />
+              <AdditionalInfoForm readOnly={readOnly} />
             </HtCard.Body>
           </HtCard>
           <div className="mx-1 d-flex flex-row-reverse">
-            <Button variant="success" type="submit">
-              Create Manifest
-            </Button>
+            {readOnly ? (
+              <></>
+            ) : (
+              <Button variant="success" type="submit">
+                Save Manifest
+              </Button>
+            )}
           </div>
-        </Form>
+        </HtForm>
         <AddTransporter
           handleClose={toggleTranSearchShow}
           show={transFormShow}

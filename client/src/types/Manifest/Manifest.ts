@@ -11,6 +11,14 @@ import { CorrectionInfo, CorrectionRequest } from './Correction';
 import { RejectionInfo } from './Rejection';
 
 /**
+ * Select details about manifests for display and navigation.
+ */
+export interface MtnDetails {
+  manifestTrackingNumber: string;
+  status: string;
+}
+
+/**
  * Type definition for the uniform hazardous waste manifest
  */
 interface Manifest {

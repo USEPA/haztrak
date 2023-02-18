@@ -14,10 +14,6 @@ interface TranRowActionProps {
 /**
  * TransporterRowActions uses index and length to disable and display
  * different actions for eah row, expected to be part of a mapped table or list.
- * @param index
- * @param removeTransporter
- * @param swapTransporter
- * @param length
  * @constructor
  */
 function TransporterRowActions({

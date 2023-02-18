@@ -5,33 +5,30 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useHtAPI from 'hooks/useHtAPI';
 import useTitle from 'hooks/useTitle';
 import SyncManifestBtn from 'components/SyncManifestBtn';
-import ManifestTable from 'components/ManifestTable';
-
-interface ManifestDetails {
-  mtn: string;
-  status: string;
-}
-
-interface SiteManifest {
-  generator: Array<ManifestDetails>;
-  transporter: Array<ManifestDetails>;
-  tsd: Array<ManifestDetails>;
-}
+import MtnTable from 'components/MtnTable';
+import { MtnDetails } from 'types/Manifest/Manifest';
 
 /**
- * Fetch and display all the manifests, known by haztrak, associated with a site.
+ * Fetch and display all the manifest tracking number (MTN) known by haztrak
  * @constructor
  */
-function SiteManifests(): ReactElement {
+function ManifestList(): ReactElement {
   let { siteId } = useParams();
-  useTitle(`${siteId} Manifest`);
+  useTitle(`${siteId || ''} Manifest`);
   const navigate = useNavigate();
 
-  const [siteManifest, loading, error] = useHtAPI<SiteManifest>(
-    `trak/site/${siteId}/manifest`
-  );
+  let getUrl = 'trak/mtn';
+  if (siteId) {
+    getUrl = `trak/mtn/${siteId}`;
+    // getUrl = `trak/mtn`;
+  }
 
-  if (error) throw error;
+  const [manifests, loading, error] = useHtAPI<Array<MtnDetails>>(getUrl);
+
+  if (error) {
+    console.error(error.message);
+    throw error;
+  }
 
   if (loading) {
     return <HtSpinner />;
@@ -46,7 +43,7 @@ function SiteManifests(): ReactElement {
           </Col>
           <Col className="d-flex justify-content-end">
             <SyncManifestBtn siteId={siteId ? siteId : ''} />
-            <Button variant="success" onClick={() => navigate('/manifest/new/edit')}>
+            <Button variant="success" onClick={() => navigate('./new')}>
               New
             </Button>
           </Col>
@@ -54,14 +51,8 @@ function SiteManifests(): ReactElement {
       </Container>
       <Container>
         <Col>
-          {siteManifest ? (
-            ManifestTable(siteManifest.tsd, 'Designated Receiving Facility')
-          ) : (
-            <></>
-          )}
-          {siteManifest ? ManifestTable(siteManifest.generator, 'Generator') : <></>}
-          {siteManifest ? (
-            ManifestTable(siteManifest.transporter, 'Transporter')
+          {manifests ? (
+            <MtnTable title={`${siteId || 'Your'} Manifests`} manifests={manifests} />
           ) : (
             <></>
           )}
@@ -71,4 +62,4 @@ function SiteManifests(): ReactElement {
   );
 }
 
-export default SiteManifests;
+export default ManifestList;

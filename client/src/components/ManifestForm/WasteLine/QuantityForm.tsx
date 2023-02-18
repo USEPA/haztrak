@@ -1,5 +1,6 @@
+import { HtForm } from 'components/Ht';
 import React from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 
@@ -37,19 +38,19 @@ function QuantityForm() {
     <>
       <Row className="mb-2">
         <Col xs={3}>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0">Container Number</Form.Label>
-            <Form.Control
+          <HtForm.Group className="mb-2">
+            <HtForm.Label className="mb-0">Container Number</HtForm.Label>
+            <HtForm.Control
               type="number"
               {...register(`quantity.containerNumber`, { min: 0, valueAsNumber: true })}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="quantityContainerType">
+          <HtForm.Group className="mb-2">
+            <HtForm.Label className="mb-0" htmlFor="quantityContainerType">
               Container Type
-            </Form.Label>
+            </HtForm.Label>
             <Controller
               control={control}
               name={`quantity.containerType`}
@@ -66,27 +67,27 @@ function QuantityForm() {
                 );
               }}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
       </Row>
       <Row>
         <Col xs={3}>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0">Total Quantity</Form.Label>
-            <Form.Control
+          <HtForm.Group className="mb-2">
+            <HtForm.Label className="mb-0">Total Quantity</HtForm.Label>
+            <HtForm.Control
               type="number"
               {...register(`quantity.quantity`, {
                 min: 0,
                 valueAsNumber: true,
               })}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
         <Col>
-          <Form.Group className="mb-2">
-            <Form.Label className="mb-0" htmlFor="quantityUnitOfMeasurement">
+          <HtForm.Group className="mb-2">
+            <HtForm.Label className="mb-0" htmlFor="quantityUnitOfMeasurement">
               Units
-            </Form.Label>
+            </HtForm.Label>
             <Controller
               control={control}
               name={`quantity.unitOfMeasurement`}
@@ -103,7 +104,7 @@ function QuantityForm() {
                 );
               }}
             />
-          </Form.Group>
+          </HtForm.Group>
         </Col>
       </Row>
     </>
