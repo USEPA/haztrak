@@ -52,12 +52,10 @@ function ManifestList(): ReactElement {
       <Container>
         <Col>
           {manifests ? (
-            <MtnTable title={'Designated Receiving Facility'} manifests={manifests} />
+            <MtnTable title={`${siteId || 'Your'} Manifests`} manifests={manifests} />
           ) : (
             <></>
           )}
-          {/*{manifests ? MtnTable(manifests.generator, 'Generator') : <></>}*/}
-          {/*{manifests ? MtnTable(manifests.transporter, 'Transporter') : <></>}*/}
         </Col>
       </Container>
     </>
