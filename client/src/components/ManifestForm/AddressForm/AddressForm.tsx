@@ -1,5 +1,6 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { HtForm } from 'components/Ht';
+import HtP from 'components/Ht/HtP';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -20,10 +21,12 @@ interface Props {
 export function AddressForm({ addressType, handlerType, readOnly }: Props) {
   const namePrefix = `${handlerType}.${addressType}`;
   const {
+    getValues,
     control,
     register,
     formState: { errors },
   } = useFormContext();
+
   return (
     <>
       <Row className="mb-2">
@@ -88,23 +91,27 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
             <HtForm.Label className="mb-0" htmlFor={`${namePrefix}State`}>
               State
             </HtForm.Label>
-            <Controller
-              control={control}
-              name={`${namePrefix}.state`}
-              render={({ field, fieldState, formState }) => {
-                return (
-                  <Select
-                    id={`${namePrefix}State`}
-                    {...field}
-                    options={StateCode}
-                    getOptionLabel={(option) => option.name}
-                    getOptionValue={(option) => option.code}
-                    openMenuOnFocus={false}
-                    isDisabled={readOnly}
-                  />
-                );
-              }}
-            />
+            {readOnly ? (
+              <HtP>{getValues(`${namePrefix}.state.name`)}</HtP>
+            ) : (
+              <Controller
+                control={control}
+                name={`${namePrefix}.state`}
+                render={({ field }) => {
+                  return (
+                    <Select
+                      id={`${namePrefix}State`}
+                      {...field}
+                      options={StateCode}
+                      getOptionLabel={(option) => option.name}
+                      getOptionValue={(option) => option.code}
+                      openMenuOnFocus={false}
+                      isDisabled={readOnly}
+                    />
+                  );
+                }}
+              />
+            )}
           </HtForm.Group>
         </Col>
         <Col>
@@ -127,24 +134,28 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
             <HtForm.Label className="mb-0" htmlFor={`${namePrefix}Country`}>
               Country
             </HtForm.Label>
-            <Controller
-              control={control}
-              name={`${namePrefix}.country`}
-              render={({ field, fieldState, formState }) => {
-                return (
-                  <Select
-                    id={`${namePrefix}Country`}
-                    {...field}
-                    defaultValue={CountryCode[0]}
-                    options={CountryCode}
-                    getOptionLabel={(option) => option.name}
-                    getOptionValue={(option) => option.code}
-                    openMenuOnFocus={false}
-                    isDisabled={readOnly}
-                  />
-                );
-              }}
-            />
+            {readOnly ? (
+              <HtP>{getValues(`${namePrefix}.country.name`)}</HtP>
+            ) : (
+              <Controller
+                control={control}
+                name={`${namePrefix}.country`}
+                render={({ field }) => {
+                  return (
+                    <Select
+                      id={`${namePrefix}Country`}
+                      {...field}
+                      defaultValue={CountryCode[0]}
+                      options={CountryCode}
+                      getOptionLabel={(option) => option.name}
+                      getOptionValue={(option) => option.code}
+                      openMenuOnFocus={false}
+                      isDisabled={readOnly}
+                    />
+                  );
+                }}
+              />
+            )}
           </HtForm.Group>
         </Col>
         <ErrorMessage

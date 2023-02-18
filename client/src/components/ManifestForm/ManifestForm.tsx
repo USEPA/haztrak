@@ -1,12 +1,13 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { HtButton, HtCard, HtForm } from 'components/Ht';
 import HandlerDetails from 'components/HandlerDetails';
+import HtP from 'components/Ht/HtP';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import ContactForm from 'components/ManifestForm/ContactForm';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
 import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable/WasteLineTable';
-import React, { forwardRef, useEffect, useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import htApi from 'services';
 import { addMsg, useAppDispatch } from 'store';
@@ -114,16 +115,20 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                     <HtForm.Label htmlFor="status" className="mb-0">
                       Status
                     </HtForm.Label>
-                    <HtForm.Select
-                      id="status"
-                      disabled={readOnly}
-                      aria-label="manifestStatus"
-                      {...manifestMethods.register('status')}
-                    >
-                      <option value="NotAssigned">Draft</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Scheduled">Scheduled</option>
-                    </HtForm.Select>
+                    {readOnly ? (
+                      <HtP>{manifestData?.status}</HtP>
+                    ) : (
+                      <HtForm.Select
+                        id="status"
+                        disabled={readOnly}
+                        aria-label="manifestStatus"
+                        {...manifestMethods.register('status')}
+                      >
+                        <option value="NotAssigned">Draft</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Scheduled">Scheduled</option>
+                      </HtForm.Select>
+                    )}
                   </HtForm.Group>
                 </Col>
                 <Col>
@@ -131,15 +136,19 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                     <HtForm.Label htmlFor="submissionType" className="mb-0">
                       Manifest Type
                     </HtForm.Label>
-                    <HtForm.Select
-                      id="submissionType"
-                      disabled={readOnly}
-                      aria-label="submissionType"
-                      {...manifestMethods.register('submissionType')}
-                    >
-                      <option value="FullElectronic">Electronic</option>
-                      <option value="Hybrid">Hybrid</option>
-                    </HtForm.Select>
+                    {readOnly ? (
+                      <HtP>{manifestData?.submissionType}</HtP>
+                    ) : (
+                      <HtForm.Select
+                        id="submissionType"
+                        disabled={readOnly}
+                        aria-label="submissionType"
+                        {...manifestMethods.register('submissionType')}
+                      >
+                        <option value="FullElectronic">Electronic</option>
+                        <option value="Hybrid">Hybrid</option>
+                      </HtForm.Select>
+                    )}
                   </HtForm.Group>
                 </Col>
               </Row>
