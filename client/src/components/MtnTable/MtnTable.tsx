@@ -4,10 +4,11 @@ import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPen } from '@fortawesome/free-solid-svg-icons';
+import { MtnDetails } from 'types/Manifest/Manifest';
 
-interface ManifestDetails {
-  mtn: string;
-  status: string;
+interface MtnTableProps {
+  title: string;
+  manifests: Array<MtnDetails>;
 }
 
 /**
@@ -15,11 +16,8 @@ interface ManifestDetails {
  * @param manifest
  * @param title
  */
-function MtnTable(
-  manifest: Array<ManifestDetails>,
-  title: string
-): ReactElement | null {
-  if (manifest.length === 0) {
+function MtnTable({ manifests, title }: MtnTableProps): ReactElement | null {
+  if (manifests.length === 0) {
     return <></>;
   }
   return (
@@ -35,7 +33,7 @@ function MtnTable(
             </tr>
           </thead>
           <tbody>
-            {manifest.map(({ mtn, status }, i) => {
+            {manifests.map(({ mtn, status }, i) => {
               return (
                 <tr key={i}>
                   <td>{mtn}</td>

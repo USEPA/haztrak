@@ -6,17 +6,7 @@ import useHtAPI from 'hooks/useHtAPI';
 import useTitle from 'hooks/useTitle';
 import SyncManifestBtn from 'components/SyncManifestBtn';
 import MtnTable from 'components/MtnTable';
-
-interface ManifestDetails {
-  mtn: string;
-  status: string;
-}
-
-interface SiteManifest {
-  generator: Array<ManifestDetails>;
-  transporter: Array<ManifestDetails>;
-  tsd: Array<ManifestDetails>;
-}
+import { MtnDetails } from 'types/Manifest/Manifest';
 
 /**
  * Fetch and display all the manifest tracking number (MTN) known by haztrak
@@ -32,7 +22,7 @@ function ManifestList(): ReactElement {
     getUrl = `trak/site/${siteId}/manifest`;
   }
 
-  const [manifests, loading, error] = useHtAPI<SiteManifest>(getUrl);
+  const [manifests, loading, error] = useHtAPI<Array<MtnDetails>>(getUrl);
 
   if (error) throw error;
 
@@ -57,9 +47,13 @@ function ManifestList(): ReactElement {
       </Container>
       <Container>
         <Col>
-          {manifests ? MtnTable(manifests.tsd, 'Designated Receiving Facility') : <></>}
-          {manifests ? MtnTable(manifests.generator, 'Generator') : <></>}
-          {manifests ? MtnTable(manifests.transporter, 'Transporter') : <></>}
+          {manifests ? (
+            <MtnTable title={'Designated Receiving Facility'} manifests={manifests} />
+          ) : (
+            <></>
+          )}
+          {/*{manifests ? MtnTable(manifests.generator, 'Generator') : <></>}*/}
+          {/*{manifests ? MtnTable(manifests.transporter, 'Transporter') : <></>}*/}
         </Col>
       </Container>
     </>
