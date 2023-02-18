@@ -14,7 +14,7 @@ import { RejectionInfo } from './Rejection';
  * Select details about manifests for display and navigation.
  */
 export interface MtnDetails {
-  mtn: string;
+  manifestTrackingNumber: string;
   status: string;
 }
 

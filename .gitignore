@@ -2,7 +2,7 @@
 **/.env
 .coverage
 .coveragerc
-**/.sqlite3
+**/*.sqlite3
 **/*.rdb
 **/.pytest_cache/
 *.DS_Store

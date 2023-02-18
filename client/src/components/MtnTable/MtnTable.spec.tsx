@@ -5,7 +5,7 @@ import { cleanup, renderWithProviders, screen } from 'test';
 import { MtnDetails } from 'types/Manifest/Manifest';
 
 const manifestDetail: MtnDetails = {
-  mtn: '123456789ELC',
+  manifestTrackingNumber: '123456789ELC',
   status: 'InTransit',
 };
 

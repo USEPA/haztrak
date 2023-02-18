@@ -33,20 +33,26 @@ function MtnTable({ manifests, title }: MtnTableProps): ReactElement | null {
             </tr>
           </thead>
           <tbody>
-            {manifests.map(({ mtn, status }, i) => {
+            {manifests.map(({ manifestTrackingNumber, status }, i) => {
               return (
                 <tr key={i}>
-                  <td>{mtn}</td>
+                  <td>{manifestTrackingNumber}</td>
                   <td>{status}</td>
                   <td>
                     <div className="d-flex justify-content-evenly">
-                      <HtTooltip text={`View: ${mtn}`}>
-                        <Link to={`./${mtn}/view`} aria-label={`viewManifest${mtn}`}>
+                      <HtTooltip text={`View: ${manifestTrackingNumber}`}>
+                        <Link
+                          to={`./${manifestTrackingNumber}/view`}
+                          aria-label={`viewManifest${manifestTrackingNumber}`}
+                        >
                           <FontAwesomeIcon icon={faEye} />
                         </Link>
                       </HtTooltip>
-                      <HtTooltip text={`Edit ${mtn}`}>
-                        <Link to={`./${mtn}/edit`} aria-label={`editManifest${mtn}`}>
+                      <HtTooltip text={`Edit ${manifestTrackingNumber}`}>
+                        <Link
+                          to={`./${manifestTrackingNumber}/edit`}
+                          aria-label={`editManifest${manifestTrackingNumber}`}
+                        >
                           <FontAwesomeIcon icon={faPen} />
                         </Link>
                       </HtTooltip>

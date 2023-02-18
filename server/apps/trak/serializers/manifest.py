@@ -3,8 +3,38 @@ from rest_framework import serializers
 from apps.trak.models import Manifest, Transporter, WasteLine
 from apps.trak.serializers.handler import HandlerSerializer
 from apps.trak.serializers.trak import TrakBaseSerializer
+
 from .transporter import TransporterSerializer
 from .waste_line import WasteLineSerializer
+
+
+class MtnSerializer(TrakBaseSerializer):
+    """
+    MtnSerializer shares select details on a user's manifests.
+    """
+    manifestTrackingNumber = serializers.CharField(
+        source='mtn',
+        required=False,
+    )
+    # status
+    submissionType = serializers.CharField(
+        source='submission_type',
+        required=False,
+    )
+    signatureStatus = serializers.BooleanField(
+        source='signature_status',
+        allow_null=True,
+        default=False,
+    )
+
+    class Meta:
+        model = Manifest
+        fields = [
+            'manifestTrackingNumber',
+            'status',
+            'submissionType',
+            'signatureStatus',
+        ]
 
 
 class ManifestSerializer(TrakBaseSerializer):

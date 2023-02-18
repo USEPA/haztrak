@@ -17,14 +17,18 @@ function ManifestList(): ReactElement {
   useTitle(`${siteId || ''} Manifest`);
   const navigate = useNavigate();
 
-  let getUrl = 'trak/manifest';
+  let getUrl = 'trak/mtn';
   if (siteId) {
-    getUrl = `trak/site/${siteId}/manifest`;
+    getUrl = `trak/mtn/${siteId}`;
+    // getUrl = `trak/mtn`;
   }
 
   const [manifests, loading, error] = useHtAPI<Array<MtnDetails>>(getUrl);
 
-  if (error) throw error;
+  if (error) {
+    console.error(error.message);
+    throw error;
+  }
 
   if (loading) {
     return <HtSpinner />;
