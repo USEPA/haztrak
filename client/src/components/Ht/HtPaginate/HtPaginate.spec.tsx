@@ -34,7 +34,7 @@ describe('HtPaginate', () => {
           onPageChange={() => console.log('blah')}
           currentPage={defaultCurrentPage}
           totalCount={defaultTotalCount}
-          pageSize={defaultPageSize + 10}
+          pageSize={defaultPageSize + defaultTotalCount}
         />
       </>
     );
