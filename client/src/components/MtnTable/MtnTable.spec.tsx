@@ -17,9 +17,10 @@ afterEach(() => {
 });
 
 describe('MtnTable', () => {
-  const tableName = 'Table Title';
-  test('renders', () => {
-    renderWithProviders(<MtnTable title={tableName} manifests={mtnData} />);
-    expect(screen.getByText(tableName)).toBeInTheDocument();
+  test('renders', async () => {
+    renderWithProviders(<MtnTable manifests={mtnData} />);
+    expect(
+      await screen.findAllByText(manifestDetail.manifestTrackingNumber)
+    ).toHaveLength(2);
   });
 });

@@ -125,7 +125,6 @@ function Sidebar(): ReactElement | null {
                 </nav>
               </div>
             </Collapse>
-
             <div className="sb-sidenav-menu-heading">Core</div>
             <Button
               className="bg-dark border-0 nav-link shadow-none"
