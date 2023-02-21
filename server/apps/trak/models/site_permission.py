@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from .rcra_profile import RcraProfile
@@ -50,3 +51,10 @@ class SitePermission(models.Model):
 
     def __str__(self):
         return f'{self.profile.user}: {self.site}'
+
+    def clean(self):
+        if self.site_manager:
+            fields = ['annual_report', 'biennial_report', 'e_manifest', 'my_rcra_id', 'wiets']
+            for field_name in fields:
+                if getattr(self, field_name) != "Certifier":
+                    raise ValidationError(f"The value for the '{field_name}' field must be set to 'Certifier'.")
