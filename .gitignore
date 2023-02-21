@@ -1,5 +1,6 @@
 # Misc files
 **/.env
+**/.secrets
 .coverage
 .coveragerc
 **/*.sqlite3
