@@ -56,6 +56,5 @@ class SitePermission(models.Model):
         if self.site_manager:
             fields = ['annual_report', 'biennial_report', 'e_manifest', 'my_rcra_id', 'wiets']
             for field_name in fields:
-                field_value = getattr(self, field_name)
-                if field_value != "Certifier":
+                if getattr(self, field_name) != "Certifier":
                     raise ValidationError(f"The value for the '{field_name}' field must be set to 'Certifier'.")
