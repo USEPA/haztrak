@@ -1,4 +1,4 @@
-name: Test Haztrak Server
+name: "Test Haztrak Server"
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  run_server_tests:
     runs-on: ubuntu-latest
     defaults:
       run:

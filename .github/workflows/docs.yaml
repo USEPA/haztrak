@@ -1,8 +1,8 @@
-name: Github Pages
+name: "Build Documentation"
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:

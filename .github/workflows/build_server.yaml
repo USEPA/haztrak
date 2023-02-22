@@ -1,4 +1,4 @@
-name: Build  Server Container
+name: "Build Server Container"
 
 on:
   workflow_call:

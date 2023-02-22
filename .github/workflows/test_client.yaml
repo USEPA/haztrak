@@ -1,4 +1,4 @@
-name: Test Haztrak Client
+name: "Test Haztrak Client"
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  run_client_tests:
     runs-on: ubuntu-latest
     defaults:
       run:
