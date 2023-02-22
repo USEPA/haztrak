@@ -25,8 +25,7 @@ class RcraProfileService:
 
     def __init__(self, *, username: str, rcrainfo: RcrainfoService = None, logger: Logger = None):
         self.username = username
-        self.profile, created = RcraProfile.objects.get_or_create(
-            user__username=self.username)
+        self.profile, created = RcraProfile.objects.get_or_create(user__username=self.username)
         if rcrainfo is not None:
             self.rcrainfo = rcrainfo
         else:
@@ -54,22 +53,18 @@ class RcraProfileService:
         3. If a Haztrak Site is not present, create one
         """
         try:
-            handler_service = HandlerService(username=self.username,
-                                             rcrainfo=self.rcrainfo)
+            handler_service = HandlerService(username=self.username, rcrainfo=self.rcrainfo)
             site_service = SiteService(username=self.username, rcrainfo=self.rcrainfo)
             if username:
                 user_to_update: str = username
             else:
                 user_to_update = self.username
-            user_profile_response = self.rcrainfo.get_user_profile(
-                username=user_to_update)
+            user_profile_response = self.rcrainfo.get_user_profile(username=user_to_update)
             permissions = self._parse_rcra_response(rcra_response=user_profile_response)
             for site_permission in permissions:
-                handler = handler_service.get_or_pull_handler(
-                    site_permission['siteId'])
+                handler = handler_service.get_or_pull_handler(site_permission["siteId"])
                 site = site_service.create_or_update_site(handler=handler)
-                self._create_or_update_rcra_permission(epa_permission=site_permission,
-                                                       site=site)
+                self._create_or_update_rcra_permission(epa_permission=site_permission, site=site)
 
         except (RcraProfile.DoesNotExist, Site.DoesNotExist) as exc:
             raise Exception(exc)
@@ -77,17 +72,17 @@ class RcraProfileService:
     @staticmethod
     def _parse_rcra_response(*, rcra_response: dict) -> list:
         permissions = []
-        for permission_json in rcra_response['users'][0]['sites']:
+        for permission_json in rcra_response["users"][0]["sites"]:
             permissions.append(permission_json)
         return permissions
 
     @transaction.atomic
-    def _create_or_update_rcra_permission(self, *, epa_permission: dict,
-                                          site: Site) -> SitePermission:
+    def _create_or_update_rcra_permission(
+        self, *, epa_permission: dict, site: Site
+    ) -> SitePermission:
         permission_serializer = EpaPermissionSerializer(data=epa_permission)
         if permission_serializer.is_valid():
             return SitePermission.objects.update_or_create(
-                **permission_serializer.validated_data,
-                site=site,
-                profile=self.profile)
-        raise Exception('Error Attempting to create SitePermission')
+                **permission_serializer.validated_data, site=site, profile=self.profile
+            )
+        raise Exception("Error Attempting to create SitePermission")

@@ -8,7 +8,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -17,173 +16,594 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Address',
+            name="Address",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('street_number', models.CharField(blank=True, max_length=12, null=True)),
-                ('address1', models.CharField(max_length=50, verbose_name='Address 1')),
-                ('address2', models.CharField(blank=True, default=None, max_length=50, null=True, verbose_name='Address 2')),
-                ('city', models.CharField(max_length=25)),
-                ('state', models.CharField(blank=True, choices=[('AK', 'Alaska'), ('AL', 'Alabama'), ('AP', 'Armed Forces Pacific'), ('AR', 'Arkansas'), ('AZ', 'Arizona'), ('CA', 'California'), ('CO', 'Colorado'), ('CT', 'Connecticut'), ('DC', 'Washington DC'), ('DE', 'Delaware'), ('FL', 'Florida'), ('GA', 'Georgia'), ('GU', 'Guam'), ('HI', 'Hawaii'), ('IA', 'Iowa'), ('ID', 'Idaho'), ('IL', 'Illinois'), ('IN', 'Indiana'), ('KS', 'Kansas'), ('KY', 'Kentucky'), ('LA', 'Louisiana'), ('MA', 'Massachusetts'), ('MD', 'Maryland'), ('ME', 'Maine'), ('MI', 'Michigan'), ('MN', 'Minnesota'), ('MO', 'Missouri'), ('MS', 'Mississippi'), ('MT', 'Montana'), ('NC', 'North Carolina'), ('ND', 'North Dakota'), ('NE', 'Nebraska'), ('NH', 'New Hampshire'), ('NJ', 'New Jersey'), ('NM', 'New Mexico'), ('NV', 'Nevada'), ('NY', 'New York'), ('OH', 'Ohio'), ('OK', 'Oklahoma'), ('OR', 'Oregon'), ('PA', 'Pennsylvania'), ('PR', 'Puerto Rico'), ('RI', 'Rhode Island'), ('SC', 'South Carolina'), ('SD', 'South Dakota'), ('TN', 'Tennessee'), ('TX', 'Texas'), ('UT', 'Utah'), ('VA', 'Virginia'), ('VI', 'Virgin Islands'), ('VT', 'Vermont'), ('WA', 'Washington'), ('WI', 'Wisconsin'), ('WV', 'West Virginia'), ('WY', 'Wyoming'), ('XA', 'REGION 01 PURVIEW'), ('XB', 'REGION 02 PURVIEW'), ('XC', 'REGION 03 PURVIEW'), ('XD', 'REGION 04 PURVIEW'), ('XE', 'REGION 05 PURVIEW'), ('XF', 'REGION 06 PURVIEW'), ('XG', 'REGION 07 PURVIEW'), ('XH', 'REGION 08 PURVIEW'), ('XI', 'REGION 09 PURVIEW'), ('XJ', 'REGION 10 PURVIEW')], max_length=3, null=True)),
-                ('country', models.CharField(blank=True, choices=[('US', 'United States'), ('MX', 'Mexico'), ('CA', 'Canada')], max_length=3, null=True)),
-                ('zip', models.CharField(blank=True, max_length=5, null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("street_number", models.CharField(blank=True, max_length=12, null=True)),
+                ("address1", models.CharField(max_length=50, verbose_name="Address 1")),
+                (
+                    "address2",
+                    models.CharField(
+                        blank=True,
+                        default=None,
+                        max_length=50,
+                        null=True,
+                        verbose_name="Address 2",
+                    ),
+                ),
+                ("city", models.CharField(max_length=25)),
+                (
+                    "state",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("AK", "Alaska"),
+                            ("AL", "Alabama"),
+                            ("AP", "Armed Forces Pacific"),
+                            ("AR", "Arkansas"),
+                            ("AZ", "Arizona"),
+                            ("CA", "California"),
+                            ("CO", "Colorado"),
+                            ("CT", "Connecticut"),
+                            ("DC", "Washington DC"),
+                            ("DE", "Delaware"),
+                            ("FL", "Florida"),
+                            ("GA", "Georgia"),
+                            ("GU", "Guam"),
+                            ("HI", "Hawaii"),
+                            ("IA", "Iowa"),
+                            ("ID", "Idaho"),
+                            ("IL", "Illinois"),
+                            ("IN", "Indiana"),
+                            ("KS", "Kansas"),
+                            ("KY", "Kentucky"),
+                            ("LA", "Louisiana"),
+                            ("MA", "Massachusetts"),
+                            ("MD", "Maryland"),
+                            ("ME", "Maine"),
+                            ("MI", "Michigan"),
+                            ("MN", "Minnesota"),
+                            ("MO", "Missouri"),
+                            ("MS", "Mississippi"),
+                            ("MT", "Montana"),
+                            ("NC", "North Carolina"),
+                            ("ND", "North Dakota"),
+                            ("NE", "Nebraska"),
+                            ("NH", "New Hampshire"),
+                            ("NJ", "New Jersey"),
+                            ("NM", "New Mexico"),
+                            ("NV", "Nevada"),
+                            ("NY", "New York"),
+                            ("OH", "Ohio"),
+                            ("OK", "Oklahoma"),
+                            ("OR", "Oregon"),
+                            ("PA", "Pennsylvania"),
+                            ("PR", "Puerto Rico"),
+                            ("RI", "Rhode Island"),
+                            ("SC", "South Carolina"),
+                            ("SD", "South Dakota"),
+                            ("TN", "Tennessee"),
+                            ("TX", "Texas"),
+                            ("UT", "Utah"),
+                            ("VA", "Virginia"),
+                            ("VI", "Virgin Islands"),
+                            ("VT", "Vermont"),
+                            ("WA", "Washington"),
+                            ("WI", "Wisconsin"),
+                            ("WV", "West Virginia"),
+                            ("WY", "Wyoming"),
+                            ("XA", "REGION 01 PURVIEW"),
+                            ("XB", "REGION 02 PURVIEW"),
+                            ("XC", "REGION 03 PURVIEW"),
+                            ("XD", "REGION 04 PURVIEW"),
+                            ("XE", "REGION 05 PURVIEW"),
+                            ("XF", "REGION 06 PURVIEW"),
+                            ("XG", "REGION 07 PURVIEW"),
+                            ("XH", "REGION 08 PURVIEW"),
+                            ("XI", "REGION 09 PURVIEW"),
+                            ("XJ", "REGION 10 PURVIEW"),
+                        ],
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "country",
+                    models.CharField(
+                        blank=True,
+                        choices=[("US", "United States"), ("MX", "Mexico"), ("CA", "Canada")],
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                ("zip", models.CharField(blank=True, max_length=5, null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Contact',
+            name="Contact",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(blank=True, max_length=38, null=True)),
-                ('middle_initial', models.CharField(blank=True, max_length=1, null=True)),
-                ('last_name', models.CharField(blank=True, max_length=38, null=True)),
-                ('email', models.EmailField(max_length=254)),
-                ('company_name', models.CharField(blank=True, max_length=80, null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("first_name", models.CharField(blank=True, max_length=38, null=True)),
+                ("middle_initial", models.CharField(blank=True, max_length=1, null=True)),
+                ("last_name", models.CharField(blank=True, max_length=38, null=True)),
+                ("email", models.EmailField(max_length=254)),
+                ("company_name", models.CharField(blank=True, max_length=80, null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='EpaPhone',
+            name="EpaPhone",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('number', apps.trak.models.contact.EpaPhoneNumber(max_length=12)),
-                ('extension', models.CharField(blank=True, max_length=6, null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("number", apps.trak.models.contact.EpaPhoneNumber(max_length=12)),
+                ("extension", models.CharField(blank=True, max_length=6, null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Handler',
+            name="Handler",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('site_type', models.CharField(choices=[('designatedFacility', 'Tsdf'), ('generator', 'Generator'), ('transporter', 'Transporter'), ('broker', 'Broker')], max_length=20)),
-                ('epa_id', models.CharField(max_length=25, verbose_name='EPA Id number')),
-                ('name', models.CharField(max_length=200)),
-                ('modified', models.BooleanField(blank=True, null=True)),
-                ('registered', models.BooleanField(blank=True, null=True)),
-                ('emergency_phone', models.JSONField(blank=True, null=True)),
-                ('electronic_signatures_info', models.JSONField(blank=True, null=True, verbose_name='Electronic signature info')),
-                ('gis_primary', models.BooleanField(blank=True, default=False, null=True, verbose_name='GIS primary')),
-                ('can_esign', models.BooleanField(blank=True, null=True, verbose_name='Can electronically sign')),
-                ('limited_esign', models.BooleanField(blank=True, null=True, verbose_name='Limited electronic signing ability')),
-                ('registered_emanifest_user', models.BooleanField(blank=True, default=False, null=True, verbose_name='Has Registered e-manifest user')),
-                ('contact', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='trak.contact', verbose_name='Contact Information')),
-                ('mail_address', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mail_address', to='trak.address')),
-                ('site_address', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='site_address', to='trak.address')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "site_type",
+                    models.CharField(
+                        choices=[
+                            ("designatedFacility", "Tsdf"),
+                            ("generator", "Generator"),
+                            ("transporter", "Transporter"),
+                            ("broker", "Broker"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                ("epa_id", models.CharField(max_length=25, verbose_name="EPA Id number")),
+                ("name", models.CharField(max_length=200)),
+                ("modified", models.BooleanField(blank=True, null=True)),
+                ("registered", models.BooleanField(blank=True, null=True)),
+                ("emergency_phone", models.JSONField(blank=True, null=True)),
+                (
+                    "electronic_signatures_info",
+                    models.JSONField(
+                        blank=True, null=True, verbose_name="Electronic signature info"
+                    ),
+                ),
+                (
+                    "gis_primary",
+                    models.BooleanField(
+                        blank=True, default=False, null=True, verbose_name="GIS primary"
+                    ),
+                ),
+                (
+                    "can_esign",
+                    models.BooleanField(
+                        blank=True, null=True, verbose_name="Can electronically sign"
+                    ),
+                ),
+                (
+                    "limited_esign",
+                    models.BooleanField(
+                        blank=True, null=True, verbose_name="Limited electronic signing ability"
+                    ),
+                ),
+                (
+                    "registered_emanifest_user",
+                    models.BooleanField(
+                        blank=True,
+                        default=False,
+                        null=True,
+                        verbose_name="Has Registered e-manifest user",
+                    ),
+                ),
+                (
+                    "contact",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="trak.contact",
+                        verbose_name="Contact Information",
+                    ),
+                ),
+                (
+                    "mail_address",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="mail_address",
+                        to="trak.address",
+                    ),
+                ),
+                (
+                    "site_address",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="site_address",
+                        to="trak.address",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Manifest',
+            name="Manifest",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_date', models.DateTimeField(auto_now=True, null=True)),
-                ('update_date', models.DateTimeField(auto_now=True)),
-                ('mtn', models.CharField(default=apps.trak.models.manifest.draft_mtn, max_length=30, verbose_name='manifest Tracking Number')),
-                ('status', models.CharField(choices=[('NotAssigned', 'Not Assigned'), ('Pending', 'Pending'), ('Scheduled', 'Scheduled'), ('InTransit', 'In Transit'), ('ReadyForSignature', 'Ready for Signature'), ('Signed', 'Signed'), ('Corrected', 'Corrected'), ('UnderCorrection', 'Under Correction'), ('MtnValidationFailed', 'MTN Validation Failed')], default='NotAssigned', max_length=25)),
-                ('submission_type', models.CharField(choices=[('FullElectronic', 'Full Electronic'), ('DataImage5Copy', 'Data + Image'), ('Hybrid', 'Hybrid'), ('Image', 'Image')], default='FullElectronic', max_length=25)),
-                ('signature_status', models.BooleanField(blank=True, null=True)),
-                ('origin_type', models.CharField(choices=[('Web', 'Web'), ('Service', 'Service'), ('Mail', 'Mail')], default='Service', max_length=25)),
-                ('shipped_date', models.DateTimeField(blank=True, null=True)),
-                ('potential_ship_date', models.DateTimeField(blank=True, null=True, verbose_name='Potential ship date')),
-                ('received_date', models.DateTimeField(blank=True, null=True)),
-                ('certified_date', models.DateTimeField(blank=True, null=True)),
-                ('certified_by', models.JSONField(blank=True, null=True)),
-                ('broker', models.JSONField(blank=True, null=True)),
-                ('rejection', models.BooleanField(blank=True, default=False)),
-                ('rejection_info', models.JSONField(blank=True, null=True, verbose_name='Rejection Information')),
-                ('discrepancy', models.BooleanField(blank=True, default=False)),
-                ('residue', models.BooleanField(blank=True, default=False)),
-                ('residue_new_mtn', models.JSONField(blank=True, default=list, verbose_name='Residue new MTN')),
-                ('import_flag', models.BooleanField(blank=True, default=False, verbose_name='Import')),
-                ('import_info', models.JSONField(blank=True, null=True, verbose_name='Import information')),
-                ('contains_residue_or_rejection', models.BooleanField(blank=True, null=True, verbose_name='Contains previous rejection or residue waste')),
-                ('printed_document', models.JSONField(blank=True, null=True)),
-                ('form_document', models.JSONField(blank=True, null=True)),
-                ('additional_info', models.JSONField(blank=True, null=True)),
-                ('correction_info', models.JSONField(blank=True, null=True)),
-                ('ppc_status', models.JSONField(blank=True, null=True, verbose_name='PPC info')),
-                ('locked', models.BooleanField(blank=True, null=True)),
-                ('locked_reason', models.CharField(blank=True, choices=[('AsyncSign', 'Asynchronous signature'), ('EpaChangeBiller', 'EPA change biller'), ('EpaCorrection', 'EPA corrections')], max_length=25, null=True)),
-                ('transfer_requested', models.BooleanField(blank=True, null=True)),
-                ('transfer_status', models.CharField(blank=True, max_length=200, null=True)),
-                ('original_sub_type', models.CharField(choices=[('FullElectronic', 'Full Electronic'), ('DataImage5Copy', 'Data + Image'), ('Hybrid', 'Hybrid'), ('Image', 'Image')], max_length=25, null=True, verbose_name='Original Submission Type')),
-                ('transfer_count', models.IntegerField(blank=True, null=True)),
-                ('next_transfer_time', models.DateTimeField(blank=True, null=True, verbose_name='Next Transfer Time')),
-                ('generator', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='generator', to='trak.handler')),
-                ('tsd', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='designated_facility', to='trak.handler', verbose_name='Designated facility')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("created_date", models.DateTimeField(auto_now=True, null=True)),
+                ("update_date", models.DateTimeField(auto_now=True)),
+                (
+                    "mtn",
+                    models.CharField(
+                        default=apps.trak.models.manifest.draft_mtn,
+                        max_length=30,
+                        verbose_name="manifest Tracking Number",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("NotAssigned", "Not Assigned"),
+                            ("Pending", "Pending"),
+                            ("Scheduled", "Scheduled"),
+                            ("InTransit", "In Transit"),
+                            ("ReadyForSignature", "Ready for Signature"),
+                            ("Signed", "Signed"),
+                            ("Corrected", "Corrected"),
+                            ("UnderCorrection", "Under Correction"),
+                            ("MtnValidationFailed", "MTN Validation Failed"),
+                        ],
+                        default="NotAssigned",
+                        max_length=25,
+                    ),
+                ),
+                (
+                    "submission_type",
+                    models.CharField(
+                        choices=[
+                            ("FullElectronic", "Full Electronic"),
+                            ("DataImage5Copy", "Data + Image"),
+                            ("Hybrid", "Hybrid"),
+                            ("Image", "Image"),
+                        ],
+                        default="FullElectronic",
+                        max_length=25,
+                    ),
+                ),
+                ("signature_status", models.BooleanField(blank=True, null=True)),
+                (
+                    "origin_type",
+                    models.CharField(
+                        choices=[("Web", "Web"), ("Service", "Service"), ("Mail", "Mail")],
+                        default="Service",
+                        max_length=25,
+                    ),
+                ),
+                ("shipped_date", models.DateTimeField(blank=True, null=True)),
+                (
+                    "potential_ship_date",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="Potential ship date"
+                    ),
+                ),
+                ("received_date", models.DateTimeField(blank=True, null=True)),
+                ("certified_date", models.DateTimeField(blank=True, null=True)),
+                ("certified_by", models.JSONField(blank=True, null=True)),
+                ("broker", models.JSONField(blank=True, null=True)),
+                ("rejection", models.BooleanField(blank=True, default=False)),
+                (
+                    "rejection_info",
+                    models.JSONField(blank=True, null=True, verbose_name="Rejection Information"),
+                ),
+                ("discrepancy", models.BooleanField(blank=True, default=False)),
+                ("residue", models.BooleanField(blank=True, default=False)),
+                (
+                    "residue_new_mtn",
+                    models.JSONField(blank=True, default=list, verbose_name="Residue new MTN"),
+                ),
+                (
+                    "import_flag",
+                    models.BooleanField(blank=True, default=False, verbose_name="Import"),
+                ),
+                (
+                    "import_info",
+                    models.JSONField(blank=True, null=True, verbose_name="Import information"),
+                ),
+                (
+                    "contains_residue_or_rejection",
+                    models.BooleanField(
+                        blank=True,
+                        null=True,
+                        verbose_name="Contains previous rejection or residue waste",
+                    ),
+                ),
+                ("printed_document", models.JSONField(blank=True, null=True)),
+                ("form_document", models.JSONField(blank=True, null=True)),
+                ("additional_info", models.JSONField(blank=True, null=True)),
+                ("correction_info", models.JSONField(blank=True, null=True)),
+                ("ppc_status", models.JSONField(blank=True, null=True, verbose_name="PPC info")),
+                ("locked", models.BooleanField(blank=True, null=True)),
+                (
+                    "locked_reason",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("AsyncSign", "Asynchronous signature"),
+                            ("EpaChangeBiller", "EPA change biller"),
+                            ("EpaCorrection", "EPA corrections"),
+                        ],
+                        max_length=25,
+                        null=True,
+                    ),
+                ),
+                ("transfer_requested", models.BooleanField(blank=True, null=True)),
+                ("transfer_status", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "original_sub_type",
+                    models.CharField(
+                        choices=[
+                            ("FullElectronic", "Full Electronic"),
+                            ("DataImage5Copy", "Data + Image"),
+                            ("Hybrid", "Hybrid"),
+                            ("Image", "Image"),
+                        ],
+                        max_length=25,
+                        null=True,
+                        verbose_name="Original Submission Type",
+                    ),
+                ),
+                ("transfer_count", models.IntegerField(blank=True, null=True)),
+                (
+                    "next_transfer_time",
+                    models.DateTimeField(blank=True, null=True, verbose_name="Next Transfer Time"),
+                ),
+                (
+                    "generator",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="generator",
+                        to="trak.handler",
+                    ),
+                ),
+                (
+                    "tsd",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="designated_facility",
+                        to="trak.handler",
+                        verbose_name="Designated facility",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='RcraProfile',
+            name="RcraProfile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('rcra_api_key', models.CharField(blank=True, max_length=128, null=True)),
-                ('rcra_api_id', models.CharField(blank=True, max_length=128, null=True)),
-                ('rcra_username', models.CharField(blank=True, max_length=128)),
-                ('phone_number', models.CharField(blank=True, max_length=15, null=True)),
-                ('email', models.EmailField(max_length=254)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("rcra_api_key", models.CharField(blank=True, max_length=128, null=True)),
+                ("rcra_api_id", models.CharField(blank=True, max_length=128, null=True)),
+                ("rcra_username", models.CharField(blank=True, max_length=128)),
+                ("phone_number", models.CharField(blank=True, max_length=15, null=True)),
+                ("email", models.EmailField(max_length=254)),
             ],
         ),
         migrations.CreateModel(
-            name='Site',
+            name="Site",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, verbose_name='site Alias')),
-                ('epa_site', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='trak.handler', verbose_name='Handler')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(max_length=200, verbose_name="site Alias")),
+                (
+                    "epa_site",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="trak.handler",
+                        verbose_name="Handler",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='WasteLine',
+            name="WasteLine",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('dot_hazardous', models.BooleanField(verbose_name='DOT hazardous')),
-                ('dot_info', models.JSONField(blank=True, null=True, verbose_name='DOT information')),
-                ('quantity', models.JSONField(blank=True, null=True)),
-                ('hazardous_waste', models.JSONField(blank=True, null=True)),
-                ('line_number', models.PositiveIntegerField(verbose_name='Waste line number')),
-                ('br', models.BooleanField(verbose_name='BR info provided')),
-                ('br_info', models.JSONField(blank=True, null=True, verbose_name='BR information')),
-                ('management_method', models.JSONField(blank=True, null=True, verbose_name='Management method code')),
-                ('pcb', models.BooleanField(verbose_name='Contains PCBs')),
-                ('pcb_infos', models.JSONField(blank=True, null=True, verbose_name='PCB information')),
-                ('discrepancy_info', models.JSONField(blank=True, null=True, verbose_name='Discrepancy-Residue information')),
-                ('epa_waste', models.BooleanField(verbose_name='EPA waste')),
-                ('additional_info', models.JSONField(blank=True, null=True)),
-                ('manifest', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='wastes', to='trak.manifest')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("dot_hazardous", models.BooleanField(verbose_name="DOT hazardous")),
+                (
+                    "dot_info",
+                    models.JSONField(blank=True, null=True, verbose_name="DOT information"),
+                ),
+                ("quantity", models.JSONField(blank=True, null=True)),
+                ("hazardous_waste", models.JSONField(blank=True, null=True)),
+                ("line_number", models.PositiveIntegerField(verbose_name="Waste line number")),
+                ("br", models.BooleanField(verbose_name="BR info provided")),
+                (
+                    "br_info",
+                    models.JSONField(blank=True, null=True, verbose_name="BR information"),
+                ),
+                (
+                    "management_method",
+                    models.JSONField(blank=True, null=True, verbose_name="Management method code"),
+                ),
+                ("pcb", models.BooleanField(verbose_name="Contains PCBs")),
+                (
+                    "pcb_infos",
+                    models.JSONField(blank=True, null=True, verbose_name="PCB information"),
+                ),
+                (
+                    "discrepancy_info",
+                    models.JSONField(
+                        blank=True, null=True, verbose_name="Discrepancy-Residue information"
+                    ),
+                ),
+                ("epa_waste", models.BooleanField(verbose_name="EPA waste")),
+                ("additional_info", models.JSONField(blank=True, null=True)),
+                (
+                    "manifest",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="wastes",
+                        to="trak.manifest",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Transporter',
+            name="Transporter",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order', models.IntegerField()),
-                ('handler', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='trak.handler')),
-                ('manifest', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='transporters', to='trak.manifest')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("order", models.IntegerField()),
+                (
+                    "handler",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="trak.handler"
+                    ),
+                ),
+                (
+                    "manifest",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="transporters",
+                        to="trak.manifest",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='SitePermission',
+            name="SitePermission",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('site_manager', models.BooleanField(default=False)),
-                ('annual_report', models.CharField(choices=[('Certifier', 'Certifier'), ('Preparer', 'Preparer'), ('Viewer', 'Viewer')], max_length=12)),
-                ('biennial_report', models.CharField(choices=[('Certifier', 'Certifier'), ('Preparer', 'Preparer'), ('Viewer', 'Viewer')], max_length=12)),
-                ('e_manifest', models.CharField(choices=[('Certifier', 'Certifier'), ('Preparer', 'Preparer'), ('Viewer', 'Viewer')], max_length=12)),
-                ('my_rcra_id', models.CharField(choices=[('Certifier', 'Certifier'), ('Preparer', 'Preparer'), ('Viewer', 'Viewer')], max_length=12)),
-                ('wiets', models.CharField(choices=[('Certifier', 'Certifier'), ('Preparer', 'Preparer'), ('Viewer', 'Viewer')], max_length=12)),
-                ('profile', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='site_permission', to='trak.rcraprofile')),
-                ('site', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='trak.site')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("site_manager", models.BooleanField(default=False)),
+                (
+                    "annual_report",
+                    models.CharField(
+                        choices=[
+                            ("Certifier", "Certifier"),
+                            ("Preparer", "Preparer"),
+                            ("Viewer", "Viewer"),
+                        ],
+                        max_length=12,
+                    ),
+                ),
+                (
+                    "biennial_report",
+                    models.CharField(
+                        choices=[
+                            ("Certifier", "Certifier"),
+                            ("Preparer", "Preparer"),
+                            ("Viewer", "Viewer"),
+                        ],
+                        max_length=12,
+                    ),
+                ),
+                (
+                    "e_manifest",
+                    models.CharField(
+                        choices=[
+                            ("Certifier", "Certifier"),
+                            ("Preparer", "Preparer"),
+                            ("Viewer", "Viewer"),
+                        ],
+                        max_length=12,
+                    ),
+                ),
+                (
+                    "my_rcra_id",
+                    models.CharField(
+                        choices=[
+                            ("Certifier", "Certifier"),
+                            ("Preparer", "Preparer"),
+                            ("Viewer", "Viewer"),
+                        ],
+                        max_length=12,
+                    ),
+                ),
+                (
+                    "wiets",
+                    models.CharField(
+                        choices=[
+                            ("Certifier", "Certifier"),
+                            ("Preparer", "Preparer"),
+                            ("Viewer", "Viewer"),
+                        ],
+                        max_length=12,
+                    ),
+                ),
+                (
+                    "profile",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="site_permission",
+                        to="trak.rcraprofile",
+                    ),
+                ),
+                (
+                    "site",
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="trak.site"),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='rcraprofile',
-            name='epa_sites',
-            field=models.ManyToManyField(blank=True, related_name='sites', to='trak.site'),
+            model_name="rcraprofile",
+            name="epa_sites",
+            field=models.ManyToManyField(blank=True, related_name="sites", to="trak.site"),
         ),
         migrations.AddField(
-            model_name='rcraprofile',
-            name='user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="rcraprofile",
+            name="user",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='contact',
-            name='phone',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='trak.epaphone'),
+            model_name="contact",
+            name="phone",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="trak.epaphone",
+            ),
         ),
     ]

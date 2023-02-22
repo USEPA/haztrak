@@ -18,7 +18,7 @@ class RcrainfoService(RcrainfoClient):
         else:
             self.profile = None
         if rcrainfo_env is None:
-            rcrainfo_env = os.getenv('HT_RCRAINFO_ENV', 'preprod')
+            rcrainfo_env = os.getenv("HT_RCRAINFO_ENV", "preprod")
         super().__init__(rcrainfo_env, **kwargs)
 
     @property

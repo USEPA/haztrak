@@ -4,15 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('trak', '0008_alter_handler_site_type'),
+        ("trak", "0008_alter_handler_site_type"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='handler',
-            name='site_type',
-            field=models.CharField(blank=True, choices=[('Tsdf', 'Tsdf'), ('Generator', 'Generator'), ('Transporter', 'Transporter'), ('Broker', 'Broker')], max_length=20, null=True),
+            model_name="handler",
+            name="site_type",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("Tsdf", "Tsdf"),
+                    ("Generator", "Generator"),
+                    ("Transporter", "Transporter"),
+                    ("Broker", "Broker"),
+                ],
+                max_length=20,
+                null=True,
+            ),
         ),
     ]

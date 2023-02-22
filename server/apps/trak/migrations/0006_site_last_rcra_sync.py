@@ -4,15 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('trak', '0004_alter_handler_epa_id_alter_site_name_and_more_squashed_0005_remove_rcraprofile_epa_sites'),
+        (
+            "trak",
+            "0004_alter_handler_epa_id_alter_site_name_and_more_squashed_0005_remove_rcraprofile_epa_sites",
+        ),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='site',
-            name='last_rcra_sync',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Last Sync with RCRAInfo'),
+            model_name="site",
+            name="last_rcra_sync",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="Last Sync with RCRAInfo"
+            ),
         ),
     ]

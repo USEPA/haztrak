@@ -15,8 +15,5 @@ def get_handler(self, *, site_id: str, username: str) -> str:
         handler = handler_service.pull_rcra_handler(site_id=site_id)
         return handler.epa_id
     except Exception as exc:
-        self.update_state(
-            state=states.FAILURE,
-            meta=f'Internal Error {exc}'
-        )
+        self.update_state(state=states.FAILURE, meta=f"Internal Error {exc}")
         raise Ignore()

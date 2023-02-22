@@ -8,7 +8,8 @@ from apps.trak.views import ManifestView
 
 class TestManifestCRUD(TestApiClient):
     """Tests the for the Manifest ModelViewSet"""
-    base_url = '/api/trak/manifest'
+
+    base_url = "/api/trak/manifest"
     factory = APIRequestFactory()
 
     @pytest.fixture(autouse=True)
@@ -20,17 +21,19 @@ class TestManifestCRUD(TestApiClient):
         self.manifest_json = json_100031134elc
 
     def test_get_manifest(self):
-        request = self.factory.get(f'{self.base_url}/{self.manifest.mtn}')
+        request = self.factory.get(f"{self.base_url}/{self.manifest.mtn}")
         force_authenticate(request, self.user)
-        response: Response = ManifestView.as_view({'get': 'retrieve'})(request,
-                                                                       mtn=self.manifest.mtn)
+        response: Response = ManifestView.as_view({"get": "retrieve"})(
+            request, mtn=self.manifest.mtn
+        )
         assert response.status_code == 200
-        assert response.data['manifestTrackingNumber'] == self.manifest.mtn
+        assert response.data["manifestTrackingNumber"] == self.manifest.mtn
 
     def test_create_manifest(self):
-        request = self.factory.post(f'{self.base_url}', self.manifest_json, format='json')
+        request = self.factory.post(f"{self.base_url}", self.manifest_json, format="json")
         force_authenticate(request, self.user)
-        response: Response = ManifestView.as_view({'post': 'create'})(request)
+        response: Response = ManifestView.as_view({"post": "create"})(request)
         assert response.status_code == 201
-        assert response.data['manifestTrackingNumber'] == self.manifest_json.get(
-            'manifestTrackingNumber')
+        assert response.data["manifestTrackingNumber"] == self.manifest_json.get(
+            "manifestTrackingNumber"
+        )

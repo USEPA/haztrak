@@ -28,7 +28,7 @@ class LocalityField(serializers.Field):
 
     def to_internal_value(self, data):
         try:
-            return data['code']
+            return data["code"]
         except KeyError:
             raise ValidationError(f'"code" field is required, provided: {data}')
 
@@ -37,8 +37,9 @@ class AddressSerializer(TrakBaseSerializer):
     """
     Address model serializer for JSON representation
     """
+
     streetNumber = serializers.CharField(
-        source='street_number',
+        source="street_number",
         required=False,
     )
     state = LocalityField(STATES)
@@ -47,11 +48,11 @@ class AddressSerializer(TrakBaseSerializer):
     class Meta:
         model = Address
         fields = [
-            'streetNumber',
-            'address1',
-            'address2',
-            'city',
-            'state',
-            'country',
-            'zip',
+            "streetNumber",
+            "address1",
+            "address2",
+            "city",
+            "state",
+            "country",
+            "zip",
         ]

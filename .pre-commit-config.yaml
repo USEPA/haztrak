@@ -22,21 +22,15 @@ repos:
             \.idea\/.*|
             \.vscode\/.*|
           )$
-  #  - repo: https://github.com/ambv/black
-  #    rev: stable
-  #    hooks:
-  #      - id: black
-  #        language_version: python3.11
-  - repo: https://github.com/pycqa/isort
-    rev: 5.10.1
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: "v0.0.251"
     hooks:
-      - id: isort
-        name: isort (python)
-  #  - repo: https://gitlab.com/pycqa/flake8
-  #    rev: 3.8.4
-  #    hooks:
-  #      - id: flake8
-  #        args: [--config, server/setup.cfg]
+      - id: ruff
+  - repo: https://github.com/ambv/black
+    rev: stable
+    hooks:
+      - id: black
+        language_version: python3.11
   - repo: local
     hooks:
       - id: pre-commit-django-migrations

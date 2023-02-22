@@ -20,7 +20,5 @@ def pull_manifest(self: Task, *, mtn: [str], username: str) -> dict:
     except (ConnectionError, TimeoutError):
         raise Reject()
     except Exception as exc:
-        self.update_state(
-            state=states.FAILURE,
-            meta=f'unknown error: {exc}')
+        self.update_state(state=states.FAILURE, meta=f"unknown error: {exc}")
         raise Ignore()
