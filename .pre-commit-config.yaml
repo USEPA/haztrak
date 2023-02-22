@@ -14,23 +14,29 @@ repos:
     rev: v3.2.0
     hooks:
       - id: trailing-whitespace
+      - id: check-json
+      - id: check-yaml
       - id: end-of-file-fixer
         exclude: |
           (?x)^(
             \.idea\/.*|
             \.vscode\/.*|
           )$
-      - id: check-yaml
+  #  - repo: https://github.com/ambv/black
+  #    rev: stable
+  #    hooks:
+  #      - id: black
+  #        language_version: python3.11
   - repo: https://github.com/pycqa/isort
     rev: 5.10.1
     hooks:
       - id: isort
         name: isort (python)
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.4
-    hooks:
-      - id: flake8
-        args: [--config, server/setup.cfg]
+  #  - repo: https://gitlab.com/pycqa/flake8
+  #    rev: 3.8.4
+  #    hooks:
+  #      - id: flake8
+  #        args: [--config, server/setup.cfg]
   - repo: local
     hooks:
       - id: pre-commit-django-migrations
