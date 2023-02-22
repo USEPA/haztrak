@@ -75,19 +75,12 @@
           "type": "boolean"
         }
       },
-      "required": [
-        "canEsign"
-      ],
+      "required": ["canEsign"],
       "additionalProperties": false
     },
     "SiteType": {
       "type": "string",
-      "enum": [
-        "Tsdf",
-        "Generator",
-        "Transporter",
-        "Broker"
-      ]
+      "enum": ["Tsdf", "Generator", "Transporter", "Broker"]
     },
     "EpaSiteId": {
       "type": "string",
@@ -107,9 +100,7 @@
           "pattern": "[0-9]"
         }
       },
-      "required": [
-        "number"
-      ],
+      "required": ["number"],
       "additionalProperties": false
     },
     "Contact": {
@@ -158,9 +149,7 @@
           "maxLength": 100
         }
       },
-      "required": [
-        "code"
-      ],
+      "required": ["code"],
       "additionalProperties": false
     },
     "Signer": {
@@ -212,11 +201,7 @@
           "pattern": "\\d{5}(?:[-\\s]\\d{4})?"
         }
       },
-      "required": [
-        "address1",
-        "city",
-        "state"
-      ],
+      "required": ["address1", "city", "state"],
       "additionalProperties": false
     },
     "ElectronicSignatureInfo": {

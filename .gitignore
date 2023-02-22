@@ -8,6 +8,7 @@
 **/.pytest_cache/
 *.DS_Store
 **/*.bak
+**/.ruff_cache
 
 # virtual environment
 venv/

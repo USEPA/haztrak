@@ -42,12 +42,7 @@
         },
         "submissionType": {
           "type": "string",
-          "enum": [
-            "FullElectronic",
-            "DataImage5Copy",
-            "Hybrid",
-            "Image"
-          ]
+          "enum": ["FullElectronic", "DataImage5Copy", "Hybrid", "Image"]
         },
         "signatureStatus": {
           "description": "Indicates if manifest was signed by TSDF. Will be returned by Get Manifest. Shall not be provided by Save and Update Manifest",
@@ -56,11 +51,7 @@
         "originType": {
           "description": "Specifies how the manifest was created. Will be returned by Get Manifest. Shall not be provided for Save and Update Manifest. ",
           "type": "string",
-          "enum": [
-            "Web",
-            "Service",
-            "Mail"
-          ]
+          "enum": ["Web", "Service", "Mail"]
         },
         "shippedDate": {
           "description": "Will be returned by Get Manifest. Shall not be provided for Save and Update Manifest.",
@@ -121,18 +112,12 @@
             },
             "rejectionType": {
               "type": "string",
-              "enum": [
-                "FullReject",
-                "PartialReject"
-              ]
+              "enum": ["FullReject", "PartialReject"]
             },
             "alternateDesignatedFacilityType": {
               "description": "Specifies the type of the alternate facility for shipping rejected waste",
               "type": "string",
-              "enum": [
-                "Generator",
-                "Tsdf"
-              ]
+              "enum": ["Generator", "Tsdf"]
             },
             "generatorPaperSignature": {
               "$ref": "#/definitions/PaperSignature"
@@ -265,11 +250,7 @@
         },
         "lockReason": {
           "type": "string",
-          "enum": [
-            "AsyncSign",
-            "EpaChangeBiller",
-            "EpaCorrection"
-          ]
+          "enum": ["AsyncSign", "EpaChangeBiller", "EpaCorrection"]
         }
       },
       "additionalProperties": false
@@ -287,10 +268,7 @@
           "maxLength": 255
         }
       },
-      "required": [
-        "code",
-        "message"
-      ],
+      "required": ["code", "message"],
       "additionalProperties": false
     },
     "ManifestTrackingNumber": {
@@ -310,10 +288,7 @@
           "maxLength": 500
         }
       },
-      "required": [
-        "idNumber",
-        "printedDotInformation"
-      ],
+      "required": ["idNumber", "printedDotInformation"],
       "additionalProperties": false
     },
     "QuantityUnitsOfMeasurement": {
@@ -324,16 +299,7 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 1,
-          "enum": [
-            "P",
-            "T",
-            "K",
-            "M",
-            "G",
-            "L",
-            "Y",
-            "N"
-          ]
+          "enum": ["P", "T", "K", "M", "G", "L", "Y", "N"]
         },
         "description": {
           "type": "string",
@@ -349,9 +315,7 @@
           ]
         }
       },
-      "required": [
-        "code"
-      ],
+      "required": ["code"],
       "additionalProperties": false
     },
     "ContainerType": {
@@ -362,21 +326,7 @@
           "type": "string",
           "minLength": 2,
           "maxLength": 2,
-          "enum": [
-            "BA",
-            "DT",
-            "CF",
-            "DW",
-            "CM",
-            "HG",
-            "CW",
-            "TC",
-            "CY",
-            "TP",
-            "DF",
-            "TT",
-            "DM"
-          ]
+          "enum": ["BA", "DT", "CF", "DW", "CM", "HG", "CW", "TC", "CY", "TP", "DF", "TT", "DM"]
         },
         "description": {
           "type": "string",
@@ -397,9 +347,7 @@
           ]
         }
       },
-      "required": [
-        "code"
-      ],
+      "required": ["code"],
       "additionalProperties": false
     },
     "DensityUnitsOfMeasurement": {
@@ -501,13 +449,7 @@
           "type": "boolean"
         }
       },
-      "required": [
-        "dotHazardous",
-        "br",
-        "pcb",
-        "lineNumber",
-        "epaWaste"
-      ],
+      "required": ["dotHazardous", "br", "pcb", "lineNumber", "epaWaste"],
       "additionalProperties": false
     },
     "PcbInfo": {
@@ -587,9 +529,7 @@
         }
       },
       "dependencies": {
-        "quantity": [
-          "unitOfMeasurement"
-        ]
+        "quantity": ["unitOfMeasurement"]
       },
       "additionalProperties": false
     },
@@ -644,10 +584,7 @@
         "newManifestDestination": {
           "description": "Used only for the Manifest.additionalInfo if Eanifest.containsPreviousRejectOrResidue== true. Specifies destination of the new manifest created \"as result\" of the rejection or residue of the original manifest.",
           "type": "string",
-          "enum": [
-            "OriginalGenerator",
-            "Tsdf"
-          ]
+          "enum": ["OriginalGenerator", "Tsdf"]
         },
         "consentNumber": {
           "description": "Used only for the Waste.additionalInfo in case of Import. Expected format 12 digits.  6 digits \"I\" and then 5 digits. Pattern  ([0-9]{6}I[0-9]{5}) ",
@@ -789,12 +726,7 @@
         "signerRole": {
           "description": "Indicates which entity signed the manifest. Industry, State, Ppc, Epa",
           "type": "string",
-          "enum": [
-            "Industry",
-            "State",
-            "Ppc",
-            "Epa"
-          ]
+          "enum": ["Industry", "State", "Ppc", "Epa"]
         },
         "onBehalf": {
           "description": "Specifies if the signature is provided on behalf of the user",
@@ -806,12 +738,7 @@
     "SiteType": {
       "description": "Specifies How a site interacts with this manifest",
       "type": "string",
-      "enum": [
-        "Tsdf",
-        "Generator",
-        "Transporter",
-        "Broker"
-      ]
+      "enum": ["Tsdf", "Generator", "Transporter", "Broker"]
     },
     "CompanyName": {
       "description": "The name for each site on the manifest",
@@ -835,9 +762,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "number"
-      ],
+      "required": ["number"],
       "additionalProperties": false
     },
     "Contact": {
@@ -884,9 +809,7 @@
           "maxLength": 100
         }
       },
-      "required": [
-        "code"
-      ],
+      "required": ["code"],
       "additionalProperties": false
     },
     "Address": {
@@ -920,9 +843,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "address1"
-      ],
+      "required": ["address1"],
       "additionalProperties": false
     },
     "Signer": {
@@ -956,11 +877,7 @@
         },
         "contactType": {
           "type": "string",
-          "enum": [
-            "Email",
-            "Text",
-            "Voice"
-          ]
+          "enum": ["Email", "Text", "Voice"]
         }
       },
       "additionalProperties": false
@@ -995,10 +912,7 @@
         "mimeType": {
           "description": "file mime type",
           "type": "string",
-          "enum": [
-            "APPLICATION_PDF",
-            "TEXT_HTML"
-          ]
+          "enum": ["APPLICATION_PDF", "TEXT_HTML"]
         }
       },
       "additionalProperties": false
@@ -1016,9 +930,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "code"
-      ],
+      "required": ["code"],
       "additionalProperties": false
     },
     "ProperShippingName": {
@@ -1032,9 +944,7 @@
           "type": "boolean"
         }
       },
-      "required": [
-        "code"
-      ],
+      "required": ["code"],
       "additionalProperties": false
     },
     "Code": {
@@ -1045,9 +955,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "code"
-      ],
+      "required": ["code"],
       "additionalProperties": false
     },
     "CorrectionInfo": {
@@ -1075,22 +983,12 @@
         "initiatorRole": {
           "description": "Indicates if the manifest is under correction by the Industry, State, Ppc, Epa. Will be returned by Correction Details, Correction Version, Get Manifest. Shall not be provided for Save and Update Manifest.",
           "type": "string",
-          "enum": [
-            "Industry",
-            "State",
-            "Ppc",
-            "Epa"
-          ]
+          "enum": ["Industry", "State", "Ppc", "Epa"]
         },
         "updateRole ": {
           "description": "Indicates if the manifest is under correction by the Industry, State, Ppc, Epa. Will be returned by Correction Details, Correction Version, Get Manifest. Shall not be provided for Save and Update Manifest.",
           "type": "string",
-          "enum": [
-            "Industry",
-            "State",
-            "Ppc",
-            "Epa"
-          ]
+          "enum": ["Industry", "State", "Ppc", "Epa"]
         }
       },
       "additionalProperties": false
@@ -1101,11 +999,7 @@
       "properties": {
         "correctionRequestStatus": {
           "type": "string",
-          "enum": [
-            "NotSent",
-            "Sent",
-            "IndustryResponded"
-          ]
+          "enum": ["NotSent", "Sent", "IndustryResponded"]
         },
         "correctionRequestDate": {
           "type": "string",
@@ -1165,11 +1059,7 @@
         "mtnExtractionStatus": {
           "description": "Indicates the status of the MTN extraction from the pdf attachment form 8700-22. System generated field. Shall not be provided for any services",
           "type": "string",
-          "enum": [
-            "NotStarted",
-            "Completed",
-            "Failed"
-          ]
+          "enum": ["NotStarted", "Completed", "Failed"]
         },
         "mtnsMatch": {
           "description": "Indicates if the electronic MTN matches MTN extracted from the pdf attachment form 8700-22. System generated field. Shall not be provided for any services",

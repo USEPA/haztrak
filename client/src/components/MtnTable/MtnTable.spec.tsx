@@ -19,8 +19,6 @@ afterEach(() => {
 describe('MtnTable', () => {
   test('renders', async () => {
     renderWithProviders(<MtnTable manifests={mtnData} />);
-    expect(
-      await screen.findAllByText(manifestDetail.manifestTrackingNumber)
-    ).toHaveLength(2);
+    expect(await screen.findAllByText(manifestDetail.manifestTrackingNumber)).toHaveLength(2);
   });
 });

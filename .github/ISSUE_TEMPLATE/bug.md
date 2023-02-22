@@ -1,8 +1,8 @@
 ---
-name: "🐞 Bug Report"
-about: "Report an issue."
-title: ""
-labels: "Type: bug"
+name: '🐞 Bug Report'
+about: 'Report an issue.'
+title: ''
+labels: 'Type: bug'
 ---
 
 # 🐞 Bug Report

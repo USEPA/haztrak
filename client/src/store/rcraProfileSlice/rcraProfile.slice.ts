@@ -48,10 +48,7 @@ const rcraProfileSlice = createSlice({
   name: 'rcraProfile',
   initialState,
   reducers: {
-    updateProfile: (
-      state: RcraProfileState,
-      action: PayloadAction<RcraProfileState>
-    ) => {
+    updateProfile: (state: RcraProfileState, action: PayloadAction<RcraProfileState>) => {
       return {
         ...state,
         ...action.payload,

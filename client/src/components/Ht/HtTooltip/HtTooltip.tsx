@@ -14,8 +14,7 @@ const renderTooltip = (text: string) => <Tooltip>{text}</Tooltip>;
 
 function HtTooltip(props: HtToolTipProps): ReactElement {
   // create copy of props intended for the OverlayTrigger
-  const overlayProps = (({ text, children, ...props }: HtToolTipProps) =>
-    props)(props);
+  const overlayProps = (({ text, children, ...props }: HtToolTipProps) => props)(props);
   return (
     <OverlayTrigger
       {...overlayProps}

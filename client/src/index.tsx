@@ -7,10 +7,7 @@ import App from './App';
 
 // initiate the mock service worker if deployed in TEST environment
 // intercepts API calls and returns fake/test responses
-if (
-  process.env.REACT_APP_HT_ENV &&
-  process.env.REACT_APP_HT_ENV.toUpperCase() === 'TEST'
-) {
+if (process.env.REACT_APP_HT_ENV && process.env.REACT_APP_HT_ENV.toUpperCase() === 'TEST') {
   const { worker } = require('./test/mock/browser');
   worker.start();
 }

@@ -12,13 +12,10 @@ const initialState: UserState = {
 export const login = createAsyncThunk(
   'user/login',
   async ({ username, password }: { username: string; password: string }) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_HT_API_URL}/api/user/login/`,
-      {
-        username,
-        password,
-      }
-    );
+    const response = await axios.post(`${process.env.REACT_APP_HT_API_URL}/api/user/login/`, {
+      username,
+      password,
+    });
     return response.data as UserState;
   }
 );

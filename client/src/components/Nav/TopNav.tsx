@@ -68,10 +68,7 @@ function TopNav() {
               </Dropdown.Item>
               <hr className="dropdown-divider" />
               <Dropdown.Item onClick={logout}>
-                <FontAwesomeIcon
-                  icon={faArrowRightFromBracket}
-                  className="pe-2 text-danger"
-                />
+                <FontAwesomeIcon icon={faArrowRightFromBracket} className="pe-2 text-danger" />
                 Logout
               </Dropdown.Item>
             </Dropdown.Menu>

@@ -95,10 +95,7 @@ function SiteList() {
             <>
               <HtModal showModal={showErrorModal} handleClose={handleClose}>
                 <HtModal.Header closeButton>
-                  <HtModal.Title
-                    style={{ color: 'red' }}
-                    title="Error retrieving site list"
-                  />
+                  <HtModal.Title style={{ color: 'red' }} title="Error retrieving site list" />
                 </HtModal.Header>
                 <HtModal.Body>
                   <p style={{ color: 'red' }}>

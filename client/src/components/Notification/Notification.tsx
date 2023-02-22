@@ -12,10 +12,7 @@ function Notification() {
   return (
     <div className="mx-3">
       <Dropdown drop="start" className="shadow">
-        <Dropdown.Toggle
-          className="bg-transparent border-0 text-primary"
-          bsPrefix="p-0"
-        >
+        <Dropdown.Toggle className="bg-transparent border-0 text-primary" bsPrefix="p-0">
           <FontAwesomeIcon icon={faEnvelope} size="lg" />
           <Badge
             pill
@@ -41,11 +38,7 @@ function Notification() {
                       className="btn-circle"
                       onClick={() => dispatch(removeMsg(alert))}
                     >
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        size="lg"
-                        className="text-white"
-                      />
+                      <FontAwesomeIcon icon={faCheck} size="lg" className="text-white" />
                     </Button>
                   </div>
                 </Dropdown.ItemText>
@@ -53,10 +46,7 @@ function Notification() {
                 {index + 1 === numberAlerts ? (
                   <></>
                 ) : (
-                  <Dropdown.Divider
-                    key={`notificationDivider${index}`}
-                    className="my-0"
-                  />
+                  <Dropdown.Divider key={`notificationDivider${index}`} className="my-0" />
                 )}
               </React.Fragment>
             );

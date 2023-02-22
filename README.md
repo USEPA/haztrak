@@ -2,7 +2,8 @@
 [![Server Tests](https://github.com/USEPA/haztrak/actions/workflows/test_server.yaml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_server.yaml)
 [![Client Tests](https://github.com/USEPA/haztrak/actions/workflows/test_client.yaml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_client.yaml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/USEPA/haztrak/main.svg)](https://results.pre-commit.ci/latest/github/USEPA/haztrak/main)
-___
+
+---
 
 # Haztrak :recycle:
 
@@ -24,8 +25,8 @@ Specifically...
 - [documentation on deploying locally with docker compose](https://usepa.github.io/haztrak/deploy/local-development.html)
 - our [PR guide](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
 - or [report an issue, request a feature, or find something to work on](https://github.com/USEPA/haztrak/issues)
-    - We try to keep the [Good First Issue](https://github.com/USEPA/haztrak/labels/good%20first%20issue) label up to
-      date
+  - We try to keep the [Good First Issue](https://github.com/USEPA/haztrak/labels/good%20first%20issue) label up to
+    date
 
 ### About e-Manifest
 

@@ -7,13 +7,4 @@ import HtButton from 'components/Ht/HtButton';
 import HtForm from 'components/Ht/HtForm';
 import HtPaginate from 'components/Ht/HtPaginate';
 
-export {
-  HtCard,
-  HtTooltip,
-  HtDropdown,
-  HtModal,
-  HtSpinner,
-  HtButton,
-  HtForm,
-  HtPaginate,
-};
+export { HtCard, HtTooltip, HtDropdown, HtModal, HtSpinner, HtButton, HtForm, HtPaginate };

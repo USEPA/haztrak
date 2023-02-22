@@ -31,18 +31,12 @@ function Sidebar(): ReactElement | null {
 
   return (
     <div id="layoutSidenav_nav">
-      <nav
-        className="sb-sidenav accordion sb-sidenav-dark bs-primary"
-        id="sidenavAccordion"
-      >
+      <nav className="sb-sidenav accordion sb-sidenav-dark bs-primary" id="sidenavAccordion">
         <div className="sb-sidenav-menu">
           <div className="nav">
             <div className="sb-sidenav-menu-heading">Apps</div>
             <Link className="nav-link" to="/">
-              <FontAwesomeIcon
-                icon={faTachometerAlt}
-                className="sb-nav-link-icon text-primary"
-              />
+              <FontAwesomeIcon icon={faTachometerAlt} className="sb-nav-link-icon text-primary" />
               Dashboard
             </Link>
             <Button
@@ -51,25 +45,15 @@ function Sidebar(): ReactElement | null {
               aria-controls="collapseSite"
               aria-expanded={siteNav}
             >
-              <FontAwesomeIcon
-                icon={faLocationArrow}
-                className="sb-nav-link-icon text-primary"
-              />
+              <FontAwesomeIcon icon={faLocationArrow} className="sb-nav-link-icon text-primary" />
               Sites
-              <div
-                className={`sb-sidenav-collapse-arrow ${
-                  siteNav ? '' : 'rotate-90-cc'
-                } `}
-              >
+              <div className={`sb-sidenav-collapse-arrow ${siteNav ? '' : 'rotate-90-cc'} `}>
                 <FontAwesomeIcon icon={faAngleDown} />
               </div>
             </Button>
             <Collapse in={siteNav}>
               <div id="collapseSite">
-                <nav
-                  className="sb-sidenav-menu-nested nav accordion"
-                  id="sidenavAccordionPages"
-                >
+                <nav className="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                   <Link className="nav-link" to="/site">
                     <FontAwesomeIcon
                       icon={faLocationDot}
@@ -98,29 +82,18 @@ function Sidebar(): ReactElement | null {
               aria-controls="collapseHelp"
               aria-expanded={mtnNav}
             >
-              <FontAwesomeIcon
-                icon={faFileLines}
-                className="text-primary sb-nav-link-icon"
-              />
+              <FontAwesomeIcon icon={faFileLines} className="text-primary sb-nav-link-icon" />
               Manifests
-              <div
-                className={`sb-sidenav-collapse-arrow ${mtnNav ? '' : 'rotate-90-cc'} `}
-              >
+              <div className={`sb-sidenav-collapse-arrow ${mtnNav ? '' : 'rotate-90-cc'} `}>
                 <FontAwesomeIcon icon={faAngleDown} />
               </div>
             </Button>
             <Collapse in={mtnNav}>
               <div id="collapseHelp">
-                <nav
-                  className="sb-sidenav-menu-nested nav accordion"
-                  id="sidenavAccordionPages"
-                >
+                <nav className="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                   <Link className="nav-link" to="/manifest">
-                    <FontAwesomeIcon
-                      icon={faFile}
-                      className="text-primary sb-nav-link-icon"
-                    />{' '}
-                    Your Manifest
+                    <FontAwesomeIcon icon={faFile} className="text-primary sb-nav-link-icon" /> Your
+                    Manifest
                   </Link>
                 </nav>
               </div>
@@ -132,30 +105,17 @@ function Sidebar(): ReactElement | null {
               aria-controls="collapseHelp"
               aria-expanded={helpNav}
             >
-              <FontAwesomeIcon
-                icon={faCircleInfo}
-                className="text-primary sb-nav-link-icon"
-              />
+              <FontAwesomeIcon icon={faCircleInfo} className="text-primary sb-nav-link-icon" />
               Help
-              <div
-                className={`sb-sidenav-collapse-arrow ${
-                  helpNav ? '' : 'rotate-90-cc'
-                } `}
-              >
+              <div className={`sb-sidenav-collapse-arrow ${helpNav ? '' : 'rotate-90-cc'} `}>
                 <FontAwesomeIcon icon={faAngleDown} />
               </div>
             </Button>
             <Collapse in={helpNav}>
               <div id="collapseHelp">
-                <nav
-                  className="sb-sidenav-menu-nested nav accordion"
-                  id="sidenavAccordionPages"
-                >
+                <nav className="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                   <Link className="nav-link" to="/about">
-                    <FontAwesomeIcon
-                      icon={faFile}
-                      className="text-primary sb-nav-link-icon"
-                    />{' '}
+                    <FontAwesomeIcon icon={faFile} className="text-primary sb-nav-link-icon" />{' '}
                     About
                   </Link>
                   <a

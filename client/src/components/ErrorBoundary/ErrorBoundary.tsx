@@ -35,13 +35,9 @@ class ErrorBoundary extends Component<Props, State> {
               <i className="text-danger h1 fas fa-bug"></i>
             </Row>
             <Row className="d-flex justify-content-center">
-              <h4 className="d-flex justify-content-center">
-                Something's Broken
-              </h4>
+              <h4 className="d-flex justify-content-center">Something's Broken</h4>
             </Row>
-            <Row className="d-flex justify-content-center">
-              Don't worry, we're working on it!
-            </Row>
+            <Row className="d-flex justify-content-center">Don't worry, we're working on it!</Row>
             <Row className="d-flex justify-content-center pt-4">
               <Alert key="danger" variant="danger">
                 {`${this.state.error}`}

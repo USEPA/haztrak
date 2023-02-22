@@ -1,6 +1,6 @@
 # Haztrak Web Server
 
-___
+---
 
 This directory the Haztrak web-server! If you're looking for a
 holistic overview of the Haztrak project, check the [README](/README.md) in the root directory or
@@ -22,14 +22,14 @@ RCRAInfo API ID and key are not used by the front end).
 The web server makes extensive use of the Django ecosystem. It namely uses the below frameworks to
 define data models, serialize and expose the API.
 
-* The Django Framework (> 4.0)
-* The Django Rest Framework (> 3.13)
-* [e-Manifest API client library](https://github.com/USEPA/e-manifest/tree/master/emanifest-py)
+- The Django Framework (> 4.0)
+- The Django Rest Framework (> 3.13)
+- [e-Manifest API client library](https://github.com/USEPA/e-manifest/tree/master/emanifest-py)
 
 It also depends on the following other services being available.
 
-* A message broker, such as [Redis](https://redis.io/).
-* The [Celery](https://docs.celeryq.dev/en/stable/) task queue, which is already built into haztrak
+- A message broker, such as [Redis](https://redis.io/).
+- The [Celery](https://docs.celeryq.dev/en/stable/) task queue, which is already built into haztrak
   but is required to be spun up as separate service.
-    * This is included in the [docker-compose](/docker-compose.yaml) file, or can be spun up
-      separately.
+  - This is included in the [docker-compose](/docker-compose.yaml) file, or can be spun up
+    separately.

@@ -27,11 +27,7 @@ interface TranAppendValues {
   name: string;
 }
 
-function TransporterSearchForm({
-  handleClose,
-  tranAppend,
-  currentTransporters,
-}: Props) {
+function TransporterSearchForm({ handleClose, tranAppend, currentTransporters }: Props) {
   const [tranOptions, setTranOptions] = useState<Array<Handler> | undefined>(undefined);
 
   const {
@@ -81,9 +77,7 @@ function TransporterSearchForm({
         if (tranOptions[i].epaSiteId === data.transporter) {
           // append in run in the ManifestForm context, on the 'transporter' field
           // const numberOfTransporter = currentTransporters?.length;
-          const numberOfTransporter = currentTransporters
-            ? currentTransporters.length
-            : 0;
+          const numberOfTransporter = currentTransporters ? currentTransporters.length : 0;
           const newTransporter: Transporter = {
             order: numberOfTransporter + 1,
             ...tranOptions[i],
@@ -139,10 +133,7 @@ function TransporterSearchForm({
                   >
                     {tranOptions.map((option) => {
                       return (
-                        <option
-                          key={`tran-select-${option.epaSiteId}`}
-                          value={option.epaSiteId}
-                        >
+                        <option key={`tran-select-${option.epaSiteId}`} value={option.epaSiteId}>
                           {' '}
                           {option.epaSiteId} {' -- '} {option.name}{' '}
                         </option>

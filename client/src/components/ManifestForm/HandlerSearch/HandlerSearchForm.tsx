@@ -41,9 +41,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
   } = useForm<addHandlerForm>();
   const manifestMethods = useFormContext();
   // const [handler, setHandler] = useState<Handler | undefined>(undefined);
-  const [handlerOptions, setHandlerOptions] = useState<Array<Handler> | undefined>(
-    undefined
-  );
+  const [handlerOptions, setHandlerOptions] = useState<Array<Handler> | undefined>(undefined);
 
   /**
    This is the data that is sent to the RESTful api, it's automatically updated
@@ -100,9 +98,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
           <Row>
             <Col>
               <HtForm.Group>
-                <HtForm.Label htmlFor={`${handlerType}SearchEPAId`}>
-                  EPA ID Number
-                </HtForm.Label>
+                <HtForm.Label htmlFor={`${handlerType}SearchEPAId`}>EPA ID Number</HtForm.Label>
                 <HtForm.Control
                   id={`${handlerType}SearchEPAId`}
                   type="text"
@@ -131,10 +127,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
                 <HtForm.Select {...register('handler', { required: true })}>
                   {handlerOptions.map((option) => {
                     return (
-                      <option
-                        key={`tran-select-${option.epaSiteId}`}
-                        value={option.epaSiteId}
-                      >
+                      <option key={`tran-select-${option.epaSiteId}`} value={option.epaSiteId}>
                         {`${option.epaSiteId} -- ${option.name} `}
                       </option>
                     );

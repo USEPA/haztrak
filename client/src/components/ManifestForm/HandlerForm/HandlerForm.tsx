@@ -84,11 +84,7 @@ function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement 
           render={({ message }) => <span className="text-danger">{message}</span>}
         />
       </Row>
-      <AddressForm
-        addressType={AddressType.site}
-        handlerType={handlerType}
-        readOnly={readOnly}
-      />
+      <AddressForm addressType={AddressType.site} handlerType={handlerType} readOnly={readOnly} />
       <Row className="mb-2">
         <Col>
           <HtForm.Check

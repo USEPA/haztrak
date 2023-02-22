@@ -10,11 +10,7 @@ interface TransporterTableProps {
   readOnly?: boolean;
 }
 
-function TransporterTable({
-  transporters,
-  arrayFieldMethods,
-  readOnly,
-}: TransporterTableProps) {
+function TransporterTable({ transporters, arrayFieldMethods, readOnly }: TransporterTableProps) {
   if (!transporters || transporters.length < 1) {
     return <></>;
   }

@@ -58,9 +58,7 @@ describe('usePagination', () => {
   test('defaults to returning a simple array', async () => {
     render(<TestPaginationHook />);
     const paginationRange = await screen.findAllByTestId('item');
-    expect(paginationRange).toHaveLength(
-      Math.ceil(defaultTotalCount / defaultPageSize)
-    );
+    expect(paginationRange).toHaveLength(Math.ceil(defaultTotalCount / defaultPageSize));
   });
   test('Returns single ellipsis when on page 1', async () => {
     render(<TestPaginationHook useEllipsis={true} />);
@@ -74,29 +72,20 @@ describe('usePagination', () => {
   });
   test('Returns 2 siblings on each side of active', async () => {
     const siblingCount = 2;
-    render(
-      <TestPaginationHook
-        useEllipsis={true}
-        currentPage={5}
-        siblingCount={siblingCount}
-      />
-    );
+    render(<TestPaginationHook useEllipsis={true} currentPage={5} siblingCount={siblingCount} />);
     const paginationRange = await screen.findAllByTestId('item');
     const numActivePages = 1; // The current page
     const numSiblings = siblingCount * 2; // for each side of active
     const numEllipsis = 2; // a '...' for each side of active
     const numEndPages = 2; // one for each side
     // Total number of <li> elements with correct test ID we expect
-    const numExpectedElements =
-      numActivePages + numSiblings + numEllipsis + numEndPages;
+    const numExpectedElements = numActivePages + numSiblings + numEllipsis + numEndPages;
     expect(paginationRange).toHaveLength(numExpectedElements);
   });
   test('updates when number of elements changes', async () => {
     render(<TestPaginationHook />);
     const paginationRange = await screen.findAllByTestId('item');
-    expect(paginationRange).toHaveLength(
-      Math.ceil(defaultTotalCount / defaultPageSize)
-    );
+    expect(paginationRange).toHaveLength(Math.ceil(defaultTotalCount / defaultPageSize));
     fireEvent.click(screen.getByText('Click Me'));
     const newPagination = await waitFor(() => screen.findAllByTestId('item'));
     expect(newPagination).toHaveLength(Math.ceil(newTotalCount / defaultPageSize));

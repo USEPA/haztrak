@@ -37,18 +37,13 @@ export function WasteLineTable({ wastes }: WasteLineTableProps) {
               <td>{String(wasteLine.quantity?.containerType)}</td>
               <td>
                 <small>
-                  {wasteLine.hazardousWaste?.federalWasteCodes?.map(
-                    (code, index) => {
-                      // ToDo: fix how hazardous waste codes are appended to wasteline
-                      // @ts-ignore
-                      return `${String(code.value)} ${
-                        index + 1 ===
-                        wasteLine.hazardousWaste?.federalWasteCodes?.length
-                          ? ' '
-                          : ', '
-                      }`;
-                    }
-                  )}
+                  {wasteLine.hazardousWaste?.federalWasteCodes?.map((code, index) => {
+                    // ToDo: fix how hazardous waste codes are appended to wasteline
+                    // @ts-ignore
+                    return `${String(code.value)} ${
+                      index + 1 === wasteLine.hazardousWaste?.federalWasteCodes?.length ? ' ' : ', '
+                    }`;
+                  })}
                 </small>
               </td>
               <td>
