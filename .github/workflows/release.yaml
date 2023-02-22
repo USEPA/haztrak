@@ -14,6 +14,9 @@ jobs:
 
   build_server:
     uses: ./.github/workflows/build_server.yaml
+    with:
+      context: ./server
+      image_name: haztrak-server
 
   #  build_client:
   #    uses: ./.github/workflows/build_client.yaml

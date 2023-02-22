@@ -2,21 +2,25 @@ name: 'Build Server Container'
 
 on:
   workflow_call:
+    inputs:
+      context:
+        required: true
+        type: string
+      image_name:
+        required: true
+        type: string
     secrets:
       DOCKERHUB_USERNAME:
         required: false
       DOCKERHUB_TOKEN:
         required: false
 
-env:
-  IMAGE_NAME: haztrak-server
-
 jobs:
   docker_build_server:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./server
+        working-directory: ${{ inputs.context }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,7 +29,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/${{github.repository_owner}}/${{env.IMAGE_NAME}}
+          images: ghcr.io/${{ github.repository_owner }}/${{ inputs.image_name }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -45,7 +49,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: ./server
+          context: ${{ inputs.context }}
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           tags: ${{ steps.meta.outputs.tags }}
