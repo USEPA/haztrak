@@ -13,17 +13,19 @@ jobs:
   #    uses: ./.github/workflows/test_client.yaml
 
   build_server:
-    uses: ./.github/workflows/build_server.yaml
+    uses: ./.github/workflows/build_image.yaml
     with:
       context: ./server
       image_name: haztrak-server
 
-  #  build_client:
-  #    uses: ./.github/workflows/build_client.yaml
+  build_client:
+    uses: ./.github/workflows/build_image.yaml
+    with:
+      context: ./client
+      image_name: haztrak-client
 
   create_release:
-    #    needs: [build_server, build_client]
-    needs: [build_server]
+    needs: [build_server, build_client]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
