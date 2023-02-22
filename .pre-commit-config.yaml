@@ -1,14 +1,26 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit.com hooks
+  autoupdate_branch: "pre-commit"
+  autoupdate_commit_msg: "[pre-commit.ci] pre-commit autoupdate"
+  autoupdate_schedule: quarterly
+  skip: []
+  submodules: false
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
-        exclude: ^\.idea/runConfigurations/[^/]*$
+        exclude: |
+          (?x)^(
+            \.idea\/.*|
+            \.vscode\/.*|
+          )$
       - id: check-yaml
-  #      - id: check-added-large-files
   - repo: https://github.com/pycqa/isort
     rev: 5.10.1
     hooks:
@@ -18,7 +30,7 @@ repos:
     rev: 3.8.4
     hooks:
       - id: flake8
-        args: [ --config, server/setup.cfg ]
+        args: [--config, server/setup.cfg]
   - repo: local
     hooks:
       - id: pre-commit-django-migrations
@@ -28,3 +40,9 @@ repos:
         types:
           - python
         pass_filenames: false
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: "v8.34.0"
+    hooks:
+      - id: eslint
+        files: \.[jt]sx?$
+        types: [file]

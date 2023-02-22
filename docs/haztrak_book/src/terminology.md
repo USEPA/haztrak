@@ -3,7 +3,7 @@
 ## Regulation and Governments
 **EPA / US EPA**
 - EPA and/or US EPA refers to the United States Environmental Protection Agency, the primary federal environmental regulator in the United States of America. [www.epa.gov]( https://www.epa.gov/)
-    
+
 **Region**
 - EPA maintains ten regional offices to more closely manage regional issues. [EPA Regional Website]( https://www.epa.gov/aboutepa/regional-and-geographic-offices)
 

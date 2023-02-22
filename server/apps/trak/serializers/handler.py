@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from apps.trak.models import Handler
 from apps.trak.serializers import AddressSerializer
+
 from .contact import ContactSerializer, EpaPhoneSerializer
 from .trak import TrakBaseSerializer
 

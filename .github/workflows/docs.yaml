@@ -1,8 +1,8 @@
-name: "Build Documentation"
+name: "Deploy Documentation"
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -37,7 +37,7 @@ jobs:
         with:
           path: ./docs/haztrak_book/book
 
-  deploy:
+  deploy_pages:
     needs: build
     environment:
       name: github-pages

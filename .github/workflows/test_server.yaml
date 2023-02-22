@@ -2,21 +2,22 @@ name: "Test Haztrak Server"
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
     paths:
       - "server/**"
   workflow_call:
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: ./server
+
 jobs:
   run_server_tests:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./server
     strategy:
       matrix:
-        python-version: [ "3.10", "3.11" ]
+        python-version: ["3.10", "3.11"]
 
     steps:
       - uses: actions/checkout@v3
