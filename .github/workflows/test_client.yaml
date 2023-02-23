@@ -1,4 +1,4 @@
-name: 'Test Haztrak Client'
+name: 'Haztrak Client Tests'
 
 on:
   pull_request:

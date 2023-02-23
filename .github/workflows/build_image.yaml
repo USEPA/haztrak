@@ -1,4 +1,4 @@
-name: 'Build Server Container'
+name: 'Build Docker Image'
 
 on:
   workflow_call:
@@ -16,7 +16,7 @@ on:
         required: false
 
 jobs:
-  docker_build_server:
+  build_image:
     runs-on: ubuntu-latest
     defaults:
       run:

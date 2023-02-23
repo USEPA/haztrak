@@ -6,19 +6,21 @@ on:
       - 'v*.*.*'
 
 jobs:
-  #  test_server:
-  #    uses: ./.github/workflows/test_server.yaml
-  #
-  #  test_client:
-  #    uses: ./.github/workflows/test_client.yaml
+  test_server:
+    uses: ./.github/workflows/test_server.yaml
+
+  test_client:
+    uses: ./.github/workflows/test_client.yaml
 
   build_server:
+    needs: [test_server]
     uses: ./.github/workflows/build_image.yaml
     with:
       context: ./server
       image_name: haztrak-server
 
   build_client:
+    needs: [test_client]
     uses: ./.github/workflows/build_image.yaml
     with:
       context: ./client

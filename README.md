@@ -2,6 +2,7 @@
 [![Server Tests](https://github.com/USEPA/haztrak/actions/workflows/test_server.yaml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_server.yaml)
 [![Client Tests](https://github.com/USEPA/haztrak/actions/workflows/test_client.yaml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_client.yaml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/USEPA/haztrak/main.svg)](https://results.pre-commit.ci/latest/github/USEPA/haztrak/main)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/USEPA/haztrak?label=latest%20release)](https://github.com/my-user/my-repo/releases/tag/v1.0.0)
 
 ---
 
