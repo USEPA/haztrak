@@ -14,6 +14,9 @@ TIMEZONE_ENV = "HT_TIMEZONE"
 TEST_DB_NAME_ENV = "HT_TEST_DB_NAME"
 CORS_DOMAIN_ENV = "HT_CORS_DOMAIN"
 RCRAINFO_ENV = "HT_RCRAINFO_ENV"
+HT_LOG_LEVEL = os.getenv("HT_LOG_LEVEL", "INFO")
+HT_TRAK_LOG_LEVEL = os.getenv("HT_TRAK_LOG_LEVEL", HT_LOG_LEVEL)
+HT_CORE_LOG_LEVEL = os.getenv("HT_CORE_LOG_LEVEL", HT_LOG_LEVEL)
 
 load_dotenv()  # ToDo: remove this (and the python-dotenv dep)
 # this is here for unit test (with a .env file)
@@ -197,17 +200,17 @@ LOGGING = {
     },
     "loggers": {
         "django": {
-            "level": os.getenv("HT_DJANGO_LOG_LEVEL", "INFO"),
+            "level": HT_LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         "apps.trak": {
-            "level": os.getenv("HT_TRAK_LOG_LEVEL", "INFO"),
+            "level": HT_TRAK_LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         "apps.core": {
-            "level": os.getenv("HT_CORE_LOG_LEVEL", "INFO"),
+            "level": HT_CORE_LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },

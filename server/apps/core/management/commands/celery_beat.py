@@ -9,17 +9,17 @@ from django.utils import autoreload
 CELERY_LOG_LEVEL = os.getenv("CELERY_LOG_LEVEL", "INFO")
 
 
-def restart_celery_worker():
-    celery_worker_cmd = f"celery -A haztrak worker -l {CELERY_LOG_LEVEL} -E"
-    cmd = f'pkill -f "{celery_worker_cmd}"'
+def restart_celery_beat():
+    celery_beat_cmd = f"celery -A haztrak beat -l {CELERY_LOG_LEVEL}"
+    cmd = f'pkill -f "{celery_beat_cmd}"'
     if sys.platform == "win32":
         cmd = "taskkill /f /t /im celery.exe"
 
     subprocess.call(shlex.split(cmd))
-    subprocess.call(shlex.split(f"{celery_worker_cmd}"))
+    subprocess.call(shlex.split(f"{celery_beat_cmd}"))
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        print("Starting celery worker with autoreload...")
-        autoreload.run_with_reloader(restart_celery_worker)
+        print("Starting celery beat with autoreload...")
+        autoreload.run_with_reloader(restart_celery_beat)
