@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_extensions",
     "django_celery_results",
+    "django_celery_beat",
     "apps.trak",
     "apps.core",
 ]
@@ -154,7 +155,7 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     "TITLE": "Haztrak API",
     "DESCRIPTION": "An open-source web app illustrating how hazardous waste "
-    "management software can integrate with EPA's RCRAInfo",
+                   "management software can integrate with EPA's RCRAInfo",
     "VERSION": "0.1.0",
     "SERVE_INCLUDE_SCHEMA": False,
     "SCHEMA_PATH_PREFIX": r"/api/[a-zA-Z]*/",
@@ -178,7 +179,7 @@ LOGGING = {
     "formatters": {
         "superverbose": {
             "format": "%(levelname)s %(asctime)s %(module)s:%(lineno)d %(process)d "
-            "%(thread)d %(message)s"
+                      "%(thread)d %(message)s"
         },
         "verbose": {"format": "%(levelname)s %(asctime)s %(module)s:%(lineno)d %(message)s"},
         "simple": {"format": "%(levelname)s %(message)s"},
