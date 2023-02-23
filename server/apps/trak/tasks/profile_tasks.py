@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 class RcraProfileTasks(Task):
     """RcraProfileTasks acts as our base Celery class that encapsulate all logic related
     to a user's RCRAInfo profile"""
+
     username: str
 
 
@@ -28,8 +29,5 @@ def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
         # ToDo retry if network error, see celery docs
         raise Reject()
     except Exception as exc:
-        self.update_state(
-            state=states.FAILURE,
-            meta=f'unknown error: {exc}'
-        )
+        self.update_state(state=states.FAILURE, meta=f"unknown error: {exc}")
         raise Ignore()

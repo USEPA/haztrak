@@ -12,11 +12,7 @@ interface TestCompProps {
 }
 
 function TestComponent({ prevailOnUnmount, excludeAppend }: TestCompProps) {
-  const [pagetitle, setPageTitle] = useTitle(
-    originalPageTitle,
-    prevailOnUnmount,
-    excludeAppend
-  );
+  const [pagetitle, setPageTitle] = useTitle(originalPageTitle, prevailOnUnmount, excludeAppend);
   return (
     <>
       <p>Hello!</p>

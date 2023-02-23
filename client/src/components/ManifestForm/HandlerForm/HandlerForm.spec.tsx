@@ -14,15 +14,11 @@ describe('HandlerForm', () => {
   test('renders with basic information inputs', () => {
     renderWithProviders(<HandlerForm handlerType={HandlerType.Generator} />);
     expect(screen.getByText(/Site Name/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(`${HandlerType.Generator} ID`, { exact: false })
-    ).toBeInTheDocument();
+    expect(screen.getByText(`${HandlerType.Generator} ID`, { exact: false })).toBeInTheDocument();
   });
   test('initially includes 1 AddressForm for site address', async () => {
     renderWithProviders(<HandlerForm handlerType={HandlerType.Generator} />);
-    expect(
-      await screen.findAllByLabelText(/Street Number/i).then((v) => v.length)
-    ).toBe(1);
+    expect(await screen.findAllByLabelText(/Street Number/i).then((v) => v.length)).toBe(1);
   });
   test('renders 2 AddressForms for site and mailing when checked', async () => {
     renderWithProviders(<HandlerForm handlerType={HandlerType.Generator} />);

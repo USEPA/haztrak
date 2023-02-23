@@ -7,6 +7,7 @@ from django.db import transaction
 
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
+
 from .rcrainfo import RcrainfoService
 
 
@@ -40,10 +41,17 @@ class ManifestService:
             return serializer.save()
         raise Exception(serializer.errors)
 
-    def search_rcra_mtn(self, *, site_id: str = None, start_date: datetime = None,
-                        end_date: datetime = None, status: str = None,
-                        date_type: str = 'UpdatedDate',
-                        state_code: str = None, site_type: str = None) -> List[str]:
+    def search_rcra_mtn(
+        self,
+        *,
+        site_id: str = None,
+        start_date: datetime = None,
+        end_date: datetime = None,
+        status: str = None,
+        date_type: str = "UpdatedDate",
+        state_code: str = None,
+        site_type: str = None,
+    ) -> List[str]:
         """
         Search RCRAInfo for manifests, an abstraction of RcrainfoService's search_mtn
 
@@ -56,12 +64,11 @@ class ManifestService:
             state_code (str): Two-letter code representing a state (e.g., "TX", "CA")
             site_type (str): "Generator|Tsdf|Transporter|RejectionInfo_AlternateTsdf"
         """
-        date_format = '%Y-%m-%dT%H:%M:%SZ'
+        date_format = "%Y-%m-%dT%H:%M:%SZ"
         if end_date:
             end_date = end_date.replace(tzinfo=timezone.utc).strftime(date_format)
         else:
-            end_date = datetime.utcnow().replace(tzinfo=timezone.utc).strftime(
-                date_format)
+            end_date = datetime.utcnow().replace(tzinfo=timezone.utc).strftime(date_format)
 
         if start_date:
             start_date = start_date.replace(tzinfo=timezone.utc).strftime(date_format)
@@ -69,18 +76,19 @@ class ManifestService:
             # If no start date is specified, retrieve for ~last 3 years
             # (doesn't need be exact, hope it's not leap year)
             start_date = datetime.utcnow().replace(tzinfo=timezone.utc) - timedelta(
-                minutes=60 * 24 * 30 * 12)
+                minutes=60 * 24 * 30 * 12
+            )
             start_date = start_date.strftime(date_format)
 
         # map our keyword arguments to names expected by RCRAInfo
         search_params = {
-            'stateCode': state_code,
-            'siteId': site_id,
-            'status': status,
-            'dateType': date_type,
-            'siteType': site_type,
-            'endDate': end_date,
-            'startDate': start_date,
+            "stateCode": state_code,
+            "siteId": site_id,
+            "status": status,
+            "dateType": date_type,
+            "siteType": site_type,
+            "endDate": end_date,
+            "startDate": start_date,
         }
         # Remove arguments that are None
         filtered_params = {k: v for k, v in search_params.items() if v is not None}
@@ -98,13 +106,13 @@ class ManifestService:
             results (Dict): with 2 members, 'success' and 'error' each is a list of MTN
             that corresponds to what manifest where successfully pulled or not.
         """
-        results = {'success': [], 'error': []}
+        results = {"success": [], "error": []}
         for mtn in tracking_numbers:
             try:
                 manifest_json: dict = self._retrieve_manifest(mtn)
                 manifest = self._save_manifest(manifest_json)
-                results['success'].append(manifest.mtn)
+                results["success"].append(manifest.mtn)
             except Exception as exc:
                 self.logger.warning(exc)
-                results['error'].append(mtn)
+                results["error"].append(mtn)
         return results

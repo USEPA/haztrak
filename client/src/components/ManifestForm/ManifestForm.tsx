@@ -206,9 +206,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
                 </Col>
                 <Col>
                   <HtForm.Group>
-                    <HtForm.Label htmlFor="potentialShipDate">
-                      Potential Shipped Date
-                    </HtForm.Label>
+                    <HtForm.Label htmlFor="potentialShipDate">Potential Shipped Date</HtForm.Label>
                     <HtForm.Control
                       id="potentialShipDate"
                       disabled={readOnly}
@@ -256,11 +254,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
               {readOnly ? (
                 <></>
               ) : (
-                <HtButton
-                  onClick={toggleWlFormShow}
-                  children={'Add Waste'}
-                  variant="success"
-                />
+                <HtButton onClick={toggleWlFormShow} children={'Add Waste'} variant="success" />
               )}
             </HtCard.Body>
           </HtCard>
@@ -272,11 +266,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
               {readOnly ? (
                 <></>
               ) : (
-                <HtButton
-                  onClick={toggleTsdfFormShow}
-                  children={'Add TSDF'}
-                  variant="success"
-                />
+                <HtButton onClick={toggleTsdfFormShow} children={'Add TSDF'} variant="success" />
               )}
             </HtCard.Body>
           </HtCard>

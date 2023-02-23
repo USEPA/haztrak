@@ -8,6 +8,7 @@ class RcraProfile(models.Model):
     API key (see ProfileUpdateSerializer). Has a one-to-one relationship with
     the User model.
     """
+
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
@@ -35,11 +36,12 @@ class RcraProfile(models.Model):
     email = models.EmailField()
 
     def __str__(self):
-        return f'{self.user.username}'
+        return f"{self.user.username}"
 
     def sync(self):
         """Launch task to sync use profile. ToDo: remove this method"""
         from ..tasks import sync_user_sites
+
         task = sync_user_sites.delay(str(self.user.username))
         return task
 

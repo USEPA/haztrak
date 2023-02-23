@@ -1,9 +1,9 @@
-name: "Pull Request Labeler"
+name: 'Pull Request Labeler'
 on:
   - pull_request_target
 
 jobs:
-  triage:
+  triage_pr:
     permissions:
       contents: read
       pull-requests: write
@@ -11,4 +11,4 @@ jobs:
     steps:
       - uses: actions/labeler@v4
         with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'

@@ -86,19 +86,11 @@ function Login(): ReactElement {
               />
               <div className="invalid-feedback">{errors.password?.message}</div>
             </HtForm.Group>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn btn-primary m-2"
-            >
-              {isSubmitting && (
-                <span className="spinner-border spinner-border-sm mr-1" />
-              )}
+            <button type="submit" disabled={isSubmitting} className="btn btn-primary m-2">
+              {isSubmitting && <span className="spinner-border spinner-border-sm mr-1" />}
               Login
             </button>
-            {authError && (
-              <div className="alert alert-danger mt-3 mb-0">{authError}</div>
-            )}
+            {authError && <div className="alert alert-danger mt-3 mb-0">{authError}</div>}
           </HtForm>
         </div>
       </div>

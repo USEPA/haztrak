@@ -5,15 +5,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('trak', '0002_alter_rcraprofile_rcra_username'),
+        ("trak", "0002_alter_rcraprofile_rcra_username"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='manifest',
-            name='mtn',
-            field=models.CharField(default=apps.trak.models.manifest.draft_mtn, max_length=30, unique=True, verbose_name='manifest Tracking Number'),
+            model_name="manifest",
+            name="mtn",
+            field=models.CharField(
+                default=apps.trak.models.manifest.draft_mtn,
+                max_length=30,
+                unique=True,
+                verbose_name="manifest Tracking Number",
+            ),
         ),
     ]

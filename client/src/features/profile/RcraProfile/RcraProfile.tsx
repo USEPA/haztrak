@@ -47,17 +47,13 @@ function RcraProfile({ profile }: ProfileViewProps) {
           <Row className="mb-2">
             <Col>
               <HtForm.Group>
-                <HtForm.Label htmlFor="profileRcraUsername">
-                  RCRAInfo Username
-                </HtForm.Label>
+                <HtForm.Label htmlFor="profileRcraUsername">RCRAInfo Username</HtForm.Label>
                 <HtForm.Control
                   plaintext={!editable}
                   readOnly={!editable}
                   id="profileRcraUsername"
                   {...register('rcraUsername')}
-                  placeholder={
-                    profile.rcraUsername ? profile.rcraUsername : 'Not Provided'
-                  }
+                  placeholder={profile.rcraUsername ? profile.rcraUsername : 'Not Provided'}
                 />
               </HtForm.Group>
             </Col>
@@ -77,9 +73,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
           <Row className="mb-2">
             <Col>
               <HtForm.Group>
-                <HtForm.Label htmlFor="profileRcraAPIKey">
-                  RCRAInfo API Key
-                </HtForm.Label>
+                <HtForm.Label htmlFor="profileRcraAPIKey">RCRAInfo API Key</HtForm.Label>
                 <HtForm.Control
                   type="password"
                   plaintext={!editable}

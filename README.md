@@ -1,7 +1,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Server Tests](https://github.com/USEPA/haztrak/actions/workflows/test_server.yaml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_server.yaml)
 [![Client Tests](https://github.com/USEPA/haztrak/actions/workflows/test_client.yaml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_client.yaml)
-___
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/USEPA/haztrak/main.svg)](https://results.pre-commit.ci/latest/github/USEPA/haztrak/main)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/USEPA/haztrak?label=latest%20release)](https://github.com/my-user/my-repo/releases/tag/v1.0.0)
+
+---
 
 # Haztrak :recycle:
 
@@ -23,13 +26,15 @@ Specifically...
 - [documentation on deploying locally with docker compose](https://usepa.github.io/haztrak/deploy/local-development.html)
 - our [PR guide](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
 - or [report an issue, request a feature, or find something to work on](https://github.com/USEPA/haztrak/issues)
-    - We try to keep the [Good First Issue](https://github.com/USEPA/haztrak/labels/good%20first%20issue) label up to date
+  - We try to keep the [Good First Issue](https://github.com/USEPA/haztrak/labels/good%20first%20issue) label up to
+    date
 
 ### About e-Manifest
 
 June 30, 2018. EPA launched a national system for tracking hazardous waste shipments electronically,
 this system, known as "[e-Manifest](https://www.epa.gov/e-manifest)," modernizes the nation’s paper-intensive process
-for tracking hazardous waste from cradle to grave while saving valuable time, resources, and dollars for industry and states.
+for tracking hazardous waste from cradle to grave while saving valuable time, resources, and dollars for industry and
+states.
 
 e-Manifest, a modular component of [RCRAInfo](https://rcrainfo.epa.gov/), can be accessed by its users in two ways:
 

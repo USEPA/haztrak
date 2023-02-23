@@ -42,12 +42,7 @@ function HtModal({
 }: HtModalProps): ReactElement {
   const baseAttributes = `bg-transparent ${className ? className : ''}`;
   return (
-    <Modal
-      show={showModal}
-      onHide={handleClose}
-      className={baseAttributes}
-      {...otherProps}
-    >
+    <Modal show={showModal} onHide={handleClose} className={baseAttributes} {...otherProps}>
       {children}
     </Modal>
   );

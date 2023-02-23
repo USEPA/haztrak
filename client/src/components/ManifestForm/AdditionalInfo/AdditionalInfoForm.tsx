@@ -16,13 +16,12 @@ interface AdditionalFormProps {
 //  https://codesandbox.io/s/6j1760jkjk
 function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
   const { register, control } = useFormContext<Manifest | WasteLine>();
-  const { fields, append, remove } = useFieldArray<
-    Manifest | WasteLine,
-    'additionalInfo.comments'
-  >({
-    control,
-    name: 'additionalInfo.comments',
-  });
+  const { fields, append, remove } = useFieldArray<Manifest | WasteLine, 'additionalInfo.comments'>(
+    {
+      control,
+      name: 'additionalInfo.comments',
+    }
+  );
 
   return (
     <>
@@ -52,9 +51,7 @@ function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
                   <HtForm.Group key={`${keyBase}-label-group`}>
                     {/* Only add a label if it's the first row*/}
                     {index === 0 ? (
-                      <HtForm.Label htmlFor={`additionalInfoLabel${index}`}>
-                        Label
-                      </HtForm.Label>
+                      <HtForm.Label htmlFor={`additionalInfoLabel${index}`}>Label</HtForm.Label>
                     ) : (
                       <></>
                     )}
@@ -114,10 +111,7 @@ function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
                       remove(index);
                     }}
                   >
-                    <FontAwesomeIcon
-                      icon={faTimesCircle}
-                      className="fa-lg text-danger"
-                    />
+                    <FontAwesomeIcon icon={faTimesCircle} className="fa-lg text-danger" />
                   </Button>
                 </Col>
               </Row>
@@ -129,9 +123,7 @@ function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
         {readOnly ? (
           <></>
         ) : (
-          <Button onClick={() => append({ description: '', label: '' })}>
-            Add Reference
-          </Button>
+          <Button onClick={() => append({ description: '', label: '' })}>Add Reference</Button>
         )}
       </div>
     </>

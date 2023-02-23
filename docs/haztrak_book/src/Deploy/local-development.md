@@ -13,16 +13,16 @@ If you find something missing or inaccurate, please submit an issue
 3. [Using RCRAInfo interfacing features](#rcrainfo-api-credentials)
 4. [Development Configs](#development-configs)
 5. [Developing without Docker](#local-development-without-docker)
-    - [Developing React without the backend](#working-on-the-react-client-locally)
+   - [Developing React without the backend](#working-on-the-react-client-locally)
 
 ## Docker Compose
 
 - The easiest way to set up a local development environment is to
   use [docker compose](https://docs.docker.com/compose/gettingstarted/)
-    - You can use one of our [config file](/configs) to inject the
-      [environment variables](./configuration.md) needed to configure Haztrak (
-      see [docker composes' documentation on environment files](https://docs.docker.com/compose/environment-variables/set-environment-variables/)).
-    - You can either use the `--env-file` flag
+  - You can use one of our [config file](/configs) to inject the
+    [environment variables](./configuration.md) needed to configure Haztrak (
+    see [docker composes' documentation on environment files](https://docs.docker.com/compose/environment-variables/set-environment-variables/)).
+  - You can either use the `--env-file` flag
 
 ```shell
 $ docker compose --env-file configs/.env.dev up --build
@@ -40,7 +40,7 @@ $ docker compose up --build
 - On start, fixtures will be loaded to the database, including 2 users to aid local development.
 
 | username  | password  |
-|-----------|-----------|
+| --------- | --------- |
 | testuser1 | password1 |
 | admin     | password1 |
 
@@ -60,8 +60,8 @@ The general steps for obtaining an API ID and key (in preprod) are as follows.
 
 1. Register for an account in [RCRAInfo (PreProduction)](https://rcrainfopreprod.epa.gov/rcrainfo/action/secured/login)
 2. Request access to one fo the test site EPA IDs (e.g., VATESTGEN001)
-    - You'll need 'Site Manager' level access to obtain API credentials
-    - Await approval, or contact EPA via the "Feedback/Report an issue".
+   - You'll need 'Site Manager' level access to obtain API credentials
+   - Await approval, or contact EPA via the "Feedback/Report an issue".
 3. Login after approval, generate your API Key.
 
 For additional information on obtaining API credentials, see the
@@ -69,29 +69,31 @@ For additional information on obtaining API credentials, see the
 
 ## Development Configs
 
-* Haztrak includes a couple configs to help ensure contributions use a consistent style guide. Most popular IDEs have a
+- Haztrak includes a couple configs to help ensure contributions use a consistent style guide. Most popular IDEs have a
   plugin to support these configs.
-* `pre-commit`
-    * If you're writing any Python, please install these git hooks.
-    * ```shell
-      $ pip install -r requirements_dev.txt
-      $ pre-commit install
-      ```
-    * [pre-commit](https://pre-commit.com/) hooks are set to run a number of linting and formatting checks before
-      commits on any branch is accepted.
-* `.editorconfig`
-    * Universal IDE configs for formatting files, most IDEs will have a plugin you can
-      install that will apply these configs.
+- `pre-commit`
+  - If you're writing any Python, please install these git hooks.
+  - ```shell
+    $ pip install -r requirements_dev.txt
+    $ pre-commit install
+    ```
+  - [pre-commit](https://pre-commit.com/) hooks are set to run a number of linting and formatting checks before
+    commits on any branch is accepted.
+- `.editorconfig`
 
-* `runhaz.sh`
-    * A bash script to help with development
-    * See usage with `$ ./runhaz.sh -h`
+  - Universal IDE configs for formatting files, most IDEs will have a plugin you can
+    install that will apply these configs.
 
-* `Prettier`
-    * [Prettier](https://prettier.io/) is used to autoformat source files, specifically
-      the front end for now. If you're using an IDE, it will likely have a prettier plugin available.
-    * The configs are found in [.prettierrc.json](/client/.prettierrc.json)
-      and [.prettierignore](/client/.prettierignore)
+- `runhaz.sh`
+
+  - A bash script to help with development
+  - See usage with `$ ./runhaz.sh -h`
+
+- `Prettier`
+  - [Prettier](https://prettier.io/) is used to autoformat source files, specifically
+    the front end for now. If you're using an IDE, it will likely have a prettier plugin available.
+  - The configs are found in [.prettierrc.json](/client/.prettierrc.json)
+    and [.prettierignore](/client/.prettierignore)
 
 ## Local Development Without Docker
 
@@ -109,7 +111,7 @@ dev dependency. When run, MSW will intercept http requests to the back end and r
 
 To run MSW, ensure the following environment variables are set
 
-* `REACT_APP_HT_ENV=TEST`
-* `REACT_APP_HT_API_URL=http://localhost:8000`
+- `REACT_APP_HT_ENV=TEST`
+- `REACT_APP_HT_API_URL=http://localhost:8000`
 
 You can log in with the [testuser](#docker-compose) username and password.

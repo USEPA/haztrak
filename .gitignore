@@ -1,5 +1,6 @@
 # Misc files
 **/.env
+**/.secrets
 .coverage
 .coveragerc
 **/*.sqlite3
@@ -7,6 +8,7 @@
 **/.pytest_cache/
 *.DS_Store
 **/*.bak
+**/.ruff_cache
 
 # virtual environment
 venv/

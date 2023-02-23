@@ -3,6 +3,4 @@ pytest==7.2.1
 pytest-django==4.5.2
 responses==0.22.0
 -r requirements.txt
-pylint==2.16.2
-pylint-django==2.5.3
-pylint-plugin-utils==0.7
+ruff==0.0.251

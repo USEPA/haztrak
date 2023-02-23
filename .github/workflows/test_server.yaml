@@ -1,22 +1,23 @@
-name: Test Haztrak Server
+name: 'Haztrak Server Tests'
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
     paths:
-      - "server/**"
+      - 'server/**'
   workflow_call:
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: ./server
+
 jobs:
-  test:
+  run_server_tests:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./server
     strategy:
       matrix:
-        python-version: [ "3.10", "3.11" ]
+        python-version: ['3.10', '3.11']
 
     steps:
       - uses: actions/checkout@v3
@@ -24,7 +25,7 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
-          cache: "pip"
+          cache: 'pip'
           python-version: ${{ matrix.python-version }}
 
       - name: Install Dependencies
@@ -34,7 +35,7 @@ jobs:
 
       - name: Run Tests
         env:
-          HT_SECRET_KEY: "django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d"
+          HT_SECRET_KEY: 'django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d'
           HT_CORS_DOMAIN: http://localhost:3000
           HT_TIMEZONE: America/New_York
           HT_HOST: localhost

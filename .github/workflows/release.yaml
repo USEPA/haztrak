@@ -1,7 +1,9 @@
+name: 'Create Release'
+
 on:
   push:
     tags:
-      - "v*.*.*"
+      - 'v*.*.*'
 
 jobs:
   test_server:
@@ -12,25 +14,34 @@ jobs:
 
   build_server:
     needs: [test_server]
-    uses: ./.github/workflows/build_server.yaml
+    uses: ./.github/workflows/build_image.yaml
+    with:
+      context: ./server
+      image_name: haztrak-server
 
   build_client:
     needs: [test_client]
-    uses: ./.github/workflows/build_client.yaml
+    uses: ./.github/workflows/build_image.yaml
+    with:
+      context: ./client
+      image_name: haztrak-client
 
   create_release:
     needs: [build_server, build_client]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@v3
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
         with:
-          body: ${{steps.github_release.outputs.changelog}}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false

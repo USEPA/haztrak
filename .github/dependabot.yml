@@ -3,23 +3,23 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/client"
+  - package-ecosystem: 'npm'
+    directory: '/client'
     schedule:
-      interval: "monthly"
+      interval: 'monthly'
     labels:
-      - "reactjs"
-      - "dependencies"
+      - 'reactjs'
+      - 'dependencies'
     open-pull-requests-limit: 2
     reviewers:
-      - "dpgraham4401"
-  - package-ecosystem: "pip"
-    directory: "/server"
+      - 'dpgraham4401'
+  - package-ecosystem: 'pip'
+    directory: '/server'
     schedule:
-      interval: "monthly"
+      interval: 'monthly'
     labels:
-      - "django"
-      - "dependencies"
+      - 'django'
+      - 'dependencies'
     open-pull-requests-limit: 2
     reviewers:
-      - "dpgraham4401"
+      - 'dpgraham4401'

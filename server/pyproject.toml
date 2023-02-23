@@ -1,0 +1,46 @@
+[project]
+name = "haztrak"
+version = "0.2.0"
+description = "An open-source web app illustrating how waste management software can interface with RCRAInfo to track hazardous waste"
+readme = "README.md"
+authors = [
+    { name = "David Graham", email = "graham.david@epa.gov" },
+]
+maintainers = [
+    { name = "David Graham", email = "graham.david@epa.gov" },
+]
+classifiers = [
+    "Framework :: Django",
+    "Programming Language :: Python :: 3",
+]
+
+license = { text = "MIT" }
+requires-python = ">=3.10"
+
+[project.urls]
+issues = "https://github.com/USEPA/haztrak/issues"
+documentation = "https://usepa.github.io/haztrak/"
+homepage = "https://github.com/USEPA/haztrak"
+repository = "https://github.com/USEPA/haztrak"
+
+[tool.black]
+line-length = 99
+target-version = ['py311']
+exclude = '''
+/(
+  | migrations
+)/
+'''
+
+[tool.ruff]
+line-length = 99
+select = ["F", "E", "W", "Q", "I001"]
+exclude = [
+    "*_alter_*.py",
+    "*_initial.py",
+    "**/migrations/*.py"
+]
+ignore = ["F401"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "haztrak.settings"

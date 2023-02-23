@@ -8,6 +8,7 @@ class EpaPhoneSerializer(TrakBaseSerializer):
     """
     EpaPhone model serializer for JSON marshalling/unmarshalling
     """
+
     number = serializers.CharField()
     extension = serializers.CharField(
         required=False,
@@ -16,8 +17,8 @@ class EpaPhoneSerializer(TrakBaseSerializer):
     class Meta:
         model = Contact
         fields = [
-            'number',
-            'extension',
+            "number",
+            "extension",
         ]
 
 
@@ -25,16 +26,17 @@ class ContactSerializer(TrakBaseSerializer):
     """
     Contact model serializer for JSON marshalling/unmarshalling
     """
+
     firstName = serializers.CharField(
-        source='first_name',
+        source="first_name",
         required=False,
     )
     middleInitial = serializers.CharField(
-        source='middle_initial',
+        source="middle_initial",
         required=False,
     )
     lastName = serializers.CharField(
-        source='last_name',
+        source="last_name",
         required=False,
     )
     phone = EpaPhoneSerializer(
@@ -44,17 +46,17 @@ class ContactSerializer(TrakBaseSerializer):
         required=False,
     )
     companyName = serializers.CharField(
-        source='company_name',
+        source="company_name",
         required=False,
     )
 
     class Meta:
         model = Contact
         fields = [
-            'firstName',
-            'middleInitial',
-            'lastName',
-            'phone',
-            'email',
-            'companyName',
+            "firstName",
+            "middleInitial",
+            "lastName",
+            "phone",
+            "email",
+            "companyName",
         ]

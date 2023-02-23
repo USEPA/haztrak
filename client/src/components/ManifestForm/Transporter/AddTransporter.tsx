@@ -12,12 +12,7 @@ interface Props {
   appendTransporter: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 
-function AddTransporter({
-  handleClose,
-  show,
-  appendTransporter,
-  currentTransporters,
-}: Props) {
+function AddTransporter({ handleClose, show, appendTransporter, currentTransporters }: Props) {
   return (
     <HtModal showModal={show ? show : false} handleClose={handleClose}>
       <HtModal.Header closeButton>
@@ -27,9 +22,7 @@ function AddTransporter({
           </Row>
           <Row>
             <i>
-              <small>
-                Type at least three characters to search for known Transporters
-              </small>
+              <small>Type at least three characters to search for known Transporters</small>
             </i>
           </Row>
         </Col>

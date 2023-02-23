@@ -7,6 +7,7 @@ from rest_framework.exceptions import ValidationError
 
 from apps.trak.models import Handler
 from apps.trak.serializers import HandlerSerializer
+
 from .rcrainfo import RcrainfoService
 
 
@@ -34,9 +35,9 @@ class HandlerService:
         """
         handler_data: Dict = self._pull_handler(site_id=site_id)
         handler_serializer: HandlerSerializer = self._deserialize_handler(
-            handler_data=handler_data)
-        return self._create_or_update_handler(
-            handler_data=handler_serializer.validated_data)
+            handler_data=handler_data
+        )
+        return self._create_or_update_handler(handler_data=handler_serializer.validated_data)
 
     def get_or_pull_handler(self, site_id: str) -> Handler:
         """
@@ -44,10 +45,10 @@ class HandlerService:
         This may be trying to do too much
         """
         if Handler.objects.filter(epa_id=site_id).exists():
-            self.logger.debug(f'using existing handler {site_id}')
+            self.logger.debug(f"using existing handler {site_id}")
             return Handler.objects.get(epa_id=site_id)
         new_handler = self.pull_rcra_handler(site_id=site_id)
-        self.logger.debug(f'pulled new handler {new_handler}')
+        self.logger.debug(f"pulled new handler {new_handler}")
         return new_handler
 
     def _pull_handler(self, *, site_id: str) -> Dict:
@@ -69,7 +70,7 @@ class HandlerService:
 
     @transaction.atomic
     def _create_or_update_handler(self, *, handler_data: dict) -> Handler:
-        epa_id = handler_data.get('epa_id')
+        epa_id = handler_data.get("epa_id")
         if Handler.objects.filter(epa_id=epa_id).exists():
             handler = Handler.objects.get(epa_id=epa_id)
             return handler

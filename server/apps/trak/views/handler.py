@@ -7,12 +7,13 @@ from apps.trak.serializers import HandlerSerializer, TransporterSerializer
 
 
 @extend_schema(
-    description='Retrieve details on a handler stored in the Haztrak database',
+    description="Retrieve details on a handler stored in the Haztrak database",
 )
 class HandlerView(RetrieveAPIView):
     """
     HandlerView returns details on a single Handler known to haztrak
     """
+
     queryset = Handler.objects.all()
     serializer_class = HandlerSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -24,9 +25,9 @@ class HandlerSearch(ListAPIView):
 
     def get_queryset(self):
         queryset = Handler.objects.all()
-        epa_id_param = self.request.query_params.get('epaId')
-        name_param = self.request.query_params.get('siteName')
-        site_type_param = self.request.query_params.get('siteType')
+        epa_id_param = self.request.query_params.get("epaId")
+        name_param = self.request.query_params.get("siteName")
+        site_type_param = self.request.query_params.get("siteType")
         if epa_id_param is not None:
             queryset = queryset.filter(epa_id__contains=epa_id_param)
         if name_param is not None:
@@ -40,6 +41,7 @@ class TransporterView(RetrieveAPIView):
     """
     Returns details on a Transporter
     """
+
     queryset = Transporter.objects.all()
     serializer_class = TransporterSerializer
     permission_classes = [permissions.AllowAny]

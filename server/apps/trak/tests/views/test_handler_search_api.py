@@ -8,7 +8,8 @@ class TestHandlerSearch:
     """
     Tests for the Handler Search endpoint
     """
-    ulr = '/api/trak/handler/search'
+
+    ulr = "/api/trak/handler/search"
 
     @pytest.fixture(autouse=True)
     def _generator(self, generator001):
@@ -21,9 +22,10 @@ class TestHandlerSearch:
     def test_returns_array_of_handlers(self, db):
         # Arrange
         factory = APIRequestFactory()
-        request = factory.get(self.ulr, {'epaId': self.generator.epa_id,
-                                         'name': '',
-                                         'type': self.generator.site_type})
+        request = factory.get(
+            self.ulr,
+            {"epaId": self.generator.epa_id, "name": "", "type": self.generator.site_type},
+        )
         force_authenticate(request, self.user)
         # Act
         response = HandlerSearch.as_view()(request)
@@ -37,9 +39,10 @@ class TestHandlerSearch:
         client = APIClient()
         client.force_authenticate(user=self.user)
         # Act
-        response = client.get(self.ulr, {'epaId': self.generator.epa_id,
-                                         'name': '',
-                                         'type': self.generator.site_type})
+        response = client.get(
+            self.ulr,
+            {"epaId": self.generator.epa_id, "name": "", "type": self.generator.site_type},
+        )
         # Assert
-        assert response.headers['Content-Type'] == 'application/json'
+        assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == 200

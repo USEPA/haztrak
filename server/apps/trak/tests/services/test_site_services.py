@@ -2,7 +2,6 @@ import pytest
 
 
 class TestSiteService:
-
     @pytest.fixture(autouse=True)
     def _test_user(self, testuser1):
         self.user = testuser1
@@ -18,8 +17,7 @@ class TestSiteService:
     @pytest.fixture(autouse=True)
     def _manifest(self, json_100031134elc):
         self.manifest_json = json_100031134elc
-        self.tracking_number = json_100031134elc.get('manifestTrackingNumber',
-                                                     '123456789ELC')
+        self.tracking_number = json_100031134elc.get("manifestTrackingNumber", "123456789ELC")
 
     def test_create_or_update_creates_new_site(self):
         """Test create_or_update_site creates a new site when non-existent"""

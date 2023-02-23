@@ -68,20 +68,7 @@ enum QuantityDescription {
 }
 
 interface ContainerType {
-  code:
-    | 'BA'
-    | 'DT'
-    | 'CF'
-    | 'DW'
-    | 'CM'
-    | 'HG'
-    | 'CW'
-    | 'TC'
-    | 'CY'
-    | 'TP'
-    | 'DF'
-    | 'TT'
-    | 'DM';
+  code: 'BA' | 'DT' | 'CF' | 'DW' | 'CM' | 'HG' | 'CW' | 'TC' | 'CY' | 'TP' | 'DF' | 'TT' | 'DM';
   description?: ContainerDescription;
 }
 
@@ -139,10 +126,4 @@ interface Comment {
   handlerId: string;
 }
 
-export type {
-  WasteLine,
-  ContainerType,
-  ContainerDescription,
-  QuantityCode,
-  QuantityDescription,
-};
+export type { WasteLine, ContainerType, ContainerDescription, QuantityCode, QuantityDescription };

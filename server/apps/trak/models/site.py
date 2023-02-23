@@ -11,21 +11,22 @@ class Site(models.Model):
     Not to be confused with what are frequently called 'sites' in RCRAInfo, for that,
     see the Handler model.
     """
+
     name = models.CharField(
-        verbose_name='site Alias',
+        verbose_name="site Alias",
         max_length=200,
-        validators=[MinValueValidator(2, 'site aliases must be longer than 2 characters')]
+        validators=[MinValueValidator(2, "site aliases must be longer than 2 characters")],
     )
     epa_site = models.OneToOneField(
-        verbose_name='Handler',
+        verbose_name="Handler",
         to=Handler,
         on_delete=models.CASCADE,
     )
     last_rcra_sync = models.DateTimeField(
-        verbose_name='Last Sync with RCRAInfo',
+        verbose_name="Last Sync with RCRAInfo",
         null=True,
         blank=True,
     )
 
     def __str__(self):
-        return f'{self.epa_site.epa_id}'
+        return f"{self.epa_site.epa_id}"

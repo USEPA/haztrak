@@ -49,9 +49,7 @@ describe('TransporterTable', () => {
     );
     for (let i = 0; i < TRAN_ARRAY.length; i++) {
       expect(screen.getByTitle(`remove-transporter-${i}-button`)).toBeInTheDocument();
-      expect(
-        screen.getByTitle(`move-transporter-${i}-down-button`)
-      ).toBeInTheDocument();
+      expect(screen.getByTitle(`move-transporter-${i}-down-button`)).toBeInTheDocument();
       expect(screen.getByTitle(`move-transporter-${i}-up-button`)).toBeInTheDocument();
     }
     expect(
@@ -81,9 +79,7 @@ describe('TransporterTable', () => {
         expect(screen.getByTitle(`move-transporter-${i}-down-button`)).toBeDisabled();
       } else {
         // eslint-disable-next-line jest/no-conditional-expect
-        expect(
-          screen.getByTitle(`move-transporter-${i}-down-button`)
-        ).not.toBeDisabled();
+        expect(screen.getByTitle(`move-transporter-${i}-down-button`)).not.toBeDisabled();
       }
     }
   });

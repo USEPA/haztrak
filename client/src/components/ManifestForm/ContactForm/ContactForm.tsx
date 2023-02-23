@@ -31,9 +31,7 @@ export default function ContactForm({ handlerFormType, readOnly }: ContactFormPr
         </Col>
         <Col>
           <HtForm.Group>
-            <HtForm.Label htmlFor={`${namePrefix}MiddleInitial`}>
-              Middle Initial
-            </HtForm.Label>
+            <HtForm.Label htmlFor={`${namePrefix}MiddleInitial`}>Middle Initial</HtForm.Label>
             <HtForm.Control
               id={`${namePrefix}MiddleInitial`}
               type="text"

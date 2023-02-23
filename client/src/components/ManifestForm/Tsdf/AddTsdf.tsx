@@ -19,9 +19,7 @@ function AddTsdf({ show, handleClose }: Props) {
           </Row>
           <Row>
             <i>
-              <small>
-                The Treatment, Storage, or Disposal Facility the waste will shipped to.
-              </small>
+              <small>The Treatment, Storage, or Disposal Facility the waste will shipped to.</small>
             </i>
           </Row>
         </Col>

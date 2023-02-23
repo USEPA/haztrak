@@ -5,15 +5,19 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('trak', '0006_site_last_rcra_sync'),
+        ("trak", "0006_site_last_rcra_sync"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='handler',
-            name='emergency_phone',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='trak.epaphone'),
+            model_name="handler",
+            name="emergency_phone",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="trak.epaphone",
+            ),
         ),
     ]

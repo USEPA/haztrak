@@ -1,14 +1,14 @@
-version: "3.9"
+version: '3.9'
 services:
   server:
     container_name: ht_server
     build: ./server
     ports:
-      - "8000:8000"
+      - '8000:8000'
     volumes:
       - ./server:/app
     environment:
-      HT_HOST: "localhost"
+      HT_HOST: 'localhost'
       HT_SECRET_KEY: ${HT_SECRET_KEY}
       HT_DEBUG: ${HT_DEBUG}
       HT_TIMEZONE: ${HT_TIMEZONE}
@@ -34,9 +34,9 @@ services:
 
   redis:
     container_name: ht_redis
-    image: "redis:alpine"
+    image: 'redis:alpine'
     ports:
-      - "6379:6379"
+      - '6379:6379'
 
   celery:
     restart: always
@@ -60,15 +60,15 @@ services:
 
   postgres:
     container_name: ht_postgres
-    image: "postgres:14"
+    image: 'postgres:14'
     environment:
       POSTGRES_DB: ${HT_DB_NAME}
       POSTGRES_USER: ${HT_DB_USER}
       POSTGRES_PASSWORD: ${HT_DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - '5432:5432'
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $HT_DB_USER -d $HT_DB_NAME"]
+      test: ['CMD-SHELL', 'pg_isready -U $HT_DB_USER -d $HT_DB_NAME']
       interval: 3s
       timeout: 3s
       retries: 5
@@ -77,9 +77,9 @@ services:
 
   client:
     container_name: ht_client
-    image: "node:18"
+    image: 'node:18'
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
       - ./client:/app
     environment:

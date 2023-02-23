@@ -1,6 +1,6 @@
 # Haztrak Client
 
-___
+---
 
 This directory the Haztrak user-interface! If you're looking for a
 holistic overview of the Haztrak project, check the [README](/README.md) in the root directory or
@@ -25,10 +25,10 @@ general.
 The web client makes extensive use of the React ecosystem, namely the below libraries, to
 render the user interface, store state, and make request to the haztrak server.
 
-* [React](https://reactjs.org/)
-* [Redux](https://redux.js.org/)
-* [Bootstrap / React-bootstrap](https://react-bootstrap.github.io/)
-* Take look at [package.json](package.json) for more information
+- [React](https://reactjs.org/)
+- [Redux](https://redux.js.org/)
+- [Bootstrap / React-bootstrap](https://react-bootstrap.github.io/)
+- Take look at [package.json](package.json) for more information
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app),
 using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/)
@@ -38,6 +38,6 @@ template.
 
 Some available scripts to get started
 
-* `npm start`
-* `npm test`
-* `npm run build`
+- `npm start`
+- `npm test`
+- `npm run build`

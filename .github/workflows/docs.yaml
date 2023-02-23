@@ -1,8 +1,8 @@
-name: Github Pages
+name: 'Deploy Documentation'
 
 on:
   push:
-    branches: ["main"]
+    branches: ['main']
   workflow_dispatch:
 
 permissions:
@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
 jobs:
@@ -37,7 +37,7 @@ jobs:
         with:
           path: ./docs/haztrak_book/book
 
-  deploy:
+  deploy_pages:
     needs: build
     environment:
       name: github-pages

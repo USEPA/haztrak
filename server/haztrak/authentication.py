@@ -11,4 +11,5 @@ class BearerAuthentication(TokenAuthentication):
     https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication
     It's used in /haztrak/settings.py under 'DEFAULT_AUTHENTICATION_CLASSES'
     """
-    keyword = 'Bearer'
+
+    keyword = "Bearer"

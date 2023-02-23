@@ -72,9 +72,7 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
               </Container>
               <Row>
                 <HtForm.Group>
-                  <HtForm.Label htmlFor="wasteDescription">
-                    Waste Description
-                  </HtForm.Label>
+                  <HtForm.Label htmlFor="wasteDescription">Waste Description</HtForm.Label>
                   <HtForm.Control
                     id="wasteDescription"
                     as="textarea"

@@ -1,24 +1,36 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit.com hooks
+  autoupdate_branch: 'pre-commit'
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: quarterly
+  skip: []
+  submodules: false
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
       - id: trailing-whitespace
-      - id: end-of-file-fixer
-        exclude: ^\.idea/runConfigurations/[^/]*$
+      - id: check-json
       - id: check-yaml
-  #      - id: check-added-large-files
-  - repo: https://github.com/pycqa/isort
-    rev: 5.10.1
+      - id: end-of-file-fixer
+        exclude: |
+          (?x)^(
+            \.idea\/.*|
+            \.vscode\/.*|
+          )$
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.0.251'
     hooks:
-      - id: isort
-        name: isort (python)
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.4
+      - id: ruff
+  - repo: https://github.com/ambv/black
+    rev: stable
     hooks:
-      - id: flake8
-        args: [ --config, server/setup.cfg ]
+      - id: black
+        language_version: python3.11
   - repo: local
     hooks:
       - id: pre-commit-django-migrations
@@ -28,3 +40,13 @@ repos:
         types:
           - python
         pass_filenames: false
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: 'v8.34.0'
+    hooks:
+      - id: eslint
+        files: \.[jt]sx?$
+        types: [file]
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.0-alpha.3
+    hooks:
+      - id: prettier
