@@ -25,7 +25,7 @@ Or, looking to contribute?
 - [Contribution guidelines](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
 - See our [documentation on setting up a local development environment](https://usepa.github.io/haztrak/deploy/local-development.html)
 - Or find something to work on via [GitHub's issue tracker](https://github.com/USEPA/haztrak/issues)
-    - Don't see something that interests you, [open an issue](https://github.com/USEPA/haztrak/issues/new/choose)
+  - Don't see something that interests you, [open an issue](https://github.com/USEPA/haztrak/issues/new/choose)
 
 ### About e-Manifest
 

@@ -1,4 +1,4 @@
-# Misc files
+# Misc development files
 **/.env
 **/.secrets
 .coverage
@@ -9,16 +9,17 @@
 *.DS_Store
 **/*.bak
 **/.ruff_cache
+# IDE
+**/.idea
+**/.vscode
 
 # virtual environment
 venv/
 .venv/
 env/
 
-# IDE
-**/.idea
-**/.vscode
-
+# Celery
+**/celerybeat-schedule
 
 # Distribution / packaging
 .Python
