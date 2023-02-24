@@ -1,7 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Server Tests](https://github.com/USEPA/haztrak/actions/workflows/test_server.yaml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_server.yaml)
 [![Client Tests](https://github.com/USEPA/haztrak/actions/workflows/test_client.yaml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_client.yaml)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/USEPA/haztrak/main.svg)](https://results.pre-commit.ci/latest/github/USEPA/haztrak/main)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/USEPA/haztrak?label=latest%20release)](https://github.com/my-user/my-repo/releases/tag/v1.0.0)
 
 ---
@@ -17,21 +16,20 @@ If you like the work we do, star this repo for greater visibility.
 
 ## Getting Started :rocket:
 
-Looking to learn more or set up a local development environment?
+Want to learn more?
 
 See our [documentation at https://usepa.github.io/haztrak/](https://usepa.github.io/haztrak/).
 
-Specifically...
+Or, looking to contribute?
 
-- [documentation on deploying locally with docker compose](https://usepa.github.io/haztrak/deploy/local-development.html)
-- our [PR guide](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
-- or [report an issue, request a feature, or find something to work on](https://github.com/USEPA/haztrak/issues)
-  - We try to keep the [Good First Issue](https://github.com/USEPA/haztrak/labels/good%20first%20issue) label up to
-    date
+- [Contribution guidelines](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
+- See our [documentation on setting up a local development environment](https://usepa.github.io/haztrak/deploy/local-development.html)
+- Or find something to work on via [GitHub's issue tracker](https://github.com/USEPA/haztrak/issues)
+  - Don't see something that interests you, [open an issue](https://github.com/USEPA/haztrak/issues/new/choose)
 
 ### About e-Manifest
 
-June 30, 2018. EPA launched a national system for tracking hazardous waste shipments electronically,
+June 30, 2018. the U.S. Environmental Protection Agency (EPA) launched a national system for tracking hazardous waste shipments electronically,
 this system, known as "[e-Manifest](https://www.epa.gov/e-manifest)," modernizes the nation’s paper-intensive process
 for tracking hazardous waste from cradle to grave while saving valuable time, resources, and dollars for industry and
 states.

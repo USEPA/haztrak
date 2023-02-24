@@ -11,6 +11,7 @@ services:
       HT_HOST: 'localhost'
       HT_SECRET_KEY: ${HT_SECRET_KEY}
       HT_DEBUG: ${HT_DEBUG}
+      HT_LOG_LEVEL: ${HT_LOG_LEVEL}
       HT_TIMEZONE: ${HT_TIMEZONE}
       HT_RCRAINFO_ENV: ${HT_RCRAINFO_ENV}
       HT_CORS_DOMAIN: ${HT_CORS_DOMAIN}
@@ -38,15 +39,16 @@ services:
     ports:
       - '6379:6379'
 
-  celery:
+  celery-worker:
     restart: always
-    container_name: ht_celery
+    container_name: ht_celery_worker
     build: ./server
     volumes:
       - ./server:/app
     environment:
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}
       CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+      CELERY_LOG_LEVEL: ${CELERY_LOG_LEVEL}
       HT_DB_ENGINE: ${HT_DB_ENGINE}
       HT_DB_NAME: ${HT_DB_NAME}
       HT_DB_USER: ${HT_DB_USER}
@@ -54,6 +56,27 @@ services:
       HT_DB_HOST: postgres
       HT_DB_PORT: ${HT_DB_PORT}
     command: python manage.py celery_worker
+    depends_on:
+      - redis
+      - server
+
+  celery-beat:
+    restart: always
+    container_name: ht_celery_beat
+    build: ./server
+    volumes:
+      - ./server:/app
+    environment:
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+      CELERY_LOG_LEVEL: ${CELERY_LOG_LEVEL}
+      HT_DB_ENGINE: ${HT_DB_ENGINE}
+      HT_DB_NAME: ${HT_DB_NAME}
+      HT_DB_USER: ${HT_DB_USER}
+      HT_DB_PASSWORD: ${HT_DB_PASSWORD}
+      HT_DB_HOST: postgres
+      HT_DB_PORT: ${HT_DB_PORT}
+    command: python manage.py celery_beat
     depends_on:
       - redis
       - server

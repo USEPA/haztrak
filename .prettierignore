@@ -5,3 +5,4 @@
 **/.env*
 **/.ruff_cache
 **/*.bak
+/client/public/mockServiceWorker.js
