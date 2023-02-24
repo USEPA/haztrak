@@ -14,10 +14,16 @@ CI/CD:
   - .github/workflows/**.yaml
 
 documentation:
-  - any: ['docs/**/*', '**/README.md']
+  - any: ['docs/**/*', 'docs/haztrak_book/**/*', '**/README.md']
 
 dependencies:
-  - any: ['server/requirements.txt', 'client/package.json', 'client/package-lock.json']
+  - any:
+      [
+        'server/requirements.txt',
+        'server/requirements_dev.txt',
+        'client/package.json',
+        'client/package-lock.json',
+      ]
 
 database:
   - server/apps/**/migrations/*.py
