@@ -80,6 +80,7 @@ services:
     depends_on:
       - redis
       - server
+
   postgres:
     container_name: ht_postgres
     image: 'postgres:14'
