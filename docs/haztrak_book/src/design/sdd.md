@@ -74,7 +74,9 @@ The in memory database acts as a broker for Haztrak's [task queue](#task-queue) 
 
 #### Task Queue
 
-The task queue is responsible for jobs/scripts/tasks that shouldn't occur during the [http request-response cycle](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol). For Haztrak, a large part of this is communicating with RCRAInfo via its [public web services](https://github.com/USEPA/e-manifest), a well documented RESTful API. Offloading these external API calls keeps our user experience feeling snappy and protects our [http server](#http-server) from network errors cause by downtime in external systems.
+The task queue is responsible for jobs/scripts/tasks that should occur outside the [http request-response cycle](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol). For Haztrak, a large part of this is communicating with RCRAInfo via its [web services](https://github.com/USEPA/e-manifest), a well documented RESTful API. Offloading these external API calls keeps our user experience feeling snappy and protects our [http server](#http-server) from network errors cause by downtime in external systems.
+
+The task queue can be scaled horizontally to include additional workers as needed. We also deploy schedulers for periodic tasks.
 
 #### HTTP server
 
