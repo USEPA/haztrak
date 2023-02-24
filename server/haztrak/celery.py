@@ -13,13 +13,15 @@ app = Celery("haztrak")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 
 app.autodiscover_tasks()
-#
-#
-# @app.on_after_configure.connect
-# def setup_periodic_tasks(sender, **kwargs):
-#     sender.add_periodic_task(10.0, hello.s(), name="say hello every 10")
-#
-#
-# @app.task
-# def hello():
-#     print("hello")
+
+
+@app.on_after_finalize.connect
+def setup_periodic_tasks(sender, **kwargs):
+    sender.add_periodic_task(10.0, launch_task.s(), name="launch from celery.py")
+
+
+@app.task(name="launch test task")
+def launch_task():
+    from apps.trak.tasks import pull_federal_codes
+
+    pull_federal_codes()
