@@ -29,6 +29,8 @@ from apps.trak.serializers import (
 from apps.trak.serializers.contact import ContactSerializer, EpaPhoneSerializer
 from apps.trak.services import RcrainfoService
 
+# os.environ["HT_SECRET_KEY"] = "mock_django_secret_key"
+
 JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + "/resources/json"
 TEST_CONTACT_JSON = f"{JSON_DIR}/contact/good_contact.json"
 TEST_PHONE_JSON = f"{JSON_DIR}/contact/phone.json"
