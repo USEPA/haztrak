@@ -82,12 +82,7 @@ $ python3 -m venv .venv && source .venv/bin/activate
 (.venv)$ pip install -r requirements_dev.txt
 ```
 
-4. Export the necessary configs
-
-ToDo Remove this step, the test suite should configure these by default when necessary.
-For now, see [configuration](../deploy/configuration.md)
-
-5. Run the tests
+4. Run the tests
 
 ```shell
 (.venv)$ pytest

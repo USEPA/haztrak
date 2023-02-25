@@ -29,7 +29,7 @@ if not os.getenv(RCRAINFO_ENV):
     os.environ[RCRAINFO_ENV] = "PREPROD"
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv(SECRET_ENV)
+SECRET_KEY = os.getenv(SECRET_ENV, "development_django_secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 debug = os.getenv(DEBUG_ENV, "FALSE").upper()

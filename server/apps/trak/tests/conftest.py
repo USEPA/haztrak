@@ -29,8 +29,6 @@ from apps.trak.serializers import (
 from apps.trak.serializers.contact import ContactSerializer, EpaPhoneSerializer
 from apps.trak.services import RcrainfoService
 
-# os.environ["HT_SECRET_KEY"] = "mock_django_secret_key"
-
 JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + "/resources/json"
 TEST_CONTACT_JSON = f"{JSON_DIR}/contact/good_contact.json"
 TEST_PHONE_JSON = f"{JSON_DIR}/contact/phone.json"
@@ -259,6 +257,10 @@ class TestApiClient:
     4. site_generator001 {Site} Site with generator001 as it's handler
     5. api_client {APIClient} pre authenticated (testuser1) APIClient
     """
+
+    @pytest.fixture(scope="session", autouse=True)
+    def set_env(self):
+        os.environ["HT_SECRET_KEY"] = "django-insecure-mock-key"
 
     @pytest.fixture(autouse=True)
     def _profile(self, test_user_profile):
