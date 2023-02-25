@@ -10,6 +10,7 @@
     - [Database Design](design/db-design.md)
     - [Async Task Design](design/task-queue.md)
   - [Source Navigation](design/source-roadmap.md)
+  - [Testing](design/testing.md)
 - [Deployment](deploy/index.md)
   - [Local Development](deploy/local-development.md)
   - [Configuration](deploy/configuration.md)

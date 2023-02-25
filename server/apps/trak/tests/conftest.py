@@ -258,6 +258,10 @@ class TestApiClient:
     5. api_client {APIClient} pre authenticated (testuser1) APIClient
     """
 
+    @pytest.fixture(scope="session", autouse=True)
+    def set_env(self):
+        os.environ["HT_SECRET_KEY"] = "django-insecure-mock-key"
+
     @pytest.fixture(autouse=True)
     def _profile(self, test_user_profile):
         self.profile = test_user_profile
