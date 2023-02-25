@@ -11,4 +11,6 @@ to look for a certain component or piece of code, this is the place to look.
   - [Browser Client](./browser-client.md)
   - [Database Design](./db-design.md)
   - [Async Task Queue](./task-queue.md)
+  - [Back End Error handling](./back-end-errors.md)
+- [Testing](./testing.md)
 - [Source Roadmap](./source-roadmap.md)
