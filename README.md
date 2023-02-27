@@ -16,16 +16,11 @@ If you like the work we do, star this repo for greater visibility.
 
 ## Getting Started :rocket:
 
-Want to learn more?
-
-See our [documentation at https://usepa.github.io/haztrak/](https://usepa.github.io/haztrak/).
-
-Or, looking to contribute?
-
-- [Contribution guidelines](https://github.com/USEPA/haztrak/blob/main/docs/CONTRIBUTING.md).
-- See our [documentation on setting up a local development environment](https://usepa.github.io/haztrak/deploy/local-development.html)
-- Or find something to work on via [GitHub's issue tracker](https://github.com/USEPA/haztrak/issues)
-  - Don't see something that interests you, [open an issue](https://github.com/USEPA/haztrak/issues/new/choose)
+- See our [documentation](https://usepa.github.io/haztrak) for an introduction,
+  as well as detailed instructions on [setting up a local development environment](https://usepa.github.io/haztrak/deploy/local-development.html)
+- [Contribution guidelines](https://github.com/USEPA/haztrak/blob/main/.github/CONTRIBUTING.md).
+- Find something to work on our [issue tracker](https://github.com/USEPA/haztrak/issues)
+  - Don't see something that interests you, [open a new issue](https://github.com/USEPA/haztrak/issues/new/choose)
 
 ### About e-Manifest
 
@@ -46,14 +41,9 @@ For more information on using the RCRAInfo and e-Manifest web services, please s
 [USEPA/e-Manifest](https://github.com/USEPA/e-manifest) repo or contact the
 [e-Manifest Team](https://www.epa.gov/e-manifest/forms/contact-us-about-hazardous-waste-electronic-manifest-system).
 
-## Documentation :page_facing_up:
-
-You can find Haztrak's documentation hosted at https://usepa.github.io/haztrak/
-
 ## Development Status :warning:
 
-Haztrak is **NOT** intended to be a polished,
-ready-to-ship, web app. it's intended audience are those seeking
+Haztrak its intended audience are those seeking
 a working example with the technical expertise to leverage the source for their own requirements.
 It's licensed under the [MIT open source](/LICENSE) license, a permissive license designed to provide you(!)
 the freedom to use, modify, redistribute, even develop proprietary derivative works.

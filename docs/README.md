@@ -2,7 +2,4 @@
 
 See our full documentation at https://usepa.github.io/haztrak/
 
-### Other Content
-
-- [Contributing](./CONTRIBUTING.md)
-- [Code of Conduct](./CODE_OF_CONDUCT.md)
+The source for the documentation is found in the [haztrak_book](./haztrak_book) directory
