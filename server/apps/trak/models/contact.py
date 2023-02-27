@@ -27,7 +27,11 @@ class EpaPhone(models.Model):
     number = EpaPhoneNumber(
         max_length=12,
     )
-    extension = models.CharField(max_length=6, null=True, blank=True)
+    extension = models.CharField(
+        max_length=6,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         if self.extension:
@@ -65,9 +69,21 @@ class Contact(models.Model):
 
     objects = ContactManager()
 
-    first_name = models.CharField(max_length=38, null=True, blank=True)
-    middle_initial = models.CharField(max_length=1, null=True, blank=True)
-    last_name = models.CharField(max_length=38, null=True, blank=True)
+    first_name = models.CharField(
+        max_length=38,
+        null=True,
+        blank=True,
+    )
+    middle_initial = models.CharField(
+        max_length=1,
+        null=True,
+        blank=True,
+    )
+    last_name = models.CharField(
+        max_length=38,
+        null=True,
+        blank=True,
+    )
     phone = models.ForeignKey(
         EpaPhone,
         on_delete=models.CASCADE,
@@ -75,7 +91,11 @@ class Contact(models.Model):
         blank=True,
     )
     email = models.EmailField()
-    company_name = models.CharField(max_length=80, null=True, blank=True)
+    company_name = models.CharField(
+        max_length=80,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         try:

@@ -23,8 +23,12 @@ class SitePermissionSerializer(TrakBaseSerializer):
         "myRCRAid",
     ]
 
-    epaId = serializers.StringRelatedField(source="site")
-    siteManagement = serializers.BooleanField(source="site_manager")
+    epaId = serializers.StringRelatedField(
+        source="site",
+    )
+    siteManagement = serializers.BooleanField(
+        source="site_manager",
+    )
     annualReport = serializers.CharField(
         source="annual_report",
     )

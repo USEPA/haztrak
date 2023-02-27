@@ -85,7 +85,10 @@ class Manifest(models.Model):
         auto_now=True,
     )
     mtn = models.CharField(
-        verbose_name="manifest Tracking Number", max_length=30, default=draft_mtn, unique=True
+        verbose_name="manifest Tracking Number",
+        max_length=30,
+        default=draft_mtn,
+        unique=True,
     )
     status = models.CharField(
         max_length=25,
