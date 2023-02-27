@@ -36,7 +36,7 @@ If you're looking to contribute code or documentation, here's the general proces
 - Clone your fork to your local workstation.
 
 ```shell
-$ git clone git@github.com/<yourgithubusername>/haztrak.git
+git clone git@github.com/<yourgithubusername>/haztrak.git
 ```
 
 - Install the [pre-commit](https://pre-commit.com/) hooks
@@ -44,7 +44,7 @@ $ git clone git@github.com/<yourgithubusername>/haztrak.git
   - See [pre-commit installation docs](https://pre-commit.com/#installation)
 
 ```shell
-$ pre-commit install
+pre-commit install
 ```
 
 - See our documentation on setting up a [local development environment](./local-development.md)

@@ -68,25 +68,25 @@ The client test suite can be run following these steps.
 1. Clone the repo
 
 ```shell
-$ git clone https://github.com/usepa/haztrak && cd haztrak/server
+git clone https://github.com/usepa/haztrak && cd haztrak/server
 ```
 
 2. setup a virtual environment
 
 ```shell
-$ python3 -m venv .venv && source .venv/bin/activate
+python3 -m venv .venv && source .venv/bin/activate
 ```
 
 3. Download the dependencies
 
 ```shell
-(.venv)$ pip install -r requirements_dev.txt
+pip install -r requirements_dev.txt
 ```
 
 4. Run the tests
 
 ```shell
-(.venv)$ pytest
+pytest
 ```
 
 ## Testing the React Client
@@ -121,17 +121,17 @@ The client test suite can be run following these steps.
 1. Clone the repo
 
 ```shell
-$ git clone https://github.com/usepa/haztrak && cd haztrak/client
+git clone https://github.com/usepa/haztrak && cd haztrak/client
 ```
 
 2. Download the dependencies
 
 ```shell
-$ npm install .
+npm install .
 ```
 
 3. Run Tests
 
 ```shell
-$ npm test
+npm test
 ```

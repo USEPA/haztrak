@@ -171,6 +171,12 @@ def wasteline_json() -> Dict:
         return json.load(f)
 
 
+@pytest.fixture
+def phone_json(db) -> Dict:
+    with open(TEST_PHONE_JSON, "r") as f:
+        return json.load(f)
+
+
 # Serializer fixtures, build on JSON fixtures to produce serializers
 @pytest.fixture
 def manifest_10003114elc_serializer(db, json_100031134elc) -> ManifestSerializer:
@@ -203,10 +209,8 @@ def epa_permission_serializer(db, epa_permission_json) -> EpaPermissionSerialize
 
 
 @pytest.fixture
-def phone_serializer(db) -> EpaPhoneSerializer:
-    with open(TEST_PHONE_JSON, "r") as f:
-        data = json.load(f)
-    return EpaPhoneSerializer(data=data)
+def phone_serializer(db, phone_json) -> EpaPhoneSerializer:
+    return EpaPhoneSerializer(data=phone_json)
 
 
 @pytest.fixture
@@ -257,10 +261,6 @@ class TestApiClient:
     4. site_generator001 {Site} Site with generator001 as it's handler
     5. api_client {APIClient} pre authenticated (testuser1) APIClient
     """
-
-    @pytest.fixture(scope="session", autouse=True)
-    def set_env(self):
-        os.environ["HT_SECRET_KEY"] = "django-insecure-mock-key"
 
     @pytest.fixture(autouse=True)
     def _profile(self, test_user_profile):

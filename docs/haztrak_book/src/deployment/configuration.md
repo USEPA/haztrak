@@ -26,7 +26,7 @@ using [docker-composes --env-file flag](https://docs.docker.com/compose/environm
 like so.
 
 ```shell
-$ docker-compose --env-file configs/.env.dev up --build
+docker-compose --env-file configs/.env.dev up --build
 ```
 
 ## Server

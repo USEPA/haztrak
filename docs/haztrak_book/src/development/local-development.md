@@ -26,14 +26,14 @@ If you find something missing or inaccurate, please submit an issue
   - You can either use the `--env-file` flag
 
 ```shell
-$ docker compose --env-file configs/.env.dev up --build
+docker compose --env-file configs/.env.dev up --build
 ```
 
 or copy the config file to the project root as a `.env` file, modify it if needed, and docker will apply it by default.
 
 ```shell
-$ cp ./configs/.env.dev .env
-$ docker compose up --build
+cp ./configs/.env.dev .env
+docker compose up --build
 ```
 
 ## Fixtures
@@ -79,9 +79,13 @@ For additional information on obtaining API credentials, see the
 
   - If you're writing any Python, please install these git hooks.
   - ```shell
-    $ pip install -r requirements_dev.txt
-    $ pre-commit install
+    pip install -r requirements_dev.txt
+    pre-commit install
     ```
+
+  ```
+
+  ```
 
   ```
 
@@ -89,6 +93,10 @@ For additional information on obtaining API credentials, see the
 
   - [pre-commit](https://pre-commit.com/) hooks are set to run a number of linting and formatting checks before
     commits on any branch is accepted.
+
+  ```
+
+  ```
 
   ```
 
