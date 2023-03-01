@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.db import models
 
-from apps.trak.models import Handler
+from apps.trak.models import Handler, ManifestHandler
 
 STATUS = [
     ("NotAssigned", "Not Assigned"),
@@ -131,13 +131,13 @@ class Manifest(models.Model):
         blank=True,
     )
     generator = models.ForeignKey(
-        Handler,
+        ManifestHandler,
         on_delete=models.PROTECT,
         related_name="generator",
     )
     # transporters
     tsd = models.ForeignKey(
-        Handler,
+        ManifestHandler,
         verbose_name="Designated facility",
         on_delete=models.PROTECT,
         related_name="designated_facility",

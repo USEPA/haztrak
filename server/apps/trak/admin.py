@@ -5,6 +5,7 @@ from .models import (
     Contact,
     EpaPhone,
     Handler,
+    ManifestHandler,
     Manifest,
     RcraProfile,
     Site,
@@ -16,6 +17,7 @@ from .models import (
 # Register models here.
 admin.site.register(Manifest)
 admin.site.register(Handler)
+admin.site.register(ManifestHandler)
 admin.site.register(Site)
 admin.site.register(WasteLine)
 admin.site.register(Transporter)

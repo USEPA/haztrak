@@ -154,3 +154,15 @@ class Handler(models.Model):
 
     def __str__(self):
         return f"{self.epa_id}"
+
+
+class ManifestHandler(models.Model):
+    handler = models.ForeignKey(
+        "Handler",
+        on_delete=models.CASCADE,
+    )
+    elec_signatures_info = models.JSONField(
+        verbose_name="Electronic signature info",
+        null=True,
+        blank=True,
+    )

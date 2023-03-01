@@ -16,6 +16,7 @@ from apps.trak.views import (
     SyncSiteManifest,
     TransporterView,
 )
+from apps.trak.views.handler import ManifestHandlerView
 
 manifest_router = routers.SimpleRouter()
 manifest_router.register(r"manifest", ManifestView)
@@ -39,4 +40,5 @@ urlpatterns = [
     path("handler/search", HandlerSearch.as_view()),
     path("handler/details/<int:pk>", HandlerView.as_view()),
     path("transporter/<int:pk>", TransporterView.as_view()),
+    path("mtnhandler/<int:pk>", ManifestHandlerView.as_view()),
 ]

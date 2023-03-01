@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.trak.models import Handler
+from apps.trak.models import Handler, ManifestHandler
 from apps.trak.serializers import AddressSerializer
 
 from .contact import ContactSerializer, EpaPhoneSerializer
@@ -89,3 +89,20 @@ class HandlerSerializer(TrakBaseSerializer):
             "hasRegisteredEmanifestUser",
             "gisPrimary",
         ]
+
+
+class ManifestHandlerSerializer(HandlerSerializer):
+    """Serializer for Handler on manifest"""
+
+    handler = HandlerSerializer()
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        handler_rep = representation.pop("handler")
+        for key in handler_rep:
+            representation[key] = handler_rep[key]
+        return representation
+
+    class Meta:
+        model = ManifestHandler
+        fields = ["handler"]

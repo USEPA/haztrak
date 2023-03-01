@@ -3,7 +3,7 @@ Model definitions for the trak domain
 """
 from .address import Address
 from .contact import Contact, EpaPhone
-from .handler import Handler
+from .handler import Handler, ManifestHandler
 from .manifest import Manifest
 from .rcra_profile import RcraProfile
 from .site import Site
