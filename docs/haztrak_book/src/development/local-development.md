@@ -14,8 +14,6 @@ If you find something missing or inaccurate, please submit an issue
 4. [Development Configs](#development-configs)
 5. [Developing without Docker](#local-development-without-docker)
 
-- [Developing React without the backend](#working-on-the-react-client-locally)
-
 ## Docker Compose
 
 - The easiest way to set up a local development environment is to
@@ -73,68 +71,34 @@ For additional information on obtaining API credentials, see the
 
 ## Development Configs
 
-- Haztrak includes a couple configs to help ensure contributions use a consistent style guide. Most popular IDEs have a
-  plugin to support these configs.
-- `pre-commit`
+Haztrak includes a couple configs to help ensure contributions use a consistent
+style guide. Most popular IDEs have a plugin to support these configs.
 
-  - If you're writing any Python, please install these git hooks.
-  - ```shell
-    pip install -r requirements_dev.txt
-    pre-commit install
-    ```
+- pre-commit
+  - [pre-commit](https://pre-commit.com/) hooks are set to run a number of linting and formatting checks before commits on any branch is accepted.
 
-  ```
+```shell
+ pip install -r requirements_dev.txt
+ pre-commit install
+```
 
-  ```
-
-  ```
-
-  ```
-
-  - [pre-commit](https://pre-commit.com/) hooks are set to run a number of linting and formatting checks before
-    commits on any branch is accepted.
-
-  ```
-
-  ```
-
-  ```
-
-  ```
-
-- `.editorconfig`
-
+- .editorconfig
   - Universal IDE configs for formatting files, most IDEs will have a plugin you can
     install that will apply these configs.
-
-- `runhaz.sh`
-
+- runhaz.sh
   - A bash script to help with development
   - See usage with `$ ./runhaz.sh -h`
-
-- `Prettier`
+- Prettier
   - [Prettier](https://prettier.io/) is used to autoformat source files, specifically
-    the front end for now. If you're using an IDE, it will likely have a prettier plugin available.
+    the most of our non-python files. If you're using an IDE, it will likely have a prettier plugin available.
   - The configs are found in [.prettierrc.json](/.prettierrc.json)
     and [.prettierignore](/.prettierignore)
+- [Black](https://black.readthedocs.io/en/stable/#)
+  - Black is a Python formatter from the
+    [Python Software Foundation](https://www.python.org/psf-landing/). It's very opinionated and largely unconfigurable.
 
 ## Local Development Without Docker
 
 If you don't have a way to build and run containers, or you're a gluten for punishment, you can make use of the Django
 management scripts and Create-React-App's npm scripts to set up a local
 development environment, however it's not recommended.
-
-### Working on the React Client Locally
-
-Since many have expressed interest in contributing to the (React JS) front end but are not experienced with django or
-cannot run containers
-on your workstation. We have an option for you. The `haztrak/client/` directory
-has [Mock Service Worker (MWS)](https://mswjs.io/) as a
-dev dependency. When run, MSW will intercept http requests to the back end and return with mock data.
-
-To run MSW, ensure the following environment variables are set
-
-- `REACT_APP_HT_ENV=TEST`
-- `REACT_APP_HT_API_URL=http://localhost:8000`
-
-You can log in with the [testuser](#docker-compose) username and password.

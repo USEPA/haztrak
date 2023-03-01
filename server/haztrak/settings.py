@@ -4,7 +4,6 @@ Haztrak project settings.
 import os
 from pathlib import Path
 
-
 # Environment variable mappings
 HOST_ENV = "HT_HOST"
 DEBUG_ENV = "HT_DEBUG"
@@ -25,7 +24,7 @@ if not os.getenv(RCRAINFO_ENV):
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = os.getenv(SECRET_ENV, "development_django_secret_key")
-SECRET_KEY = os.getenv(SECRET_ENV, 'dango-development-key')
+SECRET_KEY = os.getenv(SECRET_ENV, "dango-development-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 debug = os.getenv(DEBUG_ENV, "FALSE").upper()

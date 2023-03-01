@@ -31,15 +31,20 @@ class ManifestService:
     def _retrieve_manifest(self, mtn: str):
         response = self.rcrainfo.get_manifest(mtn)
         if response.ok:
+            self.logger.debug(f"manifest pulled {mtn}")
             return response.json()
-        raise Exception(response.json())
+        else:
+            self.logger.warning(f"error pulling {mtn}")
+            raise Exception(response.json())
 
     @transaction.atomic
     def _save_manifest(self, manifest_json: dict) -> Manifest:
         serializer = ManifestSerializer(data=manifest_json)
         if serializer.is_valid():
             return serializer.save()
-        raise Exception(serializer.errors)
+        else:
+            self.logger.warning(f"invalid serializer data: {serializer.errors}")
+            raise Exception(serializer.errors)
 
     def search_rcra_mtn(
         self,

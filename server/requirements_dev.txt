@@ -5,4 +5,3 @@ responses==0.22.0
 ruff==0.0.253
 black==23.1.0
 -r requirements.txt
-

@@ -40,6 +40,7 @@ class SiteService:
             )
             # limit the number of manifest to sync at a time to 30
             tracking_numbers = tracking_numbers[0:30]
+            logger.debug(f"tracking numbers to pull {tracking_numbers}")
             results: Dict[str, List[str]] = manifest_service.pull_manifests(
                 tracking_numbers=tracking_numbers
             )
