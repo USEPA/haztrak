@@ -82,7 +82,6 @@
       "registered": false,
       "contact": 1,
       "emergency_phone": null,
-      "electronic_signatures_info": null,
       "gis_primary": false,
       "can_esign": true,
       "limited_esign": true,

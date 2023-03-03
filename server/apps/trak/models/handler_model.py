@@ -124,11 +124,7 @@ class Handler(models.Model):
         null=True,
         blank=True,
     )
-    electronic_signatures_info = models.JSONField(
-        verbose_name="Electronic signature info",
-        null=True,
-        blank=True,
-    )
+
     gis_primary = models.BooleanField(
         verbose_name="GIS primary",
         null=True,
@@ -194,8 +190,8 @@ class ManifestHandler(models.Model):
         "Handler",
         on_delete=models.CASCADE,
     )
-    elec_signatures_info = models.JSONField(
-        verbose_name="Electronic signature info",
+    electronic_signatures = models.JSONField(
+        verbose_name="e-signature",
         null=True,
         blank=True,
     )

@@ -38,11 +38,6 @@ class HandlerSerializer(TrakBaseSerializer):
         default=None,
     )
     # paperSignatureInfo
-    electronicSignatureInfo = serializers.JSONField(
-        source="electronic_signatures_info",
-        allow_null=True,
-        default=None,
-    )
     registered = serializers.BooleanField(
         allow_null=True,
         default=False,
@@ -82,7 +77,6 @@ class HandlerSerializer(TrakBaseSerializer):
             "mailingAddress",
             "contact",
             "emergencyPhone",
-            "electronicSignatureInfo",
             "registered",
             "limitedEsign",
             "canEsign",

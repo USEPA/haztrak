@@ -5,7 +5,10 @@ from django.db import transaction
 
 from apps.trak.models import RcraProfile, Site, SitePermission
 from apps.trak.serializers import EpaPermissionSerializer
-from apps.trak.services import HandlerService, RcrainfoService, SiteService
+
+from .handler_service import HandlerService
+from .rcrainfo_service import RcrainfoService
+from .site_service import SiteService
 
 
 # ToDo, may be better to have a service level module exception.
