@@ -4,6 +4,7 @@ from rest_framework import routers
 from apps.trak.views import (
     HandlerSearch,
     HandlerView,
+    ManifestHandlerView,
     ManifestView,
     MtnList,
     PullManifest,
@@ -39,4 +40,5 @@ urlpatterns = [
     path("handler/search", HandlerSearch.as_view()),
     path("handler/details/<int:pk>", HandlerView.as_view()),
     path("transporter/<int:pk>", TransporterView.as_view()),
+    path("mtnhandler/<int:pk>", ManifestHandlerView.as_view()),
 ]

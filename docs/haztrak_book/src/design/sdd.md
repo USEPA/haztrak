@@ -1,6 +1,7 @@
 # Source Design Document
 
-This document provides a high-level overview of the Haztrak's system architecture and scope. You'll find the following topics:
+This document provides a high-level overview of the Haztrak's system architecture and scope. You'll find the following
+topics:
 
 - [introduction](#source-design-document)
 - [Purpose](#purpose-of-haztrak)
@@ -10,8 +11,7 @@ This document provides a high-level overview of the Haztrak's system architectur
   - [Back End Services](#back-end)
 - [Testing](#testing)
 - [Requirements](#requirements)
-- [Packaging](#versioning-packaging-and-containerization)
-- [Timeline](#timeline)
+- [Versioning](#versioning)
 
 We also hope this document serves as food-for-thought for anyone scoping a project
 that will need to interface with the U.S. Environmental Protection
@@ -159,13 +159,20 @@ what inevitably happens, is the test suite contains a bunch of low quality tests
 
 What dependencies and things needed to be able to deploy/build Haztrak.
 
-## Versioning, Packaging and Containerization
+## Versioning
 
-How Haztrak is delivered in its various forms.
+Haztrak uses [semantic versioning](https://semver.org/) to keep track
+of its software releases. Semantic versioning is a widely used versioning system that allows
+developers to convey the nature of the changes in the software using
+a version number.
 
-## Timeline
+The Haztrak project stores versions are in
+[Git tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging). When a new
+version of the software is released, a new Git tag is created to represent that version.
+these tags are then used for the container images that are built and
+released for that version. Since the Git tag and image tag correspond,
+the source for a given container tag can always be easily found. Containers built
+from non-release commits should use
 
-It's difficult to say when this project will be complete since it's highly
-dependent on our workload, Haztrak is often put on the back burner when other
-pragmatic priorities arise. With that being said, we plan on finishing all
-features listed in the [scope](#scope) section by the end of 2023.
+Haztrak is stored in a monorepo, as a result, the front-end and back-end
+containers are built and released simultaneously with the same version number.

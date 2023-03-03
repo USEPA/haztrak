@@ -2,6 +2,7 @@ version: '3.9'
 services:
   server:
     container_name: ht_server
+    restart: unless-stopped
     build: ./server
     ports:
       - '8000:8000'
@@ -40,7 +41,7 @@ services:
       - '6379:6379'
 
   celery-worker:
-    restart: always
+    restart: unless-stopped
     container_name: ht_celery_worker
     build: ./server
     volumes:
@@ -61,7 +62,7 @@ services:
       - server
 
   celery-beat:
-    restart: always
+    restart: unless-stopped
     container_name: ht_celery_beat
     build: ./server
     volumes:
@@ -82,6 +83,7 @@ services:
       - server
 
   postgres:
+    restart: unless-stopped
     container_name: ht_postgres
     image: 'postgres:14'
     environment:

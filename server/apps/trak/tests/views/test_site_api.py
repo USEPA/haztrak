@@ -82,26 +82,6 @@ class TestSiteManifest(TestApiClient):
 
     url = "/api/trak/site"
 
-    # @pytest.fixture(autouse=True)
-    # def _manifest(self, manifest_elc):
-    #     self.manifest = manifest_elc
-    #
-    # @pytest.fixture(autouse=True)
-    # def _profile(self, test_user_profile):
-    #     self.profile = test_user_profile
-    #
-    # @pytest.fixture(autouse=True)
-    # def _generator(self, generator001):
-    #     self.generator = generator001
-    #
-    # @pytest.fixture(autouse=True)
-    # def _site(self, site_generator001):
-    #     self.site = site_generator001
-    #
-    # @pytest.fixture(autouse=True)
-    # def _test_user(self, testuser1):
-    #     self.user = testuser1
-
     def test_returns_200(self, db):
         factory = APIRequestFactory()
         request = factory.get(f"{self.url}/{self.generator.epa_id}/manifest")

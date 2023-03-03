@@ -4,8 +4,6 @@ Haztrak project settings.
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
-
 # Environment variable mappings
 HOST_ENV = "HT_HOST"
 DEBUG_ENV = "HT_DEBUG"
@@ -18,10 +16,6 @@ HT_LOG_LEVEL = os.getenv("HT_LOG_LEVEL", "INFO")
 HT_TRAK_LOG_LEVEL = os.getenv("HT_TRAK_LOG_LEVEL", HT_LOG_LEVEL)
 HT_CORE_LOG_LEVEL = os.getenv("HT_CORE_LOG_LEVEL", HT_LOG_LEVEL)
 
-load_dotenv()  # ToDo: remove this (and the python-dotenv dep)
-# this is here for unit test (with a .env file)
-# we should find a more reproducible way across dev workstations
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,7 +23,8 @@ if not os.getenv(RCRAINFO_ENV):
     os.environ[RCRAINFO_ENV] = "PREPROD"
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv(SECRET_ENV, "development_django_secret_key")
+# SECRET_KEY = os.getenv(SECRET_ENV, "development_django_secret_key")
+SECRET_KEY = os.getenv(SECRET_ENV, "dango-development-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 debug = os.getenv(DEBUG_ENV, "FALSE").upper()

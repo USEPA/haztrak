@@ -15,18 +15,21 @@ from apps.trak.models import (
     EpaPhone,
     Handler,
     Manifest,
+    ManifestHandler,
     RcraProfile,
     Site,
     SitePermission,
 )
 from apps.trak.serializers import (
+    ContactSerializer,
     EpaPermissionSerializer,
+    EpaPhoneSerializer,
     HandlerSerializer,
+    ManifestHandlerSerializer,
     ManifestSerializer,
     SitePermissionSerializer,
     WasteLineSerializer,
 )
-from apps.trak.serializers.contact import ContactSerializer, EpaPhoneSerializer
 from apps.trak.services import RcrainfoService
 
 JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + "/resources/json"
@@ -171,6 +174,12 @@ def wasteline_json() -> Dict:
         return json.load(f)
 
 
+@pytest.fixture
+def phone_json(db) -> Dict:
+    with open(TEST_PHONE_JSON, "r") as f:
+        return json.load(f)
+
+
 # Serializer fixtures, build on JSON fixtures to produce serializers
 @pytest.fixture
 def manifest_10003114elc_serializer(db, json_100031134elc) -> ManifestSerializer:
@@ -185,6 +194,11 @@ def waste_serializer(db, wasteline_json) -> WasteLineSerializer:
 @pytest.fixture
 def handler_serializer(db, handler_json) -> HandlerSerializer:
     return HandlerSerializer(data=handler_json)
+
+
+@pytest.fixture
+def manifest_handler_serializer(db, handler_json) -> ManifestHandlerSerializer:
+    return ManifestHandlerSerializer(data=handler_json)
 
 
 @pytest.fixture
@@ -203,20 +217,32 @@ def epa_permission_serializer(db, epa_permission_json) -> EpaPermissionSerialize
 
 
 @pytest.fixture
-def phone_serializer(db) -> EpaPhoneSerializer:
-    with open(TEST_PHONE_JSON, "r") as f:
-        data = json.load(f)
-    return EpaPhoneSerializer(data=data)
+def phone_serializer(db, phone_json) -> EpaPhoneSerializer:
+    return EpaPhoneSerializer(data=phone_json)
 
 
 @pytest.fixture
-def manifest_elc(db, address_123_main, generator001, tsd001) -> Manifest:
+def manifest_gen(db, generator001) -> ManifestHandler:
+    return ManifestHandler.objects.create(
+        handler=generator001,
+    )
+
+
+@pytest.fixture
+def manifest_tsd(db, tsd001) -> ManifestHandler:
+    return ManifestHandler.objects.create(
+        handler=tsd001,
+    )
+
+
+@pytest.fixture
+def manifest_elc(db, address_123_main, manifest_gen, manifest_tsd) -> Manifest:
     return Manifest.objects.create(
         mtn="0123456789ELC",
         created_date=datetime.now(),
         potential_ship_date=date.today(),
-        generator=generator001,
-        tsd=tsd001,
+        generator=manifest_gen,
+        tsd=manifest_tsd,
     )
 
 
@@ -257,10 +283,6 @@ class TestApiClient:
     4. site_generator001 {Site} Site with generator001 as it's handler
     5. api_client {APIClient} pre authenticated (testuser1) APIClient
     """
-
-    @pytest.fixture(scope="session", autouse=True)
-    def set_env(self):
-        os.environ["HT_SECRET_KEY"] = "django-insecure-mock-key"
 
     @pytest.fixture(autouse=True)
     def _profile(self, test_user_profile):

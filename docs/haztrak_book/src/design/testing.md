@@ -29,7 +29,7 @@ For a more comprehensive overview of automated testing, we recommend the follow 
 The Haztrak HTTP server test suite includes a combination of unit tests,
 integration tests. The test suite for each [Django app](https://docs.djangoproject.com/en/4.1/intro/tutorial07/)
 is located in the `tests` directory of each app. These files
-are ignored (not included) during the [container build](../deploy/cd.md#2-docker-build)
+are ignored (not included) during the [container build](../development/cd.md#2-docker-build)
 process.
 
 The HTTP server is built around the Django ecosystem, Haztrak classes often
@@ -52,10 +52,11 @@ The Haztrak project transitioned to a pytest based test suite as part of an atte
 to reduce the maintenance cost and streamline unit tests.
 
 As part of the effort to reduce unit test maintenance cost, the haztrak project removed fixture files
-(see django [TestCase's fixture's attribute](https://docs.djangoproject.com/en/4.1/topics/testing/tools/#fixture-loading))
+(see
+django [TestCase's fixture's attribute](https://docs.djangoproject.com/en/4.1/topics/testing/tools/#fixture-loading))
 and replaced that data with [PyTest Fixtures](https://docs.pytest.org/en/7.2.x/reference/reference.html#fixtures).
 
-For a introduction to using pytest fixtures to test django, see the following articles:
+For an introduction to using pytest fixtures to test django, see the following articles:
 
 - [How to Provide Test Fixtures for Django Models in Pytest](https://realpython.com/django-pytest-fixtures/)
 - [Effective Python Testing With PyTest](https://realpython.com/pytest-python-testing/)
@@ -67,25 +68,25 @@ The client test suite can be run following these steps.
 1. Clone the repo
 
 ```shell
-$ git clone https://github.com/usepa/haztrak && cd haztrak/server
+git clone https://github.com/usepa/haztrak && cd haztrak/server
 ```
 
 2. setup a virtual environment
 
 ```shell
-$ python3 -m venv .venv && source .venv/bin/activate
+python3 -m venv .venv && source .venv/bin/activate
 ```
 
 3. Download the dependencies
 
 ```shell
-(.venv)$ pip install -r requirements_dev.txt
+pip install -r requirements_dev.txt
 ```
 
 4. Run the tests
 
 ```shell
-(.venv)$ pytest
+pytest
 ```
 
 ## Testing the React Client
@@ -93,10 +94,10 @@ $ python3 -m venv .venv && source .venv/bin/activate
 Like the [server](#testing-the-http-server), the Haztrak client employs an
 automated test suite with unit and integration tests to ensure the client is
 reliable and bug-free. These tests should be run locally by developers to ensure
-recent changes don't introduce errors as well during the [CI process](../deploy/ci.md).
+recent changes don't introduce errors as well during the [CI process](../development/ci.md).
 
 Tests are stored in `*.spec.{ts,tsx}` files alongside the corresponding source file.
-These files are ignored (not included) during the [container build](../deploy/cd.md#2-docker-build)
+These files are ignored (not included) during the [container build](../development/cd.md#2-docker-build)
 process.
 
 ### Dependencies
@@ -120,17 +121,17 @@ The client test suite can be run following these steps.
 1. Clone the repo
 
 ```shell
-$ git clone https://github.com/usepa/haztrak && cd haztrak/client
+git clone https://github.com/usepa/haztrak && cd haztrak/client
 ```
 
 2. Download the dependencies
 
 ```shell
-$ npm install .
+npm install .
 ```
 
 3. Run Tests
 
 ```shell
-$ npm test
+npm test
 ```
