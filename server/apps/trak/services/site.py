@@ -39,7 +39,7 @@ class SiteService:
                 site_id=site_id, start_date=site.last_rcra_sync
             )
             # limit the number of manifest to sync at a time
-            tracking_numbers = tracking_numbers[0:10]
+            tracking_numbers = tracking_numbers[0:30]
             logger.debug(f"tracking numbers to pull {tracking_numbers}")
             results: Dict[str, List[str]] = manifest_service.pull_manifests(
                 tracking_numbers=tracking_numbers

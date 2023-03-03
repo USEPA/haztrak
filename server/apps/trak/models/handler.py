@@ -156,7 +156,40 @@ class Handler(models.Model):
         return f"{self.epa_id}"
 
 
+class ManifestHandlerManager(models.Manager):
+    """
+    Inter-model related functionality for ManifestHandler Model
+    """
+
+    def __init__(self):
+        self.manifest_handler_data = None
+        super().__init__()
+
+    @staticmethod
+    def create_manifest_handler(**handler_data):
+        """
+        Create a Manifest handler and its related fields
+
+        Keyword Args:
+            handler (dict): handler data in (ordered)dict format
+        """
+        try:
+            if Handler.objects.filter(epa_id=handler_data["handler"]["epa_id"]).exists():
+                handler = Handler.objects.get(epa_id=handler_data["handler"]["epa_id"])
+            else:
+                handler = Handler.objects.create_handler(**handler_data["handler"])
+            return ManifestHandler.objects.create(handler=handler)
+        except KeyError as exc:
+            logger.warning(f"KeyError while creating Manifest handler {exc}")
+
+
 class ManifestHandler(models.Model):
+    """
+    ManifestHandler
+    """
+
+    objects = ManifestHandlerManager()
+
     handler = models.ForeignKey(
         "Handler",
         on_delete=models.CASCADE,

@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.db import models
 
-from apps.trak.models import Handler, ManifestHandler
+from apps.trak.models import ManifestHandler
 
 STATUS = [
     ("NotAssigned", "Not Assigned"),
@@ -52,32 +52,15 @@ class ManifestManager(models.Manager):
     @staticmethod
     def create_manifest(manifest_data):
         """Create a manifest with its related models instances"""
-        # pop foreign table data
+        # Create manifest handlers (generator and TSD) and all related models
         tsd_data = manifest_data.pop("tsd")
         gen_data = manifest_data.pop("generator")
-        # Secondary foreign table data
-        if Handler.objects.filter(epa_id=gen_data["handler"]["epa_id"]).exists():
-            gen_object = Handler.objects.get(epa_id=gen_data["handler"]["epa_id"])
-            print(f"GEN found {gen_object}")
-            manifest_generator = ManifestHandler.objects.create(handler=gen_object)
-        else:
-            gen_object = Handler.objects.create_handler(**gen_data["handler"])
-            print(f"GEN created {gen_object}")
-            manifest_generator = ManifestHandler.objects.create(handler=gen_object)
-        if Handler.objects.filter(epa_id=tsd_data["handler"]["epa_id"]).exists():
-            tsd_object = Handler.objects.get(epa_id=tsd_data["handler"]["epa_id"])
-            print(f"TSD found {tsd_object}")
-            manifest_tsd = ManifestHandler.objects.create(handler=tsd_object)
-        else:
-            tsd_object = Handler.objects.create_handler(**tsd_data["handler"])
-            print(f"TSD created {tsd_object}")
-            manifest_tsd = ManifestHandler.objects.create(handler=tsd_object)
-
+        manifest_generator = ManifestHandler.objects.create_manifest_handler(**gen_data)
+        manifest_tsd = ManifestHandler.objects.create_manifest_handler(**tsd_data)
         # Create model instances
-        manifest = Manifest.objects.create(
+        return Manifest.objects.create(
             generator=manifest_generator, tsd=manifest_tsd, **manifest_data
         )
-        return manifest
 
 
 class Manifest(models.Model):
@@ -141,13 +124,13 @@ class Manifest(models.Model):
         blank=True,
     )
     generator = models.ForeignKey(
-        ManifestHandler,
+        "ManifestHandler",
         on_delete=models.PROTECT,
         related_name="generator",
     )
     # transporters
     tsd = models.ForeignKey(
-        ManifestHandler,
+        "ManifestHandler",
         verbose_name="Designated facility",
         on_delete=models.PROTECT,
         related_name="designated_facility",
