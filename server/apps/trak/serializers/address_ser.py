@@ -43,8 +43,14 @@ class AddressSerializer(TrakBaseSerializer):
         source="street_number",
         required=False,
     )
-    state = LocalityField(STATES)
-    country = LocalityField(COUNTRIES)
+    state = LocalityField(
+        STATES,
+        required=False,
+    )
+    country = LocalityField(
+        COUNTRIES,
+        required=False,
+    )
 
     class Meta:
         model = Address
