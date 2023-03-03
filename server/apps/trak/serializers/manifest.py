@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.trak.models import Manifest, Transporter, WasteLine
-from apps.trak.serializers.handler import HandlerSerializer
+from apps.trak.serializers.handler import HandlerSerializer, ManifestHandlerSerializer
 from apps.trak.serializers.trak import TrakBaseSerializer
 
 from .transporter import TransporterSerializer
@@ -93,9 +93,9 @@ class ManifestSerializer(TrakBaseSerializer):
         allow_null=True,
         default=None,
     )
-    generator = HandlerSerializer()
+    generator = ManifestHandlerSerializer()
     transporters = TransporterSerializer(many=True)
-    designatedFacility = HandlerSerializer(
+    designatedFacility = ManifestHandlerSerializer(
         source="tsd",
     )
     # broker

@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from django.db.models import Q
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -27,7 +27,7 @@ class ManifestView(viewsets.ModelViewSet):
     queryset = Manifest.objects.all()
     lookup_field = "mtn"
     serializer_class = ManifestSerializer
-    # permission_classes = [permissions.AllowAny] # uncomment for debugging via (browsable API)
+    permission_classes = [permissions.AllowAny]  # uncomment for debugging via (browsable API)
 
 
 class PullManifest(GenericAPIView):
@@ -69,4 +69,6 @@ class MtnList(ListAPIView):
             sites = [str(i) for i in Site.objects.filter(epa_site__epa_id=epa_id)]
 
         logger.info(sites)
-        return Manifest.objects.filter(Q(generator__epa_id__in=sites) | Q(tsd__epa_id__in=sites))
+        return Manifest.objects.filter(
+            Q(generator__handler__epa_id__in=sites) | Q(tsd__handler__epa_id__in=sites)
+        )

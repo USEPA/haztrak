@@ -56,17 +56,27 @@ class ManifestManager(models.Manager):
         tsd_data = manifest_data.pop("tsd")
         gen_data = manifest_data.pop("generator")
         # Secondary foreign table data
-        if Handler.objects.filter(epa_id=gen_data["epa_id"]).exists():
-            gen_object = Handler.objects.get(epa_id=gen_data["epa_id"])
+        if Handler.objects.filter(epa_id=gen_data["handler"]["epa_id"]).exists():
+            gen_object = Handler.objects.get(epa_id=gen_data["handler"]["epa_id"])
+            print(f"GEN found {gen_object}")
+            manifest_generator = ManifestHandler.objects.create(handler=gen_object)
         else:
-            gen_object = Handler.objects.create_handler(**gen_data)
-        if Handler.objects.filter(epa_id=tsd_data["epa_id"]).exists():
-            tsd_object = Handler.objects.get(epa_id=tsd_data["epa_id"])
+            gen_object = Handler.objects.create_handler(**gen_data["handler"])
+            print(f"GEN created {gen_object}")
+            manifest_generator = ManifestHandler.objects.create(handler=gen_object)
+        if Handler.objects.filter(epa_id=tsd_data["handler"]["epa_id"]).exists():
+            tsd_object = Handler.objects.get(epa_id=tsd_data["handler"]["epa_id"])
+            print(f"TSD found {tsd_object}")
+            manifest_tsd = ManifestHandler.objects.create(handler=tsd_object)
         else:
-            tsd_object = Handler.objects.create_handler(**tsd_data)
+            tsd_object = Handler.objects.create_handler(**tsd_data["handler"])
+            print(f"TSD created {tsd_object}")
+            manifest_tsd = ManifestHandler.objects.create(handler=tsd_object)
 
         # Create model instances
-        manifest = Manifest.objects.create(generator=gen_object, tsd=tsd_object, **manifest_data)
+        manifest = Manifest.objects.create(
+            generator=manifest_generator, tsd=manifest_tsd, **manifest_data
+        )
         return manifest
 
 

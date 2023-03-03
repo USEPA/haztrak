@@ -103,6 +103,10 @@ class ManifestHandlerSerializer(HandlerSerializer):
             representation[key] = handler_rep[key]
         return representation
 
+    def to_internal_value(self, data):
+        instance = {"handler": data}
+        return super().to_internal_value(instance)
+
     class Meta:
         model = ManifestHandler
         fields = ["handler"]
