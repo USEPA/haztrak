@@ -169,6 +169,7 @@ class ManifestHandlerManager(models.Manager):
         Keyword Args:
             handler (dict): handler data in (ordered)dict format
         """
+        print(handler_data)
         try:
             if Handler.objects.filter(epa_id=handler_data["handler"]["epa_id"]).exists():
                 handler = Handler.objects.get(epa_id=handler_data["handler"]["epa_id"])

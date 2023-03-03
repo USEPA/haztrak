@@ -37,6 +37,7 @@ class Signer(models.Model):
     phone = models.ForeignKey(
         "EpaPhone",
         on_delete=models.CASCADE,
+        null=True,
     )
     email = models.CharField(
         max_length=38,
@@ -57,7 +58,15 @@ class Signer(models.Model):
     signer_role = models.CharField(
         max_length=10,
         choices=SignerRole.choices,
+        null=True,
     )
+
+    def __str__(self):
+        return (
+            f"{(lambda i: i or '')(self.first_name)}, "
+            f"{(lambda i: i or '')(self.middle_initial)} "
+            f"{(lambda i: i or '')(self.last_name)}"
+        )
 
 
 class ESignature(models.Model):

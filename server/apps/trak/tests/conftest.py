@@ -17,6 +17,7 @@ from apps.trak.models import (
     Manifest,
     ManifestHandler,
     RcraProfile,
+    Signer,
     Site,
     SitePermission,
 )
@@ -120,6 +121,19 @@ def site_generator001(db, generator001) -> Site:
 def site_tsd001(db, tsd001) -> Site:
     """A Site model instance with tsd001 as the handler"""
     return Site.objects.create(epa_site=tsd001, name=tsd001.name)
+
+
+@pytest.fixture
+def testuser_signer(db) -> Signer:
+    """A Signer model instance"""
+    return Signer.objects.create(
+        first_name="test",
+        middle_initial="Q",
+        last_name="user",
+        signer_role="EP",
+        company_name="haztrak",
+        rcra_user_id="testuser1",
+    )
 
 
 @pytest.fixture
