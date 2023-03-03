@@ -25,6 +25,7 @@ from apps.trak.serializers import (
     EpaPermissionSerializer,
     EpaPhoneSerializer,
     HandlerSerializer,
+    ManifestHandlerSerializer,
     ManifestSerializer,
     SitePermissionSerializer,
     WasteLineSerializer,
@@ -193,6 +194,11 @@ def waste_serializer(db, wasteline_json) -> WasteLineSerializer:
 @pytest.fixture
 def handler_serializer(db, handler_json) -> HandlerSerializer:
     return HandlerSerializer(data=handler_json)
+
+
+@pytest.fixture
+def manifest_handler_serializer(db, handler_json) -> ManifestHandlerSerializer:
+    return ManifestHandlerSerializer(data=handler_json)
 
 
 @pytest.fixture

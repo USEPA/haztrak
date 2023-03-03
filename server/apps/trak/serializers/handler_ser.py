@@ -90,6 +90,9 @@ class ManifestHandlerSerializer(HandlerSerializer):
 
     handler = HandlerSerializer()
 
+    def create(self, validated_data):
+        return ManifestHandler.objects.create_manifest_handler(**validated_data)
+
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         handler_rep = representation.pop("handler")

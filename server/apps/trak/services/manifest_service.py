@@ -34,16 +34,18 @@ class ManifestService:
             self.logger.debug(f"manifest pulled {mtn}")
             return response.json()
         else:
-            self.logger.warning(f"error pulling {mtn}")
+            self.logger.warning(f"error pulling manifest {mtn}")
             raise Exception(response.json())
 
     @transaction.atomic
     def _save_manifest(self, manifest_json: dict) -> Manifest:
         serializer = ManifestSerializer(data=manifest_json)
         if serializer.is_valid():
-            return serializer.save()
+            manifest = serializer.save()
+            self.logger.info(f"saved manifest {manifest.mtn}")
+            return manifest
         else:
-            self.logger.warning(f"invalid serializer data: {serializer.errors}")
+            self.logger.warning(f"malformed serializer data: {serializer.errors}")
             raise Exception(serializer.errors)
 
     def search_rcra_mtn(
@@ -74,7 +76,6 @@ class ManifestService:
             end_date = end_date.replace(tzinfo=timezone.utc).strftime(date_format)
         else:
             end_date = datetime.utcnow().replace(tzinfo=timezone.utc).strftime(date_format)
-
         if start_date:
             start_date = start_date.replace(tzinfo=timezone.utc).strftime(date_format)
         else:
@@ -85,7 +86,7 @@ class ManifestService:
             )
             start_date = start_date.strftime(date_format)
 
-        # map our keyword arguments to names expected by RCRAInfo
+        # map our keyword arguments to fields expected by RCRAInfo
         search_params = {
             "stateCode": state_code,
             "siteId": site_id,
@@ -97,8 +98,11 @@ class ManifestService:
         }
         # Remove arguments that are None
         filtered_params = {k: v for k, v in search_params.items() if v is not None}
+        self.logger.debug(f"rcrainfo manifest search parameters {filtered_params}")
 
         response = self.rcrainfo.search_mtn(**filtered_params)
+        self.logger.debug(f"rcrainfo manifest search response {response.json()}")
+
         if response.ok:
             return response.json()
         return []
