@@ -66,8 +66,10 @@ class SiteManifest(APIView):
             ]
             if epa_id not in profile_sites:
                 raise PermissionDenied
-            tsd_manifests = Manifest.objects.filter(tsd__epa_id=epa_id).values("mtn", "status")
-            gen_manifests = Manifest.objects.filter(generator__epa_id=epa_id).values(
+            tsd_manifests = Manifest.objects.filter(tsd__handler__epa_id=epa_id).values(
+                "mtn", "status"
+            )
+            gen_manifests = Manifest.objects.filter(generator__handler__epa_id=epa_id).values(
                 "mtn", "status"
             )
             tran_manifests = Manifest.objects.filter(

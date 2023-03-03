@@ -1,4 +1,5 @@
 from .address import AddressSerializer
+from .contact import ContactSerializer, EpaPhoneSerializer
 from .handler import HandlerSerializer
 from .manifest import ManifestSerializer
 from .rcra_profile import (

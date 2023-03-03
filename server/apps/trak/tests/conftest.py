@@ -18,6 +18,7 @@ from apps.trak.models import (
     RcraProfile,
     Site,
     SitePermission,
+    ManifestHandler,
 )
 from apps.trak.serializers import (
     EpaPermissionSerializer,
@@ -25,8 +26,9 @@ from apps.trak.serializers import (
     ManifestSerializer,
     SitePermissionSerializer,
     WasteLineSerializer,
+    ContactSerializer,
+    EpaPhoneSerializer,
 )
-from apps.trak.serializers.contact import ContactSerializer, EpaPhoneSerializer
 from apps.trak.services import RcrainfoService
 
 JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + "/resources/json"
@@ -214,13 +216,27 @@ def phone_serializer(db, phone_json) -> EpaPhoneSerializer:
 
 
 @pytest.fixture
-def manifest_elc(db, address_123_main, generator001, tsd001) -> Manifest:
+def manifest_gen(db, generator001) -> ManifestHandler:
+    return ManifestHandler.objects.create(
+        handler=generator001,
+    )
+
+
+@pytest.fixture
+def manifest_tsd(db, tsd001) -> ManifestHandler:
+    return ManifestHandler.objects.create(
+        handler=tsd001,
+    )
+
+
+@pytest.fixture
+def manifest_elc(db, address_123_main, manifest_gen, manifest_tsd) -> Manifest:
     return Manifest.objects.create(
         mtn="0123456789ELC",
         created_date=datetime.now(),
         potential_ship_date=date.today(),
-        generator=generator001,
-        tsd=tsd001,
+        generator=manifest_gen,
+        tsd=manifest_tsd,
     )
 
 

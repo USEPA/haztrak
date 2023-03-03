@@ -24,7 +24,7 @@ class TestRcrainfoService:
         """Test our overridden retrieve_id() and retrieve_key() function as expected"""
         rcrainfo = RcrainfoService(api_username=testuser1.username)
         auth_url = (
-            f"{rcrainfo.base_url}api/v1/auth/{test_user_profile.rcra_api_id}/"
+            f"{rcrainfo.base_url}/api/v1/auth/{test_user_profile.rcra_api_id}/"
             f"{test_user_profile.rcra_api_key}"
         )
         mock_token = "thisIsAMockToken"
