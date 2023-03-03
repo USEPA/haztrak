@@ -3,8 +3,8 @@ from rest_framework import serializers
 from apps.trak.models import Handler, ManifestHandler
 from apps.trak.serializers import AddressSerializer
 
-from .contact import ContactSerializer, EpaPhoneSerializer
-from .trak import TrakBaseSerializer
+from .contact_ser import ContactSerializer, EpaPhoneSerializer
+from .trak_ser import TrakBaseSerializer
 
 
 class HandlerSerializer(TrakBaseSerializer):

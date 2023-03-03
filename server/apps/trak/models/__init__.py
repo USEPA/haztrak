@@ -1,12 +1,12 @@
 """
 Model definitions for the trak domain
 """
-from .address import Address
-from .contact import Contact, EpaPhone
-from .handler import Handler, ManifestHandler
-from .manifest import Manifest
-from .rcra_profile import RcraProfile
-from .site import Site
-from .site_permission import SitePermission
-from .transporter import Transporter
-from .waste import WasteLine
+from .address_model import Address
+from .contact_model import Contact, EpaPhone
+from .handler_model import Handler, ManifestHandler
+from .manifest_model import Manifest
+from .rcra_profile_model import RcraProfile
+from .site_model import Site
+from .site_permission_model import SitePermission
+from .transporter_model import Transporter
+from .waste_model import WasteLine

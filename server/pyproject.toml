@@ -36,8 +36,6 @@ exclude = '''
 line-length = 99
 select = ["F", "E", "W", "Q", "I001"]
 exclude = [
-    "*_alter_*.py",
-    "*_initial.py",
     "**/migrations/*.py"
 ]
 ignore = ["F401"]

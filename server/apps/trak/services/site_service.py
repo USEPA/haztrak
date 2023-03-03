@@ -4,8 +4,8 @@ from typing import Dict, List
 from django.db import transaction
 
 from ..models import Handler, Site
-from .manifest import ManifestService
-from .rcrainfo import RcrainfoService
+from .manifest_service import ManifestService
+from .rcrainfo_service import RcrainfoService
 
 logger = logging.getLogger(__name__)
 

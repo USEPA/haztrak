@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.trak.models import Contact
-from apps.trak.serializers.trak import TrakBaseSerializer
+from apps.trak.serializers.trak_ser import TrakBaseSerializer
 
 
 class EpaPhoneSerializer(TrakBaseSerializer):

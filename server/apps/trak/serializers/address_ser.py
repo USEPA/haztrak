@@ -5,8 +5,9 @@ from rest_framework.exceptions import ValidationError
 
 from apps.trak.models import Address
 
-from ..models.address import COUNTRIES, STATES
-from .trak import TrakBaseSerializer
+# ToDo (convert to enums and remove this import)
+from ..models.address_model import COUNTRIES, STATES
+from .trak_ser import TrakBaseSerializer
 
 
 @extend_schema_field(OpenApiTypes.OBJECT)

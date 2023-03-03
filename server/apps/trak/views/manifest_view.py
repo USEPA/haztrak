@@ -3,14 +3,13 @@ from http import HTTPStatus
 
 from django.db.models import Q
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, permissions
+from rest_framework import permissions, viewsets
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from apps.trak.models import Manifest, Site
-from apps.trak.serializers import ManifestSerializer
-from apps.trak.serializers.manifest import MtnSerializer
+from apps.trak.serializers import ManifestSerializer, MtnSerializer
 from apps.trak.tasks import pull_manifest
 
 logger = logging.getLogger(__name__)

@@ -70,12 +70,7 @@
         },
         "federalGeneratorStatus": {
           "type": "string",
-          "enum": [
-            "VSG",
-            "SQG",
-            "LQG",
-            "N"
-          ]
+          "enum": ["VSG", "SQG", "LQG", "N"]
         },
         "gisPrimary": {
           "description": "Indicates if site address1 is lat/long primary.",
@@ -86,12 +81,7 @@
     },
     "SiteType": {
       "type": "string",
-      "enum": [
-        "Tsdf",
-        "Generator",
-        "Transporter",
-        "Broker"
-      ]
+      "enum": ["Tsdf", "Generator", "Transporter", "Broker"]
     },
     "EpaSiteId": {
       "type": "string",
@@ -111,9 +101,7 @@
           "pattern": "[0-9]"
         }
       },
-      "required": [
-        "number"
-      ],
+      "required": ["number"],
       "additionalProperties": false
     },
     "Contact": {
@@ -162,9 +150,7 @@
           "maxLength": 100
         }
       },
-      "required": [
-        "code"
-      ],
+      "required": ["code"],
       "additionalProperties": false
     },
     "Address": {
@@ -197,11 +183,7 @@
           "pattern": "\\d{5}(?:[-\\s]\\d{4})?"
         }
       },
-      "required": [
-        "address1",
-        "city",
-        "state"
-      ],
+      "required": ["address1", "city", "state"],
       "additionalProperties": false
     }
   }

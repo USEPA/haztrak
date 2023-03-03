@@ -1,7 +1,7 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 
-from .handler import Handler
+from .handler_model import Handler
 
 
 class Site(models.Model):

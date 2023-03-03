@@ -15,19 +15,19 @@ from apps.trak.models import (
     EpaPhone,
     Handler,
     Manifest,
+    ManifestHandler,
     RcraProfile,
     Site,
     SitePermission,
-    ManifestHandler,
 )
 from apps.trak.serializers import (
+    ContactSerializer,
     EpaPermissionSerializer,
+    EpaPhoneSerializer,
     HandlerSerializer,
     ManifestSerializer,
     SitePermissionSerializer,
     WasteLineSerializer,
-    ContactSerializer,
-    EpaPhoneSerializer,
 )
 from apps.trak.services import RcrainfoService
 

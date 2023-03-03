@@ -2,9 +2,12 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import permissions
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-from apps.trak.models import Handler, Transporter, ManifestHandler
-from apps.trak.serializers import HandlerSerializer, TransporterSerializer
-from apps.trak.serializers.handler import ManifestHandlerSerializer
+from apps.trak.models import Handler, ManifestHandler, Transporter
+from apps.trak.serializers import (
+    HandlerSerializer,
+    ManifestHandlerSerializer,
+    TransporterSerializer,
+)
 
 
 @extend_schema(

@@ -4,6 +4,7 @@ from rest_framework import routers
 from apps.trak.views import (
     HandlerSearch,
     HandlerView,
+    ManifestHandlerView,
     ManifestView,
     MtnList,
     PullManifest,
@@ -16,7 +17,6 @@ from apps.trak.views import (
     SyncSiteManifest,
     TransporterView,
 )
-from apps.trak.views.handler import ManifestHandlerView
 
 manifest_router = routers.SimpleRouter()
 manifest_router.register(r"manifest", ManifestView)

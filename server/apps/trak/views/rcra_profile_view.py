@@ -8,10 +8,10 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from apps.trak.models import RcraProfile, SitePermission
-from apps.trak.serializers import ProfileUpdateSerializer
-from apps.trak.serializers.rcra_profile import (
+from apps.trak.serializers import (
     EpaPermissionSerializer,
     ProfileGetSerializer,
+    ProfileUpdateSerializer,
     SitePermissionSerializer,
 )
 

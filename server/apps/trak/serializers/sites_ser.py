@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from apps.trak.models import Site
 from apps.trak.serializers import HandlerSerializer
-from apps.trak.serializers.trak import TrakBaseSerializer
+from apps.trak.serializers.trak_ser import TrakBaseSerializer
 
 
 class SiteSerializer(TrakBaseSerializer):

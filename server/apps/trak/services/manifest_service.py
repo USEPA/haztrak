@@ -8,7 +8,7 @@ from django.db import transaction
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
 
-from .rcrainfo import RcrainfoService
+from .rcrainfo_service import RcrainfoService
 
 
 class ManifestService:

@@ -1,8 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from .rcra_profile import RcraProfile
-from .site import Site
+from .rcra_profile_model import RcraProfile
+from .site_model import Site
 
 EPA_PERMISSION_LEVEL = [
     ("Certifier", "Certifier"),

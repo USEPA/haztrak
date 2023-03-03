@@ -3,7 +3,7 @@ import logging
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
 
-from apps.trak.services.manifest import ManifestService
+from apps.trak.services import ManifestService
 
 logger = logging.getLogger(__name__)
 
