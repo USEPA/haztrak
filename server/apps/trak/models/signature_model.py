@@ -70,9 +70,14 @@ class Signer(models.Model):
 
 
 class ESignature(models.Model):
+    manifest_handler = models.ForeignKey(
+        "ManifestHandler",
+        on_delete=models.CASCADE,
+    )
     signer = models.ForeignKey(
         "Signer",
         on_delete=models.CASCADE,
+        null=True,
     )
     sign_date = models.DateTimeField(
         blank=True,
