@@ -1,9 +1,12 @@
+from typing import Dict
+
 from rest_framework import serializers
 
 from apps.trak.models import Handler, ManifestHandler
 from apps.trak.serializers import AddressSerializer
 
 from .contact_ser import ContactSerializer, EpaPhoneSerializer
+from .signature_ser import ESignatureSerializer
 from .trak_ser import TrakBaseSerializer
 
 
@@ -89,8 +92,12 @@ class ManifestHandlerSerializer(HandlerSerializer):
     """Serializer for Handler on manifest"""
 
     handler = HandlerSerializer()
+    electronicSignaturesInfo = ESignatureSerializer(
+        source="e_signature",
+        many=True,
+    )
 
-    def create(self, validated_data):
+    def create(self, validated_data: Dict):
         return ManifestHandler.objects.create_manifest_handler(**validated_data)
 
     def to_representation(self, instance):
@@ -100,10 +107,14 @@ class ManifestHandlerSerializer(HandlerSerializer):
             representation[key] = handler_rep[key]
         return representation
 
-    def to_internal_value(self, data):
-        instance = {"handler": data}
+    def to_internal_value(self, data: Dict):
+        e_signature_data = data.pop("electronicSignatureInfo")
+        instance = {"handler": data, "electronicSignatureInfo": e_signature_data}
         return super().to_internal_value(instance)
 
     class Meta:
         model = ManifestHandler
-        fields = ["handler"]
+        fields = [
+            "handler",
+            "electronicSignaturesInfo",
+        ]

@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Signer(models.Model):
-    class SignerRole(models.TextChoices):
+    class Role(models.TextChoices):
         INDUSTRY = "IN", _("Industry")
         PPC = "PP", _("Ppc")
         EPA = "EP", _("Epa")
@@ -57,7 +57,7 @@ class Signer(models.Model):
     )
     signer_role = models.CharField(
         max_length=10,
-        choices=SignerRole.choices,
+        choices=Role.choices,
         null=True,
     )
 
@@ -72,9 +72,10 @@ class Signer(models.Model):
 class ESignature(models.Model):
     manifest_handler = models.ForeignKey(
         "ManifestHandler",
+        related_name="e_signature",
         on_delete=models.CASCADE,
     )
-    signer = models.ForeignKey(
+    signer = models.OneToOneField(
         "Signer",
         on_delete=models.CASCADE,
         null=True,

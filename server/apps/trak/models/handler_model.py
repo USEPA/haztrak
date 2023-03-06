@@ -191,11 +191,6 @@ class ManifestHandler(models.Model):
         "Handler",
         on_delete=models.CASCADE,
     )
-    electronic_signatures = models.JSONField(
-        verbose_name="e-signature",
-        null=True,
-        blank=True,
-    )
 
     def __str__(self):
         return f"ManifestHandler: {self.handler.epa_id}"
