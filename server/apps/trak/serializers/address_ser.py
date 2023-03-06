@@ -6,7 +6,7 @@ from rest_framework.exceptions import ValidationError
 from apps.trak.models import Address
 
 # ToDo (convert to enums and remove this import)
-from ..models.address_model import COUNTRIES, STATES
+from ..models.address_model import STATES, Countries
 from .trak_ser import TrakBaseSerializer
 
 
@@ -48,7 +48,7 @@ class AddressSerializer(TrakBaseSerializer):
         required=False,
     )
     country = LocalityField(
-        COUNTRIES,
+        Countries.choices,
         required=False,
     )
 

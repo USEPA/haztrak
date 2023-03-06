@@ -1,10 +1,12 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
-COUNTRIES = [
-    ("US", "United States"),
-    ("MX", "Mexico"),
-    ("CA", "Canada"),
-]
+
+class Countries(models.TextChoices):
+    US = "US", _("United States")
+    MX = "MX", _("Mexico")
+    CA = "CA", _("Canada")
+
 
 STATES = [
     ("AK", "Alaska"),
@@ -109,7 +111,7 @@ class Address(models.Model):
         max_length=3,
         null=True,
         blank=True,
-        choices=COUNTRIES,
+        choices=Countries.choices,
     )
     zip = models.CharField(
         null=True,
