@@ -1,8 +1,8 @@
-from typing import Dict
+from typing import Dict, List
 
 from rest_framework import serializers
 
-from apps.trak.models import Handler, ManifestHandler
+from apps.trak.models import ESignature, Handler, ManifestHandler
 from apps.trak.serializers import AddressSerializer
 
 from .contact_ser import ContactSerializer, EpaPhoneSerializer
@@ -93,12 +93,20 @@ class ManifestHandlerSerializer(HandlerSerializer):
 
     handler = HandlerSerializer()
     electronicSignaturesInfo = ESignatureSerializer(
-        source="e_signature",
+        source="e_signatures",
         many=True,
     )
 
     def create(self, validated_data: Dict):
-        return ManifestHandler.objects.create_manifest_handler(**validated_data)
+        e_signatures_data = []
+        if "e_signatures" in validated_data:
+            e_signatures_data: List = validated_data.pop("e_signatures")
+        manifest_handler = ManifestHandler.objects.create_manifest_handler(**validated_data)
+        for e_signature_data in e_signatures_data:
+            ESignature.objects.create_e_signature(
+                manifest_handler=manifest_handler, **e_signature_data
+            )
+        return manifest_handler
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -108,8 +116,8 @@ class ManifestHandlerSerializer(HandlerSerializer):
         return representation
 
     def to_internal_value(self, data: Dict):
-        e_signature_data = data.pop("electronicSignatureInfo")
-        instance = {"handler": data, "electronicSignatureInfo": e_signature_data}
+        e_signature_data = data.pop("electronicSignaturesInfo")
+        instance = {"handler": data, "electronicSignaturesInfo": e_signature_data}
         return super().to_internal_value(instance)
 
     class Meta:

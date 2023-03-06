@@ -69,10 +69,36 @@ class Signer(models.Model):
         )
 
 
+class ESignatureManager(models.Manager):
+    """
+    Inter-model related functionality for ESignature Model
+    """
+
+    def create_e_signature(self, signer=None, **e_signature_data):
+        """
+        Create Contact instance in database, create related phone instance if applicable,
+        and return the new instance.
+        """
+        if isinstance(e_signature_data, ESignature):
+            return e_signature_data
+        if "signer" in e_signature_data:
+            signer_data = e_signature_data.pop("phone")
+            if isinstance(signer_data, signer):
+                signer = signer_data
+            else:
+                signer = Signer.objects.create(**signer_data)
+            return super().create(**e_signature_data, signer=signer)
+        return super().create(**e_signature_data)
+
+
 class ESignature(models.Model):
+    """EPA electronic signature"""
+
+    objects = ESignatureManager()
+
     manifest_handler = models.ForeignKey(
         "ManifestHandler",
-        related_name="e_signature",
+        related_name="e_signatures",
         on_delete=models.CASCADE,
     )
     signer = models.OneToOneField(
