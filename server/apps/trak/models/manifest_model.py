@@ -199,7 +199,7 @@ class Manifest(models.Model):
         null=True,
         blank=True,
     )
-    locked_reason = models.CharField(
+    lock_reason = models.CharField(
         max_length=25,
         choices=LOCKED_REASON,
         null=True,
@@ -219,6 +219,7 @@ class Manifest(models.Model):
         max_length=25,
         choices=SUB_TYPE,
         null=True,
+        blank=True,
     )
     transfer_count = models.IntegerField(
         null=True,

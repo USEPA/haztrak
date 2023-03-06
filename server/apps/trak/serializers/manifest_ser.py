@@ -163,10 +163,9 @@ class ManifestSerializer(TrakBaseSerializer):
     )
 
     lockedReason = serializers.CharField(
-        source="locked_reason",
+        source="lock_reason",
         required=False,
         allow_null=True,
-        default=None,
     )
 
     def create(self, validated_data) -> Manifest:
