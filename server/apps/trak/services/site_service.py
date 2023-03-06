@@ -32,15 +32,17 @@ class SiteService:
         Keyword Args:
             site_id (str): the epa_id to sync with RCRAInfo's manifest. Defaults self.site.
         """
+        logger.info(f"{self} sync rcra manifest, site ID {site_id}")
         try:
             manifest_service = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
             site = Site.objects.get(epa_site__epa_id=site_id)
+            logger.info(f"site: {site}, manifest_service: {manifest_service}")
             tracking_numbers: List[str] = manifest_service.search_rcra_mtn(
                 site_id=site_id, start_date=site.last_rcra_sync
             )
             # limit the number of manifest to sync at a time
-            tracking_numbers = tracking_numbers[0:30]
-            logger.debug(f"tracking numbers to pull {tracking_numbers}")
+            tracking_numbers = tracking_numbers[0:10]
+            logger.info(f"Pulling {tracking_numbers} from RCRAInfo")
             results: Dict[str, List[str]] = manifest_service.pull_manifests(
                 tracking_numbers=tracking_numbers
             )

@@ -1,3 +1,4 @@
+import logging
 import os
 import shlex
 import subprocess
@@ -10,6 +11,7 @@ from django_celery_beat.models import CrontabSchedule, IntervalSchedule, Periodi
 from apps.trak.tasks import pull_federal_codes
 
 CELERY_LOG_LEVEL = os.getenv("CELERY_LOG_LEVEL", "INFO")
+logger = logging.getLogger(__name__)
 
 
 def restart_celery_beat():
@@ -50,7 +52,7 @@ class Command(BaseCommand):
         ]
 
         for periodic_task in periodic_tasks_data:
-            print(f'Setting up {periodic_task["task"].name}')
+            logger.info(f'Setting up {periodic_task["task"].name}')
 
             cron = CrontabSchedule.objects.create(**periodic_task["cron"])
 
@@ -61,5 +63,5 @@ class Command(BaseCommand):
                 enabled=periodic_task["enabled"],
             )
 
-        print("Starting celery beat with autoreload...")
+        logger.info("Starting celery beat with autoreload...")
         autoreload.run_with_reloader(restart_celery_beat)

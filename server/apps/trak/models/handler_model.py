@@ -4,7 +4,9 @@ from typing import Union
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from apps.trak.models import Address, Contact, EpaPhone
+from .address_model import Address
+from .contact_model import Contact, EpaPhone
+from .signature_model import ESignature
 
 logger = logging.getLogger(__name__)
 
@@ -169,15 +171,30 @@ class ManifestHandlerManager(models.Manager):
         Keyword Args:
             handler (dict): handler data in (ordered)dict format
         """
-        print(handler_data)
+        e_signatures = []
+        if "e_signatures" in handler_data:
+            e_signatures = handler_data.pop("e_signatures")
+        logger.debug(f"e_signature data {e_signatures}")
         try:
             if Handler.objects.filter(epa_id=handler_data["handler"]["epa_id"]).exists():
                 handler = Handler.objects.get(epa_id=handler_data["handler"]["epa_id"])
+                logger.debug(f"using existing Handler {handler}")
             else:
                 handler = Handler.objects.create_handler(**handler_data["handler"])
-            return ManifestHandler.objects.create(handler=handler)
+                logger.debug(f"Handler created {handler}")
+            manifest_handler = ManifestHandler.objects.create(handler=handler)
+            logger.debug(f"ManifestHandler created {manifest_handler}")
+            for e_signature_data in e_signatures:
+                e_sig = ESignature.objects.create_e_signature(
+                    manifest_handler=manifest_handler, **e_signature_data
+                )
+                logger.debug(f"ESignature created {e_sig}")
+            return manifest_handler
         except KeyError as exc:
             logger.warning(f"KeyError while creating Manifest handler {exc}")
+        except ValidationError as exc:
+            logger.warning(f"ValidationError while creating Manifest handler {exc}")
+            raise exc
 
 
 class ManifestHandler(models.Model):

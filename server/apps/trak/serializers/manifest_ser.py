@@ -1,3 +1,5 @@
+import logging
+
 from rest_framework import serializers
 
 from apps.trak.models import Manifest, Transporter, WasteLine
@@ -6,6 +8,8 @@ from apps.trak.serializers.trak_ser import TrakBaseSerializer
 
 from .transporter_ser import TransporterSerializer
 from .waste_line_ser import WasteLineSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class MtnSerializer(TrakBaseSerializer):
@@ -173,6 +177,7 @@ class ManifestSerializer(TrakBaseSerializer):
         waste_data = validated_data.pop("wastes")
         trans_data = validated_data.pop("transporters")
         manifest = Manifest.objects.create_manifest(validated_data)
+        logger.debug(f"ManifestSerializer created manifest {manifest}")
         for waste_line in waste_data:
             WasteLine.objects.create(manifest=manifest, **waste_line)
         for transporter in trans_data:

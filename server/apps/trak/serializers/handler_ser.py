@@ -95,6 +95,7 @@ class ManifestHandlerSerializer(HandlerSerializer):
     electronicSignaturesInfo = ESignatureSerializer(
         source="e_signatures",
         many=True,
+        required=False,
     )
 
     def create(self, validated_data: Dict):
@@ -116,8 +117,11 @@ class ManifestHandlerSerializer(HandlerSerializer):
         return representation
 
     def to_internal_value(self, data: Dict):
-        e_signature_data = data.pop("electronicSignaturesInfo")
-        instance = {"handler": data, "electronicSignaturesInfo": e_signature_data}
+        if "electronicSignaturesInfo" in data:
+            e_signature_data = data.pop("electronicSignaturesInfo")
+            instance = {"handler": data, "electronicSignaturesInfo": e_signature_data}
+        else:
+            instance = {"handler": data}
         return super().to_internal_value(instance)
 
     class Meta:

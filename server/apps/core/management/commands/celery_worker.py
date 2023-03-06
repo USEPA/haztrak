@@ -1,3 +1,4 @@
+import logging
 import os
 import shlex
 import subprocess
@@ -7,6 +8,7 @@ from django.core.management.base import BaseCommand
 from django.utils import autoreload
 
 CELERY_LOG_LEVEL = os.getenv("CELERY_LOG_LEVEL", "INFO")
+logger = logging.getLogger(name=__name__)
 
 
 def restart_celery_worker():
@@ -21,5 +23,5 @@ def restart_celery_worker():
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        print("Starting celery worker with autoreload...")
+        logger.info("Starting celery worker with autoreload...")
         autoreload.run_with_reloader(restart_celery_worker)

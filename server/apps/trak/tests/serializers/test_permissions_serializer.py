@@ -1,7 +1,10 @@
 import json
+import logging
 
 from apps.trak.models import SitePermission
 from apps.trak.serializers import SitePermissionSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class TestSitePermissionSerializer:
@@ -31,10 +34,8 @@ class TestEpaPermissionSerializer:
     def test_deserializes_epa_permissions(
         self, epa_permission_serializer, test_user_profile, site_generator001
     ) -> None:
-        # print(epa_permission_serializer.is_valid())
         if not epa_permission_serializer.is_valid():
-            print(epa_permission_serializer.errors)
-        print("validated data: ", epa_permission_serializer.validated_data)
+            logger.error(epa_permission_serializer.errors)
         SitePermission.objects.create(
             **epa_permission_serializer.validated_data,
             site=site_generator001,
