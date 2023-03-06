@@ -1,39 +1,9 @@
 from datetime import datetime
 
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from apps.trak.models import ManifestHandler
-
-STATUS = [
-    ("NotAssigned", "Not Assigned"),
-    ("Pending", "Pending"),
-    ("Scheduled", "Scheduled"),
-    ("InTransit", "In Transit"),
-    ("ReadyForSignature", "Ready for Signature"),
-    ("Signed", "Signed"),
-    ("Corrected", "Corrected"),
-    ("UnderCorrection", "Under Correction"),
-    ("MtnValidationFailed", "MTN Validation Failed"),
-]
-
-SUB_TYPE = [
-    ("FullElectronic", "Full Electronic"),
-    ("DataImage5Copy", "Data + Image"),
-    ("Hybrid", "Hybrid"),
-    ("Image", "Image"),
-]
-
-ORIGIN_TYPE = [
-    ("Web", "Web"),
-    ("Service", "Service"),
-    ("Mail", "Mail"),
-]
-
-LOCKED_REASON = [
-    ("AsyncSign", "Asynchronous signature"),
-    ("EpaChangeBiller", "EPA change biller"),
-    ("EpaCorrection", "EPA corrections"),
-]
 
 
 def draft_mtn():
@@ -68,6 +38,33 @@ class Manifest(models.Model):
     Model definition the e-Manifest Uniform Hazardous Waste Manifest
     """
 
+    class LockReason(models.TextChoices):
+        ASYNC_SIGN = "ACS", _("AsyncSign")
+        CHANGE_BILLER = "ECB", _("EpaChangeBiller")
+        CORRECTION = "EPC", _("EpaCorrection")
+
+    class OriginType(models.TextChoices):
+        WEB = "Web", _("Web")
+        SERVICE = "Service", _("Service")
+        MAIL = "Mail", _("Mail")
+
+    class SubType(models.TextChoices):
+        ELECTRONIC = "FullElectronic", _("Full Electronic")
+        DATA_IMAGE = "DataImage5Copy", _("Data + Image")
+        HYBRID = "Hybrid", _("Hybrid")
+        IMAGE = "Image", _("Image")
+
+    class Status(models.TextChoices):
+        NOT_ASSIGNED = "NotAssigned", _("Not Assigned")
+        PENDING = "Pending", _("Pending")
+        SCHEDULED = "Scheduled", _("Scheduled")
+        IN_TRANSIT = "InTransit", _("In Transit")
+        READY_FOR_SIGNATURE = "ReadyForSignature", _("Ready for Signature")
+        SIGNED = "Signed", _("Signed")
+        CORRECTED = "Corrected", _("Corrected")
+        UNDER_CORRECTION = "UnderCorrection", _("Under Correction")
+        VALIDATION_FAILED = "MtnValidationFailed", _("MTN Validation Failed")
+
     objects = ManifestManager()
 
     created_date = models.DateTimeField(
@@ -85,12 +82,12 @@ class Manifest(models.Model):
     )
     status = models.CharField(
         max_length=25,
-        choices=STATUS,
+        choices=Status.choices,
         default="NotAssigned",
     )
     submission_type = models.CharField(
         max_length=25,
-        choices=SUB_TYPE,
+        choices=SubType.choices,
         default="FullElectronic",
     )
     signature_status = models.BooleanField(
@@ -99,7 +96,7 @@ class Manifest(models.Model):
     )
     origin_type = models.CharField(
         max_length=25,
-        choices=ORIGIN_TYPE,
+        choices=OriginType.choices,
         default="Service",
     )
     shipped_date = models.DateTimeField(
@@ -201,7 +198,7 @@ class Manifest(models.Model):
     )
     lock_reason = models.CharField(
         max_length=25,
-        choices=LOCKED_REASON,
+        choices=LockReason.choices,
         null=True,
         blank=True,
     )
@@ -217,7 +214,7 @@ class Manifest(models.Model):
     original_sub_type = models.CharField(
         verbose_name="Original Submission Type",
         max_length=25,
-        choices=SUB_TYPE,
+        choices=SubType.choices,
         null=True,
         blank=True,
     )

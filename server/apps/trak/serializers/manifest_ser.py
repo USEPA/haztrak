@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.trak.models import Manifest, Transporter, WasteLine
-from apps.trak.serializers.handler_ser import HandlerSerializer, ManifestHandlerSerializer
+from apps.trak.serializers.handler_ser import ManifestHandlerSerializer
 from apps.trak.serializers.trak_ser import TrakBaseSerializer
 
 from .transporter_ser import TransporterSerializer
@@ -162,8 +162,9 @@ class ManifestSerializer(TrakBaseSerializer):
         default=False,
     )
 
-    lockedReason = serializers.CharField(
-        source="lock_reason",
+    lockReason = serializers.ChoiceField(
+        choices=Manifest.LockReason.choices,
+        source="get_lock_reason_display",
         required=False,
         allow_null=True,
     )
@@ -234,5 +235,5 @@ class ManifestSerializer(TrakBaseSerializer):
             "correctionInfo",
             "ppcStatus",
             "locked",
-            "lockedReason",
+            "lockReason",
         ]
