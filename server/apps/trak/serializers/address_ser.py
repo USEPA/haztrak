@@ -3,10 +3,9 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.trak.models import Address
-
 # ToDo (convert to enums and remove this import)
-from ..models.address_model import STATES, Countries
+from apps.trak.models import Address, EpaCountries, EpaStates
+
 from .trak_ser import TrakBaseSerializer
 
 
@@ -40,11 +39,11 @@ class AddressSerializer(TrakBaseSerializer):
         required=False,
     )
     state = LocalityField(
-        choices=STATES,
+        choices=EpaStates.choices,
         required=False,
     )
     country = LocalityField(
-        choices=Countries.choices,
+        choices=EpaCountries.choices,
         required=False,
     )
 
