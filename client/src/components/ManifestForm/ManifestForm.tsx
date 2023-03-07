@@ -12,7 +12,8 @@ import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-
 import htApi from 'services';
 import { addMsg, useAppDispatch } from 'store';
 import { Handler, Manifest } from 'types';
-import { HandlerType } from 'types/Handler/Handler';
+import { Transporter } from 'types/Handler';
+import { HandlerType, ManifestHandler } from 'types/Handler/Handler';
 import { WasteLine } from 'types/WasteLine';
 import HandlerForm from './HandlerForm';
 import AddTsdf from './Tsdf';
@@ -66,7 +67,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
   // Transporter controls
   const [transFormShow, setTransFormShow] = useState<boolean>(false);
   const toggleTranSearchShow = () => setTransFormShow(!transFormShow);
-  const transporters: Array<Handler> = manifestMethods.getValues('transporters');
+  const transporters: Array<Transporter> = manifestMethods.getValues('transporters');
   const tranArrayMethods = useFieldArray<Manifest, 'transporters'>({
     control: manifestMethods.control,
     name: 'transporters',
@@ -84,7 +85,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
   // Tsdf controls
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
-  const tsdf: Handler = manifestMethods.getValues('designatedFacility');
+  const tsdf: ManifestHandler = manifestMethods.getValues('designatedFacility');
 
   return (
     <>

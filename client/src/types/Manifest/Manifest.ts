@@ -2,7 +2,7 @@
  * Manifest related type declarations
  */
 
-import { Handler, Locality } from 'types/Handler/Handler';
+import { Handler, Locality, ManifestHandler } from 'types/Handler/Handler';
 import { Transporter } from 'types/Handler/Transporter';
 import { AdditionalInfo } from 'types/Manifest/AdditionalInfo';
 import { WasteLine } from 'types/WasteLine';
@@ -44,9 +44,9 @@ interface Manifest {
   receivedDate?: string;
   certifiedDate?: string;
   certifiedBy?: Signer;
-  generator: Handler;
+  generator: ManifestHandler;
   transporters: Array<Transporter>;
-  designatedFacility: Handler;
+  designatedFacility: ManifestHandler;
   broker?: Handler;
   wastes: WasteLine[];
   rejection: boolean;

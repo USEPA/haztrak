@@ -7,8 +7,6 @@ export interface Handler {
   siteAddress: Address;
   contact: Contact;
   emergencyPhone: Phone;
-  // paperSignatureInfo: PaperSignature
-  // electronicSignatureInfo?: ElectronicSignature[]
   order?: number;
   registered?: boolean;
   modified?: boolean;
@@ -17,6 +15,23 @@ export interface Handler {
   siteState?: Locality;
   hasRegisteredEmanifestUser?: boolean;
   gisPrimary?: boolean;
+}
+
+export interface ManifestHandler extends Handler {
+  // paperSignatureInfo: PaperSignature
+  electronicSignatureInfo?: Array<ElectronicSignature>;
+}
+
+export interface ElectronicSignature {
+  signer?: Signer;
+  signatureDate?: string;
+}
+
+export interface Signer {
+  firstName?: string;
+  middleInitial?: string;
+  lastName?: string;
+  companyName?: string;
 }
 
 /**

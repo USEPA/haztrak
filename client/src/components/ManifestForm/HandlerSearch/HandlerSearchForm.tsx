@@ -40,7 +40,6 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
     formState: { errors },
   } = useForm<addHandlerForm>();
   const manifestMethods = useFormContext();
-  // const [handler, setHandler] = useState<Handler | undefined>(undefined);
   const [handlerOptions, setHandlerOptions] = useState<Array<Handler> | undefined>(undefined);
 
   /**

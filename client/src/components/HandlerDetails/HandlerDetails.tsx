@@ -7,6 +7,11 @@ interface HandlerDetailsProps {
   handler: Handler;
 }
 
+/**
+ * Returns the details of an EPA hazardous waste handler including address information
+ * @param handler
+ * @constructor
+ */
 function HandlerDetails({ handler }: HandlerDetailsProps) {
   return (
     <div className="py-2">
