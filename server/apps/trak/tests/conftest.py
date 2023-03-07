@@ -17,6 +17,7 @@ from apps.trak.models import (
     Manifest,
     ManifestHandler,
     RcraProfile,
+    Signer,
     Site,
     SitePermission,
 )
@@ -30,6 +31,7 @@ from apps.trak.serializers import (
     SitePermissionSerializer,
     WasteLineSerializer,
 )
+from apps.trak.serializers.signature_ser import ESignatureSerializer
 from apps.trak.services import RcrainfoService
 
 JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + "/resources/json"
@@ -40,6 +42,7 @@ TEST_MANIFEST_JSON = f"{JSON_DIR}/test_manifest_100033134ELC.json"
 TEST_SITE_PERM_JSON = f"{JSON_DIR}/site_permission.json"
 TEST_EPA_PERM_JSON = f"{JSON_DIR}/epa_permission.json"
 TEST_HANDLER_JSON = f"{JSON_DIR}/test_handler.json"
+TEST_E_SIGNATURE_JSON = f"{JSON_DIR}/test_e_signature.json"
 
 
 @pytest.fixture
@@ -123,6 +126,19 @@ def site_tsd001(db, tsd001) -> Site:
 
 
 @pytest.fixture
+def testuser_signer(db) -> Signer:
+    """A Signer model instance"""
+    return Signer.objects.create(
+        first_name="test",
+        middle_initial="Q",
+        last_name="user",
+        signer_role="EP",
+        company_name="haztrak",
+        rcra_user_id="testuser1",
+    )
+
+
+@pytest.fixture
 def site_permission(db, site_generator001, test_user_profile) -> SitePermission:
     """Returns testuser1 SitePermission model to site_generator"""
     return SitePermission.objects.create(
@@ -180,6 +196,12 @@ def phone_json(db) -> Dict:
         return json.load(f)
 
 
+@pytest.fixture
+def e_signature_json(db) -> Dict:
+    with open(TEST_E_SIGNATURE_JSON, "r") as f:
+        return json.load(f)
+
+
 # Serializer fixtures, build on JSON fixtures to produce serializers
 @pytest.fixture
 def manifest_10003114elc_serializer(db, json_100031134elc) -> ManifestSerializer:
@@ -219,6 +241,13 @@ def epa_permission_serializer(db, epa_permission_json) -> EpaPermissionSerialize
 @pytest.fixture
 def phone_serializer(db, phone_json) -> EpaPhoneSerializer:
     return EpaPhoneSerializer(data=phone_json)
+
+
+@pytest.fixture
+def e_signature_serializer(db, e_signature_json) -> ESignatureSerializer:
+    e_signature_serializer = ESignatureSerializer(data=e_signature_json)
+    e_signature_serializer.is_valid()
+    return e_signature_serializer
 
 
 @pytest.fixture

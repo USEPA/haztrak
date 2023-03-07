@@ -1,6 +1,6 @@
 import pytest
 
-from apps.trak.models import ManifestHandler
+from apps.trak.models import Handler, ManifestHandler
 
 
 class TestManifestHandlerSerializer:
@@ -20,3 +20,12 @@ class TestManifestHandlerSerializer:
             # however it should flatten that representation.
             assert "epaSiteId" in manifest_handler_serializer.data
             assert "handler" not in manifest_handler_serializer.data
+
+
+class TestHandlerSerializer:
+    def test_save(self, handler_serializer):
+        if handler_serializer.is_valid():
+            saved_site = handler_serializer.save()
+            assert isinstance(saved_site, Handler)
+        else:
+            assert False

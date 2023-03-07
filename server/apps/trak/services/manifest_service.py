@@ -4,6 +4,7 @@ from logging import Logger
 from typing import Dict, List
 
 from django.db import transaction
+from requests import RequestException
 
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
@@ -34,13 +35,14 @@ class ManifestService:
             self.logger.debug(f"manifest pulled {mtn}")
             return response.json()
         else:
-            self.logger.warning(f"error pulling manifest {mtn}")
-            raise Exception(response.json())
+            self.logger.warning(f"error retrieving manifest {mtn}")
+            raise RequestException(response.json())
 
     @transaction.atomic
     def _save_manifest(self, manifest_json: dict) -> Manifest:
         serializer = ManifestSerializer(data=manifest_json)
         if serializer.is_valid():
+            self.logger.debug("manifest serializer is valid")
             manifest = serializer.save()
             self.logger.info(f"saved manifest {manifest.mtn}")
             return manifest
@@ -122,6 +124,6 @@ class ManifestService:
                 manifest = self._save_manifest(manifest_json)
                 results["success"].append(manifest.mtn)
             except Exception as exc:
-                self.logger.warning(exc)
+                self.logger.warning(f"error pulling manifest {mtn}: {exc}")
                 results["error"].append(mtn)
         return results

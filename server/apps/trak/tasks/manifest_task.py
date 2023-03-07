@@ -13,6 +13,7 @@ def pull_manifest(self: Task, *, mtn: [str], username: str) -> dict:
     """
     This task initiates a call to the ManifestService to pull a manifest by MTN
     """
+    logger.debug(f"start task {self.name}, manifest {mtn}")
     try:
         manifest_service = ManifestService(username=username, logger=logger)
         results = manifest_service.pull_manifests(tracking_numbers=mtn)

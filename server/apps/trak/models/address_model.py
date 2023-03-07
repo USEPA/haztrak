@@ -1,78 +1,79 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
-COUNTRIES = [
-    ("US", "United States"),
-    ("MX", "Mexico"),
-    ("CA", "Canada"),
-]
 
-STATES = [
-    ("AK", "Alaska"),
-    ("AL", "Alabama"),
-    ("AP", "Armed Forces Pacific"),
-    ("AR", "Arkansas"),
-    ("AZ", "Arizona"),
-    ("CA", "California"),
-    ("CO", "Colorado"),
-    ("CT", "Connecticut"),
-    ("DC", "Washington DC"),
-    ("DE", "Delaware"),
-    ("FL", "Florida"),
-    ("GA", "Georgia"),
-    ("GU", "Guam"),
-    ("HI", "Hawaii"),
-    ("IA", "Iowa"),
-    ("ID", "Idaho"),
-    ("IL", "Illinois"),
-    ("IN", "Indiana"),
-    ("KS", "Kansas"),
-    ("KY", "Kentucky"),
-    ("LA", "Louisiana"),
-    ("MA", "Massachusetts"),
-    ("MD", "Maryland"),
-    ("ME", "Maine"),
-    ("MI", "Michigan"),
-    ("MN", "Minnesota"),
-    ("MO", "Missouri"),
-    ("MS", "Mississippi"),
-    ("MT", "Montana"),
-    ("NC", "North Carolina"),
-    ("ND", "North Dakota"),
-    ("NE", "Nebraska"),
-    ("NH", "New Hampshire"),
-    ("NJ", "New Jersey"),
-    ("NM", "New Mexico"),
-    ("NV", "Nevada"),
-    ("NY", "New York"),
-    ("OH", "Ohio"),
-    ("OK", "Oklahoma"),
-    ("OR", "Oregon"),
-    ("PA", "Pennsylvania"),
-    ("PR", "Puerto Rico"),
-    ("RI", "Rhode Island"),
-    ("SC", "South Carolina"),
-    ("SD", "South Dakota"),
-    ("TN", "Tennessee"),
-    ("TX", "Texas"),
-    ("UT", "Utah"),
-    ("VA", "Virginia"),
-    ("VI", "Virgin Islands"),
-    ("VT", "Vermont"),
-    ("WA", "Washington"),
-    ("WI", "Wisconsin"),
-    ("WV", "West Virginia"),
-    ("WY", "Wyoming"),
-    ("XA", "REGION 01 PURVIEW"),
-    ("XB", "REGION 02 PURVIEW"),
-    ("XC", "REGION 03 PURVIEW"),
-    ("XD", "REGION 04 PURVIEW"),
-    ("XE", "REGION 05 PURVIEW"),
-    ("XF", "REGION 06 PURVIEW"),
-    ("XG", "REGION 07 PURVIEW"),
-    ("XH", "REGION 08 PURVIEW"),
-    ("XI", "REGION 09 PURVIEW"),
-    ("XJ", "REGION 10 PURVIEW"),
-]
+class EpaCountries(models.TextChoices):
+    US = "US", _("United States")
+    MX = "MX", _("Mexico")
+    CA = "CA", _("Canada")
+
+
+class EpaStates(models.TextChoices):
+    AK = "AK", _("Alaska")
+    AL = "AL", _("Alabama")
+    AP = "AP", _("Armed Forces Pacific")
+    AR = "AR", _("Arkansas")
+    AZ = "AZ", _("Arizona")
+    CA = "CA", _("California")
+    CO = "CO", _("Colorado")
+    CT = "CT", _("Connecticut")
+    DC = "DC", _("Washington DC")
+    DE = "DE", _("Delaware")
+    FL = "FL", _("Florida")
+    GA = "GA", _("Georgia")
+    GU = "GU", _("Guam")
+    HI = "HI", _("Hawaii")
+    IA = "IA", _("Iowa")
+    ID = "ID", _("Idaho")
+    IL = "IL", _("Illinois")
+    IN = "IN", _("Indiana")
+    KS = "KS", _("Kansas")
+    KY = "KY", _("Kentucky")
+    LA = "LA", _("Louisiana")
+    MA = "MA", _("Massachusetts")
+    MD = "MD", _("Maryland")
+    ME = "ME", _("Maine")
+    MI = "MI", _("Michigan")
+    MN = "MN", _("Minnesota")
+    MO = "MO", _("Missouri")
+    MS = "MS", _("Mississippi")
+    MT = "MT", _("Montana")
+    NC = "NC", _("North Carolina")
+    ND = "ND", _("North Dakota")
+    NE = "NE", _("Nebraska")
+    NH = "NH", _("New Hampshire")
+    NJ = "NJ", _("New Jersey")
+    NM = "NM", _("New Mexico")
+    NV = "NV", _("Nevada")
+    NY = "NY", _("New York")
+    OH = "OH", _("Ohio")
+    OK = "OK", _("Oklahoma")
+    OR = "OR", _("Oregon")
+    PA = "PA", _("Pennsylvania")
+    PR = "PR", _("Puerto Rico")
+    RI = "RI", _("Rhode Island")
+    SC = "SC", _("South Carolina")
+    SD = "SD", _("South Dakota")
+    TN = "TN", _("Tennessee")
+    TX = "TX", _("Texas")
+    UT = "UT", _("Utah")
+    VA = "VA", _("Virginia")
+    VI = "VI", _("Virgin Islands")
+    VT = "VT", _("Vermont")
+    WA = "WA", _("Washington")
+    WI = "WI", _("Wisconsin")
+    WV = "WV", _("West Virginia")
+    WY = "WY", _("Wyoming")
+    XA = "XA", _("REGION 01 PURVIEW")
+    XB = "XB", _("REGION 02 PURVIEW")
+    XC = "XC", _("REGION 03 PURVIEW")
+    XD = "XD", _("REGION 04 PURVIEW")
+    XE = "XE", _("REGION 05 PURVIEW")
+    XF = "XF", _("REGION 06 PURVIEW")
+    XG = "XG", _("REGION 07 PURVIEW")
+    XH = "XH", _("REGION 08 PURVIEW")
+    XI = "XI", _("REGION 09 PURVIEW")
+    XJ = "XJ", _("REGION 10 PURVIEW")
 
 
 class Address(models.Model):
@@ -103,13 +104,13 @@ class Address(models.Model):
         max_length=3,
         null=True,
         blank=True,
-        choices=STATES,
+        choices=EpaStates.choices,
     )
     country = models.CharField(
         max_length=3,
         null=True,
         blank=True,
-        choices=COUNTRIES,
+        choices=EpaCountries.choices,
     )
     zip = models.CharField(
         null=True,

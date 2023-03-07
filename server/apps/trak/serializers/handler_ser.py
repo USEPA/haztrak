@@ -1,9 +1,12 @@
+from typing import Dict, List
+
 from rest_framework import serializers
 
-from apps.trak.models import Handler, ManifestHandler
+from apps.trak.models import ESignature, Handler, ManifestHandler
 from apps.trak.serializers import AddressSerializer
 
 from .contact_ser import ContactSerializer, EpaPhoneSerializer
+from .signature_ser import ESignatureSerializer
 from .trak_ser import TrakBaseSerializer
 
 
@@ -89,9 +92,22 @@ class ManifestHandlerSerializer(HandlerSerializer):
     """Serializer for Handler on manifest"""
 
     handler = HandlerSerializer()
+    electronicSignaturesInfo = ESignatureSerializer(
+        source="e_signatures",
+        many=True,
+        required=False,
+    )
 
-    def create(self, validated_data):
-        return ManifestHandler.objects.create_manifest_handler(**validated_data)
+    def create(self, validated_data: Dict):
+        e_signatures_data = []
+        if "e_signatures" in validated_data:
+            e_signatures_data: List = validated_data.pop("e_signatures")
+        manifest_handler = ManifestHandler.objects.create_manifest_handler(**validated_data)
+        for e_signature_data in e_signatures_data:
+            ESignature.objects.create_e_signature(
+                manifest_handler=manifest_handler, **e_signature_data
+            )
+        return manifest_handler
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -100,10 +116,17 @@ class ManifestHandlerSerializer(HandlerSerializer):
             representation[key] = handler_rep[key]
         return representation
 
-    def to_internal_value(self, data):
-        instance = {"handler": data}
+    def to_internal_value(self, data: Dict):
+        if "electronicSignaturesInfo" in data:
+            e_signature_data = data.pop("electronicSignaturesInfo")
+            instance = {"handler": data, "electronicSignaturesInfo": e_signature_data}
+        else:
+            instance = {"handler": data}
         return super().to_internal_value(instance)
 
     class Meta:
         model = ManifestHandler
-        fields = ["handler"]
+        fields = [
+            "handler",
+            "electronicSignaturesInfo",
+        ]

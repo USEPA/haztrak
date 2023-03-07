@@ -3,15 +3,14 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.trak.models import Address
-
 # ToDo (convert to enums and remove this import)
-from ..models.address_model import COUNTRIES, STATES
+from apps.trak.models import Address, EpaCountries, EpaStates
+
 from .trak_ser import TrakBaseSerializer
 
 
 @extend_schema_field(OpenApiTypes.OBJECT)
-class LocalityField(serializers.Field):
+class LocalityField(serializers.ChoiceField):
     """
     Locality is defined, in RCRAInfo, as an object used to describe region (state, nation)
     {
@@ -19,10 +18,6 @@ class LocalityField(serializers.Field):
       "name": "Texas"
     }
     """
-
-    def __init__(self, choices=None, *args, **kwargs):
-        self.choices = choices
-        super().__init__(*args, **kwargs)
 
     def to_representation(self, obj):
         return {"code": obj, "name": dict(self.choices).get(obj)}
@@ -44,11 +39,11 @@ class AddressSerializer(TrakBaseSerializer):
         required=False,
     )
     state = LocalityField(
-        STATES,
+        choices=EpaStates.choices,
         required=False,
     )
     country = LocalityField(
-        COUNTRIES,
+        choices=EpaCountries.choices,
         required=False,
     )
 
