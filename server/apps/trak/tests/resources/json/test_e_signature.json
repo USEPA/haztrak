@@ -1,0 +1,14 @@
+{
+  "signer": {
+    "firstName": "David",
+    "lastName": "Graham",
+    "userId": "DPGRAHAM4401"
+  },
+  "signatureDate": "2022-01-21T15:56:07.136+0000",
+  "humanReadableDocument": {
+    "name": "human-readable.html",
+    "size": 161358,
+    "mimeType": "TEXT_HTML"
+  },
+  "signerRole": "Industry"
+}
