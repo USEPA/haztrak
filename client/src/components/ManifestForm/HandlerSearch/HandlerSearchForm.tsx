@@ -4,8 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm, useFormContext } from 'react-hook-form';
 import htApi from 'services';
-import { Handler } from 'types';
-import { HandlerType } from 'types/Handler/Handler';
+import { HandlerType, Handler } from 'types/Handler';
 
 interface Props {
   handleClose: () => void;

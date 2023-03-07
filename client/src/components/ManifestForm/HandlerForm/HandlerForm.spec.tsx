@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { fireEvent } from '@testing-library/react';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test';
-import { HandlerType } from 'types/Handler/Handler';
+import { HandlerType } from 'types/Handler';
 import HandlerForm from './HandlerForm';
 
 afterEach(() => {

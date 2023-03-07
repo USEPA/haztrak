@@ -2,13 +2,19 @@ import { HtModal } from 'components/Ht';
 import { HandlerSearchForm } from 'components/ManifestForm/HandlerSearch';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { HandlerType } from 'types/Handler/Handler';
+import { HandlerType } from 'types/Handler';
 
 interface Props {
   handleClose: () => void;
   show: boolean | undefined;
 }
 
+/**
+ * Returns a modal that wraps around the HandlerSearchForm for adding the manifest TSDF
+ * @param show
+ * @param handleClose
+ * @constructor
+ */
 function AddTsdf({ show, handleClose }: Props) {
   return (
     <HtModal showModal={show ? show : false} handleClose={handleClose}>

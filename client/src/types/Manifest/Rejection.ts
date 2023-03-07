@@ -1,4 +1,4 @@
-import { Handler } from 'types/Handler/Handler';
+import { Handler } from 'types/Handler';
 
 export interface RejectionInfo {
   rejectionType: RejectionType;

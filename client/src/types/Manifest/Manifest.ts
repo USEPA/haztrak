@@ -2,11 +2,9 @@
  * Manifest related type declarations
  */
 
-import { Handler, Locality, ManifestHandler } from 'types/Handler/Handler';
-import { Transporter } from 'types/Handler/Transporter';
+import { Signer, Locality, ManifestHandler, Transporter } from 'types/Handler';
 import { AdditionalInfo } from 'types/Manifest/AdditionalInfo';
 import { WasteLine } from 'types/WasteLine';
-import { Signer } from './Contact';
 import { CorrectionInfo, CorrectionRequest } from './Correction';
 import { RejectionInfo } from './Rejection';
 
@@ -47,7 +45,7 @@ interface Manifest {
   generator: ManifestHandler;
   transporters: Array<Transporter>;
   designatedFacility: ManifestHandler;
-  broker?: Handler;
+  broker?: ManifestHandler;
   wastes: WasteLine[];
   rejection: boolean;
   rejectionInfo?: RejectionInfo;
@@ -79,7 +77,7 @@ interface Manifest {
  * Details required if the hazardous waste is internationally imported
  */
 interface ImportInfo {
-  importGenerator: Handler;
+  importGenerator: ManifestHandler;
   portOfEntry: PortOfEntry;
 }
 

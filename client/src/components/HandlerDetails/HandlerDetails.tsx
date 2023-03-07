@@ -1,7 +1,7 @@
 import AddressListGroup from 'components/HandlerDetails/AddressListGroup';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { Handler } from 'types';
+import { Handler } from 'types/Handler';
 
 interface HandlerDetailsProps {
   handler: Handler;

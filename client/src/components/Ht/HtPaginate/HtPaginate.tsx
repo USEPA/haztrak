@@ -1,7 +1,7 @@
 import React from 'react';
 import usePagination from 'hooks/usePagination';
 import { Pagination } from 'react-bootstrap';
-import { usePaginationProps } from 'types';
+import { usePaginationProps } from 'types/hooks';
 
 interface HtPaginateProps extends usePaginationProps {
   onPageChange: any;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import WasteLineForm from './WasteLineForm';
 import { UseFieldArrayAppend } from 'react-hook-form';
-import { Manifest } from 'types';
+import { Manifest } from 'types/Manifest';
 import { WasteLine } from 'types/WasteLine';
 import { HtModal } from 'components/Ht';
 

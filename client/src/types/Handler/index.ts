@@ -1,5 +1,23 @@
-import { Handler } from './Handler';
-import { Site } from './Site';
-import { Transporter } from './Transporter';
+import {
+  Handler,
+  ManifestHandler,
+  Transporter,
+  Site,
+  Signer,
+  ElectronicSignature,
+  HandlerType,
+} from './handler';
 
-export type { Site, Handler, Transporter };
+import { Locality, StateCode, AddressType, Address } from './address';
+
+export type {
+  Site,
+  Handler,
+  Transporter,
+  Signer,
+  Address,
+  Locality,
+  ManifestHandler,
+  ElectronicSignature,
+};
+export { HandlerType, AddressType, StateCode };
