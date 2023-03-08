@@ -7,10 +7,11 @@ export enum AddressType {
 }
 
 /**
- * The RCRAInfo Address interface
+ * Object representing address information for handlers on a hazardous waste manifest
  */
 export interface Address {
   address1: string;
+  address2?: string;
   city: string;
   country: Locality;
   state: Locality;
@@ -18,11 +19,23 @@ export interface Address {
   zip: string;
 }
 
+/**
+ * An object, used by RCRAInfo, that represents a geographic region, such as States and Countries.
+ */
 export interface Locality {
+  /**
+   * A, usually two character string, that acts as a unique identifier for the geographic region
+   */
   code: string;
+  /**
+   * Optional name of the region
+   */
   name?: string;
 }
 
+/**
+ * Enum representing the different state choices, as defined by RCRAInfo
+ */
 export enum StateCode {
   AK = 'Alaska',
   AL = 'Alabama',

@@ -24,7 +24,8 @@ interface ManifestFormProps {
 }
 
 /**
- * Returns a form for the uniform hazardous waste manifest.
+ * Returns form for the uniform hazardous waste manifest. It also acts
+ * as the current method of viewing manifest when the form is read only.
  * @constructor
  */
 function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {

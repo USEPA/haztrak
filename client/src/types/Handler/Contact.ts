@@ -1,3 +1,6 @@
+/**
+ * Contact information for a given handler listed on the hazardous waste manifest
+ */
 export interface Contact {
   firstName?: string;
   middleInitial?: string;
@@ -7,6 +10,9 @@ export interface Contact {
   companyName?: string;
 }
 
+/**
+ * Phone object defined by RCRAInfo including Phone and optional extension
+ */
 export interface Phone {
   number: string;
   extension?: string;

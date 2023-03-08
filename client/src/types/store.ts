@@ -32,10 +32,27 @@ export interface Alert {
  * The user's RCRAInfo account data stored in the Redux store
  */
 export interface RcraProfileState {
+  /**
+   * User's haztrak username
+   */
   user: string | undefined;
+  /**
+   * The user's API ID for the EPA RCRAInfo/e-Manifest system
+   */
   rcraAPIID?: string;
+  /**
+   * The user's RCRAInfo system username
+   */
   rcraUsername?: string;
+  /**
+   * The user's API key for the EPA RCRAInfo/e-Manifest system.
+   * Should never be sent to client, only received from.
+   */
   rcraAPIKey?: string;
+  /**
+   * Array of EPA sites a user has access to in RCRAInfo stored in key-value pairs
+   * where the keys are the site's EPA ID number
+   */
   epaSites?: Record<string, ProfileEpaSite>;
   phoneNumber?: string;
   loading?: boolean;
@@ -43,15 +60,23 @@ export interface RcraProfileState {
 }
 
 /**
- * The user's site permissions for an EPA site in RCRAInfo
+ * The user's site permissions for an EPA site in RCRAInfo, including each the user's
+ * permission for each RCRAInfo module
  */
 export interface ProfileEpaSite {
   epaId: string;
   permissions: {
+    /**
+     * Whether the user has 'Site Manager' level access.
+     * If true, all other modules should be equal to 'Certifier'
+     */
     siteManagement: boolean;
     annualReport: string;
     biennialReport: string;
     eManifest: string;
+    /**
+     * The RCRAInfo Waste Import Export Tracking System (WIETS)
+     */
     WIETS: string;
     myRCRAid: string;
   };
