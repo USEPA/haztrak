@@ -11,8 +11,8 @@ import { Button, Col, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import htApi from 'services';
 import { addMsg, useAppDispatch } from 'store';
-import { Handler, Manifest } from 'types';
-import { HandlerType } from 'types/Handler/Handler';
+import { Manifest } from 'types/Manifest';
+import { Transporter, HandlerType, ManifestHandler } from 'types/Handler';
 import { WasteLine } from 'types/WasteLine';
 import HandlerForm from './HandlerForm';
 import AddTsdf from './Tsdf';
@@ -24,12 +24,15 @@ interface ManifestFormProps {
 }
 
 /**
- * Returns a form for the uniform hazardous waste manifest.
+ * Returns form for the uniform hazardous waste manifest. It also acts
+ * as the current method of viewing manifest when the form is read only.
  * @constructor
  */
 function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
   // Top level ManifestForm methods and objects
   const manifestMethods = useForm<Manifest>({ values: manifestData });
+  // On load, focus the generator EPA ID.
+  useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
   const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     // ToDo: on submit, validate the user input
@@ -61,12 +64,14 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
       });
   };
 
-  useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
+  // Generator controls
+  const generator: ManifestHandler = manifestMethods.getValues('generator');
+  console.log(generator);
 
   // Transporter controls
   const [transFormShow, setTransFormShow] = useState<boolean>(false);
   const toggleTranSearchShow = () => setTransFormShow(!transFormShow);
-  const transporters: Array<Handler> = manifestMethods.getValues('transporters');
+  const transporters: Array<Transporter> = manifestMethods.getValues('transporters');
   const tranArrayMethods = useFieldArray<Manifest, 'transporters'>({
     control: manifestMethods.control,
     name: 'transporters',
@@ -84,7 +89,7 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
   // Tsdf controls
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
-  const tsdf: Handler = manifestMethods.getValues('designatedFacility');
+  const tsdf: ManifestHandler = manifestMethods.getValues('designatedFacility');
 
   return (
     <>
@@ -221,9 +226,19 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
           <HtCard id="generator-form-card">
             <HtCard.Header title="Generator" />
             <HtCard.Body>
-              <HandlerForm handlerType={HandlerType.Generator} readOnly={readOnly} />
-              <h4>Emergency Contact Information</h4>
-              <ContactForm handlerFormType="generator" readOnly={readOnly} />
+              {readOnly ? (
+                <>
+                  <HandlerDetails handler={generator} />
+                  <h4>Emergency Contact Information</h4>
+                  <ContactForm handlerFormType="generator" readOnly={readOnly} />
+                </>
+              ) : (
+                <>
+                  <HandlerForm handlerType={HandlerType.Generator} readOnly={readOnly} />
+                  <h4>Emergency Contact Information</h4>
+                  <ContactForm handlerFormType="generator" readOnly={readOnly} />
+                </>
+              )}
             </HtCard.Body>
           </HtCard>
           <HtCard id="transporter-form-card">

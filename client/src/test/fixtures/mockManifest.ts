@@ -1,4 +1,4 @@
-import { Manifest } from 'types';
+import { Manifest } from 'types/Manifest';
 import { MOCK_HANDLER } from 'test/fixtures/mockHandler';
 import { MOCK_WASTE } from 'test/fixtures/mockWaste';
 

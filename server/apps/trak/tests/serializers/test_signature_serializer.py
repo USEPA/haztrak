@@ -11,7 +11,9 @@ class TestESignatureSerializer:
         e_signature_serializer = ESignatureSerializer(data=e_signature_json)
         assert e_signature_serializer.is_valid() is True
 
-    def test_serializer_saves_new_signer(self, manifest_gen, e_signature_serializer, e_signature_json):
+    def test_serializer_saves_new_signer(
+        self, manifest_gen, e_signature_serializer, e_signature_json
+    ):
         e_signature_serializer.save(manifest_handler=manifest_gen)
         assert Signer.objects.filter(first_name=e_signature_json["signer"]["firstName"]).exists()
 

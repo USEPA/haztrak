@@ -1,3 +1,6 @@
+/**
+ * Represents waste information captures on EPA's hazardous waste manifest
+ */
 interface WasteLine {
   dotHazardous: boolean;
   epaWaste: boolean;
@@ -15,8 +18,15 @@ interface WasteLine {
   additionalInfo?: AdditionalInfo;
 }
 
+/**
+ * Unites States Department of Transportation (DOT) information
+ */
 interface DotInformation {
   idNumber: Code;
+  /**
+   * Contains various information for DOT requirements such as
+   * RQ Description, Technical Name, Hazard Class, Packing Group and any user edits
+   */
   printedDotInformation: string;
 }
 
@@ -24,38 +34,55 @@ interface Code {
   code: string;
 }
 
+/**
+ * Biennial Report information for the hazardous waste manifest
+ * https://www.epa.gov/hwgenerators/biennial-hazardous-waste-report
+ */
 interface BrInfo {
   density: number;
-  densityUnitOfMeasurement: DensityUnitOfMeasurement;
+  densityUnitOfMeasurement: DensityUOM;
   formCode: CodeDescription;
   sourceCode: CodeDescription;
   wasteMinimizationCode: CodeDescription;
 }
 
-interface DensityUnitOfMeasurement {
+/**
+ * Density Units of Measurement
+ */
+interface DensityUOM {
   code: string;
   description: string;
 }
 
+/**
+ * Object representing hazardous waste handling codes and their descriptions.
+ */
 export interface CodeDescription {
   code: string;
   description?: string;
 }
 
+/**
+ * Hazardous waste quantity information such as container, quantity, UOM data
+ */
 interface Quantity {
   containerNumber: number;
   containerType: ContainerType;
   quantity: number;
-  unitOfMeasurement: QuantityUnitsOfMeasurement;
+  unitOfMeasurement: QuantityUOM;
 }
 
-interface QuantityUnitsOfMeasurement {
+/**
+ * Quantity Units of Measurement
+ */
+interface QuantityUOM {
   code: 'P' | 'T' | 'K' | 'M' | 'G' | 'L' | 'Y' | 'N';
   description?: QuantityDescription;
 }
 
-enum QuantityCode {}
-
+/**
+ * Choices for different types of Quantity UOM
+ */
 enum QuantityDescription {
   P = 'Pounds',
   T = 'Tons (2000 Pounds)',
@@ -126,4 +153,4 @@ interface Comment {
   handlerId: string;
 }
 
-export type { WasteLine, ContainerType, ContainerDescription, QuantityCode, QuantityDescription };
+export type { WasteLine, ContainerType, ContainerDescription, QuantityDescription };

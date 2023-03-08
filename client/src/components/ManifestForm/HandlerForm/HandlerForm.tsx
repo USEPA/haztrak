@@ -4,8 +4,8 @@ import { AddressForm } from 'components/ManifestForm/AddressForm';
 import { ReactElement, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
-import { Manifest } from 'types';
-import { AddressType, HandlerType } from 'types/Handler/Handler';
+import { Manifest } from 'types/Manifest';
+import { AddressType, HandlerType } from 'types/Handler';
 
 interface HandlerFormProps {
   handlerType: HandlerType;

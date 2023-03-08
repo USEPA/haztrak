@@ -1,11 +1,12 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import { Handler, Manifest } from 'types';
+import { Manifest } from 'types/Manifest';
+import { Transporter } from 'types/Handler';
 import { TransporterRowActions } from './TransporterRowActions';
 import { UseFieldArrayReturn } from 'react-hook-form';
 
 interface TransporterTableProps {
-  transporters?: Array<Handler>;
+  transporters?: Array<Transporter>;
   arrayFieldMethods: UseFieldArrayReturn<Manifest, 'transporters', 'id'>;
   readOnly?: boolean;
 }

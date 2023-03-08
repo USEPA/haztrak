@@ -5,7 +5,7 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
-import { AddressType, HandlerType } from 'types/Handler/Handler';
+import { AddressType, HandlerType } from 'types/Handler';
 import { CountryCode, StateCode } from './StateSelect';
 
 interface Props {

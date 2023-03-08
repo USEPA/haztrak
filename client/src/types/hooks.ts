@@ -1,3 +1,6 @@
+/**
+ * Objects representing the necessary props used by Haztrak's pagination custom hook.
+ */
 export interface usePaginationProps {
   currentPage: number;
   totalCount: number;
