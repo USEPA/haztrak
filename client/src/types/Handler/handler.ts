@@ -55,7 +55,7 @@ export interface Handler {
  */
 export interface ManifestHandler extends Handler {
   // paperSignatureInfo: PaperSignature
-  electronicSignatureInfo?: Array<ElectronicSignature>;
+  electronicSignaturesInfo?: Array<ElectronicSignature>;
 }
 
 /**

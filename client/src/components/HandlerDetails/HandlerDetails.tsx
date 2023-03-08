@@ -1,10 +1,17 @@
+import {
+  faCircleCheck,
+  faCircleXmark,
+  faFileSignature,
+  faSignature,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddressListGroup from 'components/HandlerDetails/AddressListGroup';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { Handler } from 'types/Handler';
+import { ManifestHandler } from 'types/Handler';
 
 interface HandlerDetailsProps {
-  handler: Handler;
+  handler: ManifestHandler;
 }
 
 /**
@@ -16,7 +23,16 @@ function HandlerDetails({ handler }: HandlerDetailsProps) {
   return (
     <div className="py-2">
       <Row>
-        <h4>{handler.name}</h4>
+        <Col>
+          <h4>{handler.name}</h4>
+        </Col>
+        <Col className="d-flex justify-content-end">
+          {handler.electronicSignaturesInfo && (
+            <p className="text-right">
+              signed <FontAwesomeIcon icon={faSignature} className="text-success" size="xl" />
+            </p>
+          )}
+        </Col>
       </Row>
       <Row className="mb-0">
         <Col>
@@ -25,19 +41,19 @@ function HandlerDetails({ handler }: HandlerDetailsProps) {
         </Col>
         <Col>
           <p className="mb-0">
-            Can e-Sign:{' '}
-            {handler.hasRegisteredEmanifestUser ? (
-              <i className="align-text-bottom text-success fa-solid fa-circle-check"></i>
+            <label className="fw-bold">Can e-Sign: </label>{' '}
+            {handler.canEsign ? (
+              <FontAwesomeIcon icon={faCircleCheck} className="text-success align-text-bottom" />
             ) : (
-              <i className="align-text-bottom text-danger fa-solid fa-circle-xmark"></i>
+              <FontAwesomeIcon icon={faCircleXmark} className="text-danger align-text-bottom" />
             )}
           </p>
           <p>
             Has registered e-Manifest user:{' '}
             {handler.hasRegisteredEmanifestUser ? (
-              <i className="align-text-bottom text-success fa-solid fa-circle-check"></i>
+              <FontAwesomeIcon icon={faCircleCheck} className="text-success align-text-bottom" />
             ) : (
-              <i className="align-text-bottom text-danger fa-solid fa-circle-xmark"></i>
+              <FontAwesomeIcon icon={faCircleXmark} className="text-danger align-text-bottom" />
             )}
           </p>
         </Col>

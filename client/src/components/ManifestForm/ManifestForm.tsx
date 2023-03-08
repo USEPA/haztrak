@@ -31,6 +31,8 @@ interface ManifestFormProps {
 function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
   // Top level ManifestForm methods and objects
   const manifestMethods = useForm<Manifest>({ values: manifestData });
+  // On load, focus the generator EPA ID.
+  useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
   const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     // ToDo: on submit, validate the user input
@@ -62,7 +64,9 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
       });
   };
 
-  useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
+  // Generator controls
+  const generator: ManifestHandler = manifestMethods.getValues('generator');
+  console.log(generator);
 
   // Transporter controls
   const [transFormShow, setTransFormShow] = useState<boolean>(false);
@@ -222,9 +226,19 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
           <HtCard id="generator-form-card">
             <HtCard.Header title="Generator" />
             <HtCard.Body>
-              <HandlerForm handlerType={HandlerType.Generator} readOnly={readOnly} />
-              <h4>Emergency Contact Information</h4>
-              <ContactForm handlerFormType="generator" readOnly={readOnly} />
+              {readOnly ? (
+                <>
+                  <HandlerDetails handler={generator} />
+                  <h4>Emergency Contact Information</h4>
+                  <ContactForm handlerFormType="generator" readOnly={readOnly} />
+                </>
+              ) : (
+                <>
+                  <HandlerForm handlerType={HandlerType.Generator} readOnly={readOnly} />
+                  <h4>Emergency Contact Information</h4>
+                  <ContactForm handlerFormType="generator" readOnly={readOnly} />
+                </>
+              )}
             </HtCard.Body>
           </HtCard>
           <HtCard id="transporter-form-card">
