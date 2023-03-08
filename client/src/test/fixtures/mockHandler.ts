@@ -1,3 +1,5 @@
+import { ManifestHandler } from 'types/Handler';
+
 /**
  * A mock handler ID, use by the mock handler object, for tests
  */
@@ -7,7 +9,7 @@ export const MOCK_USERNAME = 'testuser1';
 /**
  * A mock handler object for tests
  */
-export const MOCK_HANDLER = {
+export const MOCK_HANDLER: ManifestHandler = {
   epaSiteId: MOCK_EPA_ID,
   siteType: 'Generator',
   name: 'TEST TRANSPORTER 2 OF VA',
@@ -48,7 +50,7 @@ export const MOCK_HANDLER = {
   emergencyPhone: {
     number: '888-456-1234',
   },
-  electronicSignatureInfo: [
+  electronicSignaturesInfo: [
     {
       humanReadableDocument: {
         name: 'human-readable.html',

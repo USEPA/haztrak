@@ -56,6 +56,7 @@ export interface Handler {
 export interface ManifestHandler extends Handler {
   // paperSignatureInfo: PaperSignature
   electronicSignaturesInfo?: Array<ElectronicSignature>;
+  siteType?: 'Generator' | 'Broken' | 'Transporter' | 'Tsdf';
 }
 
 /**

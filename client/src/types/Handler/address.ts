@@ -12,11 +12,11 @@ export enum AddressType {
 export interface Address {
   address1: string;
   address2?: string;
-  city: string;
-  country: Locality;
+  city?: string;
+  country?: Locality;
   state: Locality;
-  streetNumber: string;
-  zip: string;
+  streetNumber?: string;
+  zip?: string;
 }
 
 /**
