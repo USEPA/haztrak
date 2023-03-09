@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
+# Change the Django Admin page title
+admin.site.site_header = "Haztrak Admin"
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/trak/", include("apps.trak.urls")),

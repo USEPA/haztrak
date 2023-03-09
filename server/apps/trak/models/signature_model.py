@@ -144,3 +144,25 @@ class ESignature(models.Model):
 
     class Meta:
         verbose_name = "e-Signature"
+
+
+class PaperSignature(models.Model):
+    """
+    Contains printed name of the handler Signee and Date of Signature.
+    """
+
+    printed_name = models.CharField(
+        max_length=255,
+    )
+    sign_date = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.printed_name} ({self.sign_date.strftime('%Y-%m-%d %H:%M:%S')})"
+
+    def __repr__(self):
+        return (
+            f"<PaperSignature printedName='{self.printed_name}' signatureDate='{self.sign_date}'>"
+        )
+
+    def __hash__(self):
+        return hash((self.printed_name, self.sign_date))

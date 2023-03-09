@@ -108,7 +108,7 @@ generate_api_schema() {
 
 graph_models() {
     print_style "Generating Entity Relationship Diagram...\n" "success";
-    exec_cmd="$base_py_cmd graph_models trak -g --rankdir=LR --arrow-shape=normal -o $base_dir/docs/haztrak_book/src/assets/erd.png"
+    exec_cmd="$base_py_cmd graph_models trak -g --rankdir=RL --arrow-shape=normal -o $base_dir/docs/haztrak_book/src/assets/erd.png"
     eval "$exec_cmd"
     exit
 }
