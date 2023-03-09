@@ -199,7 +199,8 @@ class ManifestHandlerManager(models.Manager):
 
 class ManifestHandler(models.Model):
     """
-    ManifestHandler
+    ManifestHandler which contains a reference to hazardous waste
+    handler and data specific to that handler on the given manifest.
     """
 
     objects = ManifestHandlerManager()
@@ -207,6 +208,14 @@ class ManifestHandler(models.Model):
     handler = models.ForeignKey(
         "Handler",
         on_delete=models.CASCADE,
+        help_text="Hazardous waste handler associated with the manifest",
+    )
+    paper_signature = models.OneToOneField(
+        "PaperSignature",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        help_text="The signature associated with hazardous waste custody exchange",
     )
 
     def __str__(self):
