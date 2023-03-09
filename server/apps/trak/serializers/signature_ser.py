@@ -2,7 +2,7 @@ from typing import Dict
 
 from rest_framework import serializers
 
-from apps.trak.models import ESignature, Signer
+from apps.trak.models import ESignature, PaperSignature, Signer
 from apps.trak.serializers.contact_ser import EpaPhoneSerializer
 from apps.trak.serializers.trak_ser import TrakBaseSerializer
 
@@ -108,4 +108,33 @@ class ESignatureSerializer(TrakBaseSerializer):
             "signatureDate",
             "onBehalf",
             "order",
+        ]
+
+
+class PaperSignatureSerializer(TrakBaseSerializer):
+    """
+    Serializer for Paper Signature on manifest which indicates whether a manifest
+    has changed custody during the hazardous waste shipment
+    """
+
+    printedName = serializers.CharField(
+        source="printed_name",
+        required=False,
+    )
+    signatureDate = serializers.DateTimeField(
+        source="sign_date",
+        required=False,
+    )
+
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
+
+    def create(self, validated_data: Dict):
+        return super().create(validated_data)
+
+    class Meta:
+        model = PaperSignature
+        fields = [
+            "printedName",
+            "signatureDate",
         ]
