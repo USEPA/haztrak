@@ -1,5 +1,3 @@
-import pytest
-
 from apps.trak.models import Handler, ManifestHandler, PaperSignature
 from apps.trak.serializers import ManifestHandlerSerializer
 
