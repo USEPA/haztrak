@@ -128,7 +128,7 @@ function Sidebar(): ReactElement | null {
                       icon={faNetworkWired}
                       className="sb-nav-link-icon text-primary"
                     />
-                    Swagger UI
+                    OpenAPI Docs
                   </a>
                 </nav>
               </div>

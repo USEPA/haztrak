@@ -1,5 +1,5 @@
 class TestRcraProfileModel:
-    """Test related to the RcraProfile model and it's API"""
+    """Test related to the RcraProfile model and its API"""
 
     def test_is_api_user_returns_false_one_empty(self, db, test_user_profile):
         test_user_profile.rcra_api_id = None
