@@ -1,0 +1,52 @@
+{
+  "epaSiteId": "VA988177803",
+  "name": "WORLD OIL RECYCLING",
+  "modified": false,
+  "registered": true,
+  "paperSignatureInfo": {
+    "printedName": "gen",
+    "signatureDate": "2022-06-07T01:00:00.000+00:00"
+  },
+  "mailingAddress": {
+    "address1": "15 CLOVERFIELD LANE",
+    "city": "LOS ANGELES",
+    "state": {
+      "code": "VA",
+      "name": "VIRGINIA"
+    },
+    "country": {
+      "code": "US",
+      "name": "UNITED STATES"
+    },
+    "zip": "12345"
+  },
+  "siteAddress": {
+    "address1": "15 CLOVERFIELD LANE",
+    "city": "LOS ANGELES",
+    "state": {
+      "code": "VA",
+      "name": "VIRGINIA"
+    },
+    "country": {
+      "code": "US",
+      "name": "UNITED STATES"
+    },
+    "zip": "12345"
+  },
+  "contact": {
+    "firstName": "JOHN",
+    "middleInitial": "Q",
+    "lastName": "TESTER",
+    "phone": {
+      "number": "703-308-0023"
+    },
+    "email": "EMANIFEST@EPA.GOV"
+  },
+  "emergencyPhone": {
+    "number": "911-911-0000"
+  },
+  "gisPrimary": false,
+  "canEsign": true,
+  "limitedEsign": true,
+  "hasRegisteredEmanifestUser": true
+}

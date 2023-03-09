@@ -6,7 +6,7 @@ from apps.trak.models import ESignature, Handler, ManifestHandler
 from apps.trak.serializers import AddressSerializer
 
 from .contact_ser import ContactSerializer, EpaPhoneSerializer
-from .signature_ser import ESignatureSerializer
+from .signature_ser import ESignatureSerializer, PaperSignatureSerializer
 from .trak_ser import TrakBaseSerializer
 
 
@@ -97,6 +97,10 @@ class ManifestHandlerSerializer(HandlerSerializer):
         many=True,
         required=False,
     )
+    paperSignatureInfo = PaperSignatureSerializer(
+        source="paper_signature",
+        required=False,
+    )
 
     def create(self, validated_data: Dict):
         e_signatures_data = []
@@ -117,11 +121,12 @@ class ManifestHandlerSerializer(HandlerSerializer):
         return representation
 
     def to_internal_value(self, data: Dict):
+        instance = {}
         if "electronicSignaturesInfo" in data:
-            e_signature_data = data.pop("electronicSignaturesInfo")
-            instance = {"handler": data, "electronicSignaturesInfo": e_signature_data}
-        else:
-            instance = {"handler": data}
+            instance["electronicSignaturesInfo"] = data.pop("electronicSignaturesInfo")
+        if "paperSignatureInfo" in data:
+            instance["paperSignatureInfo"] = data.pop("paperSignatureInfo")
+        instance["handler"] = data
         return super().to_internal_value(instance)
 
     class Meta:
@@ -129,4 +134,5 @@ class ManifestHandlerSerializer(HandlerSerializer):
         fields = [
             "handler",
             "electronicSignaturesInfo",
+            "paperSignatureInfo",
         ]

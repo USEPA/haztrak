@@ -113,8 +113,8 @@ class ESignatureSerializer(TrakBaseSerializer):
 
 class PaperSignatureSerializer(TrakBaseSerializer):
     """
-    Serializer for Paper Signature on manifest which indicates whether a manifest
-    has changed custody during the hazardous waste shipment
+    Serializer for Paper Signature on manifest which indicates the change
+    of custody with paper manifests
     """
 
     printedName = serializers.CharField(

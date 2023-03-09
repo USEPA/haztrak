@@ -148,7 +148,8 @@ class ESignature(models.Model):
 
 class PaperSignature(models.Model):
     """
-    Contains printed name of the handler Signee and Date of Signature.
+    Contains printed name of the handler Signee and
+    Date of Signature for paper manifests.
     """
 
     printed_name = models.CharField(
