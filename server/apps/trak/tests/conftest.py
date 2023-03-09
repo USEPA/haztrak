@@ -42,6 +42,7 @@ TEST_MANIFEST_JSON = f"{JSON_DIR}/test_manifest_100033134ELC.json"
 TEST_SITE_PERM_JSON = f"{JSON_DIR}/site_permission.json"
 TEST_EPA_PERM_JSON = f"{JSON_DIR}/epa_permission.json"
 TEST_HANDLER_JSON = f"{JSON_DIR}/test_handler.json"
+TEST_PAPER_HANDLER_JSON = f"{JSON_DIR}/paper_manifest_handler.json"
 TEST_E_SIGNATURE_JSON = f"{JSON_DIR}/test_e_signature.json"
 
 
@@ -191,6 +192,12 @@ def wasteline_json() -> Dict:
 
 
 @pytest.fixture
+def paper_manifest_handler_json() -> Dict:
+    with open(TEST_PAPER_HANDLER_JSON, "r") as f:
+        return json.load(f)
+
+
+@pytest.fixture
 def phone_json(db) -> Dict:
     with open(TEST_PHONE_JSON, "r") as f:
         return json.load(f)
@@ -220,7 +227,16 @@ def handler_serializer(db, handler_json) -> HandlerSerializer:
 
 @pytest.fixture
 def manifest_handler_serializer(db, handler_json) -> ManifestHandlerSerializer:
-    return ManifestHandlerSerializer(data=handler_json)
+    manifest_handler_serializer = ManifestHandlerSerializer(data=handler_json)
+    manifest_handler_serializer.is_valid()
+    return manifest_handler_serializer
+
+
+@pytest.fixture
+def paper_handler_serializer(db, paper_manifest_handler_json) -> ManifestHandlerSerializer:
+    handler_serializer = ManifestHandlerSerializer(data=paper_manifest_handler_json)
+    handler_serializer.is_valid()
+    return handler_serializer
 
 
 @pytest.fixture

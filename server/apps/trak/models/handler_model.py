@@ -6,7 +6,7 @@ from django.db import models
 
 from .address_model import Address
 from .contact_model import Contact, EpaPhone
-from .signature_model import ESignature
+from .signature_model import ESignature, PaperSignature
 
 logger = logging.getLogger(__name__)
 
@@ -172,9 +172,12 @@ class ManifestHandlerManager(models.Manager):
             handler (dict): handler data in (ordered)dict format
         """
         e_signatures = []
+        paper_signature = None
         if "e_signatures" in handler_data:
             e_signatures = handler_data.pop("e_signatures")
         logger.debug(f"e_signature data {e_signatures}")
+        if "paper_signature" in handler_data:
+            paper_signature = PaperSignature.objects.create(**handler_data.pop("paper_signature"))
         try:
             if Handler.objects.filter(epa_id=handler_data["handler"]["epa_id"]).exists():
                 handler = Handler.objects.get(epa_id=handler_data["handler"]["epa_id"])
@@ -182,7 +185,9 @@ class ManifestHandlerManager(models.Manager):
             else:
                 handler = Handler.objects.create_handler(**handler_data["handler"])
                 logger.debug(f"Handler created {handler}")
-            manifest_handler = ManifestHandler.objects.create(handler=handler)
+            manifest_handler = ManifestHandler.objects.create(
+                handler=handler, paper_signature=paper_signature
+            )
             logger.debug(f"ManifestHandler created {manifest_handler}")
             for e_signature_data in e_signatures:
                 e_sig = ESignature.objects.create_e_signature(

@@ -1,25 +1,29 @@
-import pytest
-
-from apps.trak.models import Handler, ManifestHandler
+from apps.trak.models import Handler, ManifestHandler, PaperSignature
+from apps.trak.serializers import ManifestHandlerSerializer
 
 
 class TestManifestHandlerSerializer:
-    def test_m_handler_serializes(self, manifest_handler_serializer) -> None:
-        assert manifest_handler_serializer.is_valid() is True
+    def test_m_handler_serializes(self, handler_json) -> None:
+        manifest_handler_serializer = ManifestHandlerSerializer(data=handler_json)
+        assert manifest_handler_serializer.is_valid()
 
     def test_serializer_saves_handler(self, db, manifest_handler_serializer) -> None:
-        if manifest_handler_serializer.is_valid():
-            manifest_handler = manifest_handler_serializer.save()
-            assert isinstance(manifest_handler, ManifestHandler)
-        else:
-            pytest.fail()
+        manifest_handler = manifest_handler_serializer.save()
+        assert isinstance(manifest_handler, ManifestHandler)
+
+    def test_paper_manifest_handler_serializes(self, paper_manifest_handler_json) -> None:
+        manifest_handler_serializer = ManifestHandlerSerializer(data=paper_manifest_handler_json)
+        assert manifest_handler_serializer.is_valid()
+
+    def test_creates_paper_signature(self, db, paper_handler_serializer) -> None:
+        manifest_handler: ManifestHandler = paper_handler_serializer.save()
+        assert isinstance(manifest_handler.paper_signature, PaperSignature)
 
     def test_serializer_flattens_foreign_keys(self, manifest_handler_serializer) -> None:
-        if manifest_handler_serializer.is_valid():
-            # The ManifestHandler holds a foreign key to a Handler instance
-            # however it should flatten that representation.
-            assert "epaSiteId" in manifest_handler_serializer.data
-            assert "handler" not in manifest_handler_serializer.data
+        # The ManifestHandler holds a foreign key to a Handler instance
+        # however it should flatten that representation.
+        assert "epaSiteId" in manifest_handler_serializer.data
+        assert "handler" not in manifest_handler_serializer.data
 
 
 class TestHandlerSerializer:
