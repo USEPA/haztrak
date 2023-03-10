@@ -1,7 +1,9 @@
 import logging
-from datetime import datetime
+import re
 
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Max
 from django.utils.translation import gettext_lazy as _
 
 from apps.trak.models import ManifestHandler
@@ -14,7 +16,20 @@ def draft_mtn():
     A callable that returns a timestamped draft MTN in lieu of an
     official MTN from e-Manifest
     """
-    return str(f'draft-{datetime.now().strftime("%Y-%m-%d-%H:%M:%S")}')
+    manifests = Manifest.objects.all()
+    if not manifests:
+        max_id = 1
+    else:
+        max_id = manifests.aggregate(Max("id"))
+    return f"{str(max_id).zfill(9)}DFT"
+
+
+def validate_mtn(value):
+    if not re.match(r"[0-9]{9}[A-Z]{3}", value):
+        raise ValidationError(
+            _("%(value)s is not in valid MTN format: [0-9]{9}[A-Z]{3}"),
+            params={"value": value},
+        )
 
 
 class ManifestManager(models.Manager):
@@ -25,14 +40,22 @@ class ManifestManager(models.Manager):
     @staticmethod
     def create_manifest(manifest_data):
         """Create a manifest with its related models instances"""
+        additional_info = None
         # Create manifest handlers (generator and TSD) and all related models
         tsd_data = manifest_data.pop("tsd")
         gen_data = manifest_data.pop("generator")
         manifest_generator = ManifestHandler.objects.create_manifest_handler(**gen_data)
         manifest_tsd = ManifestHandler.objects.create_manifest_handler(**tsd_data)
+        if "additional_info" in manifest_data:
+            manifest_data.pop("additional_info")
+            # ToDo: implement AdditionalInfoSerializer
+            # AdditionalInfo.objects.create(**manifest_data.pop("additional_info"))
         # Create model instances
         return Manifest.objects.create(
-            generator=manifest_generator, tsd=manifest_tsd, **manifest_data
+            generator=manifest_generator,
+            tsd=manifest_tsd,
+            additional_info=additional_info,
+            **manifest_data,
         )
 
 
@@ -82,6 +105,7 @@ class Manifest(models.Model):
         max_length=30,
         default=draft_mtn,
         unique=True,
+        validators=[validate_mtn],
     )
     status = models.CharField(
         max_length=25,
@@ -182,7 +206,9 @@ class Manifest(models.Model):
         null=True,
         blank=True,
     )
-    additional_info = models.JSONField(
+    additional_info = models.ForeignKey(
+        "AdditionalInfo",
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
@@ -233,3 +259,47 @@ class Manifest(models.Model):
 
     def __str__(self):
         return f"{self.mtn}"
+
+
+class AdditionalInfo(models.Model):
+    """
+    Entity containing Additional Information. Relevant to Both Manifest and individual WastesLines.
+    Shipment rejection related info is stored in this object.
+    """
+
+    class NewDestination(models.TextChoices):
+        """Shipment destination choices upon rejection"""
+
+        GENERATOR = "GEN", _("Generator")
+        TSDF = "TSD", _("Tsdf")
+
+    original_mtn = models.JSONField(
+        null=True,
+        blank=True,
+        help_text="Original manifest tracking number of rejected manifest"
+        "Regex expression validation: [0-9]{9}[A-Z]{3}",
+        validators=[validate_mtn],
+    )
+    new_destination = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        choices=NewDestination.choices,
+        help_text="Destination of the new manifest created during rejection or residue.",
+    )
+    consent_number = models.CharField(
+        max_length=12,
+        null=True,
+        blank=True,
+    )
+    # comments ToDo: implement Comment model, one-to-many relationship with additional info
+    handling_instructions = models.CharField(
+        max_length=4000,
+        null=True,
+        blank=True,
+        help_text="Special Handling Instructions",
+    )
+
+    class Meta:
+        verbose_name = "AdditionalInfo"
+        verbose_name_plural = "AdditionalInfo"
