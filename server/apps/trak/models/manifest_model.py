@@ -40,14 +40,22 @@ class ManifestManager(models.Manager):
     @staticmethod
     def create_manifest(manifest_data):
         """Create a manifest with its related models instances"""
+        additional_info = None
         # Create manifest handlers (generator and TSD) and all related models
         tsd_data = manifest_data.pop("tsd")
         gen_data = manifest_data.pop("generator")
         manifest_generator = ManifestHandler.objects.create_manifest_handler(**gen_data)
         manifest_tsd = ManifestHandler.objects.create_manifest_handler(**tsd_data)
+        if "additional_info" in manifest_data:
+            manifest_data.pop("additional_info")
+            # ToDo: implement AdditionalInfoSerializer
+            # AdditionalInfo.objects.create(**manifest_data.pop("additional_info"))
         # Create model instances
         return Manifest.objects.create(
-            generator=manifest_generator, tsd=manifest_tsd, **manifest_data
+            generator=manifest_generator,
+            tsd=manifest_tsd,
+            additional_info=additional_info,
+            **manifest_data,
         )
 
 
@@ -198,7 +206,9 @@ class Manifest(models.Model):
         null=True,
         blank=True,
     )
-    additional_info = models.JSONField(
+    additional_info = models.ForeignKey(
+        "AdditionalInfo",
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
