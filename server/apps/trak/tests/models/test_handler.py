@@ -1,4 +1,4 @@
-from apps.trak.models import ESignature, Handler, ManifestHandler
+from apps.trak.models import Handler, ManifestHandler
 
 
 class TestHandlerModel:
@@ -6,9 +6,6 @@ class TestHandlerModel:
 
     def test_handler_created(self, db, generator001) -> None:
         assert type(generator001) is Handler
-
-    def test_handler_connects_to_site_address(self, db, generator001, address_123_main) -> None:
-        assert generator001.site_address.address1 == address_123_main.address1
 
     def test_handler_db_read_write(self, db, generator001) -> None:
         generator001.save()

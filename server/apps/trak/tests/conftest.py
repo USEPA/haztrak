@@ -2,7 +2,7 @@ import json
 import os
 from datetime import date, datetime
 from http import HTTPStatus
-from typing import Dict
+from typing import Dict, Optional
 
 import pytest
 import responses
@@ -63,54 +63,82 @@ def other_user(db) -> User:
 
 
 @pytest.fixture
-def address_123_main(db) -> Address:
-    """A Address model instance"""
-    return Address.objects.create(
-        address1="Main st.", street_number="123", country="VA", city="Arlington"
-    )
+def address_factory(db):
+    def create_address(
+        address1: Optional[str] = "Main st.",
+        street_number: Optional[str] = "123",
+        country: Optional[str] = "US",
+        city: Optional[str] = "Arlington",
+    ) -> Address:
+        return Address.objects.create(
+            address1=address1,
+            street_number=street_number,
+            country=country,
+            city=city,
+        )
+
+    return create_address
 
 
 @pytest.fixture
-def epa_phone(db) -> EpaPhone:
-    """A EpaPhone model instance"""
-    return EpaPhone.objects.create(number="123-123-1234", extension="123")
+def epa_phone_factory(db):
+    def create_epa_phone(
+        number: Optional[str] = "123-123-1234", extension: Optional[str] = "1234"
+    ) -> EpaPhone:
+        return EpaPhone.objects.create(
+            number=number,
+            extension=extension,
+        )
+
+    return create_epa_phone
 
 
 @pytest.fixture
-def handler_contact(db, epa_phone) -> Contact:
-    """A Contact model instance"""
-    return Contact.objects.create(
-        first_name="test",
-        middle_initial="M",
-        last_name="User",
-        email="testuser@haztrak.net",
-        phone=epa_phone,
-    )
+def contact_factory(db, epa_phone_factory):
+    def create_contact(
+        first_name: Optional[str] = "test",
+        middle_initial: Optional[str] = "Q",
+        last_name: Optional[str] = "user",
+        email: Optional[str] = "testuser@haztrak.net",
+        phone: Optional[EpaPhone] = None,
+    ) -> Contact:
+        if phone is None:
+            phone = epa_phone_factory()
+        contact = Contact.objects.create(
+            first_name=first_name,
+            middle_initial=middle_initial,
+            last_name=last_name,
+            email=email,
+            phone=phone,
+        )
+        return contact
+
+    return create_contact
 
 
 @pytest.fixture
-def generator001(db, address_123_main, handler_contact) -> Handler:
+def generator001(db, address_factory, contact_factory) -> Handler:
     """A Handler instance named generator001"""
     return Handler.objects.create(
         epa_id="handler001",
         name="my_handler",
         site_type="Generator",
-        site_address=address_123_main,
-        mail_address=address_123_main,
-        contact=handler_contact,
+        site_address=address_factory(),
+        mail_address=address_factory(),
+        contact=contact_factory(),
     )
 
 
 @pytest.fixture
-def tsd001(db, address_123_main, handler_contact) -> Handler:
+def tsd001(db, address_factory, contact_factory) -> Handler:
     """Returns a Handler instance named tsd001"""
     return Handler.objects.create(
         epa_id="tsd001",
         name="my_tsd",
         site_type="Tsd",
-        site_address=address_123_main,
-        mail_address=address_123_main,
-        contact=handler_contact,
+        site_address=address_factory(),
+        mail_address=address_factory(),
+        contact=contact_factory(),
     )
 
 
@@ -281,7 +309,7 @@ def manifest_tsd(db, tsd001) -> ManifestHandler:
 
 
 @pytest.fixture
-def manifest_elc(db, address_123_main, manifest_gen, manifest_tsd) -> Manifest:
+def manifest_elc(db, manifest_gen, manifest_tsd) -> Manifest:
     return Manifest.objects.create(
         mtn="0123456789ELC",
         created_date=datetime.now(),
