@@ -17,8 +17,8 @@ class TestManifestCRUD(TestApiClient):
         self.manifest = manifest_elc
 
     @pytest.fixture(autouse=True)
-    def _manifest_json(self, json_100031134elc):
-        self.manifest_json = json_100031134elc
+    def _manifest_json(self, json_100033134elc):
+        self.manifest_json = json_100033134elc
 
     def test_get_manifest(self):
         request = self.factory.get(f"{self.base_url}/{self.manifest.mtn}")

@@ -156,7 +156,7 @@ def site_permission(db, site_generator001, test_user_profile) -> SitePermission:
 
 # JSON fixtures, fixtures that return a Dict from our test files
 @pytest.fixture
-def json_100031134elc() -> Dict:
+def json_100033134elc() -> Dict:
     with open(TEST_MANIFEST_JSON, "r") as f:
         return json.load(f)
 
@@ -211,8 +211,8 @@ def e_signature_json(db) -> Dict:
 
 # Serializer fixtures, build on JSON fixtures to produce serializers
 @pytest.fixture
-def manifest_10003114elc_serializer(db, json_100031134elc) -> ManifestSerializer:
-    return ManifestSerializer(data=json_100031134elc)
+def manifest_10003114elc_serializer(db, json_100033134elc) -> ManifestSerializer:
+    return ManifestSerializer(data=json_100033134elc)
 
 
 @pytest.fixture
@@ -355,26 +355,26 @@ class TestApiClient:
 
 
 @pytest.fixture
-def manifest_100033134elc_rcra_response(db, json_100031134elc):
+def manifest_100033134elc_rcra_response(db, json_100033134elc):
     rcrainfo = RcrainfoService(api_username="testuser1", rcrainfo_env="preprod")
     with responses.RequestsMock() as mock:
         mock.get(
-            url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{json_100031134elc.get("manifestTrackingNumber")}',
+            url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{json_100033134elc.get("manifestTrackingNumber")}',
             content_type="application/json",
-            json=json_100031134elc,
+            json=json_100033134elc,
             status=HTTPStatus.OK,
         )
         yield mock
 
 
 @pytest.fixture
-def search_site_mtn_rcra_response(json_100031134elc):
+def search_site_mtn_rcra_response(json_100033134elc):
     rcrainfo = RcrainfoService(api_username="testuser1", rcrainfo_env="preprod")
     with responses.RequestsMock() as mock:
         mock.post(
             url=f"{rcrainfo.base_url}/api/v1/emanifest/search",
             content_type="application/json",
-            json=[json_100031134elc.get("manifestTrackingNumber")],
+            json=[json_100033134elc.get("manifestTrackingNumber")],
             status=HTTPStatus.OK,
         )
         yield mock

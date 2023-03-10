@@ -15,9 +15,9 @@ class TestSiteService:
         self.gen001 = generator001
 
     @pytest.fixture(autouse=True)
-    def _manifest(self, json_100031134elc):
-        self.manifest_json = json_100031134elc
-        self.tracking_number = json_100031134elc.get("manifestTrackingNumber", "123456789ELC")
+    def _manifest(self, json_100033134elc):
+        self.manifest_json = json_100033134elc
+        self.tracking_number = json_100033134elc.get("manifestTrackingNumber", "123456789ELC")
 
     def test_create_or_update_creates_new_site(self):
         """Test create_or_update_site creates a new site when non-existent"""

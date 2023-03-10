@@ -13,9 +13,9 @@ class TestManifestService:
         self.gen001 = site_generator001
 
     @pytest.fixture(autouse=True)
-    def _manifest(self, json_100031134elc):
-        self.json_100031134elc = json_100031134elc
-        self.tracking_number = json_100031134elc.get("manifestTrackingNumber", "123456789ELC")
+    def _manifest(self, json_100033134elc):
+        self.json_100031134elc = json_100033134elc
+        self.tracking_number = json_100033134elc.get("manifestTrackingNumber", "123456789ELC")
 
     def test_pull_manifests(self, manifest_100033134elc_rcra_response):
         """Test retrieves a manifest from RCRAInfo"""
