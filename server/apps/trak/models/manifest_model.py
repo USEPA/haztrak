@@ -47,9 +47,7 @@ class ManifestManager(models.Manager):
         manifest_generator = ManifestHandler.objects.create_manifest_handler(**gen_data)
         manifest_tsd = ManifestHandler.objects.create_manifest_handler(**tsd_data)
         if "additional_info" in manifest_data:
-            manifest_data.pop("additional_info")
-            # ToDo: implement AdditionalInfoSerializer
-            # AdditionalInfo.objects.create(**manifest_data.pop("additional_info"))
+            additional_info = AdditionalInfo.objects.create(**manifest_data.pop("additional_info"))
         # Create model instances
         return Manifest.objects.create(
             generator=manifest_generator,
@@ -293,6 +291,10 @@ class AdditionalInfo(models.Model):
         blank=True,
     )
     # comments ToDo: implement Comment model, one-to-many relationship with additional info
+    comments = models.JSONField(
+        null=True,
+        blank=True,
+    )
     handling_instructions = models.CharField(
         max_length=4000,
         null=True,

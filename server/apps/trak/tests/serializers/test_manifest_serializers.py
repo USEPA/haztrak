@@ -1,4 +1,5 @@
 from apps.trak.models import Manifest, WasteLine
+from apps.trak.models.manifest_model import AdditionalInfo
 from apps.trak.serializers import ManifestSerializer
 
 
@@ -23,3 +24,10 @@ class TestManifestSerializer:
         saved_manifest = manifest_10003114elc_serializer.save()
         waste_line = WasteLine.objects.filter(manifest=saved_manifest).first()
         assert isinstance(waste_line, WasteLine)
+
+    def test_saves_additional_info(self, manifest_10003114elc_serializer):
+        manifest_10003114elc_serializer.is_valid()
+        print(manifest_10003114elc_serializer.validated_data["additional_info"])
+        manifest = manifest_10003114elc_serializer.save()
+        additional_info = manifest.additional_info
+        assert isinstance(additional_info, AdditionalInfo)

@@ -6,10 +6,48 @@ from apps.trak.models import Manifest, Transporter, WasteLine
 from apps.trak.serializers.handler_ser import ManifestHandlerSerializer
 from apps.trak.serializers.trak_ser import TrakBaseSerializer
 
+from ..models.manifest_model import AdditionalInfo
 from .transporter_ser import TransporterSerializer
 from .waste_line_ser import WasteLineSerializer
 
 logger = logging.getLogger(__name__)
+
+
+class AdditionalInfoSerializer(serializers.ModelSerializer):
+    originalManifestTrackingNumbers = serializers.JSONField(
+        allow_null=True,
+        required=False,
+        source="original_mtn",
+    )
+    newManifestDestination = serializers.CharField(
+        allow_null=True,
+        required=False,
+        source="new_destination",
+    )
+    consentNumber = serializers.CharField(
+        allow_null=True,
+        required=False,
+        source="consent_number",
+    )
+    comments = serializers.JSONField(
+        allow_null=True,
+        required=False,
+    )
+    handlingInstructions = serializers.CharField(
+        allow_null=True,
+        required=False,
+        source="handling_instructions",
+    )
+
+    class Meta:
+        model = AdditionalInfo
+        fields = (
+            "originalManifestTrackingNumbers",
+            "newManifestDestination",
+            "consentNumber",
+            "comments",
+            "handlingInstructions",
+        )
 
 
 class MtnSerializer(TrakBaseSerializer):
@@ -89,13 +127,11 @@ class ManifestSerializer(TrakBaseSerializer):
         source="certified_date",
         required=False,
         allow_null=True,
-        default=None,
     )
     certifiedBy = serializers.JSONField(
         source="certified_by",
         required=False,
         allow_null=True,
-        default=None,
     )
     generator = ManifestHandlerSerializer()
     transporters = TransporterSerializer(many=True)
@@ -109,7 +145,6 @@ class ManifestSerializer(TrakBaseSerializer):
         source="rejection_info",
         required=False,
         allow_null=True,
-        default=None,
     )
     # discrepancy
     # residue
@@ -123,40 +158,36 @@ class ManifestSerializer(TrakBaseSerializer):
         source="import_info",
         required=False,
         allow_null=True,
-        default=None,
     )
     containsPreviousRejectOrResidue = serializers.BooleanField(
-        source="contains_residue_or_rejection", required=False, default=False
+        source="contains_residue_or_rejection",
+        required=False,
+        default=False,
     )
     printedDocument = serializers.JSONField(
         source="printed_document",
         required=False,
         allow_null=True,
-        default=None,
     )
     formDocument = serializers.JSONField(
         source="form_document",
         required=False,
         allow_null=True,
-        default=None,
     )
-    additionalInfo = serializers.JSONField(
+    additionalInfo = AdditionalInfoSerializer(
         source="additional_info",
         required=False,
         allow_null=True,
-        default=None,
     )
     correctionInfo = serializers.JSONField(
         source="correction_info",
         required=False,
         allow_null=True,
-        default=None,
     )
     ppcStatus = serializers.JSONField(
         source="ppc_status",
         required=False,
         allow_null=True,
-        default=None,
     )
     # mtnValidationInfo
     # provideImageGeneratorInfo
