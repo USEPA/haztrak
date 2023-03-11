@@ -6,13 +6,14 @@ class TestSiteService:
     def _test_user(self, user_factory):
         self.user = user_factory()
 
-    @pytest.fixture(autouse=True)
-    def _site_gen001(self, site_generator001):
-        self.site_gen001 = site_generator001
+    #
+    # @pytest.fixture(autouse=True)
+    # def _site_gen001(self, site_generator001):
+    #     self.site_gen001 = site_generator001
 
     @pytest.fixture(autouse=True)
-    def _gen001(self, generator001):
-        self.gen001 = generator001
+    def _gen001(self, handler_factory):
+        self.gen001 = handler_factory()
 
     @pytest.fixture(autouse=True)
     def _manifest(self, json_100033134elc):

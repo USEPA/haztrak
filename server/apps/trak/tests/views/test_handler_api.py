@@ -14,8 +14,8 @@ class TestHandlerEndpoints:
         self.client = api_client
 
     @pytest.fixture(autouse=True)
-    def _generator(self, generator001):
-        self.generator = generator001
+    def _generator(self, handler_factory):
+        self.generator = handler_factory()
 
     def test_get_handler_headers(self):
         response: Response = self.client.get(f"{self.url}/details/{self.generator.pk}")

@@ -51,17 +51,19 @@ class TestSiteDetailsApi:
         self.user = user_factory()
         self.profile = rcra_profile_factory(user=self.user)
 
-    @pytest.fixture(autouse=True)
-    def _site_permission(self, site_permission):
-        self.site_permission = site_permission
+    #
+    # @pytest.fixture(autouse=True)
+    # def _site_permission(self, site_permission):
+    #     self.site_permission = site_permission
 
     @pytest.fixture(autouse=True)
-    def _generator(self, generator001):
-        self.generator = generator001
+    def _site(self, site_factory, handler_factory):
+        self.generator = handler_factory()
+        self.site = site_factory(epa_site=self.generator)
 
-    @pytest.fixture(autouse=True)
-    def _site(self, site_generator001):
-        self.site = site_generator001
+    # @pytest.fixture(autouse=True)
+    # def _site(self, site_generator001):
+    #     self.site = site_generator001
 
     # def test_returns_site(self):
     #     client = APIClient()
@@ -70,10 +72,10 @@ class TestSiteDetailsApi:
     #     assert response.headers["Content-Type"] == "application/json"
     #     assert response.status_code == 200
 
-    def test_non_user_sites_not_returned(self, site_tsd001):
+    def test_non_user_sites_not_returned(self):
         client = APIClient()
         client.force_authenticate(user=self.user)
-        response = client.get(f"{self.url}/{site_tsd001.epa_site.epa_id}")
+        response = client.get(f"{self.url}/{self.site.epa_site.epa_id}")
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == http.HTTPStatus.NOT_FOUND
 
@@ -90,8 +92,8 @@ class TestSiteManifest:
         self.user = user_factory()
 
     @pytest.fixture(autouse=True)
-    def _generator(self, generator001):
-        self.generator = generator001
+    def _generator(self, handler_factory):
+        self.generator = handler_factory()
 
     def test_returns_200(self, db):
         factory = APIRequestFactory()

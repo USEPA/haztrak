@@ -9,8 +9,8 @@ class TestManifestService:
         self.user = user_factory()
 
     @pytest.fixture(autouse=True)
-    def _gen001(self, site_generator001):
-        self.gen001 = site_generator001
+    def _gen001(self, site_factory):
+        self.gen001 = site_factory()
 
     @pytest.fixture(autouse=True)
     def _manifest(self, json_100033134elc):

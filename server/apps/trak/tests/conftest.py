@@ -139,41 +139,38 @@ def contact_factory(db, epa_phone_factory):
 
 
 @pytest.fixture
-def generator001(db, address_factory, contact_factory) -> Handler:
-    """A Handler instance named generator001"""
-    return Handler.objects.create(
-        epa_id="handler001",
-        name="my_handler",
-        site_type="Generator",
-        site_address=address_factory(),
-        mail_address=address_factory(),
-        contact=contact_factory(),
-    )
+def handler_factory(db, address_factory, contact_factory):
+    def create_handler(
+        epa_id: Optional[str] = "handler001",
+        name: Optional[str] = "my_handler",
+        site_type: Optional[str] = "Generator",
+    ) -> Handler:
+        return Handler.objects.create(
+            epa_id=epa_id,
+            name=name,
+            site_type=site_type,
+            site_address=address_factory(),
+            mail_address=address_factory(),
+            contact=contact_factory(),
+        )
+
+    return create_handler
 
 
 @pytest.fixture
-def tsd001(db, address_factory, contact_factory) -> Handler:
-    """Returns a Handler instance named tsd001"""
-    return Handler.objects.create(
-        epa_id="tsd001",
-        name="my_tsd",
-        site_type="Tsd",
-        site_address=address_factory(),
-        mail_address=address_factory(),
-        contact=contact_factory(),
-    )
+def site_factory(db, handler_factory):
+    def create_site(
+        epa_site: Optional[Handler] = None,
+        name: Optional[str] = "my_handler",
+    ) -> Site:
+        if epa_site is None:
+            epa_site = handler_factory()
+        return Site.objects.create(
+            epa_site=epa_site,
+            name=name,
+        )
 
-
-@pytest.fixture
-def site_generator001(db, generator001) -> Site:
-    """A Site model instance with generator001 as the handler"""
-    return Site.objects.create(epa_site=generator001, name=generator001.name)
-
-
-@pytest.fixture
-def site_tsd001(db, tsd001) -> Site:
-    """A Site model instance with tsd001 as the handler"""
-    return Site.objects.create(epa_site=tsd001, name=tsd001.name)
+    return create_site
 
 
 @pytest.fixture
@@ -190,10 +187,10 @@ def testuser_signer(db) -> Signer:
 
 
 @pytest.fixture
-def site_permission(db, site_generator001, rcra_profile_factory) -> SitePermission:
+def site_permission(db, site_factory, rcra_profile_factory) -> SitePermission:
     """Returns testuser1 SitePermission model to site_generator"""
     return SitePermission.objects.create(
-        site=site_generator001,
+        site=site_factory(),
         profile=rcra_profile_factory(),
         site_manager=True,
         annual_report="Certifier",
@@ -317,16 +314,9 @@ def e_signature_serializer(db, e_signature_json) -> ESignatureSerializer:
 
 
 @pytest.fixture
-def manifest_gen(db, generator001) -> ManifestHandler:
+def manifest_gen(db, handler_factory) -> ManifestHandler:
     return ManifestHandler.objects.create(
-        handler=generator001,
-    )
-
-
-@pytest.fixture
-def manifest_tsd(db, tsd001) -> ManifestHandler:
-    return ManifestHandler.objects.create(
-        handler=tsd001,
+        handler=handler_factory(),
     )
 
 

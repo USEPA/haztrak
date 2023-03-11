@@ -12,8 +12,8 @@ class TestHandlerSearch:
     ulr = "/api/trak/handler/search"
 
     @pytest.fixture(autouse=True)
-    def _generator(self, generator001):
-        self.generator = generator001
+    def _generator(self, handler_factory):
+        self.generator = handler_factory()
 
     @pytest.fixture(autouse=True)
     def _test_user(self, user_factory):
