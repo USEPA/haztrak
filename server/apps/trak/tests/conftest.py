@@ -187,18 +187,34 @@ def testuser_signer(db) -> Signer:
 
 
 @pytest.fixture
-def site_permission(db, site_factory, rcra_profile_factory) -> SitePermission:
-    """Returns testuser1 SitePermission model to site_generator"""
-    return SitePermission.objects.create(
-        site=site_factory(),
-        profile=rcra_profile_factory(),
-        site_manager=True,
-        annual_report="Certifier",
-        biennial_report="Certifier",
-        e_manifest="Certifier",
-        wiets="Certifier",
-        my_rcra_id="Certifier",
-    )
+def site_permission_factory(db, site_factory, rcra_profile_factory):
+    def create_permission(
+        site: Optional[Site] = None,
+        profile: Optional[RcraProfile] = None,
+        site_manager: Optional[bool] = True,
+        annual_report: Optional[str] = "Certifier",
+        biennial_report: Optional[str] = "Certifier",
+        e_manifest: Optional[str] = "Certifier",
+        wiets: Optional[str] = "Certifier",
+        my_rcra_id: Optional[str] = "Certifier",
+    ) -> SitePermission:
+        """Returns testuser1 SitePermission model to site_generator"""
+        if site is None:
+            site = site_factory()
+        if profile is None:
+            profile = rcra_profile_factory()
+        return SitePermission.objects.create(
+            site=site,
+            profile=profile,
+            site_manager=site_manager,
+            annual_report=annual_report,
+            biennial_report=biennial_report,
+            e_manifest=e_manifest,
+            wiets=wiets,
+            my_rcra_id=my_rcra_id,
+        )
+
+    return create_permission
 
 
 # JSON fixtures, fixtures that return a Dict from our test files
