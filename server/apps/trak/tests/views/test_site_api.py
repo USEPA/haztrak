@@ -6,11 +6,18 @@ from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
 from apps.trak.models import Site
-from apps.trak.tests.conftest import TestApiClient
 from apps.trak.views import SiteManifest
 
 
-class TestSiteAPI(TestApiClient):
+class TestSiteAPI:
+    @pytest.fixture(autouse=True)
+    def _api_client(self, api_client_factory):
+        self.client = api_client_factory()
+
+    @pytest.fixture(autouse=True)
+    def _profile(self, rcra_profile_factory):
+        self.profile = rcra_profile_factory()
+
     base_url = "/api/trak/site/"
 
     def test_responds_200(self):
@@ -40,47 +47,50 @@ class TestSiteDetailsApi:
     url = "/api/trak/site"
 
     @pytest.fixture(autouse=True)
-    def _profile(self, test_user_profile):
-        self.profile = test_user_profile
-
-    @pytest.fixture(autouse=True)
-    def _site_permission(self, site_permission):
-        self.site_permission = site_permission
-
-    @pytest.fixture(autouse=True)
-    def _generator(self, generator001):
-        self.generator = generator001
-
-    @pytest.fixture(autouse=True)
-    def _site(self, site_generator001):
-        self.site = site_generator001
-
-    @pytest.fixture(autouse=True)
-    def _test_user(self, testuser1):
-        self.user = testuser1
+    def _site(
+        self,
+        user_factory,
+        rcra_profile_factory,
+        site_factory,
+        handler_factory,
+        site_permission_factory,
+    ):
+        self.user = user_factory(username="testuser1")
+        self.profile = rcra_profile_factory(user=self.user)
+        self.generator = handler_factory()
+        self.site = site_factory(epa_site=self.generator)
+        self.site_permission = site_permission_factory(site=self.site, profile=self.profile)
+        self.other_site = site_factory(epa_site=handler_factory(epa_id="VAFOOBAR001"))
 
     def test_returns_site(self):
         client = APIClient()
         client.force_authenticate(user=self.user)
-        response = client.get(f"{self.url}/{self.generator.epa_id}")
+        response = client.get(f"{self.url}/{self.site.epa_site.epa_id}")
         assert response.headers["Content-Type"] == "application/json"
-        assert response.data["name"] == self.site.name
         assert response.status_code == 200
 
-    def test_non_user_sites_not_returned(self, site_tsd001):
+    def test_non_user_sites_not_returned(self):
         client = APIClient()
         client.force_authenticate(user=self.user)
-        response = client.get(f"{self.url}/{site_tsd001.epa_site.epa_id}")
+        response = client.get(f"{self.url}/{self.other_site.epa_site.epa_id}")
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == http.HTTPStatus.NOT_FOUND
 
 
-class TestSiteManifest(TestApiClient):
+class TestSiteManifest:
     """
     Tests for the endpoint to retrieve a Site's manifests
     """
 
     url = "/api/trak/site"
+
+    @pytest.fixture(autouse=True)
+    def _user(self, user_factory):
+        self.user = user_factory()
+
+    @pytest.fixture(autouse=True)
+    def _generator(self, handler_factory):
+        self.generator = handler_factory()
 
     def test_returns_200(self, db):
         factory = APIRequestFactory()

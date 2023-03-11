@@ -1,8 +1,11 @@
 import json
 import os
+import random
+import string
 from datetime import date, datetime
+from enum import Enum
 from http import HTTPStatus
-from typing import Dict
+from typing import Dict, Optional
 
 import pytest
 import responses
@@ -16,6 +19,7 @@ from apps.trak.models import (
     Handler,
     Manifest,
     ManifestHandler,
+    PaperSignature,
     RcraProfile,
     Signer,
     Site,
@@ -34,347 +38,380 @@ from apps.trak.serializers import (
 from apps.trak.serializers.signature_ser import ESignatureSerializer
 from apps.trak.services import RcrainfoService
 
-JSON_DIR = os.path.dirname(os.path.abspath(__file__)) + "/resources/json"
-TEST_CONTACT_JSON = f"{JSON_DIR}/contact/good_contact.json"
-TEST_PHONE_JSON = f"{JSON_DIR}/contact/phone.json"
-TEST_WASTE1_JSON = f"{JSON_DIR}/test_wasteline1.json"
-TEST_MANIFEST_JSON = f"{JSON_DIR}/test_manifest_100033134ELC.json"
-TEST_SITE_PERM_JSON = f"{JSON_DIR}/site_permission.json"
-TEST_EPA_PERM_JSON = f"{JSON_DIR}/epa_permission.json"
-TEST_HANDLER_JSON = f"{JSON_DIR}/test_handler.json"
-TEST_PAPER_HANDLER_JSON = f"{JSON_DIR}/paper_manifest_handler.json"
-TEST_E_SIGNATURE_JSON = f"{JSON_DIR}/test_e_signature.json"
+
+@pytest.fixture
+def haztrak_json():
+    """Fixture with JSON data"""
+    json_dir = os.path.dirname(os.path.abspath(__file__)) + "/resources/json"
+
+    def read_file(path: str) -> Dict:
+        with open(path, "r") as f:
+            return json.load(f)
+
+    class Json(Enum):
+        CONTACT = read_file(f"{json_dir}/contact/good_contact.json")
+        PHONE = read_file(f"{json_dir}/contact/phone.json")
+        WASTELINE_1 = read_file(f"{json_dir}/test_wasteline1.json")
+        MANIFEST = read_file(f"{json_dir}/test_manifest_100033134ELC.json")
+        SITE_PERMISSION = read_file(f"{json_dir}/site_permission.json")
+        EPA_PERMISSION = read_file(f"{json_dir}/epa_permission.json")
+        HANDLER = read_file(f"{json_dir}/test_handler.json")
+        PAPER_MANIFEST_HANDLER = read_file(f"{json_dir}/paper_manifest_handler.json")
+        E_SIGNATURE = read_file(f"{json_dir}/test_e_signature.json")
+
+    return Json
 
 
 @pytest.fixture
-def testuser1(db) -> User:
-    """Django user with username: 'testuser1', password: 'password1'"""
-    return User.objects.create_user(
-        username="testuser1", email="testuser1@haztrak.net", password="password1"
-    )
+def user_factory(db):
+    """Abstract factory for Django's User model"""
+
+    def create_user(
+        username: Optional[str] = None,
+        email: Optional[str] = "testuser1@haztrak.net",
+        password: Optional[str] = "password1",
+    ) -> User:
+        if username is None:
+            username = "".join(
+                random.choice(string.ascii_letters) for _ in range(10)
+            )  # generate a random username
+        return User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+        )
+
+    return create_user
 
 
 @pytest.fixture
-def other_user(db) -> User:
-    """Django user with username: 'other_user', password: 'password1'"""
-    return User.objects.create_user(
-        username="other_user", email="other@haztrak.net", password="password1"
-    )
+def rcra_profile_factory(db, user_factory):
+    """Abstract factory for Haztrak RcraProfile model"""
+
+    def create_profile(
+        rcra_api_id: Optional[str] = "rcraApiId",
+        rcra_api_key: Optional[str] = "rcraApikey",
+        rcra_username: Optional[str] = "dpgraham4401",
+        user: Optional[User] = None,
+    ) -> RcraProfile:
+        if user is None:
+            user = user_factory()
+        return RcraProfile.objects.create(
+            rcra_api_id=rcra_api_id,
+            rcra_api_key=rcra_api_key,
+            rcra_username=rcra_username,
+            user=user,
+        )
+
+    return create_profile
 
 
 @pytest.fixture
-def address_123_main(db) -> Address:
-    """A Address model instance"""
-    return Address.objects.create(
-        address1="Main st.", street_number="123", country="VA", city="Arlington"
-    )
+def address_factory(db):
+    """Abstract factory for Haztrak Address model"""
+
+    def create_address(
+        address1: Optional[str] = "Main st.",
+        street_number: Optional[str] = "123",
+        country: Optional[str] = "US",
+        city: Optional[str] = "Arlington",
+    ) -> Address:
+        return Address.objects.create(
+            address1=address1,
+            street_number=street_number,
+            country=country,
+            city=city,
+        )
+
+    return create_address
 
 
 @pytest.fixture
-def epa_phone(db) -> EpaPhone:
-    """A EpaPhone model instance"""
-    return EpaPhone.objects.create(number="123-123-1234", extension="123")
+def epa_phone_factory(db):
+    """Abstract factory for Haztrak EpaPhone model"""
+
+    def create_epa_phone(
+        number: Optional[str] = "123-123-1234", extension: Optional[str] = "1234"
+    ) -> EpaPhone:
+        return EpaPhone.objects.create(
+            number=number,
+            extension=extension,
+        )
+
+    return create_epa_phone
 
 
 @pytest.fixture
-def handler_contact(db, epa_phone) -> Contact:
-    """A Contact model instance"""
-    return Contact.objects.create(
-        first_name="test",
-        middle_initial="M",
-        last_name="User",
-        email="testuser@haztrak.net",
-        phone=epa_phone,
-    )
+def paper_signature_factory(db):
+    """Abstract factory for Paper Signature"""
+
+    def create_signature(
+        printed_name: Optional[str] = "David Graham",
+        sign_date: Optional[datetime] = None,
+    ) -> PaperSignature:
+        if sign_date is None:
+            sign_date = datetime.utcnow()
+        return PaperSignature.objects.create(
+            printed_name=printed_name,
+            sign_date=sign_date,
+        )
+
+    return create_signature
 
 
 @pytest.fixture
-def generator001(db, address_123_main, handler_contact) -> Handler:
-    """A Handler instance named generator001"""
-    return Handler.objects.create(
-        epa_id="handler001",
-        name="my_handler",
-        site_type="Generator",
-        site_address=address_123_main,
-        mail_address=address_123_main,
-        contact=handler_contact,
-    )
+def contact_factory(db, epa_phone_factory):
+    """Abstract factory for Haztrak Contact model"""
+
+    def create_contact(
+        first_name: Optional[str] = "test",
+        middle_initial: Optional[str] = "Q",
+        last_name: Optional[str] = "user",
+        email: Optional[str] = "testuser@haztrak.net",
+        phone: Optional[EpaPhone] = None,
+    ) -> Contact:
+        if phone is None:
+            phone = epa_phone_factory()
+        contact = Contact.objects.create(
+            first_name=first_name,
+            middle_initial=middle_initial,
+            last_name=last_name,
+            email=email,
+            phone=phone,
+        )
+        return contact
+
+    return create_contact
 
 
 @pytest.fixture
-def tsd001(db, address_123_main, handler_contact) -> Handler:
-    """Returns a Handler instance named tsd001"""
-    return Handler.objects.create(
-        epa_id="tsd001",
-        name="my_tsd",
-        site_type="Tsd",
-        site_address=address_123_main,
-        mail_address=address_123_main,
-        contact=handler_contact,
-    )
+def handler_factory(db, address_factory, contact_factory):
+    """Abstract factory for Haztrak Handler model"""
+
+    def create_handler(
+        epa_id: Optional[str] = "handler001",
+        name: Optional[str] = "my_handler",
+        site_type: Optional[str] = "Generator",
+    ) -> Handler:
+        return Handler.objects.create(
+            epa_id=epa_id,
+            name=name,
+            site_type=site_type,
+            site_address=address_factory(),
+            mail_address=address_factory(),
+            contact=contact_factory(),
+        )
+
+    return create_handler
 
 
 @pytest.fixture
-def site_generator001(db, generator001) -> Site:
-    """A Site model instance with generator001 as the handler"""
-    return Site.objects.create(epa_site=generator001, name=generator001.name)
+def site_factory(db, handler_factory):
+    """Abstract factory for Haztrak Site model"""
+
+    def create_site(
+        epa_site: Optional[Handler] = None,
+        name: Optional[str] = "my_handler",
+    ) -> Site:
+        if epa_site is None:
+            epa_site = handler_factory()
+        return Site.objects.create(
+            epa_site=epa_site,
+            name=name,
+        )
+
+    return create_site
 
 
 @pytest.fixture
-def site_tsd001(db, tsd001) -> Site:
-    """A Site model instance with tsd001 as the handler"""
-    return Site.objects.create(epa_site=tsd001, name=tsd001.name)
+def signer_factory(db):
+    """Abstract factory for Haztrak Signer model"""
+
+    def creat_signer(
+        first_name: Optional[str] = "test",
+        middle_initial: Optional[str] = "Q",
+        last_name: Optional[str] = "user",
+        signer_role: Optional[str] = "EP",
+        company_name: Optional[str] = "haztrak",
+        rcra_user_id: Optional[str] = "testuser1",
+    ) -> Signer:
+        return Signer.objects.create(
+            first_name=first_name,
+            middle_initial=middle_initial,
+            last_name=last_name,
+            signer_role=signer_role,
+            company_name=company_name,
+            rcra_user_id=rcra_user_id,
+        )
+
+    return creat_signer
 
 
 @pytest.fixture
-def testuser_signer(db) -> Signer:
-    """A Signer model instance"""
-    return Signer.objects.create(
-        first_name="test",
-        middle_initial="Q",
-        last_name="user",
-        signer_role="EP",
-        company_name="haztrak",
-        rcra_user_id="testuser1",
-    )
+def site_permission_factory(db, site_factory, rcra_profile_factory):
+    """Abstract factory for Haztrak SitePermission model"""
+
+    def create_permission(
+        site: Optional[Site] = None,
+        profile: Optional[RcraProfile] = None,
+        site_manager: Optional[bool] = True,
+        annual_report: Optional[str] = "Certifier",
+        biennial_report: Optional[str] = "Certifier",
+        e_manifest: Optional[str] = "Certifier",
+        wiets: Optional[str] = "Certifier",
+        my_rcra_id: Optional[str] = "Certifier",
+    ) -> SitePermission:
+        """Returns testuser1 SitePermission model to site_generator"""
+        if site is None:
+            site = site_factory()
+        if profile is None:
+            profile = rcra_profile_factory()
+        return SitePermission.objects.create(
+            site=site,
+            profile=profile,
+            site_manager=site_manager,
+            annual_report=annual_report,
+            biennial_report=biennial_report,
+            e_manifest=e_manifest,
+            wiets=wiets,
+            my_rcra_id=my_rcra_id,
+        )
+
+    return create_permission
 
 
 @pytest.fixture
-def site_permission(db, site_generator001, test_user_profile) -> SitePermission:
-    """Returns testuser1 SitePermission model to site_generator"""
-    return SitePermission.objects.create(
-        site=site_generator001,
-        profile=test_user_profile,
-        site_manager=True,
-        annual_report="Certifier",
-        biennial_report="Certifier",
-        e_manifest="Certifier",
-        wiets="Certifier",
-        my_rcra_id="Certifier",
-    )
+def manifest_handler_factory(db, handler_factory):
+    """Abstract factory for Haztrak ManifestHandler model"""
 
+    def create_manifest_handler(handler: Optional[Handler] = None) -> ManifestHandler:
+        if handler is None:
+            handler = handler_factory()
+        return ManifestHandler.objects.create(handler=handler)
 
-# JSON fixtures, fixtures that return a Dict from our test files
-@pytest.fixture
-def json_100033134elc() -> Dict:
-    with open(TEST_MANIFEST_JSON, "r") as f:
-        return json.load(f)
+    return create_manifest_handler
 
 
 @pytest.fixture
-def handler_json() -> Dict:
-    with open(TEST_HANDLER_JSON, "r") as f:
-        return json.load(f)
+def manifest_factory(db, manifest_handler_factory, handler_factory):
+    """Abstract factory for Haztrak Manifest model"""
+
+    def create_manifest(
+        mtn: Optional[str] = "123456789ELC",
+        generator: Optional[Handler] = None,
+        tsd: Optional[Handler] = None,
+    ) -> Manifest:
+        if generator is None:
+            generator = manifest_handler_factory()
+        if tsd is None:
+            handler = handler_factory(epa_id="foobar_id")
+            tsd = manifest_handler_factory(handler=handler)
+        return Manifest.objects.create(
+            mtn=mtn,
+            created_date=datetime.now(),
+            potential_ship_date=date.today(),
+            generator=generator,
+            tsd=tsd,
+        )
+
+    return create_manifest
 
 
 @pytest.fixture
-def contact_json() -> Dict:
-    with open(TEST_CONTACT_JSON, "r") as f:
-        return json.load(f)
+def api_client_factory(db, user_factory):
+    """Abstract factory for DRF APIClient testing class"""
 
+    def create_client(
+        user: Optional[User] = None,
+    ) -> APIClient:
+        if user is None:
+            user = user_factory()
+        client = APIClient()
+        client.force_authenticate(user=user)
+        return client
 
-@pytest.fixture
-def site_permission_json(db) -> Dict:
-    with open(TEST_SITE_PERM_JSON, "r") as f:
-        return json.load(f)
-
-
-@pytest.fixture
-def epa_permission_json(db) -> Dict:
-    with open(TEST_EPA_PERM_JSON, "r") as f:
-        return json.load(f)
-
-
-@pytest.fixture
-def wasteline_json() -> Dict:
-    with open(TEST_WASTE1_JSON, "r") as f:
-        return json.load(f)
-
-
-@pytest.fixture
-def paper_manifest_handler_json() -> Dict:
-    with open(TEST_PAPER_HANDLER_JSON, "r") as f:
-        return json.load(f)
-
-
-@pytest.fixture
-def phone_json(db) -> Dict:
-    with open(TEST_PHONE_JSON, "r") as f:
-        return json.load(f)
-
-
-@pytest.fixture
-def e_signature_json(db) -> Dict:
-    with open(TEST_E_SIGNATURE_JSON, "r") as f:
-        return json.load(f)
+    return create_client
 
 
 # Serializer fixtures, build on JSON fixtures to produce serializers
 @pytest.fixture
-def manifest_10003114elc_serializer(db, json_100033134elc) -> ManifestSerializer:
-    return ManifestSerializer(data=json_100033134elc)
+def manifest_10003114elc_serializer(db, haztrak_json) -> ManifestSerializer:
+    return ManifestSerializer(data=haztrak_json.MANIFEST.value)
 
 
 @pytest.fixture
-def waste_serializer(db, wasteline_json) -> WasteLineSerializer:
-    return WasteLineSerializer(data=wasteline_json)
+def waste_serializer(db, haztrak_json) -> WasteLineSerializer:
+    return WasteLineSerializer(data=haztrak_json.WASTELINE_1.value)
 
 
 @pytest.fixture
-def handler_serializer(db, handler_json) -> HandlerSerializer:
-    return HandlerSerializer(data=handler_json)
+def handler_serializer(db, haztrak_json) -> HandlerSerializer:
+    return HandlerSerializer(data=haztrak_json.HANDLER.value)
 
 
 @pytest.fixture
-def manifest_handler_serializer(db, handler_json) -> ManifestHandlerSerializer:
-    manifest_handler_serializer = ManifestHandlerSerializer(data=handler_json)
+def manifest_handler_serializer(db, haztrak_json) -> ManifestHandlerSerializer:
+    manifest_handler_serializer = ManifestHandlerSerializer(data=haztrak_json.HANDLER.value)
     manifest_handler_serializer.is_valid()
     return manifest_handler_serializer
 
 
 @pytest.fixture
-def paper_handler_serializer(db, paper_manifest_handler_json) -> ManifestHandlerSerializer:
-    handler_serializer = ManifestHandlerSerializer(data=paper_manifest_handler_json)
+def paper_handler_serializer(db, haztrak_json) -> ManifestHandlerSerializer:
+    handler_serializer = ManifestHandlerSerializer(data=haztrak_json.PAPER_MANIFEST_HANDLER.value)
     handler_serializer.is_valid()
     return handler_serializer
 
 
 @pytest.fixture
-def contact_serializer(db, contact_json) -> ContactSerializer:
-    return ContactSerializer(data=contact_json)
+def contact_serializer(db, haztrak_json) -> ContactSerializer:
+    return ContactSerializer(data=haztrak_json.CONTACT.value)
 
 
 @pytest.fixture
-def site_permission_serializer(db, site_permission_json) -> SitePermissionSerializer:
-    return SitePermissionSerializer(data=site_permission_json)
+def site_permission_serializer(db, haztrak_json) -> SitePermissionSerializer:
+    return SitePermissionSerializer(data=haztrak_json.SITE_PERMISSION.value)
 
 
 @pytest.fixture
-def epa_permission_serializer(db, epa_permission_json) -> EpaPermissionSerializer:
-    return EpaPermissionSerializer(data=epa_permission_json)
+def epa_permission_serializer(db, haztrak_json) -> EpaPermissionSerializer:
+    return EpaPermissionSerializer(data=haztrak_json.EPA_PERMISSION.value)
 
 
 @pytest.fixture
-def phone_serializer(db, phone_json) -> EpaPhoneSerializer:
-    return EpaPhoneSerializer(data=phone_json)
+def phone_serializer(db, haztrak_json) -> EpaPhoneSerializer:
+    return EpaPhoneSerializer(data=haztrak_json.PHONE.value)
 
 
 @pytest.fixture
-def e_signature_serializer(db, e_signature_json) -> ESignatureSerializer:
-    e_signature_serializer = ESignatureSerializer(data=e_signature_json)
+def e_signature_serializer(db, haztrak_json) -> ESignatureSerializer:
+    e_signature_serializer = ESignatureSerializer(data=haztrak_json.E_SIGNATURE.value)
     e_signature_serializer.is_valid()
     return e_signature_serializer
 
 
 @pytest.fixture
-def manifest_gen(db, generator001) -> ManifestHandler:
-    return ManifestHandler.objects.create(
-        handler=generator001,
-    )
-
-
-@pytest.fixture
-def manifest_tsd(db, tsd001) -> ManifestHandler:
-    return ManifestHandler.objects.create(
-        handler=tsd001,
-    )
-
-
-@pytest.fixture
-def manifest_elc(db, address_123_main, manifest_gen, manifest_tsd) -> Manifest:
-    return Manifest.objects.create(
-        mtn="0123456789ELC",
-        created_date=datetime.now(),
-        potential_ship_date=date.today(),
-        generator=manifest_gen,
-        tsd=manifest_tsd,
-    )
-
-
-@pytest.fixture
-def test_user_profile(db, site_generator001, testuser1) -> RcraProfile:
-    return RcraProfile.objects.create(
-        rcra_api_id="rcraApiId",
-        rcra_api_key="rcraApikey",
-        rcra_username="dpgraham4401",
-        user=testuser1,
-    )
-
-
-@pytest.fixture
-def other_user_profile(db, site_tsd001, other_user) -> RcraProfile:
-    return RcraProfile.objects.create(
-        rcra_api_id="rcraApiId",
-        rcra_api_key="rcraApikey",
-        rcra_user_name="other_user",
-        user=other_user,
-    )
-
-
-@pytest.fixture
-def api_client(db, testuser1) -> APIClient:
-    client = APIClient()
-    client.force_authenticate(user=testuser1)
-    return client
-
-
-class TestApiClient:
-    f"""
-    This is a base class for Haztrak's other test suites.
-    It includes a number of fixtures already...
-    1. testuser1 {User} django's user model
-    2. test_user_profile {RcraProfile} testuser1's RcraProfile
-    3. generator001 {Handler} handler model testuser1 has access to
-    4. site_generator001 {Site} Site with generator001 as it's handler
-    5. api_client {APIClient} pre authenticated (testuser1) APIClient
-    """
-
-    @pytest.fixture(autouse=True)
-    def _profile(self, test_user_profile):
-        self.profile = test_user_profile
-
-    @pytest.fixture(autouse=True)
-    def _site_permission(self, site_permission):
-        self.site_permission = site_permission
-
-    @pytest.fixture(autouse=True)
-    def _generator(self, generator001):
-        self.generator = generator001
-
-    @pytest.fixture(autouse=True)
-    def _site(self, site_generator001):
-        self.site = site_generator001
-
-    @pytest.fixture(autouse=True)
-    def _test_user(self, testuser1):
-        self.user = testuser1
-
-    @pytest.fixture(autouse=True)
-    def _api_client(self, api_client):
-        self.client = api_client
-
-
-@pytest.fixture
-def manifest_100033134elc_rcra_response(db, json_100033134elc):
+def manifest_100033134elc_rcra_response(db, haztrak_json):
     rcrainfo = RcrainfoService(api_username="testuser1", rcrainfo_env="preprod")
+    manifest_json = haztrak_json.MANIFEST.value
     with responses.RequestsMock() as mock:
         mock.get(
-            url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{json_100033134elc.get("manifestTrackingNumber")}',
+            url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{manifest_json.get("manifestTrackingNumber")}',
             content_type="application/json",
-            json=json_100033134elc,
+            json=manifest_json,
             status=HTTPStatus.OK,
         )
         yield mock
 
 
 @pytest.fixture
-def search_site_mtn_rcra_response(json_100033134elc):
+def search_site_mtn_rcra_response(haztrak_json):
     rcrainfo = RcrainfoService(api_username="testuser1", rcrainfo_env="preprod")
     with responses.RequestsMock() as mock:
         mock.post(
             url=f"{rcrainfo.base_url}/api/v1/emanifest/search",
             content_type="application/json",
-            json=[json_100033134elc.get("manifestTrackingNumber")],
+            json=[haztrak_json.MANIFEST.value.get("manifestTrackingNumber")],
             status=HTTPStatus.OK,
         )
         yield mock

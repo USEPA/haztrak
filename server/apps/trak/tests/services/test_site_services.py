@@ -3,21 +3,17 @@ import pytest
 
 class TestSiteService:
     @pytest.fixture(autouse=True)
-    def _test_user(self, testuser1):
-        self.user = testuser1
+    def _setup_user(self, user_factory):
+        self.user = user_factory()
 
     @pytest.fixture(autouse=True)
-    def _site_gen001(self, site_generator001):
-        self.site_gen001 = site_generator001
+    def _setup_generator(self, handler_factory):
+        self.gen001 = handler_factory()
 
     @pytest.fixture(autouse=True)
-    def _gen001(self, generator001):
-        self.gen001 = generator001
-
-    @pytest.fixture(autouse=True)
-    def _manifest(self, json_100033134elc):
-        self.manifest_json = json_100033134elc
-        self.tracking_number = json_100033134elc.get("manifestTrackingNumber", "123456789ELC")
+    def _manifest(self, haztrak_json):
+        self.manifest_json = haztrak_json.MANIFEST.value
+        self.tracking_number = self.manifest_json.get("manifestTrackingNumber", "123456789ELC")
 
     def test_create_or_update_creates_new_site(self):
         """Test create_or_update_site creates a new site when non-existent"""

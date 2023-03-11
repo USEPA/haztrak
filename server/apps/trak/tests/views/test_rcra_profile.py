@@ -1,16 +1,22 @@
 import json
 
+import pytest as pytest
 from rest_framework.response import Response
 
-from apps.trak.tests.conftest import TestApiClient
 
-
-class TestRcraProfileEndpoint(TestApiClient):
+class TestRcraProfileEndpoint:
     """
     Tests the for the endpoints related to the user's RcraProfile
     """
 
     url = "/api/trak/profile"
+
+    @pytest.fixture(autouse=True)
+    def _setup(self, rcra_profile_factory, user_factory, api_client_factory):
+        self.user = user_factory()
+        self.client = api_client_factory(user=self.user)
+        self.client.force_authenticate(user=self.user)
+        self.profile = rcra_profile_factory(user=self.user)
 
     def test_returns_user_profile(self):
         response: Response = self.client.get(f"{self.url}/{self.user.username}")
