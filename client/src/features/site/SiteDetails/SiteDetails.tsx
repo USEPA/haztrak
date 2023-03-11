@@ -2,10 +2,10 @@ import HandlerDetails from 'components/HandlerDetails';
 import { HtCard } from 'components/Ht';
 import useHtAPI from 'hooks/useHtAPI';
 import React, { ReactElement } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Site } from 'types/Handler';
 import SyncManifestBtn from 'components/SyncManifestBtn';
-import { Container } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 
 /**
  * GET and Display details of the hazardous waste site specified in the URL
@@ -14,12 +14,16 @@ import { Container } from 'react-bootstrap';
 function SiteDetails(): ReactElement {
   let { siteId } = useParams();
   const [siteData, loading, error] = useHtAPI<Site>(`trak/site/${siteId}`);
+  const navigate = useNavigate();
 
   if (error) throw error;
   return (
     <Container className="py-3">
       <div className="mx-1 d-flex flex-row-reverse">
         <SyncManifestBtn siteId={siteId ? siteId : ''} />
+        <Button variant="primary" onClick={() => navigate(`/site/${siteId}/manifest`)}>
+          View Manifest
+        </Button>
       </div>
       <HtCard>
         <HtCard.Header title={siteId} />
