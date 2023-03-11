@@ -2,15 +2,18 @@ import pytest
 from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.trak.tests.conftest import TestApiClient
 from apps.trak.views import ManifestView
 
 
-class TestManifestCRUD(TestApiClient):
+class TestManifestCRUD:
     """Tests the for the Manifest ModelViewSet"""
 
     base_url = "/api/trak/manifest"
     factory = APIRequestFactory()
+
+    @pytest.fixture(autouse=True)
+    def _user(self, user_factory):
+        self.user = user_factory()
 
     @pytest.fixture(autouse=True)
     def _manifest_elc(self, manifest_elc):

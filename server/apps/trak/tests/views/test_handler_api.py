@@ -1,14 +1,21 @@
+import pytest as pytest
 from rest_framework.response import Response
 
-from apps.trak.tests.conftest import TestApiClient
 
-
-class TestHandlerEndpoints(TestApiClient):
+class TestHandlerEndpoints:
     """
     Tests the for the endpoints related to the handlers
     """
 
     url = "/api/trak/handler"
+
+    @pytest.fixture(autouse=True)
+    def _api_client(self, api_client):
+        self.client = api_client
+
+    @pytest.fixture(autouse=True)
+    def _generator(self, generator001):
+        self.generator = generator001
 
     def test_get_handler_headers(self):
         response: Response = self.client.get(f"{self.url}/details/{self.generator.pk}")

@@ -1,5 +1,7 @@
 import json
 import os
+import random
+import string
 from datetime import date, datetime
 from http import HTTPStatus
 from typing import Dict, Optional
@@ -47,19 +49,39 @@ TEST_E_SIGNATURE_JSON = f"{JSON_DIR}/test_e_signature.json"
 
 
 @pytest.fixture
-def testuser1(db) -> User:
-    """Django user with username: 'testuser1', password: 'password1'"""
-    return User.objects.create_user(
-        username="testuser1", email="testuser1@haztrak.net", password="password1"
-    )
+def user_factory(db):
+    def create_user(
+        username: Optional[str] = None,
+        email: Optional[str] = "testuser1@haztrak.net",
+        password: Optional[str] = "password1",
+    ) -> User:
+        if username is None:
+            username = "".join(
+                random.choice(string.ascii_letters) for _ in range(10)
+            )  # generate a random username
+        return User.objects.create_user(username=username, email=email, password=password)
+
+    return create_user
 
 
 @pytest.fixture
-def other_user(db) -> User:
-    """Django user with username: 'other_user', password: 'password1'"""
-    return User.objects.create_user(
-        username="other_user", email="other@haztrak.net", password="password1"
-    )
+def rcra_profile_factory(db, user_factory):
+    def create_profile(
+        rcra_api_id: Optional[str] = "rcraApiId",
+        rcra_api_key: Optional[str] = "rcraApikey",
+        rcra_username: Optional[str] = "dpgraham4401",
+        user: Optional[User] = None,
+    ) -> RcraProfile:
+        if user is None:
+            user = user_factory()
+        return RcraProfile.objects.create(
+            rcra_api_id=rcra_api_id,
+            rcra_api_key=rcra_api_key,
+            rcra_username=rcra_username,
+            user=user,
+        )
+
+    return create_profile
 
 
 @pytest.fixture
@@ -168,11 +190,11 @@ def testuser_signer(db) -> Signer:
 
 
 @pytest.fixture
-def site_permission(db, site_generator001, test_user_profile) -> SitePermission:
+def site_permission(db, site_generator001, rcra_profile_factory) -> SitePermission:
     """Returns testuser1 SitePermission model to site_generator"""
     return SitePermission.objects.create(
         site=site_generator001,
-        profile=test_user_profile,
+        profile=rcra_profile_factory(),
         site_manager=True,
         annual_report="Certifier",
         biennial_report="Certifier",
@@ -320,66 +342,10 @@ def manifest_elc(db, manifest_gen, manifest_tsd) -> Manifest:
 
 
 @pytest.fixture
-def test_user_profile(db, site_generator001, testuser1) -> RcraProfile:
-    return RcraProfile.objects.create(
-        rcra_api_id="rcraApiId",
-        rcra_api_key="rcraApikey",
-        rcra_username="dpgraham4401",
-        user=testuser1,
-    )
-
-
-@pytest.fixture
-def other_user_profile(db, site_tsd001, other_user) -> RcraProfile:
-    return RcraProfile.objects.create(
-        rcra_api_id="rcraApiId",
-        rcra_api_key="rcraApikey",
-        rcra_user_name="other_user",
-        user=other_user,
-    )
-
-
-@pytest.fixture
-def api_client(db, testuser1) -> APIClient:
+def api_client(db, user_factory) -> APIClient:
     client = APIClient()
-    client.force_authenticate(user=testuser1)
+    client.force_authenticate(user=user_factory())
     return client
-
-
-class TestApiClient:
-    f"""
-    This is a base class for Haztrak's other test suites.
-    It includes a number of fixtures already...
-    1. testuser1 {User} django's user model
-    2. test_user_profile {RcraProfile} testuser1's RcraProfile
-    3. generator001 {Handler} handler model testuser1 has access to
-    4. site_generator001 {Site} Site with generator001 as it's handler
-    5. api_client {APIClient} pre authenticated (testuser1) APIClient
-    """
-
-    @pytest.fixture(autouse=True)
-    def _profile(self, test_user_profile):
-        self.profile = test_user_profile
-
-    @pytest.fixture(autouse=True)
-    def _site_permission(self, site_permission):
-        self.site_permission = site_permission
-
-    @pytest.fixture(autouse=True)
-    def _generator(self, generator001):
-        self.generator = generator001
-
-    @pytest.fixture(autouse=True)
-    def _site(self, site_generator001):
-        self.site = site_generator001
-
-    @pytest.fixture(autouse=True)
-    def _test_user(self, testuser1):
-        self.user = testuser1
-
-    @pytest.fixture(autouse=True)
-    def _api_client(self, api_client):
-        self.client = api_client
 
 
 @pytest.fixture

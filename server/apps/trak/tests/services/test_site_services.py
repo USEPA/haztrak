@@ -3,8 +3,8 @@ import pytest
 
 class TestSiteService:
     @pytest.fixture(autouse=True)
-    def _test_user(self, testuser1):
-        self.user = testuser1
+    def _test_user(self, user_factory):
+        self.user = user_factory()
 
     @pytest.fixture(autouse=True)
     def _site_gen001(self, site_generator001):

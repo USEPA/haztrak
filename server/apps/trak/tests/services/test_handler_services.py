@@ -6,8 +6,8 @@ from apps.trak.services import HandlerService, RcrainfoService
 
 class TestHandlerService:
     @pytest.fixture(autouse=True)
-    def _test_user(self, testuser1):
-        self.user = testuser1
+    def _test_user(self, user_factory):
+        self.user = user_factory()
 
     @pytest.fixture(autouse=True)
     def _handler_json(self, handler_json):

@@ -32,12 +32,12 @@ class TestEpaPermissionSerializer:
     """
 
     def test_deserializes_epa_permissions(
-        self, epa_permission_serializer, test_user_profile, site_generator001
+        self, epa_permission_serializer, rcra_profile_factory, site_generator001
     ) -> None:
         if not epa_permission_serializer.is_valid():
             logger.error(epa_permission_serializer.errors)
         SitePermission.objects.create(
             **epa_permission_serializer.validated_data,
             site=site_generator001,
-            profile=test_user_profile,
+            profile=rcra_profile_factory(),
         )

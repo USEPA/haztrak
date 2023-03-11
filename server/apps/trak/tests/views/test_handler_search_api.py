@@ -16,8 +16,8 @@ class TestHandlerSearch:
         self.generator = generator001
 
     @pytest.fixture(autouse=True)
-    def _test_user(self, testuser1):
-        self.user = testuser1
+    def _test_user(self, user_factory):
+        self.user = user_factory()
 
     def test_returns_array_of_handlers(self, db):
         # Arrange
