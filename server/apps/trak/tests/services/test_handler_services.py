@@ -1,6 +1,7 @@
 import pytest
 import responses
 
+from apps.trak.models import Handler
 from apps.trak.services import HandlerService, RcrainfoService
 
 
@@ -10,9 +11,9 @@ class TestHandlerService:
         self.user = user_factory()
 
     @pytest.fixture(autouse=True)
-    def _handler_json(self, handler_json):
-        self.handler_json = handler_json
-        self.epa_id = handler_json.get("epaSiteId", "handler001")
+    def _handler_json(self, haztrak_json):
+        self.handler_json = haztrak_json.HANDLER.value
+        self.epa_id = self.handler_json.get("epaSiteId", "handler001")
 
     @responses.activate
     def test_pull_rcra_handler(self):
@@ -24,4 +25,4 @@ class TestHandlerService:
         with responses.RequestsMock() as mock:
             mock.get(handler_url, json=self.handler_json, status=200)
             results = handler_service.pull_rcra_handler(site_id=self.epa_id)
-            print(results)
+            assert isinstance(results, Handler)

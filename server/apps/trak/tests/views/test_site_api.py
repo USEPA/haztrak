@@ -5,14 +5,14 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.trak.models import Site, SitePermission
+from apps.trak.models import Site
 from apps.trak.views import SiteManifest
 
 
 class TestSiteAPI:
     @pytest.fixture(autouse=True)
-    def _api_client(self, api_client):
-        self.client = api_client
+    def _api_client(self, api_client_factory):
+        self.client = api_client_factory()
 
     @pytest.fixture(autouse=True)
     def _profile(self, rcra_profile_factory):

@@ -20,8 +20,8 @@ class TestManifestCRUD:
         self.manifest = manifest_factory()
 
     @pytest.fixture(autouse=True)
-    def _manifest_json(self, json_100033134elc):
-        self.manifest_json = json_100033134elc
+    def _manifest_json(self, haztrak_json):
+        self.manifest_json = haztrak_json.MANIFEST.value
 
     def test_get_manifest(self):
         request = self.factory.get(f"{self.base_url}/{self.manifest.mtn}")

@@ -12,11 +12,11 @@ class TestHandlerSearch:
     ulr = "/api/trak/handler/search"
 
     @pytest.fixture(autouse=True)
-    def _generator(self, handler_factory):
+    def _setup_handler(self, handler_factory):
         self.generator = handler_factory()
 
     @pytest.fixture(autouse=True)
-    def _test_user(self, user_factory):
+    def _setup_user(self, user_factory):
         self.user = user_factory()
 
     def test_returns_array_of_handlers(self, db):
@@ -24,7 +24,11 @@ class TestHandlerSearch:
         factory = APIRequestFactory()
         request = factory.get(
             self.ulr,
-            {"epaId": self.generator.epa_id, "name": "", "type": self.generator.site_type},
+            {
+                "epaId": self.generator.epa_id,
+                "name": "",
+                "type": self.generator.site_type,
+            },
         )
         force_authenticate(request, self.user)
         # Act
@@ -34,14 +38,18 @@ class TestHandlerSearch:
         for i in response.data:
             assert isinstance(i, dict)
 
-    def test_returns_correct_headers(self, db) -> None:
+    def test_endpoint_headers(self, db) -> None:
         # Arrange
         client = APIClient()
         client.force_authenticate(user=self.user)
         # Act
         response = client.get(
             self.ulr,
-            {"epaId": self.generator.epa_id, "name": "", "type": self.generator.site_type},
+            {
+                "epaId": self.generator.epa_id,
+                "name": "",
+                "type": self.generator.site_type,
+            },
         )
         # Assert
         assert response.headers["Content-Type"] == "application/json"

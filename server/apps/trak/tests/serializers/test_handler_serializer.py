@@ -3,16 +3,21 @@ from apps.trak.serializers import ManifestHandlerSerializer
 
 
 class TestManifestHandlerSerializer:
-    def test_m_handler_serializes(self, handler_json) -> None:
-        manifest_handler_serializer = ManifestHandlerSerializer(data=handler_json)
+    def test_new_fixture(self, haztrak_json):
+        print(haztrak_json.MANIFEST.value)
+
+    def test_m_handler_serializes(self, haztrak_json) -> None:
+        manifest_handler_serializer = ManifestHandlerSerializer(data=haztrak_json.HANDLER.value)
         assert manifest_handler_serializer.is_valid()
 
     def test_serializer_saves_handler(self, db, manifest_handler_serializer) -> None:
         manifest_handler = manifest_handler_serializer.save()
         assert isinstance(manifest_handler, ManifestHandler)
 
-    def test_paper_manifest_handler_serializes(self, paper_manifest_handler_json) -> None:
-        manifest_handler_serializer = ManifestHandlerSerializer(data=paper_manifest_handler_json)
+    def test_paper_manifest_handler_serializes(self, haztrak_json) -> None:
+        manifest_handler_serializer = ManifestHandlerSerializer(
+            data=haztrak_json.PAPER_MANIFEST_HANDLER.value
+        )
         assert manifest_handler_serializer.is_valid()
 
     def test_creates_paper_signature(self, db, paper_handler_serializer) -> None:

@@ -13,7 +13,7 @@ class TestRcraProfileModel:
         self.profile.save()
         assert not self.profile.is_api_user
 
-    def test_is_api_user_returns_false_all_empty(self, db):
+    def test_is_api_user_false_when_empty(self, db):
         self.profile.rcra_api_id = None
         self.profile.rcra_api_key = None
         self.profile.rcra_username = None

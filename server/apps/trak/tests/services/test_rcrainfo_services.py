@@ -9,11 +9,8 @@ from apps.trak.services import RcrainfoService
 
 class TestRcrainfoService:
     @pytest.fixture(autouse=True)
-    def _testuser(self, user_factory):
+    def _setup_user(self, user_factory, rcra_profile_factory):
         self.testuser1 = user_factory()
-
-    @pytest.fixture(autouse=True)
-    def _testuser_profile(self, rcra_profile_factory):
         self.profile = rcra_profile_factory(user=self.testuser1)
 
     def test_class_inits(self):
