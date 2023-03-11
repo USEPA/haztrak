@@ -12,9 +12,9 @@ class TestESignatureSerializer:
         assert e_signature_serializer.is_valid() is True
 
     def test_serializer_saves_new_signer(
-        self, manifest_gen, e_signature_serializer, e_signature_json
+        self, manifest_handler_factory, e_signature_serializer, e_signature_json
     ):
-        e_signature_serializer.save(manifest_handler=manifest_gen)
+        e_signature_serializer.save(manifest_handler=manifest_handler_factory())
         assert Signer.objects.filter(first_name=e_signature_json["signer"]["firstName"]).exists()
 
     def test_e_signature_serializer_saves_new_document(self):

@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.trak.models import Site
+from apps.trak.models import Site, SitePermission
 from apps.trak.views import SiteManifest
 
 
@@ -47,35 +47,32 @@ class TestSiteDetailsApi:
     url = "/api/trak/site"
 
     @pytest.fixture(autouse=True)
-    def _profile(self, rcra_profile_factory, user_factory):
-        self.user = user_factory()
+    def _site(
+        self,
+        user_factory,
+        rcra_profile_factory,
+        site_factory,
+        handler_factory,
+        site_permission_factory,
+    ):
+        self.user = user_factory(username="testuser1")
         self.profile = rcra_profile_factory(user=self.user)
-
-    #
-    # @pytest.fixture(autouse=True)
-    # def _site_permission(self, site_permission):
-    #     self.site_permission = site_permission
-
-    @pytest.fixture(autouse=True)
-    def _site(self, site_factory, handler_factory):
         self.generator = handler_factory()
         self.site = site_factory(epa_site=self.generator)
+        self.site_permission = site_permission_factory(site=self.site, profile=self.profile)
+        self.other_site = site_factory(epa_site=handler_factory(epa_id="VAFOOBAR001"))
 
-    # @pytest.fixture(autouse=True)
-    # def _site(self, site_generator001):
-    #     self.site = site_generator001
-
-    # def test_returns_site(self):
-    #     client = APIClient()
-    #     client.force_authenticate(user=self.user)
-    #     response = client.get(f"{self.url}/{self.generator.epa_id}")
-    #     assert response.headers["Content-Type"] == "application/json"
-    #     assert response.status_code == 200
+    def test_returns_site(self):
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+        response = client.get(f"{self.url}/{self.site.epa_site.epa_id}")
+        assert response.headers["Content-Type"] == "application/json"
+        assert response.status_code == 200
 
     def test_non_user_sites_not_returned(self):
         client = APIClient()
         client.force_authenticate(user=self.user)
-        response = client.get(f"{self.url}/{self.site.epa_site.epa_id}")
+        response = client.get(f"{self.url}/{self.other_site.epa_site.epa_id}")
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == http.HTTPStatus.NOT_FOUND
 

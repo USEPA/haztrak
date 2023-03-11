@@ -174,16 +174,25 @@ def site_factory(db, handler_factory):
 
 
 @pytest.fixture
-def testuser_signer(db) -> Signer:
-    """A Signer model instance"""
-    return Signer.objects.create(
-        first_name="test",
-        middle_initial="Q",
-        last_name="user",
-        signer_role="EP",
-        company_name="haztrak",
-        rcra_user_id="testuser1",
-    )
+def signer_factory(db):
+    def creat_signer(
+        first_name: Optional[str] = "test",
+        middle_initial: Optional[str] = "Q",
+        last_name: Optional[str] = "user",
+        signer_role: Optional[str] = "EP",
+        company_name: Optional[str] = "haztrak",
+        rcra_user_id: Optional[str] = "testuser1",
+    ) -> Signer:
+        return Signer.objects.create(
+            first_name=first_name,
+            middle_initial=middle_initial,
+            last_name=last_name,
+            signer_role=signer_role,
+            company_name=company_name,
+            rcra_user_id=rcra_user_id,
+        )
+
+    return creat_signer
 
 
 @pytest.fixture
@@ -330,21 +339,36 @@ def e_signature_serializer(db, e_signature_json) -> ESignatureSerializer:
 
 
 @pytest.fixture
-def manifest_gen(db, handler_factory) -> ManifestHandler:
-    return ManifestHandler.objects.create(
-        handler=handler_factory(),
-    )
+def manifest_handler_factory(db, handler_factory):
+    def create_manifest_handler(handler: Optional[Handler] = None) -> ManifestHandler:
+        if handler is None:
+            handler = handler_factory()
+        return ManifestHandler.objects.create(handler=handler)
+
+    return create_manifest_handler
 
 
 @pytest.fixture
-def manifest_elc(db, manifest_gen, manifest_tsd) -> Manifest:
-    return Manifest.objects.create(
-        mtn="0123456789ELC",
-        created_date=datetime.now(),
-        potential_ship_date=date.today(),
-        generator=manifest_gen,
-        tsd=manifest_tsd,
-    )
+def manifest_factory(db, manifest_handler_factory, handler_factory):
+    def create_manifest(
+        mtn: Optional[str] = "123456789ELC",
+        generator: Optional[Handler] = None,
+        tsd: Optional[Handler] = None,
+    ) -> Manifest:
+        if generator is None:
+            generator = manifest_handler_factory()
+        if tsd is None:
+            handler = handler_factory(epa_id="foobar_id")
+            tsd = manifest_handler_factory(handler=handler)
+        return Manifest.objects.create(
+            mtn=mtn,
+            created_date=datetime.now(),
+            potential_ship_date=date.today(),
+            generator=generator,
+            tsd=tsd,
+        )
+
+    return create_manifest
 
 
 @pytest.fixture

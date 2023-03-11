@@ -16,8 +16,8 @@ class TestManifestCRUD:
         self.user = user_factory()
 
     @pytest.fixture(autouse=True)
-    def _manifest_elc(self, manifest_elc):
-        self.manifest = manifest_elc
+    def _manifest_elc(self, manifest_factory):
+        self.manifest = manifest_factory()
 
     @pytest.fixture(autouse=True)
     def _manifest_json(self, json_100033134elc):
