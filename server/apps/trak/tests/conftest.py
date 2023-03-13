@@ -1,5 +1,7 @@
 import json
 import os
+import random
+import string
 from datetime import date, datetime
 from enum import Enum
 from http import HTTPStatus
@@ -14,6 +16,7 @@ from apps.trak.models import (
     Address,
     Contact,
     EpaPhone,
+    ESignature,
     Handler,
     Manifest,
     ManifestHandler,
@@ -201,6 +204,38 @@ def handler_factory(db, address_factory, contact_factory):
 
 
 @pytest.fixture
+def e_signature_factory(db, signer_factory, manifest_handler_factory):
+    """Abstract factory for Haztrak ManifestHandler model"""
+
+    def create_e_signature(
+        signer: Optional[Signer] = None,
+        manifest_handler: Optional[ManifestHandler] = None,
+    ) -> ESignature:
+        return ESignature.objects.create(
+            signer=signer or signer_factory(),
+            manifest_handler=manifest_handler or manifest_handler_factory(),
+            sign_date=datetime.utcnow(),
+            cromerr_activity_id="".join(random.choices(string.ascii_letters, k=10)),
+            cromerr_document_id="".join(random.choices(string.ascii_letters, k=10)),
+            on_behalf=False,
+        )
+
+    return create_e_signature
+
+
+@pytest.fixture
+def manifest_handler_factory(db, handler_factory):
+    """Abstract factory for Haztrak ManifestHandler model"""
+
+    def create_manifest_handler(handler: Optional[Handler] = None) -> ManifestHandler:
+        return ManifestHandler.objects.create(
+            handler=handler or handler_factory(),
+        )
+
+    return create_manifest_handler
+
+
+@pytest.fixture
 def site_factory(db, handler_factory):
     """Abstract factory for Haztrak Site model"""
 
@@ -267,18 +302,6 @@ def site_permission_factory(db, site_factory, rcra_profile_factory):
         )
 
     return create_permission
-
-
-@pytest.fixture
-def manifest_handler_factory(db, handler_factory):
-    """Abstract factory for Haztrak ManifestHandler model"""
-
-    def create_manifest_handler(handler: Optional[Handler] = None) -> ManifestHandler:
-        return ManifestHandler.objects.create(
-            handler=handler or handler_factory(),
-        )
-
-    return create_manifest_handler
 
 
 @pytest.fixture

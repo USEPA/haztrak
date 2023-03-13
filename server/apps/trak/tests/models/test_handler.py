@@ -9,6 +9,6 @@ class TestManifestHandlerModel:
 
     def test_manager_creates_new_handler(self, handler_serializer) -> None:
         handler_serializer.is_valid()
-        ManifestHandler.objects.create_manifest_handler(handler=handler_serializer.validated_data)
+        ManifestHandler.objects.save(handler=handler_serializer.validated_data)
         new_handler = Handler.objects.get(epa_id=handler_serializer.validated_data["epa_id"])
         assert isinstance(new_handler, Handler)

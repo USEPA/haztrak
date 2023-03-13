@@ -207,13 +207,13 @@ class ManifestSerializer(TrakBaseSerializer):
     def create(self, validated_data) -> Manifest:
         waste_data = validated_data.pop("wastes")
         trans_data = validated_data.pop("transporters")
-        manifest = Manifest.objects.create_manifest(validated_data)
+        manifest = Manifest.objects.save(validated_data)
         logger.debug(f"ManifestSerializer created manifest {manifest}")
         for waste_line in waste_data:
             WasteLine.objects.create(manifest=manifest, **waste_line)
         for transporter in trans_data:
             transporter["manifest"] = manifest
-            Transporter.objects.create_transporter(**transporter)
+            Transporter.objects.save(**transporter)
         return manifest
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior

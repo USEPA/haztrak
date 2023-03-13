@@ -74,5 +74,5 @@ class HandlerService:
         if Handler.objects.filter(epa_id=epa_id).exists():
             handler = Handler.objects.get(epa_id=epa_id)
             return handler
-        handler = Handler.objects.create_handler(**handler_data)
+        handler = Handler.objects.save(**handler_data)
         return handler

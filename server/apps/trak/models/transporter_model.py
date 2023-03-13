@@ -11,18 +11,14 @@ class TransporterManager(ManifestHandlerManager):
     Inter-model related functionality for Transporter Model
     """
 
-    @staticmethod
-    def create_transporter(manifest: Manifest, **data: Dict):
+    def save(self, **transporter_data: Dict):
         """
         Create a Transporter from a manifest instance and handler dict
-
-        ToDo: See ManifestHandlerManager method, there's overlap that can be refactored
-         as a bigger item, look at our custom model managers, see where we can apply a better
-         design to take advantage of polymorphism and inheritance
+        ToDo: fix this implementation
         """
-        handler_data = data.pop("handler")
-        new_handler = Handler.objects.create_handler(**handler_data)
-        return Transporter.objects.create(handler=new_handler, manifest=manifest, **data)
+        handler_data = transporter_data.pop("handler")
+        handler = Handler.objects.save(**handler_data)
+        return self.create(handler=handler, **transporter_data)
 
 
 class Transporter(ManifestHandler):

@@ -1,5 +1,6 @@
 import logging
 import re
+from typing import Dict
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -7,6 +8,7 @@ from django.db.models import Max
 from django.utils.translation import gettext_lazy as _
 
 from apps.trak.models import ManifestHandler
+from apps.trak.models.base_model import TrakManager
 
 logger = logging.getLogger(__name__)
 
@@ -32,24 +34,25 @@ def validate_mtn(value):
         )
 
 
-class ManifestManager(models.Manager):
+class ManifestManager(TrakManager):
     """
     Inter-model related functionality for Manifest Model
     """
 
-    @staticmethod
-    def create_manifest(manifest_data):
+    def save(self, manifest_data: Dict):
         """Create a manifest with its related models instances"""
         additional_info = None
+        manifest_generator = None
+        manifest_tsd = None
         # Create manifest handlers (generator and TSD) and all related models
-        tsd_data = manifest_data.pop("tsd")
-        gen_data = manifest_data.pop("generator")
-        manifest_generator = ManifestHandler.objects.create_manifest_handler(**gen_data)
-        manifest_tsd = ManifestHandler.objects.create_manifest_handler(**tsd_data)
+        if "generator" in manifest_data:
+            manifest_generator = ManifestHandler.objects.save(**manifest_data.pop("generator"))
+        if "tsd" in manifest_data:
+            manifest_tsd = ManifestHandler.objects.save(**manifest_data.pop("tsd"))
         if "additional_info" in manifest_data:
             additional_info = AdditionalInfo.objects.create(**manifest_data.pop("additional_info"))
         # Create model instances
-        return Manifest.objects.create(
+        return super().save(
             generator=manifest_generator,
             tsd=manifest_tsd,
             additional_info=additional_info,

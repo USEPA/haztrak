@@ -67,7 +67,7 @@ class HandlerSerializer(TrakBaseSerializer):
     )
 
     def create(self, validated_data):
-        return Handler.objects.create_handler(**validated_data)
+        return Handler.objects.save(**validated_data)
 
     class Meta:
         model = Handler
@@ -103,15 +103,7 @@ class ManifestHandlerSerializer(HandlerSerializer):
     )
 
     def create(self, validated_data: Dict):
-        e_signatures_data = []
-        if "e_signatures" in validated_data:
-            e_signatures_data: List = validated_data.pop("e_signatures")
-        manifest_handler = ManifestHandler.objects.create_manifest_handler(**validated_data)
-        for e_signature_data in e_signatures_data:
-            ESignature.objects.create_e_signature(
-                manifest_handler=manifest_handler, **e_signature_data
-            )
-        return manifest_handler
+        return ManifestHandler.objects.save(**validated_data)
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
