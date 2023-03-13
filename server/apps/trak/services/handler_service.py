@@ -20,14 +20,14 @@ class HandlerService:
 
     def __init__(self, *, username: str, rcrainfo: RcrainfoService = None, logger: Logger = None):
         self.username = username
-        if rcrainfo is not None:
-            self.rcrainfo = rcrainfo
-        else:
-            self.rcrainfo = RcrainfoService(api_username=self.username)
-        if logger:
-            self.logger = logger
-        else:
-            self.logger = logging.getLogger(__name__)
+        self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
+        self.logger = logger or logging.getLogger(__name__)
+
+    def __repr__(self):
+        return (
+            f"<{self.__class__.__name__}(api_username='{self.username}', "
+            f"rcrainfo='{self.rcrainfo}')>"
+        )
 
     def pull_rcra_handler(self, *, site_id: str) -> Handler:
         """

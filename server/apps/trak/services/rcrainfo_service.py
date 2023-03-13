@@ -19,12 +19,22 @@ class RcrainfoService(RcrainfoClient):
             self.profile = None
         if rcrainfo_env is None:
             rcrainfo_env = os.getenv("HT_RCRAINFO_ENV", "preprod")
+            self.rcrainfo_env = rcrainfo_env
         super().__init__(rcrainfo_env, **kwargs)
 
     @property
-    def has_api_user(self):
+    def has_api_user(self) -> bool:
         """returns boolean if the assigned API user has credentials"""
-        return self.profile.is_api_user
+        try:
+            return self.profile.is_api_user
+        except AttributeError:
+            return False
+
+    def __repr__(self):
+        return (
+            f"<{self.__class__.__name__}(api_username='{self.api_user}', "
+            f"rcrainfo_env='{self.rcrainfo_env}')>"
+        )
 
     def retrieve_id(self, api_id=None) -> str:
         """Override RcrainfoClient method to retrieve API ID for authentication"""
@@ -44,9 +54,9 @@ class RcrainfoService(RcrainfoClient):
         haztrak user to have their unique RCRAInfo user and API credentials in their
         RcraProfile
         """
-        if username:
-            profile = RcraProfile.objects.get(user__username=username)
-        else:
-            profile = RcraProfile.objects.get(user__username=self.api_user)
+        profile = RcraProfile.objects.get(user__username=username or self.api_user)
         response = self.search_users(userId=profile.rcra_username)
         return response.json()
+
+    def __bool__(self):
+        return True

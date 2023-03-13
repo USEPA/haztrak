@@ -3,17 +3,11 @@ import pytest
 
 class TestSiteService:
     @pytest.fixture(autouse=True)
-    def _setup_user(self, user_factory):
+    def _setup(self, user_factory, site_factory, haztrak_json):
         self.user = user_factory()
-
-    @pytest.fixture(autouse=True)
-    def _setup_generator(self, handler_factory):
-        self.gen001 = handler_factory()
-
-    @pytest.fixture(autouse=True)
-    def _manifest(self, haztrak_json):
-        self.manifest_json = haztrak_json.MANIFEST.value
-        self.tracking_number = self.manifest_json.get("manifestTrackingNumber", "123456789ELC")
+        self.gen001 = site_factory()
+        self.json_100031134elc = haztrak_json.MANIFEST.value
+        self.tracking_number = self.json_100031134elc.get("manifestTrackingNumber", "123456789ELC")
 
     def test_create_or_update_creates_new_site(self):
         """Test create_or_update_site creates a new site when non-existent"""

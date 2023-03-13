@@ -18,10 +18,7 @@ class SiteService:
 
     def __init__(self, *, username: str, site_id: str = None, rcrainfo: RcrainfoService = None):
         self.username = username
-        if rcrainfo is not None:
-            self.rcrainfo = rcrainfo
-        else:
-            self.rcrainfo = RcrainfoService(api_username=username)
+        self.rcrainfo = rcrainfo or RcrainfoService(api_username=username)
         if site_id:
             self.site = Site.objects.get(epa_site__epa_id=site_id)
 
@@ -35,17 +32,20 @@ class SiteService:
         logger.info(f"{self} sync rcra manifest, site ID {site_id}")
         try:
             manifest_service = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
-            site = Site.objects.get(epa_site__epa_id=site_id)
+            site = Site.objects.get(epa_site__epa_id=site_id or self.site)
             logger.info(f"site: {site}, manifest_service: {manifest_service}")
             tracking_numbers: List[str] = manifest_service.search_rcra_mtn(
                 site_id=site_id, start_date=site.last_rcra_sync
             )
+            # ToDo: uncomment this after we have manifest development fixtures
             # limit the number of manifest to sync at a time
             tracking_numbers = tracking_numbers[0:10]
             logger.info(f"Pulling {tracking_numbers} from RCRAInfo")
             results: Dict[str, List[str]] = manifest_service.pull_manifests(
                 tracking_numbers=tracking_numbers
             )
+            # ToDo: uncomment this after we have manifest development fixtures
+            # Update the Rcrainfo last sync date for future sync operations
             # site.last_rcra_sync = datetime.now().replace(tzinfo=timezone.utc)
             site.save()
             return results
@@ -57,7 +57,6 @@ class SiteService:
     def create_or_update_site(self, *, handler: Handler, site_name: str = None) -> Site:
         """
         Retrieve a site from the database or create.
-        # ToDo convert to create_or_update_site()
 
         Keyword Args:
             handler (Handler): An instance of the (hazardous waste) Handler model
@@ -66,7 +65,6 @@ class SiteService:
         if site_name is None:
             site_name = handler.name
         if Site.objects.filter(epa_site__epa_id=handler.epa_id).exists():
-            site = Site.objects.get(epa_site__epa_id=handler.epa_id)
-            return site
+            return Site.objects.get(epa_site__epa_id=handler.epa_id)
         else:
             return Site.objects.create(epa_site=handler, name=site_name)

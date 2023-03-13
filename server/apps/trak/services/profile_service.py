@@ -29,14 +29,8 @@ class RcraProfileService:
     def __init__(self, *, username: str, rcrainfo: RcrainfoService = None, logger: Logger = None):
         self.username = username
         self.profile, created = RcraProfile.objects.get_or_create(user__username=self.username)
-        if rcrainfo is not None:
-            self.rcrainfo = rcrainfo
-        else:
-            self.rcrainfo = RcrainfoService(api_username=self.username)
-        if logger:
-            self.logger = logger
-        else:
-            self.logger = logging.getLogger(__name__)
+        self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
+        self.logger = logger or logging.getLogger(__name__)
 
     @property
     def can_access_rcrainfo(self) -> bool:
@@ -46,6 +40,11 @@ class RcraProfileService:
         if self.rcrainfo is not None:
             return True
         return False
+
+    def __repr__(self):
+        return (
+            f"<{self.__class__.__name__}(username='{self.username}', rcrainfo='{self.rcrainfo}')>"
+        )
 
     def pull_rcra_profile(self, *, username: str = None):
         """

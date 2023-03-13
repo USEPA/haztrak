@@ -30,3 +30,9 @@ class Site(models.Model):
 
     def __str__(self):
         return f"{self.epa_site.epa_id}"
+
+    def __repr__(self):
+        field_values = ", ".join(
+            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
+        )
+        return f"<{self.__class__.__name__}({field_values})>"

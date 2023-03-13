@@ -1,7 +1,5 @@
 import json
 import os
-import random
-import string
 from datetime import date, datetime
 from enum import Enum
 from http import HTTPStatus
@@ -67,14 +65,14 @@ def user_factory(db):
     """Abstract factory for Django's User model"""
 
     def create_user(
-        username: Optional[str] = None,
+        username: Optional[str] = "testuser1",
         email: Optional[str] = "testuser1@haztrak.net",
         password: Optional[str] = "password1",
     ) -> User:
-        if username is None:
-            username = "".join(
-                random.choice(string.ascii_letters) for _ in range(10)
-            )  # generate a random username
+        # if username is None:
+        #     username = "".join(
+        #         random.choice(string.ascii_letters) for _ in range(10)
+        #     )  # generate a random username
         return User.objects.create_user(
             username=username,
             email=email,
@@ -94,13 +92,11 @@ def rcra_profile_factory(db, user_factory):
         rcra_username: Optional[str] = "dpgraham4401",
         user: Optional[User] = None,
     ) -> RcraProfile:
-        if user is None:
-            user = user_factory()
         return RcraProfile.objects.create(
             rcra_api_id=rcra_api_id,
             rcra_api_key=rcra_api_key,
             rcra_username=rcra_username,
-            user=user,
+            user=user or user_factory(),
         )
 
     return create_profile
@@ -131,7 +127,8 @@ def epa_phone_factory(db):
     """Abstract factory for Haztrak EpaPhone model"""
 
     def create_epa_phone(
-        number: Optional[str] = "123-123-1234", extension: Optional[str] = "1234"
+        number: Optional[str] = "123-123-1234",
+        extension: Optional[str] = "1234",
     ) -> EpaPhone:
         return EpaPhone.objects.create(
             number=number,
@@ -149,11 +146,9 @@ def paper_signature_factory(db):
         printed_name: Optional[str] = "David Graham",
         sign_date: Optional[datetime] = None,
     ) -> PaperSignature:
-        if sign_date is None:
-            sign_date = datetime.utcnow()
         return PaperSignature.objects.create(
             printed_name=printed_name,
-            sign_date=sign_date,
+            sign_date=sign_date or datetime.utcnow(),
         )
 
     return create_signature
@@ -170,14 +165,12 @@ def contact_factory(db, epa_phone_factory):
         email: Optional[str] = "testuser@haztrak.net",
         phone: Optional[EpaPhone] = None,
     ) -> Contact:
-        if phone is None:
-            phone = epa_phone_factory()
         contact = Contact.objects.create(
             first_name=first_name,
             middle_initial=middle_initial,
             last_name=last_name,
             email=email,
-            phone=phone,
+            phone=phone or epa_phone_factory(),
         )
         return contact
 
@@ -192,13 +185,15 @@ def handler_factory(db, address_factory, contact_factory):
         epa_id: Optional[str] = "handler001",
         name: Optional[str] = "my_handler",
         site_type: Optional[str] = "Generator",
+        site_address: Optional[Address] = None,
+        mail_address: Optional[Address] = None,
     ) -> Handler:
         return Handler.objects.create(
             epa_id=epa_id,
             name=name,
             site_type=site_type,
-            site_address=address_factory(),
-            mail_address=address_factory(),
+            site_address=site_address or address_factory(),
+            mail_address=mail_address or address_factory(),
             contact=contact_factory(),
         )
 
@@ -213,10 +208,8 @@ def site_factory(db, handler_factory):
         epa_site: Optional[Handler] = None,
         name: Optional[str] = "my_handler",
     ) -> Site:
-        if epa_site is None:
-            epa_site = handler_factory()
         return Site.objects.create(
-            epa_site=epa_site,
+            epa_site=epa_site or handler_factory(),
             name=name,
         )
 
@@ -262,13 +255,9 @@ def site_permission_factory(db, site_factory, rcra_profile_factory):
         my_rcra_id: Optional[str] = "Certifier",
     ) -> SitePermission:
         """Returns testuser1 SitePermission model to site_generator"""
-        if site is None:
-            site = site_factory()
-        if profile is None:
-            profile = rcra_profile_factory()
         return SitePermission.objects.create(
-            site=site,
-            profile=profile,
+            site=site or site_factory(),
+            profile=profile or rcra_profile_factory(),
             site_manager=site_manager,
             annual_report=annual_report,
             biennial_report=biennial_report,
@@ -285,9 +274,9 @@ def manifest_handler_factory(db, handler_factory):
     """Abstract factory for Haztrak ManifestHandler model"""
 
     def create_manifest_handler(handler: Optional[Handler] = None) -> ManifestHandler:
-        if handler is None:
-            handler = handler_factory()
-        return ManifestHandler.objects.create(handler=handler)
+        return ManifestHandler.objects.create(
+            handler=handler or handler_factory(),
+        )
 
     return create_manifest_handler
 
@@ -301,17 +290,16 @@ def manifest_factory(db, manifest_handler_factory, handler_factory):
         generator: Optional[Handler] = None,
         tsd: Optional[Handler] = None,
     ) -> Manifest:
-        if generator is None:
-            generator = manifest_handler_factory()
         if tsd is None:
+            # ensure the TSD is a different EPA site
             handler = handler_factory(epa_id="foobar_id")
             tsd = manifest_handler_factory(handler=handler)
         return Manifest.objects.create(
             mtn=mtn,
             created_date=datetime.now(),
             potential_ship_date=date.today(),
-            generator=generator,
-            tsd=tsd,
+            generator=generator or manifest_handler_factory(),
+            tsd=tsd or manifest_handler_factory(handler=handler_factory(epa_id="tsd001")),
         )
 
     return create_manifest
@@ -324,10 +312,10 @@ def api_client_factory(db, user_factory):
     def create_client(
         user: Optional[User] = None,
     ) -> APIClient:
-        if user is None:
-            user = user_factory()
         client = APIClient()
-        client.force_authenticate(user=user)
+        client.force_authenticate(
+            user=user or user_factory(),
+        )
         return client
 
     return create_client
