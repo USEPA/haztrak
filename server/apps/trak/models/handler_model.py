@@ -5,13 +5,14 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 from .address_model import Address
+from .base_model import TrakManager
 from .contact_model import Contact, EpaPhone
 from .signature_model import ESignature, PaperSignature
 
 logger = logging.getLogger(__name__)
 
 
-class HandlerManager(models.Manager):
+class HandlerManager(TrakManager):
     """
     Inter-model related functionality for Handler Model
     """
@@ -20,7 +21,7 @@ class HandlerManager(models.Manager):
         self.handler_data = None
         super().__init__()
 
-    def create_handler(self, **handler_data):
+    def save(self, **handler_data):
         """
         Create a handler and its related fields
 
@@ -32,14 +33,14 @@ class HandlerManager(models.Manager):
         """
         try:
             epa_id = handler_data.get("epa_id")
-            if Handler.objects.filter(epa_id=epa_id).exists():
+            if self.model.objects.filter(epa_id=epa_id).exists():
                 return Handler.objects.get(epa_id=epa_id)
             self.handler_data = handler_data
-            new_contact = Contact.objects.create(self.handler_data.pop("contact"))
+            new_contact = Contact.objects.save(**self.handler_data.pop("contact"))
             emergency_phone = self.get_emergency_phone()
             site_address = self.get_address("site_address")
             mail_address = self.get_address("mail_address")
-            return super().create(
+            return super().save(
                 site_address=site_address,
                 mail_address=mail_address,
                 emergency_phone=emergency_phone,
@@ -166,23 +167,12 @@ class Handler(models.Model):
         return f"<{self.__class__.__name__}({field_values})>"
 
 
-class ManifestHandlerManager(models.Manager):
+class ManifestHandlerManager(TrakManager):
     """
     Inter-model related functionality for ManifestHandler Model
     """
 
-    def __init__(self):
-        self.manifest_handler_data = None
-        super().__init__()
-
-    @staticmethod
-    def create_manifest_handler(**handler_data):
-        """
-        Create a Manifest handler and its related fields
-
-        Keyword Args:
-            handler (dict): handler data in (ordered)dict format
-        """
+    def save(self, **handler_data) -> models.QuerySet:
         e_signatures = []
         paper_signature = None
         if "e_signatures" in handler_data:
@@ -195,14 +185,14 @@ class ManifestHandlerManager(models.Manager):
                 handler = Handler.objects.get(epa_id=handler_data["handler"]["epa_id"])
                 logger.debug(f"using existing Handler {handler}")
             else:
-                handler = Handler.objects.create_handler(**handler_data["handler"])
+                handler = Handler.objects.save(**handler_data["handler"])
                 logger.debug(f"Handler created {handler}")
             manifest_handler = ManifestHandler.objects.create(
                 handler=handler, paper_signature=paper_signature
             )
             logger.debug(f"ManifestHandler created {manifest_handler}")
             for e_signature_data in e_signatures:
-                e_sig = ESignature.objects.create_e_signature(
+                e_sig = ESignature.objects.save(
                     manifest_handler=manifest_handler, **e_signature_data
                 )
                 logger.debug(f"ESignature created {e_sig}")
@@ -237,3 +227,9 @@ class ManifestHandler(models.Model):
 
     def __str__(self):
         return f"ManifestHandler: {self.handler.epa_id}"
+
+    def __repr__(self):
+        field_values = ", ".join(
+            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
+        )
+        return f"<{self.__class__.__name__}({field_values})>"

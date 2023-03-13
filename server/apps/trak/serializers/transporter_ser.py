@@ -1,6 +1,7 @@
 from apps.trak.models import Transporter
 from apps.trak.serializers.handler_ser import HandlerSerializer
-from apps.trak.serializers.trak_ser import TrakBaseSerializer
+
+from .base_ser import TrakBaseSerializer
 
 
 class TransporterSerializer(TrakBaseSerializer):

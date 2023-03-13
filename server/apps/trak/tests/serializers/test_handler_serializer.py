@@ -3,9 +3,6 @@ from apps.trak.serializers import ManifestHandlerSerializer
 
 
 class TestManifestHandlerSerializer:
-    def test_new_fixture(self, haztrak_json):
-        print(haztrak_json.MANIFEST.value)
-
     def test_m_handler_serializes(self, haztrak_json) -> None:
         manifest_handler_serializer = ManifestHandlerSerializer(data=haztrak_json.HANDLER.value)
         assert manifest_handler_serializer.is_valid()

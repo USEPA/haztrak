@@ -4,6 +4,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from apps.trak.models.base_model import TrakManager
+
 
 class EpaPhoneNumber(models.CharField):
     """
@@ -39,26 +41,24 @@ class EpaPhone(models.Model):
         return f"{self.number}"
 
 
-class ContactManager(models.Manager):
+class ContactManager(TrakManager):
     """
     Inter-model related functionality for Contact Model
     """
 
-    def create(self, contact=None, **contact_data):
+    def save(self, **contact_data) -> models.QuerySet:
         """
         Create Contact instance in database, create related phone instance if applicable,
         and return the new instance.
         """
-        if isinstance(contact, Contact):
-            return contact
         if "phone" in contact_data:
             phone_data = contact_data.pop("phone")
             if isinstance(phone_data, EpaPhone):
                 phone = phone_data
             else:
                 phone = EpaPhone.objects.create(**phone_data)
-            return super().create(**contact_data, phone=phone)
-        return super().create(**contact_data)
+            return self.create(**contact_data, phone=phone)
+        return super().save(**contact_data)
 
 
 class Contact(models.Model):

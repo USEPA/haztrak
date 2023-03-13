@@ -1,13 +1,13 @@
-from typing import Dict, List
+from typing import Dict
 
 from rest_framework import serializers
 
-from apps.trak.models import ESignature, Handler, ManifestHandler
+from apps.trak.models import Handler, ManifestHandler
 from apps.trak.serializers import AddressSerializer
 
+from .base_ser import TrakBaseSerializer
 from .contact_ser import ContactSerializer, EpaPhoneSerializer
 from .signature_ser import ESignatureSerializer, PaperSignatureSerializer
-from .trak_ser import TrakBaseSerializer
 
 
 class HandlerSerializer(TrakBaseSerializer):
@@ -67,7 +67,7 @@ class HandlerSerializer(TrakBaseSerializer):
     )
 
     def create(self, validated_data):
-        return Handler.objects.create_handler(**validated_data)
+        return self.Meta.model.objects.save(**validated_data)
 
     class Meta:
         model = Handler
@@ -102,16 +102,11 @@ class ManifestHandlerSerializer(HandlerSerializer):
         required=False,
     )
 
+    def update(self, instance, validated_data: Dict):
+        return self.Meta.model.objects.update(instance, **validated_data)
+
     def create(self, validated_data: Dict):
-        e_signatures_data = []
-        if "e_signatures" in validated_data:
-            e_signatures_data: List = validated_data.pop("e_signatures")
-        manifest_handler = ManifestHandler.objects.create_manifest_handler(**validated_data)
-        for e_signature_data in e_signatures_data:
-            ESignature.objects.create_e_signature(
-                manifest_handler=manifest_handler, **e_signature_data
-            )
-        return manifest_handler
+        return self.Meta.model.objects.save(**validated_data)
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

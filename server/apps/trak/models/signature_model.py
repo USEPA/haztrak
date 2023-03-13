@@ -1,8 +1,9 @@
 import logging
 
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from apps.trak.models.base_model import TrakManager
 
 logger = logging.getLogger(__name__)
 
@@ -76,24 +77,19 @@ class Signer(models.Model):
         )
 
 
-class ESignatureManager(models.Manager):
+class ESignatureManager(TrakManager):
     """
     Inter-model related functionality for ESignature Model
     """
 
-    def create_e_signature(self, **e_signature_data):
+    def save(self, **e_signature_data):
         """
         Create Contact instance in database, create related phone instance if applicable,
         and return the new instance.
         """
-        try:
-            if "signer" in e_signature_data:
-                signer_data = e_signature_data.pop("signer")
-                e_signature_data["signer"] = Signer.objects.create(**signer_data)
-            return super().create(**e_signature_data)
-        except ValidationError as exc:
-            logger.error(exc)
-            raise exc
+        if "signer" in e_signature_data:
+            e_signature_data["signer"] = Signer.objects.create(**e_signature_data.pop("signer"))
+        return super().save(**e_signature_data)
 
 
 class ESignature(models.Model):
@@ -141,6 +137,12 @@ class ESignature(models.Model):
                 f"e-signature on {self.sign_date}"
             )
         return f"e-signature on {self.sign_date}"
+
+    def __repr__(self):
+        field_values = ", ".join(
+            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
+        )
+        return f"<{self.__class__.__name__}({field_values})>"
 
     class Meta:
         verbose_name = "e-Signature"
