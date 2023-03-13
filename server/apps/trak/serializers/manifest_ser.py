@@ -5,9 +5,9 @@ from rest_framework import serializers
 
 from apps.trak.models import Manifest
 from apps.trak.serializers.handler_ser import ManifestHandlerSerializer
-from apps.trak.serializers.trak_ser import TrakBaseSerializer
 
 from ..models.manifest_model import AdditionalInfo
+from .base_ser import TrakBaseSerializer
 from .transporter_ser import TransporterSerializer
 from .waste_line_ser import WasteLineSerializer
 

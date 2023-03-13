@@ -3,7 +3,8 @@ from rest_framework.exceptions import APIException
 from rest_framework.serializers import ModelSerializer
 
 from apps.trak.models import RcraProfile, SitePermission
-from apps.trak.serializers.trak_ser import TrakBaseSerializer
+
+from .base_ser import TrakBaseSerializer
 
 
 class SitePermissionSerializer(TrakBaseSerializer):

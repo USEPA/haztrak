@@ -4,7 +4,8 @@ from rest_framework import serializers
 
 from apps.trak.models import ESignature, PaperSignature, Signer
 from apps.trak.serializers.contact_ser import EpaPhoneSerializer
-from apps.trak.serializers.trak_ser import TrakBaseSerializer
+
+from .base_ser import TrakBaseSerializer
 
 
 class SignerSerializer(TrakBaseSerializer):

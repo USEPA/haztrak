@@ -2,7 +2,7 @@ import json
 import os
 import random
 import string
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from enum import Enum
 from http import HTTPStatus
 from typing import Dict, Optional
@@ -151,7 +151,7 @@ def paper_signature_factory(db):
     ) -> PaperSignature:
         return PaperSignature.objects.create(
             printed_name=printed_name,
-            sign_date=sign_date or datetime.utcnow(),
+            sign_date=sign_date or datetime.utcnow().replace(tzinfo=timezone.utc),
         )
 
     return create_signature
@@ -214,7 +214,7 @@ def e_signature_factory(db, signer_factory, manifest_handler_factory):
         return ESignature.objects.create(
             signer=signer or signer_factory(),
             manifest_handler=manifest_handler or manifest_handler_factory(),
-            sign_date=datetime.utcnow(),
+            sign_date=datetime.utcnow().replace(tzinfo=timezone.utc),
             cromerr_activity_id="".join(random.choices(string.ascii_letters, k=10)),
             cromerr_document_id="".join(random.choices(string.ascii_letters, k=10)),
             on_behalf=False,
@@ -319,8 +319,8 @@ def manifest_factory(db, manifest_handler_factory, handler_factory):
             tsd = manifest_handler_factory(handler=handler)
         return Manifest.objects.create(
             mtn=mtn,
-            created_date=datetime.now(),
-            potential_ship_date=date.today(),
+            created_date=datetime.now().replace(tzinfo=timezone.utc),
+            potential_ship_date=datetime.now().replace(tzinfo=timezone.utc),
             generator=generator or manifest_handler_factory(),
             tsd=tsd or manifest_handler_factory(handler=handler_factory(epa_id="tsd001")),
         )

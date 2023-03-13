@@ -5,9 +5,9 @@ from rest_framework import serializers
 from apps.trak.models import Handler, ManifestHandler
 from apps.trak.serializers import AddressSerializer
 
+from .base_ser import TrakBaseSerializer
 from .contact_ser import ContactSerializer, EpaPhoneSerializer
 from .signature_ser import ESignatureSerializer, PaperSignatureSerializer
-from .trak_ser import TrakBaseSerializer
 
 
 class HandlerSerializer(TrakBaseSerializer):
@@ -67,7 +67,7 @@ class HandlerSerializer(TrakBaseSerializer):
     )
 
     def create(self, validated_data):
-        return Handler.objects.save(**validated_data)
+        return self.Meta.model.objects.save(**validated_data)
 
     class Meta:
         model = Handler

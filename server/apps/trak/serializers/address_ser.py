@@ -5,7 +5,7 @@ from rest_framework.exceptions import ValidationError
 
 from apps.trak.models import Address
 
-from .trak_ser import TrakBaseSerializer
+from .base_ser import TrakBaseSerializer
 
 
 @extend_schema_field(OpenApiTypes.OBJECT)
