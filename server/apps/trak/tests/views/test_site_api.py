@@ -11,12 +11,23 @@ from apps.trak.views import SiteManifest
 
 class TestSiteAPI:
     @pytest.fixture(autouse=True)
-    def _api_client(self, api_client_factory):
-        self.client = api_client_factory()
-
-    @pytest.fixture(autouse=True)
-    def _profile(self, rcra_profile_factory):
-        self.profile = rcra_profile_factory()
+    def _api_client(
+        self,
+        api_client_factory,
+        rcra_profile_factory,
+        site_permission_factory,
+        user_factory,
+        site_factory,
+        handler_factory,
+    ):
+        self.user = user_factory()
+        self.client = api_client_factory(user=self.user)
+        self.profile = rcra_profile_factory(user=self.user)
+        self.user_site = site_factory()
+        self.user_site_permission = site_permission_factory(
+            site=self.user_site, profile=self.profile
+        )
+        self.other_site = site_factory(epa_site=handler_factory(epa_id="VA12345678"))
 
     base_url = "/api/trak/site/"
 
@@ -32,6 +43,11 @@ class TestSiteAPI:
         response_site_id = [i["handler"]["epaSiteId"] for i in response.data]
         for site_id in sites_with_access:
             assert site_id in response_site_id
+
+    def test_other_sites_not_included(self):
+        response = self.client.get(f"{self.base_url}")
+        response_site_id = [i["handler"]["epaSiteId"] for i in response.data]
+        assert self.other_site.epa_site.epa_id not in response_site_id
 
     def test_unauthenticated_returns_401(self):
         self.client.logout()

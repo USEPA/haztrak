@@ -90,7 +90,10 @@ class Contact(models.Model):
         null=True,
         blank=True,
     )
-    email = models.EmailField()
+    email = models.EmailField(
+        null=True,
+        blank=True,
+    )
     company_name = models.CharField(
         max_length=80,
         null=True,
@@ -99,15 +102,15 @@ class Contact(models.Model):
 
     def __str__(self):
         try:
-            first = self.first_name if self.first_name else ""
-            middle = self.middle_initial if self.middle_initial else ""
-            last = self.last_name if self.last_name else ""
-            return (
-                f"contact {self.pk}: {first.capitalize()} {middle.capitalize()} "
-                f"{last.capitalize()}"
-            )
+            first = self.first_name or ""
+            middle = self.middle_initial or ""
+            last = self.last_name or ""
+            return f"{first.capitalize()} {middle.capitalize()} {last.capitalize()}"
         except AttributeError:
             return f"contact {self.pk}: {self.first_name} {self.middle_initial} {self.last_name}"
 
     def __repr__(self):
-        return f"Contact {self.pk}"
+        field_values = ", ".join(
+            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
+        )
+        return f"<{self.__class__.__name__}({field_values})>"

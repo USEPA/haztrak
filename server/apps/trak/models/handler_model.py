@@ -49,6 +49,12 @@ class HandlerManager(models.Manager):
         except KeyError as exc:
             logger.warning(f"error while creating handler {exc}")
 
+    def __repr__(self):
+        field_values = ", ".join(
+            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
+        )
+        return f"<{self.__class__.__name__}({field_values})>"
+
     def get_emergency_phone(self) -> Union[EpaPhone, None]:
         """Check if emergency phone is present and create an EpaPhone row"""
         try:
@@ -152,6 +158,12 @@ class Handler(models.Model):
 
     def __str__(self):
         return f"{self.epa_id}"
+
+    def __repr__(self):
+        field_values = ", ".join(
+            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
+        )
+        return f"<{self.__class__.__name__}({field_values})>"
 
 
 class ManifestHandlerManager(models.Manager):

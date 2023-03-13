@@ -7,13 +7,28 @@ from apps.trak.services import HandlerService, RcrainfoService
 
 class TestHandlerService:
     @pytest.fixture(autouse=True)
-    def _test_user(self, user_factory):
+    def _setup(self, user_factory, rcra_profile_factory, haztrak_json):
         self.user = user_factory()
-
-    @pytest.fixture(autouse=True)
-    def _handler_json(self, haztrak_json):
+        self.profile = rcra_profile_factory(user=self.user)
         self.handler_json = haztrak_json.HANDLER.value
         self.epa_id = self.handler_json.get("epaSiteId", "handler001")
+
+    def test_stores_rcrainfo_instance(self):
+        """
+        the e-Manifest PyPI package RcrainfoClient uses a __bool__ method we need to override
+        in order for self.rcrainfo = rcrainfo or RcrainfoService(...) to work.
+        """
+        rcrainfo = RcrainfoService(api_username=self.user.username, auto_renew=False)
+        handler_service = HandlerService(username=self.user.username, rcrainfo=rcrainfo)
+        assert handler_service.rcrainfo is rcrainfo
+
+    def test_creates_rcrainfo_instance_when_none(self):
+        """
+        the e-Manifest PyPI package RcrainfoClient uses a __bool__ method we need to override
+        in order for self.rcrainfo = rcrainfo or RcrainfoService(...) to work.
+        """
+        handler_service = HandlerService(username=self.user.username)
+        assert isinstance(handler_service.rcrainfo, RcrainfoService)
 
     @responses.activate
     def test_pull_rcra_handler(self):

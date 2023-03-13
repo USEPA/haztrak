@@ -161,9 +161,10 @@ class PaperSignature(models.Model):
         return f"{self.printed_name} ({self.sign_date.strftime('%Y-%m-%d %H:%M:%S')})"
 
     def __repr__(self):
-        return (
-            f"<PaperSignature printedName='{self.printed_name}' signatureDate='{self.sign_date}'>"
+        field_values = ", ".join(
+            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
         )
+        return f"<{self.__class__.__name__}({field_values})>"
 
     def __hash__(self):
         return hash((self.printed_name, self.sign_date))

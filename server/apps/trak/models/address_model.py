@@ -99,6 +99,8 @@ class Address(models.Model):
     )
     city = models.CharField(
         max_length=25,
+        null=True,
+        blank=True,
     )
     state = models.CharField(
         max_length=3,
@@ -122,3 +124,9 @@ class Address(models.Model):
         if self.street_number:
             return f"{self.street_number} {self.address1}"
         return f" {self.address1}"
+
+    def __repr__(self):
+        field_values = ", ".join(
+            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
+        )
+        return f"<{self.__class__.__name__}({field_values})>"

@@ -67,3 +67,9 @@ class WasteLine(models.Model):
 
     def __str__(self):
         return f"{self.manifest} line {self.line_number}"
+
+    def __repr__(self):
+        field_values = ", ".join(
+            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
+        )
+        return f"<WasteLine({field_values})>"

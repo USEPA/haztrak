@@ -41,3 +41,9 @@ class Transporter(ManifestHandler):
 
     def __str__(self):
         return f"{self.handler.epa_id}: transporter {self.order} on {self.manifest.mtn}"
+
+    def __repr__(self):
+        field_values = ", ".join(
+            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
+        )
+        return f"<{self.__class__.__name__}({field_values})>"
