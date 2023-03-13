@@ -1,6 +1,5 @@
 import logging
 
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -88,14 +87,9 @@ class ESignatureManager(TrakManager):
         Create Contact instance in database, create related phone instance if applicable,
         and return the new instance.
         """
-        try:
-            if "signer" in e_signature_data:
-                signer_data = e_signature_data.pop("signer")
-                e_signature_data["signer"] = Signer.objects.create(**signer_data)
-            return super().save(**e_signature_data)
-        except ValidationError as exc:
-            logger.error(exc)
-            raise exc
+        if "signer" in e_signature_data:
+            e_signature_data["signer"] = Signer.objects.create(**e_signature_data.pop("signer"))
+        return super().save(**e_signature_data)
 
 
 class ESignature(models.Model):

@@ -10,6 +10,9 @@ from django.utils.translation import gettext_lazy as _
 from apps.trak.models import ManifestHandler
 from apps.trak.models.base_model import TrakManager
 
+from .transporter_model import Transporter
+from .waste_model import WasteLine
+
 logger = logging.getLogger(__name__)
 
 
@@ -39,11 +42,17 @@ class ManifestManager(TrakManager):
     Inter-model related functionality for Manifest Model
     """
 
-    def save(self, manifest_data: Dict):
+    def save(self, **manifest_data: Dict):
         """Create a manifest with its related models instances"""
+        waste_data = []
+        trans_data = []
         additional_info = None
         manifest_generator = None
         manifest_tsd = None
+        if "wastes" in manifest_data:
+            waste_data = manifest_data.pop("wastes")
+        if "transporters" in manifest_data:
+            trans_data = manifest_data.pop("transporters")
         # Create manifest handlers (generator and TSD) and all related models
         if "generator" in manifest_data:
             manifest_generator = ManifestHandler.objects.save(**manifest_data.pop("generator"))
@@ -52,18 +61,27 @@ class ManifestManager(TrakManager):
         if "additional_info" in manifest_data:
             additional_info = AdditionalInfo.objects.create(**manifest_data.pop("additional_info"))
         # Create model instances
-        return super().save(
+        manifest = super().save(
             generator=manifest_generator,
             tsd=manifest_tsd,
             additional_info=additional_info,
             **manifest_data,
         )
+        for waste_line in waste_data:
+            saved_waste_line = WasteLine.objects.save(manifest=manifest, **waste_line)
+            logger.debug(f"WasteLine saved {saved_waste_line.pk}")
+        for transporter in trans_data:
+            saved_transporter = Transporter.objects.save(manifest=manifest, **transporter)
+            logger.debug(f"WasteLine saved {saved_transporter.pk}")
+        return manifest
 
 
 class Manifest(models.Model):
     """
     Model definition the e-Manifest Uniform Hazardous Waste Manifest
     """
+
+    objects = ManifestManager()
 
     class LockReason(models.TextChoices):
         ASYNC_SIGN = "ACS", _("AsyncSign")
@@ -91,8 +109,6 @@ class Manifest(models.Model):
         CORRECTED = "Corrected", _("Corrected")
         UNDER_CORRECTION = "UnderCorrection", _("Under Correction")
         VALIDATION_FAILED = "MtnValidationFailed", _("MTN Validation Failed")
-
-    objects = ManifestManager()
 
     created_date = models.DateTimeField(
         null=True,

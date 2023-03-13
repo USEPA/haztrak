@@ -1,8 +1,9 @@
 import logging
+from typing import Dict
 
 from rest_framework import serializers
 
-from apps.trak.models import Manifest, Transporter, WasteLine
+from apps.trak.models import Manifest
 from apps.trak.serializers.handler_ser import ManifestHandlerSerializer
 from apps.trak.serializers.trak_ser import TrakBaseSerializer
 
@@ -204,17 +205,11 @@ class ManifestSerializer(TrakBaseSerializer):
         allow_null=True,
     )
 
-    def create(self, validated_data) -> Manifest:
-        waste_data = validated_data.pop("wastes")
-        trans_data = validated_data.pop("transporters")
-        manifest = Manifest.objects.save(validated_data)
-        logger.debug(f"ManifestSerializer created manifest {manifest}")
-        for waste_line in waste_data:
-            WasteLine.objects.create(manifest=manifest, **waste_line)
-        for transporter in trans_data:
-            transporter["manifest"] = manifest
-            Transporter.objects.save(**transporter)
-        return manifest
+    def update(self, instance, validated_data: Dict) -> Manifest:
+        return self.Meta.model.objects.save(**validated_data)
+
+    def create(self, validated_data: Dict) -> Manifest:
+        return self.Meta.model.objects.save(**validated_data)
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
     def to_representation(self, instance) -> str:

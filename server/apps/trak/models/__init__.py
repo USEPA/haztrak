@@ -1,7 +1,7 @@
 """
 Model definitions for the trak domain
 """
-from .address_model import Address, EpaCountries, EpaStates
+from .address_model import Address
 from .contact_model import Contact, EpaPhone
 from .handler_model import Handler, ManifestHandler
 from .manifest_model import Manifest

@@ -1,11 +1,24 @@
 from django.db import models
 
+from apps.trak.models.base_model import TrakManager
+
+
+class WasteLineManager(TrakManager):
+    """
+    Inter-model related functionality for Contact Model
+    """
+
+    def save(self, **waste_data) -> models.QuerySet:
+        return super().save(**waste_data)
+
 
 class WasteLine(models.Model):
     """
     ToDo: Every place we have as a JSON field likely should be stored in separate table
     Model definition for hazardous waste listed on a uniform hazardous waste manifest.
     """
+
+    objects = WasteLineManager()
 
     manifest = models.ForeignKey(
         "Manifest",

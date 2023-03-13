@@ -3,7 +3,6 @@ from typing import Dict
 from django.db import models
 
 from .handler_model import Handler, ManifestHandler, ManifestHandlerManager
-from .manifest_model import Manifest
 
 
 class TransporterManager(ManifestHandlerManager):

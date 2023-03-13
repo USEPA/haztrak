@@ -88,16 +88,10 @@ class ESignatureSerializer(TrakBaseSerializer):
     )
 
     def update(self, instance, validated_data):
-        super().update(instance, validated_data)
+        return super().update(instance, validated_data)
 
     def create(self, validated_data: Dict):
-        signer = None
-        try:
-            signer_data = validated_data.pop("signer")
-            signer = Signer.objects.create(**signer_data)
-        except KeyError:
-            pass
-        return ESignature.objects.create(**validated_data, signer=signer)
+        return self.Meta.model.objects.save(**validated_data)
 
     class Meta:
         model = ESignature
@@ -126,11 +120,11 @@ class PaperSignatureSerializer(TrakBaseSerializer):
         required=False,
     )
 
-    def update(self, instance, validated_data):
-        return super().update(instance, validated_data)
+    def update(self, instance, validated_data: Dict):
+        return super().update(instance, **validated_data)
 
     def create(self, validated_data: Dict):
-        return super().create(validated_data)
+        return super().create(**validated_data)
 
     class Meta:
         model = PaperSignature
