@@ -9,6 +9,7 @@ import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import htApi from 'services';
 import { addMsg, useAppDispatch } from 'store';
 import { Manifest } from 'types/Manifest';
@@ -21,6 +22,8 @@ import AddWasteLine from './WasteLine';
 interface ManifestFormProps {
   readOnly?: boolean;
   manifestData?: Manifest;
+  siteId?: string;
+  mtn?: string;
 }
 
 /**
@@ -28,12 +31,13 @@ interface ManifestFormProps {
  * as the current method of viewing manifest when the form is read only.
  * @constructor
  */
-function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
+function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps) {
   // Top level ManifestForm methods and objects
   const manifestMethods = useForm<Manifest>({ values: manifestData });
   // On load, focus the generator EPA ID.
   useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     // ToDo: on submit, validate the user input
     htApi
@@ -66,7 +70,6 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
 
   // Generator controls
   const generator: ManifestHandler = manifestMethods.getValues('generator');
-  console.log(generator);
 
   // Transporter controls
   const [transFormShow, setTransFormShow] = useState<boolean>(false);
@@ -95,9 +98,11 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
     <>
       <FormProvider {...manifestMethods}>
         <HtForm onSubmit={manifestMethods.handleSubmit(onSubmit)}>
-          <h2 className="fw-bold">{`${
-            manifestData?.manifestTrackingNumber || 'Draft'
-          } Manifest`}</h2>
+          <div className="d-flex justify-content-between">
+            <h2 className="fw-bold">{`${
+              manifestData?.manifestTrackingNumber || 'Draft'
+            } Manifest`}</h2>
+          </div>
           <HtCard id="general-form-card">
             <HtCard.Header title="General info" />
             <HtCard.Body>
@@ -293,13 +298,16 @@ function ManifestForm({ readOnly, manifestData }: ManifestFormProps) {
             </HtCard.Body>
           </HtCard>
           <div className="mx-1 d-flex flex-row-reverse">
-            {readOnly ? (
-              <></>
-            ) : (
-              <Button variant="success" type="submit">
-                Save Manifest
-              </Button>
-            )}
+            <Button className="mx-2" variant="success" type="submit" disabled={readOnly}>
+              Save Manifest
+            </Button>
+            <Button
+              variant="primary"
+              disabled={!readOnly}
+              onClick={() => navigate(`/site/${siteId}/manifest/${mtn}/edit`)}
+            >
+              Edit Manifest
+            </Button>
           </div>
         </HtForm>
         <AddTransporter
