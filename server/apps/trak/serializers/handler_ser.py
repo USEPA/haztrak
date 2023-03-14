@@ -125,6 +125,8 @@ class ManifestHandlerSerializer(HandlerSerializer):
         if "paperSignatureInfo" in data:
             instance["paperSignatureInfo"] = data.pop("paperSignatureInfo")
         instance["handler"] = data
+        if "order" in instance["handler"]:
+            instance["order"] = instance["handler"]["order"]
         return super().to_internal_value(instance)
 
     class Meta:

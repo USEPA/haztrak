@@ -183,12 +183,15 @@ class ManifestHandlerManager(TrakManager):
         try:
             if Handler.objects.filter(epa_id=handler_data["handler"]["epa_id"]).exists():
                 handler = Handler.objects.get(epa_id=handler_data["handler"]["epa_id"])
+                handler_data.pop("handler")
                 logger.debug(f"using existing Handler {handler}")
             else:
-                handler = Handler.objects.save(**handler_data["handler"])
+                handler = Handler.objects.save(**handler_data.pop("handler"))
                 logger.debug(f"Handler created {handler}")
-            manifest_handler = ManifestHandler.objects.create(
-                handler=handler, paper_signature=paper_signature
+            manifest_handler = self.model.objects.create(
+                handler=handler,
+                paper_signature=paper_signature,
+                **handler_data,
             )
             logger.debug(f"ManifestHandler created {manifest_handler}")
             for e_signature_data in e_signatures:

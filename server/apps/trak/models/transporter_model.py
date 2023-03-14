@@ -15,9 +15,7 @@ class TransporterManager(ManifestHandlerManager):
         Create a Transporter from a manifest instance and handler dict
         ToDo: fix this implementation
         """
-        handler_data = transporter_data.pop("handler")
-        handler = Handler.objects.save(**handler_data)
-        return self.create(handler=handler, **transporter_data)
+        return super().save(**transporter_data)
 
 
 class Transporter(ManifestHandler):
