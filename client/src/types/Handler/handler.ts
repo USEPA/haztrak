@@ -50,11 +50,16 @@ export interface Handler {
   gisPrimary?: boolean;
 }
 
+export interface PaperSignature {
+  printedName: string;
+  signatureDate: string;
+}
+
 /**
  * The ManifestHandler extends to Handler schema and adds manifest specific data
  */
 export interface ManifestHandler extends Handler {
-  // paperSignatureInfo: PaperSignature
+  paperSignatureInfo?: PaperSignature;
   electronicSignaturesInfo?: Array<ElectronicSignature>;
   siteType?: 'Generator' | 'Broken' | 'Transporter' | 'Tsdf';
 }

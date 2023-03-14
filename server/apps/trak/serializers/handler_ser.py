@@ -66,6 +66,9 @@ class HandlerSerializer(TrakBaseSerializer):
         default=False,
     )
 
+    def update(self, instance, validated_data):
+        return self.Meta.model.objects.save(**validated_data)
+
     def create(self, validated_data):
         return self.Meta.model.objects.save(**validated_data)
 

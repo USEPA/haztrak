@@ -10,6 +10,7 @@ function ManifestDetails() {
   const { mtn, action, siteId } = useParams();
   useTitle(`${mtn}`);
   const [manifestData, loading, error] = useHtAPI<Manifest>(`trak/manifest/${mtn}`);
+  console.log(manifestData?.transporters[0].paperSignatureInfo);
 
   let readOnly = true;
   if (action === 'edit') {

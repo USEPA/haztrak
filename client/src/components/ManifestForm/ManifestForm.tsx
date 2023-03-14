@@ -67,6 +67,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
         );
       });
   };
+  console.log(manifestData?.transporters);
 
   // Generator controls
   const generator: ManifestHandler = manifestMethods.getValues('generator');
