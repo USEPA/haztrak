@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
+from .base_model import TrakBaseModel
 from .rcra_profile_model import RcraProfile
 from .site_model import Site
 
@@ -11,7 +12,7 @@ EPA_PERMISSION_LEVEL = [
 ]
 
 
-class SitePermission(models.Model):
+class SitePermission(TrakBaseModel):
     """
     RCRAInfo Site Permissions per module connected to a user's RcraProfile
     and the corresponding Site
@@ -49,13 +50,6 @@ class SitePermission(models.Model):
 
     def __str__(self):
         return f"{self.profile.user}: {self.site}"
-
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-
-        return f"<{self.__class__.__name__}({field_values})>"
 
     def clean(self):
         if self.site_manager:

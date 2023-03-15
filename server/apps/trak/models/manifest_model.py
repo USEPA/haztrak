@@ -8,7 +8,7 @@ from django.db.models import Max
 from django.utils.translation import gettext_lazy as _
 
 from apps.trak.models import ManifestHandler
-from apps.trak.models.base_model import TrakManager
+from apps.trak.models.base_model import TrakBaseManager, TrakBaseModel
 
 from .transporter_model import Transporter
 from .waste_model import WasteLine
@@ -37,7 +37,7 @@ def validate_mtn(value):
         )
 
 
-class ManifestManager(TrakManager):
+class ManifestManager(TrakBaseManager):
     """
     Inter-model related functionality for Manifest Model
     """
@@ -76,7 +76,7 @@ class ManifestManager(TrakManager):
         return manifest
 
 
-class Manifest(models.Model):
+class Manifest(TrakBaseModel):
     """
     Model definition the e-Manifest Uniform Hazardous Waste Manifest
     """
@@ -278,7 +278,7 @@ class Manifest(models.Model):
         return f"{self.mtn}"
 
 
-class AdditionalInfo(models.Model):
+class AdditionalInfo(TrakBaseModel):
     """
     Entity containing Additional Information. Relevant to Both Manifest and individual WastesLines.
     Shipment rejection related info is stored in this object.
@@ -327,9 +327,3 @@ class AdditionalInfo(models.Model):
 
     def __str__(self):
         return f"{self.original_mtn or 'Unknown'}"
-
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-        return f"<{self.__class__.__name__}({field_values})>"

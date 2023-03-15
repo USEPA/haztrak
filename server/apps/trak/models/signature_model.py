@@ -3,12 +3,12 @@ import logging
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.trak.models.base_model import TrakManager
+from apps.trak.models.base_model import TrakBaseManager, TrakBaseModel
 
 logger = logging.getLogger(__name__)
 
 
-class Signer(models.Model):
+class Signer(TrakBaseModel):
     """EPA manifest signer definition"""
 
     class Role(models.TextChoices):
@@ -77,7 +77,7 @@ class Signer(models.Model):
         )
 
 
-class ESignatureManager(TrakManager):
+class ESignatureManager(TrakBaseManager):
     """
     Inter-model related functionality for ESignature Model
     """
@@ -92,7 +92,7 @@ class ESignatureManager(TrakManager):
         return super().save(**e_signature_data)
 
 
-class ESignature(models.Model):
+class ESignature(TrakBaseModel):
     """EPA electronic signature"""
 
     objects = ESignatureManager()
@@ -138,17 +138,11 @@ class ESignature(models.Model):
             )
         return f"e-signature on {self.sign_date}"
 
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-        return f"<{self.__class__.__name__}({field_values})>"
-
     class Meta:
         verbose_name = "e-Signature"
 
 
-class PaperSignature(models.Model):
+class PaperSignature(TrakBaseModel):
     """
     Contains printed name of the handler Signee and
     Date of Signature for paper manifests.
@@ -161,12 +155,6 @@ class PaperSignature(models.Model):
 
     def __str__(self):
         return f"{self.printed_name} ({self.sign_date.strftime('%Y-%m-%d %H:%M:%S')})"
-
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-        return f"<{self.__class__.__name__}({field_values})>"
 
     def __hash__(self):
         return hash((self.printed_name, self.sign_date))

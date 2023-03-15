@@ -1,9 +1,9 @@
 from django.db import models
 
-from apps.trak.models.base_model import TrakManager
+from apps.trak.models.base_model import TrakBaseManager, TrakBaseModel
 
 
-class WasteLineManager(TrakManager):
+class WasteLineManager(TrakBaseManager):
     """
     Inter-model related functionality for Contact Model
     """
@@ -12,7 +12,7 @@ class WasteLineManager(TrakManager):
         return super().save(**waste_data)
 
 
-class WasteLine(models.Model):
+class WasteLine(TrakBaseModel):
     """
     ToDo: Every place we have as a JSON field likely should be stored in separate table
     Model definition for hazardous waste listed on a uniform hazardous waste manifest.
@@ -80,9 +80,3 @@ class WasteLine(models.Model):
 
     def __str__(self):
         return f"{self.manifest} line {self.line_number}"
-
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-        return f"<WasteLine({field_values})>"

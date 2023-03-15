@@ -1,10 +1,11 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 
+from .base_model import TrakBaseModel
 from .handler_model import Handler
 
 
-class Site(models.Model):
+class Site(TrakBaseModel):
     """
     Haztrak Site model used to control access to Handler object.
 
@@ -30,9 +31,3 @@ class Site(models.Model):
 
     def __str__(self):
         return f"{self.epa_site.epa_id}"
-
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-        return f"<{self.__class__.__name__}({field_values})>"

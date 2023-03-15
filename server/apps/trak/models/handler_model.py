@@ -5,14 +5,14 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 from .address_model import Address
-from .base_model import TrakManager
+from .base_model import TrakBaseManager, TrakBaseModel
 from .contact_model import Contact, EpaPhone
 from .signature_model import ESignature, PaperSignature
 
 logger = logging.getLogger(__name__)
 
 
-class HandlerManager(TrakManager):
+class HandlerManager(TrakBaseManager):
     """
     Inter-model related functionality for Handler Model
     """
@@ -50,12 +50,6 @@ class HandlerManager(TrakManager):
         except KeyError as exc:
             logger.warning(f"error while creating handler {exc}")
 
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-        return f"<{self.__class__.__name__}({field_values})>"
-
     def get_emergency_phone(self) -> Union[EpaPhone, None]:
         """Check if emergency phone is present and create an EpaPhone row"""
         try:
@@ -78,7 +72,7 @@ class HandlerManager(TrakManager):
             raise ValidationError(exc)
 
 
-class Handler(models.Model):
+class Handler(TrakBaseModel):
     """
     RCRAInfo Handler model definition for entities on the uniform hazardous waste manifests
     """
@@ -105,12 +99,12 @@ class Handler(models.Model):
         max_length=200,
     )
     site_address = models.ForeignKey(
-        Address,
+        "Address",
         on_delete=models.CASCADE,
         related_name="site_address",
     )
     mail_address = models.ForeignKey(
-        Address,
+        "Address",
         on_delete=models.CASCADE,
         related_name="mail_address",
     )
@@ -123,12 +117,12 @@ class Handler(models.Model):
         blank=True,
     )
     contact = models.ForeignKey(
-        Contact,
+        "Contact",
         on_delete=models.CASCADE,
         verbose_name="Contact Information",
     )
     emergency_phone = models.ForeignKey(
-        EpaPhone,
+        "EpaPhone",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
@@ -160,14 +154,8 @@ class Handler(models.Model):
     def __str__(self):
         return f"{self.epa_id}"
 
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-        return f"<{self.__class__.__name__}({field_values})>"
 
-
-class ManifestHandlerManager(TrakManager):
+class ManifestHandlerManager(TrakBaseManager):
     """
     Inter-model related functionality for ManifestHandler Model
     """
@@ -207,7 +195,7 @@ class ManifestHandlerManager(TrakManager):
             raise exc
 
 
-class ManifestHandler(models.Model):
+class ManifestHandler(TrakBaseModel):
     """
     ManifestHandler which contains a reference to hazardous waste
     handler and data specific to that handler on the given manifest.
@@ -230,9 +218,3 @@ class ManifestHandler(models.Model):
 
     def __str__(self):
         return f"ManifestHandler: {self.handler.epa_id}"
-
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-        return f"<{self.__class__.__name__}({field_values})>"

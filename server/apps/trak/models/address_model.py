@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from apps.trak.models.base_model import TrakBaseModel
 
-class Address(models.Model):
+
+class Address(TrakBaseModel):
     """
     Used to capture RCRAInfo address instances (mail, site).
     """
@@ -122,9 +124,3 @@ class Address(models.Model):
         if self.street_number:
             return f"{self.street_number} {self.address1}"
         return f" {self.address1}"
-
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-        return f"<{self.__class__.__name__}({field_values})>"

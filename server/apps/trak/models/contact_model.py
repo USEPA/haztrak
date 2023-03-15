@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.trak.models.base_model import TrakManager
+from apps.trak.models.base_model import TrakBaseManager, TrakBaseModel
 
 
 class EpaPhoneNumber(models.CharField):
@@ -41,7 +41,7 @@ class EpaPhone(models.Model):
         return f"{self.number}"
 
 
-class ContactManager(TrakManager):
+class ContactManager(TrakBaseManager):
     """
     Inter-model related functionality for Contact Model
     """
@@ -61,7 +61,7 @@ class ContactManager(TrakManager):
         return super().save(**contact_data)
 
 
-class Contact(models.Model):
+class Contact(TrakBaseModel):
     """
     RCRAInfo contact including personnel information such as name, email, company,
     includes a phone related field.
@@ -108,9 +108,3 @@ class Contact(models.Model):
             return f"{first.capitalize()} {middle.capitalize()} {last.capitalize()}"
         except AttributeError:
             return f"contact {self.pk}: {self.first_name} {self.middle_initial} {self.last_name}"
-
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-        return f"<{self.__class__.__name__}({field_values})>"
