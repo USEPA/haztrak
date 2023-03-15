@@ -216,5 +216,12 @@ class ManifestHandler(TrakBaseModel):
         help_text="The signature associated with hazardous waste custody exchange",
     )
 
+    @property
+    def signed(self) -> bool:
+        """Returns True if one of the signature types is present"""
+        e_signature_exists = ESignature.objects.filter(manifest_handler=self).exists()
+        paper_signature_exists = self.paper_signature is not None
+        return paper_signature_exists or e_signature_exists
+
     def __str__(self):
         return f"ManifestHandler: {self.handler.epa_id}"
