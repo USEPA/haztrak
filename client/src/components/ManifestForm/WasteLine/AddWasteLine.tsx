@@ -20,7 +20,7 @@ interface Props {
  */
 function AddWasteLine({ show, handleClose, appendWaste, currentWastes }: Props) {
   return (
-    <HtModal showModal={show ? show : false} handleClose={handleClose} dialogClassName="modal-90w">
+    <HtModal showModal={show ? show : false} handleClose={handleClose}>
       <HtModal.Header closeButton>
         <Col>
           <Row>

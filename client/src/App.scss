@@ -76,11 +76,6 @@ button.ht-ellipsis:active {
   color: var(--bs-gray-dark);
 }
 
-.modal-90w {
-  width: 90% !important;
-  max-width: none !important;
-}
-
 // boilerplate
 @media (prefers-reduced-motion: no-preference) {
   :root {
@@ -99,7 +94,7 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-// ToDo: remove this and replace with more
+// ToDo: remove as much #layoutSidenav as possible
 // Styles inherited from the initial template (sb-admin)
 #layoutSidenav {
   display: flex;
@@ -192,8 +187,8 @@ body {
   max-width: 20rem;
 }
 
-.nav .nav-link .sb-nav-link-icon,
-.sb-sidenav-menu .nav-link .sb-nav-link-icon {
+.nav .nav-link,
+.sb-sidenav-menu .nav-link {
   margin-right: 0.5rem;
 }
 
@@ -247,7 +242,7 @@ body {
   position: relative;
 }
 
-.sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-nav-link-icon {
+.sb-sidenav .sb-sidenav-menu .nav .nav-link {
   font-size: 0.9rem;
 }
 
@@ -284,7 +279,7 @@ body {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.sb-sidenav-dark .sb-sidenav-menu .nav-link .sb-nav-link-icon {
+.sb-sidenav-dark .sb-sidenav-menu .nav-link {
   color: rgba(255, 255, 255, 0.25);
 }
 
@@ -300,7 +295,7 @@ body {
   color: #fff;
 }
 
-.sb-sidenav-dark .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
+.sb-sidenav-dark .sb-sidenav-menu .nav-link.active {
   color: #fff;
 }
 
@@ -308,40 +303,35 @@ body {
   background-color: #343a40;
 }
 
-.sb-sidenav-light {
-  background-color: #f8f9fa;
+.sb-sidenav-menu .sb-sidenav-menu-heading {
+  color: #adb5bd;
+}
+
+.sb-sidenav-menu .nav-link {
   color: #212529;
 }
 
-.sb-sidenav-light .sb-sidenav-menu .sb-sidenav-menu-heading {
+.sb-sidenav-menu .nav-link {
   color: #adb5bd;
 }
 
-.sb-sidenav-light .sb-sidenav-menu .nav-link {
-  color: #212529;
-}
-
-.sb-sidenav-light .sb-sidenav-menu .nav-link .sb-nav-link-icon {
+.sb-sidenav-menu .nav-link .sb-sidenav-collapse-arrow {
   color: #adb5bd;
 }
 
-.sb-sidenav-light .sb-sidenav-menu .nav-link .sb-sidenav-collapse-arrow {
-  color: #adb5bd;
-}
-
-.sb-sidenav-light .sb-sidenav-menu .nav-link:hover {
+.sb-sidenav-menu .nav-link:hover {
   color: #0d6efd;
 }
 
-.sb-sidenav-light .sb-sidenav-menu .nav-link.active {
+.sb-sidenav-menu .nav-link.active {
   color: #0d6efd;
 }
 
-.sb-sidenav-light .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
+.sb-sidenav-menu .nav-link.active {
   color: #0d6efd;
 }
 
-.sb-sidenav-light .sb-sidenav-footer {
+.sb-sidenav-footer {
   background-color: #e9ecef;
 }
 

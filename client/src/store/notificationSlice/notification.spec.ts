@@ -1,5 +1,5 @@
 /**
- * Test for the notification reduc slice
+ * Test for the notification Redux slice
  */
 import { cleanup } from '@testing-library/react';
 import NotificationReducer, { addMsg, removeMsg } from 'store/notificationSlice/notification.slice';
