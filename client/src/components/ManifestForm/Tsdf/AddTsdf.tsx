@@ -2,7 +2,7 @@ import { HtModal } from 'components/Ht';
 import { HandlerSearchForm } from 'components/ManifestForm/HandlerSearch';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { HandlerType } from 'types/Handler';
+import { HandlerType } from 'types/handler';
 
 interface Props {
   handleClose: () => void;

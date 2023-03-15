@@ -9,6 +9,7 @@ import {
 } from './handler';
 
 import { Locality, StateCode, AddressType, Address } from './address';
+import { Contact, Phone } from './contact';
 
 export type {
   Site,
@@ -19,5 +20,7 @@ export type {
   Locality,
   ManifestHandler,
   ElectronicSignature,
+  Contact,
+  Phone,
 };
 export { HandlerType, AddressType, StateCode };

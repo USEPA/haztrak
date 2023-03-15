@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Col, Row } from 'react-bootstrap';
-import { Manifest } from 'types/Manifest';
+import { Manifest } from 'types/manifest';
 import { HtForm } from 'components/Ht';
 
 interface ContactFormProps {

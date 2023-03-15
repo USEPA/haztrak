@@ -1,4 +1,4 @@
-import { WasteLine } from 'types/WasteLine';
+import { WasteLine } from 'types/wasteLine';
 
 export const MOCK_WASTE: WasteLine = {
   dotHazardous: false,

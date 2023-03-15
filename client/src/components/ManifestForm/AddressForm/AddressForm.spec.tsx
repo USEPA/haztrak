@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test';
-import { AddressType, HandlerType } from 'types/Handler';
+import { AddressType, HandlerType } from 'types/handler';
 import { AddressForm } from './AddressForm';
 
 afterEach(() => {

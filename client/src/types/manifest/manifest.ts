@@ -1,8 +1,8 @@
-import { Signer, Locality, ManifestHandler, Transporter } from 'types/Handler';
-import { AdditionalInfo } from 'types/Manifest/AdditionalInfo';
-import { WasteLine } from 'types/WasteLine';
-import { CorrectionInfo, CorrectionRequest } from './Correction';
-import { RejectionInfo } from './Rejection';
+import { Signer, Locality, ManifestHandler, Transporter } from 'types/handler';
+import { AdditionalInfo } from 'types/manifest';
+import { WasteLine } from 'types/wasteLine';
+import { CorrectionInfo, CorrectionRequest } from 'types/manifest';
+import { RejectionInfo } from 'types/manifest/rejection';
 
 /**
  * Select details about a manifest for display, navigation, and analysis.
@@ -19,7 +19,7 @@ export interface MtnDetails {
  * program. It captures information on the type and quantity of waste being transported,
  * instructions for handling, and custody exchange data (signatures).
  */
-interface Manifest {
+export interface Manifest {
   createdDate?: string;
   updatedDate?: string;
   /**
@@ -151,5 +151,3 @@ interface Document {
   size: number;
   mimeType: 'APPLICATION_PDF' | 'TEXT_HTML';
 }
-
-export default Manifest;

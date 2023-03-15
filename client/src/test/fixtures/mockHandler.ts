@@ -1,4 +1,4 @@
-import { ManifestHandler } from 'types/Handler';
+import { ManifestHandler } from 'types/handler';
 
 /**
  * A mock handler ID, use by the mock handler object, for tests

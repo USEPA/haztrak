@@ -1,6 +1,6 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
-import { Address } from 'types/Handler';
+import { Address } from 'types/handler';
 
 interface AddressListGroupProps {
   title: string;

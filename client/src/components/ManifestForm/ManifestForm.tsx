@@ -12,12 +12,13 @@ import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-
 import { useNavigate } from 'react-router-dom';
 import htApi from 'services';
 import { addMsg, useAppDispatch } from 'store';
-import { Manifest } from 'types/Manifest';
-import { Transporter, HandlerType, ManifestHandler } from 'types/Handler';
-import { WasteLine } from 'types/WasteLine';
+import { Manifest } from 'types/manifest';
+import { Transporter, HandlerType, ManifestHandler } from 'types/handler';
+import { WasteLine } from 'types/wasteLine';
 import HandlerForm from './HandlerForm';
 import AddTsdf from './Tsdf';
 import AddWasteLine from './WasteLine';
+import { QuickerSignModal } from 'components/QuickerSign';
 
 interface ManifestFormProps {
   readOnly?: boolean;
@@ -78,6 +79,23 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
     control: manifestMethods.control,
     name: 'transporters',
   });
+  // Quicker Sign controls
+  const [quickerSignShow, setQuickerSignShow] = useState<boolean>(false);
+  const [quickerSignHandler, setQuickerSignHandler] = useState<ManifestHandler | undefined>(
+    undefined
+  );
+  /**
+   * Convenience function to toggle Quicker Sign form
+   */
+  const toggleQuickerSignShow = () => setQuickerSignShow(!quickerSignShow);
+  /**
+   * Convenience function to state for controlling which ManifestHandler will be quicker signing
+   * and toggle to modal that displays our Quicker Sign form.
+   */
+  const setupQuickerSign = (handler: ManifestHandler | undefined) => {
+    setQuickerSignHandler(handler);
+    toggleQuickerSignShow();
+  };
 
   // WasteLine controls
   const [wlFormShow, setWlFormShow] = useState<boolean>(false);
@@ -235,6 +253,18 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                   <HandlerDetails handler={generator} />
                   <h4>Emergency Contact Information</h4>
                   <ContactForm handlerFormType="generator" readOnly={readOnly} />
+                  <div className="d-flex justify-content-between">
+                    {/* Button to bring up the Quicker Sign modal*/}
+                    <HtButton
+                      align="end"
+                      onClick={() => {
+                        setupQuickerSign(generator);
+                      }}
+                      disabled={generator.signed}
+                    >
+                      Quicker Sign
+                    </HtButton>
+                  </div>
                 </>
               ) : (
                 <>
@@ -281,7 +311,25 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
           <HtCard id="tsdf-form-card">
             <HtCard.Header title="Designated Facility" />
             <HtCard.Body className="pb-4">
-              {tsdf ? <HandlerDetails handler={tsdf} /> : <></>}
+              {tsdf ? (
+                <>
+                  <HandlerDetails handler={tsdf} />
+                  <div className="d-flex justify-content-between">
+                    {/* Button to bring up the Quicker Sign modal*/}
+                    <HtButton
+                      align="end"
+                      onClick={() => {
+                        setupQuickerSign(tsdf);
+                      }}
+                      disabled={generator.signed}
+                    >
+                      Quicker Sign
+                    </HtButton>
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
               {readOnly ? (
                 <></>
               ) : (
@@ -301,6 +349,17 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
               Save Manifest
             </Button>
             <Button
+              className="mx-2"
+              variant="danger"
+              disabled={readOnly}
+              onClick={() => {
+                manifestMethods.reset();
+                navigate(`/site/${siteId}/manifest/${mtn}/view`);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
               variant="primary"
               disabled={!readOnly}
               onClick={() => navigate(`/site/${siteId}/manifest/${mtn}/edit`)}
@@ -314,6 +373,12 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
           show={transFormShow}
           currentTransporters={transporters}
           appendTransporter={tranArrayMethods.append}
+        />
+        <QuickerSignModal
+          handleClose={toggleQuickerSignShow}
+          show={quickerSignShow}
+          mtn={[mtn ? mtn : '']}
+          mtnHandler={quickerSignHandler}
         />
         <AddWasteLine
           appendWaste={wasteArrayMethods.append}

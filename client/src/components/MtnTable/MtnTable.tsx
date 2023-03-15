@@ -4,7 +4,7 @@ import { Row, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPen } from '@fortawesome/free-solid-svg-icons';
-import { MtnDetails } from 'types/Manifest/Manifest';
+import { MtnDetails } from 'types/manifest';
 
 interface MtnTableProps {
   manifests: Array<MtnDetails>;

@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test';
 import { MOCK_HANDLER } from 'test/fixtures';
-import { ManifestHandler } from 'types/Handler';
+import { ManifestHandler } from 'types/handler';
 import HandlerDetails from './HandlerDetails';
 
 afterEach(() => {
