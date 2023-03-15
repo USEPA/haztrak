@@ -87,11 +87,11 @@ class Address(TrakBaseModel):
         blank=True,
     )
     address1 = models.CharField(
-        verbose_name="Address 1",
+        verbose_name="address 1",
         max_length=50,
     )
     address2 = models.CharField(
-        verbose_name="Address 2",
+        verbose_name="address 2",
         max_length=50,
         default=None,
         null=True,
