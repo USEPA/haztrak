@@ -16,6 +16,7 @@ class TransporterSerializer(ManifestHandlerSerializer):
             "order",
             "paperSignatureInfo",
             "electronicSignaturesInfo",
+            "signed",
         ]
 
     def to_internal_value(self, data):

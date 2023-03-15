@@ -27,7 +27,7 @@ function HandlerDetails({ handler }: HandlerDetailsProps) {
           <h4>{handler.name}</h4>
         </Col>
         <Col className="d-flex justify-content-end">
-          {handler.electronicSignaturesInfo && (
+          {handler.signed && (
             <p className="text-right">
               signed <FontAwesomeIcon icon={faSignature} className="text-success" size="xl" />
             </p>

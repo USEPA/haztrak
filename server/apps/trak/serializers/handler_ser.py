@@ -104,6 +104,7 @@ class ManifestHandlerSerializer(HandlerSerializer):
         source="paper_signature",
         required=False,
     )
+    signed = serializers.ReadOnlyField()
 
     def update(self, instance, validated_data: Dict):
         return self.Meta.model.objects.update(instance, **validated_data)
@@ -135,4 +136,5 @@ class ManifestHandlerSerializer(HandlerSerializer):
             "handler",
             "electronicSignaturesInfo",
             "paperSignatureInfo",
+            "signed",
         ]
