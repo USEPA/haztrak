@@ -36,6 +36,7 @@ class AddressSerializer(TrakBaseSerializer):
     streetNumber = serializers.CharField(
         source="street_number",
         required=False,
+        allow_blank=True,
     )
     state = LocalityField(
         choices=Address.EpaStates.choices,

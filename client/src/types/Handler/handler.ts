@@ -51,12 +51,24 @@ export interface Handler {
 }
 
 /**
+ * The Signature that appears on paper versions of the manifest
+ */
+export interface PaperSignature {
+  printedName: string;
+  signatureDate: string;
+}
+
+/**
  * The ManifestHandler extends to Handler schema and adds manifest specific data
  */
 export interface ManifestHandler extends Handler {
-  // paperSignatureInfo: PaperSignature
+  paperSignatureInfo?: PaperSignature;
   electronicSignaturesInfo?: Array<ElectronicSignature>;
   siteType?: 'Generator' | 'Broken' | 'Transporter' | 'Tsdf';
+  /**
+   * Property on by back end to signify whether the handler has signed
+   */
+  signed?: boolean;
 }
 
 /**

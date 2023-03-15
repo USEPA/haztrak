@@ -1,9 +1,11 @@
+import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import { Manifest } from 'types/Manifest';
 import { Transporter } from 'types/Handler';
 import { TransporterRowActions } from './TransporterRowActions';
 import { UseFieldArrayReturn } from 'react-hook-form';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface TransporterTableProps {
   transporters?: Array<Transporter>;
@@ -28,8 +30,8 @@ function TransporterTable({ transporters, arrayFieldMethods, readOnly }: Transpo
           <th>#</th>
           <th>EPA ID</th>
           <th>Name</th>
-          <th>e-Signer?</th>
-          <th>Edit</th>
+          <th className="text-center">Signed</th>
+          {readOnly ? <></> : <th className="text-center">Edit</th>}
         </tr>
       </thead>
       <tbody>
@@ -39,7 +41,13 @@ function TransporterTable({ transporters, arrayFieldMethods, readOnly }: Transpo
               <td>{transporter.order}</td>
               <td>{transporter.epaSiteId}</td>
               <td>{transporter.name}</td>
-              <td>{transporter.canEsign ? 'yes' : 'no'}</td>
+              <td className="text-center">
+                {transporter.signed ? (
+                  <FontAwesomeIcon icon={faCircleCheck} size="lg" className="text-success" />
+                ) : (
+                  <FontAwesomeIcon icon={faCircleXmark} size="lg" className="text-danger" />
+                )}
+              </td>
               <td>
                 {readOnly ? (
                   <></>

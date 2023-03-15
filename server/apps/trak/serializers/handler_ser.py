@@ -66,6 +66,9 @@ class HandlerSerializer(TrakBaseSerializer):
         default=False,
     )
 
+    def update(self, instance, validated_data):
+        return self.Meta.model.objects.save(**validated_data)
+
     def create(self, validated_data):
         return self.Meta.model.objects.save(**validated_data)
 
@@ -101,6 +104,7 @@ class ManifestHandlerSerializer(HandlerSerializer):
         source="paper_signature",
         required=False,
     )
+    signed = serializers.ReadOnlyField()
 
     def update(self, instance, validated_data: Dict):
         return self.Meta.model.objects.update(instance, **validated_data)
@@ -122,6 +126,8 @@ class ManifestHandlerSerializer(HandlerSerializer):
         if "paperSignatureInfo" in data:
             instance["paperSignatureInfo"] = data.pop("paperSignatureInfo")
         instance["handler"] = data
+        if "order" in instance["handler"]:
+            instance["order"] = instance["handler"]["order"]
         return super().to_internal_value(instance)
 
     class Meta:
@@ -130,4 +136,5 @@ class ManifestHandlerSerializer(HandlerSerializer):
             "handler",
             "electronicSignaturesInfo",
             "paperSignatureInfo",
+            "signed",
         ]

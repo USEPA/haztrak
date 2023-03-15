@@ -224,12 +224,16 @@ def e_signature_factory(db, signer_factory, manifest_handler_factory):
 
 
 @pytest.fixture
-def manifest_handler_factory(db, handler_factory):
+def manifest_handler_factory(db, handler_factory, paper_signature_factory):
     """Abstract factory for Haztrak ManifestHandler model"""
 
-    def create_manifest_handler(handler: Optional[Handler] = None) -> ManifestHandler:
+    def create_manifest_handler(
+        handler: Optional[Handler] = None,
+        paper_signature: Optional[PaperSignature] = None,
+    ) -> ManifestHandler:
         return ManifestHandler.objects.create(
             handler=handler or handler_factory(),
+            paper_signature=paper_signature or paper_signature_factory(),
         )
 
     return create_manifest_handler

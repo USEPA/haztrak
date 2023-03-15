@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from apps.trak.models.base_model import TrakBaseModel
 
-class RcraProfile(models.Model):
+
+class RcraProfile(TrakBaseModel):
     """
     Provides the user's RcraProfile information, excluding their RCRAInfo
     API key (see ProfileUpdateSerializer). Has a one-to-one relationship with
@@ -37,12 +39,6 @@ class RcraProfile(models.Model):
 
     def __str__(self):
         return f"{self.user.username}"
-
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-        return f"<{self.__class__.__name__}({field_values})>"
 
     def sync(self):
         """Launch task to sync use profile. ToDo: remove this method"""

@@ -36,6 +36,7 @@ class AdditionalInfoSerializer(serializers.ModelSerializer):
     )
     handlingInstructions = serializers.CharField(
         allow_null=True,
+        allow_blank=True,
         required=False,
         source="handling_instructions",
     )

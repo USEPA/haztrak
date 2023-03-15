@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { Manifest } from 'types/Manifest';
 
 function ManifestDetails() {
-  const { mtn, action } = useParams();
+  const { mtn, action, siteId } = useParams();
   useTitle(`${mtn}`);
   const [manifestData, loading, error] = useHtAPI<Manifest>(`trak/manifest/${mtn}`);
 
@@ -21,7 +21,7 @@ function ManifestDetails() {
   return loading ? (
     <HtSpinner />
   ) : manifestData ? (
-    <ManifestForm manifestData={manifestData} readOnly={readOnly} />
+    <ManifestForm manifestData={manifestData} readOnly={readOnly} siteId={siteId} mtn={mtn} />
   ) : (
     <></>
   );
