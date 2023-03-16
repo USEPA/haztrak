@@ -110,11 +110,11 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
           </HtCard>
         </Container>
         <div className="d-flex justify-content-end">
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="danger" onClick={handleClose}>
             Cancel
           </Button>
           <Button type="submit" variant="success" className="mx-3">
-            Add Waste Line
+            Add
           </Button>
         </div>
       </HtForm>

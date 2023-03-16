@@ -21,7 +21,7 @@ function AddTsdf({ show, handleClose }: Props) {
       <HtModal.Header closeButton>
         <Col>
           <Row>
-            <HtModal.Title title="Designated Facility" />
+            <HtModal.Title title="Add Designated Facility" />
           </Row>
           <Row>
             <i>

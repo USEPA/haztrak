@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import htApi from 'services';
 import { addMsg, useAppDispatch } from 'store';
 import { Manifest } from 'types/manifest';
-import { Transporter, HandlerType, ManifestHandler } from 'types/handler';
+import { HandlerType, ManifestHandler, Transporter } from 'types/handler';
 import { WasteLine } from 'types/wasteLine';
 import HandlerForm from './HandlerForm';
 import AddTsdf from './Tsdf';
@@ -40,7 +40,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
-    // ToDo: on submit, validate the user input
+    // ToDo: on submit, add front end validation
     htApi
       .post('/trak/manifest/', data)
       .then((response: AxiosResponse) => {
@@ -346,7 +346,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
           </HtCard>
           <div className="mx-1 d-flex flex-row-reverse">
             <Button className="mx-2" variant="success" type="submit" disabled={readOnly}>
-              Save Manifest
+              Save
             </Button>
             <Button
               className="mx-2"
@@ -354,7 +354,11 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
               disabled={readOnly}
               onClick={() => {
                 manifestMethods.reset();
-                navigate(`/site/${siteId}/manifest/${mtn}/view`);
+                if (!mtn) {
+                  navigate(-1);
+                } else {
+                  navigate(`/site/${siteId}/manifest/${mtn}/view`);
+                }
               }}
             >
               Cancel
@@ -364,7 +368,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
               disabled={!readOnly}
               onClick={() => navigate(`/site/${siteId}/manifest/${mtn}/edit`)}
             >
-              Edit Manifest
+              Edit
             </Button>
           </div>
         </HtForm>
