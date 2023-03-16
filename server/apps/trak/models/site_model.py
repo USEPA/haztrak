@@ -14,17 +14,17 @@ class Site(TrakBaseModel):
     """
 
     name = models.CharField(
-        verbose_name="site Alias",
+        verbose_name="site alias",
         max_length=200,
         validators=[MinValueValidator(2, "site aliases must be longer than 2 characters")],
     )
     epa_site = models.OneToOneField(
-        verbose_name="Handler",
+        verbose_name="handler",
         to=Handler,
         on_delete=models.CASCADE,
     )
     last_rcra_sync = models.DateTimeField(
-        verbose_name="Last Sync with RCRAInfo",
+        verbose_name="last sync with RCRAInfo",
         null=True,
         blank=True,
     )

@@ -1,14 +1,9 @@
-import {
-  faCircleCheck,
-  faCircleXmark,
-  faFileSignature,
-  faSignature,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faCircleXmark, faSignature } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddressListGroup from 'components/HandlerDetails/AddressListGroup';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { ManifestHandler } from 'types/Handler';
+import { ManifestHandler } from 'types/handler';
 
 interface HandlerDetailsProps {
   handler: ManifestHandler;

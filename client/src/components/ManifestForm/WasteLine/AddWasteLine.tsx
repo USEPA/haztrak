@@ -2,8 +2,8 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import WasteLineForm from './WasteLineForm';
 import { UseFieldArrayAppend } from 'react-hook-form';
-import { Manifest } from 'types/Manifest';
-import { WasteLine } from 'types/WasteLine';
+import { Manifest } from 'types/manifest';
+import { WasteLine } from 'types/wasteLine';
 import { HtModal } from 'components/Ht';
 
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
  */
 function AddWasteLine({ show, handleClose, appendWaste, currentWastes }: Props) {
   return (
-    <HtModal showModal={show ? show : false} handleClose={handleClose} dialogClassName="modal-90w">
+    <HtModal showModal={show ? show : false} handleClose={handleClose}>
       <HtModal.Header closeButton>
         <Col>
           <Row>

@@ -148,7 +148,7 @@ class Manifest(TrakBaseModel):
         blank=True,
     )
     potential_ship_date = models.DateTimeField(
-        verbose_name="Potential ship date",
+        verbose_name="potential ship date",
         null=True,
         blank=True,
     )
@@ -172,7 +172,7 @@ class Manifest(TrakBaseModel):
     # transporters
     tsd = models.ForeignKey(
         "ManifestHandler",
-        verbose_name="Designated facility",
+        verbose_name="designated facility",
         on_delete=models.PROTECT,
         related_name="designated_facility",
     )
@@ -196,22 +196,22 @@ class Manifest(TrakBaseModel):
         default=False,
     )
     residue_new_mtn = models.JSONField(
-        verbose_name="Residue new MTN",
+        verbose_name="residue new MTN",
         blank=True,
         default=list,
     )
     import_flag = models.BooleanField(
-        verbose_name="Import",
+        verbose_name="import",
         blank=True,
         default=False,
     )
     import_info = models.JSONField(
-        verbose_name="Import information",
+        verbose_name="import information",
         null=True,
         blank=True,
     )
     contains_residue_or_rejection = models.BooleanField(
-        verbose_name="Contains previous rejection or residue waste",
+        verbose_name="contains previous rejection or residue waste",
         null=True,
         blank=True,
     )
@@ -258,7 +258,7 @@ class Manifest(TrakBaseModel):
         blank=True,
     )
     original_sub_type = models.CharField(
-        verbose_name="Original Submission Type",
+        verbose_name="original submission type",
         max_length=25,
         choices=SubType.choices,
         null=True,
@@ -269,7 +269,7 @@ class Manifest(TrakBaseModel):
         blank=True,
     )
     next_transfer_time = models.DateTimeField(
-        verbose_name="Next Transfer Time",
+        verbose_name="next transfer time",
         null=True,
         blank=True,
     )
@@ -322,8 +322,8 @@ class AdditionalInfo(TrakBaseModel):
     )
 
     class Meta:
-        verbose_name = "AdditionalInfo"
-        verbose_name_plural = "AdditionalInfo"
+        verbose_name = "additional info"
+        verbose_name_plural = "additional info"
 
     def __str__(self):
         return f"{self.original_mtn or 'Unknown'}"

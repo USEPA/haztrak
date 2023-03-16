@@ -3,8 +3,8 @@ import TransporterSearchForm from 'components/ManifestForm/HandlerSearch/Transpo
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { UseFieldArrayAppend } from 'react-hook-form';
-import { Handler } from 'types/Handler';
-import { Manifest } from 'types/Manifest';
+import { Handler } from 'types/handler';
+import { Manifest } from 'types/manifest';
 
 interface Props {
   handleClose: () => void;

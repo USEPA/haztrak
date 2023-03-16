@@ -6,7 +6,7 @@ import useHtAPI from 'hooks/useHtAPI';
 import useTitle from 'hooks/useTitle';
 import SyncManifestBtn from 'components/SyncManifestBtn';
 import MtnTable from 'components/MtnTable';
-import { MtnDetails } from 'types/Manifest/Manifest';
+import { MtnDetails } from 'types/manifest';
 
 /**
  * Fetch and display all the manifest tracking number (MTN) known by haztrak

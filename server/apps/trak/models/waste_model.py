@@ -42,7 +42,7 @@ class WasteLine(TrakBaseModel):
         blank=True,
     )
     line_number = models.PositiveIntegerField(
-        verbose_name="Waste line number",
+        verbose_name="waste line number",
     )
     br = models.BooleanField(
         verbose_name="BR info provided",
@@ -53,12 +53,12 @@ class WasteLine(TrakBaseModel):
         blank=True,
     )
     management_method = models.JSONField(
-        verbose_name="Management method code",
+        verbose_name="management method code",
         null=True,
         blank=True,
     )
     pcb = models.BooleanField(
-        verbose_name="Contains PCBs",
+        verbose_name="contains PCBs",
     )
     pcb_infos = models.JSONField(
         verbose_name="PCB information",
@@ -66,7 +66,7 @@ class WasteLine(TrakBaseModel):
         blank=True,
     )
     discrepancy_info = models.JSONField(
-        verbose_name="Discrepancy-Residue information",
+        verbose_name="discrepancy-residue information",
         null=True,
         blank=True,
     )

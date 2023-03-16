@@ -12,12 +12,12 @@ interface TestCompProps {
 }
 
 function TestComponent({ prevailOnUnmount, excludeAppend }: TestCompProps) {
-  const [pagetitle, setPageTitle] = useTitle(originalPageTitle, prevailOnUnmount, excludeAppend);
+  const [pageTitle, setPageTitle] = useTitle(originalPageTitle, prevailOnUnmount, excludeAppend);
   return (
     <>
       <p>Hello!</p>
       <button onClick={() => setPageTitle(newPageTitle)}>Change Title</button>
-      <p>{pagetitle ? pagetitle : 'undefined'}</p>
+      <p>{pageTitle ? pageTitle : 'undefined'}</p>
     </>
   );
 }
@@ -32,7 +32,7 @@ describe('useTitle', () => {
     render(<TestComponent />);
     expect(document.title).toContain(originalPageTitle);
   });
-  it('It can be used to changes the title', () => {
+  it('changes the page title', () => {
     render(<TestComponent />);
     fireEvent.click(screen.getByText(/Change Title/i));
     expect(document.title).toContain(newPageTitle);

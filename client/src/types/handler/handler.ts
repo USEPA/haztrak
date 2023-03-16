@@ -1,5 +1,5 @@
 import { Address, Locality } from './address';
-import { Contact, Phone } from 'types/Handler/Contact';
+import { Contact, Phone } from 'types/handler';
 
 /**
  * The schema of an EPA hazardous waste handler, it serves as the base schema for

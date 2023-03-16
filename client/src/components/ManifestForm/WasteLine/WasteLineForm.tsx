@@ -4,8 +4,8 @@ import HazardousWasteForm from 'components/ManifestForm/WasteLine/HazardousWaste
 import React from 'react';
 import { Button, Container, Row } from 'react-bootstrap';
 import { FormProvider, UseFieldArrayAppend, useForm } from 'react-hook-form';
-import { Manifest } from 'types/Manifest';
-import { WasteLine } from 'types/WasteLine';
+import { Manifest } from 'types/manifest';
+import { WasteLine } from 'types/wasteLine';
 import QuantityForm from './QuantityForm';
 
 interface WasteLineFormProps {
@@ -110,11 +110,11 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
           </HtCard>
         </Container>
         <div className="d-flex justify-content-end">
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="danger" onClick={handleClose}>
             Cancel
           </Button>
           <Button type="submit" variant="success" className="mx-3">
-            Add Waste Line
+            Add
           </Button>
         </div>
       </HtForm>

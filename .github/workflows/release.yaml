@@ -1,9 +1,8 @@
 name: 'Create Release'
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+  release:
+    types: [published]
 
 jobs:
   test_server:
@@ -25,22 +24,3 @@ jobs:
     with:
       context: ./client
       image_name: haztrak-client
-
-  create_release:
-    needs: [build_server, build_client]
-    permissions:
-      contents: write
-      pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Create Release
-        id: create_release
-        uses: release-drafter/release-drafter@v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          publish: true
-          tag: ${{ github.ref }}
-          version: ${{ github.ref }}
-          footer: '[You can find Haztrak containers in the GitHub container registry](https://github.com/orgs/USEPA/packages?repo_name=haztrak)'

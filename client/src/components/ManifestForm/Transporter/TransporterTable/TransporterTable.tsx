@@ -1,8 +1,8 @@
 import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import { Manifest } from 'types/Manifest';
-import { Transporter } from 'types/Handler';
+import { Manifest } from 'types/manifest';
+import { Transporter } from 'types/handler';
 import { TransporterRowActions } from './TransporterRowActions';
 import { UseFieldArrayReturn } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

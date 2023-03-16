@@ -91,7 +91,7 @@ class Handler(TrakBaseModel):
         ],
     )
     epa_id = models.CharField(
-        verbose_name="EPA Id number",
+        verbose_name="EPA ID number",
         max_length=25,
         unique=True,
     )
@@ -119,7 +119,7 @@ class Handler(TrakBaseModel):
     contact = models.ForeignKey(
         "Contact",
         on_delete=models.CASCADE,
-        verbose_name="Contact Information",
+        verbose_name="contact information",
     )
     emergency_phone = models.ForeignKey(
         "EpaPhone",
@@ -135,17 +135,17 @@ class Handler(TrakBaseModel):
         default=False,
     )
     can_esign = models.BooleanField(
-        verbose_name="Can electronically sign",
+        verbose_name="can electronically sign",
         null=True,
         blank=True,
     )
     limited_esign = models.BooleanField(
-        verbose_name="Limited electronic signing ability",
+        verbose_name="limited electronic signing ability",
         null=True,
         blank=True,
     )
     registered_emanifest_user = models.BooleanField(
-        verbose_name="Has Registered e-manifest user",
+        verbose_name="has registered e-manifest user",
         null=True,
         blank=True,
         default=False,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import { WasteLine } from 'types/WasteLine';
+import { WasteLine } from 'types/wasteLine';
 
 interface WasteLineTableProps {
   wastes: Array<WasteLine>;
