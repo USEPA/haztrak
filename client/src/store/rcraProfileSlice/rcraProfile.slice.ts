@@ -9,6 +9,7 @@ const initialState: RcraProfileState = {
   rcraUsername: undefined,
   epaSites: {},
   phoneNumber: undefined,
+  apiUser: false,
   loading: false,
   error: undefined,
 };
@@ -19,6 +20,7 @@ interface RcraProfileResponse {
   rcraUsername: undefined;
   epaSites?: Array<ProfileEpaSite>;
   phoneNumber: undefined;
+  apiUser: boolean;
   loading: false;
   error: undefined;
 }

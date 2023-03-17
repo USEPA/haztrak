@@ -57,6 +57,10 @@ export interface RcraProfileState {
   phoneNumber?: string;
   loading?: boolean;
   error?: string;
+  /**
+   * Indicates whether the user is authorized
+   */
+  apiUser?: boolean;
 }
 
 /**

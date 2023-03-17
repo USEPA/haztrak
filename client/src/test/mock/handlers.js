@@ -6,6 +6,9 @@ import { MOCK_MANIFESTS_ARRAY } from '../fixtures/mockManifest';
 export const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
 
 export const handlers = [
+  /**
+   * Login endpoint
+   */
   rest.post(`${API_BASE_URL}/api/user/login`, (req, res, ctx) => {
     // Persist user's authentication in the session
     sessionStorage.setItem('token', 'this_is_a_fake_token');
