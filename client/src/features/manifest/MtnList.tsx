@@ -4,7 +4,7 @@ import { Button, Col, Container, Dropdown, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import useHtAPI from 'hooks/useHtAPI';
 import useTitle from 'hooks/useTitle';
-import SyncManifestBtn from 'components/SyncManifestBtn';
+import { SyncManifestBtn } from 'components/buttons';
 import MtnTable from 'components/MtnTable';
 import { MtnDetails } from 'types/manifest';
 

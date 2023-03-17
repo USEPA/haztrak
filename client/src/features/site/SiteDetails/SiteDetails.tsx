@@ -4,7 +4,7 @@ import useHtAPI from 'hooks/useHtAPI';
 import React, { ReactElement } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Site } from 'types/handler';
-import SyncManifestBtn from 'components/SyncManifestBtn';
+import { SyncManifestBtn } from 'components/buttons';
 import { Container, Button } from 'react-bootstrap';
 
 /**

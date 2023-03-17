@@ -1,6 +1,9 @@
+import { faSync } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
 import htApi from 'services';
+import { RcraApiUserBtn } from 'components/buttons';
+import { addMsg, useAppDispatch } from 'store';
 
 interface SyncManifestProps {
   siteId: string;
@@ -13,13 +16,14 @@ interface SyncManifestProps {
  */
 function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
   const [syncingMtn, setSyncingMtn] = useState(false);
+  const dispatch = useAppDispatch();
 
   if (!siteId || disabled) {
     disabled = true;
   }
 
   return (
-    <Button
+    <RcraApiUserBtn
       variant="primary"
       disabled={disabled}
       className="mx-2"
@@ -28,12 +32,24 @@ function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
         htApi
           .post('/trak/site/manifest/sync', { siteId: `${siteId}` })
           .then((r) => console.log(r))
+          .then(() => {
+            dispatch(
+              addMsg({
+                uniqueId: Date.now(),
+                createdDate: new Date().toISOString(),
+                message: 'Sync Manifest Task Launched',
+                alertType: 'Info',
+                read: false,
+                timeout: 5000,
+              })
+            );
+          })
           .catch((reason) => console.log(reason));
       }}
     >
-      {/*Sync <FontAwesomeIcon icon="sync" spin={syncingMtn} />*/}
-      Sync Manifest
-    </Button>
+      {`Sync Manifest `}
+      <FontAwesomeIcon icon={faSync} />
+    </RcraApiUserBtn>
   );
 }
 
