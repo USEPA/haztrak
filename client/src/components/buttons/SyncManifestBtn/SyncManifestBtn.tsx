@@ -11,7 +11,8 @@ interface SyncManifestProps {
 }
 
 /**
- * Button for initiating a task to pull manifests from RCRAInfo
+ * Button for initiating a task to pull manifests from RCRAInfo for a given site
+ * The button will be disabled if siteId (the EPA ID number) is not provided
  * @constructor
  */
 function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
