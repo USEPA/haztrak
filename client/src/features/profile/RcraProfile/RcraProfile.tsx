@@ -1,9 +1,10 @@
+import { RcraApiUserBtn } from 'components/buttons';
 import { HtForm } from 'components/Ht';
 import React, { useState } from 'react';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from 'store';
-import { updateProfile } from 'store/rcraProfileSlice';
+import { getProfile, updateProfile } from 'store/rcraProfileSlice';
 import { RcraProfileState } from 'types/store';
 import htApi from 'services';
 import { Link } from 'react-router-dom';
@@ -36,6 +37,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
       .then((r) => {
         dispatch(updateProfile(r.data));
       })
+      .then(() => dispatch(getProfile()))
       .then(() => setProfileLoading(!profileLoading))
       .catch((r) => console.error(r));
   };
@@ -147,7 +149,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
         </Table>
       </Container>
       <div className="mx-1 d-flex flex-row-reverse">
-        <Button
+        <RcraApiUserBtn
           className="mx-2"
           variant="primary"
           onClick={() =>
@@ -158,7 +160,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
           }
         >
           Sync Site Permissions
-        </Button>
+        </RcraApiUserBtn>
       </div>
     </>
   );
