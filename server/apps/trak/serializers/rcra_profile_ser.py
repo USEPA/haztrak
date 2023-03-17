@@ -183,6 +183,11 @@ class ProfileGetSerializer(ModelSerializer):
         source="rcra_username",
         required=False,
     )
+    apiUser = serializers.BooleanField(
+        source="is_api_user",
+        required=False,
+        allow_null=False,
+    )
 
     class Meta:
         model = RcraProfile
@@ -193,6 +198,7 @@ class ProfileGetSerializer(ModelSerializer):
             "epaSites",
             # 'sites',
             "phoneNumber",
+            "apiUser",
         ]
 
 
