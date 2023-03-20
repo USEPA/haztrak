@@ -7,7 +7,7 @@ import { faCheck, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 function Notification() {
   const notificationState = useAppSelector((state) => state.notification);
   const dispatch = useAppDispatch();
-  const numberAlerts = notificationState.alert.length;
+  const numberAlerts = notificationState.notifications.length;
 
   return (
     <div className="mx-3">
@@ -27,16 +27,16 @@ function Notification() {
           <Dropdown.Header className="bg-primary text-white rounded-top mt-n1">
             Notification Center
           </Dropdown.Header>
-          {notificationState.alert.map((alert, index) => {
+          {notificationState.notifications.map((notification, index) => {
             return (
               <React.Fragment key={`alertId${index}`}>
                 <Dropdown.ItemText className="text-nowrap">
                   <div className="d-flex align-items-center justify-content-between">
-                    <div className="me-5 text-truncate">{alert.message}</div>
+                    <div className="me-5 text-truncate">{notification.message}</div>
                     <Button
                       variant="success"
                       className="btn-circle"
-                      onClick={() => dispatch(removeMsg(alert))}
+                      onClick={() => dispatch(removeMsg(notification))}
                     >
                       <FontAwesomeIcon icon={faCheck} size="lg" className="text-white" />
                     </Button>

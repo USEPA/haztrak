@@ -16,9 +16,18 @@ afterEach(() => {
 });
 afterAll(() => server.close()); // Disable API mocking after the tests are done.
 
-describe('Home component', () => {
+describe('Home', () => {
   test('renders', () => {
-    renderWithProviders(<Home />);
+    renderWithProviders(<Home />, {
+      preloadedState: {
+        user: {
+          user: MOCK_USERNAME,
+          token: 'fake_token',
+          loading: false,
+          error: undefined,
+        },
+      },
+    });
     expect(screen.getByText(/Hello/i)).toBeInTheDocument();
   });
   test('User information is retrieved', async () => {
