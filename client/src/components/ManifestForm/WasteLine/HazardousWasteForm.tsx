@@ -3,8 +3,11 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
+import useHtAPI from 'hooks/useHtAPI';
+import { Code } from 'types/wasteLine';
 
-// ToDo: For development, replace with hook to fetch real codes
+// ToDo: For development, We currently have the federal wastes codes implemented
+//  but not for generator and TSD state waste codes
 const options = [
   { code: 'D001', description: 'D001' },
   { code: 'D002', description: 'D002' },
@@ -18,6 +21,9 @@ const options = [
 
 function HazardousWasteForm() {
   const { control } = useFormContext();
+  const [federalWasteCodes, federalLoading, federalError] =
+    useHtAPI<Array<Code>>('trak/code/waste/federal');
+  console.log(federalWasteCodes);
 
   return (
     <>
@@ -38,9 +44,10 @@ function HazardousWasteForm() {
                   <Select
                     id="hazardousWasteFederalWasteCodes"
                     {...field}
-                    options={options}
+                    options={federalWasteCodes}
+                    isLoading={federalLoading}
                     getOptionLabel={(option) => option.code}
-                    getOptionValue={(option) => option.code}
+                    getOptionValue={(option) => option.description}
                     openMenuOnFocus={false}
                     isMulti
                     isClearable
