@@ -2,28 +2,71 @@ import { HtForm } from 'components/Ht';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
-import Select from 'react-select';
+import Select, { components, StylesConfig } from 'react-select';
 import useHtAPI from 'hooks/useHtAPI';
 import { Code } from 'types/wasteLine';
 
-// ToDo: For development, We currently have the federal wastes codes implemented
-//  but not for generator and TSD state waste codes
+// ToDo: For temporary development purposes, We retrieve federal wastes codes
+//  but still need to implement state waste codes on backend
 const options = [
-  { code: 'D001', description: 'D001' },
-  { code: 'D002', description: 'D002' },
-  { code: 'D003', description: 'D003' },
-  { code: 'D004', description: 'D004' },
-  { code: 'D005', description: 'D005' },
-  { code: 'F001', description: 'F001' },
-  { code: 'F002', description: 'F002' },
-  { code: 'F003', description: 'F003' },
+  {
+    code: '121',
+    description: 'Alkaline solution (pH >12.5) with metals ',
+  },
+  {
+    code: '122',
+    description: 'Alkaline solution without metals (pH > 12.5)',
+  },
+  {
+    code: '123',
+    description: 'Unspecified alkaline solution',
+  },
+  {
+    code: '131',
+    description: 'Aqueous solution (2 < pH < 12.5) containing reactive anions',
+  },
+  {
+    code: '132',
+    description: 'Aqueous solution w/metals ',
+  },
 ];
 
+/**
+ * Returns a form for adding waste code(s), to a wasteline, for a given manifest.
+ * It expects to be within the context of a manifest form.
+ * @constructor
+ */
 function HazardousWasteForm() {
   const { control } = useFormContext();
+  // Retrieve federal waste codes from the server
   const [federalWasteCodes, federalLoading, federalError] =
     useHtAPI<Array<Code>>('trak/code/waste/federal');
-  console.log(federalWasteCodes);
+  if (federalError) console.error(federalError);
+
+  /**
+   * Styles for our waste code react-select dropdowns
+   */
+  const wasteCodeStyles: StylesConfig<Code, true> = {
+    multiValue: (baseStyle, state) => ({
+      ...baseStyle,
+      maxWidth: '100px',
+    }),
+  };
+
+  /**
+   * This is a custom component we use to display waste codes so that the full
+   * description of the waste code is present when selecting from the dropdown
+   * but only contains the ~4-digit code once selected.
+   *
+   * see SO question here
+   * https://stackoverflow.com/questions/52482985/react-select-show-different-text-label-for-drop-down-and-control
+   *
+   * @param props
+   * @constructor
+   */
+  const MultiValue = (props: any) => (
+    <components.MultiValue {...props}>{props.data.code}</components.MultiValue>
+  );
 
   return (
     <>
@@ -33,8 +76,7 @@ function HazardousWasteForm() {
             <HtForm.Label className="mb-0" htmlFor="hazardousWasteFederalWasteCodes">
               Federal Waste Codes
             </HtForm.Label>
-            {/* We need to use 'Controller' to wrap
-              around React-Select's controlled component */}
+            {/* We need to use 'Controller' to wrap around the React-Select controlled component */}
             {/*https://react-hook-form.com/api/usecontroller/controller*/}
             <Controller
               control={control}
@@ -46,8 +88,10 @@ function HazardousWasteForm() {
                     {...field}
                     options={federalWasteCodes}
                     isLoading={federalLoading}
-                    getOptionLabel={(option) => option.code}
-                    getOptionValue={(option) => option.description}
+                    getOptionLabel={(option) => `${option.code}: ${option.description}`}
+                    getOptionValue={(option) => option.code}
+                    styles={wasteCodeStyles}
+                    components={{ MultiValue }}
                     openMenuOnFocus={false}
                     isMulti
                     isClearable
@@ -56,6 +100,13 @@ function HazardousWasteForm() {
                 );
               }}
             ></Controller>
+            {federalError ? (
+              <i className="text-danger">
+                We're sorry, we experienced an error retrieving the federal waste codes
+              </i>
+            ) : (
+              <></>
+            )}
           </HtForm.Group>
           <HtForm.Group className="mb-3">
             <HtForm.Label className="mb-0" htmlFor="hazardousWasteGeneratorStateCodes">
