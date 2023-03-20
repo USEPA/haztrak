@@ -80,7 +80,7 @@ dump_fixtures(){
     exec_cmd="$base_py_cmd dumpdata"
     fixtures_dir="$server_dir/fixtures"
     fixture_cmd=(
-    "-e contenttypes -e auth.permission -e admin.logentry -e sessions.session > $fixtures_dir/dev_data.json"
+    "-e contenttypes -e auth.permission -e admin.logentry -e sessions.session --format=yaml > $fixtures_dir/dev_data.yaml"
     )
     for i in "${fixture_cmd[@]}"
     do
@@ -93,7 +93,7 @@ dump_fixtures(){
 load_django_fixtures() {
     # load initial data, good if you need to drop the dev database
     fixtures_dir="$server_dir/fixtures"
-    exec_cmd="$base_py_cmd loaddata $fixtures_dir/dev_data.json"
+    exec_cmd="$base_py_cmd loaddata $fixtures_dir/dev_data.yaml"
     eval "$exec_cmd"
     exit
 }

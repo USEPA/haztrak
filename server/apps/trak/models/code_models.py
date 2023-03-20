@@ -14,8 +14,7 @@ class EpaCodeBase(TrakBaseModel):
     code = models.CharField(
         max_length=2,
     )
-    description = models.CharField(
-        max_length=255,
+    description = models.TextField(
         blank=True,
         null=True,
     )
@@ -57,7 +56,7 @@ class WasteCode(EpaCodeBase):
         FEDERAL = "FD", _("Federal")
 
     code = models.CharField(
-        max_length=4,
+        max_length=6,
     )
 
     code_type = models.CharField(
