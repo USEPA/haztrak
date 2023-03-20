@@ -5,9 +5,10 @@ import string
 from datetime import datetime, timezone
 from enum import Enum
 from http import HTTPStatus
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 import pytest
+import pytest_mock
 import responses
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
@@ -27,6 +28,7 @@ from apps.trak.models import (
     SitePermission,
     WasteCode,
 )
+from apps.trak.models.handler_model import HandlerType
 from apps.trak.serializers import (
     ContactSerializer,
     EpaPermissionSerializer,
@@ -186,14 +188,14 @@ def handler_factory(db, address_factory, contact_factory):
     """Abstract factory for Haztrak Handler model"""
 
     def create_handler(
-        epa_id: Optional[str] = "handler001",
+        epa_id: Optional[str] = None,
         name: Optional[str] = "my_handler",
         site_type: Optional[str] = "Generator",
         site_address: Optional[Address] = None,
         mail_address: Optional[Address] = None,
     ) -> Handler:
         return Handler.objects.create(
-            epa_id=epa_id,
+            epa_id=epa_id or f"VAD{''.join(random.choices(string.digits, k=9))}",
             name=name,
             site_type=site_type,
             site_address=site_address or address_factory(),
@@ -320,7 +322,7 @@ def manifest_factory(db, manifest_handler_factory, handler_factory):
     ) -> Manifest:
         if tsd is None:
             # ensure the TSD is a different EPA site
-            handler = handler_factory(epa_id="foobar_id")
+            handler = handler_factory()
             tsd = manifest_handler_factory(handler=handler)
         return Manifest.objects.create(
             mtn=mtn,
@@ -426,27 +428,78 @@ def e_signature_serializer(db, haztrak_json) -> ESignatureSerializer:
 
 
 @pytest.fixture
-def manifest_100033134elc_rcra_response(db, haztrak_json):
+def manifest_100033134elc_rcra_response(db, haztrak_json, mock_responses):
     rcrainfo = RcrainfoService(api_username="testuser1", rcrainfo_env="preprod")
     manifest_json = haztrak_json.MANIFEST.value
-    with responses.RequestsMock() as mock:
-        mock.get(
-            url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{manifest_json.get("manifestTrackingNumber")}',
-            content_type="application/json",
-            json=manifest_json,
-            status=HTTPStatus.OK,
-        )
-        yield mock
+    mock_responses.get(
+        url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{manifest_json.get("manifestTrackingNumber")}',
+        content_type="application/json",
+        json=manifest_json,
+        status=HTTPStatus.OK,
+    )
 
 
 @pytest.fixture
-def search_site_mtn_rcra_response(haztrak_json):
+def search_site_mtn_rcra_response(haztrak_json, mock_responses):
     rcrainfo = RcrainfoService(api_username="testuser1", rcrainfo_env="preprod")
-    with responses.RequestsMock() as mock:
-        mock.post(
-            url=f"{rcrainfo.base_url}/api/v1/emanifest/search",
-            content_type="application/json",
-            json=[haztrak_json.MANIFEST.value.get("manifestTrackingNumber")],
-            status=HTTPStatus.OK,
-        )
-        yield mock
+    mock_responses.post(
+        url=f"{rcrainfo.base_url}/api/v1/emanifest/search",
+        content_type="application/json",
+        json=[haztrak_json.MANIFEST.value.get("manifestTrackingNumber")],
+        status=HTTPStatus.OK,
+    )
+
+
+@pytest.fixture
+def mock_responses():
+    """
+    fixture for mocking external http request responses
+    see Responses docs
+    https://github.com/getsentry/responses#responses-as-a-pytest-fixture
+    """
+    with responses.RequestsMock() as mock_responses:
+        yield mock_responses
+
+
+@pytest.fixture
+def mocker(mocker: pytest_mock.MockerFixture):
+    """
+    wrapper fixture pytest-mock's mocker fixture for easy type annotations
+    https://github.com/pytest-dev/pytest-mock
+    """
+    return mocker
+
+
+@pytest.fixture
+def quicker_sign_response_factory():
+    """
+    Factory for creating dynamic quicker sign response data
+    """
+
+    def create_quicker_sign(
+        mtn: List[str],
+        site_id: str,
+        site_type: Optional[HandlerType] = HandlerType.GENERATOR,
+        printed_name: Optional[str] = "David Graham",
+        sign_date: Optional[datetime] = datetime.utcnow().replace(tzinfo=timezone.utc),
+        transporter_order: Optional[int] = None,
+    ) -> Dict:
+        sign_date_iso = sign_date.isoformat(timespec="milliseconds")
+        return {
+            "reportId": "5fff5aab-2172-4a28-b530-f4c42f1bfdaf",
+            "date": sign_date_iso,
+            "operationStatus": "Completed",
+            "manifestReports": [{"manifestTrackingNumber": mtn} for mtn in mtn],
+            "signerReport": {
+                "printedSignatureName": printed_name,
+                "printedSignatureDate": sign_date_iso,
+                "electronicSignatureDate": sign_date_iso,
+                "firstName": "David",
+                "lastName": "Graham",
+                "userId": "DPGRAHAM4401",
+                "warnings": [],
+            },
+            "siteReport": {"siteId": site_id, "siteType": str(site_type.label)},
+        }
+
+    return create_quicker_sign

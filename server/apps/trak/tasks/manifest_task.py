@@ -3,8 +3,6 @@ import logging
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
 
-from apps.trak.services import ManifestService
-
 logger = logging.getLogger(__name__)
 
 
@@ -13,6 +11,8 @@ def pull_manifest(self: Task, *, mtn: [str], username: str) -> dict:
     """
     This task initiates a call to the ManifestService to pull a manifest by MTN
     """
+    from apps.trak.services import ManifestService
+
     logger.debug(f"start task {self.name}, manifest {mtn}")
     try:
         manifest_service = ManifestService(username=username, logger=logger)

@@ -1,14 +1,17 @@
 import logging
 from datetime import datetime, timedelta, timezone
 from logging import Logger
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from django.db import transaction
+from django.db.models import Q
 from requests import RequestException
 
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
 
+from ..models.handler_model import HandlerType
+from ..tasks.manifest_task import pull_manifest
 from .rcrainfo_service import RcrainfoService
 
 
@@ -126,3 +129,58 @@ class ManifestService:
                 self.logger.warning(f"error pulling manifest {mtn}: {exc}")
                 results["error"].append(mtn)
         return results
+
+    def sign_manifest(
+        self,
+        mtn: List[str],
+        site_id: str,
+        site_type: HandlerType.choices,
+        printed_name: str,
+        signature_date: Optional[datetime] = datetime.utcnow().replace(tzinfo=timezone.utc),
+        transporter_order: Optional[int] = None,
+    ):
+        results = {"success": [], "error": []}
+        site_filter = self._get_handler_query(site_id, site_type)
+        existing_mtn = Manifest.objects.filter(site_filter, mtn__in=mtn)
+        # get our list of valid MTN
+        validated_mtn = [manifest.mtn for manifest in existing_mtn]
+        # append any MTN, passed as an argument, not found in the DB to the error results
+        unknown_mtn = list(set(mtn).difference(set(validated_mtn)))
+        self.logger.warning(f"MTN not found or site not listed as site type {unknown_mtn}")
+        results["error"].extend(unknown_mtn)
+        response = self.rcrainfo.sign_manifest(
+            mtn=validated_mtn,
+            site_id=site_id,
+            site_type=site_type,
+            printed_name=printed_name,
+            signature_date=signature_date,
+            transporter_order=transporter_order,
+        )
+        if response.ok:
+            data = response.json()
+            print(data)
+            results["success"].append(validated_mtn)  # Temporary
+            for manifest in response.json()["manifestReports"]:
+                pull_manifest.delay(mtn=manifest["manifestTrackingNumber"], username=self.username)
+        else:
+            self.logger.warning(
+                f"Error Quicker signing manifests, "
+                f"response: {response.status_code} {response.json()}"
+            )
+            results["error"].append(validated_mtn)  # Temporary
+        return results
+
+    @classmethod
+    def _get_handler_query(cls, site_id: str, site_type: HandlerType | str):
+        """map handler type to django Query object"""
+        if isinstance(site_type, str) and not isinstance(site_type, HandlerType):
+            site_type = site_type.lower()
+        match site_type:
+            case HandlerType.GENERATOR | "generator":
+                return Q(generator__handler__epa_id=site_id)
+            case HandlerType.TRANSPORTER | "transporter":
+                return Q(transporter__handler__epa_id=site_id)
+            case HandlerType.TSDF | "tsdf":
+                return Q(tsd__handler__epa_id=site_id)
+            case _:
+                raise ValueError(f"unrecognized site_type argument {site_type}")

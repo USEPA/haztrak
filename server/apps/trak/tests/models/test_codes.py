@@ -1,4 +1,5 @@
 import pytest
+from django.db import IntegrityError
 
 from apps.trak.models import WasteCode
 
@@ -34,3 +35,9 @@ class TestWasteCodes:
     def test_state_manager_retrieves_state_only(self, db) -> None:
         codes = WasteCode.state.all()
         assert len(codes) == len(self.state_waste_codes)
+
+    def test_waste_codes_are_unique(self, db, waste_code_factory) -> None:
+        code = "D005"
+        waste_code_factory(code=code)
+        with pytest.raises(IntegrityError):
+            WasteCode.objects.create(code=code)

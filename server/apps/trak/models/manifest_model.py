@@ -67,6 +67,7 @@ class ManifestManager(TrakBaseManager):
             additional_info=additional_info,
             **manifest_data,
         )
+        # save one-to-many objects that needs to Manifest.id as a foreign key
         for waste_line in waste_data:
             saved_waste_line = WasteLine.objects.save(manifest=manifest, **waste_line)
             logger.debug(f"WasteLine saved {saved_waste_line.pk}")
