@@ -1,27 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Alert, NotificationState } from 'types/store';
+import { Notification, NotificationState } from 'types/store';
 
 const initialState: NotificationState = {
-  alert: [],
+  notifications: [],
 };
 
 const notificationSlice = createSlice({
   name: 'notification',
   initialState,
   reducers: {
-    addMsg: (state: NotificationState, action: PayloadAction<Alert>) => {
-      state.alert.push(action.payload);
+    addMsg: (state: NotificationState, action: PayloadAction<Notification>) => {
+      state.notifications.push(action.payload);
       return state;
     },
-    readMsg: (state: NotificationState, action: PayloadAction<Alert>) => {
-      state.alert.push(action.payload);
+    readMsg: (state: NotificationState, action: PayloadAction<Notification>) => {
+      state.notifications.push(action.payload);
       return state;
     },
-    removeMsg: (state: NotificationState, action: PayloadAction<Alert>) => {
+    removeMsg: (state: NotificationState, action: PayloadAction<Notification>) => {
       const idToDelete = action.payload.uniqueId;
-      for (let i = 0; i < state.alert.length; i++) {
-        if (state.alert[i].uniqueId === idToDelete) {
-          state.alert.splice(i, 1);
+      for (let i = 0; i < state.notifications.length; i++) {
+        if (state.notifications[i].uniqueId === idToDelete) {
+          state.notifications.splice(i, 1);
         }
       }
       return state;

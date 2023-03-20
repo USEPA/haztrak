@@ -13,6 +13,7 @@ from .models import (
     Site,
     SitePermission,
     Transporter,
+    WasteCode,
     WasteLine,
 )
 
@@ -29,4 +30,5 @@ admin.site.register(Signer)
 admin.site.register(Site)
 admin.site.register(SitePermission)
 admin.site.register(Transporter)
+admin.site.register(WasteCode)
 admin.site.register(WasteLine)

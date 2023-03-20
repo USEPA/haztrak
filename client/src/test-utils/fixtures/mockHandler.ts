@@ -1,16 +1,10 @@
-import { ManifestHandler } from 'types/handler';
-
-/**
- * A mock handler ID, use by the mock handler object, for tests
- */
-export const MOCK_EPA_ID = 'testSiteIdNumber';
-export const MOCK_USERNAME = 'testuser1';
+import { Handler, ManifestHandler, Site, Transporter } from 'types/handler';
 
 /**
  * A mock handler object for tests
  */
-export const MOCK_HANDLER: ManifestHandler = {
-  epaSiteId: MOCK_EPA_ID,
+const DEFAULT_HANDLER: ManifestHandler = {
+  epaSiteId: 'testSiteIdNumber',
   siteType: 'Generator',
   name: 'TEST TRANSPORTER 2 OF VA',
   siteAddress: {
@@ -63,9 +57,25 @@ export const MOCK_HANDLER: ManifestHandler = {
   gisPrimary: false,
 };
 
-export const MOCK_SITE_OBJECT = {
-  name: 'mySiteName',
-  handler: MOCK_HANDLER,
-};
+export function createMockHandler(overWrites?: Partial<Handler>): Handler {
+  return {
+    ...DEFAULT_HANDLER,
+    ...overWrites,
+  };
+}
 
-export const MOCK_SITE_ARRAY = [MOCK_SITE_OBJECT, MOCK_SITE_OBJECT];
+export function createMockSite(overWrites?: Partial<Site>): Site {
+  return {
+    handler: createMockHandler(),
+    name: 'mySiteName',
+    ...overWrites,
+  };
+}
+
+export function createMockTransporter(overWrites?: Partial<Transporter>): Transporter {
+  return {
+    ...createMockHandler(),
+    order: 1,
+    ...overWrites,
+  };
+}

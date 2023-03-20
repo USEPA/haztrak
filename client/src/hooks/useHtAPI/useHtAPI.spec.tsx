@@ -3,7 +3,7 @@ import useHtAPI from 'hooks/useHtAPI';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { render, renderWithProviders, screen } from 'test';
+import { render, renderWithProviders, screen } from 'test-utils';
 
 interface exampleData {
   foo: string;

@@ -3,8 +3,8 @@ import { SyncManifestBtn } from 'components/buttons';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test';
-import { API_BASE_URL } from 'test/mock/handlers';
+import { cleanup, renderWithProviders, screen } from 'test-utils';
+import { API_BASE_URL } from 'test-utils/mock/handlers';
 
 const testTaskID = 'testTaskId';
 

@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { HtPaginate } from 'components/Ht/index';
 import React from 'react';
-import { cleanup, render, screen } from 'test';
+import { cleanup, render, screen } from 'test-utils';
 
 afterEach(() => {
   cleanup();

@@ -13,13 +13,13 @@ export interface UserState {
  * Note, we don't store these in the back end database, this is just for looks.
  */
 export interface NotificationState {
-  alert: Array<Alert>;
+  notifications: Array<Notification>;
 }
 
 /**
  * Alert describes the payload used to interact with the Redux store 'notification' slice.
  */
-export interface Alert {
+export interface Notification {
   uniqueId: number;
   createdDate: string;
   read: boolean;

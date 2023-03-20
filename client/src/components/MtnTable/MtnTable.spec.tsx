@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import MtnTable from 'components/MtnTable/index';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test';
+import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { MtnDetails } from 'types/manifest';
 
 const manifestDetail: MtnDetails = {

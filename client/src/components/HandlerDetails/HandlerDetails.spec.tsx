@@ -1,8 +1,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test';
-import { MOCK_HANDLER } from 'test/fixtures';
-import { ManifestHandler } from 'types/handler';
+import { cleanup, renderWithProviders, screen } from 'test-utils';
+import { createMockHandler } from 'test-utils/fixtures';
 import HandlerDetails from './HandlerDetails';
 
 afterEach(() => {
@@ -12,18 +11,18 @@ afterEach(() => {
 
 describe('HandlerDetails', () => {
   test('displays the handlers information', () => {
-    renderWithProviders(<HandlerDetails handler={MOCK_HANDLER} />);
-    expect(screen.getByText(MOCK_HANDLER.name)).toBeInTheDocument();
-    expect(screen.getByText(MOCK_HANDLER.epaSiteId)).toBeInTheDocument();
+    const handler = createMockHandler();
+    renderWithProviders(<HandlerDetails handler={handler} />);
+    expect(screen.getByText(handler.name)).toBeInTheDocument();
+    expect(screen.getByText(handler.epaSiteId)).toBeInTheDocument();
   });
   test('does not display undefined when part of address is missing', () => {
-    const minimumAddressHandler: ManifestHandler = {
-      ...MOCK_HANDLER,
+    const minimumAddressHandler = createMockHandler({
       siteAddress: {
         address1: '123 main st.',
         state: { code: 'Tx' },
       },
-    };
+    });
     renderWithProviders(<HandlerDetails handler={minimumAddressHandler} />);
     expect(screen.queryByText(/undefined/)).not.toBeInTheDocument();
   });

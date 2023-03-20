@@ -1,23 +1,19 @@
 import { screen } from '@testing-library/react';
 import React from 'react';
-import { renderWithProviders } from 'test';
-import { MOCK_HANDLER } from 'test/fixtures';
+import { renderWithProviders } from 'test-utils';
 import { Transporter } from 'types/handler';
 import { TransporterTable } from './index';
+import { createMockTransporter } from 'test-utils/fixtures';
 
 const HANDLER_ID_1 = 'siteId1';
 const HANDLER_ID_2 = 'siteId2';
 
 const TRAN_ARRAY: Array<Transporter> = [
   {
-    ...MOCK_HANDLER,
-    epaSiteId: HANDLER_ID_1,
-    order: 1,
+    ...createMockTransporter({ epaSiteId: HANDLER_ID_1, order: 1 }),
   },
   {
-    ...MOCK_HANDLER,
-    epaSiteId: HANDLER_ID_2,
-    order: 2,
+    ...createMockTransporter({ epaSiteId: HANDLER_ID_2, order: 2 }),
   },
 ];
 

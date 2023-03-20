@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test';
-import { MOCK_USERNAME } from 'test/fixtures/mockHandler';
-import { handlers } from 'test/mock/handlers';
+import { cleanup, renderWithProviders, screen } from 'test-utils';
+import { handlers } from 'test-utils/mock/handlers';
 import Home from './index';
 
 const server = setupServer(...handlers);
+const username = 'testuser1';
 
 beforeAll(() => server.listen()); // setup mock http server
 afterEach(() => {
@@ -16,9 +16,18 @@ afterEach(() => {
 });
 afterAll(() => server.close()); // Disable API mocking after the tests are done.
 
-describe('Home component', () => {
+describe('Home', () => {
   test('renders', () => {
-    renderWithProviders(<Home />);
+    renderWithProviders(<Home />, {
+      preloadedState: {
+        user: {
+          user: username,
+          token: 'fake_token',
+          loading: false,
+          error: undefined,
+        },
+      },
+    });
     expect(screen.getByText(/Hello/i)).toBeInTheDocument();
   });
   test('User information is retrieved', async () => {
@@ -26,7 +35,7 @@ describe('Home component', () => {
     renderWithProviders(<Home />, {
       preloadedState: {
         user: {
-          user: MOCK_USERNAME,
+          user: username,
           token: 'fake_token',
           loading: false,
           error: undefined,

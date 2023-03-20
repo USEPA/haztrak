@@ -17,7 +17,7 @@ import htApi from 'services';
  */
 export default function useHtAPI<T>(url: string) {
   const [data, setData] = useState<T | undefined>(undefined);
-  const [loading, setLoading] = useState<Boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | undefined>(undefined);
 
   useEffect(() => {

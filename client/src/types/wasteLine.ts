@@ -14,7 +14,7 @@ interface WasteLine {
   hazardousWaste?: HazardousWaste;
   pcbInfos?: PcbInfo[];
   discrepancyResidueInfo?: DiscrepancyResidueInfo;
-  managementMethod?: CodeDescription;
+  managementMethod?: Code;
   additionalInfo?: AdditionalInfo;
 }
 
@@ -30,8 +30,13 @@ interface DotInformation {
   printedDotInformation: string;
 }
 
-interface Code {
+/**
+ * EPA defined generic interface for codes of various types and their description
+ * such as density UOM, waste codes, form codes, and more.
+ */
+export interface Code {
   code: string;
+  description?: string;
 }
 
 /**
@@ -40,26 +45,10 @@ interface Code {
  */
 interface BrInfo {
   density: number;
-  densityUnitOfMeasurement: DensityUOM;
-  formCode: CodeDescription;
-  sourceCode: CodeDescription;
-  wasteMinimizationCode: CodeDescription;
-}
-
-/**
- * Density Units of Measurement
- */
-interface DensityUOM {
-  code: string;
-  description: string;
-}
-
-/**
- * Object representing hazardous waste handling codes and their descriptions.
- */
-export interface CodeDescription {
-  code: string;
-  description?: string;
+  densityUnitOfMeasurement: Code;
+  formCode: Code;
+  sourceCode: Code;
+  wasteMinimizationCode: Code;
 }
 
 /**
@@ -116,10 +105,10 @@ enum ContainerDescription {
 }
 
 interface HazardousWaste {
-  federalWasteCodes?: CodeDescription[];
-  tsdfStateWasteCodes?: CodeDescription[];
+  federalWasteCodes?: Code[];
+  tsdfStateWasteCodes?: Code[];
   txWasteCodes?: string;
-  generatorStateWasteCodes?: CodeDescription[];
+  generatorStateWasteCodes?: Code[];
 }
 
 interface PcbInfo {

@@ -1,8 +1,15 @@
+/**
+ * A user's RcraProfile slice encapsulates our logic related what actions and data a user
+ * has access to for each EPA site ID.
+ */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { ProfileEpaSite, RcraProfileState } from 'types/store';
-import { RootState } from 'store/rootStore';
+import { RootState } from 'store';
 
+/**
+ * initial, empty, state of a user's RcraProfile.
+ */
 const initialState: RcraProfileState = {
   user: undefined,
   rcraAPIID: undefined,
@@ -14,6 +21,12 @@ const initialState: RcraProfileState = {
   error: undefined,
 };
 
+/**
+ * Interface of the haztrak server response,
+ *
+ * Notice we convert the array of site objects to an object where each key is ID number of the
+ * site. This avoids looping through the array every time we need site information.
+ */
 interface RcraProfileResponse {
   user: undefined;
   rcraAPIID: undefined;
@@ -25,6 +38,9 @@ interface RcraProfileResponse {
   error: undefined;
 }
 
+/**
+ * Retrieves a user's RcraProfile from the server.
+ */
 export const getProfile = createAsyncThunk<RcraProfileState>(
   'rcraProfile/getProfile',
   async (arg, thunkAPI) => {

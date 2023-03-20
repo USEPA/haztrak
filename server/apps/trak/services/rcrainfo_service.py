@@ -2,7 +2,7 @@ import os
 
 from emanifest import RcrainfoClient
 
-from apps.trak.models import RcraProfile
+from apps.trak.models import RcraProfile, WasteCode
 
 
 class RcrainfoService(RcrainfoClient):
@@ -57,6 +57,12 @@ class RcrainfoService(RcrainfoClient):
         profile = RcraProfile.objects.get(user__username=username or self.api_user)
         response = self.search_users(userId=profile.rcra_username)
         return response.json()
+
+    def sync_federal_waste_codes(self):
+        response = self.get_fed_waste_codes()
+        for federal_code in response.json():
+            WasteCode.federal.create(code_type=WasteCode.CodeType.FEDERAL, **federal_code)
+        print(response.json())
 
     def __bool__(self):
         return True

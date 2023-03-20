@@ -10,4 +10,4 @@ from .rcra_profile_ser import (
 )
 from .sites_ser import SiteSerializer
 from .transporter_ser import TransporterSerializer
-from .waste_line_ser import WasteLineSerializer
+from .waste_line_ser import WasteCodeSerializer, WasteLineSerializer

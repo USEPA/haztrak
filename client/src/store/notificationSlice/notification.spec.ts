@@ -6,7 +6,7 @@ import NotificationReducer, { addMsg, removeMsg } from 'store/notificationSlice/
 import { NotificationState } from 'types/store';
 
 const initialState: NotificationState = {
-  alert: [],
+  notifications: [],
 };
 
 const alertPayload = {
@@ -28,10 +28,12 @@ describe('Notification Slice', () => {
     expect(NotificationReducer(undefined, { type: undefined })).toEqual(initialState);
   });
   test('addMsg appends a new message', () => {
-    expect(NotificationReducer(initialState, addMsg(alertPayload)).alert.length).toEqual(1);
+    expect(NotificationReducer(initialState, addMsg(alertPayload)).notifications.length).toEqual(1);
   });
   test('removeMsg remove the alert', () => {
-    const nonEmptyState: NotificationState = { alert: [alertPayload] };
-    expect(NotificationReducer(nonEmptyState, removeMsg(alertPayload)).alert.length).toEqual(0);
+    const nonEmptyState: NotificationState = { notifications: [alertPayload] };
+    expect(
+      NotificationReducer(nonEmptyState, removeMsg(alertPayload)).notifications.length
+    ).toEqual(0);
   });
 });
