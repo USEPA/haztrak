@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test';
-import { MOCK_USERNAME } from 'test/fixtures/mockHandler';
-import { handlers } from 'test/mock/handlers';
+import { cleanup, renderWithProviders, screen } from 'test-utils';
+import { handlers } from 'test-utils/mock/handlers';
 import Home from './index';
 
 const server = setupServer(...handlers);
+const username = 'testuser1';
 
 beforeAll(() => server.listen()); // setup mock http server
 afterEach(() => {
@@ -21,7 +21,7 @@ describe('Home', () => {
     renderWithProviders(<Home />, {
       preloadedState: {
         user: {
-          user: MOCK_USERNAME,
+          user: username,
           token: 'fake_token',
           loading: false,
           error: undefined,
@@ -35,7 +35,7 @@ describe('Home', () => {
     renderWithProviders(<Home />, {
       preloadedState: {
         user: {
-          user: MOCK_USERNAME,
+          user: username,
           token: 'fake_token',
           loading: false,
           error: undefined,

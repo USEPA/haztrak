@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { RcraApiUserBtn } from 'components/buttons/index';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test';
+import { cleanup, renderWithProviders, screen } from 'test-utils';
 
 afterEach(() => {
   cleanup();

@@ -32,11 +32,11 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
 export function renderWithProviders(
   ui: React.ReactElement,
   {
-    preloadedState = {},
+    preloadedState = {}, // an object with partial slices of our redux state
     defaultValues = {}, // for Forms
     store = setupStore(preloadedState), // Automatically create a store instance if no store was passed in
-    ...renderOptions
-  }: ExtendedRenderOptions = {}
+    ...renderOptions // react-testing library function options
+  }: ExtendedRenderOptions = {} // default to empty object
 ) {
   function Wrapper({ children }: PropsWithChildren<{}>): ReactElement {
     const formMethods = useForm({ defaultValues });
@@ -51,5 +51,3 @@ export function renderWithProviders(
 
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 }
-
-export * from '@testing-library/react';

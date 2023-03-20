@@ -1,14 +1,20 @@
+import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test';
-import { MOCK_EPA_ID } from 'test/fixtures';
-import { MOCK_SITE_ARRAY } from 'test/fixtures/mockHandler';
-import { handlers } from 'test/mock/handlers';
+import { cleanup, renderWithProviders, screen } from 'test-utils';
+import { createMockHandler, createMockSite } from 'test-utils/fixtures/mockHandler';
+import { API_BASE_URL } from 'test-utils/mock/handlers';
 import SiteList from './index';
 
-const server = setupServer(...handlers);
+const mockSites = [createMockSite(), createMockSite()];
+const server = setupServer(
+  rest.get(`${API_BASE_URL}/api/trak/site`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(mockSites));
+  })
+);
+const handler = createMockHandler();
 
-// Arrange
+// pre-/post-test hooks
 beforeAll(() => server.listen());
 afterEach(() => {
   server.resetHandlers();
@@ -24,8 +30,8 @@ describe('SiteList component', () => {
   test('fetches sites a user has access to', async () => {
     // Act
     renderWithProviders(<SiteList />);
-    let numIds = await screen.findAllByRole('cell', { name: MOCK_EPA_ID });
+    let numIds = await screen.findAllByRole('cell', { name: handler.epaSiteId });
     // Assert
-    expect(numIds.length).toEqual(MOCK_SITE_ARRAY.length);
+    expect(numIds.length).toEqual(mockSites.length);
   });
 });

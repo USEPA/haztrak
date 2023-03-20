@@ -1,6 +1,6 @@
 import { cleanup, fireEvent } from '@testing-library/react';
 import React from 'react';
-import { render, screen } from 'test';
+import { render, screen } from 'test-utils';
 import useTitle from './index';
 
 const originalPageTitle = 'originalPageTitle';
