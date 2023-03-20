@@ -2,7 +2,7 @@ import { HtForm } from 'components/Ht';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
-import Select, { components, StylesConfig } from 'react-select';
+import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
 import useHtAPI from 'hooks/useHtAPI';
 import { Code } from 'types/wasteLine';
 
@@ -47,9 +47,17 @@ function HazardousWasteForm() {
    * Styles for our waste code react-select dropdowns
    */
   const wasteCodeStyles: StylesConfig<Code, true> = {
-    multiValue: (baseStyle, state) => ({
+    multiValue: (baseStyle) => ({
       ...baseStyle,
-      maxWidth: '100px',
+      borderRadius: '5px',
+    }),
+    // leaving this here as documentation
+    multiValueRemove: (baseStyle, state: MultiValueProps<Code, true, GroupBase<Code>>) => ({
+      ...baseStyle,
+      borderRadius: '5px',
+      ':hover': {
+        backgroundColor: '#e6151580',
+      },
     }),
   };
 
@@ -88,7 +96,9 @@ function HazardousWasteForm() {
                     {...field}
                     options={federalWasteCodes}
                     isLoading={federalLoading}
-                    getOptionLabel={(option) => `${option.code}: ${option.description}`}
+                    getOptionLabel={(option) =>
+                      `${option.code}: ${option.description.toLowerCase()}`
+                    }
                     getOptionValue={(option) => option.code}
                     styles={wasteCodeStyles}
                     components={{ MultiValue }}
