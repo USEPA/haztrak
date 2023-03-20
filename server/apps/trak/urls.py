@@ -2,6 +2,7 @@ from django.urls import include, path
 from rest_framework import routers
 
 from apps.trak.views import (
+    FederalWasteCodes,
     HandlerSearch,
     HandlerView,
     ManifestHandlerView,
@@ -41,4 +42,6 @@ urlpatterns = [
     path("handler/details/<int:pk>", HandlerView.as_view()),
     path("transporter/<int:pk>", TransporterView.as_view()),
     path("mtnhandler/<int:pk>", ManifestHandlerView.as_view()),
+    # code
+    path("code/waste/federal", FederalWasteCodes.as_view()),
 ]

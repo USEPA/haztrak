@@ -2,7 +2,7 @@ import json
 import os
 import random
 import string
-from datetime import date, datetime, timezone
+from datetime import datetime, timezone
 from enum import Enum
 from http import HTTPStatus
 from typing import Dict, Optional
@@ -25,6 +25,7 @@ from apps.trak.models import (
     Signer,
     Site,
     SitePermission,
+    WasteCode,
 )
 from apps.trak.serializers import (
     ContactSerializer,
@@ -346,6 +347,25 @@ def api_client_factory(db, user_factory):
         return client
 
     return create_client
+
+
+@pytest.fixture
+def waste_code_factory(db):
+    """Abstract factory for waste codes"""
+
+    def create_waste_code(
+        code: Optional[str] = "D001",
+        description: Optional[str] = "IGNITABLE WASTE",
+        code_type: Optional[WasteCode.CodeType] = WasteCode.CodeType.FEDERAL,
+    ) -> WasteCode:
+        waste_code = WasteCode.objects.create(
+            code=code,
+            description=description,
+            code_type=code_type,
+        )
+        return waste_code
+
+    return create_waste_code
 
 
 # Serializer fixtures, build on JSON fixtures to produce serializers

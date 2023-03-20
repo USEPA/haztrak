@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.trak.models import WasteLine
+from apps.trak.models import WasteCode, WasteLine
 
 from .base_ser import TrakBaseSerializer
 
@@ -68,3 +68,14 @@ class WasteLineSerializer(TrakBaseSerializer):
 
     def __str__(self):
         return f"{self.data}"
+
+
+class WasteCodeSerializer(serializers.ModelSerializer):
+    """Serializer for Federal and State waste codes"""
+
+    class Meta:
+        model = WasteCode
+        fields = [
+            "code",
+            "description",
+        ]
