@@ -1,0 +1,1171 @@
+openapi: 3.0.3
+info:
+  title: Haztrak API
+  version: 0.3.0
+  description: An open-source web app illustrating how hazardous waste management
+    software can integrate with EPA's RCRAInfo
+paths:
+  /api/trak/code/waste/federal:
+    get:
+      operationId: code_waste_federal_list
+      description: Endpoint for retrieving EPA Federal waste codes
+      tags:
+        - code
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WasteCode'
+          description: ''
+  /api/trak/handler/details/{id}:
+    get:
+      operationId: handler_details_retrieve
+      description: Retrieve details on a handler stored in the Haztrak database
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - handler
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Handler'
+          description: ''
+  /api/trak/handler/search:
+    get:
+      operationId: handler_search_list
+      tags:
+        - handler
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Handler'
+          description: ''
+  /api/trak/manifest/:
+    get:
+      operationId: manifest_list
+      description: The Uniform hazardous waste manifest by the manifest tracking number
+        (MTN)
+      tags:
+        - manifest
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manifest'
+          description: ''
+    post:
+      operationId: manifest_create
+      description: The Uniform hazardous waste manifest by the manifest tracking number
+        (MTN)
+      tags:
+        - manifest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Manifest'
+        required: true
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manifest'
+          description: ''
+  /api/trak/manifest/{mtn}/:
+    get:
+      operationId: manifest_retrieve
+      description: The Uniform hazardous waste manifest by the manifest tracking number
+        (MTN)
+      parameters:
+        - in: path
+          name: mtn
+          schema:
+            type: string
+            title: Manifest Tracking Number
+          required: true
+      tags:
+        - manifest
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manifest'
+          description: ''
+    put:
+      operationId: manifest_update
+      description: The Uniform hazardous waste manifest by the manifest tracking number
+        (MTN)
+      parameters:
+        - in: path
+          name: mtn
+          schema:
+            type: string
+            title: Manifest Tracking Number
+          required: true
+      tags:
+        - manifest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Manifest'
+        required: true
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manifest'
+          description: ''
+    patch:
+      operationId: manifest_partial_update
+      description: The Uniform hazardous waste manifest by the manifest tracking number
+        (MTN)
+      parameters:
+        - in: path
+          name: mtn
+          schema:
+            type: string
+            title: Manifest Tracking Number
+          required: true
+      tags:
+        - manifest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedManifest'
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manifest'
+          description: ''
+    delete:
+      operationId: manifest_destroy
+      description: The Uniform hazardous waste manifest by the manifest tracking number
+        (MTN)
+      parameters:
+        - in: path
+          name: mtn
+          schema:
+            type: string
+            title: Manifest Tracking Number
+          required: true
+      tags:
+        - manifest
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manifest'
+          description: ''
+  /api/trak/manifest/pull:
+    post:
+      operationId: manifest_pull_create
+      description: |-
+        This endpoint launches a task to pull a manifest (by MTN) from RCRAInfo.
+        On success, returns the task queue ID.
+      tags:
+        - manifest
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/trak/mtn:
+    get:
+      operationId: mtn_list
+      description: MtnList returns select details on a user's manifest,
+      tags:
+        - mtn
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mtn'
+          description: ''
+  /api/trak/mtn/{epa_id}:
+    get:
+      operationId: mtn_list_2
+      description: MtnList returns select details on a user's manifest,
+      parameters:
+        - in: path
+          name: epa_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - mtn
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mtn'
+          description: ''
+  /api/trak/mtnhandler/{id}:
+    get:
+      operationId: mtnhandler_retrieve
+      description: |-
+        For Viewing a user's Site Permissions in the same JSON structure as RCRAInfo.
+
+        This is not included in the current URL configs, but kept here for documentation.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - mtnhandler
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManifestHandler'
+          description: ''
+  /api/trak/permission/{id}:
+    get:
+      operationId: permission_retrieve
+      description: |-
+        For Viewing a user's Site Permissions in haztrak's internal JSON structure.
+        This is not included in the current URL configs, but kept here for documentation.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - permission
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SitePermission'
+          description: ''
+  /api/trak/profile/{user}:
+    get:
+      operationId: profile_retrieve
+      description: |-
+        Responsible for CRUD operations related to the user RcraProfile, which maintains
+        information necessary for actions that interface with RCRAInfo
+      parameters:
+        - in: path
+          name: user
+          schema:
+            type: string
+          required: true
+      tags:
+        - profile
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileGet'
+          description: ''
+    put:
+      operationId: profile_update
+      description: |-
+        Responsible for CRUD operations related to the user RcraProfile, which maintains
+        information necessary for actions that interface with RCRAInfo
+      parameters:
+        - in: path
+          name: user
+          schema:
+            type: string
+          required: true
+      tags:
+        - profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdate'
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileUpdate'
+          description: ''
+    patch:
+      operationId: profile_partial_update
+      description: |-
+        Responsible for CRUD operations related to the user RcraProfile, which maintains
+        information necessary for actions that interface with RCRAInfo
+      parameters:
+        - in: path
+          name: user
+          schema:
+            type: string
+          required: true
+      tags:
+        - profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileGet'
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileGet'
+          description: ''
+  /api/trak/profile/{user}/sync:
+    get:
+      operationId: profile_sync_retrieve
+      description: Sync Profile GET method handler
+      parameters:
+        - in: path
+          name: user
+          schema:
+            type: string
+          required: true
+      tags:
+        - profile
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/trak/site/:
+    get:
+      operationId: site_list
+      description: |-
+        SiteList is a ListAPIView that returns haztrak sites that the current
+        user has access to.
+      tags:
+        - site
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Site'
+          description: ''
+  /api/trak/site/{epa_id}:
+    get:
+      operationId: site_retrieve
+      description: View to GET a Haztrak Site, which encapsulates the EPA Handler
+        plus some.
+      parameters:
+        - in: path
+          name: epa_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - site
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+          description: ''
+  /api/trak/site/{epa_id}/manifest:
+    get:
+      operationId: site_manifest_retrieve
+      description: GET method handler
+      parameters:
+        - in: path
+          name: epa_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - site
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/trak/site/manifest/sync:
+    post:
+      operationId: site_manifest_sync_create
+      description: POST method handler
+      tags:
+        - site
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/trak/transporter/{id}:
+    get:
+      operationId: transporter_retrieve
+      description: Returns details on a Transporter
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - transporter
+      security:
+        - tokenAuth: []
+        - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transporter'
+          description: ''
+  /api/user/login/:
+    post:
+      operationId: login_create
+      tags:
+        - login
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+components:
+  schemas:
+    AdditionalInfo:
+      type: object
+      properties:
+        originalManifestTrackingNumbers:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        newManifestDestination:
+          type: string
+          nullable: true
+        consentNumber:
+          type: string
+          nullable: true
+        comments:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        handlingInstructions:
+          type: string
+          nullable: true
+    Address:
+      type: object
+      description: Address model serializer for JSON representation
+      properties:
+        streetNumber:
+          type: string
+        address1:
+          type: string
+          title: Address 1
+          maxLength: 50
+        address2:
+          type: string
+          nullable: true
+          title: Address 2
+          maxLength: 50
+        city:
+          type: string
+          nullable: true
+          maxLength: 25
+        state:
+          type: object
+          additionalProperties: {}
+        country:
+          type: object
+          additionalProperties: {}
+        zip:
+          type: string
+          nullable: true
+          maxLength: 5
+      required:
+        - address1
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+        - password
+        - token
+        - username
+    Contact:
+      type: object
+      description: Contact model serializer for JSON marshalling/unmarshalling
+      properties:
+        firstName:
+          type: string
+        middleInitial:
+          type: string
+        lastName:
+          type: string
+        phone:
+          $ref: '#/components/schemas/EpaPhone'
+        email:
+          type: string
+        companyName:
+          type: string
+    ESignature:
+      type: object
+      description: Serializer for Electronic Signature on manifest
+      properties:
+        signer:
+          $ref: '#/components/schemas/Signer'
+        cromerrActivityId:
+          type: string
+        cromerrDocumentId:
+          type: string
+        signatureDate:
+          type: string
+          format: date-time
+        onBehalf:
+          type: boolean
+          default: false
+        order:
+          type: integer
+    EpaPhone:
+      type: object
+      description: EpaPhone model serializer for JSON marshalling/unmarshalling
+      properties:
+        number:
+          type: string
+        extension:
+          type: string
+      required:
+        - number
+    Handler:
+      type: object
+      description: Handler model serializer for JSON marshalling/unmarshalling
+      properties:
+        epaSiteId:
+          type: string
+        siteType:
+          type: string
+          nullable: true
+        modified:
+          type: boolean
+          nullable: true
+          default: false
+        name:
+          type: string
+          maxLength: 200
+        siteAddress:
+          $ref: '#/components/schemas/Address'
+        mailingAddress:
+          $ref: '#/components/schemas/Address'
+        contact:
+          $ref: '#/components/schemas/Contact'
+        emergencyPhone:
+          allOf:
+            - $ref: '#/components/schemas/EpaPhone'
+          nullable: true
+        registered:
+          type: boolean
+          nullable: true
+          default: false
+        limitedEsign:
+          type: boolean
+          nullable: true
+          default: false
+        canEsign:
+          type: boolean
+          nullable: true
+          default: false
+        hasRegisteredEmanifestUser:
+          type: boolean
+          nullable: true
+          default: false
+        gisPrimary:
+          type: boolean
+          nullable: true
+          default: false
+      required:
+        - contact
+        - epaSiteId
+        - mailingAddress
+        - name
+        - siteAddress
+    LockReasonEnum:
+      enum:
+        - ACS
+        - ECB
+        - EPC
+      type: string
+    Manifest:
+      type: object
+      description: Manifest model serializer for JSON marshalling/unmarshalling
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        manifestTrackingNumber:
+          type: string
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        submissionType:
+          type: string
+        signatureStatus:
+          type: boolean
+          nullable: true
+          default: false
+        originType:
+          type: string
+        shippedDate:
+          type: string
+          format: date-time
+        potentialShipDate:
+          type: string
+        receivedDate:
+          type: string
+          format: date-time
+        certifiedDate:
+          type: string
+          format: date-time
+          nullable: true
+        certifiedBy:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        generator:
+          $ref: '#/components/schemas/ManifestHandler'
+        transporters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transporter'
+        designatedFacility:
+          $ref: '#/components/schemas/ManifestHandler'
+        broker:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        wastes:
+          type: array
+          items:
+            $ref: '#/components/schemas/WasteLine'
+        rejection:
+          type: boolean
+        rejectionInfo:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        discrepancy:
+          type: boolean
+        residue:
+          type: boolean
+        residueNewManifestTrackingNumbers:
+          type: object
+          additionalProperties: {}
+          default: []
+        importInfo:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        containsPreviousRejectOrResidue:
+          type: boolean
+          default: false
+        printedDocument:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        formDocument:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        additionalInfo:
+          allOf:
+            - $ref: '#/components/schemas/AdditionalInfo'
+          nullable: true
+        correctionInfo:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        ppcStatus:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        locked:
+          type: boolean
+          nullable: true
+          default: false
+        lockReason:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/LockReasonEnum'
+            - $ref: '#/components/schemas/NullEnum'
+      required:
+        - designatedFacility
+        - generator
+        - transporters
+        - wastes
+    ManifestHandler:
+      type: object
+      description: Serializer for Handler on manifest
+      properties:
+        handler:
+          $ref: '#/components/schemas/Handler'
+        electronicSignaturesInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/ESignature'
+        paperSignatureInfo:
+          $ref: '#/components/schemas/PaperSignature'
+        signed:
+          type: boolean
+          readOnly: true
+      required:
+        - handler
+        - signed
+    Mtn:
+      type: object
+      description: MtnSerializer shares select details on a user's manifests.
+      properties:
+        manifestTrackingNumber:
+          type: string
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        submissionType:
+          type: string
+        signatureStatus:
+          type: boolean
+          nullable: true
+          default: false
+    NullEnum:
+      enum:
+        - null
+    PaperSignature:
+      type: object
+      description: |-
+        Serializer for Paper Signature on manifest which indicates the change
+        of custody with paper manifests
+      properties:
+        printedName:
+          type: string
+        signatureDate:
+          type: string
+          format: date-time
+    PatchedManifest:
+      type: object
+      description: Manifest model serializer for JSON marshalling/unmarshalling
+      properties:
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        manifestTrackingNumber:
+          type: string
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        submissionType:
+          type: string
+        signatureStatus:
+          type: boolean
+          nullable: true
+          default: false
+        originType:
+          type: string
+        shippedDate:
+          type: string
+          format: date-time
+        potentialShipDate:
+          type: string
+        receivedDate:
+          type: string
+          format: date-time
+        certifiedDate:
+          type: string
+          format: date-time
+          nullable: true
+        certifiedBy:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        generator:
+          $ref: '#/components/schemas/ManifestHandler'
+        transporters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transporter'
+        designatedFacility:
+          $ref: '#/components/schemas/ManifestHandler'
+        broker:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        wastes:
+          type: array
+          items:
+            $ref: '#/components/schemas/WasteLine'
+        rejection:
+          type: boolean
+        rejectionInfo:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        discrepancy:
+          type: boolean
+        residue:
+          type: boolean
+        residueNewManifestTrackingNumbers:
+          type: object
+          additionalProperties: {}
+          default: []
+        importInfo:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        containsPreviousRejectOrResidue:
+          type: boolean
+          default: false
+        printedDocument:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        formDocument:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        additionalInfo:
+          allOf:
+            - $ref: '#/components/schemas/AdditionalInfo'
+          nullable: true
+        correctionInfo:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        ppcStatus:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        locked:
+          type: boolean
+          nullable: true
+          default: false
+        lockReason:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/LockReasonEnum'
+            - $ref: '#/components/schemas/NullEnum'
+    PatchedProfileGet:
+      type: object
+      description: Rcra Profile model serializer for JSON marshalling/unmarshalling
+      properties:
+        user:
+          type: string
+          readOnly: true
+        rcraAPIID:
+          type: string
+        rcraUsername:
+          type: string
+        epaSites:
+          type: array
+          items:
+            $ref: '#/components/schemas/SitePermission'
+        phoneNumber:
+          type: string
+        apiUser:
+          type: boolean
+    ProfileGet:
+      type: object
+      description: Rcra Profile model serializer for JSON marshalling/unmarshalling
+      properties:
+        user:
+          type: string
+          readOnly: true
+        rcraAPIID:
+          type: string
+        rcraUsername:
+          type: string
+        epaSites:
+          type: array
+          items:
+            $ref: '#/components/schemas/SitePermission'
+        phoneNumber:
+          type: string
+        apiUser:
+          type: boolean
+      required:
+        - user
+    ProfileUpdate:
+      type: object
+      description: |-
+        Subclasses the ProfileGetSerializer and adds the users RCRAInfo API Key
+        to be used for updating the user's RcraProfile (not for GET requests).
+      properties:
+        user:
+          type: string
+          readOnly: true
+        rcraAPIID:
+          type: string
+        rcraAPIKey:
+          type: string
+        rcraUsername:
+          type: string
+        epaSites:
+          type: array
+          items:
+            $ref: '#/components/schemas/SitePermission'
+        phoneNumber:
+          type: string
+      required:
+        - user
+    Signer:
+      type: object
+      description: Serializer for EPA Signer Object
+      properties:
+        userId:
+          type: string
+        firstName:
+          type: string
+        middleInitial:
+          type: string
+        lastName:
+          type: string
+        phone:
+          $ref: '#/components/schemas/EpaPhone'
+        email:
+          type: string
+        contactType:
+          type: string
+        companyName:
+          type: string
+        signerRole:
+          type: string
+    Site:
+      type: object
+      description: Site model serializer for JSON marshalling/unmarshalling
+      properties:
+        name:
+          type: string
+        handler:
+          $ref: '#/components/schemas/Handler'
+      required:
+        - handler
+    SitePermission:
+      type: object
+      description: |-
+        SitePermission model serializer
+        We use this internally because it's easier to handle, using consistent naming,
+        Haztrak has a separate serializer for user permissions from RCRAInfo.
+        See EpaPermissionSerializer.
+      properties:
+        epaId:
+          type: string
+          readOnly: true
+        siteManagement:
+          type: boolean
+        annualReport:
+          type: string
+        biennialReport:
+          type: string
+        eManifest:
+          type: string
+        WIETS:
+          type: string
+        myRCRAid:
+          type: string
+      required:
+        - WIETS
+        - annualReport
+        - biennialReport
+        - eManifest
+        - epaId
+        - myRCRAid
+        - siteManagement
+    StatusEnum:
+      enum:
+        - NotAssigned
+        - Pending
+        - Scheduled
+        - InTransit
+        - ReadyForSignature
+        - Signed
+        - Corrected
+        - UnderCorrection
+        - MtnValidationFailed
+      type: string
+    Transporter:
+      type: object
+      description: Transporter model serializer for JSON marshalling/unmarshalling
+      properties:
+        handler:
+          $ref: '#/components/schemas/Handler'
+        order:
+          type: integer
+        paperSignatureInfo:
+          $ref: '#/components/schemas/PaperSignature'
+        electronicSignaturesInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/ESignature'
+        signed:
+          type: boolean
+          readOnly: true
+      required:
+        - handler
+        - order
+        - signed
+    WasteCode:
+      type: object
+      description: Serializer for Federal and State waste codes
+      properties:
+        code:
+          type: string
+          maxLength: 6
+        description:
+          type: string
+          nullable: true
+      required:
+        - code
+    WasteLine:
+      type: object
+      description: Waste Line model serializer for JSON marshalling/unmarshalling
+      properties:
+        lineNumber:
+          type: integer
+        dotHazardous:
+          type: boolean
+        dotInformation:
+          type: object
+          additionalProperties: {}
+        quantity:
+          type: object
+          additionalProperties: {}
+        hazardousWaste:
+          type: object
+          additionalProperties: {}
+        br:
+          type: boolean
+          title: BR info provided
+        brInfo:
+          type: object
+          additionalProperties: {}
+        managementMethod:
+          type: object
+          additionalProperties: {}
+        pcb:
+          type: boolean
+          title: Contains PCBs
+        pcbInfos:
+          type: object
+          additionalProperties: {}
+        discrepancyResidueInfo:
+          type: object
+          additionalProperties: {}
+        epaWaste:
+          type: boolean
+      required:
+        - br
+        - dotHazardous
+        - epaWaste
+        - lineNumber
+        - pcb
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer

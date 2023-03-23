@@ -57,7 +57,7 @@ print_usage() {
    echo "-l, --load          load initial database data from fixture files"
    echo "-t, --test          Run all tests, show output if exit status is not 0"
    echo "-p, --pre-commit    installs hooks, if necessary, and runs pre-commit run --all-files"
-   echo "-g, --generate      Generate the Open API Schema to /docs/API/"
+   echo "-o, --openapi		 Generate the Open API Schema to /docs/API/"
    echo "-e, --erd           Graph the django models to an entity relationship diagram (ERD), requires graphviz"
    echo "-h, --help          Print this help message"
    echo
@@ -100,7 +100,7 @@ load_django_fixtures() {
 
 generate_api_schema() {
     print_style "Generating Open API schema...\n" "success";
-    exec_cmd="$base_py_cmd spectacular --file $base_dir/docs/API/openapi-schema.yaml"
+    exec_cmd="$base_py_cmd spectacular --settings haztrak.settings --file $base_dir/docs/api/postman/schemas/openapi-schema.yaml"
     eval "$exec_cmd"
     exit
 }
@@ -198,7 +198,7 @@ while [[ $# -gt 0 ]]; do
     -p|--pre-commit)
         run_pre_commit
         ;;
-    -g|--generate)
+    -o|--openapi)
 		generate_api_schema
 		;;
     -e|--erd)
