@@ -1,16 +1,17 @@
 import logging
 from datetime import datetime, timedelta, timezone
 from logging import Logger
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 from django.db import transaction
 from django.db.models import Q
 from requests import RequestException
 
-from apps.trak.models import Manifest
+from apps.trak.models import Manifest, QuickerSign
 from apps.trak.serializers import ManifestSerializer
 
 from ..models.handler_model import HandlerType
+from ..serializers.signature_ser import QuickerSignSerializer
 from ..tasks.manifest_task import pull_manifest
 from .rcrainfo_service import RcrainfoService
 
@@ -130,32 +131,21 @@ class ManifestService:
                 results["error"].append(mtn)
         return results
 
-    def sign_manifest(
-        self,
-        mtn: List[str],
-        site_id: str,
-        site_type: HandlerType.choices,
-        printed_name: str,
-        signature_date: Optional[datetime] = datetime.utcnow().replace(tzinfo=timezone.utc),
-        transporter_order: Optional[int] = None,
-    ):
+    def sign_manifest(self, signature: QuickerSign):
         results = {"success": [], "error": []}
-        site_filter = self._get_handler_query(site_id, site_type)
-        existing_mtn = Manifest.objects.filter(site_filter, mtn__in=mtn)
+        site_filter = self._get_handler_query(signature.site_id, signature.site_type)
+        existing_mtn = Manifest.objects.filter(site_filter, mtn__in=signature.mtn)
         # get our list of valid MTN
         validated_mtn = [manifest.mtn for manifest in existing_mtn]
         # append any MTN, passed as an argument, not found in the DB to the error results
-        unknown_mtn = list(set(mtn).difference(set(validated_mtn)))
+        print(signature.mtn)
+        print(validated_mtn)
+        unknown_mtn = list(set(signature.mtn).difference(set(validated_mtn)))
         self.logger.warning(f"MTN not found or site not listed as site type {unknown_mtn}")
         results["error"].extend(unknown_mtn)
-        response = self.rcrainfo.sign_manifest(
-            mtn=validated_mtn,
-            site_id=site_id,
-            site_type=site_type,
-            printed_name=printed_name,
-            signature_date=signature_date,
-            transporter_order=transporter_order,
-        )
+        signature.mtn = validated_mtn
+        signature_data = QuickerSignSerializer(signature)
+        response = self.rcrainfo.sign_manifest(**signature_data.data)
         if response.ok:
             data = response.json()
             print(data)

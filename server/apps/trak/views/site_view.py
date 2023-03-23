@@ -4,14 +4,13 @@ from logging import getLogger
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from rest_framework import status
 from rest_framework.exceptions import APIException
-from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404
+from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from apps.trak.models import Manifest, Site
-from apps.trak.serializers import SiteSerializer
+from apps.trak.serializers import MtnSerializer, SiteSerializer
 from apps.trak.tasks import sync_site_manifests
 
 logger = getLogger(__name__)
@@ -48,7 +47,7 @@ class SiteApi(RetrieveAPIView):
         return Response(serializer.data)
 
 
-class SiteManifest(APIView):
+class SiteManifest(GenericAPIView):
     """
     Returns a site's manifest tracking numbers (MTN). Rhe MTN are broken down into three lists;
     generator, transporter, designated.Each array contains a list of objects with MTN and select
@@ -57,6 +56,7 @@ class SiteManifest(APIView):
 
     response = Response
     permission_classes = [IsAuthenticated]
+    serializer_class = MtnSerializer
 
     def get(self, request: Request, epa_id: str = None) -> Response:
         """GET method handler"""
@@ -92,7 +92,7 @@ class SiteManifest(APIView):
             )
 
 
-class SyncSiteManifest(APIView):
+class SyncSiteManifest(GenericAPIView):
     """
     This endpoint launches a task to pull a site's manifests that are out of sync with RCRAInfo
     """

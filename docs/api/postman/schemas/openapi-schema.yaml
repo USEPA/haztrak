@@ -218,6 +218,27 @@ paths:
       responses:
         '200':
           description: No response body
+  /api/trak/manifest/sign:
+    post:
+      operationId: manifest_sign_create
+      description: Endpoint to Quicker Sign manifests via an async task
+      tags:
+        - manifest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuickerSign'
+        required: true
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuickerSign'
+          description: ''
   /api/trak/mtn:
     get:
       operationId: mtn_list
@@ -461,7 +482,11 @@ paths:
         - tokenAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mtn'
+          description: ''
   /api/trak/site/manifest/sync:
     post:
       operationId: site_manifest_sync_create
@@ -1014,6 +1039,30 @@ components:
           type: string
       required:
         - user
+    QuickerSign:
+      type: object
+      description: Serializer for EPA Quicker Sign objects
+      properties:
+        manifestTrackingNumbers:
+          type: array
+          items:
+            type: string
+        printedSignatureName:
+          type: string
+        printedSignatureDate:
+          type: string
+          format: date-time
+        siteType:
+          type: string
+        siteId:
+          type: string
+        transporterOrder:
+          type: integer
+      required:
+        - manifestTrackingNumbers
+        - printedSignatureName
+        - siteId
+        - siteType
     Signer:
       type: object
       description: Serializer for EPA Signer Object

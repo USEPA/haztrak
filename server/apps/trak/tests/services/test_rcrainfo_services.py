@@ -5,7 +5,8 @@ import pytest
 from emanifest import RcrainfoClient
 from responses import matchers
 
-from apps.trak.models.handler_model import HandlerType
+from apps.trak.models import QuickerSign
+from apps.trak.serializers.signature_ser import QuickerSignSerializer
 from apps.trak.services import RcrainfoService
 
 
@@ -59,7 +60,7 @@ class TestQuickerSign:
     mtn = ["123456789ELC", "987654321ELC"]
     printed_name = "David Graham"
     site_id = "VATESTGEN001"
-    site_type = HandlerType.GENERATOR
+    site_type = "Generator"
     sign_date = datetime.utcnow().replace(tzinfo=timezone.utc)
 
     @pytest.fixture(autouse=True)
@@ -85,7 +86,7 @@ class TestQuickerSign:
                     {
                         "printedSignatureName": self.printed_name,
                         "printedSignatureDate": self.sign_date.isoformat(timespec="milliseconds"),
-                        "siteType": str(self.site_type.label),
+                        "siteType": self.site_type,
                         "manifestTrackingNumbers": self.mtn,
                         "siteId": self.site_id,
                     }
@@ -93,11 +94,13 @@ class TestQuickerSign:
             ],
             status=200,
         )
-        response = self.rcrainfo.sign_manifest(
-            site_type=HandlerType.GENERATOR,
+        quicker_signature = QuickerSign(
+            site_type=self.site_type,
             mtn=self.mtn,
             site_id=self.site_id,
             printed_name=self.printed_name,
-            signature_date=self.sign_date,
+            printed_date=self.sign_date,
         )
+        signature_serializer = QuickerSignSerializer(quicker_signature)
+        response = self.rcrainfo.sign_manifest(**signature_serializer.data)
         assert response.status_code == http.HTTPStatus.OK

@@ -1,4 +1,6 @@
 import logging
+from datetime import datetime, timezone
+from typing import List, Optional
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -158,3 +160,39 @@ class PaperSignature(TrakBaseModel):
 
     def __hash__(self):
         return hash((self.printed_name, self.sign_date))
+
+
+class QuickerSign:
+    """
+    Quicker Sign is the python object representation of the EPA's Quicker Sign schema
+    This is not a django model, however for the time being we do not have a better location
+    """
+
+    def __init__(
+        self,
+        mtn: List[str],
+        printed_name: str,
+        site_type: str,
+        site_id: str,
+        printed_date: Optional[datetime | str] = datetime.utcnow().replace(tzinfo=timezone.utc),
+        transporter_order: Optional[int] = None,
+    ):
+        self.mtn = mtn
+        self.printed_name = printed_name
+        self.site_type = site_type
+        self.site_id = site_id
+        self.transporter_order = transporter_order
+        # Check if printed_date is datetime object of string
+        if isinstance(printed_date, datetime):
+            self.printed_date: datetime = printed_date
+        # If it's a string, it should be in the appropriate ISO format
+        elif isinstance(printed_date, str):
+            try:
+                self.printed_date: datetime = datetime.fromisoformat(printed_date)
+            # If error, default to current time
+            except ValueError:
+                self.printed_date: datetime = datetime.utcnow().replace(tzinfo=timezone.utc)
+        else:
+            raise TypeError(
+                f"printed_date must be string or datetime, received {type(printed_date)}"
+            )

@@ -1,12 +1,9 @@
-import datetime
 import os
-from typing import List, Optional
 
+from django.db import IntegrityError
 from emanifest import RcrainfoClient
-from psycopg2._psycopg import IntegrityError
 
 from apps.trak.models import RcraProfile, WasteCode
-from apps.trak.models.handler_model import HandlerType
 
 
 class RcrainfoService(RcrainfoClient):
@@ -79,37 +76,17 @@ class RcrainfoService(RcrainfoClient):
                 WasteCode.federal.update(code_type=WasteCode.CodeType.FEDERAL, **federal_code)
                 pass
 
-    def sign_manifest(
-        self,
-        mtn: List[str],
-        site_id: str,
-        site_type: HandlerType.choices,
-        printed_name: str,
-        signature_date: Optional[datetime.datetime] = datetime.datetime.utcnow().replace(
-            tzinfo=datetime.timezone.utc
-        ),
-        transporter_order: Optional[int] = None,
-    ):
+    def sign_manifest(self, **sign_data):
         """
         Utilizes RcraInfo's Quicker Sign endpoint to electronically sign manifest(s)
-        we override the e-Manifest package's sign_manifest function, first validating.
+        we override the e-Manifest package's sign_manifest function to validate inputs.
         """
-        if isinstance(site_type, HandlerType):
-            site_type = str(site_type.label)
-        sign_params = {
-            "manifestTrackingNumbers": mtn,
-            "siteId": site_id,
-            "siteType": site_type,
-            "printedSignatureName": printed_name,
-            "printedSignatureDate": signature_date.isoformat(timespec="milliseconds"),
-            "transporterOrder": transporter_order,
-        }
-        sign_params = {k: v for k, v in sign_params.items() if v is not None}
-        return super().sign_manifest(**sign_params)
+        sign_data = {k: v for k, v in sign_data.items() if v is not None}
+        return super().sign_manifest(**sign_data)
 
     def __bool__(self):
         """
         This Overrides the RcrainfoClient bool
-        we use this to test RcrainfoService is not None
+        we use this to test a RcrainfoService instance is not None
         """
         return True

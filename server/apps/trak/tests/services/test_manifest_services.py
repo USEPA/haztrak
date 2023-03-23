@@ -5,6 +5,7 @@ import pytest_mock
 from django.db.models import Q
 from emanifest import RcrainfoResponse
 
+from apps.trak.models import QuickerSign
 from apps.trak.models.handler_model import HandlerType
 from apps.trak.services import ManifestService, RcrainfoService
 
@@ -104,12 +105,14 @@ class TestSignManifest:
         )
         bad_mtn = "000000000ELC"  # a manifest (tracking number) that does not exist
         mtn = self.mtn + [bad_mtn]
-        results: Dict[str, List[str]] = manifest_service.sign_manifest(
+        print(mtn)
+        quicker_signature = QuickerSign(
             mtn=mtn,
             site_id=self.site.epa_site.epa_id,
             site_type=HandlerType.GENERATOR,
             printed_name="David Graham",
         )
+        results: Dict[str, List[str]] = manifest_service.sign_manifest(quicker_signature)
         assert bad_mtn in results["error"]
 
     def test_calls_rcrainfo_service_sign_manifest(self):
@@ -117,10 +120,11 @@ class TestSignManifest:
         manifest_service = ManifestService(
             username=self.user.username, rcrainfo=self.mock_rcrainfo
         )
-        manifest_service.sign_manifest(
+        quicker_sign = QuickerSign(
             mtn=self.mtn,
             site_id=self.site.epa_site.epa_id,
             site_type=HandlerType.GENERATOR,
             printed_name="David Graham",
         )
+        manifest_service.sign_manifest(quicker_sign)
         self.mock_rcrainfo.sign_manifest.assert_called()

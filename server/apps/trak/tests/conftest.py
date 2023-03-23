@@ -75,17 +75,13 @@ def user_factory(db):
         email: Optional[str] = "testuser1@haztrak.net",
         password: Optional[str] = "password1",
     ) -> User:
-        # if username is None:
-        #     username = "".join(
-        #         random.choice(string.ascii_letters) for _ in range(10)
-        #     )  # generate a random username
         return User.objects.create_user(
             username=username,
             email=email,
             password=password,
         )
 
-    return create_user
+    yield create_user
 
 
 @pytest.fixture
@@ -105,7 +101,7 @@ def rcra_profile_factory(db, user_factory):
             user=user or user_factory(),
         )
 
-    return create_profile
+    yield create_profile
 
 
 @pytest.fixture
@@ -125,7 +121,7 @@ def address_factory(db):
             city=city,
         )
 
-    return create_address
+    yield create_address
 
 
 @pytest.fixture
@@ -141,7 +137,7 @@ def epa_phone_factory(db):
             extension=extension,
         )
 
-    return create_epa_phone
+    yield create_epa_phone
 
 
 @pytest.fixture
@@ -157,7 +153,7 @@ def paper_signature_factory(db):
             sign_date=sign_date or datetime.utcnow().replace(tzinfo=timezone.utc),
         )
 
-    return create_signature
+    yield create_signature
 
 
 @pytest.fixture
@@ -180,7 +176,7 @@ def contact_factory(db, epa_phone_factory):
         )
         return contact
 
-    return create_contact
+    yield create_contact
 
 
 @pytest.fixture
@@ -203,7 +199,7 @@ def handler_factory(db, address_factory, contact_factory):
             contact=contact_factory(),
         )
 
-    return create_handler
+    yield create_handler
 
 
 @pytest.fixture
@@ -223,7 +219,7 @@ def e_signature_factory(db, signer_factory, manifest_handler_factory):
             on_behalf=False,
         )
 
-    return create_e_signature
+    yield create_e_signature
 
 
 @pytest.fixture
@@ -239,7 +235,7 @@ def manifest_handler_factory(db, handler_factory, paper_signature_factory):
             paper_signature=paper_signature or paper_signature_factory(),
         )
 
-    return create_manifest_handler
+    yield create_manifest_handler
 
 
 @pytest.fixture
@@ -255,7 +251,7 @@ def site_factory(db, handler_factory):
             name=name,
         )
 
-    return create_site
+    yield create_site
 
 
 @pytest.fixture
@@ -279,7 +275,7 @@ def signer_factory(db):
             rcra_user_id=rcra_user_id,
         )
 
-    return creat_signer
+    yield creat_signer
 
 
 @pytest.fixture
@@ -308,7 +304,7 @@ def site_permission_factory(db, site_factory, rcra_profile_factory):
             my_rcra_id=my_rcra_id,
         )
 
-    return create_permission
+    yield create_permission
 
 
 @pytest.fixture
@@ -332,7 +328,7 @@ def manifest_factory(db, manifest_handler_factory, handler_factory):
             tsd=tsd or manifest_handler_factory(handler=handler_factory(epa_id="tsd001")),
         )
 
-    return create_manifest
+    yield create_manifest
 
 
 @pytest.fixture
@@ -348,7 +344,7 @@ def api_client_factory(db, user_factory):
         )
         return client
 
-    return create_client
+    yield create_client
 
 
 @pytest.fixture
@@ -367,7 +363,7 @@ def waste_code_factory(db):
         )
         return waste_code
 
-    return create_waste_code
+    yield create_waste_code
 
 
 # Serializer fixtures, build on JSON fixtures to produce serializers
@@ -502,4 +498,4 @@ def quicker_sign_response_factory():
             "siteReport": {"siteId": site_id, "siteType": str(site_type.label)},
         }
 
-    return create_quicker_sign
+    yield create_quicker_sign
