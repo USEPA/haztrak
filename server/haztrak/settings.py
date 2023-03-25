@@ -4,6 +4,9 @@ Haztrak project settings.
 import os
 from pathlib import Path
 
+# Globals
+HAZTRAK_VERSION = "0.3.0"
+
 # Environment variable mappings
 HOST_ENV = "HT_HOST"
 DEBUG_ENV = "HT_DEBUG"
@@ -154,7 +157,7 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "Haztrak API",
     "DESCRIPTION": "An open-source web app illustrating how hazardous waste "
     "management software can integrate with EPA's RCRAInfo",
-    "VERSION": "0.1.0",
+    "VERSION": HAZTRAK_VERSION,
     "SERVE_INCLUDE_SCHEMA": False,
     "SCHEMA_PATH_PREFIX": r"/api/[a-zA-Z]*/",
     "SWAGGER_UI_SETTINGS": {

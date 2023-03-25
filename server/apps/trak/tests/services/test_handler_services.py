@@ -30,14 +30,12 @@ class TestHandlerService:
         handler_service = HandlerService(username=self.user.username)
         assert isinstance(handler_service.rcrainfo, RcrainfoService)
 
-    @responses.activate
-    def test_pull_rcra_handler(self):
+    def test_pull_rcra_handler(self, mock_responses):
         """test pulling a handler's information from rcrainfo"""
         rcrainfo = RcrainfoService(api_username=self.user.username, auto_renew=False)
         handler_service = HandlerService(username=self.user.username, rcrainfo=rcrainfo)
         handler_url = f"{rcrainfo.base_url}/api/v1/site-details/{self.epa_id}"
 
-        with responses.RequestsMock() as mock:
-            mock.get(handler_url, json=self.handler_json, status=200)
-            results = handler_service.pull_rcra_handler(site_id=self.epa_id)
-            assert isinstance(results, Handler)
+        mock_responses.get(handler_url, json=self.handler_json, status=200)
+        results = handler_service.pull_rcra_handler(site_id=self.epa_id)
+        assert isinstance(results, Handler)

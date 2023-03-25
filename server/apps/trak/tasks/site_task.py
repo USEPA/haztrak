@@ -3,14 +3,14 @@ import logging
 from celery import shared_task, states
 from celery.exceptions import Ignore
 
-from apps.trak.services import SiteService
-
 logger = logging.getLogger(__name__)
 
 
 @shared_task(name="sync site manifests", bind=True)
 def sync_site_manifests(self, *, site_id: str, username: str):
     """asynchronous task to sync an EPA site's manifests"""
+    from apps.trak.services import SiteService
+
     try:
         site_service = SiteService(username=username)
         results = site_service.sync_rcra_manifest(site_id=site_id)

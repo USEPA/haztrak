@@ -4,11 +4,15 @@ from logging import Logger
 from typing import Dict, List
 
 from django.db import transaction
+from django.db.models import Q
 from requests import RequestException
 
-from apps.trak.models import Manifest
+from apps.trak.models import Manifest, QuickerSign
 from apps.trak.serializers import ManifestSerializer
 
+from ..models.handler_model import HandlerType
+from ..serializers.signature_ser import QuickerSignSerializer
+from ..tasks.manifest_task import pull_manifest
 from .rcrainfo_service import RcrainfoService
 
 
@@ -126,3 +130,47 @@ class ManifestService:
                 self.logger.warning(f"error pulling manifest {mtn}: {exc}")
                 results["error"].append(mtn)
         return results
+
+    def sign_manifest(self, signature: QuickerSign):
+        results = {"success": [], "error": []}
+        site_filter = self._get_handler_query(signature.site_id, signature.site_type)
+        existing_mtn = Manifest.objects.filter(site_filter, mtn__in=signature.mtn)
+        # get our list of valid MTN
+        validated_mtn = [manifest.mtn for manifest in existing_mtn]
+        # append any MTN, passed as an argument, not found in the DB to the error results
+        print(signature.mtn)
+        print(validated_mtn)
+        unknown_mtn = list(set(signature.mtn).difference(set(validated_mtn)))
+        self.logger.warning(f"MTN not found or site not listed as site type {unknown_mtn}")
+        results["error"].extend(unknown_mtn)
+        signature.mtn = validated_mtn
+        signature_data = QuickerSignSerializer(signature)
+        response = self.rcrainfo.sign_manifest(**signature_data.data)
+        if response.ok:
+            data = response.json()
+            print(data)
+            results["success"].append(validated_mtn)  # Temporary
+            for manifest in response.json()["manifestReports"]:
+                pull_manifest.delay(mtn=manifest["manifestTrackingNumber"], username=self.username)
+        else:
+            self.logger.warning(
+                f"Error Quicker signing manifests, "
+                f"response: {response.status_code} {response.json()}"
+            )
+            results["error"].append(validated_mtn)  # Temporary
+        return results
+
+    @classmethod
+    def _get_handler_query(cls, site_id: str, site_type: HandlerType | str):
+        """map handler type to django Query object"""
+        if isinstance(site_type, str) and not isinstance(site_type, HandlerType):
+            site_type = site_type.lower()
+        match site_type:
+            case HandlerType.GENERATOR | "generator":
+                return Q(generator__handler__epa_id=site_id)
+            case HandlerType.TRANSPORTER | "transporter":
+                return Q(transporter__handler__epa_id=site_id)
+            case HandlerType.TSDF | "tsdf":
+                return Q(tsd__handler__epa_id=site_id)
+            case _:
+                raise ValueError(f"unrecognized site_type argument {site_type}")

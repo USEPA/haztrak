@@ -3,6 +3,7 @@ from typing import Union
 
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from .address_model import Address
 from .base_model import TrakBaseManager, TrakBaseModel
@@ -10,6 +11,17 @@ from .contact_model import Contact, EpaPhone
 from .signature_model import ESignature, PaperSignature
 
 logger = logging.getLogger(__name__)
+
+
+class HandlerType(models.TextChoices):
+    """A hazardous waste handler's type. Whether they are the handler
+    that generates, transports, or treats the waste (Tsdf).
+    It's also possible they can be a broker although this is much less common"""
+
+    GENERATOR = "GEN", _("Generator")
+    TRANSPORTER = "TRA", _("Transporter")
+    TSDF = "TSD", _("Tsdf")
+    BROKER = "BRO", _("Broker")
 
 
 class HandlerManager(TrakBaseManager):

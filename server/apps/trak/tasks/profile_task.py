@@ -4,8 +4,6 @@ from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
 from requests import RequestException
 
-from apps.trak.services import RcraProfileService
-
 logger = logging.getLogger(__name__)
 
 
@@ -22,6 +20,8 @@ def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
     This task initiates a call to the RcraProfileService to pull a user's RCRAInfo profile
     and update that information in Haztrak.
     """
+    from apps.trak.services import RcraProfileService
+
     try:
         profile_service = RcraProfileService(username=username, logger=logger)
         profile_service.pull_rcra_profile()

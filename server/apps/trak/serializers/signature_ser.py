@@ -1,11 +1,52 @@
+from datetime import timezone
 from typing import Dict
 
 from rest_framework import serializers
 
-from apps.trak.models import ESignature, PaperSignature, Signer
+from apps.trak.models import ESignature, PaperSignature, QuickerSign, Signer
 from apps.trak.serializers.contact_ser import EpaPhoneSerializer
 
 from .base_ser import TrakBaseSerializer
+
+
+class QuickerSignSerializer(serializers.Serializer):
+    """Serializer for EPA Quicker Sign objects"""
+
+    manifestTrackingNumbers = serializers.ListField(source="mtn", child=serializers.CharField())
+    printedSignatureName = serializers.CharField(source="printed_name")
+    printedSignatureDate = serializers.DateTimeField(
+        source="printed_date",
+        required=False,
+        default_timezone=timezone.utc,
+        format=None,
+    )
+    siteType = serializers.CharField(source="site_type")
+    siteId = serializers.CharField(source="site_id")
+    transporterOrder = serializers.IntegerField(source="transporter_order", required=False)
+
+    def to_internal_value(self, data: Dict):
+        return super().to_internal_value(data)
+
+    def to_representation(self, instance: QuickerSign):
+        data = super().to_representation(instance)
+        data["printedSignatureDate"] = instance.printed_date.isoformat(timespec="milliseconds")
+        return data
+
+    def update(self, instance, validated_data):
+        return self.Meta.model(**validated_data)
+
+    def create(self, validated_data):
+        return self.Meta.model(**validated_data)
+
+    class Meta:
+        model = QuickerSign
+        fields = [
+            "printedSignatureName",
+            "printedSignatureDate",
+            "siteType",
+            "siteId",
+            "transporterOrder",
+        ]
 
 
 class SignerSerializer(TrakBaseSerializer):

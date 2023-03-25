@@ -5,9 +5,10 @@ import string
 from datetime import datetime, timezone
 from enum import Enum
 from http import HTTPStatus
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 import pytest
+import pytest_mock
 import responses
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
@@ -27,6 +28,7 @@ from apps.trak.models import (
     SitePermission,
     WasteCode,
 )
+from apps.trak.models.handler_model import HandlerType
 from apps.trak.serializers import (
     ContactSerializer,
     EpaPermissionSerializer,
@@ -73,17 +75,13 @@ def user_factory(db):
         email: Optional[str] = "testuser1@haztrak.net",
         password: Optional[str] = "password1",
     ) -> User:
-        # if username is None:
-        #     username = "".join(
-        #         random.choice(string.ascii_letters) for _ in range(10)
-        #     )  # generate a random username
         return User.objects.create_user(
             username=username,
             email=email,
             password=password,
         )
 
-    return create_user
+    yield create_user
 
 
 @pytest.fixture
@@ -103,7 +101,7 @@ def rcra_profile_factory(db, user_factory):
             user=user or user_factory(),
         )
 
-    return create_profile
+    yield create_profile
 
 
 @pytest.fixture
@@ -123,7 +121,7 @@ def address_factory(db):
             city=city,
         )
 
-    return create_address
+    yield create_address
 
 
 @pytest.fixture
@@ -139,7 +137,7 @@ def epa_phone_factory(db):
             extension=extension,
         )
 
-    return create_epa_phone
+    yield create_epa_phone
 
 
 @pytest.fixture
@@ -155,7 +153,7 @@ def paper_signature_factory(db):
             sign_date=sign_date or datetime.utcnow().replace(tzinfo=timezone.utc),
         )
 
-    return create_signature
+    yield create_signature
 
 
 @pytest.fixture
@@ -178,7 +176,7 @@ def contact_factory(db, epa_phone_factory):
         )
         return contact
 
-    return create_contact
+    yield create_contact
 
 
 @pytest.fixture
@@ -186,14 +184,14 @@ def handler_factory(db, address_factory, contact_factory):
     """Abstract factory for Haztrak Handler model"""
 
     def create_handler(
-        epa_id: Optional[str] = "handler001",
+        epa_id: Optional[str] = None,
         name: Optional[str] = "my_handler",
         site_type: Optional[str] = "Generator",
         site_address: Optional[Address] = None,
         mail_address: Optional[Address] = None,
     ) -> Handler:
         return Handler.objects.create(
-            epa_id=epa_id,
+            epa_id=epa_id or f"VAD{''.join(random.choices(string.digits, k=9))}",
             name=name,
             site_type=site_type,
             site_address=site_address or address_factory(),
@@ -201,7 +199,7 @@ def handler_factory(db, address_factory, contact_factory):
             contact=contact_factory(),
         )
 
-    return create_handler
+    yield create_handler
 
 
 @pytest.fixture
@@ -221,7 +219,7 @@ def e_signature_factory(db, signer_factory, manifest_handler_factory):
             on_behalf=False,
         )
 
-    return create_e_signature
+    yield create_e_signature
 
 
 @pytest.fixture
@@ -237,7 +235,7 @@ def manifest_handler_factory(db, handler_factory, paper_signature_factory):
             paper_signature=paper_signature or paper_signature_factory(),
         )
 
-    return create_manifest_handler
+    yield create_manifest_handler
 
 
 @pytest.fixture
@@ -253,7 +251,7 @@ def site_factory(db, handler_factory):
             name=name,
         )
 
-    return create_site
+    yield create_site
 
 
 @pytest.fixture
@@ -277,7 +275,7 @@ def signer_factory(db):
             rcra_user_id=rcra_user_id,
         )
 
-    return creat_signer
+    yield creat_signer
 
 
 @pytest.fixture
@@ -306,7 +304,7 @@ def site_permission_factory(db, site_factory, rcra_profile_factory):
             my_rcra_id=my_rcra_id,
         )
 
-    return create_permission
+    yield create_permission
 
 
 @pytest.fixture
@@ -320,7 +318,7 @@ def manifest_factory(db, manifest_handler_factory, handler_factory):
     ) -> Manifest:
         if tsd is None:
             # ensure the TSD is a different EPA site
-            handler = handler_factory(epa_id="foobar_id")
+            handler = handler_factory()
             tsd = manifest_handler_factory(handler=handler)
         return Manifest.objects.create(
             mtn=mtn,
@@ -330,7 +328,7 @@ def manifest_factory(db, manifest_handler_factory, handler_factory):
             tsd=tsd or manifest_handler_factory(handler=handler_factory(epa_id="tsd001")),
         )
 
-    return create_manifest
+    yield create_manifest
 
 
 @pytest.fixture
@@ -346,7 +344,7 @@ def api_client_factory(db, user_factory):
         )
         return client
 
-    return create_client
+    yield create_client
 
 
 @pytest.fixture
@@ -365,7 +363,7 @@ def waste_code_factory(db):
         )
         return waste_code
 
-    return create_waste_code
+    yield create_waste_code
 
 
 # Serializer fixtures, build on JSON fixtures to produce serializers
@@ -426,27 +424,78 @@ def e_signature_serializer(db, haztrak_json) -> ESignatureSerializer:
 
 
 @pytest.fixture
-def manifest_100033134elc_rcra_response(db, haztrak_json):
+def manifest_100033134elc_rcra_response(db, haztrak_json, mock_responses):
     rcrainfo = RcrainfoService(api_username="testuser1", rcrainfo_env="preprod")
     manifest_json = haztrak_json.MANIFEST.value
-    with responses.RequestsMock() as mock:
-        mock.get(
-            url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{manifest_json.get("manifestTrackingNumber")}',
-            content_type="application/json",
-            json=manifest_json,
-            status=HTTPStatus.OK,
-        )
-        yield mock
+    mock_responses.get(
+        url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{manifest_json.get("manifestTrackingNumber")}',
+        content_type="application/json",
+        json=manifest_json,
+        status=HTTPStatus.OK,
+    )
 
 
 @pytest.fixture
-def search_site_mtn_rcra_response(haztrak_json):
+def search_site_mtn_rcra_response(haztrak_json, mock_responses):
     rcrainfo = RcrainfoService(api_username="testuser1", rcrainfo_env="preprod")
-    with responses.RequestsMock() as mock:
-        mock.post(
-            url=f"{rcrainfo.base_url}/api/v1/emanifest/search",
-            content_type="application/json",
-            json=[haztrak_json.MANIFEST.value.get("manifestTrackingNumber")],
-            status=HTTPStatus.OK,
-        )
-        yield mock
+    mock_responses.post(
+        url=f"{rcrainfo.base_url}/api/v1/emanifest/search",
+        content_type="application/json",
+        json=[haztrak_json.MANIFEST.value.get("manifestTrackingNumber")],
+        status=HTTPStatus.OK,
+    )
+
+
+@pytest.fixture
+def mock_responses():
+    """
+    fixture for mocking external http request responses
+    see Responses docs
+    https://github.com/getsentry/responses#responses-as-a-pytest-fixture
+    """
+    with responses.RequestsMock() as mock_responses:
+        yield mock_responses
+
+
+@pytest.fixture
+def mocker(mocker: pytest_mock.MockerFixture):
+    """
+    wrapper fixture pytest-mock's mocker fixture for easy type annotations
+    https://github.com/pytest-dev/pytest-mock
+    """
+    return mocker
+
+
+@pytest.fixture
+def quicker_sign_response_factory():
+    """
+    Factory for creating dynamic quicker sign response data
+    """
+
+    def create_quicker_sign(
+        mtn: List[str],
+        site_id: str,
+        site_type: Optional[HandlerType] = HandlerType.GENERATOR,
+        printed_name: Optional[str] = "David Graham",
+        sign_date: Optional[datetime] = datetime.utcnow().replace(tzinfo=timezone.utc),
+        transporter_order: Optional[int] = None,
+    ) -> Dict:
+        sign_date_iso = sign_date.isoformat(timespec="milliseconds")
+        return {
+            "reportId": "5fff5aab-2172-4a28-b530-f4c42f1bfdaf",
+            "date": sign_date_iso,
+            "operationStatus": "Completed",
+            "manifestReports": [{"manifestTrackingNumber": mtn} for mtn in mtn],
+            "signerReport": {
+                "printedSignatureName": printed_name,
+                "printedSignatureDate": sign_date_iso,
+                "electronicSignatureDate": sign_date_iso,
+                "firstName": "David",
+                "lastName": "Graham",
+                "userId": "DPGRAHAM4401",
+                "warnings": [],
+            },
+            "siteReport": {"siteId": site_id, "siteType": str(site_type.label)},
+        }
+
+    yield create_quicker_sign

@@ -10,6 +10,7 @@ from apps.trak.views import (
     MtnList,
     PullManifest,
     RcraProfileView,
+    SignManifestView,
     SiteApi,
     SiteList,
     SiteManifest,
@@ -30,6 +31,7 @@ urlpatterns = [
     # Manifest
     path("", include(manifest_router.urls)),
     path("manifest/pull", PullManifest.as_view()),
+    path("manifest/sign", SignManifestView.as_view()),
     path("mtn", MtnList.as_view()),
     path("mtn/<str:epa_id>", MtnList.as_view()),
     # Site
