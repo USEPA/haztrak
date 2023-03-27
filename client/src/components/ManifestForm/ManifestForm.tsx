@@ -110,6 +110,11 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
   const tsdf: ManifestHandler = manifestMethods.getValues('designatedFacility');
 
+  const signAble =
+    manifestData?.status === 'Scheduled' ||
+    manifestData?.status === 'InTransit' ||
+    manifestData?.status === 'ReadyForSignature';
+
   return (
     <>
       <FormProvider {...manifestMethods}>
@@ -259,7 +264,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                         siteType={'Generator'}
                         mtnHandler={generator}
                         handleClick={setupSign}
-                        disabled={generator.signed}
+                        disabled={generator.signed || !signAble}
                       />
                     </Col>
                   </div>
@@ -320,7 +325,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                         siteType={'Tsdf'}
                         mtnHandler={tsdf}
                         handleClick={setupSign}
-                        disabled={tsdf.signed}
+                        disabled={tsdf.signed || !signAble}
                       />
                     </Col>
                   </div>

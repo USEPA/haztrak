@@ -17,6 +17,7 @@ function RcraApiUserBtn(props: HtApiUserBtnProps) {
   // In order for the button to be active,
   // the disabled prop needs to be falsy AND the user needs to be an API user
   const active = !btnProps.disabled && profile.apiUser;
+
   return (
     <Button {...btnProps} disabled={!active}>
       {props.children}

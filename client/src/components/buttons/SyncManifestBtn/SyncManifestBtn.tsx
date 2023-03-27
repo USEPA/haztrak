@@ -6,7 +6,7 @@ import { RcraApiUserBtn } from 'components/buttons';
 import { addMsg, useAppDispatch } from 'store';
 
 interface SyncManifestProps {
-  siteId: string;
+  siteId?: string;
   disabled?: boolean;
 }
 
@@ -18,21 +18,18 @@ interface SyncManifestProps {
 function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
   const [syncingMtn, setSyncingMtn] = useState(false);
   const dispatch = useAppDispatch();
-
-  if (!siteId || disabled) {
-    disabled = true;
-  }
+  let active: boolean = siteId ? true : false;
+  active = !disabled;
 
   return (
     <RcraApiUserBtn
       variant="primary"
-      disabled={disabled}
+      disabled={!active}
       className="mx-2"
       onClick={() => {
         setSyncingMtn(!syncingMtn);
         htApi
           .post('/trak/site/manifest/sync', { siteId: `${siteId}` })
-          .then((r) => console.log(r))
           .then(() => {
             dispatch(
               addMsg({
@@ -45,7 +42,7 @@ function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
               })
             );
           })
-          .catch((reason) => console.log(reason));
+          .catch((reason) => console.error(reason));
       }}
     >
       {`Sync Manifest `}

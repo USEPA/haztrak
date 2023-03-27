@@ -48,7 +48,6 @@ function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSign
         transporterOrder: mtnHandler.order,
       };
     }
-    console.log(signature);
     htApi
       .post('/trak/manifest/sign', signature)
       .then((response: AxiosResponse) => {
@@ -56,7 +55,7 @@ function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSign
           addMsg({
             uniqueId: Date.now(),
             createdDate: new Date().toISOString(),
-            message: `${response} ${response.statusText}`,
+            message: `${response.data.task} ${response.statusText}`,
             alertType: 'Info',
             read: false,
             timeout: 5000,
@@ -75,6 +74,9 @@ function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSign
           })
         );
       });
+    if (handleClose) {
+      handleClose();
+    }
   };
 
   return (
