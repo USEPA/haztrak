@@ -4,26 +4,30 @@ import { HtForm } from 'components/Ht';
 import React from 'react';
 import { Button, Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ManifestHandler } from 'types/handler';
+import { ManifestHandler, Transporter } from 'types/handler';
 import { QuickerSignature } from 'types/manifest/signatures';
 import { useNavigate } from 'react-router-dom';
+import { addMsg, RootState, useAppDispatch, useAppSelector } from 'store';
+import { UserState } from 'types/store';
+import htApi from 'services';
+import { AxiosError, AxiosResponse } from 'axios';
 
 interface QuickerSignProps {
   mtn: Array<string>;
-  mtnHandler: ManifestHandler;
+  mtnHandler: ManifestHandler | Transporter;
   siteType: 'Generator' | 'Transporter' | 'Tsdf';
-  transporterOrder?: number;
   handleClose?: () => void;
 }
 
-function QuickerSign({
-  mtn,
-  mtnHandler,
-  handleClose,
-  siteType,
-  transporterOrder,
-}: QuickerSignProps) {
-  const { register, handleSubmit } = useForm<QuickerSignature>();
+function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSignProps) {
+  const { user } = useAppSelector<UserState>((state: RootState) => state.user);
+  const dispatch = useAppDispatch();
+  const { register, handleSubmit, setValue } = useForm<QuickerSignature>({
+    defaultValues: {
+      printedSignatureName: user,
+      printedSignatureDate: new Date().toISOString().slice(0, -8),
+    },
+  });
   const navigate = useNavigate();
   if (!handleClose) {
     // If handleClose function is not passed, assume navigate back 1
@@ -31,14 +35,46 @@ function QuickerSign({
   }
 
   const onSubmit: SubmitHandler<QuickerSignature> = (data) => {
-    const signature: QuickerSignature = {
-      printedSignatureDate: data.printedSignatureDate,
+    let signature: QuickerSignature = {
+      printedSignatureDate: data.printedSignatureDate + '.000Z',
       printedSignatureName: data.printedSignatureName,
       siteId: mtnHandler.epaSiteId,
       siteType: siteType,
       manifestTrackingNumbers: mtn,
     };
+    if ('order' in mtnHandler) {
+      signature = {
+        ...signature,
+        transporterOrder: mtnHandler.order,
+      };
+    }
     console.log(signature);
+    htApi
+      .post('/trak/manifest/sign', signature)
+      .then((response: AxiosResponse) => {
+        dispatch(
+          addMsg({
+            uniqueId: Date.now(),
+            createdDate: new Date().toISOString(),
+            message: `${response} ${response.statusText}`,
+            alertType: 'Info',
+            read: false,
+            timeout: 5000,
+          })
+        );
+      })
+      .catch((error: AxiosError) => {
+        dispatch(
+          addMsg({
+            uniqueId: Date.now(),
+            createdDate: new Date().toISOString(),
+            message: `${error.message}`,
+            alertType: 'Error',
+            read: false,
+            timeout: 5000,
+          })
+        );
+      });
   };
 
   return (
@@ -57,14 +93,23 @@ function QuickerSign({
             </HtForm.Group>
           </Col>
           <Col>
-            <HtForm.Group>
-              <HtForm.Label>Signature Date</HtForm.Label>
+            <HtForm.Label htmlFor={'printedSignatureDate'}>Signature Date</HtForm.Label>
+            <HtForm.InputGroup>
               <HtForm.Control
                 id="printedSignatureDate"
                 type="datetime-local"
                 {...register(`printedSignatureDate`)}
               />
-            </HtForm.Group>
+              <Button
+                onClick={() => {
+                  setValue('printedSignatureDate', new Date().toISOString().slice(0, -8), {
+                    shouldDirty: true,
+                  });
+                }}
+              >
+                Now
+              </Button>
+            </HtForm.InputGroup>
           </Col>
         </Row>
         <Container>
@@ -99,4 +144,4 @@ function QuickerSign({
   );
 }
 
-export default QuickerSign;
+export default QuickerSignForm;

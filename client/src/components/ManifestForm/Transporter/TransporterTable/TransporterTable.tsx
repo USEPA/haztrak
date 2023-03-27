@@ -1,8 +1,10 @@
 import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { QuickerSignModalBtn } from 'components/QuickerSign';
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import { Manifest } from 'types/manifest';
 import { Transporter } from 'types/handler';
+import { QuickerSignData } from 'types/manifest/signatures';
 import { TransporterRowActions } from './TransporterRowActions';
 import { UseFieldArrayReturn } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,9 +13,15 @@ interface TransporterTableProps {
   transporters?: Array<Transporter>;
   arrayFieldMethods: UseFieldArrayReturn<Manifest, 'transporters', 'id'>;
   readOnly?: boolean;
+  setupSign: (data: QuickerSignData) => void;
 }
 
-function TransporterTable({ transporters, arrayFieldMethods, readOnly }: TransporterTableProps) {
+function TransporterTable({
+  transporters,
+  arrayFieldMethods,
+  readOnly,
+  setupSign,
+}: TransporterTableProps) {
   if (!transporters || transporters.length < 1) {
     return <></>;
   }
@@ -31,7 +39,7 @@ function TransporterTable({ transporters, arrayFieldMethods, readOnly }: Transpo
           <th>EPA ID</th>
           <th>Name</th>
           <th className="text-center">Signed</th>
-          {readOnly ? <></> : <th className="text-center">Edit</th>}
+          <th className="text-center">Edit</th>
         </tr>
       </thead>
       <tbody>
@@ -50,7 +58,13 @@ function TransporterTable({ transporters, arrayFieldMethods, readOnly }: Transpo
               </td>
               <td>
                 {readOnly ? (
-                  <></>
+                  <QuickerSignModalBtn
+                    siteType={'Transporter'}
+                    mtnHandler={transporter}
+                    handleClick={setupSign}
+                    iconOnly={true}
+                    disabled={transporter.signed}
+                  />
                 ) : (
                   <TransporterRowActions
                     removeTransporter={arrayFieldMethods.remove}

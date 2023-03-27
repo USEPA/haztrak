@@ -1,6 +1,6 @@
-import QuickerSign from './QuickerSign';
+import QuickerSignForm from 'components/QuickerSign/QuickerSignForm';
 import QuickerSignModal from './QuickerSignModal';
 import QuickerSignModalBtn from './QuickerSignModalBtn';
 
-export default QuickerSign;
+export default QuickerSignForm;
 export { QuickerSignModal, QuickerSignModalBtn };

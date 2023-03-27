@@ -1,3 +1,5 @@
+import { ManifestHandler } from 'types/handler';
+
 /**
  * The EPA Quicker Sign schema
  */
@@ -16,4 +18,9 @@ export interface QuickerSignature {
 export interface QuickerSignForm {
   printedSignatureName: string;
   printedSignatureDate: string;
+}
+
+export interface QuickerSignData {
+  handler: ManifestHandler | undefined;
+  siteType: 'Generator' | 'Transporter' | 'Tsdf';
 }

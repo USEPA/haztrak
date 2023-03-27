@@ -1,7 +1,7 @@
 import { HtModal } from 'components/Ht';
 import React from 'react';
 import { ManifestHandler } from 'types/handler';
-import QuickerSign from './QuickerSign';
+import QuickerSignForm from 'components/QuickerSign/QuickerSignForm';
 
 interface QuickerSignModalProps {
   handleClose: () => void;
@@ -20,7 +20,7 @@ function QuickerSignModal({ handleClose, show, mtn, mtnHandler, siteType }: Quic
         </HtModal.Header>
         <HtModal.Body>
           {mtn && mtnHandler && (
-            <QuickerSign
+            <QuickerSignForm
               mtn={mtn}
               mtnHandler={mtnHandler}
               handleClose={handleClose}

@@ -14,6 +14,7 @@ interface QuickerSignModalBtnProps extends ButtonProps {
   siteType: 'Generator' | 'Transporter' | 'Tsdf';
   mtnHandler: ManifestHandler;
   handleClick: (data: QuickerSignData) => void;
+  iconOnly?: boolean;
 }
 
 /**
@@ -26,6 +27,7 @@ function QuickerSignModalBtn({
   mtnHandler,
   handleClick,
   disabled,
+  iconOnly = false,
 }: QuickerSignModalBtnProps) {
   return (
     <RcraApiUserBtn
@@ -34,7 +36,7 @@ function QuickerSignModalBtn({
       }}
       disabled={disabled}
     >
-      {`Quicker Sign `}
+      {iconOnly ? '' : 'Quicker Sign '}
       <FontAwesomeIcon icon={faFeather} />
     </RcraApiUserBtn>
   );

@@ -1,5 +1,4 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { RcraApiUserBtn } from 'components/buttons';
 import { HtButton, HtCard, HtForm } from 'components/Ht';
 import HandlerDetails from 'components/HandlerDetails';
 import HtP from 'components/Ht/HtP';
@@ -15,6 +14,7 @@ import htApi from 'services';
 import { addMsg, useAppDispatch } from 'store';
 import { Manifest } from 'types/manifest';
 import { HandlerType, ManifestHandler, Transporter } from 'types/handler';
+import { QuickerSignData } from 'types/manifest/signatures';
 import { WasteLine } from 'types/wasteLine';
 import HandlerForm from './HandlerForm';
 import AddTsdf from './Tsdf';
@@ -26,11 +26,6 @@ interface ManifestFormProps {
   manifestData?: Manifest;
   siteId?: string;
   mtn?: string;
-}
-
-interface QuickerSignData {
-  handler: ManifestHandler | undefined;
-  siteType: 'Generator' | 'Transporter' | 'Tsdf';
 }
 
 /**
@@ -85,23 +80,20 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
     control: manifestMethods.control,
     name: 'transporters',
   });
+
   // Quicker Sign controls
   const [quickerSignShow, setQuickerSignShow] = useState<boolean>(false);
   const [quickerSignHandler, setQuickerSignHandler] = useState<QuickerSignData>({
     handler: undefined,
-    siteType: 'Generator',
+    siteType: 'Generator', // ToDo initialize to undefined
   });
-  /**
-   * Convenience function to toggle Quicker Sign form
-   */
   const toggleQuickerSignShow = () => setQuickerSignShow(!quickerSignShow);
   /**
-   * Closure for controlling which ManifestHandler will be quicker signing
-   * and toggle to modal that displays our Quicker Sign form.
+   * function used to control the QuickerSign form (modal) and pass the necessary context
    */
-  const setupQuickerSign = (handlerData: QuickerSignData) => {
-    setQuickerSignHandler(handlerData);
-    toggleQuickerSignShow();
+  const setupSign = (signContext: QuickerSignData) => {
+    setQuickerSignHandler(signContext); // set state to appropriate ManifestHandler
+    toggleQuickerSignShow(); // Toggle the Quicker Sign modal
   };
 
   // WasteLine controls
@@ -266,7 +258,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                       <QuickerSignModalBtn
                         siteType={'Generator'}
                         mtnHandler={generator}
-                        handleClick={setupQuickerSign}
+                        handleClick={setupSign}
                         disabled={generator.signed}
                       />
                     </Col>
@@ -289,6 +281,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 transporters={transporters}
                 arrayFieldMethods={tranArrayMethods}
                 readOnly={readOnly}
+                setupSign={setupSign}
               />
               {readOnly ? (
                 <></>
@@ -326,7 +319,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                       <QuickerSignModalBtn
                         siteType={'Tsdf'}
                         mtnHandler={tsdf}
-                        handleClick={setupQuickerSign}
+                        handleClick={setupSign}
                         disabled={tsdf.signed}
                       />
                     </Col>
