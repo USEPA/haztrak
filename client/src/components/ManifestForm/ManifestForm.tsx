@@ -1,4 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
+import { RcraApiUserBtn } from 'components/buttons';
 import { HtButton, HtCard, HtForm } from 'components/Ht';
 import HandlerDetails from 'components/HandlerDetails';
 import HtP from 'components/Ht/HtP';
@@ -18,7 +19,7 @@ import { WasteLine } from 'types/wasteLine';
 import HandlerForm from './HandlerForm';
 import AddTsdf from './Tsdf';
 import AddWasteLine from './WasteLine';
-import { QuickerSignModal } from 'components/QuickerSign';
+import { QuickerSignModal, QuickerSignModalBtn } from 'components/QuickerSign';
 
 interface ManifestFormProps {
   readOnly?: boolean;
@@ -261,15 +262,14 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                   <ContactForm handlerFormType="generator" readOnly={readOnly} />
                   <div className="d-flex justify-content-between">
                     {/* Button to bring up the Quicker Sign modal*/}
-                    <HtButton
-                      align="end"
-                      onClick={() => {
-                        setupQuickerSign({ handler: generator, siteType: 'Generator' });
-                      }}
-                      disabled={generator.signed}
-                    >
-                      Quicker Sign
-                    </HtButton>
+                    <Col className="text-end">
+                      <QuickerSignModalBtn
+                        siteType={'Generator'}
+                        mtnHandler={generator}
+                        handleClick={setupQuickerSign}
+                        disabled={generator.signed}
+                      />
+                    </Col>
                   </div>
                 </>
               ) : (
@@ -322,15 +322,14 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                   <HandlerDetails handler={tsdf} />
                   <div className="d-flex justify-content-between">
                     {/* Button to bring up the Quicker Sign modal*/}
-                    <HtButton
-                      align="end"
-                      onClick={() => {
-                        setupQuickerSign({ handler: tsdf, siteType: 'Tsdf' });
-                      }}
-                      disabled={tsdf.signed}
-                    >
-                      Quicker Sign
-                    </HtButton>
+                    <Col className="text-end">
+                      <QuickerSignModalBtn
+                        siteType={'Tsdf'}
+                        mtnHandler={tsdf}
+                        handleClick={setupQuickerSign}
+                        disabled={tsdf.signed}
+                      />
+                    </Col>
                   </div>
                 </>
               ) : (
