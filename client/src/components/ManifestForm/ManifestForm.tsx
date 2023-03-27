@@ -27,6 +27,11 @@ interface ManifestFormProps {
   mtn?: string;
 }
 
+interface QuickerSignData {
+  handler: ManifestHandler | undefined;
+  siteType: 'Generator' | 'Transporter' | 'Tsdf';
+}
+
 /**
  * Returns form for the uniform hazardous waste manifest. It also acts
  * as the current method of viewing manifest when the form is read only.
@@ -81,19 +86,20 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
   });
   // Quicker Sign controls
   const [quickerSignShow, setQuickerSignShow] = useState<boolean>(false);
-  const [quickerSignHandler, setQuickerSignHandler] = useState<ManifestHandler | undefined>(
-    undefined
-  );
+  const [quickerSignHandler, setQuickerSignHandler] = useState<QuickerSignData>({
+    handler: undefined,
+    siteType: 'Generator',
+  });
   /**
    * Convenience function to toggle Quicker Sign form
    */
   const toggleQuickerSignShow = () => setQuickerSignShow(!quickerSignShow);
   /**
-   * Convenience function to state for controlling which ManifestHandler will be quicker signing
+   * Closure for controlling which ManifestHandler will be quicker signing
    * and toggle to modal that displays our Quicker Sign form.
    */
-  const setupQuickerSign = (handler: ManifestHandler | undefined) => {
-    setQuickerSignHandler(handler);
+  const setupQuickerSign = (handlerData: QuickerSignData) => {
+    setQuickerSignHandler(handlerData);
     toggleQuickerSignShow();
   };
 
@@ -258,7 +264,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                     <HtButton
                       align="end"
                       onClick={() => {
-                        setupQuickerSign(generator);
+                        setupQuickerSign({ handler: generator, siteType: 'Generator' });
                       }}
                       disabled={generator.signed}
                     >
@@ -319,9 +325,9 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                     <HtButton
                       align="end"
                       onClick={() => {
-                        setupQuickerSign(tsdf);
+                        setupQuickerSign({ handler: tsdf, siteType: 'Tsdf' });
                       }}
-                      disabled={generator.signed}
+                      disabled={tsdf.signed}
                     >
                       Quicker Sign
                     </HtButton>
@@ -382,7 +388,8 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
           handleClose={toggleQuickerSignShow}
           show={quickerSignShow}
           mtn={[mtn ? mtn : '']}
-          mtnHandler={quickerSignHandler}
+          mtnHandler={quickerSignHandler.handler}
+          siteType={quickerSignHandler.siteType}
         />
         <AddWasteLine
           appendWaste={wasteArrayMethods.append}

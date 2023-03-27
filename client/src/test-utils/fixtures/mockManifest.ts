@@ -1,5 +1,5 @@
 import { Manifest } from 'types/manifest';
-import { createMockHandler, createMockTransporter } from 'test-utils/fixtures/mockHandler';
+import { createMockMTNHandler, createMockTransporter } from 'test-utils/fixtures/mockHandler';
 import { createMockWaste } from 'test-utils/fixtures/mockWaste';
 
 export const DEFAULT_MANIFEST: Manifest = {
@@ -10,9 +10,12 @@ export const DEFAULT_MANIFEST: Manifest = {
   locked: false,
   containsPreviousRejectOrResidue: false,
   potentialShipDate: '2022-12-14T12:50:12+0000',
-  generator: createMockHandler(),
-  transporters: [{ ...createMockTransporter() }, { ...createMockTransporter({ order: 2 }) }],
-  designatedFacility: createMockHandler(),
+  generator: createMockMTNHandler({ epaSiteId: 'VATESTGEN001' }),
+  transporters: [
+    { ...createMockTransporter({ order: 1 }) },
+    { ...createMockTransporter({ order: 2 }) },
+  ],
+  designatedFacility: createMockMTNHandler({ epaSiteId: 'VATEST001' }),
   wastes: [{ ...createMockWaste({ lineNumber: 1 }) }, { ...createMockWaste({ lineNumber: 2 }) }],
 };
 

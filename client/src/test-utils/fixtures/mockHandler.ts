@@ -5,7 +5,6 @@ import { Handler, ManifestHandler, Site, Transporter } from 'types/handler';
  */
 const DEFAULT_HANDLER: ManifestHandler = {
   epaSiteId: 'testSiteIdNumber',
-  siteType: 'Generator',
   name: 'TEST TRANSPORTER 2 OF VA',
   siteAddress: {
     streetNumber: '123',
@@ -60,6 +59,14 @@ const DEFAULT_HANDLER: ManifestHandler = {
 export function createMockHandler(overWrites?: Partial<Handler>): Handler {
   return {
     ...DEFAULT_HANDLER,
+    ...overWrites,
+  };
+}
+
+export function createMockMTNHandler(overWrites?: Partial<ManifestHandler>): ManifestHandler {
+  return {
+    ...createMockHandler(),
+    electronicSignaturesInfo: [],
     ...overWrites,
   };
 }

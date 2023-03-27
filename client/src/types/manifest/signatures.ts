@@ -3,7 +3,7 @@
  */
 export interface QuickerSignature {
   siteId: string;
-  siteType: 'Transporter' | 'Generator' | 'Tsdf';
+  siteType: 'Transporter' | 'Generator' | 'Tsdf' | 'Broker';
   transporterOrder?: number;
   printedSignatureName: string;
   printedSignatureDate: string;

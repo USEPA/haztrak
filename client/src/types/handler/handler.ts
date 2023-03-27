@@ -64,7 +64,6 @@ export interface PaperSignature {
 export interface ManifestHandler extends Handler {
   paperSignatureInfo?: PaperSignature;
   electronicSignaturesInfo?: Array<ElectronicSignature>;
-  siteType?: 'Generator' | 'Broken' | 'Transporter' | 'Tsdf';
   /**
    * Property on by back end to signify whether the handler has signed
    */

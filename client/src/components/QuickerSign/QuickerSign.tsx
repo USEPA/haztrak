@@ -11,10 +11,18 @@ import { useNavigate } from 'react-router-dom';
 interface QuickerSignProps {
   mtn: Array<string>;
   mtnHandler: ManifestHandler;
+  siteType: 'Generator' | 'Transporter' | 'Tsdf';
+  transporterOrder?: number;
   handleClose?: () => void;
 }
 
-function QuickerSign({ mtn, mtnHandler, handleClose }: QuickerSignProps) {
+function QuickerSign({
+  mtn,
+  mtnHandler,
+  handleClose,
+  siteType,
+  transporterOrder,
+}: QuickerSignProps) {
   const { register, handleSubmit } = useForm<QuickerSignature>();
   const navigate = useNavigate();
   if (!handleClose) {
@@ -23,7 +31,14 @@ function QuickerSign({ mtn, mtnHandler, handleClose }: QuickerSignProps) {
   }
 
   const onSubmit: SubmitHandler<QuickerSignature> = (data) => {
-    console.log(data);
+    const signature: QuickerSignature = {
+      printedSignatureDate: data.printedSignatureDate,
+      printedSignatureName: data.printedSignatureName,
+      siteId: mtnHandler.epaSiteId,
+      siteType: siteType,
+      manifestTrackingNumbers: mtn,
+    };
+    console.log(signature);
   };
 
   return (
