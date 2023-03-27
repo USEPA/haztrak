@@ -1,0 +1,35 @@
+name: 'Dependency Review'
+
+on:
+  pull_request:
+    paths:
+      - ./**/requirements.txt
+      - ./**/package-lock.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v3
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v3
+        with:
+          comment-summary-in-pr: true
+          fail-on-severity: moderate
+          license-check: true
+          vulnerability-check: true
+          # allow-licenses:
+          #   - MIT
+          #   - MIT-0
+          #   - CC-PDDC
+          #   - CC0-1.0
+          #   - NIST-PD
+          #   - PDDL-1.0
+          # deny-licenses:
+          #   - GPL-3.0
