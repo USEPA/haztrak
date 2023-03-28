@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddressListGroup from 'components/HandlerDetails/AddressListGroup';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { ManifestHandler } from 'types/handler';
+import { Handler, ManifestHandler } from 'types/handler';
 
 interface HandlerDetailsProps {
-  handler: ManifestHandler;
+  handler: ManifestHandler | Handler;
 }
 
 /**
@@ -22,7 +22,7 @@ function HandlerDetails({ handler }: HandlerDetailsProps) {
           <h4>{handler.name}</h4>
         </Col>
         <Col className="d-flex justify-content-end">
-          {handler.signed && (
+          {'signed' in handler && handler.signed && (
             <p className="text-right">
               signed <FontAwesomeIcon icon={faSignature} className="text-success" size="xl" />
             </p>

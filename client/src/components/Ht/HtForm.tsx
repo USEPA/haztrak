@@ -7,6 +7,8 @@ import {
   FormLabelProps,
   FormProps,
   FormSelectProps,
+  InputGroup,
+  InputGroupProps,
 } from 'react-bootstrap';
 
 function HtForm(props: FormProps): ReactElement {
@@ -18,6 +20,14 @@ HtForm.Group = function (props: FormGroupProps): ReactElement {
     <Form.Group {...props} className="mb-2">
       {props.children}
     </Form.Group>
+  );
+};
+
+HtForm.InputGroup = function (props: InputGroupProps): ReactElement {
+  return (
+    <InputGroup {...props} className="mb-2">
+      {props.children}
+    </InputGroup>
   );
 };
 

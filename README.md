@@ -17,7 +17,7 @@ If you like the work we do, star this repo for greater visibility.
 ## Getting Started :rocket:
 
 - See our [documentation](https://usepa.github.io/haztrak) for an introduction,
-  as well as detailed instructions on [setting up a local development environment](https://usepa.github.io/haztrak/deploy/local-development.html)
+  as well as detailed instructions on [setting up a local development environment](https://usepa.github.io/haztrak/development/local-development.html)
 - [Contribution guidelines](https://github.com/USEPA/haztrak/blob/main/.github/CONTRIBUTING.md).
 - Find something to work on our [issue tracker](https://github.com/USEPA/haztrak/issues)
   - Don't see something that interests you, [open a new issue](https://github.com/USEPA/haztrak/issues/new/choose)

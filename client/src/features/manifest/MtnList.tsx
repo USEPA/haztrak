@@ -38,7 +38,7 @@ function MtnList(): ReactElement {
             <h2>{siteId}</h2>
           </Col>
           <Col className="d-flex justify-content-end">
-            <SyncManifestBtn siteId={siteId ? siteId : ''} />
+            <SyncManifestBtn siteId={siteId} disabled={!siteId} />
             <Button variant="success" onClick={() => navigate('./new')}>
               New
             </Button>

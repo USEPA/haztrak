@@ -231,7 +231,9 @@ class ManifestHandler(TrakBaseModel):
     @property
     def signed(self) -> bool:
         """Returns True if one of the signature types is present"""
-        e_signature_exists = ESignature.objects.filter(manifest_handler=self).exists()
+        e_signature_exists = ESignature.objects.filter(
+            manifest_handler=self, sign_date__isnull=False
+        ).exists()
         paper_signature_exists = self.paper_signature is not None
         return paper_signature_exists or e_signature_exists
 

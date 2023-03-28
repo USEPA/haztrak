@@ -153,10 +153,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
           className="mx-2"
           variant="primary"
           onClick={() =>
-            htApi
-              .get(`trak/profile/${profile.user}/sync`)
-              .then((r) => console.log('ToDo: replace this\n', r))
-              .catch((r) => console.error(r))
+            htApi.get(`trak/profile/${profile.user}/sync`).catch((r) => console.error(r))
           }
         >
           Sync Site Permissions

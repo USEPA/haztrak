@@ -14,11 +14,12 @@ import htApi from 'services';
 import { addMsg, useAppDispatch } from 'store';
 import { Manifest } from 'types/manifest';
 import { HandlerType, ManifestHandler, Transporter } from 'types/handler';
+import { QuickerSignData } from 'types/manifest/signatures';
 import { WasteLine } from 'types/wasteLine';
 import HandlerForm from './HandlerForm';
 import AddTsdf from './Tsdf';
 import AddWasteLine from './WasteLine';
-import { QuickerSignModal } from 'components/QuickerSign';
+import { QuickerSignModal, QuickerSignModalBtn } from 'components/QuickerSign';
 
 interface ManifestFormProps {
   readOnly?: boolean;
@@ -79,22 +80,20 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
     control: manifestMethods.control,
     name: 'transporters',
   });
+
   // Quicker Sign controls
   const [quickerSignShow, setQuickerSignShow] = useState<boolean>(false);
-  const [quickerSignHandler, setQuickerSignHandler] = useState<ManifestHandler | undefined>(
-    undefined
-  );
-  /**
-   * Convenience function to toggle Quicker Sign form
-   */
+  const [quickerSignHandler, setQuickerSignHandler] = useState<QuickerSignData>({
+    handler: undefined,
+    siteType: 'Generator', // ToDo initialize to undefined
+  });
   const toggleQuickerSignShow = () => setQuickerSignShow(!quickerSignShow);
   /**
-   * Convenience function to state for controlling which ManifestHandler will be quicker signing
-   * and toggle to modal that displays our Quicker Sign form.
+   * function used to control the QuickerSign form (modal) and pass the necessary context
    */
-  const setupQuickerSign = (handler: ManifestHandler | undefined) => {
-    setQuickerSignHandler(handler);
-    toggleQuickerSignShow();
+  const setupSign = (signContext: QuickerSignData) => {
+    setQuickerSignHandler(signContext); // set state to appropriate ManifestHandler
+    toggleQuickerSignShow(); // Toggle the Quicker Sign modal
   };
 
   // WasteLine controls
@@ -110,6 +109,11 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
   const tsdf: ManifestHandler = manifestMethods.getValues('designatedFacility');
+
+  const signAble =
+    manifestData?.status === 'Scheduled' ||
+    manifestData?.status === 'InTransit' ||
+    manifestData?.status === 'ReadyForSignature';
 
   return (
     <>
@@ -255,15 +259,14 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                   <ContactForm handlerFormType="generator" readOnly={readOnly} />
                   <div className="d-flex justify-content-between">
                     {/* Button to bring up the Quicker Sign modal*/}
-                    <HtButton
-                      align="end"
-                      onClick={() => {
-                        setupQuickerSign(generator);
-                      }}
-                      disabled={generator.signed}
-                    >
-                      Quicker Sign
-                    </HtButton>
+                    <Col className="text-end">
+                      <QuickerSignModalBtn
+                        siteType={'Generator'}
+                        mtnHandler={generator}
+                        handleClick={setupSign}
+                        disabled={generator.signed || !signAble}
+                      />
+                    </Col>
                   </div>
                 </>
               ) : (
@@ -283,6 +286,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 transporters={transporters}
                 arrayFieldMethods={tranArrayMethods}
                 readOnly={readOnly}
+                setupSign={setupSign}
               />
               {readOnly ? (
                 <></>
@@ -316,15 +320,14 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                   <HandlerDetails handler={tsdf} />
                   <div className="d-flex justify-content-between">
                     {/* Button to bring up the Quicker Sign modal*/}
-                    <HtButton
-                      align="end"
-                      onClick={() => {
-                        setupQuickerSign(tsdf);
-                      }}
-                      disabled={generator.signed}
-                    >
-                      Quicker Sign
-                    </HtButton>
+                    <Col className="text-end">
+                      <QuickerSignModalBtn
+                        siteType={'Tsdf'}
+                        mtnHandler={tsdf}
+                        handleClick={setupSign}
+                        disabled={tsdf.signed || !signAble}
+                      />
+                    </Col>
                   </div>
                 </>
               ) : (
@@ -382,7 +385,8 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
           handleClose={toggleQuickerSignShow}
           show={quickerSignShow}
           mtn={[mtn ? mtn : '']}
-          mtnHandler={quickerSignHandler}
+          mtnHandler={quickerSignHandler.handler}
+          siteType={quickerSignHandler.siteType}
         />
         <AddWasteLine
           appendWaste={wasteArrayMethods.append}
