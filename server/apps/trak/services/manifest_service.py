@@ -22,10 +22,10 @@ class ManifestService:
     business logic and exposes methods corresponding to use cases.
     """
 
-    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None, logger: Logger = None):
+    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None):
         self.username = username
         self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
-        self.logger = logger or logging.getLogger(__name__)
+        self.logger = logging.getLogger(__name__)
 
     def __repr__(self):
         return (

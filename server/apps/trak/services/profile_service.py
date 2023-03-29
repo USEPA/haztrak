@@ -1,5 +1,4 @@
 import logging
-from logging import Logger
 
 from django.db import transaction
 
@@ -26,11 +25,11 @@ class RcraProfileService:
     of a and exposes method corresponding to use cases.
     """
 
-    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None, logger: Logger = None):
+    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None):
         self.username = username
         self.profile, created = RcraProfile.objects.get_or_create(user__username=self.username)
         self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
-        self.logger = logger or logging.getLogger(__name__)
+        self.logger = logging.getLogger(__name__)
 
     @property
     def can_access_rcrainfo(self) -> bool:

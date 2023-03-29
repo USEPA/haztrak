@@ -20,7 +20,7 @@ def pull_manifest(self: Task, *, mtn: [str], username: str) -> dict:
 
     logger.debug(f"start task {self.name}, manifest {mtn}")
     try:
-        manifest_service = ManifestService(username=username, logger=logger)
+        manifest_service = ManifestService(username=username)
         results = manifest_service.pull_manifests(tracking_numbers=mtn)
         return results
     except (ConnectionError, TimeoutError):
