@@ -13,8 +13,8 @@ been in place since the 1980's.
 
 You are formally invited to contribute to the Haztrak Project!
 
-You don't need to experience programming to donate your time,
-we accept all contribution types, code, written word, bug reports, feature suggestions,
+You don't need experience programming to donate your time,
+we accept contribution of all types, code, written word, bug reports, feature suggestions,
 graphics.
 
 For additional information on how to contribute, see our
@@ -23,7 +23,7 @@ For additional information on how to contribute, see our
 Please keep in mind that Haztrak is labor of love, there's aspects of Haztrak that will
 likely never be ready for a production deployment. Our entire budget is our spare time.
 
-## Reporting an Issue
+## Report an Issue or Ask Questions
 
-If you see an error with this documentation, or you have a suggestion, please submit
+See a mistake in this documentation? Have a suggestion or questions? Submit
 an issue to our [issue tacker](https://github.com/USEPA/haztrak/issues/new/choose)
