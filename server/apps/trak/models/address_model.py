@@ -9,6 +9,9 @@ class Address(TrakBaseModel):
     Used to capture RCRAInfo address instances (mail, site).
     """
 
+    class Meta:
+        ordering = ["address1"]
+
     class EpaCountries(models.TextChoices):
         US = "US", _("United States")
         MX = "MX", _("Mexico")

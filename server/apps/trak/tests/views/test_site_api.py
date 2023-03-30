@@ -23,7 +23,8 @@ class TestSiteAPI:
         self.user = user_factory()
         self.client = api_client_factory(user=self.user)
         self.profile = rcra_profile_factory(user=self.user)
-        self.user_site = site_factory()
+        self.handler = handler_factory()
+        self.user_site = site_factory(epa_site=self.handler)
         self.user_site_permission = site_permission_factory(
             site=self.user_site, profile=self.profile
         )
@@ -38,7 +39,7 @@ class TestSiteAPI:
     def test_returns_sites_with_access(self):
         response = self.client.get(f"{self.base_url}")
         sites_with_access = [
-            str(i) for i in Site.objects.filter(sitepermission__profile=self.profile)
+            i.epa_site.epa_id for i in Site.objects.filter(sitepermission__profile=self.profile)
         ]
         response_site_id = [i["handler"]["epaSiteId"] for i in response.data]
         for site_id in sites_with_access:

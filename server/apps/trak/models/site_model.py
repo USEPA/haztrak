@@ -13,6 +13,9 @@ class Site(TrakBaseModel):
     see the Handler model.
     """
 
+    class Meta:
+        ordering = ["epa_site__epa_id"]
+
     name = models.CharField(
         verbose_name="site alias",
         max_length=200,
@@ -30,4 +33,6 @@ class Site(TrakBaseModel):
     )
 
     def __str__(self):
+        if self.name:
+            return f"{self.name}"
         return f"{self.epa_site.epa_id}"

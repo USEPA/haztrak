@@ -23,6 +23,9 @@ class Transporter(ManifestHandler):
     Model definition for entities listed as transporters of hazardous waste on the manifest.
     """
 
+    class Meta:
+        ordering = ["manifest__mtn"]
+
     objects = TransporterManager()
 
     manifest = models.ForeignKey(
@@ -33,4 +36,4 @@ class Transporter(ManifestHandler):
     order = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.handler.epa_id}: transporter {self.order} on {self.manifest.mtn}"
+        return f"{self.handler.epa_id}"

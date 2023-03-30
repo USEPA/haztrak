@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -10,6 +11,9 @@ class RcraProfile(TrakBaseModel):
     API key (see ProfileUpdateSerializer). Has a one-to-one relationship with
     the User model.
     """
+
+    class Meta:
+        ordering = ["rcra_username"]
 
     user = models.OneToOneField(
         User,
