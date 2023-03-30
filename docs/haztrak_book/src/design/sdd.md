@@ -83,21 +83,17 @@ The Haztrak system can be described as a series of services.
 Throughout our documentation, you'll frequently see us place these services into
 two categories, 'front end', and 'back end'.
 
-#### Front End
-
-1. A user interface (client)
-
 #### Back End
-
-1. A HTTP server
-2. A relational database
-3. An in memory database
-4. A task queue
 
 At this phase in the developments lifecycle we don't employ a logging service,
 however this could be added in the near future.
 
 ### Front End
+
+The Front End consist of two user interfaces.
+
+1. A user interface (client)
+2. An Admin Site
 
 #### Client
 
@@ -106,9 +102,22 @@ presenting the user with Haztrak's available functionality. Haztrak comes
 pre-equipped with a client that can be accessed via the user's browser,
 specifically a single page application (SPA).
 
+#### Admin Site
+
+The admin interface is an out-of-the-box feature of the [Django framework](https://docs.djangoproject.com/en/4.1/ref/contrib/admin/)
+It provides a quick, model-centric interface where trusted users can manage content.
+It's not intended to provide a process centric interface, although we will try to provide some
+customization to make it easier to do admin centric work related to the manifesting process.
+
 ### Back End
 
-The back end is partitioned into the first four of the services discussed [above](#architecture).
+The back end contains the following components:
+
+1. An HTTP server
+2. A relational database
+3. An in memory database
+4. A task queue
+5. A task scheduler
 
 #### Relational Database
 
@@ -136,7 +145,17 @@ feeling snappy and protects our [http server](#http-server) from network
 errors cause by downtime in external systems.
 
 The task queue can be scaled horizontally to include additional workers as needed.
-We also deploy schedulers for periodic tasks.
+We also deploy [task schedulers](#task-scheduler) for periodic tasks.
+
+#### Task Scheduler
+
+The scheduler kicks off tasks at regular intervals, that are then executed by available
+worker in the task queue. Only a single scheduler is running at any given point to avoid
+duplicating tasks. Periodic tasks can be scheduled by:
+
+- (Crontab)[https://crontab.guru/]
+- Solar events (e.g., every day at sundown)
+- Periodically (e.g., every 10 minutes)
 
 #### HTTP server
 

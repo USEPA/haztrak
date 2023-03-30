@@ -1,15 +1,16 @@
 import logging
 import re
-from typing import Dict
+from typing import Dict, List
 
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Max
+from django.db.models import Max, Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from apps.trak.models import ManifestHandler
 from apps.trak.models.base_model import TrakBaseManager, TrakBaseModel
 
+from .handler_model import HandlerType
 from .transporter_model import Transporter
 from .waste_model import WasteLine
 
@@ -41,6 +42,28 @@ class ManifestManager(TrakBaseManager):
     """
     Inter-model related functionality for Manifest Model
     """
+
+    def existing_mtn(self, *args, mtn: List[str]) -> QuerySet:
+        """
+        Filter non-existent manifest tracking numbers (MTN).
+        Also accepts *args to pass things like django.db.models.Q objects
+        """
+        return self.model.objects.filter(*args, mtn__in=mtn)
+
+    @staticmethod
+    def get_handler_query(site_id: str, site_type: HandlerType | str):
+        """Returns a Django Query object for filtering by handler type"""
+        if isinstance(site_type, str) and not isinstance(site_type, HandlerType):
+            site_type = site_type.lower()
+        match site_type:
+            case HandlerType.GENERATOR | "generator":
+                return Q(generator__handler__epa_id=site_id)
+            case HandlerType.TRANSPORTER | "transporter":
+                return Q(transporters__handler__epa_id=site_id)
+            case HandlerType.TSDF | "tsdf":
+                return Q(tsd__handler__epa_id=site_id)
+            case _:
+                raise ValueError(f"unrecognized site_type argument {site_type}")
 
     def save(self, **manifest_data: Dict):
         """Create a manifest with its related models instances"""
