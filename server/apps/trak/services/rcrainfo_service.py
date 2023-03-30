@@ -1,7 +1,9 @@
+import logging
 import os
+from datetime import datetime
 
 from django.db import IntegrityError
-from emanifest import RcrainfoClient
+from emanifest import RcrainfoClient, RcrainfoResponse
 
 from apps.trak.models import RcraProfile, WasteCode
 
@@ -16,6 +18,7 @@ class RcrainfoService(RcrainfoClient):
 
     def __init__(self, *, api_username: str, rcrainfo_env: str = None, **kwargs):
         self.api_user = api_username
+        self.logger = logging.getLogger(__name__)
         if RcraProfile.objects.filter(user__username=self.api_user).exists():
             self.profile = RcraProfile.objects.get(user__username=self.api_user)
         else:
@@ -83,6 +86,32 @@ class RcrainfoService(RcrainfoClient):
         """
         sign_data = {k: v for k, v in sign_data.items() if v is not None}
         return super().sign_manifest(**sign_data)
+
+    def search_mtn(
+        self,
+        reg: bool = False,
+        site_id: str = None,
+        start_date: str = None,
+        end_date: str = None,
+        status: str = None,
+        date_type: str = "UpdatedDate",
+        state_code: str = None,
+        site_type: str = None,
+    ) -> RcrainfoResponse:
+        # map our python friendly keyword arguments to RCRAInfo expected fields
+        search_params = {
+            "stateCode": state_code,
+            "siteId": site_id,
+            "status": status,
+            "dateType": date_type,
+            "siteType": site_type,
+            "endDate": end_date,
+            "startDate": start_date,
+        }
+        # Remove arguments that are None
+        filtered_params = {k: v for k, v in search_params.items() if v is not None}
+        self.logger.debug(f"rcrainfo manifest search parameters {filtered_params}")
+        return super().search_mtn(**filtered_params)
 
     def __bool__(self):
         """

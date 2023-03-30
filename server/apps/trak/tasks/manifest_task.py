@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @shared_task(name="pull manifest", bind=True, acks_late=True)
-def pull_manifest(self: Task, *, mtn: [str], username: str) -> dict:
+def pull_manifest(self: Task, *, mtn: List[str], username: str) -> dict:
     """
     This task initiates a call to the ManifestService to pull a manifest by MTN
     """
@@ -62,6 +62,9 @@ def sign_manifest(
         return results
     except (ConnectionError, TimeoutError) as exc:
         raise Reject(exc)
+    except ValueError as exc:
+        self.update_state(state=states.FAILURE, meta=f"ValueError: {exc}")
+        raise Ignore()
     except Exception as exc:
         self.update_state(state=states.FAILURE, meta=f"unknown error: {exc}")
         raise Ignore()

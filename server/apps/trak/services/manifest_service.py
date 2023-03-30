@@ -1,16 +1,13 @@
 import logging
 from datetime import datetime, timedelta, timezone
-from logging import Logger
 from typing import Dict, List
 
 from django.db import transaction
-from django.db.models import Q
 from requests import RequestException
 
 from apps.trak.models import Manifest, QuickerSign
 from apps.trak.serializers import ManifestSerializer
 
-from ..models.handler_model import HandlerType
 from ..serializers.signature_ser import QuickerSignSerializer
 from ..tasks.manifest_task import pull_manifest
 from .rcrainfo_service import RcrainfoService
@@ -84,29 +81,24 @@ class ManifestService:
         if start_date:
             start_date = start_date.replace(tzinfo=timezone.utc).strftime(date_format)
         else:
-            # If no start date is specified, retrieve for ~last 3 years
-            # (doesn't need be exact, hope it's not leap year)
+            # If no start date is specified, retrieve for last ~3 years
             start_date = datetime.utcnow().replace(tzinfo=timezone.utc) - timedelta(
-                minutes=60 * 24 * 30 * 12
+                minutes=60  # 60 seconds/1minutes
+                * 24  # 24 hours/1day
+                * 30  # 30 days/1month
+                * 36  # 36 months/3years = 3/years
             )
             start_date = start_date.strftime(date_format)
 
-        # map our keyword arguments to fields expected by RCRAInfo
-        search_params = {
-            "stateCode": state_code,
-            "siteId": site_id,
-            "status": status,
-            "dateType": date_type,
-            "siteType": site_type,
-            "endDate": end_date,
-            "startDate": start_date,
-        }
-        # Remove arguments that are None
-        filtered_params = {k: v for k, v in search_params.items() if v is not None}
-        self.logger.debug(f"rcrainfo manifest search parameters {filtered_params}")
-
-        response = self.rcrainfo.search_mtn(**filtered_params)
-        self.logger.debug(f"rcrainfo manifest search response {response.json()}")
+        response = self.rcrainfo.search_mtn(
+            site_id=site_id,
+            site_type=site_type,
+            state_code=state_code,
+            start_date=start_date,
+            end_date=end_date,
+            status=status,
+            date_type=date_type,
+        )
 
         if response.ok:
             return response.json()
@@ -131,46 +123,42 @@ class ManifestService:
                 results["error"].append(mtn)
         return results
 
-    def sign_manifest(self, signature: QuickerSign):
-        results = {"success": [], "error": []}
-        site_filter = self._get_handler_query(signature.site_id, signature.site_type)
-        existing_mtn = Manifest.objects.filter(site_filter, mtn__in=signature.mtn)
-        # get our list of valid MTN
-        validated_mtn = [manifest.mtn for manifest in existing_mtn]
-        # append any MTN, passed as an argument, not found in the DB to the error results
-        print(signature.mtn)
-        print(validated_mtn)
-        unknown_mtn = list(set(signature.mtn).difference(set(validated_mtn)))
-        self.logger.warning(f"MTN not found or site not listed as site type {unknown_mtn}")
-        results["error"].extend(unknown_mtn)
-        signature.mtn = validated_mtn
+    def sign_manifest(self, signature: QuickerSign) -> dict[str, list[str]]:
+        """
+        Electronically sign manifests in RCRAInfo through the RESTful API. Returns the results by
+        manifest tracking number (MTN) in a Dict.
+        """
+        # only submit signatures for MTN found in haztrak
+        results = self._filter_mtn(signature=signature)
+        signature.mtn = results["success"]
+
+        # Serialize our QuickerSign object and POST to RCRAInfo
         signature_data = QuickerSignSerializer(signature)
         response = self.rcrainfo.sign_manifest(**signature_data.data)
+
+        # Handle the response
         if response.ok:
-            data = response.json()
-            print(data)
-            results["success"].append(validated_mtn)  # Temporary
+            results["success"].extend(results["success"])  # Temporary
             for manifest in response.json()["manifestReports"]:
-                pull_manifest.delay(mtn=manifest["manifestTrackingNumber"], username=self.username)
+                # For each manifest successfully signed, pull the updated manifest
+                pull_manifest.delay(
+                    mtn=[manifest["manifestTrackingNumber"]], username=self.username
+                )
         else:
             self.logger.warning(
                 f"Error Quicker signing manifests, "
                 f"response: {response.status_code} {response.json()}"
             )
-            results["error"].append(validated_mtn)  # Temporary
+            results["error"].extend(results["success"])  # Temporary
         return results
 
-    @classmethod
-    def _get_handler_query(cls, site_id: str, site_type: HandlerType | str):
-        """map handler type to django Query object"""
-        if isinstance(site_type, str) and not isinstance(site_type, HandlerType):
-            site_type = site_type.lower()
-        match site_type:
-            case HandlerType.GENERATOR | "generator":
-                return Q(generator__handler__epa_id=site_id)
-            case HandlerType.TRANSPORTER | "transporter":
-                return Q(transporter__handler__epa_id=site_id)
-            case HandlerType.TSDF | "tsdf":
-                return Q(tsd__handler__epa_id=site_id)
-            case _:
-                raise ValueError(f"unrecognized site_type argument {site_type}")
+    def _filter_mtn(self, signature: QuickerSign) -> dict[str, list[str]]:
+        results = {"success": [], "error": []}
+        site_filter = Manifest.objects.get_handler_query(signature.site_id, signature.site_type)
+        existing_mtn = Manifest.objects.existing_mtn(site_filter, mtn=signature.mtn)
+        # get our list of valid MTN
+        results["success"] = [manifest.mtn for manifest in existing_mtn]
+        # append any MTN, passed as an argument, not found in the DB to the error results
+        results["error"].extend(list(set(signature.mtn).difference(set(results["success"]))))
+        self.logger.warning(f"MTN not found or site not listed as site type {results['error']}")
+        return results

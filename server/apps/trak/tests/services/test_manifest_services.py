@@ -2,7 +2,6 @@ from typing import Dict, List
 
 import pytest
 import pytest_mock
-from django.db.models import Q
 from emanifest import RcrainfoResponse
 
 from apps.trak.models import QuickerSign
@@ -74,27 +73,6 @@ class TestSignManifest:
         )
         self.mock_rcrainfo = mock_rcrainfo
 
-    def test_get_handler_query_maps_handler_types(self):
-        manifest_service = ManifestService(username=self.user.username)
-        query = manifest_service._get_handler_query(
-            site_type=HandlerType.GENERATOR, site_id=self.site.epa_site.epa_id
-        )
-        assert isinstance(query, Q)
-
-    def test_get_handler_query_maps_strings(self):
-        manifest_service = ManifestService(username=self.user.username)
-        query = manifest_service._get_handler_query(
-            site_type="generator", site_id=self.site.epa_site.epa_id
-        )
-        assert isinstance(query, Q)
-
-    def test_get_handler_query_raises_value_error(self):
-        manifest_service = ManifestService(username=self.user.username)
-        with pytest.raises(ValueError):
-            manifest_service._get_handler_query(
-                site_type="bad_argument", site_id=self.site.epa_site.epa_id
-            )
-
     def test_removes_non_existent_mtn(self):
         """
         Test that manifest tracking numbers (MTN)
@@ -105,7 +83,6 @@ class TestSignManifest:
         )
         bad_mtn = "000000000ELC"  # a manifest (tracking number) that does not exist
         mtn = self.mtn + [bad_mtn]
-        print(mtn)
         quicker_signature = QuickerSign(
             mtn=mtn,
             site_id=self.site.epa_site.epa_id,

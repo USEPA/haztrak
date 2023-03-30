@@ -2,8 +2,10 @@ import re
 
 import pytest
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 
-from apps.trak.models.manifest_model import draft_mtn, validate_mtn
+from apps.trak.models.handler_model import HandlerType
+from apps.trak.models.manifest_model import Manifest, draft_mtn, validate_mtn
 
 
 class TestManifestModel:
@@ -23,3 +25,17 @@ class TestManifestModel:
     def test_mtn_validation_raises_error(self, mtn):
         with pytest.raises(ValidationError):
             assert validate_mtn(mtn) is None
+
+    def test_get_handler_query_maps_handler_types(self):
+        query = Manifest.objects.get_handler_query(
+            site_type=HandlerType.GENERATOR, site_id="mock_EPA_ID"
+        )
+        assert isinstance(query, Q)
+
+    def test_get_handler_query_maps_strings(self):
+        query = Manifest.objects.get_handler_query(site_type="generator", site_id="mock_EPA_ID")
+        assert isinstance(query, Q)
+
+    def test_get_handler_query_raises_value_error(self):
+        with pytest.raises(ValueError):
+            Manifest.objects.get_handler_query(site_type="bad_argument", site_id="mock_EPA_ID")
