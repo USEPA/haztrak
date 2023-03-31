@@ -18,6 +18,10 @@ class SitePermission(TrakBaseModel):
     and the corresponding Site
     """
 
+    class Meta:
+        verbose_name = "EPA Site Permission"
+        ordering = ["site__epa_site__epa_id"]
+
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     profile = models.ForeignKey(
         RcraProfile,

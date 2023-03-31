@@ -26,6 +26,9 @@ class EpaPhone(models.Model):
     along with up to 6 digit extension.
     """
 
+    class Meta:
+        ordering = ["number"]
+
     number = EpaPhoneNumber(
         max_length=12,
     )
@@ -67,6 +70,9 @@ class Contact(TrakBaseModel):
     includes a phone related field.
     """
 
+    class Meta:
+        ordering = ["first_name"]
+
     objects = ContactManager()
 
     first_name = models.CharField(
@@ -102,9 +108,9 @@ class Contact(TrakBaseModel):
 
     def __str__(self):
         try:
-            first = self.first_name or ""
+            first = self.first_name
             middle = self.middle_initial or ""
-            last = self.last_name or ""
+            last = self.last_name
             return f"{first.capitalize()} {middle.capitalize()} {last.capitalize()}"
         except AttributeError:
-            return f"contact {self.pk}: {self.first_name} {self.middle_initial} {self.last_name}"
+            return f"Unknown Contact {self.pk}"

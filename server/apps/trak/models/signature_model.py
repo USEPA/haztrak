@@ -13,6 +13,9 @@ logger = logging.getLogger(__name__)
 class Signer(TrakBaseModel):
     """EPA manifest signer definition"""
 
+    class Meta:
+        ordering = ["first_name"]
+
     class Role(models.TextChoices):
         INDUSTRY = "IN", _("Industry")
         PPC = "PP", _("Ppc")
@@ -97,6 +100,10 @@ class ESignatureManager(TrakBaseManager):
 class ESignature(TrakBaseModel):
     """EPA electronic signature"""
 
+    class Meta:
+        verbose_name = "e-Signature"
+        ordering = ["sign_date"]
+
     objects = ESignatureManager()
 
     manifest_handler = models.ForeignKey(
@@ -139,9 +146,6 @@ class ESignature(TrakBaseModel):
                 f"e-signature on {self.sign_date}"
             )
         return f"e-signature on {self.sign_date}"
-
-    class Meta:
-        verbose_name = "e-Signature"
 
 
 class PaperSignature(TrakBaseModel):

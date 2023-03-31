@@ -23,6 +23,10 @@ class TrakBaseManager(models.Manager, metaclass=ABCMeta):
 class TrakBaseModel(models.Model):
     """Base class for all apps.trak models"""
 
+    class Meta:
+        abstract = True
+        ordering = ["pk"]
+
     def __str__(self):
         return f"{self.__class__.__name__}"
 
@@ -31,6 +35,3 @@ class TrakBaseModel(models.Model):
             f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
         )
         return f"<{self.__class__.__name__}({field_values})>"
-
-    class Meta:
-        abstract = True

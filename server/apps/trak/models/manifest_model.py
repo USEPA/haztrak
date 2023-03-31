@@ -105,6 +105,9 @@ class Manifest(TrakBaseModel):
     Model definition the e-Manifest Uniform Hazardous Waste Manifest
     """
 
+    class Meta:
+        ordering = ["update_date", "mtn"]
+
     objects = ManifestManager()
 
     class LockReason(models.TextChoices):
@@ -298,6 +301,12 @@ class Manifest(TrakBaseModel):
         blank=True,
     )
 
+    @property
+    def is_draft(self) -> bool:
+        if self.mtn is None or self.mtn.endswith("DFT"):
+            return True
+        return False
+
     def __str__(self):
         return f"{self.mtn}"
 
@@ -307,6 +316,10 @@ class AdditionalInfo(TrakBaseModel):
     Entity containing Additional Information. Relevant to Both Manifest and individual WastesLines.
     Shipment rejection related info is stored in this object.
     """
+
+    class Meta:
+        verbose_name = "Additional Info"
+        verbose_name_plural = "Additional Info"
 
     class NewDestination(models.TextChoices):
         """Shipment destination choices upon rejection"""
@@ -344,10 +357,6 @@ class AdditionalInfo(TrakBaseModel):
         blank=True,
         help_text="Special Handling Instructions",
     )
-
-    class Meta:
-        verbose_name = "additional info"
-        verbose_name_plural = "additional info"
 
     def __str__(self):
         return f"{self.original_mtn or 'Unknown'}"

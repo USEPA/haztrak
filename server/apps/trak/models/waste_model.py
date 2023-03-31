@@ -18,6 +18,9 @@ class WasteLine(TrakBaseModel):
     Model definition for hazardous waste listed on a uniform hazardous waste manifest.
     """
 
+    class Meta:
+        ordering = ["manifest__mtn", "line_number"]
+
     objects = WasteLineManager()
 
     manifest = models.ForeignKey(

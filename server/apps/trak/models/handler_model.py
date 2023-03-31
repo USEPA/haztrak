@@ -89,6 +89,9 @@ class Handler(TrakBaseModel):
     RCRAInfo Handler model definition for entities on the uniform hazardous waste manifests
     """
 
+    class Meta:
+        ordering = ["epa_id"]
+
     objects = HandlerManager()
 
     site_type = models.CharField(
@@ -213,6 +216,9 @@ class ManifestHandler(TrakBaseModel):
     handler and data specific to that handler on the given manifest.
     """
 
+    class Meta:
+        ordering = ["handler"]
+
     objects = ManifestHandlerManager()
 
     handler = models.ForeignKey(
@@ -238,4 +244,4 @@ class ManifestHandler(TrakBaseModel):
         return paper_signature_exists or e_signature_exists
 
     def __str__(self):
-        return f"ManifestHandler: {self.handler.epa_id}"
+        return f"{self.handler.epa_id}"

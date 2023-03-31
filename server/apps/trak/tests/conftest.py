@@ -185,7 +185,7 @@ def handler_factory(db, address_factory, contact_factory):
 
     def create_handler(
         epa_id: Optional[str] = None,
-        name: Optional[str] = "my_handler",
+        name: Optional[str] = "my handler name",
         site_type: Optional[str] = "Generator",
         site_address: Optional[Address] = None,
         mail_address: Optional[Address] = None,
@@ -244,7 +244,7 @@ def site_factory(db, handler_factory):
 
     def create_site(
         epa_site: Optional[Handler] = None,
-        name: Optional[str] = "my_handler",
+        name: Optional[str] = "my site name",
     ) -> Site:
         return Site.objects.create(
             epa_site=epa_site or handler_factory(),

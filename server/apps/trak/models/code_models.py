@@ -20,11 +20,7 @@ class EpaCodeBase(TrakBaseModel):
     )
 
     def __str__(self):
-        if len(self.description) > 35:
-            description = f"{self.description[:32]}..."
-        else:
-            description = f"{self.description}"
-        return f"{self.code}: {description} "
+        return f"{self.code}"
 
     class Meta:
         abstract = True
@@ -46,6 +42,9 @@ class StateWasteCodeManager(models.Manager):
 
 class WasteCode(EpaCodeBase):
     """Manifest Federal and state waste codes"""
+
+    class Meta:
+        ordering = ["code"]
 
     objects = models.Manager()
     federal = FederalWasteCodeManager()
