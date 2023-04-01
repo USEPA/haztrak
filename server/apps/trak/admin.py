@@ -13,7 +13,6 @@ from .models import (
     ManifestHandler,
     RcraProfile,
     Signer,
-    Site,
     SitePermission,
     Transporter,
     WasteCode,
@@ -131,19 +130,19 @@ class HandlerAdmin(admin.ModelAdmin):
     search_fields = ["epa_id"]
 
 
-@admin.register(Site)
-class SiteAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "related_handler", "last_rcra_sync"]
-    list_display_links = ["__str__", "related_handler"]
-
-    @admin.display(description="EPA Site")
-    def related_handler(self, site: Site) -> str:
-        url = (
-            reverse("admin:trak_handler_changelist")
-            + "?"
-            + urlencode({"epa_id": str(site.epa_site.epa_id)})
-        )
-        return format_html("<a href='{}'>{}</a>", url, site.epa_site.epa_id)
+# @admin.register(Site)
+# class SiteAdmin(admin.ModelAdmin):
+#     list_display = ["__str__", "related_handler", "last_rcra_sync"]
+#     list_display_links = ["__str__", "related_handler"]
+#
+#     @admin.display(description="EPA Site")
+#     def related_handler(self, site: Site) -> str:
+#         url = (
+#             reverse("admin:trak_handler_changelist")
+#             + "?"
+#             + urlencode({"epa_id": str(site.epa_site.epa_id)})
+#         )
+#         return format_html("<a href='{}'>{}</a>", url, site.epa_site.epa_id)
 
 
 class WasteLineInline(admin.TabularInline):

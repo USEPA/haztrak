@@ -3,7 +3,9 @@ from typing import Dict, List
 
 from django.db import transaction
 
-from ..models import EpaSite, Site
+from apps.sites.models import Site
+
+from ..models import EpaSite
 from .manifest_service import ManifestService
 from .rcrainfo_service import RcrainfoService
 

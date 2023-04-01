@@ -9,7 +9,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.trak.models import Manifest, Site
+from apps.sites.models import Site
+from apps.trak.models import Manifest
 from apps.trak.serializers import MtnSerializer, SiteSerializer
 from apps.trak.tasks import sync_site_manifests
 

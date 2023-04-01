@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.trak.models import Site
+from apps.sites.models import Site
 from apps.trak.views import SiteManifest
 
 

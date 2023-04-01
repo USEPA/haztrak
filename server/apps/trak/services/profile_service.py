@@ -2,7 +2,8 @@ import logging
 
 from django.db import transaction
 
-from apps.trak.models import RcraProfile, Site, SitePermission
+from apps.sites.models import Site
+from apps.trak.models import RcraProfile, SitePermission
 from apps.trak.serializers import EpaPermissionSerializer
 
 from .epa_site_service import EpaSiteService

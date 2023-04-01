@@ -13,6 +13,7 @@ import responses
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
+from apps.sites.models import Site
 from apps.trak.models import (
     Address,
     Contact,
@@ -24,7 +25,6 @@ from apps.trak.models import (
     PaperSignature,
     RcraProfile,
     Signer,
-    Site,
     SitePermission,
     WasteCode,
 )

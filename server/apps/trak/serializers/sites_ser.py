@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.trak.models import Site
+from apps.sites.models import Site
 from apps.trak.serializers import EpaSiteSerializer
 
 from .base_ser import TrakBaseSerializer
