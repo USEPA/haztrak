@@ -2,13 +2,14 @@ import logging
 from typing import Union
 
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from .address_model import Address
-from .base_model import TrakBaseManager, TrakBaseModel
-from .contact_model import Contact, EpaPhone
-from .signature_model import ESignature, PaperSignature
+from apps.sites.models import Address, Contact
+from apps.sites.models.contact_models import SitePhone
+
+from .base_models import SitesBaseManager, SitesBaseModel
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,7 @@ class EpaSiteType(models.TextChoices):
     BROKER = "BRO", _("Broker")
 
 
-class EpaSiteManager(TrakBaseManager):
+class EpaSiteManager(SitesBaseManager):
     """
     Inter-model related functionality for EpaSite Model
     """
@@ -62,12 +63,12 @@ class EpaSiteManager(TrakBaseManager):
         except KeyError as exc:
             logger.warning(f"error while creating {self.model.__class__.__name__}{exc}")
 
-    def get_emergency_phone(self) -> Union[EpaPhone, None]:
-        """Check if emergency phone is present and create an EpaPhone row"""
+    def get_emergency_phone(self) -> Union[SitePhone, None]:
+        """Check if emergency phone is present and create an SitePhone row"""
         try:
             emergency_phone_data = self.handler_data.pop("emergency_phone")
             if emergency_phone_data is not None:
-                return EpaPhone.objects.create(**emergency_phone_data)
+                return SitePhone.objects.create(**emergency_phone_data)
         except KeyError as exc:
             logger.debug(exc)
             return None
@@ -84,7 +85,7 @@ class EpaSiteManager(TrakBaseManager):
             raise ValidationError(exc)
 
 
-class EpaSite(TrakBaseModel):
+class EpaSite(SitesBaseModel):
     """
     RCRAInfo EpaSite model definition for entities on the uniform hazardous waste manifests
     """
@@ -137,7 +138,7 @@ class EpaSite(TrakBaseModel):
         verbose_name="contact information",
     )
     emergency_phone = models.ForeignKey(
-        "EpaPhone",
+        SitePhone,
         on_delete=models.CASCADE,
         null=True,
         blank=True,
@@ -170,78 +171,34 @@ class EpaSite(TrakBaseModel):
         return f"{self.epa_id}"
 
 
-class ManifestHandlerManager(TrakBaseManager):
+class Site(SitesBaseModel):
     """
-    Inter-model related functionality for ManifestHandler Model
-    """
+    Haztrak Site model used to control access to EpaSite object.
 
-    def save(self, **handler_data) -> models.QuerySet:
-        e_signatures = []
-        paper_signature = None
-        if "e_signatures" in handler_data:
-            e_signatures = handler_data.pop("e_signatures")
-        logger.debug(f"e_signature data {e_signatures}")
-        if "paper_signature" in handler_data:
-            paper_signature = PaperSignature.objects.create(**handler_data.pop("paper_signature"))
-        try:
-            if EpaSite.objects.filter(epa_id=handler_data["epa_site"]["epa_id"]).exists():
-                epa_site = EpaSite.objects.get(epa_id=handler_data["epa_site"]["epa_id"])
-                handler_data.pop("epa_site")
-                logger.debug(f"using existing EpaSite {epa_site}")
-            else:
-                epa_site = EpaSite.objects.save(**handler_data.pop("epa_site"))
-                logger.debug(f"EpaSite created {epa_site}")
-            manifest_handler = self.model.objects.create(
-                epa_site=epa_site,
-                paper_signature=paper_signature,
-                **handler_data,
-            )
-            logger.debug(f"ManifestHandler created {manifest_handler}")
-            for e_signature_data in e_signatures:
-                e_sig = ESignature.objects.save(
-                    manifest_handler=manifest_handler, **e_signature_data
-                )
-                logger.debug(f"ESignature created {e_sig}")
-            return manifest_handler
-        except KeyError as exc:
-            logger.warning(f"KeyError while creating Manifest epa_site {exc}")
-        except ValidationError as exc:
-            logger.warning(f"ValidationError while creating Manifest epa_site {exc}")
-            raise exc
-
-
-class ManifestHandler(TrakBaseModel):
-    """
-    ManifestHandler which contains a reference to hazardous waste
-    epa_site and data specific to that epa_site on the given manifest.
+    Not to be confused with what are frequently called 'sites' in RCRAInfo, for that,
+    see the EpaSite model.
     """
 
     class Meta:
-        ordering = ["epa_site"]
+        ordering = ["epa_site__epa_id"]
 
-    objects = ManifestHandlerManager()
-
-    epa_site = models.ForeignKey(
-        "EpaSite",
-        on_delete=models.CASCADE,
-        help_text="Hazardous waste epa_site associated with the manifest",
+    name = models.CharField(
+        verbose_name="site alias",
+        max_length=200,
+        validators=[MinValueValidator(2, "site aliases must be longer than 2 characters")],
     )
-    paper_signature = models.OneToOneField(
-        "PaperSignature",
+    epa_site = models.OneToOneField(
+        verbose_name="epa_site",
+        to=EpaSite,
         on_delete=models.CASCADE,
+    )
+    last_rcra_sync = models.DateTimeField(
+        verbose_name="last sync with RCRAInfo",
         null=True,
         blank=True,
-        help_text="The signature associated with hazardous waste custody exchange",
     )
 
-    @property
-    def signed(self) -> bool:
-        """Returns True if one of the signature types is present"""
-        e_signature_exists = ESignature.objects.filter(
-            manifest_handler=self, sign_date__isnull=False
-        ).exists()
-        paper_signature_exists = self.paper_signature is not None
-        return paper_signature_exists or e_signature_exists
-
     def __str__(self):
+        if self.name:
+            return f"{self.name}"
         return f"{self.epa_site.epa_id}"

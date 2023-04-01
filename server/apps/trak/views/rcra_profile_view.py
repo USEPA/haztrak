@@ -7,7 +7,7 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpd
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.trak.models import RcraProfile, SitePermission
+from apps.sites.models.epa_profile_models import EpaProfile, SitePermission
 from apps.trak.serializers import (
     EpaPermissionSerializer,
     ProfileGetSerializer,
@@ -18,11 +18,11 @@ from apps.trak.serializers import (
 
 class RcraProfileView(RetrieveUpdateAPIView):
     """
-    Responsible for CRUD operations related to the user RcraProfile, which maintains
+    Responsible for CRUD operations related to the user EpaProfile, which maintains
     information necessary for actions that interface with RCRAInfo
     """
 
-    queryset = RcraProfile.objects.all()
+    queryset = EpaProfile.objects.all()
     serializer_class = ProfileUpdateSerializer
     permission_classes = [permissions.AllowAny]  # temporary, remove me
     response = Response
@@ -37,7 +37,7 @@ class RcraProfileView(RetrieveUpdateAPIView):
         Filter based on the current user
         """
         user = self.request.user
-        return RcraProfile.objects.get(user=user)
+        return EpaProfile.objects.get(user=user)
 
     def get_object(self):
         return self.queryset.get(user__username=self.kwargs.get("user"))
@@ -55,7 +55,7 @@ class SyncProfile(GenericAPIView):
     def get(self, request: Request, user: str = None) -> Response:
         """Sync Profile GET method epa_site"""
         try:
-            profile = RcraProfile.objects.get(user=request.user)
+            profile = EpaProfile.objects.get(user=request.user)
             task = profile.sync()
             return self.response({"task": task.id})
         except (User.DoesNotExist, CeleryError) as exc:

@@ -1,10 +1,53 @@
+import logging
+from re import match
+
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.trak.models.base_model import TrakBaseModel
+from .base_models import SitesBaseManager, SitesBaseModel
+
+logger = logging.getLogger(__name__)
 
 
-class Address(TrakBaseModel):
+class SitePhoneNumber(models.CharField):
+    """
+    SitePhoneNumber encapsulates RCRAInfo's representation of a phone (not including extensions)
+    """
+
+    def validate(self, value, model_instance):
+        if not match(r"^\d{3}-\d{3}-\d{4}$", value):
+            raise ValidationError(
+                _("%(value)s should be a phone with format ###-###-####"),
+                params={"value": value},
+            )
+
+
+class SitePhone(models.Model):
+    """
+    RCRAInfo phone model, stores phones in ###-###-#### format
+    along with up to 6 digit extension.
+    """
+
+    class Meta:
+        ordering = ["number"]
+
+    number = SitePhoneNumber(
+        max_length=12,
+    )
+    extension = models.CharField(
+        max_length=6,
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        if self.extension:
+            return f"{self.number} Ext. {self.extension}"
+        return f"{self.number}"
+
+
+class Address(SitesBaseModel):
     """
     Used to capture RCRAInfo address instances (mail, site).
     """
@@ -127,3 +170,75 @@ class Address(TrakBaseModel):
         if self.street_number:
             return f"{self.street_number} {self.address1}"
         return f" {self.address1}"
+
+
+class ContactManager(SitesBaseManager):
+    """
+    Inter-model related functionality for Contact Model
+    """
+
+    def save(self, **contact_data) -> models.QuerySet:
+        """
+        Create Contact instance in database, create related phone instance if applicable,
+        and return the new instance.
+        """
+        if "phone" in contact_data:
+            phone_data = contact_data.pop("phone")
+            if isinstance(phone_data, SitePhone):
+                phone = phone_data
+            else:
+                phone = SitePhone.objects.create(**phone_data)
+            return self.create(**contact_data, phone=phone)
+        return super().save(**contact_data)
+
+
+class Contact(SitesBaseModel):
+    """
+    RCRAInfo contact including personnel information such as name, email, company,
+    includes a phone related field.
+    """
+
+    class Meta:
+        ordering = ["first_name"]
+
+    objects = ContactManager()
+
+    first_name = models.CharField(
+        max_length=38,
+        null=True,
+        blank=True,
+    )
+    middle_initial = models.CharField(
+        max_length=1,
+        null=True,
+        blank=True,
+    )
+    last_name = models.CharField(
+        max_length=38,
+        null=True,
+        blank=True,
+    )
+    phone = models.ForeignKey(
+        SitePhone,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    email = models.EmailField(
+        null=True,
+        blank=True,
+    )
+    company_name = models.CharField(
+        max_length=80,
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        try:
+            first = self.first_name
+            middle = self.middle_initial or ""
+            last = self.last_name
+            return f"{first.capitalize()} {middle.capitalize()} {last.capitalize()}"
+        except AttributeError:
+            return f"Unknown Contact {self.pk}"

@@ -1,6 +1,7 @@
 import pytest
 
-from apps.trak.models import EpaSite, ManifestHandler
+from apps.sites.models import EpaSite
+from apps.trak.models import ManifestHandler
 
 
 @pytest.mark.django_db

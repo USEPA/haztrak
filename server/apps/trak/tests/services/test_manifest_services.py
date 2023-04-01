@@ -4,8 +4,8 @@ import pytest
 import pytest_mock
 from emanifest import RcrainfoResponse
 
+from apps.sites.models import EpaSiteType
 from apps.trak.models import QuickerSign
-from apps.trak.models.handler_model import EpaSiteType
 from apps.trak.services import ManifestService, RcrainfoService
 
 

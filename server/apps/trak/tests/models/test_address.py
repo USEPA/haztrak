@@ -1,7 +1,7 @@
 import pytest
 from django.db import IntegrityError
 
-from apps.trak.models import Address
+from apps.sites.models import Address
 
 
 @pytest.mark.django_db

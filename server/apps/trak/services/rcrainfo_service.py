@@ -5,7 +5,8 @@ from datetime import datetime
 from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse
 
-from apps.trak.models import RcraProfile, WasteCode
+from apps.sites.models.epa_profile_models import EpaProfile
+from apps.trak.models import WasteCode
 
 
 class RcrainfoService(RcrainfoClient):
@@ -19,8 +20,8 @@ class RcrainfoService(RcrainfoClient):
     def __init__(self, *, api_username: str, rcrainfo_env: str = None, **kwargs):
         self.api_user = api_username
         self.logger = logging.getLogger(__name__)
-        if RcraProfile.objects.filter(user__username=self.api_user).exists():
-            self.profile = RcraProfile.objects.get(user__username=self.api_user)
+        if EpaProfile.objects.filter(user__username=self.api_user).exists():
+            self.profile = EpaProfile.objects.get(user__username=self.api_user)
         else:
             self.profile = None
         if rcrainfo_env is None:
@@ -58,9 +59,9 @@ class RcrainfoService(RcrainfoClient):
         """
         Retrieve a user's site permissions from RCRAInfo, It expects the
         haztrak user to have their unique RCRAInfo user and API credentials in their
-        RcraProfile
+        EpaProfile
         """
-        profile = RcraProfile.objects.get(user__username=username or self.api_user)
+        profile = EpaProfile.objects.get(user__username=username or self.api_user)
         response = self.search_users(userId=profile.rcra_username)
         return response.json()
 

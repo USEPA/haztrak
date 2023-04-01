@@ -1,18 +1,18 @@
 import pytest
 
-from apps.trak.models import RcraProfile
+from apps.sites.models.epa_profile_models import EpaProfile
 
 
 @pytest.mark.django_db
 class TestRcraProfileModel:
-    """Test related to the RcraProfile model and its API"""
+    """Test related to the EpaProfile model and its API"""
 
     @pytest.fixture(autouse=True)
     def _setup_profile(self, rcra_profile_factory):
         self.profile = rcra_profile_factory()
 
     def test_rcra_profile_saves(self):
-        assert isinstance(self.profile, RcraProfile)
+        assert isinstance(self.profile, EpaProfile)
 
     def test_is_api_user_returns_true(self):
         assert self.profile.is_api_user

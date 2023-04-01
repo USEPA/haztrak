@@ -3,21 +3,20 @@ from django.db.models import Q, QuerySet
 from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
+from ..sites.models import Address, Contact
+from ..sites.models.epa_profile_models import EpaProfile, SitePermission
+
+# from ..sites.models import EpaSite
 from .models import (
-    Address,
-    Contact,
-    EpaPhone,
-    EpaSite,
     ESignature,
     Manifest,
     ManifestHandler,
-    RcraProfile,
     Signer,
-    SitePermission,
     Transporter,
     WasteCode,
     WasteLine,
 )
+from .models.contact_models import EpaPhone
 
 
 class IsApiUser(admin.SimpleListFilter):
@@ -36,7 +35,7 @@ class IsApiUser(admin.SimpleListFilter):
             return queryset
 
 
-@admin.register(RcraProfile)
+@admin.register(EpaProfile)
 class RcraProfileAdmin(admin.ModelAdmin):
     list_display = ["__str__", "related_user", "rcra_username", "api_user"]
     search_fields = ["user__username", "rcra_username"]
@@ -47,7 +46,7 @@ class RcraProfileAdmin(admin.ModelAdmin):
         url = reverse("admin:auth_user_changelist") + "?" + urlencode({"q": str(user.id)})
         return format_html("<a href='{}'>{}</a>", url, user)
 
-    def api_user(self, profile: RcraProfile) -> bool:
+    def api_user(self, profile: EpaProfile) -> bool:
         return profile.is_api_user
 
     api_user.boolean = True
@@ -123,11 +122,12 @@ class IsDraftMtn(admin.SimpleListFilter):
             return queryset
 
 
-@admin.register(EpaSite)
-class HandlerAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "site_type", "site_address", "mail_address"]
-    list_filter = ["site_type"]
-    search_fields = ["epa_id"]
+#
+# @admin.register(EpaSite)
+# class HandlerAdmin(admin.ModelAdmin):
+#     list_display = ["__str__", "site_type", "site_address", "mail_address"]
+#     list_filter = ["site_type"]
+#     search_fields = ["epa_id"]
 
 
 # @admin.register(Site)

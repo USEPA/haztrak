@@ -2,7 +2,8 @@ from typing import Dict
 
 from rest_framework import serializers
 
-from apps.trak.models import EpaSite, ManifestHandler
+from apps.sites.models import EpaSite
+from apps.trak.models import ManifestHandler
 from apps.trak.serializers import AddressSerializer
 
 from .base_ser import TrakBaseSerializer

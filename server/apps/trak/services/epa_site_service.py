@@ -4,7 +4,7 @@ from typing import Dict
 from django.db import transaction
 from rest_framework.exceptions import ValidationError
 
-from apps.trak.models import EpaSite
+from apps.sites.models import EpaSite
 from apps.trak.serializers import EpaSiteSerializer
 
 from .rcrainfo_service import RcrainfoService

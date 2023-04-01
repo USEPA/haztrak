@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.trak.models.base_model import TrakBaseManager, TrakBaseModel
+from apps.trak.models.base_models import TrakBaseManager, TrakBaseModel
 
 
 class WasteLineManager(TrakBaseManager):

@@ -3,7 +3,7 @@ import logging
 
 import pytest
 
-from apps.trak.models import SitePermission
+from apps.sites.models.epa_profile_models import SitePermission
 from apps.trak.serializers import SitePermissionSerializer
 
 logger = logging.getLogger(__name__)

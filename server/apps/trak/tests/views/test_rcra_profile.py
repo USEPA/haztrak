@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 class TestRcraProfileEndpoint:
     """
-    Tests the for the endpoints related to the user's RcraProfile
+    Tests the for the endpoints related to the user's EpaProfile
     """
 
     url = "/api/trak/profile"

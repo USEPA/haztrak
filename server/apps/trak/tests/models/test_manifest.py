@@ -4,8 +4,8 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 
-from apps.trak.models.handler_model import EpaSiteType
-from apps.trak.models.manifest_model import Manifest, draft_mtn, validate_mtn
+from apps.sites.models import EpaSiteType
+from apps.trak.models.manifest_models import Manifest, draft_mtn, validate_mtn
 
 
 @pytest.mark.django_db

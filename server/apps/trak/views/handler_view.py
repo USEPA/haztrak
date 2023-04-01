@@ -2,7 +2,8 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import permissions
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-from apps.trak.models import EpaSite, ManifestHandler, Transporter
+from apps.sites.models import EpaSite
+from apps.trak.models import ManifestHandler, Transporter
 from apps.trak.serializers import (
     EpaSiteSerializer,
     ManifestHandlerSerializer,

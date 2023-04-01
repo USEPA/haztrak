@@ -3,9 +3,9 @@ import logging
 from django.db import transaction
 
 from apps.sites.models import Site
-from apps.trak.models import RcraProfile, SitePermission
 from apps.trak.serializers import EpaPermissionSerializer
 
+from ...sites.models.epa_profile_models import EpaProfile, SitePermission
 from .epa_site_service import EpaSiteService
 from .rcrainfo_service import RcrainfoService
 from .site_service import SiteService
@@ -22,13 +22,13 @@ class RcraServiceError(Exception):
 
 class RcraProfileService:
     """
-    RcraProfileService encapsulates the RcraProfile subdomain business logic
+    RcraProfileService encapsulates the EpaProfile subdomain business logic
     of a and exposes method corresponding to use cases.
     """
 
     def __init__(self, *, username: str, rcrainfo: RcrainfoService = None):
         self.username = username
-        self.profile, created = RcraProfile.objects.get_or_create(user__username=self.username)
+        self.profile, created = EpaProfile.objects.get_or_create(user__username=self.username)
         self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
         self.logger = logging.getLogger(__name__)
 
@@ -68,7 +68,7 @@ class RcraProfileService:
                 site = site_service.create_or_update_site(epa_site=epa_site)
                 self._create_or_update_rcra_permission(epa_permission=site_permission, site=site)
 
-        except (RcraProfile.DoesNotExist, Site.DoesNotExist) as exc:
+        except (EpaProfile.DoesNotExist, Site.DoesNotExist) as exc:
             raise Exception(exc)
 
     @staticmethod

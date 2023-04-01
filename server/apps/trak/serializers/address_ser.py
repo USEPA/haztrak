@@ -3,8 +3,7 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.trak.models import Address
-
+from ...sites.models import Address
 from .base_ser import TrakBaseSerializer
 
 

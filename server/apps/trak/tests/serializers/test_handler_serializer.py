@@ -1,6 +1,7 @@
 import pytest
 
-from apps.trak.models import EpaSite, ManifestHandler, PaperSignature
+from apps.sites.models import EpaSite
+from apps.trak.models import ManifestHandler, PaperSignature
 from apps.trak.serializers import ManifestHandlerSerializer
 
 

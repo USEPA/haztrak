@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from apps.trak.models import Contact
-
+from ...sites.models import Contact
 from .base_ser import TrakBaseSerializer
 
 

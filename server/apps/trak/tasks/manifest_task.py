@@ -5,8 +5,8 @@ from typing import Dict, List, Optional
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
 
+from apps.sites.models import EpaSiteType
 from apps.trak.models import QuickerSign
-from apps.trak.models.handler_model import EpaSiteType
 
 logger = logging.getLogger(__name__)
 

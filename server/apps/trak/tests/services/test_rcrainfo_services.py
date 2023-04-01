@@ -24,7 +24,7 @@ class TestRcrainfoService:
 
     def test_auto_authorized(self):
         rcrainfo = RcrainfoService(api_username=self.testuser1.username)
-        # retrieve_id() should get their API credentials from their RcraProfile
+        # retrieve_id() should get their API credentials from their EpaProfile
         testuser_id = rcrainfo.retrieve_id()
         assert testuser_id == self.profile.rcra_api_id
 

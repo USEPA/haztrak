@@ -13,22 +13,17 @@ import responses
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
-from apps.sites.models import Site
+from apps.sites.models import Address, Contact, EpaSite, EpaSiteType, Site, SitePhone
+from apps.sites.models.epa_profile_models import EpaProfile, SitePermission
 from apps.trak.models import (
-    Address,
-    Contact,
     EpaPhone,
-    EpaSite,
     ESignature,
     Manifest,
     ManifestHandler,
     PaperSignature,
-    RcraProfile,
     Signer,
-    SitePermission,
     WasteCode,
 )
-from apps.trak.models.handler_model import EpaSiteType
 from apps.trak.serializers import (
     ContactSerializer,
     EpaPermissionSerializer,
@@ -86,15 +81,15 @@ def user_factory(db):
 
 @pytest.fixture
 def rcra_profile_factory(db, user_factory):
-    """Abstract factory for Haztrak RcraProfile model"""
+    """Abstract factory for Haztrak EpaProfile model"""
 
     def create_profile(
         rcra_api_id: Optional[str] = "rcraApiId",
         rcra_api_key: Optional[str] = "rcraApikey",
         rcra_username: Optional[str] = "dpgraham4401",
         user: Optional[User] = None,
-    ) -> RcraProfile:
-        return RcraProfile.objects.create(
+    ) -> EpaProfile:
+        return EpaProfile.objects.create(
             rcra_api_id=rcra_api_id,
             rcra_api_key=rcra_api_key,
             rcra_username=rcra_username,
@@ -122,6 +117,22 @@ def address_factory(db):
         )
 
     yield create_address
+
+
+@pytest.fixture
+def site_phone_factory(db):
+    """Abstract factory for Haztrak EpaPhone model"""
+
+    def create_site_phone(
+        number: Optional[str] = "123-123-1234",
+        extension: Optional[str] = "1234",
+    ) -> SitePhone:
+        return SitePhone.objects.create(
+            number=number,
+            extension=extension,
+        )
+
+    yield create_site_phone
 
 
 @pytest.fixture
@@ -157,7 +168,7 @@ def paper_signature_factory(db):
 
 
 @pytest.fixture
-def contact_factory(db, epa_phone_factory):
+def contact_factory(db, site_phone_factory):
     """Abstract factory for Haztrak Contact model"""
 
     def create_contact(
@@ -165,14 +176,14 @@ def contact_factory(db, epa_phone_factory):
         middle_initial: Optional[str] = "Q",
         last_name: Optional[str] = "user",
         email: Optional[str] = "testuser@haztrak.net",
-        phone: Optional[EpaPhone] = None,
+        phone: Optional[SitePhone] = None,
     ) -> Contact:
         contact = Contact.objects.create(
             first_name=first_name,
             middle_initial=middle_initial,
             last_name=last_name,
             email=email,
-            phone=phone or epa_phone_factory(),
+            phone=phone or site_phone_factory(),
         )
         return contact
 
@@ -284,7 +295,7 @@ def site_permission_factory(db, site_factory, rcra_profile_factory):
 
     def create_permission(
         site: Optional[Site] = None,
-        profile: Optional[RcraProfile] = None,
+        profile: Optional[EpaProfile] = None,
         site_manager: Optional[bool] = True,
         annual_report: Optional[str] = "Certifier",
         biennial_report: Optional[str] = "Certifier",

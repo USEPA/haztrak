@@ -1,14 +1,14 @@
 import pytest
 from django.core.exceptions import ValidationError
 
-from apps.trak.models import Contact
+from apps.sites.models import Contact
 
 
 @pytest.mark.django_db
 class TestContactModel:
     @pytest.fixture(autouse=True)
-    def _setup(self, contact_factory, epa_phone_factory):
-        self.phone = epa_phone_factory(number="214-555-5555")
+    def _setup(self, contact_factory, site_phone_factory):
+        self.phone = site_phone_factory(number="214-555-5555")
         self.contact = contact_factory(
             phone=self.phone,
             first_name="test",

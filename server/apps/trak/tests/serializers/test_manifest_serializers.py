@@ -1,5 +1,5 @@
 from apps.trak.models import Manifest, WasteLine
-from apps.trak.models.manifest_model import AdditionalInfo
+from apps.trak.models.manifest_models import AdditionalInfo
 from apps.trak.serializers import ManifestSerializer
 
 

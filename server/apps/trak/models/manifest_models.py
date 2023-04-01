@@ -7,12 +7,12 @@ from django.db import models
 from django.db.models import Max, Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 
+from apps.sites.models import EpaSiteType
 from apps.trak.models import ManifestHandler
-from apps.trak.models.base_model import TrakBaseManager, TrakBaseModel
+from apps.trak.models.base_models import TrakBaseManager, TrakBaseModel
 
-from .handler_model import EpaSiteType
-from .transporter_model import Transporter
-from .waste_model import WasteLine
+from .transporter_models import Transporter
+from .waste_models import WasteLine
 
 logger = logging.getLogger(__name__)
 

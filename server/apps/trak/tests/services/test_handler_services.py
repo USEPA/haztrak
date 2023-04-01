@@ -1,7 +1,7 @@
 import pytest
 import responses
 
-from apps.trak.models import EpaSite
+from apps.sites.models import EpaSite
 from apps.trak.services import EpaSiteService, RcrainfoService
 
 

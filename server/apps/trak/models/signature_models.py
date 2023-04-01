@@ -5,7 +5,7 @@ from typing import List, Optional
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.trak.models.base_model import TrakBaseManager, TrakBaseModel
+from apps.trak.models.base_models import TrakBaseManager, TrakBaseModel
 
 logger = logging.getLogger(__name__)
 

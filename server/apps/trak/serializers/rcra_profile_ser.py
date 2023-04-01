@@ -2,8 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import APIException
 from rest_framework.serializers import ModelSerializer
 
-from apps.trak.models import RcraProfile, SitePermission
-
+from ...sites.models.epa_profile_models import EpaProfile, SitePermission
 from .base_ser import TrakBaseSerializer
 
 
@@ -190,7 +189,7 @@ class ProfileGetSerializer(ModelSerializer):
     )
 
     class Meta:
-        model = RcraProfile
+        model = EpaProfile
         fields = [
             "user",
             "rcraAPIID",
@@ -205,7 +204,7 @@ class ProfileGetSerializer(ModelSerializer):
 class ProfileUpdateSerializer(ProfileGetSerializer):
     """
     Subclasses the ProfileGetSerializer and adds the users RCRAInfo API Key
-    to be used for updating the user's RcraProfile (not for GET requests).
+    to be used for updating the user's EpaProfile (not for GET requests).
     """
 
     rcraAPIKey = serializers.CharField(
@@ -214,7 +213,7 @@ class ProfileUpdateSerializer(ProfileGetSerializer):
     )
 
     class Meta:
-        model = RcraProfile
+        model = EpaProfile
         fields = [
             "user",
             "rcraAPIID",
