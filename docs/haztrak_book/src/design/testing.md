@@ -14,7 +14,7 @@ thoroughly tested.
 - End-to-end tests simulate user behavior and ensure that the application works
   as expected from the user's perspective.
 
-Contributors are encouraged to practice [test driven development (TDD)](), we
+Contributors are encouraged to practice [test driven development (TDD)](https://en.wikipedia.org/wiki/Test-driven_development), we
 often ask that contributors provide tests to prove their PR are acting as intended.
 However, we do not aim for 100% code coverage in our test suite. The Haztrak project
 believes that doing so more often results in lengthy run times,
