@@ -9,7 +9,7 @@ class TestRcraProfileEndpoint:
     Tests the for the endpoints related to the user's EpaProfile
     """
 
-    url = "/api/trak/profile"
+    url = "/api/site/profile"
 
     @pytest.fixture(autouse=True)
     def _setup(self, rcra_profile_factory, user_factory, api_client_factory):

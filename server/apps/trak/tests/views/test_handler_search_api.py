@@ -1,7 +1,7 @@
 import pytest
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.trak.views import HandlerSearch
+from apps.sites.views.epa_site_views import EpaSiteSearchView
 
 
 class TestHandlerSearch:
@@ -9,7 +9,7 @@ class TestHandlerSearch:
     Tests for the EpaSite Search endpoint
     """
 
-    ulr = "/api/trak/epa_site/search"
+    ulr = "/api/site/epa_site/search"
 
     @pytest.fixture(autouse=True)
     def _setup_handler(self, epa_site_factory):
@@ -32,7 +32,7 @@ class TestHandlerSearch:
         )
         force_authenticate(request, self.user)
         # Act
-        response = HandlerSearch.as_view()(request)
+        response = EpaSiteSearchView.as_view()(request)
         # Assert
         assert len(response.data) > 0
         for i in response.data:

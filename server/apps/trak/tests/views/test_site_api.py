@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
 from apps.sites.models import Site
-from apps.trak.views import SiteManifest
+from apps.sites.views import SiteManifest
 
 
 class TestSiteAPI:
@@ -30,7 +30,7 @@ class TestSiteAPI:
         )
         self.other_site = site_factory(epa_site=epa_site_factory(epa_id="VA12345678"))
 
-    base_url = "/api/trak/site/"
+    base_url = "/api/site/"
 
     def test_responds_200(self):
         response = self.client.get(f"{self.base_url}")
@@ -61,7 +61,7 @@ class TestSiteDetailsApi:
     Tests the site details endpoint
     """
 
-    url = "/api/trak/site"
+    url = "/api/site"
 
     @pytest.fixture(autouse=True)
     def _site(
@@ -99,7 +99,9 @@ class TestSiteManifest:
     Tests for the endpoint to retrieve a Site's manifests
     """
 
-    url = "/api/trak/site"
+    # ToDo fix these false positive tests
+
+    url = "/api/site"
 
     @pytest.fixture(autouse=True)
     def _user(self, user_factory):
@@ -114,5 +116,5 @@ class TestSiteManifest:
         request = factory.get(f"{self.url}/{self.generator.epa_id}/manifest")
         force_authenticate(request, self.user)
         response: Response = SiteManifest.as_view()(request, self.generator.epa_id)
-        print(response)
+        print(response.data)
         # assert response.status_code == http.HTTPStatus.OK

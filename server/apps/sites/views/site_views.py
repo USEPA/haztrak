@@ -1,5 +1,5 @@
+import logging
 from http import HTTPStatus
-from logging import getLogger
 
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from rest_framework import status
@@ -14,7 +14,7 @@ from apps.trak.models import Manifest
 from apps.trak.serializers import MtnSerializer, SiteSerializer
 from apps.trak.tasks import sync_site_manifests
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class SiteList(ListAPIView):
@@ -48,6 +48,27 @@ class SiteApi(RetrieveAPIView):
         return Response(serializer.data)
 
 
+class SyncSiteManifest(GenericAPIView):
+    """
+    This endpoint launches a task to pull a site's manifests that are out of sync with RCRAInfo
+    """
+
+    queryset = None
+    permission_classes = [IsAuthenticated]
+    response = Response
+
+    def post(self, request: Request) -> Response:
+        """POST method epa_site"""
+        try:
+            site_id = request.data["siteId"]
+            task = sync_site_manifests.delay(site_id=site_id, username=str(request.user))
+            return self.response(data={"task": task.id}, status=HTTPStatus.OK)
+        except KeyError:
+            return self.response(
+                data={"error": "malformed payload"}, status=HTTPStatus.BAD_REQUEST
+            )
+
+
 class SiteManifest(GenericAPIView):
     """
     Returns a site's manifest tracking numbers (MTN). Rhe MTN are broken down into three lists;
@@ -67,14 +88,14 @@ class SiteManifest(GenericAPIView):
             ]
             if epa_id not in profile_sites:
                 raise PermissionDenied
-            tsd_manifests = Manifest.objects.filter(tsd__handler__epa_id=epa_id).values(
+            tsd_manifests = Manifest.objects.filter(tsd__epa_site__epa_id=epa_id).values(
                 "mtn", "status"
             )
-            gen_manifests = Manifest.objects.filter(generator__handler__epa_id=epa_id).values(
+            gen_manifests = Manifest.objects.filter(generator__epa_site__epa_id=epa_id).values(
                 "mtn", "status"
             )
             tran_manifests = Manifest.objects.filter(
-                transporters__handler__epa_id__contains=epa_id
+                transporters__epa_site__epa_id__contains=epa_id
             ).values("mtn", "status")
             return self.response(
                 status=status.HTTP_200_OK,
@@ -90,25 +111,4 @@ class SiteManifest(GenericAPIView):
         except ObjectDoesNotExist:
             return self.response(
                 status=status.HTTP_404_NOT_FOUND, data={"Error": f"{epa_id} not found"}
-            )
-
-
-class SyncSiteManifest(GenericAPIView):
-    """
-    This endpoint launches a task to pull a site's manifests that are out of sync with RCRAInfo
-    """
-
-    queryset = None
-    permission_classes = [IsAuthenticated]
-    response = Response
-
-    def post(self, request: Request) -> Response:
-        """POST method epa_site"""
-        try:
-            site_id = request.data["siteId"]
-            task = sync_site_manifests.delay(site_id=site_id, username=str(request.user))
-            return self.response(data={"task": task.id}, status=HTTPStatus.OK)
-        except KeyError:
-            return self.response(
-                data={"error": "malformed payload"}, status=HTTPStatus.BAD_REQUEST
             )

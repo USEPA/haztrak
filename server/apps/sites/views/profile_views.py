@@ -7,7 +7,7 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpd
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.sites.models.epa_profile_models import EpaProfile, SitePermission
+from apps.sites.models import EpaProfile, SitePermission
 from apps.trak.serializers import (
     EpaPermissionSerializer,
     ProfileGetSerializer,
@@ -43,7 +43,7 @@ class RcraProfileView(RetrieveUpdateAPIView):
         return self.queryset.get(user__username=self.kwargs.get("user"))
 
 
-class SyncProfile(GenericAPIView):
+class SyncProfileView(GenericAPIView):
     """
     This endpoint launches a task to sync the logged-in user's RCRAInfo profile
     with their haztrak (Rcra)profile.

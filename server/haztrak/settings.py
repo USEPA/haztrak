@@ -209,6 +209,11 @@ LOGGING = {
             "handlers": ["console"],
             "propagate": False,
         },
+        "apps.sites": {
+            "level": HT_TRAK_LOG_LEVEL,
+            "handlers": ["console"],
+            "propagate": False,
+        },
         "apps.core": {
             "level": HT_CORE_LOG_LEVEL,
             "handlers": ["console"],
