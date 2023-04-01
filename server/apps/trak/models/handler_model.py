@@ -13,8 +13,8 @@ from .signature_model import ESignature, PaperSignature
 logger = logging.getLogger(__name__)
 
 
-class HandlerType(models.TextChoices):
-    """A hazardous waste handler's type. Whether they are the handler
+class EpaSiteType(models.TextChoices):
+    """A hazardous waste epa_site's type. Whether they are the epa_site
     that generates, transports, or treats the waste (Tsdf).
     It's also possible they can be a broker although this is much less common"""
 
@@ -24,9 +24,9 @@ class HandlerType(models.TextChoices):
     BROKER = "BRO", _("Broker")
 
 
-class HandlerManager(TrakBaseManager):
+class EpaSiteManager(TrakBaseManager):
     """
-    Inter-model related functionality for Handler Model
+    Inter-model related functionality for EpaSite Model
     """
 
     def __init__(self):
@@ -35,7 +35,7 @@ class HandlerManager(TrakBaseManager):
 
     def save(self, **handler_data):
         """
-        Create a handler and its related fields
+        Create an EpaSite and its related fields
 
         Keyword Args:
             contact (dict): Contact data in (ordered)dict format
@@ -46,7 +46,7 @@ class HandlerManager(TrakBaseManager):
         try:
             epa_id = handler_data.get("epa_id")
             if self.model.objects.filter(epa_id=epa_id).exists():
-                return Handler.objects.get(epa_id=epa_id)
+                return EpaSite.objects.get(epa_id=epa_id)
             self.handler_data = handler_data
             new_contact = Contact.objects.save(**self.handler_data.pop("contact"))
             emergency_phone = self.get_emergency_phone()
@@ -60,7 +60,7 @@ class HandlerManager(TrakBaseManager):
                 **self.handler_data,
             )
         except KeyError as exc:
-            logger.warning(f"error while creating handler {exc}")
+            logger.warning(f"error while creating {self.model.__class__.__name__}{exc}")
 
     def get_emergency_phone(self) -> Union[EpaPhone, None]:
         """Check if emergency phone is present and create an EpaPhone row"""
@@ -84,15 +84,15 @@ class HandlerManager(TrakBaseManager):
             raise ValidationError(exc)
 
 
-class Handler(TrakBaseModel):
+class EpaSite(TrakBaseModel):
     """
-    RCRAInfo Handler model definition for entities on the uniform hazardous waste manifests
+    RCRAInfo EpaSite model definition for entities on the uniform hazardous waste manifests
     """
 
     class Meta:
         ordering = ["epa_id"]
 
-    objects = HandlerManager()
+    objects = EpaSiteManager()
 
     site_type = models.CharField(
         max_length=20,
@@ -184,15 +184,15 @@ class ManifestHandlerManager(TrakBaseManager):
         if "paper_signature" in handler_data:
             paper_signature = PaperSignature.objects.create(**handler_data.pop("paper_signature"))
         try:
-            if Handler.objects.filter(epa_id=handler_data["handler"]["epa_id"]).exists():
-                handler = Handler.objects.get(epa_id=handler_data["handler"]["epa_id"])
-                handler_data.pop("handler")
-                logger.debug(f"using existing Handler {handler}")
+            if EpaSite.objects.filter(epa_id=handler_data["epa_site"]["epa_id"]).exists():
+                epa_site = EpaSite.objects.get(epa_id=handler_data["epa_site"]["epa_id"])
+                handler_data.pop("epa_site")
+                logger.debug(f"using existing EpaSite {epa_site}")
             else:
-                handler = Handler.objects.save(**handler_data.pop("handler"))
-                logger.debug(f"Handler created {handler}")
+                epa_site = EpaSite.objects.save(**handler_data.pop("epa_site"))
+                logger.debug(f"EpaSite created {epa_site}")
             manifest_handler = self.model.objects.create(
-                handler=handler,
+                epa_site=epa_site,
                 paper_signature=paper_signature,
                 **handler_data,
             )
@@ -204,27 +204,27 @@ class ManifestHandlerManager(TrakBaseManager):
                 logger.debug(f"ESignature created {e_sig}")
             return manifest_handler
         except KeyError as exc:
-            logger.warning(f"KeyError while creating Manifest handler {exc}")
+            logger.warning(f"KeyError while creating Manifest epa_site {exc}")
         except ValidationError as exc:
-            logger.warning(f"ValidationError while creating Manifest handler {exc}")
+            logger.warning(f"ValidationError while creating Manifest epa_site {exc}")
             raise exc
 
 
 class ManifestHandler(TrakBaseModel):
     """
     ManifestHandler which contains a reference to hazardous waste
-    handler and data specific to that handler on the given manifest.
+    epa_site and data specific to that epa_site on the given manifest.
     """
 
     class Meta:
-        ordering = ["handler"]
+        ordering = ["epa_site"]
 
     objects = ManifestHandlerManager()
 
-    handler = models.ForeignKey(
-        "Handler",
+    epa_site = models.ForeignKey(
+        "EpaSite",
         on_delete=models.CASCADE,
-        help_text="Hazardous waste handler associated with the manifest",
+        help_text="Hazardous waste epa_site associated with the manifest",
     )
     paper_signature = models.OneToOneField(
         "PaperSignature",
@@ -244,4 +244,4 @@ class ManifestHandler(TrakBaseModel):
         return paper_signature_exists or e_signature_exists
 
     def __str__(self):
-        return f"{self.handler.epa_id}"
+        return f"{self.epa_site.epa_id}"

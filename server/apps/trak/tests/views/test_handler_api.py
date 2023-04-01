@@ -7,12 +7,12 @@ class TestHandlerEndpoints:
     Tests the for the endpoints related to the handlers
     """
 
-    url = "/api/trak/handler"
+    url = "/api/trak/epa_site"
 
     @pytest.fixture(autouse=True)
-    def _setup(self, handler_factory, api_client_factory):
+    def _setup(self, epa_site_factory, api_client_factory):
         self.client = api_client_factory()
-        self.generator = handler_factory()
+        self.generator = epa_site_factory()
 
     def test_endpoint_headers(self):
         response: Response = self.client.get(f"{self.url}/details/{self.generator.pk}")

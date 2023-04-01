@@ -12,7 +12,7 @@ class TransporterSerializer(ManifestHandlerSerializer):
     class Meta:
         model = Transporter
         fields = [
-            "handler",
+            "epa_site",
             "order",
             "paperSignatureInfo",
             "electronicSignaturesInfo",
@@ -20,7 +20,7 @@ class TransporterSerializer(ManifestHandlerSerializer):
         ]
 
     def to_internal_value(self, data):
-        """Move fields related to handler to an internal handler dictionary."""
+        """Move fields related to epa_site to an internal epa_site dictionary."""
         try:
             internal = super().to_internal_value(data)
             return internal

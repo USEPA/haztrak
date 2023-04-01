@@ -5,7 +5,7 @@ from django.db import transaction
 from apps.trak.models import RcraProfile, Site, SitePermission
 from apps.trak.serializers import EpaPermissionSerializer
 
-from .handler_service import HandlerService
+from .epa_site_service import EpaSiteService
 from .rcrainfo_service import RcrainfoService
 from .site_service import SiteService
 
@@ -49,12 +49,12 @@ class RcraProfileService:
         """
         This high level function makes several requests to RCRAInfo to pull...
         1. A user's site permissions, it creates a SitePermission for each
-        2. For each site permission, it pulls the handler details, and creates or updates
-         a Handler instance for each
+        2. For each site permission, it pulls the epa_site details, and creates or updates
+         a EpaSite instance for each
         3. If a Haztrak Site is not present, create one
         """
         try:
-            handler_service = HandlerService(username=self.username, rcrainfo=self.rcrainfo)
+            handler_service = EpaSiteService(username=self.username, rcrainfo=self.rcrainfo)
             site_service = SiteService(username=self.username, rcrainfo=self.rcrainfo)
             if username:
                 user_to_update: str = username
@@ -63,8 +63,8 @@ class RcraProfileService:
             user_profile_response = self.rcrainfo.get_user_profile(username=user_to_update)
             permissions = self._parse_rcra_response(rcra_response=user_profile_response)
             for site_permission in permissions:
-                handler = handler_service.get_or_pull_handler(site_permission["siteId"])
-                site = site_service.create_or_update_site(handler=handler)
+                epa_site = handler_service.get_or_pull_epa_site(site_permission["siteId"])
+                site = site_service.create_or_update_site(epa_site=epa_site)
                 self._create_or_update_rcra_permission(epa_permission=site_permission, site=site)
 
         except (RcraProfile.DoesNotExist, Site.DoesNotExist) as exc:

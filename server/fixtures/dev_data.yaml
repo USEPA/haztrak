@@ -737,7 +737,7 @@
     phone: 1
     email: testuser1@haztrak.net
     company_name: haztrak
-- model: trak.handler
+- model: trak.epa_site
   pk: 1
   fields:
     site_type: Generator

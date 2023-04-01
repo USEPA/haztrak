@@ -4,7 +4,7 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 
-from apps.trak.models.handler_model import HandlerType
+from apps.trak.models.handler_model import EpaSiteType
 from apps.trak.models.manifest_model import Manifest, draft_mtn, validate_mtn
 
 
@@ -29,7 +29,7 @@ class TestManifestModel:
 
     def test_get_handler_query_maps_handler_types(self):
         query = Manifest.objects.get_handler_query(
-            site_type=HandlerType.GENERATOR, site_id="mock_EPA_ID"
+            site_type=EpaSiteType.GENERATOR, site_id="mock_EPA_ID"
         )
         assert isinstance(query, Q)
 

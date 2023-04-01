@@ -3,7 +3,7 @@ from typing import Dict, List
 
 from django.db import transaction
 
-from ..models import Handler, Site
+from ..models import EpaSite, Site
 from .manifest_service import ManifestService
 from .rcrainfo_service import RcrainfoService
 
@@ -54,17 +54,17 @@ class SiteService:
             raise Exception
 
     @transaction.atomic
-    def create_or_update_site(self, *, handler: Handler, site_name: str = None) -> Site:
+    def create_or_update_site(self, *, epa_site: EpaSite, site_name: str = None) -> Site:
         """
         Retrieve a site from the database or create.
 
         Keyword Args:
-            handler (Handler): An instance of the (hazardous waste) Handler model
+            epa_site (EpaSite): An instance of the (hazardous waste) Handler model
             site_name (str): A haztrak alias for a site
         """
         if site_name is None:
-            site_name = handler.name
-        if Site.objects.filter(epa_site__epa_id=handler.epa_id).exists():
-            return Site.objects.get(epa_site__epa_id=handler.epa_id)
+            site_name = epa_site.name
+        if Site.objects.filter(epa_site__epa_id=epa_site.epa_id).exists():
+            return Site.objects.get(epa_site__epa_id=epa_site.epa_id)
         else:
-            return Site.objects.create(epa_site=handler, name=site_name)
+            return Site.objects.create(epa_site=epa_site, name=site_name)

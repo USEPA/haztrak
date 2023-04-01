@@ -2,9 +2,9 @@ from django.urls import include, path
 from rest_framework import routers
 
 from apps.trak.views import (
+    EpaSiteView,
     FederalWasteCodes,
     HandlerSearch,
-    HandlerView,
     ManifestHandlerView,
     ManifestView,
     MtnList,
@@ -39,9 +39,9 @@ urlpatterns = [
     path("site/<str:epa_id>", SiteApi.as_view()),
     path("site/<str:epa_id>/manifest", SiteManifest.as_view()),
     path("site/manifest/sync", SyncSiteManifest.as_view()),
-    # Handler
-    path("handler/search", HandlerSearch.as_view()),
-    path("handler/details/<int:pk>", HandlerView.as_view()),
+    # EpaSite
+    path("epa_site/search", HandlerSearch.as_view()),
+    path("epa_site/details/<int:pk>", EpaSiteView.as_view()),
     path("transporter/<int:pk>", TransporterView.as_view()),
     path("mtnhandler/<int:pk>", ManifestHandlerView.as_view()),
     # code

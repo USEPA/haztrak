@@ -1,6 +1,6 @@
 import pytest
 
-from apps.trak.models import Handler, ManifestHandler, PaperSignature
+from apps.trak.models import EpaSite, ManifestHandler, PaperSignature
 from apps.trak.serializers import ManifestHandlerSerializer
 
 
@@ -25,16 +25,16 @@ class TestManifestHandlerSerializer:
         assert isinstance(manifest_handler.paper_signature, PaperSignature)
 
     def test_serializer_flattens_foreign_keys(self, manifest_handler_serializer) -> None:
-        # The ManifestHandler holds a foreign key to a Handler instance
+        # The ManifestHandler holds a foreign key to a EpaSite instance
         # however it should flatten that representation.
         assert "epaSiteId" in manifest_handler_serializer.data
-        assert "handler" not in manifest_handler_serializer.data
+        assert "epa_site" not in manifest_handler_serializer.data
 
 
 class TestHandlerSerializer:
     def test_save(self, handler_serializer):
         if handler_serializer.is_valid():
             saved_site = handler_serializer.save()
-            assert isinstance(saved_site, Handler)
+            assert isinstance(saved_site, EpaSite)
         else:
             assert False

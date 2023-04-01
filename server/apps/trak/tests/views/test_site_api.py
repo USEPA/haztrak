@@ -18,17 +18,17 @@ class TestSiteAPI:
         site_permission_factory,
         user_factory,
         site_factory,
-        handler_factory,
+        epa_site_factory,
     ):
         self.user = user_factory()
         self.client = api_client_factory(user=self.user)
         self.profile = rcra_profile_factory(user=self.user)
-        self.handler = handler_factory()
-        self.user_site = site_factory(epa_site=self.handler)
+        self.epa_site = epa_site_factory()
+        self.user_site = site_factory(epa_site=self.epa_site)
         self.user_site_permission = site_permission_factory(
             site=self.user_site, profile=self.profile
         )
-        self.other_site = site_factory(epa_site=handler_factory(epa_id="VA12345678"))
+        self.other_site = site_factory(epa_site=epa_site_factory(epa_id="VA12345678"))
 
     base_url = "/api/trak/site/"
 
@@ -69,15 +69,15 @@ class TestSiteDetailsApi:
         user_factory,
         rcra_profile_factory,
         site_factory,
-        handler_factory,
+        epa_site_factory,
         site_permission_factory,
     ):
         self.user = user_factory(username="testuser1")
         self.profile = rcra_profile_factory(user=self.user)
-        self.generator = handler_factory()
+        self.generator = epa_site_factory()
         self.site = site_factory(epa_site=self.generator)
         self.site_permission = site_permission_factory(site=self.site, profile=self.profile)
-        self.other_site = site_factory(epa_site=handler_factory(epa_id="VAFOOBAR001"))
+        self.other_site = site_factory(epa_site=epa_site_factory(epa_id="VAFOOBAR001"))
 
     def test_returns_site(self):
         client = APIClient()
@@ -106,8 +106,8 @@ class TestSiteManifest:
         self.user = user_factory()
 
     @pytest.fixture(autouse=True)
-    def _generator(self, handler_factory):
-        self.generator = handler_factory()
+    def _generator(self, epa_site_factory):
+        self.generator = epa_site_factory()
 
     def test_returns_200(self):
         factory = APIRequestFactory()

@@ -5,7 +5,7 @@ import pytest_mock
 from emanifest import RcrainfoResponse
 
 from apps.trak.models import QuickerSign
-from apps.trak.models.handler_model import HandlerType
+from apps.trak.models.handler_model import EpaSiteType
 from apps.trak.services import ManifestService, RcrainfoService
 
 
@@ -47,12 +47,12 @@ class TestSignManifest:
         user_factory,
         site_factory,
         manifest_factory,
-        handler_factory,
+        epa_site_factory,
         manifest_handler_factory,
     ):
         self.user = user_factory()
-        self.generator = handler_factory()
-        self.manifest_generator = manifest_handler_factory(handler=self.generator)
+        self.generator = epa_site_factory()
+        self.manifest_generator = manifest_handler_factory(epa_site=self.generator)
         self.site = site_factory(epa_site=self.generator)
         self.rcrainfo = RcrainfoService(api_username=self.user.username)
         self.manifests = [
@@ -86,7 +86,7 @@ class TestSignManifest:
         quicker_signature = QuickerSign(
             mtn=mtn,
             site_id=self.site.epa_site.epa_id,
-            site_type=HandlerType.GENERATOR,
+            site_type=EpaSiteType.GENERATOR,
             printed_name="David Graham",
         )
         results: Dict[str, List[str]] = manifest_service.sign_manifest(quicker_signature)
@@ -100,7 +100,7 @@ class TestSignManifest:
         quicker_sign = QuickerSign(
             mtn=self.mtn,
             site_id=self.site.epa_site.epa_id,
-            site_type=HandlerType.GENERATOR,
+            site_type=EpaSiteType.GENERATOR,
             printed_name="David Graham",
         )
         manifest_service.sign_manifest(quicker_sign)

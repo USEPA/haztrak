@@ -2,33 +2,33 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import permissions
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-from apps.trak.models import Handler, ManifestHandler, Transporter
+from apps.trak.models import EpaSite, ManifestHandler, Transporter
 from apps.trak.serializers import (
-    HandlerSerializer,
+    EpaSiteSerializer,
     ManifestHandlerSerializer,
     TransporterSerializer,
 )
 
 
 @extend_schema(
-    description="Retrieve details on a handler stored in the Haztrak database",
+    description="Retrieve details on a epa_site stored in the Haztrak database",
 )
-class HandlerView(RetrieveAPIView):
+class EpaSiteView(RetrieveAPIView):
     """
-    HandlerView returns details on a single Handler known to haztrak
+    EpaSiteView returns details on a single EpaSite known to haztrak
     """
 
-    queryset = Handler.objects.all()
-    serializer_class = HandlerSerializer
+    queryset = EpaSite.objects.all()
+    serializer_class = EpaSiteSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
 class HandlerSearch(ListAPIView):
-    queryset = Handler.objects.all()
-    serializer_class = HandlerSerializer
+    queryset = EpaSite.objects.all()
+    serializer_class = EpaSiteSerializer
 
     def get_queryset(self):
-        queryset = Handler.objects.all()
+        queryset = EpaSite.objects.all()
         epa_id_param = self.request.query_params.get("epaId")
         name_param = self.request.query_params.get("siteName")
         site_type_param = self.request.query_params.get("siteType")

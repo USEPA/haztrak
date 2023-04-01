@@ -7,8 +7,8 @@ from .models import (
     Address,
     Contact,
     EpaPhone,
+    EpaSite,
     ESignature,
-    Handler,
     Manifest,
     ManifestHandler,
     RcraProfile,
@@ -124,7 +124,7 @@ class IsDraftMtn(admin.SimpleListFilter):
             return queryset
 
 
-@admin.register(Handler)
+@admin.register(EpaSite)
 class HandlerAdmin(admin.ModelAdmin):
     list_display = ["__str__", "site_type", "site_address", "mail_address"]
     list_filter = ["site_type"]

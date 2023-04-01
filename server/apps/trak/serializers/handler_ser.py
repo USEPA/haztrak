@@ -2,7 +2,7 @@ from typing import Dict
 
 from rest_framework import serializers
 
-from apps.trak.models import Handler, ManifestHandler
+from apps.trak.models import EpaSite, ManifestHandler
 from apps.trak.serializers import AddressSerializer
 
 from .base_ser import TrakBaseSerializer
@@ -10,9 +10,9 @@ from .contact_ser import ContactSerializer, EpaPhoneSerializer
 from .signature_ser import ESignatureSerializer, PaperSignatureSerializer
 
 
-class HandlerSerializer(TrakBaseSerializer):
+class EpaSiteSerializer(TrakBaseSerializer):
     """
-    Handler model serializer for JSON marshalling/unmarshalling
+    EpaSite model serializer for JSON marshalling/unmarshalling
     """
 
     epaSiteId = serializers.CharField(
@@ -73,7 +73,7 @@ class HandlerSerializer(TrakBaseSerializer):
         return self.Meta.model.objects.save(**validated_data)
 
     class Meta:
-        model = Handler
+        model = EpaSite
         fields = [
             "epaSiteId",
             "siteType",
@@ -91,10 +91,10 @@ class HandlerSerializer(TrakBaseSerializer):
         ]
 
 
-class ManifestHandlerSerializer(HandlerSerializer):
-    """Serializer for Handler on manifest"""
+class ManifestHandlerSerializer(EpaSiteSerializer):
+    """Serializer for EpaSite on manifest"""
 
-    handler = HandlerSerializer()
+    epa_site = EpaSiteSerializer()
     electronicSignaturesInfo = ESignatureSerializer(
         source="e_signatures",
         many=True,
@@ -114,7 +114,7 @@ class ManifestHandlerSerializer(HandlerSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        handler_rep = representation.pop("handler")
+        handler_rep = representation.pop("epa_site")
         for key in handler_rep:
             representation[key] = handler_rep[key]
         return representation
@@ -125,15 +125,15 @@ class ManifestHandlerSerializer(HandlerSerializer):
             instance["electronicSignaturesInfo"] = data.pop("electronicSignaturesInfo")
         if "paperSignatureInfo" in data:
             instance["paperSignatureInfo"] = data.pop("paperSignatureInfo")
-        instance["handler"] = data
-        if "order" in instance["handler"]:
-            instance["order"] = instance["handler"]["order"]
+        instance["epa_site"] = data
+        if "order" in instance["epa_site"]:
+            instance["order"] = instance["epa_site"]["order"]
         return super().to_internal_value(instance)
 
     class Meta:
         model = ManifestHandler
         fields = [
-            "handler",
+            "epa_site",
             "electronicSignaturesInfo",
             "paperSignatureInfo",
             "signed",

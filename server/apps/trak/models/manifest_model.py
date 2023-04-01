@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.trak.models import ManifestHandler
 from apps.trak.models.base_model import TrakBaseManager, TrakBaseModel
 
-from .handler_model import HandlerType
+from .handler_model import EpaSiteType
 from .transporter_model import Transporter
 from .waste_model import WasteLine
 
@@ -51,17 +51,17 @@ class ManifestManager(TrakBaseManager):
         return self.model.objects.filter(*args, mtn__in=mtn)
 
     @staticmethod
-    def get_handler_query(site_id: str, site_type: HandlerType | str):
-        """Returns a Django Query object for filtering by handler type"""
-        if isinstance(site_type, str) and not isinstance(site_type, HandlerType):
+    def get_handler_query(site_id: str, site_type: EpaSiteType | str):
+        """Returns a Django Query object for filtering by epa_site type"""
+        if isinstance(site_type, str) and not isinstance(site_type, EpaSiteType):
             site_type = site_type.lower()
         match site_type:
-            case HandlerType.GENERATOR | "generator":
-                return Q(generator__handler__epa_id=site_id)
-            case HandlerType.TRANSPORTER | "transporter":
-                return Q(transporters__handler__epa_id=site_id)
-            case HandlerType.TSDF | "tsdf":
-                return Q(tsd__handler__epa_id=site_id)
+            case EpaSiteType.GENERATOR | "generator":
+                return Q(generator__epa_site__epa_id=site_id)
+            case EpaSiteType.TRANSPORTER | "transporter":
+                return Q(transporters__epa_site__epa_id=site_id)
+            case EpaSiteType.TSDF | "tsdf":
+                return Q(tsd__epa_site__epa_id=site_id)
             case _:
                 raise ValueError(f"unrecognized site_type argument {site_type}")
 

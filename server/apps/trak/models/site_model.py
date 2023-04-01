@@ -2,15 +2,15 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 from .base_model import TrakBaseModel
-from .handler_model import Handler
+from .handler_model import EpaSite
 
 
 class Site(TrakBaseModel):
     """
-    Haztrak Site model used to control access to Handler object.
+    Haztrak Site model used to control access to EpaSite object.
 
     Not to be confused with what are frequently called 'sites' in RCRAInfo, for that,
-    see the Handler model.
+    see the EpaSite model.
     """
 
     class Meta:
@@ -22,8 +22,8 @@ class Site(TrakBaseModel):
         validators=[MinValueValidator(2, "site aliases must be longer than 2 characters")],
     )
     epa_site = models.OneToOneField(
-        verbose_name="handler",
-        to=Handler,
+        verbose_name="epa_site",
+        to=EpaSite,
         on_delete=models.CASCADE,
     )
     last_rcra_sync = models.DateTimeField(

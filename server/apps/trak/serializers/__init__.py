@@ -1,6 +1,6 @@
 from .address_ser import AddressSerializer
 from .contact_ser import ContactSerializer, EpaPhoneSerializer
-from .handler_ser import HandlerSerializer, ManifestHandlerSerializer
+from .handler_ser import EpaSiteSerializer, ManifestHandlerSerializer
 from .manifest_ser import ManifestSerializer, MtnSerializer
 from .rcra_profile_ser import (
     EpaPermissionSerializer,

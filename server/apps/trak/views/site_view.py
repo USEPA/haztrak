@@ -31,7 +31,7 @@ class SiteList(ListAPIView):
 
 class SiteApi(RetrieveAPIView):
     """
-    View to GET a Haztrak Site, which encapsulates the EPA Handler plus some.
+    View to GET a Haztrak Site, which encapsulates the EPA EpaSite plus some.
     """
 
     serializer_class = SiteSerializer
@@ -59,7 +59,7 @@ class SiteManifest(GenericAPIView):
     serializer_class = MtnSerializer
 
     def get(self, request: Request, epa_id: str = None) -> Response:
-        """GET method handler"""
+        """GET method epa_site"""
         try:
             profile_sites = [
                 str(i) for i in Site.objects.filter(sitepermission__profile__user=request.user)
@@ -102,7 +102,7 @@ class SyncSiteManifest(GenericAPIView):
     response = Response
 
     def post(self, request: Request) -> Response:
-        """POST method handler"""
+        """POST method epa_site"""
         try:
             site_id = request.data["siteId"]
             task = sync_site_manifests.delay(site_id=site_id, username=str(request.user))

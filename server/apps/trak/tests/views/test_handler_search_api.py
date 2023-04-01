@@ -6,14 +6,14 @@ from apps.trak.views import HandlerSearch
 
 class TestHandlerSearch:
     """
-    Tests for the Handler Search endpoint
+    Tests for the EpaSite Search endpoint
     """
 
-    ulr = "/api/trak/handler/search"
+    ulr = "/api/trak/epa_site/search"
 
     @pytest.fixture(autouse=True)
-    def _setup_handler(self, handler_factory):
-        self.generator = handler_factory()
+    def _setup_handler(self, epa_site_factory):
+        self.generator = epa_site_factory()
 
     @pytest.fixture(autouse=True)
     def _setup_user(self, user_factory):
