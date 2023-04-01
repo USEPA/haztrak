@@ -3,6 +3,7 @@ import pytest
 from apps.trak.models import RcraProfile
 
 
+@pytest.mark.django_db
 class TestRcraProfileModel:
     """Test related to the RcraProfile model and its API"""
 
@@ -10,10 +11,10 @@ class TestRcraProfileModel:
     def _setup_profile(self, rcra_profile_factory):
         self.profile = rcra_profile_factory()
 
-    def test_rcra_profile_saves(self, db):
+    def test_rcra_profile_saves(self):
         assert isinstance(self.profile, RcraProfile)
 
-    def test_is_api_user_returns_true(self, db):
+    def test_is_api_user_returns_true(self):
         assert self.profile.is_api_user
 
     def test_is_api_user_returns_false_one_empty(self, rcra_profile_factory, user_factory):

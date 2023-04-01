@@ -109,7 +109,7 @@ class TestSiteManifest:
     def _generator(self, handler_factory):
         self.generator = handler_factory()
 
-    def test_returns_200(self, db):
+    def test_returns_200(self):
         factory = APIRequestFactory()
         request = factory.get(f"{self.url}/{self.generator.epa_id}/manifest")
         force_authenticate(request, self.user)

@@ -1,10 +1,13 @@
+import pytest
+
 from apps.trak.models import Handler, ManifestHandler
 
 
+@pytest.mark.django_db
 class TestManifestHandlerModel:
     """Test related to the Manifest Handler model and its API"""
 
-    def test_handler_created(self, db, manifest_handler_factory) -> None:
+    def test_handler_created(self, manifest_handler_factory) -> None:
         assert type(manifest_handler_factory()) is ManifestHandler
 
     def test_manager_creates_new_handler(self, handler_serializer) -> None:

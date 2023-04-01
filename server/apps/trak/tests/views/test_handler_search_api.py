@@ -19,7 +19,7 @@ class TestHandlerSearch:
     def _setup_user(self, user_factory):
         self.user = user_factory()
 
-    def test_returns_array_of_handlers(self, db):
+    def test_returns_array_of_handlers(self):
         # Arrange
         factory = APIRequestFactory()
         request = factory.get(
@@ -38,7 +38,7 @@ class TestHandlerSearch:
         for i in response.data:
             assert isinstance(i, dict)
 
-    def test_endpoint_headers(self, db) -> None:
+    def test_endpoint_headers(self) -> None:
         # Arrange
         client = APIClient()
         client.force_authenticate(user=self.user)

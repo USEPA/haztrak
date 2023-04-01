@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from apps.trak.models import Contact
 
 
+@pytest.mark.django_db
 class TestContactModel:
     @pytest.fixture(autouse=True)
     def _setup(self, contact_factory, epa_phone_factory):
@@ -15,10 +16,10 @@ class TestContactModel:
             last_name="user",
         )
 
-    def test_address_create(self, db) -> None:
+    def test_address_create(self) -> None:
         assert type(self.contact) is Contact
 
-    def test_contact_email_validation(self, db, contact_factory):
+    def test_contact_email_validation(self, contact_factory):
         with pytest.raises(ValidationError):
             contact = Contact(first_name="test", last_name="foo", email="bad_email")
             contact.full_clean()

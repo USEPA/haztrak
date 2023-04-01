@@ -8,8 +8,9 @@ from apps.trak.models.handler_model import HandlerType
 from apps.trak.models.manifest_model import Manifest, draft_mtn, validate_mtn
 
 
+@pytest.mark.django_db
 class TestManifestModel:
-    def test_draft_mtn_format(self, db):
+    def test_draft_mtn_format(self):
         """
         ensure our default MTN for draft manifests follows the
         same format as EPA uniform hazardous waste (e.g., 123456789ELC)

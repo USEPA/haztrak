@@ -1,13 +1,16 @@
+import pytest
+
 from apps.trak.models import Handler, ManifestHandler, PaperSignature
 from apps.trak.serializers import ManifestHandlerSerializer
 
 
+@pytest.mark.django_db
 class TestManifestHandlerSerializer:
     def test_m_handler_serializes(self, haztrak_json) -> None:
         manifest_handler_serializer = ManifestHandlerSerializer(data=haztrak_json.HANDLER.value)
         assert manifest_handler_serializer.is_valid()
 
-    def test_serializer_saves_handler(self, db, manifest_handler_serializer) -> None:
+    def test_serializer_saves_handler(self, manifest_handler_serializer) -> None:
         manifest_handler = manifest_handler_serializer.save()
         assert isinstance(manifest_handler, ManifestHandler)
 
@@ -17,7 +20,7 @@ class TestManifestHandlerSerializer:
         )
         assert manifest_handler_serializer.is_valid()
 
-    def test_creates_paper_signature(self, db, paper_handler_serializer) -> None:
+    def test_creates_paper_signature(self, paper_handler_serializer) -> None:
         manifest_handler: ManifestHandler = paper_handler_serializer.save()
         assert isinstance(manifest_handler.paper_signature, PaperSignature)
 
