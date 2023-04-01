@@ -53,7 +53,7 @@ class SitePermission(TrakBaseModel):
     )
 
     def __str__(self):
-        return f"{self.profile.user}: {self.site}"
+        return f"{self.profile.user}: {self.site.epa_site.epa_id}"
 
     def clean(self):
         if self.site_manager:
