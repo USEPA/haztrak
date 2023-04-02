@@ -12,7 +12,7 @@ class TestEpaSiteView:
     Tests the for the endpoints related to the handlers
     """
 
-    url = "/api/site/epa_site"
+    url = "/api/site/handler"
 
     @pytest.fixture(autouse=True)
     def _setup(self, epa_site_factory, api_client_factory):
@@ -34,7 +34,7 @@ class TestHandlerSearch:
     Tests for the EpaSite Search endpoint
     """
 
-    ulr = "/api/site/epa_site/search"
+    ulr = "/api/site/handler/search"
 
     @pytest.fixture(autouse=True)
     def _setup_handler(self, epa_site_factory):
