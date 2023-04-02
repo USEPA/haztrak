@@ -3,8 +3,9 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from ...sites.models import Address
-from .base_ser import TrakBaseSerializer
+from apps.sites.models import Address
+
+from .base_ser import SitesBaseSerializer
 
 
 @extend_schema_field(OpenApiTypes.OBJECT)
@@ -27,7 +28,7 @@ class LocalityField(serializers.ChoiceField):
             raise ValidationError(f'"code" field is required, provided: {data}')
 
 
-class AddressSerializer(TrakBaseSerializer):
+class AddressSerializer(SitesBaseSerializer):
     """
     Address model serializer for JSON representation
     """

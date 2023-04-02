@@ -6,7 +6,7 @@ from emanifest import RcrainfoClient
 from responses import matchers
 
 from apps.trak.models import QuickerSign
-from apps.trak.serializers.signature_ser import QuickerSignSerializer
+from apps.trak.serializers import QuickerSignSerializer
 from apps.trak.services import RcrainfoService
 
 

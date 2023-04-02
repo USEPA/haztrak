@@ -9,7 +9,7 @@ from .site_models import Site
 class EpaProfile(SitesBaseModel):
     """
     Provides the user's EpaProfile information, excluding their RCRAInfo
-    API key (see ProfileUpdateSerializer). Has a one-to-one relationship with
+    API key (see EpaProfileUpdateSerializer). Has a one-to-one relationship with
     the User model.
     """
 

@@ -1,12 +1,20 @@
 import json
-import logging
 
 import pytest
 
-from apps.sites.models.epa_profile_models import SitePermission
-from apps.trak.serializers import SitePermissionSerializer
+from apps.sites.models import SitePermission
+from apps.sites.serializers import SitePermissionSerializer
 
-logger = logging.getLogger(__name__)
+
+class TestContactSerializer:
+    def test_serializes(self, contact_serializer) -> None:
+        contact_serializer.is_valid()
+        assert contact_serializer.is_valid() is True
+
+
+class TestEpaSiteSerializer:
+    def test_serializes(self, handler_serializer):
+        assert handler_serializer.is_valid() is True
 
 
 class TestSitePermissionSerializer:
@@ -41,7 +49,8 @@ class TestEpaPermissionSerializer:
         self, epa_permission_serializer, rcra_profile_factory, site_factory
     ) -> None:
         if not epa_permission_serializer.is_valid():
-            logger.error(epa_permission_serializer.errors)
+            # if something is wrong with the serializer fixture, fail
+            assert False
         SitePermission.objects.create(
             **epa_permission_serializer.validated_data,
             site=site_factory(),

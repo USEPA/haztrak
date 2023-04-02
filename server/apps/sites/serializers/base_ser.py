@@ -1,10 +1,10 @@
 from rest_framework import serializers
 
 
-class TrakBaseSerializer(serializers.ModelSerializer):
+class SitesBaseSerializer(serializers.ModelSerializer):
     """
-    The Django Trak app base serializers class used to share functionality
-    across trak app serializers universally.
+    The Django Sites app base serializers class used to share functionality
+    across Sites app serializers universally.
     """
 
     def __str__(self):

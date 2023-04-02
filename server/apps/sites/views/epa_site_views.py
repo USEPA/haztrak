@@ -3,7 +3,7 @@ from rest_framework import permissions
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 from apps.sites.models import EpaSite
-from apps.trak.serializers import EpaSiteSerializer
+from apps.sites.serializers import EpaSiteSerializer
 
 
 @extend_schema(

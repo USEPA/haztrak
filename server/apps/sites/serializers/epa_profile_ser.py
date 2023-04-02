@@ -2,11 +2,12 @@ from rest_framework import serializers
 from rest_framework.exceptions import APIException
 from rest_framework.serializers import ModelSerializer
 
-from ...sites.models.epa_profile_models import EpaProfile, SitePermission
-from .base_ser import TrakBaseSerializer
+from apps.sites.models.epa_profile_models import EpaProfile, SitePermission
+
+from .base_ser import SitesBaseSerializer
 
 
-class SitePermissionSerializer(TrakBaseSerializer):
+class SitePermissionSerializer(SitesBaseSerializer):
     """
     SitePermission model serializer
     We use this internally because it's easier to handle, using consistent naming,
@@ -163,9 +164,9 @@ class EpaPermissionSerializer(SitePermissionSerializer):
         ]
 
 
-class ProfileGetSerializer(ModelSerializer):
+class EpaProfileGetSerializer(ModelSerializer):
     """
-    Rcra Profile model serializer for JSON marshalling/unmarshalling
+    EpaProfile model serializer for JSON marshalling/unmarshalling
     """
 
     user = serializers.StringRelatedField()
@@ -201,9 +202,9 @@ class ProfileGetSerializer(ModelSerializer):
         ]
 
 
-class ProfileUpdateSerializer(ProfileGetSerializer):
+class EpaProfileUpdateSerializer(EpaProfileGetSerializer):
     """
-    Subclasses the ProfileGetSerializer and adds the users RCRAInfo API Key
+    Subclasses the EpaProfileGetSerializer and adds the users RCRAInfo API Key
     to be used for updating the user's EpaProfile (not for GET requests).
     """
 

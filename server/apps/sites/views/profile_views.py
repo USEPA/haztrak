@@ -8,10 +8,10 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from apps.sites.models import EpaProfile, SitePermission
-from apps.trak.serializers import (
+from apps.sites.serializers import (
     EpaPermissionSerializer,
-    ProfileGetSerializer,
-    ProfileUpdateSerializer,
+    EpaProfileGetSerializer,
+    EpaProfileUpdateSerializer,
     SitePermissionSerializer,
 )
 
@@ -23,14 +23,14 @@ class RcraProfileView(RetrieveUpdateAPIView):
     """
 
     queryset = EpaProfile.objects.all()
-    serializer_class = ProfileUpdateSerializer
+    serializer_class = EpaProfileUpdateSerializer
     permission_classes = [permissions.AllowAny]  # temporary, remove me
     response = Response
 
     def get_serializer_class(self):
         if self.request.method == "PUT":
-            return ProfileUpdateSerializer
-        return ProfileGetSerializer
+            return EpaProfileUpdateSerializer
+        return EpaProfileGetSerializer
 
     def get_queryset(self):
         """

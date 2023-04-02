@@ -3,7 +3,7 @@ import logging
 from django.db import transaction
 
 from apps.sites.models import Site
-from apps.trak.serializers import EpaPermissionSerializer
+from apps.sites.serializers import EpaPermissionSerializer
 
 from ...sites.models.epa_profile_models import EpaProfile, SitePermission
 from .epa_site_service import EpaSiteService

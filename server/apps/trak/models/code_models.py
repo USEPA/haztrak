@@ -8,7 +8,7 @@ from apps.trak.models.base_models import TrakBaseModel
 logger = logging.getLogger(__name__)
 
 
-class EpaCodeBase(TrakBaseModel):
+class EpaCodeBaseModel(TrakBaseModel):
     """Abstract base class for Epa Lookups and codes"""
 
     code = models.CharField(
@@ -40,7 +40,7 @@ class StateWasteCodeManager(models.Manager):
         return super().get_queryset().filter(code_type=WasteCode.CodeType.STATE)
 
 
-class WasteCode(EpaCodeBase):
+class WasteCode(EpaCodeBaseModel):
     """Manifest Federal and state waste codes"""
 
     class Meta:

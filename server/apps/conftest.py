@@ -15,9 +15,15 @@ from rest_framework.test import APIClient
 
 from apps.sites.models import Address, Contact, EpaSite, EpaSiteType, Site, SitePhone
 from apps.sites.models.epa_profile_models import EpaProfile, SitePermission
+from apps.sites.serializers import (
+    ContactSerializer,
+    EpaPermissionSerializer,
+    EpaPhoneSerializer,
+    EpaSiteSerializer,
+    SitePermissionSerializer,
+)
 from apps.trak.models import (
     EpaPhone,
-    ESignature,
     Manifest,
     ManifestHandler,
     PaperSignature,
@@ -25,13 +31,8 @@ from apps.trak.models import (
     WasteCode,
 )
 from apps.trak.serializers import (
-    ContactSerializer,
-    EpaPermissionSerializer,
-    EpaPhoneSerializer,
-    EpaSiteSerializer,
     ManifestHandlerSerializer,
     ManifestSerializer,
-    SitePermissionSerializer,
     WasteLineSerializer,
 )
 from apps.trak.serializers.signature_ser import ESignatureSerializer
@@ -211,26 +212,6 @@ def epa_site_factory(db, address_factory, contact_factory):
         )
 
     yield create_epa_site
-
-
-@pytest.fixture
-def e_signature_factory(db, signer_factory, manifest_handler_factory):
-    """Abstract factory for Haztrak ManifestHandler model"""
-
-    def create_e_signature(
-        signer: Optional[Signer] = None,
-        manifest_handler: Optional[ManifestHandler] = None,
-    ) -> ESignature:
-        return ESignature.objects.create(
-            signer=signer or signer_factory(),
-            manifest_handler=manifest_handler or manifest_handler_factory(),
-            sign_date=datetime.utcnow().replace(tzinfo=timezone.utc),
-            cromerr_activity_id="".join(random.choices(string.ascii_letters, k=10)),
-            cromerr_document_id="".join(random.choices(string.ascii_letters, k=10)),
-            on_behalf=False,
-        )
-
-    yield create_e_signature
 
 
 @pytest.fixture

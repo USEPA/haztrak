@@ -1,7 +1,7 @@
 import pytest
 
 from apps.trak.models import Signer
-from apps.trak.serializers.signature_ser import ESignatureSerializer
+from apps.trak.serializers import ESignatureSerializer
 
 
 class TestESignatureSerializer:

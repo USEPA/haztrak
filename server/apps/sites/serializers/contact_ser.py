@@ -1,10 +1,11 @@
 from rest_framework import serializers
 
-from ...sites.models import Contact
-from .base_ser import TrakBaseSerializer
+from apps.sites.models import Contact
+
+from .base_ser import SitesBaseSerializer
 
 
-class EpaPhoneSerializer(TrakBaseSerializer):
+class EpaPhoneSerializer(SitesBaseSerializer):
     """
     EpaPhone model serializer for JSON marshalling/unmarshalling
     """
@@ -22,7 +23,7 @@ class EpaPhoneSerializer(TrakBaseSerializer):
         ]
 
 
-class ContactSerializer(TrakBaseSerializer):
+class ContactSerializer(SitesBaseSerializer):
     """
     Contact model serializer for JSON marshalling/unmarshalling
     """

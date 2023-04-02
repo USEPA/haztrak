@@ -5,7 +5,7 @@ from django.db import transaction
 from rest_framework.exceptions import ValidationError
 
 from apps.sites.models import EpaSite
-from apps.trak.serializers import EpaSiteSerializer
+from apps.sites.serializers import EpaSiteSerializer
 
 from .rcrainfo_service import RcrainfoService
 

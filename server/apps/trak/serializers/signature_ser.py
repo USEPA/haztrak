@@ -3,8 +3,8 @@ from typing import Dict
 
 from rest_framework import serializers
 
+from apps.sites.serializers.contact_ser import EpaPhoneSerializer
 from apps.trak.models import ESignature, PaperSignature, QuickerSign, Signer
-from apps.trak.serializers.contact_ser import EpaPhoneSerializer
 
 from .base_ser import TrakBaseSerializer
 
