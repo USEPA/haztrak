@@ -7,9 +7,9 @@ from apps.sites.services import EpaSiteService
 
 class TestHandlerService:
     @pytest.fixture(autouse=True)
-    def _setup(self, user_factory, rcra_profile_factory, haztrak_json):
+    def _setup(self, user_factory, epa_profile_factory, haztrak_json):
         self.user = user_factory()
-        self.profile = rcra_profile_factory(user=self.user)
+        self.profile = epa_profile_factory(user=self.user)
         self.handler_json = haztrak_json.HANDLER.value
         self.epa_id = self.handler_json.get("epaSiteId", "handler001")
 

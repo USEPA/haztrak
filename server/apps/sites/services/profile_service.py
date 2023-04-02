@@ -45,7 +45,7 @@ class EpaProfileService:
             f"<{self.__class__.__name__}(username='{self.username}', rcrainfo='{self.rcrainfo}')>"
         )
 
-    def pull_rcra_profile(self, *, username: str = None):
+    def pull_epa_profile(self, *, username: str = None):
         """
         This high level function makes several requests to RCRAInfo to pull...
         1. A user's site permissions, it creates a SitePermission for each

@@ -20,11 +20,11 @@ def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
     This task initiates a call to the EpaProfileService to pull a user's RCRAInfo profile
     and update that information in Haztrak.
     """
-    from apps.trak.services import RcraProfileService
+    from apps.sites.services import EpaProfileService
 
     try:
-        profile_service = RcraProfileService(username=username, logger=logger)
-        profile_service.pull_rcra_profile()
+        profile_service = EpaProfileService(username=username)
+        profile_service.pull_epa_profile()
     except (ConnectionError, RequestException, TimeoutError):
         # ToDo retry if network error, see celery docs
         raise Reject()

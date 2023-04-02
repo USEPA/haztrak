@@ -91,11 +91,11 @@ class TestRcraProfileEndpoint:
     url = "/api/site/profile"
 
     @pytest.fixture(autouse=True)
-    def _setup(self, rcra_profile_factory, user_factory, api_client_factory):
+    def _setup(self, epa_profile_factory, user_factory, api_client_factory):
         self.user = user_factory()
         self.client = api_client_factory(user=self.user)
         self.client.force_authenticate(user=self.user)
-        self.profile = rcra_profile_factory(user=self.user)
+        self.profile = epa_profile_factory(user=self.user)
 
     def test_returns_user_profile(self):
         response: Response = self.client.get(f"{self.url}/{self.user.username}")

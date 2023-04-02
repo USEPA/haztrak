@@ -6,6 +6,20 @@ from apps.trak.serializers import ManifestHandlerSerializer
 
 @pytest.mark.django_db
 class TestManifestHandlerSerializer:
+    @pytest.fixture
+    def manifest_handler_serializer(self, haztrak_json) -> ManifestHandlerSerializer:
+        manifest_handler_serializer = ManifestHandlerSerializer(data=haztrak_json.HANDLER.value)
+        manifest_handler_serializer.is_valid()
+        return manifest_handler_serializer
+
+    @pytest.fixture
+    def paper_handler_serializer(self, haztrak_json) -> ManifestHandlerSerializer:
+        handler_serializer = ManifestHandlerSerializer(
+            data=haztrak_json.PAPER_MANIFEST_HANDLER.value
+        )
+        handler_serializer.is_valid()
+        return handler_serializer
+
     def test_m_handler_serializes(self, haztrak_json) -> None:
         manifest_handler_serializer = ManifestHandlerSerializer(data=haztrak_json.HANDLER.value)
         assert manifest_handler_serializer.is_valid()

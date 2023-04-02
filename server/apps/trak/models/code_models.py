@@ -58,7 +58,6 @@ class WasteCode(EpaCodeBaseModel):
         max_length=6,
         unique=True,
     )
-
     code_type = models.CharField(
         choices=CodeType.choices,
         max_length=2,

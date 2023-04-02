@@ -11,9 +11,9 @@ from rest_framework.response import Response
 
 from apps.sites.models import Site
 from apps.sites.serializers import SiteSerializer
+from apps.sites.tasks import sync_site_manifests
 from apps.trak.models import Manifest
 from apps.trak.serializers import MtnSerializer
-from apps.trak.tasks import sync_site_manifests
 
 logger = logging.getLogger(__name__)
 

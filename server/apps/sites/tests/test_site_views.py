@@ -14,7 +14,7 @@ class TestSiteAPI:
     def _api_client(
         self,
         api_client_factory,
-        rcra_profile_factory,
+        epa_profile_factory,
         site_permission_factory,
         user_factory,
         site_factory,
@@ -22,7 +22,7 @@ class TestSiteAPI:
     ):
         self.user = user_factory()
         self.client = api_client_factory(user=self.user)
-        self.profile = rcra_profile_factory(user=self.user)
+        self.profile = epa_profile_factory(user=self.user)
         self.epa_site = epa_site_factory()
         self.user_site = site_factory(epa_site=self.epa_site)
         self.user_site_permission = site_permission_factory(
@@ -67,13 +67,13 @@ class TestSiteDetailsApi:
     def _site(
         self,
         user_factory,
-        rcra_profile_factory,
+        epa_profile_factory,
         site_factory,
         epa_site_factory,
         site_permission_factory,
     ):
         self.user = user_factory(username="testuser1")
-        self.profile = rcra_profile_factory(user=self.user)
+        self.profile = epa_profile_factory(user=self.user)
         self.generator = epa_site_factory()
         self.site = site_factory(epa_site=self.generator)
         self.site_permission = site_permission_factory(site=self.site, profile=self.profile)

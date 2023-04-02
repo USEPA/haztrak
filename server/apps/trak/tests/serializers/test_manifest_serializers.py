@@ -1,5 +1,12 @@
+import pytest
+
 from apps.trak.models import AdditionalInfo, Manifest, WasteLine
 from apps.trak.serializers import ManifestSerializer
+
+
+@pytest.fixture
+def manifest_10003114elc_serializer(db, haztrak_json) -> ManifestSerializer:
+    return ManifestSerializer(data=haztrak_json.MANIFEST.value)
 
 
 class TestManifestSerializer:

@@ -4,6 +4,13 @@ from apps.trak.models import Signer
 from apps.trak.serializers import ESignatureSerializer
 
 
+@pytest.fixture
+def e_signature_serializer(db, haztrak_json) -> ESignatureSerializer:
+    e_signature_serializer = ESignatureSerializer(data=haztrak_json.E_SIGNATURE.value)
+    e_signature_serializer.is_valid()
+    return e_signature_serializer
+
+
 class TestESignatureSerializer:
     """
     Test suite for e-Manifest electronic signatures serialization to/from JSON
