@@ -12,7 +12,7 @@ import { faEye, faFileLines } from '@fortawesome/free-solid-svg-icons';
  * @constructor
  */
 function SiteList() {
-  const [siteData, loading, error] = useHtAPI<Array<Site>>('trak/site/');
+  const [siteData, loading, error] = useHtAPI<Array<Site>>('site/');
   const [showErrorModal, setShowErrorModal] = useState(false);
 
   useEffect(() => {

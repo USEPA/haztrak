@@ -59,7 +59,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
     async function fetchOptions() {
       if (typeof searchData.epaId === 'string' && typeof searchData.name === 'string') {
         if (searchData.epaId.length >= 3 || searchData.name.length >= 3) {
-          const response = await htApi.get('trak/handler/search', {
+          const response = await htApi.get('site/handler/search', {
             params: searchData,
           });
           return response.data;

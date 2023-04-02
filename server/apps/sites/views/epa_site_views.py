@@ -28,10 +28,12 @@ class EpaSiteSearchView(ListAPIView):
         epa_id_param = self.request.query_params.get("epaId")
         name_param = self.request.query_params.get("siteName")
         site_type_param = self.request.query_params.get("siteType")
+        print(site_type_param)
         if epa_id_param is not None:
             queryset = queryset.filter(epa_id__contains=epa_id_param)
         if name_param is not None:
             queryset = queryset.filter(name__contains=name_param)
-        if site_type_param is not None:
-            queryset = queryset.filter(site_type=site_type_param)
+        # ToDo: filter EpaSites by handler type
+        # if site_type_param is not None:
+        #     queryset = queryset.filter(site_type=site_type_param)
         return queryset

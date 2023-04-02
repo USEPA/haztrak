@@ -47,7 +47,7 @@ class EpaProfile(SitesBaseModel):
 
     def sync(self):
         """Launch task to sync use profile. ToDo: remove this method"""
-        from apps.trak.tasks import sync_user_sites
+        from apps.sites.tasks import sync_user_sites
 
         task = sync_user_sites.delay(str(self.user.username))
         return task

@@ -22,8 +22,6 @@ urlpatterns = [
     path("mtn", MtnList.as_view()),
     path("mtn/<str:epa_id>", MtnList.as_view()),
     # Handler
-    # path("epa_site/search", EpaSiteSearchView.as_view()),
-    # path("epa_site/details/<int:pk>", EpaSiteView.as_view()),
     path("transporter/<int:pk>", TransporterView.as_view()),
     path("mtnhandler/<int:pk>", ManifestHandlerView.as_view()),
     # code

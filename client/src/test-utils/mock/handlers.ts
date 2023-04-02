@@ -28,7 +28,7 @@ export const handlers = [
   /**
    * User RcraProfile data
    */
-  rest.get(`${API_BASE_URL}/api/trak/profile/${mockUsername}`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/site/profile/${mockUsername}`, (req, res, ctx) => {
     return res(
       // Respond with a 200 status code
       ctx.status(200),
@@ -45,13 +45,13 @@ export const handlers = [
   /**
    * List user sites
    */
-  rest.get(`${API_BASE_URL}/api/trak/site`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/site`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockSites));
   }),
   /**
    * Site Details
    */
-  rest.get(`${API_BASE_URL}/api/trak/site/${mockEpaId}`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/site/${mockEpaId}`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockSites[0]));
   }),
   /**

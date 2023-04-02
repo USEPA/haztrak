@@ -68,11 +68,11 @@ class MtnList(ListAPIView):
                 for i in Site.objects.filter(sitepermission__profile__user=self.request.user)
             ]
         else:
-            sites = [str(i) for i in Site.objects.filter(epa_site__epa_id=epa_id)]
+            sites = [i.epa_site.epa_id for i in Site.objects.filter(epa_site__epa_id=epa_id)]
 
         logger.info(sites)
         return Manifest.objects.filter(
-            Q(generator__handler__epa_id__in=sites) | Q(tsd__handler__epa_id__in=sites)
+            Q(generator__epa_site__epa_id__in=sites) | Q(tsd__epa_site__epa_id__in=sites)
         )
 
 

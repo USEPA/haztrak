@@ -23,6 +23,6 @@ urlpatterns = [
     path("<str:epa_id>/manifest", SiteManifest.as_view()),
     path("manifest/sync", SyncSiteManifest.as_view()),
     # EpaSite
-    path("epa_site/search", EpaSiteSearchView.as_view()),
-    path("epa_site/details/<int:pk>", EpaSiteView.as_view()),
+    path("handler/search", EpaSiteSearchView.as_view()),
+    path("handler/details/<int:pk>", EpaSiteView.as_view()),
 ]
