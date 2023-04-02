@@ -1,6 +1,5 @@
 import logging
 import os
-from datetime import datetime
 
 from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse

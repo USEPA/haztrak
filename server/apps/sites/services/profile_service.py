@@ -2,27 +2,26 @@ import logging
 
 from django.db import transaction
 
+from apps.core.services import RcrainfoService
 from apps.sites.models import Site
+from apps.sites.models.epa_profile_models import EpaProfile, SitePermission
 from apps.sites.serializers import EpaPermissionSerializer
-
-from ...sites.models.epa_profile_models import EpaProfile, SitePermission
-from .epa_site_service import EpaSiteService
-from .rcrainfo_service import RcrainfoService
-from .site_service import SiteService
+from apps.sites.services.epa_site_service import EpaSiteService
+from apps.sites.services.site_service import SiteService
 
 
 # ToDo, may be better to have a service level module exception.
 class RcraServiceError(Exception):
-    """Exception for errors specific to the RcraProfileService"""
+    """Exception for errors specific to the EpaProfileService"""
 
     def __init__(self, message: str):
         self.message = message
         super().__init__(self.message)
 
 
-class RcraProfileService:
+class EpaProfileService:
     """
-    RcraProfileService encapsulates the EpaProfile subdomain business logic
+    EpaProfileService encapsulates the EpaProfile subdomain business logic
     of a and exposes method corresponding to use cases.
     """
 

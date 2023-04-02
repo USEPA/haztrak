@@ -13,6 +13,7 @@ import responses
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
+from apps.core.services import RcrainfoService
 from apps.sites.models import Address, Contact, EpaSite, EpaSiteType, Site, SitePhone
 from apps.sites.models.epa_profile_models import EpaProfile, SitePermission
 from apps.sites.serializers import (
@@ -36,7 +37,6 @@ from apps.trak.serializers import (
     WasteLineSerializer,
 )
 from apps.trak.serializers.signature_ser import ESignatureSerializer
-from apps.trak.services import RcrainfoService
 
 
 @pytest.fixture

@@ -17,7 +17,7 @@ class RcraProfileTasks(Task):
 @shared_task(name="sync profile", base=RcraProfileTasks, bind=True, acks_late=True)
 def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
     """
-    This task initiates a call to the RcraProfileService to pull a user's RCRAInfo profile
+    This task initiates a call to the EpaProfileService to pull a user's RCRAInfo profile
     and update that information in Haztrak.
     """
     from apps.trak.services import RcraProfileService

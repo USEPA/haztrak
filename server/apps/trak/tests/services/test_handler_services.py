@@ -1,8 +1,8 @@
 import pytest
-import responses
 
+from apps.core.services import RcrainfoService
 from apps.sites.models import EpaSite
-from apps.trak.services import EpaSiteService, RcrainfoService
+from apps.sites.services import EpaSiteService
 
 
 class TestHandlerService:

@@ -3,7 +3,7 @@ import logging
 from celery import shared_task, states
 from celery.exceptions import Ignore
 
-from apps.trak.services import EpaSiteService
+from apps.sites.services import EpaSiteService
 
 logger = logging.getLogger(__name__)
 

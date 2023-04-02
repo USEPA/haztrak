@@ -3,10 +3,8 @@ from django.db.models import Q, QuerySet
 from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
-from ..sites.models import Address, Contact
-from ..sites.models.epa_profile_models import EpaProfile, SitePermission
+from apps.sites.models import Address, Contact, EpaProfile, SitePermission
 
-# from ..sites.models import EpaSite
 from .models import (
     ESignature,
     Manifest,

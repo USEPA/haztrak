@@ -3,10 +3,9 @@ from typing import Dict, List
 
 from django.db import transaction
 
+from apps.core.services import RcrainfoService
 from apps.sites.models import EpaSite, Site
-
-from .manifest_service import ManifestService
-from .rcrainfo_service import RcrainfoService
+from apps.trak.services.manifest_service import ManifestService
 
 logger = logging.getLogger(__name__)
 

@@ -4,10 +4,9 @@ from typing import Dict
 from django.db import transaction
 from rest_framework.exceptions import ValidationError
 
+from apps.core.services import RcrainfoService
 from apps.sites.models import EpaSite
 from apps.sites.serializers import EpaSiteSerializer
-
-from .rcrainfo_service import RcrainfoService
 
 
 class EpaSiteService:
