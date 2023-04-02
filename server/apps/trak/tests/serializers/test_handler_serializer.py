@@ -1,13 +1,30 @@
-from apps.trak.models import Handler, ManifestHandler, PaperSignature
+import pytest
+
+from apps.trak.models import ManifestHandler, PaperSignature
 from apps.trak.serializers import ManifestHandlerSerializer
 
 
+@pytest.mark.django_db
 class TestManifestHandlerSerializer:
+    @pytest.fixture
+    def manifest_handler_serializer(self, haztrak_json) -> ManifestHandlerSerializer:
+        manifest_handler_serializer = ManifestHandlerSerializer(data=haztrak_json.HANDLER.value)
+        manifest_handler_serializer.is_valid()
+        return manifest_handler_serializer
+
+    @pytest.fixture
+    def paper_handler_serializer(self, haztrak_json) -> ManifestHandlerSerializer:
+        handler_serializer = ManifestHandlerSerializer(
+            data=haztrak_json.PAPER_MANIFEST_HANDLER.value
+        )
+        handler_serializer.is_valid()
+        return handler_serializer
+
     def test_m_handler_serializes(self, haztrak_json) -> None:
         manifest_handler_serializer = ManifestHandlerSerializer(data=haztrak_json.HANDLER.value)
         assert manifest_handler_serializer.is_valid()
 
-    def test_serializer_saves_handler(self, db, manifest_handler_serializer) -> None:
+    def test_serializer_saves_handler(self, manifest_handler_serializer) -> None:
         manifest_handler = manifest_handler_serializer.save()
         assert isinstance(manifest_handler, ManifestHandler)
 
@@ -17,21 +34,12 @@ class TestManifestHandlerSerializer:
         )
         assert manifest_handler_serializer.is_valid()
 
-    def test_creates_paper_signature(self, db, paper_handler_serializer) -> None:
+    def test_creates_paper_signature(self, paper_handler_serializer) -> None:
         manifest_handler: ManifestHandler = paper_handler_serializer.save()
         assert isinstance(manifest_handler.paper_signature, PaperSignature)
 
     def test_serializer_flattens_foreign_keys(self, manifest_handler_serializer) -> None:
-        # The ManifestHandler holds a foreign key to a Handler instance
+        # The ManifestHandler holds a foreign key to a EpaSite instance
         # however it should flatten that representation.
         assert "epaSiteId" in manifest_handler_serializer.data
-        assert "handler" not in manifest_handler_serializer.data
-
-
-class TestHandlerSerializer:
-    def test_save(self, handler_serializer):
-        if handler_serializer.is_valid():
-            saved_site = handler_serializer.save()
-            assert isinstance(saved_site, Handler)
-        else:
-            assert False
+        assert "epa_site" not in manifest_handler_serializer.data

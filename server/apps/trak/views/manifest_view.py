@@ -9,7 +9,8 @@ from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.trak.models import Manifest, Site
+from apps.sites.models import Site
+from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer, MtnSerializer
 from apps.trak.serializers.signature_ser import QuickerSignSerializer
 from apps.trak.tasks import pull_manifest, sign_manifest
@@ -67,11 +68,11 @@ class MtnList(ListAPIView):
                 for i in Site.objects.filter(sitepermission__profile__user=self.request.user)
             ]
         else:
-            sites = [str(i) for i in Site.objects.filter(epa_site__epa_id=epa_id)]
+            sites = [i.epa_site.epa_id for i in Site.objects.filter(epa_site__epa_id=epa_id)]
 
         logger.info(sites)
         return Manifest.objects.filter(
-            Q(generator__handler__epa_id__in=sites) | Q(tsd__handler__epa_id__in=sites)
+            Q(generator__epa_site__epa_id__in=sites) | Q(tsd__epa_site__epa_id__in=sites)
         )
 
 

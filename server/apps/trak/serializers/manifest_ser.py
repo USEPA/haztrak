@@ -4,11 +4,11 @@ from typing import Dict
 from rest_framework import serializers
 
 from apps.trak.models import Manifest
+from apps.trak.models.manifest_models import AdditionalInfo
 from apps.trak.serializers.handler_ser import ManifestHandlerSerializer
 
-from ..models.manifest_model import AdditionalInfo
 from .base_ser import TrakBaseSerializer
-from .transporter_ser import TransporterSerializer
+from .handler_ser import TransporterSerializer
 from .waste_line_ser import WasteLineSerializer
 
 logger = logging.getLogger(__name__)

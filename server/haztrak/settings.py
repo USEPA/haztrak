@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 
 # Globals
-HAZTRAK_VERSION = "0.3.0"
+HAZTRAK_VERSION = "0.4.0"
 
 # Environment variable mappings
 HOST_ENV = "HT_HOST"
@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django_celery_results",
     "django_celery_beat",
     "apps.trak",
+    "apps.sites",
     "apps.core",
 ]
 
@@ -141,11 +142,12 @@ STATICFILES_DIRS = [
 ]
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ("haztrak.authentication.BearerAuthentication",),
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "haztrak.authentication.BearerAuthentication",
+    ],
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    # uncomment to use browser to inspect the API for dev
-    # 'DEFAULT_PERMISSION_CLASSES': [],
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [],
+    # 'DEFAULT_PERMISSION_CLASSES': [],  # uncomment to use browser to inspect the API for dev
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [], # uncomment to use browser to inspect the API for dev
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PARSER_CLASSES": [
         "rest_framework.parsers.JSONParser",
@@ -158,12 +160,12 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "An open-source web app illustrating how hazardous waste "
     "management software can integrate with EPA's RCRAInfo",
     "VERSION": HAZTRAK_VERSION,
-    "SERVE_INCLUDE_SCHEMA": False,
-    "SCHEMA_PATH_PREFIX": r"/api/[a-zA-Z]*/",
+    "SERVE_INCLUDE_SCHEMA": True,
+    # "SCHEMA_PATH_PREFIX": r"/api/[a-zA-Z]*/", # ToDo: redesign endpoints
     "SWAGGER_UI_SETTINGS": {
         "deepLinking": True,
         "persistAuthorization": True,
-        "displayOperationId": True,
+        "displayOperationId": False,
     },
 }
 
@@ -204,6 +206,11 @@ LOGGING = {
             "propagate": False,
         },
         "apps.trak": {
+            "level": HT_TRAK_LOG_LEVEL,
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "apps.sites": {
             "level": HT_TRAK_LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,

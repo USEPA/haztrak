@@ -8,7 +8,7 @@ import SiteList from './index';
 
 const mockSites = [createMockSite(), createMockSite()];
 const server = setupServer(
-  rest.get(`${API_BASE_URL}/api/trak/site`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/site`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockSites));
   })
 );

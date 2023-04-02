@@ -33,7 +33,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
     const newUpdateData = removeEmptyFields(updateData);
     setProfileLoading(!profileLoading);
     htApi
-      .put(`/trak/profile/${profile.user}`, newUpdateData)
+      .put(`/site/profile/${profile.user}`, newUpdateData)
       .then((r) => {
         dispatch(updateProfile(r.data));
       })
@@ -153,7 +153,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
           className="mx-2"
           variant="primary"
           onClick={() =>
-            htApi.get(`trak/profile/${profile.user}/sync`).catch((r) => console.error(r))
+            htApi.get(`site/profile/${profile.user}/sync`).catch((r) => console.error(r))
           }
         >
           Sync Site Permissions

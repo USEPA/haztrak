@@ -5,12 +5,10 @@ from typing import Dict, List
 from django.db import transaction
 from requests import RequestException
 
+from apps.core.services import RcrainfoService
 from apps.trak.models import Manifest, QuickerSign
-from apps.trak.serializers import ManifestSerializer
-
-from ..serializers.signature_ser import QuickerSignSerializer
-from ..tasks.manifest_task import pull_manifest
-from .rcrainfo_service import RcrainfoService
+from apps.trak.serializers import ManifestSerializer, QuickerSignSerializer
+from apps.trak.tasks.manifest_task import pull_manifest
 
 
 class ManifestService:

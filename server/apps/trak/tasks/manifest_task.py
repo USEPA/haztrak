@@ -5,8 +5,8 @@ from typing import Dict, List, Optional
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
 
+from apps.sites.models import EpaSiteType
 from apps.trak.models import QuickerSign
-from apps.trak.models.handler_model import HandlerType
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ def sign_manifest(
     username: str,
     mtn: List[str],
     site_id: str,
-    site_type: HandlerType | str,
+    site_type: EpaSiteType | str,
     printed_name: str,
     printed_date: datetime.datetime,
     transporter_order: Optional[int] = None,

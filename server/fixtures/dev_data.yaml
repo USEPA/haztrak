@@ -122,7 +122,7 @@
     total_run_count: 0
     date_changed: 2023-03-19 00:29:09.692346+00:00
     description: ''
-- model: trak.address
+- model: sites.address
   pk: 1
   fields:
     street_number: null
@@ -728,7 +728,12 @@
   fields:
     number: 321-321-3214
     extension: null
-- model: trak.contact
+- model: sites.sitephone
+  pk: 1
+  fields:
+    number: 321-321-3214
+    extension: null
+- model: sites.contact
   pk: 1
   fields:
     first_name: David
@@ -737,7 +742,7 @@
     phone: 1
     email: testuser1@haztrak.net
     company_name: haztrak
-- model: trak.handler
+- model: sites.epasite
   pk: 1
   fields:
     site_type: Generator
@@ -753,7 +758,7 @@
     can_esign: true
     limited_esign: true
     registered_emanifest_user: true
-- model: trak.rcraprofile
+- model: sites.epaprofile
   pk: 1
   fields:
     user: 2
@@ -762,13 +767,13 @@
     rcra_username: dpgraham4401
     phone_number: null
     email: test.user@haztrak.net
-- model: trak.site
+- model: sites.site
   pk: 1
   fields:
     name: VA TEST GEN 2021
     epa_site: 1
     last_rcra_sync: null
-- model: trak.sitepermission
+- model: sites.sitepermission
   pk: 1
   fields:
     site: 1

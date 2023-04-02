@@ -13,7 +13,7 @@ import { Container, Button } from 'react-bootstrap';
  */
 function SiteDetails(): ReactElement {
   let { siteId } = useParams();
-  const [siteData, loading, error] = useHtAPI<Site>(`trak/site/${siteId}`);
+  const [siteData, loading, error] = useHtAPI<Site>(`site/${siteId}`);
   const navigate = useNavigate();
 
   if (error) throw error;

@@ -1,12 +1,14 @@
+from http import HTTPStatus
 from typing import Dict, List
 
 import pytest
 import pytest_mock
 from emanifest import RcrainfoResponse
 
+from apps.core.services import RcrainfoService
+from apps.sites.models import EpaSiteType
 from apps.trak.models import QuickerSign
-from apps.trak.models.handler_model import HandlerType
-from apps.trak.services import ManifestService, RcrainfoService
+from apps.trak.services import ManifestService
 
 
 class TestManifestService:
@@ -16,6 +18,27 @@ class TestManifestService:
         self.gen001 = site_factory()
         self.json_100031134elc = haztrak_json.MANIFEST.value
         self.tracking_number = self.json_100031134elc.get("manifestTrackingNumber", "123456789ELC")
+
+    @pytest.fixture
+    def manifest_100033134elc_rcra_response(self, haztrak_json, mock_responses):
+        rcrainfo = RcrainfoService(api_username="testuser1", rcrainfo_env="preprod")
+        manifest_json = haztrak_json.MANIFEST.value
+        mock_responses.get(
+            url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{manifest_json.get("manifestTrackingNumber")}',
+            content_type="application/json",
+            json=manifest_json,
+            status=HTTPStatus.OK,
+        )
+
+    @pytest.fixture
+    def search_site_mtn_rcra_response(self, haztrak_json, mock_responses):
+        rcrainfo = RcrainfoService(api_username="testuser1", rcrainfo_env="preprod")
+        mock_responses.post(
+            url=f"{rcrainfo.base_url}/api/v1/emanifest/search",
+            content_type="application/json",
+            json=[haztrak_json.MANIFEST.value.get("manifestTrackingNumber")],
+            status=HTTPStatus.OK,
+        )
 
     def test_pull_manifests(
         self, manifest_100033134elc_rcra_response, mocker: pytest_mock.MockerFixture
@@ -47,12 +70,12 @@ class TestSignManifest:
         user_factory,
         site_factory,
         manifest_factory,
-        handler_factory,
+        epa_site_factory,
         manifest_handler_factory,
     ):
         self.user = user_factory()
-        self.generator = handler_factory()
-        self.manifest_generator = manifest_handler_factory(handler=self.generator)
+        self.generator = epa_site_factory()
+        self.manifest_generator = manifest_handler_factory(epa_site=self.generator)
         self.site = site_factory(epa_site=self.generator)
         self.rcrainfo = RcrainfoService(api_username=self.user.username)
         self.manifests = [
@@ -86,7 +109,7 @@ class TestSignManifest:
         quicker_signature = QuickerSign(
             mtn=mtn,
             site_id=self.site.epa_site.epa_id,
-            site_type=HandlerType.GENERATOR,
+            site_type=EpaSiteType.GENERATOR,
             printed_name="David Graham",
         )
         results: Dict[str, List[str]] = manifest_service.sign_manifest(quicker_signature)
@@ -100,7 +123,7 @@ class TestSignManifest:
         quicker_sign = QuickerSign(
             mtn=self.mtn,
             site_id=self.site.epa_site.epa_id,
-            site_type=HandlerType.GENERATOR,
+            site_type=EpaSiteType.GENERATOR,
             printed_name="David Graham",
         )
         manifest_service.sign_manifest(quicker_sign)
