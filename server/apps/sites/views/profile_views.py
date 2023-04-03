@@ -16,7 +16,7 @@ from apps.sites.serializers import (
 )
 
 
-class RcraProfileView(RetrieveUpdateAPIView):
+class EpaProfileView(RetrieveUpdateAPIView):
     """
     Responsible for CRUD operations related to the user EpaProfile, which maintains
     information necessary for actions that interface with RCRAInfo
@@ -26,18 +26,13 @@ class RcraProfileView(RetrieveUpdateAPIView):
     serializer_class = EpaProfileUpdateSerializer
     permission_classes = [permissions.AllowAny]  # temporary, remove me
     response = Response
+    lookup_field = "user"
 
     def get_serializer_class(self):
+        """use UpdateSerializer if method is PUT"""
         if self.request.method == "PUT":
             return EpaProfileUpdateSerializer
         return EpaProfileGetSerializer
-
-    def get_queryset(self):
-        """
-        Filter based on the current user
-        """
-        user = self.request.user
-        return EpaProfile.objects.get(user=user)
 
     def get_object(self):
         return self.queryset.get(user__username=self.kwargs.get("user"))

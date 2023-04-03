@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
 from apps.sites.models import EpaSiteType
-from apps.sites.views import EpaSiteSearchView
+from apps.sites.views import EpaProfileView, EpaSiteSearchView
 
 
 class TestEpaSiteView:
@@ -114,6 +114,12 @@ class TestEpaProfileEndpoint:
     """
 
     url = "/api/site/profile"
+    id_field = "rcraAPIID"
+    key_field = "rcraAPIKey"
+    username_field = "rcraUsername"
+    new_api_id = "updatedRcraAPIID"
+    new_api_key = "updatedRcraAPIKey"
+    new_username = "newRCRAInfoUsername"
 
     @pytest.fixture()
     def user_and_client(self, epa_profile_factory, user_factory, api_client_factory):
@@ -130,7 +136,7 @@ class TestEpaProfileEndpoint:
         assert response.status_code == 200
         assert response.data["user"] == self.user.username
 
-    def test_put_updates_profile(self, user_and_client, epa_profile_factory):
+    def test_profile_updates(self, user_and_client, epa_profile_factory):
         # Arrange
         epa_profile_factory(user=self.user)
         id_json_key = "rcraAPIID"
@@ -146,3 +152,22 @@ class TestEpaProfileEndpoint:
         assert response.status_code == 200
         assert response.data[id_json_key] == new_api_id
         assert response.data[username_json_key] == new_username
+
+    def test_update_does_not_return_api_key(self, user_and_client, epa_profile_factory):
+        # Arrange
+        epa_profile_factory(user=self.user)
+        factory = APIRequestFactory()
+        request = factory.put(
+            f"{self.url}/{self.user.username}",
+            {
+                self.id_field: self.new_api_id,
+                self.username_field: self.new_username,
+                self.key_field: self.new_api_key,
+            },
+            format="json",
+        )
+        force_authenticate(request, self.user)
+        # Act
+        response = EpaProfileView.as_view()(request, user=self.user.username)
+        # Assert
+        assert self.key_field not in response.data

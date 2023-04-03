@@ -196,7 +196,6 @@ class EpaProfileGetSerializer(ModelSerializer):
             "rcraAPIID",
             "rcraUsername",
             "epaSites",
-            # 'sites',
             "phoneNumber",
             "apiUser",
         ]
@@ -205,7 +204,7 @@ class EpaProfileGetSerializer(ModelSerializer):
 class EpaProfileUpdateSerializer(EpaProfileGetSerializer):
     """
     Subclasses the EpaProfileGetSerializer and adds the users RCRAInfo API Key
-    to be used for updating the user's EpaProfile (not for GET requests).
+    to be used for updating the user's EpaProfile.
     """
 
     rcraAPIKey = serializers.CharField(
@@ -223,3 +222,8 @@ class EpaProfileUpdateSerializer(EpaProfileGetSerializer):
             "epaSites",
             "phoneNumber",
         ]
+
+    def to_representation(self, instance):
+        """We never serialize sensitive data in this serializer class"""
+        serializer = EpaProfileGetSerializer(instance)
+        return serializer.data
