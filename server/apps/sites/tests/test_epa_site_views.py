@@ -12,21 +12,24 @@ class TestEpaSiteView:
     Tests the for the endpoints related to the handlers
     """
 
-    url = "/api/site/handler"
+    URL = "/api/site/handler"
 
-    @pytest.fixture(autouse=True)
-    def _setup(self, epa_site_factory, api_client_factory):
-        self.client = api_client_factory()
-        self.generator = epa_site_factory()
+    @pytest.fixture
+    def client(self, epa_site_factory, api_client_factory):
+        return api_client_factory()
 
-    def test_endpoint_headers(self):
-        response: Response = self.client.get(f"{self.url}/details/{self.generator.pk}")
+    @pytest.fixture
+    def generator(self, epa_site_factory, api_client_factory):
+        return epa_site_factory()
+
+    def test_endpoint_returns_json_with_epa_site(self, client, generator):
+        response: Response = client.get(f"{self.URL}/details/{generator.pk}")
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK
 
-    def test_returns_serialized_handler(self):
-        response: Response = self.client.get(f"{self.url}/details/{self.generator.pk}")
-        assert response.data["epaSiteId"] == self.generator.epa_id
+    def test_returns_serialized_handler(self, client, generator):
+        response: Response = client.get(f"{self.URL}/details/{generator.pk}")
+        assert response.data["epaSiteId"] == generator.epa_id
 
 
 class TestEpaSiteSearchView:
@@ -34,7 +37,7 @@ class TestEpaSiteSearchView:
     Tests for the EpaSite Search endpoint
     """
 
-    ulr = "/api/site/handler/search"
+    URL = "/api/site/handler/search"
 
     @pytest.fixture(autouse=True)
     def generator(self, epa_site_factory):
@@ -48,7 +51,7 @@ class TestEpaSiteSearchView:
         # Arrange
         factory = APIRequestFactory()
         request = factory.get(
-            self.ulr,
+            self.URL,
             {  # The expected parameters & args
                 "epaId": generator.epa_id,
                 "name": "",
@@ -73,7 +76,7 @@ class TestEpaSiteSearchView:
         epa_site_factory(epa_id=f"{common_prefix}00000TSD1", site_type=EpaSiteType.TSDF)
         factory = APIRequestFactory()
         request = factory.get(
-            self.ulr,
+            self.URL,
             {
                 "epaId": common_prefix,
                 "name": "",
@@ -96,7 +99,7 @@ class TestEpaSiteSearchView:
         client.force_authenticate(user=user)
         # Act
         response = client.get(
-            self.ulr,
+            self.URL,
             {
                 "epaId": generator.epa_id,
                 "name": "",
@@ -113,7 +116,7 @@ class TestEpaProfileView:
     Tests the for the endpoints related to the user's EpaProfile
     """
 
-    url = "/api/site/profile"
+    URL = "/api/site/profile"
     id_field = "rcraAPIID"
     key_field = "rcraAPIKey"
     username_field = "rcraUsername"
@@ -130,7 +133,7 @@ class TestEpaProfileView:
     def epa_profile_request(self, user_and_client):
         factory = APIRequestFactory()
         request = factory.put(
-            f"{self.url}/{self.user.username}",
+            f"{self.URL}/{self.user.username}",
             {
                 self.id_field: self.new_api_id,
                 self.username_field: self.new_username,
@@ -145,7 +148,7 @@ class TestEpaProfileView:
         # Arrange
         epa_profile_factory(user=self.user)
         # Act
-        response: Response = self.client.get(f"{self.url}/{self.user.username}")
+        response: Response = self.client.get(f"{self.URL}/{self.user.username}")
         # Assert
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK

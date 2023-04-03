@@ -22,7 +22,8 @@ class TestAddressModel:
 class TestContactModel:
     def test_contact_modal_saves(self, contact_factory) -> None:
         """simply check the model saves given our factory's defaults"""
-        assert type(contact_factory()) is Contact
+        contact = contact_factory()
+        assert isinstance(contact, Contact)
 
     @pytest.mark.parametrize("email", ["bad_email", "email.@example.com", "email.example.com"])
     def test_contact_raises_error_with_invalid_emails(self, contact_factory, email):
@@ -36,9 +37,8 @@ class TestEpaProfileModel:
     """Test related to the EpaProfile model and its API"""
 
     def test_rcra_profile_saves(self, epa_profile_factory):
-        # Arrange
+        """simply check the model saves given our factory's defaults"""
         epa_profile = epa_profile_factory()
-        # Act/Assert
         assert isinstance(epa_profile, EpaProfile)
 
     @pytest.mark.parametrize("rcra_username", ["username", None])

@@ -1,13 +1,16 @@
+from typing import Optional
+
 import pytest
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.sites.models import Site
-from apps.sites.views import SiteManifest
+from apps.sites.models import EpaProfile, EpaSite, Site, SitePermission
+from apps.sites.views import SiteDetailView, SiteMtnListView
 
 
-class TestSiteAPI:
+class TestSiteListView:
     @pytest.fixture(autouse=True)
     def _api_client(
         self,
@@ -61,35 +64,70 @@ class TestSiteDetailsApi:
 
     url = "/api/site"
 
-    @pytest.fixture(autouse=True)
-    def _site(
+    @pytest.fixture
+    def local_site_factory(
         self,
-        user_factory,
         epa_profile_factory,
-        site_factory,
         epa_site_factory,
+        user_factory,
+        site_factory,
         site_permission_factory,
     ):
-        self.user = user_factory(username="testuser1")
-        self.profile = epa_profile_factory(user=self.user)
-        self.generator = epa_site_factory()
-        self.site = site_factory(epa_site=self.generator)
-        self.site_permission = site_permission_factory(site=self.site, profile=self.profile)
-        self.other_site = site_factory(epa_site=epa_site_factory(epa_id="VAFOOBAR001"))
+        """Create sets up a site, corresponding epa_site, a site_permissions for a user"""
 
-    def test_returns_site(self):
+        def create_site_and_related(
+            user: Optional[User] = user_factory(),
+            epa_site: Optional[EpaSite] = epa_site_factory(),
+            profile: Optional[EpaProfile] = None,
+            site: Optional[Site] = None,
+            site_permission: Optional[SitePermission] = None,
+        ):
+            if profile is None:
+                profile = epa_profile_factory(user=user)
+            if site is None:
+                site = site_factory(epa_site=epa_site)
+            if site_permission is None:
+                site_permission_factory(site=site, profile=profile)
+            return site
+
+        return create_site_and_related
+
+    def test_returns_site_by_id(self, user_factory, local_site_factory):
+        # Arrange
+        user = user_factory(username="username1")
+        site = local_site_factory(user=user)
+        factory = APIRequestFactory()
+        request = factory.get(f"{self.url}/{site.epa_site.epa_id}")
+        force_authenticate(request, user)
+        # Act
+        response = SiteDetailView.as_view()(request, epa_id=site.epa_site.epa_id)
+        # Assert
+        assert response.data["handler"]["epaSiteId"] == site.epa_site.epa_id
+
+    def test_non_user_sites_not_returned(self, user_factory, local_site_factory, site_factory):
+        # Arrange
+        user = user_factory(username="username1")
+        local_site_factory(user=user)
+        other_site = site_factory()
+        factory = APIRequestFactory()
+        request = factory.get(f"{self.url}/{other_site.epa_site.epa_id}")
+        force_authenticate(request, user)
+        # Act
+        response = SiteDetailView.as_view()(request, epa_id=other_site.epa_site.epa_id)
+        # Assert
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    def test_returns_formatted_http_response(self, user_factory, local_site_factory, site_factory):
+        # Arrange
+        user = user_factory(username="username1")
+        site = local_site_factory(user=user)
         client = APIClient()
-        client.force_authenticate(user=self.user)
-        response = client.get(f"{self.url}/{self.site.epa_site.epa_id}")
+        client.force_authenticate(user=user)
+        # Act
+        response = client.get(f"{self.url}/{site.epa_site.epa_id}")
+        # Assert
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK
-
-    def test_non_user_sites_not_returned(self):
-        client = APIClient()
-        client.force_authenticate(user=self.user)
-        response = client.get(f"{self.url}/{self.other_site.epa_site.epa_id}")
-        assert response.headers["Content-Type"] == "application/json"
-        assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
 class TestSiteManifest:
@@ -113,5 +151,5 @@ class TestSiteManifest:
         factory = APIRequestFactory()
         request = factory.get(f"{self.url}/{self.generator.epa_id}/manifest")
         force_authenticate(request, self.user)
-        response: Response = SiteManifest.as_view()(request, self.generator.epa_id)
+        response: Response = SiteMtnListView.as_view()(request, self.generator.epa_id)
         print(response.data)

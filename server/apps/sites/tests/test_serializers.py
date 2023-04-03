@@ -16,8 +16,7 @@ class TestContactSerializer:
     def contact_serializer(self, haztrak_json) -> ContactSerializer:
         return ContactSerializer(data=haztrak_json.CONTACT.value)
 
-    def test_serializes(self, contact_serializer) -> None:
-        contact_serializer.is_valid()
+    def test_serializes_contact_model(self, contact_serializer) -> None:
         assert contact_serializer.is_valid() is True
 
 
