@@ -1,0 +1,69 @@
+import pytest
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.test import APIRequestFactory, force_authenticate
+
+from apps.sites.views import EpaProfileView
+
+
+class TestEpaProfileView:
+    """
+    Tests the for the endpoints related to the user's EpaProfile
+    """
+
+    URL = "/api/site/profile"
+    id_field = "rcraAPIID"
+    key_field = "rcraAPIKey"
+    username_field = "rcraUsername"
+    new_api_id = "updatedRcraAPIID"
+    new_api_key = "updatedRcraAPIKey"
+    new_username = "newRCRAInfoUsername"
+
+    @pytest.fixture
+    def user_and_client(self, epa_profile_factory, user_factory, api_client_factory):
+        self.user = user_factory()
+        self.client = api_client_factory(user=self.user)
+
+    @pytest.fixture
+    def epa_profile_request(self, user_and_client):
+        factory = APIRequestFactory()
+        request = factory.put(
+            f"{self.URL}/{self.user.username}",
+            {
+                self.id_field: self.new_api_id,
+                self.username_field: self.new_username,
+                self.key_field: self.new_api_key,
+            },
+            format="json",
+        )
+        force_authenticate(request, self.user)
+        return request
+
+    def test_returns_a_user_profile(self, user_and_client, epa_profile_factory):
+        # Arrange
+        epa_profile_factory(user=self.user)
+        # Act
+        response: Response = self.client.get(f"{self.URL}/{self.user.username}")
+        # Assert
+        assert response.headers["Content-Type"] == "application/json"
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["user"] == self.user.username
+
+    def test_profile_updates(self, epa_profile_factory, epa_profile_request):
+        # Arrange
+        epa_profile_factory(user=self.user)
+        request = epa_profile_request
+        # Act
+        response = EpaProfileView.as_view()(request, user=self.user.username)
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data[self.id_field] == self.new_api_id
+        assert response.data[self.username_field] == self.new_username
+
+    def test_update_does_not_return_api_key(self, epa_profile_factory, epa_profile_request):
+        # Arrange
+        epa_profile_factory(user=self.user)
+        request = epa_profile_request
+        # Act
+        response = EpaProfileView.as_view()(request, user=self.user.username)
+        # Assert
+        assert self.key_field not in response.data

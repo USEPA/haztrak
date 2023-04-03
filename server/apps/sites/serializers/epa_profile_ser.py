@@ -164,9 +164,9 @@ class EpaPermissionSerializer(SitePermissionSerializer):
         ]
 
 
-class EpaProfileGetSerializer(ModelSerializer):
+class EpaProfileSerializer(ModelSerializer):
     """
-    EpaProfile model serializer for JSON marshalling/unmarshalling
+    Model serializer for marshalling/unmarshalling a user's EpaProfile
     """
 
     user = serializers.StringRelatedField()
@@ -178,6 +178,11 @@ class EpaProfileGetSerializer(ModelSerializer):
     rcraAPIID = serializers.CharField(
         source="rcra_api_id",
         required=False,
+    )
+    rcraAPIKey = serializers.CharField(
+        source="rcra_api_key",
+        required=False,
+        write_only=True,
     )
     rcraUsername = serializers.CharField(
         source="rcra_username",
@@ -194,36 +199,9 @@ class EpaProfileGetSerializer(ModelSerializer):
         fields = [
             "user",
             "rcraAPIID",
+            "rcraAPIKey",
             "rcraUsername",
             "epaSites",
             "phoneNumber",
             "apiUser",
         ]
-
-
-class EpaProfileUpdateSerializer(EpaProfileGetSerializer):
-    """
-    Subclasses the EpaProfileGetSerializer and adds the users RCRAInfo API Key
-    to be used for updating the user's EpaProfile.
-    """
-
-    rcraAPIKey = serializers.CharField(
-        source="rcra_api_key",
-        required=False,
-    )
-
-    class Meta:
-        model = EpaProfile
-        fields = [
-            "user",
-            "rcraAPIID",
-            "rcraAPIKey",
-            "rcraUsername",
-            "epaSites",
-            "phoneNumber",
-        ]
-
-    def to_representation(self, instance):
-        """We never serialize sensitive data in this serializer class"""
-        serializer = EpaProfileGetSerializer(instance)
-        return serializer.data

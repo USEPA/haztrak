@@ -8,32 +8,23 @@ from rest_framework.response import Response
 from apps.sites.models import EpaProfile, SitePermission
 from apps.sites.serializers import (
     EpaPermissionSerializer,
-    EpaProfileGetSerializer,
-    EpaProfileUpdateSerializer,
+    EpaProfileSerializer,
     SitePermissionSerializer,
 )
 
 
 class EpaProfileView(RetrieveUpdateAPIView):
     """
-    Responsible for CRUD operations related to the user EpaProfile, which maintains
-    information necessary for actions that interface with RCRAInfo
+    Responsible for Create/Update operations related to the user EpaProfile,
+    which maintains a user's RCRAInfo profile data. This info is necessary for
+    actions that interface with RCRAInfo.
     """
 
     queryset = EpaProfile.objects.all()
-    serializer_class = EpaProfileUpdateSerializer
-    permission_classes = [permissions.AllowAny]  # temporary, remove me
+    serializer_class = EpaProfileSerializer
     response = Response
-    lookup_field = "user"
-
-    def get_serializer_class(self):
-        """use UpdateSerializer if method is PUT"""
-        if self.request.method == "PUT":
-            return EpaProfileUpdateSerializer
-        return EpaProfileGetSerializer
-
-    def get_object(self):
-        return self.queryset.get(user__username=self.kwargs.get("user"))
+    lookup_field = "user__username"
+    lookup_url_kwarg = "user"
 
 
 class SyncProfileView(GenericAPIView):
