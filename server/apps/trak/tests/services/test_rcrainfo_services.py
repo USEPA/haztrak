@@ -1,9 +1,9 @@
-import http
 from datetime import datetime, timedelta, timezone
 
 import pytest
 from emanifest import RcrainfoClient
 from responses import matchers
+from rest_framework import status
 
 from apps.core.services import RcrainfoService
 from apps.trak.models import QuickerSign
@@ -103,4 +103,4 @@ class TestQuickerSign:
         )
         signature_serializer = QuickerSignSerializer(quicker_signature)
         response = self.rcrainfo.sign_manifest(**signature_serializer.data)
-        assert response.status_code == http.HTTPStatus.OK
+        assert response.status_code == status.HTTP_200_OK

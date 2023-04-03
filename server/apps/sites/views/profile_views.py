@@ -1,8 +1,6 @@
-from http import HTTPStatus
-
 from celery.exceptions import CeleryError
 from django.contrib.auth.models import User
-from rest_framework import permissions
+from rest_framework import permissions, status
 from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -10,37 +8,23 @@ from rest_framework.response import Response
 from apps.sites.models import EpaProfile, SitePermission
 from apps.sites.serializers import (
     EpaPermissionSerializer,
-    EpaProfileGetSerializer,
-    EpaProfileUpdateSerializer,
+    EpaProfileSerializer,
     SitePermissionSerializer,
 )
 
 
-class RcraProfileView(RetrieveUpdateAPIView):
+class EpaProfileView(RetrieveUpdateAPIView):
     """
-    Responsible for CRUD operations related to the user EpaProfile, which maintains
-    information necessary for actions that interface with RCRAInfo
+    Responsible for Create/Update operations related to the user EpaProfile,
+    which maintains a user's RCRAInfo profile data. This info is necessary for
+    actions that interface with RCRAInfo.
     """
 
     queryset = EpaProfile.objects.all()
-    serializer_class = EpaProfileUpdateSerializer
-    permission_classes = [permissions.AllowAny]  # temporary, remove me
+    serializer_class = EpaProfileSerializer
     response = Response
-
-    def get_serializer_class(self):
-        if self.request.method == "PUT":
-            return EpaProfileUpdateSerializer
-        return EpaProfileGetSerializer
-
-    def get_queryset(self):
-        """
-        Filter based on the current user
-        """
-        user = self.request.user
-        return EpaProfile.objects.get(user=user)
-
-    def get_object(self):
-        return self.queryset.get(user__username=self.kwargs.get("user"))
+    lookup_field = "user__username"
+    lookup_url_kwarg = "user"
 
 
 class SyncProfileView(GenericAPIView):
@@ -59,7 +43,7 @@ class SyncProfileView(GenericAPIView):
             task = profile.sync()
             return self.response({"task": task.id})
         except (User.DoesNotExist, CeleryError) as exc:
-            return self.response(data=exc, status=HTTPStatus.INTERNAL_SERVER_ERROR)
+            return self.response(data=exc, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class SitePermissionView(RetrieveAPIView):

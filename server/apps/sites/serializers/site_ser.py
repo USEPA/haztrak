@@ -14,6 +14,7 @@ class EpaSiteSerializer(SitesBaseSerializer):
     epaSiteId = serializers.CharField(
         source="epa_id",
     )
+    # ToDo: we want to serialize based on the display name
     siteType = serializers.CharField(
         source="site_type",
         allow_null=True,

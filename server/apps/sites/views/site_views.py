@@ -1,10 +1,9 @@
 import logging
-from http import HTTPStatus
 
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from rest_framework import status
 from rest_framework.exceptions import APIException
-from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView, get_object_or_404
+from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -18,9 +17,9 @@ from apps.trak.serializers import MtnSerializer
 logger = logging.getLogger(__name__)
 
 
-class SiteList(ListAPIView):
+class SiteListView(ListAPIView):
     """
-    SiteList is a ListAPIView that returns haztrak sites that the current
+    SiteListView is a ListAPIView that returns haztrak sites that the current
     user has access to.
     """
 
@@ -31,25 +30,25 @@ class SiteList(ListAPIView):
         return Site.objects.filter(sitepermission__profile__user=user)
 
 
-class SiteApi(RetrieveAPIView):
+class SiteDetailView(RetrieveAPIView):
     """
     View to GET a Haztrak Site, which encapsulates the EPA EpaSite plus some.
     """
 
     serializer_class = SiteSerializer
+    lookup_field = "epa_site__epa_id"
     lookup_url_kwarg = "epa_id"
     queryset = Site.objects.all()
 
-    def retrieve(self, request, *args, **kwargs):
+    def get_queryset(self):
         epa_id = self.kwargs["epa_id"]
-        site = get_object_or_404(
-            self.queryset, epa_site__epa_id=epa_id, sitepermission__profile__user=request.user
+        queryset = Site.objects.filter(
+            epa_site__epa_id=epa_id, sitepermission__profile__user=self.request.user
         )
-        serializer = SiteSerializer(site)
-        return Response(serializer.data)
+        return queryset
 
 
-class SyncSiteManifest(GenericAPIView):
+class SyncSiteManifestView(GenericAPIView):
     """
     This endpoint launches a task to pull a site's manifests that are out of sync with RCRAInfo
     """
@@ -63,14 +62,14 @@ class SyncSiteManifest(GenericAPIView):
         try:
             site_id = request.data["siteId"]
             task = sync_site_manifests.delay(site_id=site_id, username=str(request.user))
-            return self.response(data={"task": task.id}, status=HTTPStatus.OK)
+            return self.response(data={"task": task.id}, status=status.HTTP_200_OK)
         except KeyError:
             return self.response(
-                data={"error": "malformed payload"}, status=HTTPStatus.BAD_REQUEST
+                data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
             )
 
 
-class SiteManifest(GenericAPIView):
+class SiteMtnListView(GenericAPIView):
     """
     Returns a site's manifest tracking numbers (MTN). Rhe MTN are broken down into three lists;
     generator, transporter, designated.Each array contains a list of objects with MTN and select

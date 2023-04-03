@@ -52,12 +52,16 @@ def user_factory(db):
     """Abstract factory for Django's User model"""
 
     def create_user(
-        username: Optional[str] = "testuser1",
+        username: Optional[str] = f"{''.join(random.choices(string.ascii_letters, k=9))}",
+        first_name: Optional[str] = "John",
+        last_name: Optional[str] = "Doe",
         email: Optional[str] = "testuser1@haztrak.net",
         password: Optional[str] = "password1",
     ) -> User:
         return User.objects.create_user(
             username=username,
+            first_name=first_name,
+            last_name=last_name,
             email=email,
             password=password,
         )
