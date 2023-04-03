@@ -1,5 +1,3 @@
-import json
-
 import pytest
 from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
@@ -30,7 +28,7 @@ class TestEpaSiteView:
         assert response.data["epaSiteId"] == self.generator.epa_id
 
 
-class TestHandlerSearch:
+class TestEpaSiteSearchView:
     """
     Tests for the EpaSite Search endpoint
     """
@@ -91,6 +89,7 @@ class TestHandlerSearch:
             assert handler_data["siteType"] == EpaSiteType.TSDF
 
     def test_endpoint_returns_json_formatted_data(self, user, generator) -> None:
+        """Use APIClient to ensure our HTTP response meets spec"""
         # Arrange
         client = APIClient()
         client.force_authenticate(user=user)
@@ -108,7 +107,7 @@ class TestHandlerSearch:
         assert response.status_code == 200
 
 
-class TestEpaProfileEndpoint:
+class TestEpaProfileView:
     """
     Tests the for the endpoints related to the user's EpaProfile
     """
@@ -121,41 +120,13 @@ class TestEpaProfileEndpoint:
     new_api_key = "updatedRcraAPIKey"
     new_username = "newRCRAInfoUsername"
 
-    @pytest.fixture()
+    @pytest.fixture
     def user_and_client(self, epa_profile_factory, user_factory, api_client_factory):
         self.user = user_factory()
         self.client = api_client_factory(user=self.user)
 
-    def test_returns_a_user_profile(self, user_and_client, epa_profile_factory):
-        # Arrange
-        epa_profile_factory(user=self.user)
-        # Act
-        response: Response = self.client.get(f"{self.url}/{self.user.username}")
-        # Assert
-        assert response.headers["Content-Type"] == "application/json"
-        assert response.status_code == 200
-        assert response.data["user"] == self.user.username
-
-    def test_profile_updates(self, user_and_client, epa_profile_factory):
-        # Arrange
-        epa_profile_factory(user=self.user)
-        id_json_key = "rcraAPIID"
-        username_json_key = "rcraUsername"
-        new_api_id = "updatedRcraAPIID"
-        new_username = "newRCRAInfoUsername"
-        put_data = json.dumps({id_json_key: new_api_id, username_json_key: new_username})
-        # Act
-        response: Response = self.client.put(
-            f"{self.url}/{self.user.username}", data=put_data, content_type="application/json"
-        )
-        # Assert
-        assert response.status_code == 200
-        assert response.data[id_json_key] == new_api_id
-        assert response.data[username_json_key] == new_username
-
-    def test_update_does_not_return_api_key(self, user_and_client, epa_profile_factory):
-        # Arrange
-        epa_profile_factory(user=self.user)
+    @pytest.fixture
+    def epa_profile_request(self, user_and_client):
         factory = APIRequestFactory()
         request = factory.put(
             f"{self.url}/{self.user.username}",
@@ -167,6 +138,32 @@ class TestEpaProfileEndpoint:
             format="json",
         )
         force_authenticate(request, self.user)
+        return request
+
+    def test_returns_a_user_profile(self, user_and_client, epa_profile_factory):
+        # Arrange
+        epa_profile_factory(user=self.user)
+        # Act
+        response: Response = self.client.get(f"{self.url}/{self.user.username}")
+        # Assert
+        assert response.headers["Content-Type"] == "application/json"
+        assert response.status_code == 200
+        assert response.data["user"] == self.user.username
+
+    def test_profile_updates(self, epa_profile_factory, epa_profile_request):
+        # Arrange
+        epa_profile_factory(user=self.user)
+        request = epa_profile_request
+        # Act
+        response = EpaProfileView.as_view()(request, user=self.user.username)
+        assert response.status_code == 200
+        assert response.data[self.id_field] == self.new_api_id
+        assert response.data[self.username_field] == self.new_username
+
+    def test_update_does_not_return_api_key(self, epa_profile_factory, epa_profile_request):
+        # Arrange
+        epa_profile_factory(user=self.user)
+        request = epa_profile_request
         # Act
         response = EpaProfileView.as_view()(request, user=self.user.username)
         # Assert
