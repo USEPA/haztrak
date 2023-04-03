@@ -1,10 +1,9 @@
 import logging
-from http import HTTPStatus
 
 from celery.exceptions import TaskError
 from django.db.models import Q
 from drf_spectacular.utils import extend_schema
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, status, viewsets
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -45,10 +44,10 @@ class PullManifest(GenericAPIView):
         try:
             mtn = request.data["mtn"]
             task = pull_manifest.delay(mtn=mtn, username=str(request.user))
-            return self.response(data={"task": task.id}, status=HTTPStatus.OK)
+            return self.response(data={"task": task.id}, status=status.HTTP_200_OK)
         except KeyError:
             return self.response(
-                data={"error": "malformed payload"}, status=HTTPStatus.BAD_REQUEST
+                data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
             )
 
 
@@ -98,7 +97,7 @@ class SignManifestView(GenericAPIView):
                 task = sign_manifest.delay(
                     username=str(request.user), **quicker_serializer.validated_data
                 )
-                return Response(data={"task": task.id}, status=HTTPStatus.OK)
-            return Response(status=HTTPStatus.BAD_REQUEST)
+                return Response(data={"task": task.id}, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         except TaskError as exc:
-            return Response(status=HTTPStatus.INTERNAL_SERVER_ERROR, data=exc)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=exc)

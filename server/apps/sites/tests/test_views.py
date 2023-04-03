@@ -1,4 +1,5 @@
 import pytest
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
@@ -21,7 +22,7 @@ class TestEpaSiteView:
     def test_endpoint_headers(self):
         response: Response = self.client.get(f"{self.url}/details/{self.generator.pk}")
         assert response.headers["Content-Type"] == "application/json"
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
 
     def test_returns_serialized_handler(self):
         response: Response = self.client.get(f"{self.url}/details/{self.generator.pk}")
@@ -104,7 +105,7 @@ class TestEpaSiteSearchView:
         )
         # Assert
         assert response.headers["Content-Type"] == "application/json"
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
 
 
 class TestEpaProfileView:
@@ -147,7 +148,7 @@ class TestEpaProfileView:
         response: Response = self.client.get(f"{self.url}/{self.user.username}")
         # Assert
         assert response.headers["Content-Type"] == "application/json"
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert response.data["user"] == self.user.username
 
     def test_profile_updates(self, epa_profile_factory, epa_profile_request):
@@ -156,7 +157,7 @@ class TestEpaProfileView:
         request = epa_profile_request
         # Act
         response = EpaProfileView.as_view()(request, user=self.user.username)
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert response.data[self.id_field] == self.new_api_id
         assert response.data[self.username_field] == self.new_username
 

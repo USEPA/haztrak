@@ -1,5 +1,4 @@
 import logging
-from http import HTTPStatus
 
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from rest_framework import status
@@ -63,10 +62,10 @@ class SyncSiteManifest(GenericAPIView):
         try:
             site_id = request.data["siteId"]
             task = sync_site_manifests.delay(site_id=site_id, username=str(request.user))
-            return self.response(data={"task": task.id}, status=HTTPStatus.OK)
+            return self.response(data={"task": task.id}, status=status.HTTP_200_OK)
         except KeyError:
             return self.response(
-                data={"error": "malformed payload"}, status=HTTPStatus.BAD_REQUEST
+                data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
             )
 
 

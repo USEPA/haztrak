@@ -1,8 +1,6 @@
-from http import HTTPStatus
-
 from celery.exceptions import CeleryError
 from django.contrib.auth.models import User
-from rest_framework import permissions
+from rest_framework import permissions, status
 from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -54,7 +52,7 @@ class SyncProfileView(GenericAPIView):
             task = profile.sync()
             return self.response({"task": task.id})
         except (User.DoesNotExist, CeleryError) as exc:
-            return self.response(data=exc, status=HTTPStatus.INTERNAL_SERVER_ERROR)
+            return self.response(data=exc, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class SitePermissionView(RetrieveAPIView):

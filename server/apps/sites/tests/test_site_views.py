@@ -1,5 +1,3 @@
-import http
-
 import pytest
 from rest_framework import status
 from rest_framework.response import Response
@@ -32,7 +30,7 @@ class TestSiteAPI:
 
     base_url = "/api/site/"
 
-    def test_responds_200(self):
+    def test_responds_with_site_in_json_format(self):
         response = self.client.get(f"{self.base_url}")
         assert response.status_code == status.HTTP_200_OK
 
@@ -84,14 +82,14 @@ class TestSiteDetailsApi:
         client.force_authenticate(user=self.user)
         response = client.get(f"{self.url}/{self.site.epa_site.epa_id}")
         assert response.headers["Content-Type"] == "application/json"
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
 
     def test_non_user_sites_not_returned(self):
         client = APIClient()
         client.force_authenticate(user=self.user)
         response = client.get(f"{self.url}/{self.other_site.epa_site.epa_id}")
         assert response.headers["Content-Type"] == "application/json"
-        assert response.status_code == http.HTTPStatus.NOT_FOUND
+        assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
 class TestSiteManifest:
@@ -117,4 +115,3 @@ class TestSiteManifest:
         force_authenticate(request, self.user)
         response: Response = SiteManifest.as_view()(request, self.generator.epa_id)
         print(response.data)
-        # assert response.status_code == http.HTTPStatus.OK

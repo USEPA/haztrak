@@ -1,9 +1,9 @@
-from http import HTTPStatus
 from typing import Dict, List
 
 import pytest
 import pytest_mock
 from emanifest import RcrainfoResponse
+from rest_framework import status
 
 from apps.core.services import RcrainfoService
 from apps.sites.models import EpaSiteType
@@ -27,7 +27,7 @@ class TestManifestService:
             url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{manifest_json.get("manifestTrackingNumber")}',
             content_type="application/json",
             json=manifest_json,
-            status=HTTPStatus.OK,
+            status=status.HTTP_200_OK,
         )
 
     @pytest.fixture
@@ -37,7 +37,7 @@ class TestManifestService:
             url=f"{rcrainfo.base_url}/api/v1/emanifest/search",
             content_type="application/json",
             json=[haztrak_json.MANIFEST.value.get("manifestTrackingNumber")],
-            status=HTTPStatus.OK,
+            status=status.HTTP_200_OK,
         )
 
     def test_pull_manifests(
