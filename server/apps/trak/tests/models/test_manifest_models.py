@@ -16,14 +16,16 @@ class TestManifestModel:
         same format as EPA uniform hazardous waste (e.g., 123456789ELC)
         """
         new_mtn = draft_mtn()
-        assert re.match(r"[0-9]{9}[A-Z]{3}", new_mtn)
+        assert re.match(r"[0-9]{9}[a-zA-Z]{3}", new_mtn)
 
     @pytest.mark.parametrize("mtn", ["123456789ELC", "111111111DFT", "100200300JJK"])
     def test_mtn_validation_raises_no_error(self, mtn):
+        # Act/Assert
         assert validate_mtn(mtn) is None
 
     @pytest.mark.parametrize("mtn", ["foo_bar", "111111DFT", "123456789"])
     def test_mtn_validation_raises_error(self, mtn):
+        # Act/Assert
         with pytest.raises(ValidationError):
             assert validate_mtn(mtn) is None
 

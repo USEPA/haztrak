@@ -5,7 +5,7 @@ from apps.trak.models import WasteCode
 
 
 @pytest.mark.django_db
-class TestWasteCodes:
+class TestWasteCodesModel:
     federal_codes = [
         ("D001", "IGNITABLE WASTE"),
         ("D002", "CORROSIVE WASTE"),
@@ -18,22 +18,26 @@ class TestWasteCodes:
         ("133", "Aqueous solution with 10% or more total organic residues"),
     ]
 
-    @pytest.fixture(autouse=True)
-    def _setup(self, waste_code_factory):
+    @pytest.fixture
+    def create_codes(self, waste_code_factory):
         for code in self.federal_codes:
             waste_code_factory(code=code[0], description=[1], code_type=WasteCode.CodeType.FEDERAL)
         for code in self.state_waste_codes:
             waste_code_factory(code=code[0], description=[1], code_type=WasteCode.CodeType.STATE)
 
-    def test_base_manager_retrieves_all(self) -> None:
+    def test_base_manager_retrieves_all(self, create_codes) -> None:
+        # Act
         codes = WasteCode.objects.all()
+        # Assert
         assert len(codes) == (len(self.state_waste_codes) + len(self.federal_codes))
 
-    def test_federal_manager_retrieves_federal_only(self) -> None:
+    def test_federal_manager_retrieves_federal_waste_codes(self, create_codes) -> None:
+        # Act
         codes = WasteCode.federal.all()
+        # Assert
         assert len(codes) == len(self.federal_codes)
 
-    def test_state_manager_retrieves_state_only(self) -> None:
+    def test_state_manager_retrieves_state_waste_codes(self, create_codes) -> None:
         codes = WasteCode.state.all()
         assert len(codes) == len(self.state_waste_codes)
 
