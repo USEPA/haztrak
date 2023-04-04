@@ -80,7 +80,7 @@ dump_fixtures(){
     exec_cmd="$base_py_cmd dumpdata"
     fixtures_dir="$server_dir/fixtures"
     fixture_cmd=(
-    "-e contenttypes -e auth.permission -e admin.logentry -e sessions.session --format=yaml > $fixtures_dir/dev_data.yaml"
+    "-e contenttypes -e auth.permission -e django_celery_results.taskresult -e django_celery_beat.periodictasks -e django_celery_beat.crontabschedule -e admin.logentry -e sessions.session --format=yaml > $fixtures_dir/dev_data1.yaml"
     )
     for i in "${fixture_cmd[@]}"
     do

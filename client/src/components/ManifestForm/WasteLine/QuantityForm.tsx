@@ -1,6 +1,6 @@
 import { HtForm } from 'components/Ht';
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 
@@ -40,7 +40,7 @@ function QuantityForm() {
         <Col xs={3}>
           <HtForm.Group className="mb-2">
             <HtForm.Label className="mb-0">Container Number</HtForm.Label>
-            <HtForm.Control
+            <Form.Control
               type="number"
               {...register(`quantity.containerNumber`, { min: 0, valueAsNumber: true })}
             />
@@ -74,7 +74,7 @@ function QuantityForm() {
         <Col xs={3}>
           <HtForm.Group className="mb-2">
             <HtForm.Label className="mb-0">Total Quantity</HtForm.Label>
-            <HtForm.Control
+            <Form.Control
               type="number"
               {...register(`quantity.quantity`, {
                 min: 0,

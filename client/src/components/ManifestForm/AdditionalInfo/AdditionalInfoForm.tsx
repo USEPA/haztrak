@@ -2,7 +2,7 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { HtForm } from 'components/Ht';
 import React from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Manifest } from 'types/manifest';
 import { WasteLine } from 'types/wasteLine';
@@ -29,7 +29,7 @@ function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
         <HtForm.Label htmlFor="specialHandlingInstructions">
           Special Handling Instructions
         </HtForm.Label>
-        <HtForm.Control
+        <Form.Control
           id="specialHandlingInstructions"
           plaintext={readOnly}
           readOnly={readOnly}
@@ -55,7 +55,7 @@ function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
                     ) : (
                       <></>
                     )}
-                    <HtForm.Control
+                    <Form.Control
                       type="text"
                       id={`additionalInfoLabel${index}`}
                       aria-label={`additionalInfoLabel${index}`}
@@ -77,7 +77,7 @@ function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
                       <></>
                     )}
                     {/* column for the Description field */}
-                    <HtForm.Control
+                    <Form.Control
                       id={`additionalInfoDescription${index}`}
                       aria-label={`additionalInfoDescription${index}`}
                       type="text"

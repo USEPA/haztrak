@@ -1,7 +1,7 @@
 import { RcraApiUserBtn } from 'components/buttons';
 import { HtForm } from 'components/Ht';
 import React, { useState } from 'react';
-import { Button, Col, Container, Row, Table } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from 'store';
 import { getProfile, updateProfile } from 'store/rcraProfileSlice';
@@ -50,7 +50,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
             <Col>
               <HtForm.Group>
                 <HtForm.Label htmlFor="profileRcraUsername">RCRAInfo Username</HtForm.Label>
-                <HtForm.Control
+                <Form.Control
                   plaintext={!editable}
                   readOnly={!editable}
                   id="profileRcraUsername"
@@ -62,7 +62,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
             <Col>
               <HtForm.Group>
                 <HtForm.Label htmlFor="profileRcraAPIID">RCRAInfo API ID</HtForm.Label>
-                <HtForm.Control
+                <Form.Control
                   plaintext={!editable}
                   readOnly={!editable}
                   id="profileRcraAPIID"
@@ -76,7 +76,7 @@ function RcraProfile({ profile }: ProfileViewProps) {
             <Col>
               <HtForm.Group>
                 <HtForm.Label htmlFor="profileRcraAPIKey">RCRAInfo API Key</HtForm.Label>
-                <HtForm.Control
+                <Form.Control
                   type="password"
                   plaintext={!editable}
                   readOnly={!editable}

@@ -2,7 +2,7 @@ import { faFileSignature } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { HtForm } from 'components/Ht';
 import React from 'react';
-import { Button, Col, Container, ListGroup, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ManifestHandler, Transporter } from 'types/handler';
 import { QuickerSignature } from 'types/manifest/signatures';
@@ -86,7 +86,7 @@ function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSign
           <Col>
             <HtForm.Group>
               <HtForm.Label>Printed Name</HtForm.Label>
-              <HtForm.Control
+              <Form.Control
                 id="printedSignatureName"
                 type="text"
                 placeholder="John Doe"
@@ -97,7 +97,7 @@ function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSign
           <Col>
             <HtForm.Label htmlFor={'printedSignatureDate'}>Signature Date</HtForm.Label>
             <HtForm.InputGroup>
-              <HtForm.Control
+              <Form.Control
                 id="printedSignatureDate"
                 type="datetime-local"
                 {...register(`printedSignatureDate`)}

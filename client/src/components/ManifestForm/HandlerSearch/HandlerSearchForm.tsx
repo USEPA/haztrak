@@ -1,7 +1,7 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { HtForm, HtModal } from 'components/Ht';
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm, useFormContext } from 'react-hook-form';
 import htApi from 'services';
 import { HandlerType, Handler } from 'types/handler';
@@ -97,7 +97,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
             <Col>
               <HtForm.Group>
                 <HtForm.Label htmlFor={`${handlerType}SearchEPAId`}>EPA ID Number</HtForm.Label>
-                <HtForm.Control
+                <Form.Control
                   id={`${handlerType}SearchEPAId`}
                   type="text"
                   placeholder="VATESTRAN03"
@@ -110,7 +110,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
             <Col>
               <HtForm.Group>
                 <HtForm.Label htmlFor={`${handlerType}SearchName`}>Name</HtForm.Label>
-                <HtForm.Control
+                <Form.Control
                   id={`${handlerType}SearchName`}
                   type="text"
                   placeholder="VA TEST GEN 2021"

@@ -7,7 +7,7 @@ import ContactForm from 'components/ManifestForm/ContactForm';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
 import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable/WasteLineTable';
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import htApi from 'services';
@@ -131,7 +131,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 <Col>
                   <HtForm.Group>
                     <HtForm.Label htmlFor="manifestTrackingNumber">MTN</HtForm.Label>
-                    <HtForm.Control
+                    <Form.Control
                       id="manifestTrackingNumber"
                       plaintext={readOnly}
                       readOnly={readOnly}
@@ -187,7 +187,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 <Col>
                   <HtForm.Group>
                     <HtForm.Label htmlFor="createdDate">Created Date</HtForm.Label>
-                    <HtForm.Control
+                    <Form.Control
                       id="createdDate"
                       disabled
                       type="date"
@@ -198,7 +198,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 <Col>
                   <HtForm.Group>
                     <HtForm.Label htmlFor="updatedDate">Last Update Date</HtForm.Label>
-                    <HtForm.Control
+                    <Form.Control
                       id="updatedDate"
                       disabled={readOnly}
                       type="date"
@@ -209,7 +209,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 <Col>
                   <HtForm.Group>
                     <HtForm.Label htmlFor="shippedDate">Shipped Date</HtForm.Label>
-                    <HtForm.Control
+                    <Form.Control
                       id="shippedDate"
                       disabled={readOnly}
                       type="date"
@@ -238,7 +238,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 <Col>
                   <HtForm.Group>
                     <HtForm.Label htmlFor="potentialShipDate">Potential Shipped Date</HtForm.Label>
-                    <HtForm.Control
+                    <Form.Control
                       id="potentialShipDate"
                       disabled={readOnly}
                       type="date"

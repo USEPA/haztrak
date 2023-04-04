@@ -2,7 +2,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import { HtForm } from 'components/Ht';
 import HtP from 'components/Ht/HtP';
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 import { AddressType, HandlerType } from 'types/handler';
@@ -33,7 +33,7 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
         <Col>
           <HtForm.Group>
             <HtForm.Label htmlFor="addressStreetNumber">Street Number</HtForm.Label>
-            <HtForm.Control
+            <Form.Control
               id="addressStreetNumber"
               type="text"
               plaintext={readOnly}
@@ -46,7 +46,7 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
         <Col>
           <HtForm.Group>
             <HtForm.Label htmlFor="addressStreetName">Street Name</HtForm.Label>
-            <HtForm.Control
+            <Form.Control
               id="addressStreetName"
               type="text"
               plaintext={readOnly}
@@ -59,7 +59,7 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
         <Col>
           <HtForm.Group>
             <HtForm.Label htmlFor="addressCity">City</HtForm.Label>
-            <HtForm.Control
+            <Form.Control
               id="addressCity"
               type="text"
               plaintext={readOnly}
@@ -119,7 +119,7 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
             <HtForm.Label className="mb-0" htmlFor="addressZip">
               Zip
             </HtForm.Label>
-            <HtForm.Control
+            <Form.Control
               id="addressZip"
               type="text"
               plaintext={readOnly}

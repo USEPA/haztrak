@@ -2,7 +2,7 @@ import { HtCard, HtForm } from 'components/Ht';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import HazardousWasteForm from 'components/ManifestForm/WasteLine/HazardousWasteForm';
 import React from 'react';
-import { Button, Container, Row } from 'react-bootstrap';
+import { Button, Container, Form, Row } from 'react-bootstrap';
 import { FormProvider, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import { Manifest } from 'types/manifest';
 import { WasteLine } from 'types/wasteLine';
@@ -73,7 +73,7 @@ function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
               <Row>
                 <HtForm.Group>
                   <HtForm.Label htmlFor="wasteDescription">Waste Description</HtForm.Label>
-                  <HtForm.Control
+                  <Form.Control
                     id="wasteDescription"
                     as="textarea"
                     {...register(`wasteDescription`)}

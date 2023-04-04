@@ -1,7 +1,7 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { HtForm, HtModal } from 'components/Ht';
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import htApi from 'services';
 import { Manifest } from 'types/manifest';
@@ -97,7 +97,7 @@ function TransporterSearchForm({ handleClose, tranAppend, currentTransporters }:
             <Col>
               <HtForm.Group>
                 <HtForm.Label htmlFor="transporterEPAId">EPA ID Number</HtForm.Label>
-                <HtForm.Control
+                <Form.Control
                   id="transporterEPAId"
                   type="text"
                   placeholder="VATESTRAN03"
@@ -110,7 +110,7 @@ function TransporterSearchForm({ handleClose, tranAppend, currentTransporters }:
             <Col>
               <HtForm.Group>
                 <HtForm.Label htmlFor="transporterName">Name</HtForm.Label>
-                <HtForm.Control
+                <Form.Control
                   id="transporterName"
                   type="text"
                   placeholder="VA TEST GEN 2021"
