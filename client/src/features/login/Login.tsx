@@ -11,8 +11,8 @@ import { z } from 'zod';
 import { Form } from 'react-bootstrap';
 
 const loginSchema = z.object({
-  username: z.string().min(8),
-  password: z.string().min(8),
+  username: z.string().min(1, 'Username Required').min(8),
+  password: z.string().min(1, 'Password Required').min(8),
 });
 
 type LoginSchema = z.infer<typeof loginSchema>;
@@ -62,7 +62,7 @@ function Login(): ReactElement {
                 type="text"
                 placeholder={'wary-walrus-123'}
                 {...register('username', {})}
-                className={`${errors.username ? 'is-invalid' : ''}`}
+                className={errors.username && 'is-invalid'}
               />
               <div className="invalid-feedback">{errors.username?.message}</div>
             </HtForm.Group>
@@ -73,7 +73,7 @@ function Login(): ReactElement {
                 type="password"
                 placeholder="MyP@ssword123"
                 {...register('password', {})}
-                className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                className={errors.password && 'is-invalid'}
               />
               <div className="invalid-feedback">{errors.password?.message}</div>
             </HtForm.Group>
