@@ -2,7 +2,7 @@ import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import { QuickerSignModalBtn } from 'components/QuickerSign';
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import { Manifest } from 'types/manifest';
+import { Manifest } from 'components/ManifestForm/manifestSchema';
 import { Transporter } from 'types/handler';
 import { QuickerSignData } from 'types/manifest/signatures';
 import { TransporterRowActions } from './TransporterRowActions';

@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AxiosError, AxiosResponse } from 'axios';
 import { HtButton, HtCard, HtForm } from 'components/Ht';
 import HandlerDetails from 'components/HandlerDetails';
 import HtP from 'components/Ht/HtP';
@@ -11,9 +10,6 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import htApi from 'services';
-import { addMsg, useAppDispatch } from 'store';
-import { Manifest } from 'types/manifest';
 import { HandlerType, ManifestHandler, Transporter } from 'types/handler';
 import { QuickerSignData } from 'types/manifest/signatures';
 import { WasteLine } from 'types/wasteLine';
@@ -21,7 +17,7 @@ import HandlerForm from './HandlerForm';
 import AddTsdf from './Tsdf';
 import AddWasteLine from './WasteLine';
 import { QuickerSignModal, QuickerSignModalBtn } from 'components/QuickerSign';
-import { manifestSchema } from './manifestSchema';
+import { manifestSchema, Manifest } from './manifestSchema';
 
 interface ManifestFormProps {
   readOnly?: boolean;
@@ -47,35 +43,10 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
   const isDraft = !manifestData?.manifestTrackingNumber;
   // On load, focus the generator EPA ID.
   useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
-    htApi
-      .post('/trak/manifest/', data)
-      .then((response: AxiosResponse) => {
-        dispatch(
-          addMsg({
-            uniqueId: Date.now(),
-            createdDate: new Date().toISOString(),
-            message: `${response.data.manifestTrackingNumber} ${response.statusText}`,
-            alertType: 'Info',
-            read: false,
-            timeout: 5000,
-          })
-        );
-      })
-      .catch((error: AxiosError) => {
-        dispatch(
-          addMsg({
-            uniqueId: Date.now(),
-            createdDate: new Date().toISOString(),
-            message: `${error.message}`,
-            alertType: 'Error',
-            read: false,
-            timeout: 5000,
-          })
-        );
-      });
+    console.log(data);
   };
   // Generator controls
   const generator: ManifestHandler = manifestMethods.getValues('generator');

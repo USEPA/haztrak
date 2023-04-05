@@ -4,7 +4,7 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { UseFieldArrayAppend } from 'react-hook-form';
 import { Handler } from 'types/handler';
-import { Manifest } from 'types/manifest';
+import { Manifest } from 'components/ManifestForm/manifestSchema';
 
 interface Props {
   handleClose: () => void;

@@ -4,7 +4,7 @@ import HazardousWasteForm from 'components/ManifestForm/WasteLine/HazardousWaste
 import React from 'react';
 import { Button, Container, Form, Row } from 'react-bootstrap';
 import { FormProvider, UseFieldArrayAppend, useForm } from 'react-hook-form';
-import { Manifest } from 'types/manifest';
+import { Manifest } from 'components/ManifestForm/manifestSchema';
 import { WasteLine } from 'types/wasteLine';
 import QuantityForm from './QuantityForm';
 

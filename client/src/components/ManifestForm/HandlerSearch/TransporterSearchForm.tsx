@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import htApi from 'services';
-import { Manifest } from 'types/manifest';
+import { Manifest } from 'components/ManifestForm/manifestSchema';
 import { Handler, HandlerType, Transporter } from 'types/handler';
 
 interface Props {

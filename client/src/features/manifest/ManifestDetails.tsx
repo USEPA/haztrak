@@ -4,7 +4,7 @@ import useHtAPI from 'hooks/useHtAPI';
 import useTitle from 'hooks/useTitle';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Manifest } from 'types/manifest';
+import { Manifest } from 'components/ManifestForm/manifestSchema';
 
 function ManifestDetails() {
   const { mtn, action, siteId } = useParams();

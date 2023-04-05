@@ -49,7 +49,6 @@ export const getProfile = createAsyncThunk<RcraProfileState>(
     const response = await axios.get(
       `${process.env.REACT_APP_HT_API_URL}/api/site/profile/${username}`
     );
-    console.log(response.data);
     const { epaSites, ...rest } = response.data as RcraProfileResponse;
     let profile: RcraProfileState = { ...rest };
     profile.epaSites = epaSites?.reduce(
