@@ -25,6 +25,7 @@ class EpaProfileView(RetrieveUpdateAPIView):
     response = Response
     lookup_field = "user__username"
     lookup_url_kwarg = "user"
+    permission_classes = [permissions.AllowAny]  # temporary, remove me
 
 
 class SyncProfileView(GenericAPIView):
