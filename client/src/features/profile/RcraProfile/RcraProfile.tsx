@@ -30,10 +30,9 @@ function RcraProfile({ profile }: ProfileViewProps) {
   const onSubmit = (data: RcraProfileState) => {
     const { rcraAPIID, rcraUsername, rcraAPIKey } = data;
     const updateData = { rcraAPIID, rcraUsername, rcraAPIKey };
-    const newUpdateData = removeEmptyFields(updateData);
     setProfileLoading(!profileLoading);
     htApi
-      .put(`/site/profile/${profile.user}`, newUpdateData)
+      .put(`/site/profile/${profile.user}`, updateData)
       .then((r) => {
         dispatch(updateProfile(r.data));
       })
@@ -86,7 +85,6 @@ function RcraProfile({ profile }: ProfileViewProps) {
                 />
               </HtForm.Group>
             </Col>
-            <Col>{/* Other RcraProfile form inputs here*/}</Col>
           </Row>
           <Row>
             <div className="mx-1 d-flex flex-row-reverse">
@@ -161,15 +159,6 @@ function RcraProfile({ profile }: ProfileViewProps) {
       </div>
     </>
   );
-}
-
-function removeEmptyFields(data: any) {
-  Object.keys(data).forEach((key) => {
-    if (data[key] === '' || data[key] == null) {
-      delete data[key];
-    }
-  });
-  return data;
 }
 
 export default RcraProfile;

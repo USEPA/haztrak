@@ -44,12 +44,12 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
   const {
     formState: { errors },
   } = manifestMethods;
+  const isDraft = !manifestData?.manifestTrackingNumber;
   // On load, focus the generator EPA ID.
   useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
-    // ToDo: on submit, add front end validation
     htApi
       .post('/trak/manifest/', data)
       .then((response: AxiosResponse) => {
@@ -96,9 +96,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
     siteType: 'Generator', // ToDo initialize to undefined
   });
   const toggleQuickerSignShow = () => setQuickerSignShow(!quickerSignShow);
-  /**
-   * function used to control the QuickerSign form (modal) and pass the necessary context
-   */
+  // function used to control the QuickerSign form (modal) and pass the necessary context
   const setupSign = (signContext: QuickerSignData) => {
     setQuickerSignHandler(signContext); // set state to appropriate ManifestHandler
     toggleQuickerSignShow(); // Toggle the Quicker Sign modal
@@ -141,10 +139,12 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                     <HtForm.Label htmlFor="manifestTrackingNumber">MTN</HtForm.Label>
                     <Form.Control
                       id="manifestTrackingNumber"
-                      plaintext={readOnly}
-                      readOnly={readOnly}
+                      plaintext
+                      readOnly
                       type="text"
-                      placeholder={'Draft Manifest'}
+                      placeholder={
+                        isDraft ? 'Draft Manifest' : manifestData?.manifestTrackingNumber
+                      }
                       {...manifestMethods.register('manifestTrackingNumber')}
                       className={errors.manifestTrackingNumber && 'is-invalid'}
                     />
