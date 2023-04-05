@@ -1,6 +1,6 @@
 import { HtModal } from 'components/Ht';
 import React from 'react';
-import { ManifestHandler } from 'types/handler';
+import { ManifestHandler } from 'types/site';
 import QuickerSignForm from 'components/QuickerSign/QuickerSignForm';
 
 interface QuickerSignModalProps {

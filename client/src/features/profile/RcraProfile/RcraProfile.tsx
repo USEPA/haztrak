@@ -5,7 +5,7 @@ import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from 'store';
 import { getProfile, updateProfile } from 'store/rcraProfileSlice';
-import { RcraProfileState } from 'types/store';
+import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
 import htApi from 'services';
 import { Link } from 'react-router-dom';
 

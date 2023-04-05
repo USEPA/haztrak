@@ -1,4 +1,4 @@
-import { Handler, ManifestHandler, Site, Transporter } from 'types/handler';
+import { RcraSite, ManifestHandler, Site, Transporter } from 'types/site';
 
 /**
  * A mock handler object for tests
@@ -56,7 +56,7 @@ const DEFAULT_HANDLER: ManifestHandler = {
   gisPrimary: false,
 };
 
-export function createMockHandler(overWrites?: Partial<Handler>): Handler {
+export function createMockHandler(overWrites?: Partial<RcraSite>): RcraSite {
   return {
     ...DEFAULT_HANDLER,
     ...overWrites,

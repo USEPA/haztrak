@@ -1,17 +1,19 @@
-import { Signer, Locality, ManifestHandler, Transporter } from 'types/handler';
-import { AdditionalInfo } from 'types/manifest';
+import { RejectionInfo } from 'components/ManifestForm/manifestSchema';
+import { RcraLocality, ManifestHandler, Transporter, Signer } from 'types/site';
 import { WasteLine } from 'types/wasteLine';
-import { CorrectionInfo, CorrectionRequest } from 'types/manifest';
-import { RejectionInfo } from 'types/manifest/rejection';
+import { AdditionalInfo, CorrectionInfo, CorrectionRequest } from 'types/manifest';
+import { z } from 'zod';
+
+const mtnDetailsSchema = z.object({
+  manifestTrackingNumber: z.string(),
+  status: z.string(),
+});
 
 /**
  * Select details about a manifest for display, navigation, and analysis.
  * Often used in composite types (arrays).
  */
-export interface MtnDetails {
-  manifestTrackingNumber: string;
-  status: string;
-}
+export type MtnDetails = z.infer<typeof mtnDetailsSchema>;
 
 /**
  * The Manifest, also known as hazardous waste manifest, is a key component of the
@@ -139,7 +141,7 @@ interface ImportInfo {
  * Location info on imported waste
  */
 interface PortOfEntry {
-  state: Locality;
+  state: RcraLocality;
   cityPort: string;
 }
 

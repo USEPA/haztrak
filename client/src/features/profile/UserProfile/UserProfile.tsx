@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Container } from 'react-bootstrap';
-import { RcraProfileState } from 'types/store';
+import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 interface ProfileViewProps {
   profile: RcraProfileState;

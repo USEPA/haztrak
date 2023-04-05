@@ -1,33 +1,30 @@
-import { Locality } from 'types/handler';
+import { rcraLocalitySchema } from 'types/site/address';
+import { z } from 'zod';
 
-export interface CorrectionRequest {
-  correctionRequestStatus: CorrectionRequestStatus;
-  correctionRequestDate: string;
-  initiatorState: Locality;
-  active: boolean;
+/**
+ * Object containing info from a request for a correction from a RCRA authorized
+ * state (e.g., Texas, California)
+ */
+const correctionRequestSchema = z.object({
+  correctionRequestStatus: z.enum(['NotSend', 'Sent', 'IndustryResponded']),
+  correctionRequestDate: z.string(),
+  initiatorState: rcraLocalitySchema,
+  active: z.boolean(),
   // stateUser
   // sections
-}
+});
 
-enum CorrectionRequestStatus {
-  NotSend,
-  Sent,
-  IndustryResponded,
-}
+export type CorrectionRequest = z.infer<typeof correctionRequestSchema>;
+const partRole = z.enum(['Industry', 'State', 'Ppc', 'Epa']);
 
-export interface CorrectionInfo {
-  versionNumber: number;
-  active: boolean;
-  ppcActive: boolean;
+const correctionInfoSchema = z.object({
+  versionNumber: z.number(),
+  active: z.boolean(),
+  ppcActive: z.boolean(),
   // electronicSignatureInfo
   // epaSiteId
-  initiatorRole: PartyRole;
-  updateRole: PartyRole;
-}
+  initiatorRole: partRole,
+  updateRole: partRole,
+});
 
-enum PartyRole {
-  Industry,
-  State,
-  Ppc,
-  Epa,
-}
+export type CorrectionInfo = z.infer<typeof correctionInfoSchema>;

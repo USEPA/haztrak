@@ -1,16 +1,24 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { HtForm } from 'components/Ht';
 import HtP from 'components/Ht/HtP';
+import { HandlerTypeEnum } from 'components/ManifestForm/manifestSchema';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
-import { AddressType, HandlerType } from 'types/handler';
+import { z } from 'zod';
 import { CountryCode, StateCode } from './StateSelect';
+
+/**
+ * indicates whether an address is the site's physical location or mailing location
+ */
+const addressType = z.enum(['siteAddress', 'mailingAddress']);
+
+type AddressType = z.infer<typeof addressType>;
 
 interface Props {
   addressType: AddressType;
-  handlerType: HandlerType;
+  handlerType: HandlerTypeEnum;
   readOnly?: boolean;
 }
 

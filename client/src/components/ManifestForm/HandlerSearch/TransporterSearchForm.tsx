@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import htApi from 'services';
-import { Manifest } from 'components/ManifestForm/manifestSchema';
-import { Handler, HandlerType, Transporter } from 'types/handler';
+import { HandlerType, Manifest } from 'components/ManifestForm/manifestSchema';
+import { RcraSite, Transporter } from 'types/site';
 
 interface Props {
   handleClose: () => void;
-  currentTransporters?: Array<Handler>;
+  currentTransporters?: Array<RcraSite>;
   tranAppend: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 
@@ -27,7 +27,7 @@ interface TranAppendValues {
 }
 
 function TransporterSearchForm({ handleClose, tranAppend, currentTransporters }: Props) {
-  const [tranOptions, setTranOptions] = useState<Array<Handler> | undefined>(undefined);
+  const [tranOptions, setTranOptions] = useState<Array<RcraSite> | undefined>(undefined);
 
   const {
     register,
@@ -43,7 +43,7 @@ function TransporterSearchForm({ handleClose, tranAppend, currentTransporters }:
   const searchData: SearchCriteria = {
     epaId: watch('epaId'),
     name: watch('name'),
-    siteType: HandlerType.Transporter,
+    siteType: HandlerType.enum.transporter,
   };
 
   /** This useEffect is responsible for watching the transporter search fields
@@ -62,7 +62,7 @@ function TransporterSearchForm({ handleClose, tranAppend, currentTransporters }:
     }
 
     fetchOptions()
-      .then((trans: Array<Handler>) => setTranOptions(trans))
+      .then((trans: Array<RcraSite>) => setTranOptions(trans))
       .catch((error) => console.error(error));
   }, [watch('epaId'), watch('name')]);
 

@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import React from 'react';
 import { renderWithProviders } from 'test-utils';
-import { Transporter } from 'types/handler';
+import { Transporter } from 'types/site';
 import { TransporterTable } from './index';
 import { createMockTransporter } from 'test-utils/fixtures';
 

@@ -1,14 +1,15 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { HtForm, HtModal } from 'components/Ht';
+import { HandlerTypeEnum } from 'components/ManifestForm/manifestSchema';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm, useFormContext } from 'react-hook-form';
 import htApi from 'services';
-import { HandlerType, Handler } from 'types/handler';
+import { RcraSite } from 'types/site';
 
 interface Props {
   handleClose: () => void;
-  handlerType: HandlerType;
+  handlerType: HandlerTypeEnum;
 }
 
 interface SearchCriteria {
@@ -39,7 +40,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
     formState: { errors },
   } = useForm<addHandlerForm>();
   const manifestMethods = useFormContext();
-  const [handlerOptions, setHandlerOptions] = useState<Array<Handler> | undefined>(undefined);
+  const [handlerOptions, setHandlerOptions] = useState<Array<RcraSite> | undefined>(undefined);
 
   /**
    This is the data that is sent to the RESTful api, it's automatically updated
@@ -68,7 +69,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
     }
 
     fetchOptions()
-      .then((trans: Array<Handler>) => setHandlerOptions(trans))
+      .then((trans: Array<RcraSite>) => setHandlerOptions(trans))
       .catch((error) => console.error(error));
   }, [watch('epaId'), watch('name')]);
 
@@ -79,7 +80,7 @@ function HandlerSearchForm({ handleClose, handlerType }: Props) {
     if (handlerOptions !== undefined) {
       for (let i = 0; i < handlerOptions?.length; i++) {
         if (handlerOptions[i].epaSiteId === data.handler) {
-          const newTsdf: Handler = {
+          const newTsdf: RcraSite = {
             ...handlerOptions[i],
           };
           manifestMethods.setValue(handlerType, newTsdf);

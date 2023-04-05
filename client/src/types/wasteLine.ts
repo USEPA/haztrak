@@ -19,7 +19,7 @@ interface WasteLine {
 }
 
 /**
- * Unites States Department of Transportation (DOT) information
+ * United States Department of Transportation (DOT) information
  */
 interface DotInformation {
   idNumber: Code;

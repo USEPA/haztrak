@@ -3,13 +3,13 @@ import TransporterSearchForm from 'components/ManifestForm/HandlerSearch/Transpo
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { UseFieldArrayAppend } from 'react-hook-form';
-import { Handler } from 'types/handler';
+import { RcraSite } from 'types/site';
 import { Manifest } from 'components/ManifestForm/manifestSchema';
 
 interface Props {
   handleClose: () => void;
   show: boolean | undefined;
-  currentTransporters?: Array<Handler>;
+  currentTransporters?: Array<RcraSite>;
   appendTransporter: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 

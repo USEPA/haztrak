@@ -1,6 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { UserState } from 'types/store';
+
+/**
+ * The Redux stored information on the current haztrak user
+ */
+export interface UserState {
+  user?: string;
+  token?: string;
+  loading?: boolean;
+  error?: string;
+}
 
 const initialState: UserState = {
   user: JSON.parse(localStorage.getItem('user') || 'null') || null,
@@ -25,6 +34,7 @@ export const login = createAsyncThunk(
  *
  * @description on logout, we want to strip all information
  * from browser storage and redux store's state
+ * ToDo send logout request to server
  * @param    {Object} user UserState
  * @return   {Object}      UserState
  */
