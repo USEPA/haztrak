@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError, AxiosResponse } from 'axios';
 import { HtButton, HtCard, HtForm } from 'components/Ht';
 import HandlerDetails from 'components/HandlerDetails';
@@ -20,6 +21,7 @@ import HandlerForm from './HandlerForm';
 import AddTsdf from './Tsdf';
 import AddWasteLine from './WasteLine';
 import { QuickerSignModal, QuickerSignModalBtn } from 'components/QuickerSign';
+import { manifestSchema } from './manifestSchema';
 
 interface ManifestFormProps {
   readOnly?: boolean;
@@ -35,7 +37,13 @@ interface ManifestFormProps {
  */
 function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps) {
   // Top level ManifestForm methods and objects
-  const manifestMethods = useForm<Manifest>({ values: manifestData });
+  const manifestMethods = useForm<Manifest>({
+    values: manifestData,
+    resolver: zodResolver(manifestSchema),
+  });
+  const {
+    formState: { errors },
+  } = manifestMethods;
   // On load, focus the generator EPA ID.
   useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
   const dispatch = useAppDispatch();
@@ -138,7 +146,9 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                       type="text"
                       placeholder={'Draft Manifest'}
                       {...manifestMethods.register('manifestTrackingNumber')}
+                      className={errors.manifestTrackingNumber && 'is-invalid'}
                     />
+                    <div className="invalid-feedback">{errors.manifestTrackingNumber?.message}</div>
                   </HtForm.Group>
                 </Col>
                 <Col>
