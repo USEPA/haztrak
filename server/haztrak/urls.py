@@ -22,8 +22,8 @@ admin.site.site_header = "Haztrak Admin"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/trak/", include("apps.trak.urls")),
-    path("api/site/", include("apps.sites.urls")),
+    path("api/v1/trak/", include("apps.trak.urls")),
+    path("api/v1/site/", include("apps.sites.urls")),
     path("api/user/", include("apps.core.urls")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
