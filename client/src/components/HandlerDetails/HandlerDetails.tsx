@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddressListGroup from 'components/HandlerDetails/AddressListGroup';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { Handler, ManifestHandler } from 'types/handler';
+import { RcraSite, ManifestHandler } from 'types/site';
 
 interface HandlerDetailsProps {
-  handler: ManifestHandler | Handler;
+  handler: ManifestHandler | RcraSite;
 }
 
 /**

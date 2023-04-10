@@ -199,6 +199,5 @@ class Site(SitesBaseModel):
     )
 
     def __str__(self):
-        if self.name:
-            return f"{self.name}"
+        """Used in StringRelated fields in serializer classes"""
         return f"{self.epa_site.epa_id}"

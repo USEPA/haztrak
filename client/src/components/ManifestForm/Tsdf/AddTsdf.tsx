@@ -1,8 +1,8 @@
 import { HtModal } from 'components/Ht';
 import { HandlerSearchForm } from 'components/ManifestForm/HandlerSearch';
+import { HandlerType } from 'components/ManifestForm/manifestSchema';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { HandlerType } from 'types/handler';
 
 interface Props {
   handleClose: () => void;
@@ -31,7 +31,10 @@ function AddTsdf({ show, handleClose }: Props) {
         </Col>
       </HtModal.Header>
       <HtModal.Body>
-        <HandlerSearchForm handleClose={handleClose} handlerType={HandlerType.Tsd} />
+        <HandlerSearchForm
+          handleClose={handleClose}
+          handlerType={HandlerType.enum.designatedFacility}
+        />
       </HtModal.Body>
     </HtModal>
   );

@@ -1,17 +1,29 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { RcraApiUserBtn } from 'components/buttons';
 import { HtForm } from 'components/Ht';
 import React, { useState } from 'react';
-import { Button, Col, Container, Row, Table } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from 'store';
 import { getProfile, updateProfile } from 'store/rcraProfileSlice';
-import { RcraProfileState } from 'types/store';
+import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
 import htApi from 'services';
 import { Link } from 'react-router-dom';
+import { z } from 'zod';
 
 interface ProfileViewProps {
   profile: RcraProfileState;
 }
+
+// ToDo: Each field should be empty or meet the min length requirements
+// ToDo: Either rcraAPIId & rcraAPIID should both be empty or both be non-empty
+const rcraProfileForm = z.object({
+  rcraAPIID: z.string().min(36).optional(),
+  rcraAPIKey: z.string().min(20).optional(),
+  rcraUsername: z.string().min(8).optional(),
+});
+
+type RcraProfileForm = z.infer<typeof rcraProfileForm>;
 
 function RcraProfile({ profile }: ProfileViewProps) {
   const [editable, setEditable] = useState(false);
@@ -19,21 +31,25 @@ function RcraProfile({ profile }: ProfileViewProps) {
   const { error, epaSites, loading, ...formValues } = profile;
   const dispatch = useAppDispatch();
 
-  const { register, reset, handleSubmit } = useForm<RcraProfileState>({
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RcraProfileForm>({
     values: formValues,
+    resolver: zodResolver(rcraProfileForm),
   });
 
   /**
    * Run upon submitting the RcraProfile form.
    * @param data {RcraProfileState}
    */
-  const onSubmit = (data: RcraProfileState) => {
-    const { rcraAPIID, rcraUsername, rcraAPIKey } = data;
-    const updateData = { rcraAPIID, rcraUsername, rcraAPIKey };
-    const newUpdateData = removeEmptyFields(updateData);
+  const onSubmit = (data: RcraProfileForm) => {
     setProfileLoading(!profileLoading);
+    setEditable(!editable);
     htApi
-      .put(`/site/profile/${profile.user}`, newUpdateData)
+      .put(`/site/profile/${profile.user}`, data)
       .then((r) => {
         dispatch(updateProfile(r.data));
       })
@@ -50,25 +66,29 @@ function RcraProfile({ profile }: ProfileViewProps) {
             <Col>
               <HtForm.Group>
                 <HtForm.Label htmlFor="profileRcraUsername">RCRAInfo Username</HtForm.Label>
-                <HtForm.Control
+                <Form.Control
                   plaintext={!editable}
                   readOnly={!editable}
                   id="profileRcraUsername"
                   {...register('rcraUsername')}
                   placeholder={profile.rcraUsername ? profile.rcraUsername : 'Not Provided'}
+                  className={errors.rcraUsername && 'is-invalid'}
                 />
+                <div className="invalid-feedback">{errors.rcraUsername?.message}</div>
               </HtForm.Group>
             </Col>
             <Col>
               <HtForm.Group>
                 <HtForm.Label htmlFor="profileRcraAPIID">RCRAInfo API ID</HtForm.Label>
-                <HtForm.Control
+                <Form.Control
                   plaintext={!editable}
                   readOnly={!editable}
                   id="profileRcraAPIID"
                   {...register('rcraAPIID')}
                   placeholder={profile.rcraAPIID ? profile.rcraAPIID : 'Not Provided'}
+                  className={errors.rcraAPIID && 'is-invalid'}
                 />
+                <div className="invalid-feedback">{errors.rcraAPIID?.message}</div>
               </HtForm.Group>
             </Col>
           </Row>
@@ -76,43 +96,51 @@ function RcraProfile({ profile }: ProfileViewProps) {
             <Col>
               <HtForm.Group>
                 <HtForm.Label htmlFor="profileRcraAPIKey">RCRAInfo API Key</HtForm.Label>
-                <HtForm.Control
+                <Form.Control
                   type="password"
                   plaintext={!editable}
                   readOnly={!editable}
                   id="profileRcraAPIKey"
                   {...register('rcraAPIKey')}
                   placeholder="●●●●●●●●●●●"
+                  className={errors.rcraAPIKey && 'is-invalid'}
                 />
+                <div className="invalid-feedback">{errors.rcraAPIKey?.message}</div>
               </HtForm.Group>
             </Col>
-            <Col>{/* Other RcraProfile form inputs here*/}</Col>
           </Row>
           <Row>
             <div className="mx-1 d-flex flex-row-reverse">
-              <Button
-                className="mx-2"
-                variant="success"
-                type={editable ? 'button' : 'submit'}
-                onClick={() => {
-                  setEditable(!editable);
-                }}
-              >
-                {!editable ? 'Edit' : 'Save'}
-              </Button>
               {!editable ? (
-                <></>
+                <>
+                  <Button
+                    className="mx-2"
+                    variant="success"
+                    type="button"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setEditable(!editable);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </>
               ) : (
-                <Button
-                  className="mx-2"
-                  variant="danger"
-                  onClick={() => {
-                    setEditable(!editable);
-                    reset();
-                  }}
-                >
-                  Cancel
-                </Button>
+                <>
+                  <Button className="mx-2" variant="success" type="submit">
+                    Save
+                  </Button>
+                  <Button
+                    className="mx-2"
+                    variant="danger"
+                    onClick={() => {
+                      setEditable(!editable);
+                      reset();
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </>
               )}
             </div>
           </Row>
@@ -161,15 +189,6 @@ function RcraProfile({ profile }: ProfileViewProps) {
       </div>
     </>
   );
-}
-
-function removeEmptyFields(data: any) {
-  Object.keys(data).forEach((key) => {
-    if (data[key] === '' || data[key] == null) {
-      delete data[key];
-    }
-  });
-  return data;
 }
 
 export default RcraProfile;

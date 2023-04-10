@@ -1,5 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Notification, NotificationState } from 'types/store';
+
+/**
+ * Schema of a user's alerts stored in the Redux store
+ * Note, we don't store these in the back end database, this is just for looks.
+ */
+export interface NotificationState {
+  notifications: Array<Notification>;
+}
+
+/**
+ * Alert describes the payload used to interact with the Redux store 'notification' slice.
+ */
+export interface Notification {
+  uniqueId: number;
+  createdDate: string;
+  read: boolean;
+  message: string;
+  alertType: 'Warning' | 'Error' | 'Info' | String;
+  timeout: number;
+}
 
 const initialState: NotificationState = {
   notifications: [],

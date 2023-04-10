@@ -1,6 +1,6 @@
 import { Button, ButtonProps } from 'react-bootstrap';
 import { useAppSelector } from 'store';
-import { RcraProfileState } from 'types/store';
+import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 interface HtApiUserBtnProps extends ButtonProps {}
 

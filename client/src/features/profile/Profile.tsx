@@ -6,7 +6,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from 'store';
 import { getProfile } from 'store/rcraProfileSlice';
-import { RcraProfileState } from 'types/store';
+import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 /**
  * Display user profile

@@ -1,10 +1,10 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
-import { Address } from 'types/handler';
+import { RcraAddress } from 'types/site/address';
 
 interface AddressListGroupProps {
   title: string;
-  address: Address;
+  address: RcraAddress;
 }
 
 export default function AddressListGroup({ title, address }: AddressListGroupProps) {

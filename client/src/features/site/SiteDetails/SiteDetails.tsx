@@ -3,17 +3,17 @@ import { HtCard } from 'components/Ht';
 import useHtAPI from 'hooks/useHtAPI';
 import React, { ReactElement } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Site } from 'types/handler';
+import { HaztrakSite } from 'types/site';
 import { SyncManifestBtn } from 'components/buttons';
 import { Container, Button } from 'react-bootstrap';
 
 /**
- * GET and Display details of the hazardous waste site specified in the URL
+ * GET and Display details of the Haztrak site including RCRA site details.
  * @constructor
  */
 function SiteDetails(): ReactElement {
   let { siteId } = useParams();
-  const [siteData, loading, error] = useHtAPI<Site>(`site/${siteId}`);
+  const [siteData, loading, error] = useHtAPI<HaztrakSite>(`site/${siteId}`);
   const navigate = useNavigate();
 
   if (error) throw error;

@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from 'axios';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { HtButton, HtCard, HtForm } from 'components/Ht';
 import HandlerDetails from 'components/HandlerDetails';
 import HtP from 'components/Ht/HtP';
@@ -7,19 +7,17 @@ import ContactForm from 'components/ManifestForm/ContactForm';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
 import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable/WasteLineTable';
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import htApi from 'services';
-import { addMsg, useAppDispatch } from 'store';
-import { Manifest } from 'types/manifest';
-import { HandlerType, ManifestHandler, Transporter } from 'types/handler';
+import { ManifestHandler, Transporter } from 'types/site';
 import { QuickerSignData } from 'types/manifest/signatures';
 import { WasteLine } from 'types/wasteLine';
 import HandlerForm from './HandlerForm';
 import AddTsdf from './Tsdf';
 import AddWasteLine from './WasteLine';
 import { QuickerSignModal, QuickerSignModalBtn } from 'components/QuickerSign';
+import { manifestSchema, Manifest, HandlerType } from './manifestSchema';
 
 interface ManifestFormProps {
   readOnly?: boolean;
@@ -35,39 +33,20 @@ interface ManifestFormProps {
  */
 function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps) {
   // Top level ManifestForm methods and objects
-  const manifestMethods = useForm<Manifest>({ values: manifestData });
+  const manifestMethods = useForm<Manifest>({
+    values: manifestData,
+    resolver: zodResolver(manifestSchema),
+  });
+  const {
+    formState: { errors },
+  } = manifestMethods;
+  const isDraft = !manifestData?.manifestTrackingNumber;
   // On load, focus the generator EPA ID.
   useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
-    // ToDo: on submit, add front end validation
-    htApi
-      .post('/trak/manifest/', data)
-      .then((response: AxiosResponse) => {
-        dispatch(
-          addMsg({
-            uniqueId: Date.now(),
-            createdDate: new Date().toISOString(),
-            message: `${response.data.manifestTrackingNumber} ${response.statusText}`,
-            alertType: 'Info',
-            read: false,
-            timeout: 5000,
-          })
-        );
-      })
-      .catch((error: AxiosError) => {
-        dispatch(
-          addMsg({
-            uniqueId: Date.now(),
-            createdDate: new Date().toISOString(),
-            message: `${error.message}`,
-            alertType: 'Error',
-            read: false,
-            timeout: 5000,
-          })
-        );
-      });
+    console.log(data);
   };
   // Generator controls
   const generator: ManifestHandler = manifestMethods.getValues('generator');
@@ -88,9 +67,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
     siteType: 'Generator', // ToDo initialize to undefined
   });
   const toggleQuickerSignShow = () => setQuickerSignShow(!quickerSignShow);
-  /**
-   * function used to control the QuickerSign form (modal) and pass the necessary context
-   */
+  // function used to control the QuickerSign form (modal) and pass the necessary context
   const setupSign = (signContext: QuickerSignData) => {
     setQuickerSignHandler(signContext); // set state to appropriate ManifestHandler
     toggleQuickerSignShow(); // Toggle the Quicker Sign modal
@@ -131,14 +108,18 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 <Col>
                   <HtForm.Group>
                     <HtForm.Label htmlFor="manifestTrackingNumber">MTN</HtForm.Label>
-                    <HtForm.Control
+                    <Form.Control
                       id="manifestTrackingNumber"
-                      plaintext={readOnly}
-                      readOnly={readOnly}
+                      plaintext
+                      readOnly
                       type="text"
-                      placeholder={'Draft Manifest'}
+                      placeholder={
+                        isDraft ? 'Draft Manifest' : manifestData?.manifestTrackingNumber
+                      }
                       {...manifestMethods.register('manifestTrackingNumber')}
+                      className={errors.manifestTrackingNumber && 'is-invalid'}
                     />
+                    <div className="invalid-feedback">{errors.manifestTrackingNumber?.message}</div>
                   </HtForm.Group>
                 </Col>
                 <Col>
@@ -187,34 +168,40 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 <Col>
                   <HtForm.Group>
                     <HtForm.Label htmlFor="createdDate">Created Date</HtForm.Label>
-                    <HtForm.Control
+                    <Form.Control
                       id="createdDate"
                       disabled
                       type="date"
-                      {...manifestMethods.register('createdDate')}
+                      {...manifestMethods.register('createdDate', { valueAsDate: true })}
+                      className={errors.createdDate && 'is-invalid'}
                     />
+                    <div className="invalid-feedback">{errors.createdDate?.message}</div>
                   </HtForm.Group>
                 </Col>
                 <Col>
                   <HtForm.Group>
                     <HtForm.Label htmlFor="updatedDate">Last Update Date</HtForm.Label>
-                    <HtForm.Control
+                    <Form.Control
                       id="updatedDate"
                       disabled={readOnly}
                       type="date"
-                      {...manifestMethods.register('updatedDate')}
+                      {...manifestMethods.register('updatedDate', { valueAsDate: true })}
+                      className={errors.updatedDate && 'is-invalid'}
                     />
+                    <div className="invalid-feedback">{errors.updatedDate?.message}</div>
                   </HtForm.Group>
                 </Col>
                 <Col>
                   <HtForm.Group>
                     <HtForm.Label htmlFor="shippedDate">Shipped Date</HtForm.Label>
-                    <HtForm.Control
+                    <Form.Control
                       id="shippedDate"
                       disabled={readOnly}
                       type="date"
-                      {...manifestMethods.register('shippedDate')}
+                      {...manifestMethods.register('shippedDate', { valueAsDate: true })}
+                      className={errors.shippedDate && 'is-invalid'}
                     />
+                    <div className="invalid-feedback">{errors.shippedDate?.message}</div>
                   </HtForm.Group>
                 </Col>
               </Row>
@@ -226,24 +213,30 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                     disabled={readOnly}
                     label="Imported Waste"
                     {...manifestMethods.register('import')}
+                    className={errors.import && 'is-invalid'}
                   />
+                  <div className="invalid-feedback">{errors.import?.message}</div>
                   <HtForm.Check
                     type="checkbox"
                     id="rejection"
                     disabled={readOnly}
                     label="Rejected Waste"
                     {...manifestMethods.register('rejection')}
+                    className={errors.rejection && 'is-invalid'}
                   />
+                  <div className="invalid-feedback">{errors.rejection?.message}</div>
                 </Col>
                 <Col>
                   <HtForm.Group>
                     <HtForm.Label htmlFor="potentialShipDate">Potential Shipped Date</HtForm.Label>
-                    <HtForm.Control
+                    <Form.Control
                       id="potentialShipDate"
                       disabled={readOnly}
                       type="date"
-                      {...manifestMethods.register('potentialShipDate')}
+                      {...manifestMethods.register('potentialShipDate', { valueAsDate: true })}
+                      className={errors.potentialShipDate && 'is-invalid'}
                     />
+                    <div className="invalid-feedback">{errors.potentialShipDate?.message}</div>
                   </HtForm.Group>
                 </Col>
               </Row>
@@ -271,7 +264,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 </>
               ) : (
                 <>
-                  <HandlerForm handlerType={HandlerType.Generator} readOnly={readOnly} />
+                  <HandlerForm handlerType={HandlerType.enum.generator} readOnly={readOnly} />
                   <h4>Emergency Contact Information</h4>
                   <ContactForm handlerFormType="generator" readOnly={readOnly} />
                 </>

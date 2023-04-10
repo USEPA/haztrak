@@ -1,20 +1,20 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { HtForm } from 'components/Ht';
 import { AddressForm } from 'components/ManifestForm/AddressForm';
+import { HandlerTypeEnum } from 'components/ManifestForm/manifestSchema';
 import { ReactElement, useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 import { Manifest } from 'types/manifest';
-import { AddressType, HandlerType } from 'types/handler';
 
 interface HandlerFormProps {
-  handlerType: HandlerType;
+  handlerType: HandlerTypeEnum;
   readOnly?: boolean;
 }
 
 function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement {
   const [mailCheck, setMailCheck] = useState(false);
-  if (handlerType !== HandlerType.Generator) {
+  if (handlerType !== 'generator') {
     throw new Error();
   }
 
@@ -48,7 +48,7 @@ function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement 
         <Col className="col-sm-4">
           <HtForm.Group>
             <HtForm.Label htmlFor="handlerEPAId">Generator ID</HtForm.Label>
-            <HtForm.Control
+            <Form.Control
               id="handlerEPAId"
               type="text"
               plaintext={readOnly}
@@ -61,14 +61,12 @@ function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement 
         <Col className="col-sm-8">
           <HtForm.Group>
             <HtForm.Label htmlFor="handlerName">Site Name</HtForm.Label>
-            <HtForm.Control
+            <Form.Control
               id="handlerName"
               plaintext={readOnly}
               readOnly={readOnly}
               type="text"
               placeholder={`${handlerType} Name`}
-              // register comes from react-hook-form, however haztrak leaves the
-              // validation to the dedicated 'yup' library which is more expressive
               {...register(`generator.name`)}
             />
           </HtForm.Group>
@@ -84,7 +82,7 @@ function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement 
           render={({ message }) => <span className="text-danger">{message}</span>}
         />
       </Row>
-      <AddressForm addressType={AddressType.site} handlerType={handlerType} readOnly={readOnly} />
+      <AddressForm addressType={'siteAddress'} handlerType={handlerType} readOnly={readOnly} />
       <Row className="mb-2">
         <Col>
           <HtForm.Check
@@ -103,7 +101,7 @@ function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement 
           <>
             <h4>Mailing Address</h4>
             <AddressForm
-              addressType={AddressType.mail}
+              addressType={'mailingAddress'}
               handlerType={handlerType}
               readOnly={readOnly}
             />

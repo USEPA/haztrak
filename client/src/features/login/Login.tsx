@@ -1,18 +1,21 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { HtForm } from 'components/Ht';
 import React, { ReactElement, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
 import { login, useAppDispatch, useAppSelector } from 'store';
 import { useNavigate } from 'react-router-dom';
 import useTitle from '../../hooks/useTitle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruckFast } from '@fortawesome/free-solid-svg-icons';
+import { z } from 'zod';
+import { Form } from 'react-bootstrap';
 
-interface Inputs {
-  username: string;
-  password: string;
-}
+const loginSchema = z.object({
+  username: z.string().min(1, 'Username Required').min(8),
+  password: z.string().min(1, 'Password Required').min(8),
+});
+
+type LoginSchema = z.infer<typeof loginSchema>;
 
 /**
  * Haztrak Login component, redirects if user is already logged in
@@ -25,6 +28,11 @@ function Login(): ReactElement {
   const authUser = useSelector((state) => state.user.user);
   const authError = useSelector((state) => state.user.error);
   const navigation = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginSchema>({ resolver: zodResolver(loginSchema) });
 
   useEffect(() => {
     // redirect to home if already logged in
@@ -33,23 +41,7 @@ function Login(): ReactElement {
     }
   }, [authUser]);
 
-  // form validation rules
-  const validationSchema = Yup.object().shape({
-    username: Yup.string().required('Username is required'),
-    password: Yup.string().required('Password is required'),
-  });
-  const formOptions = { resolver: yupResolver(validationSchema) };
-
-  // get functions to build form with useForm() hook
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<Inputs>(formOptions);
-
-  // const { errors, isSubmitting } = formState;
-
-  function onSubmit({ username, password }: Inputs) {
+  function onSubmit({ username, password }: LoginSchema) {
     return dispatch(login({ username, password }));
   }
 
@@ -65,23 +57,23 @@ function Login(): ReactElement {
           <HtForm onSubmit={handleSubmit(onSubmit)}>
             <HtForm.Group>
               <HtForm.Label htmlFor="username">Username</HtForm.Label>
-              <HtForm.Control
+              <Form.Control
                 id="username"
                 type="text"
                 placeholder={'wary-walrus-123'}
                 {...register('username', {})}
-                className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                className={errors.username && 'is-invalid'}
               />
               <div className="invalid-feedback">{errors.username?.message}</div>
             </HtForm.Group>
             <HtForm.Group>
               <HtForm.Label htmlFor="password">Password</HtForm.Label>
-              <input
+              <Form.Control
                 id="password"
                 type="password"
                 placeholder="MyP@ssword123"
                 {...register('password', {})}
-                className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                className={errors.password && 'is-invalid'}
               />
               <div className="invalid-feedback">{errors.password?.message}</div>
             </HtForm.Group>

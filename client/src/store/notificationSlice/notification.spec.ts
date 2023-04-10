@@ -3,7 +3,7 @@
  */
 import { cleanup } from '@testing-library/react';
 import NotificationReducer, { addMsg, removeMsg } from 'store/notificationSlice/notification.slice';
-import { NotificationState } from 'types/store';
+import { NotificationState } from './notification.slice';
 
 const initialState: NotificationState = {
   notifications: [],

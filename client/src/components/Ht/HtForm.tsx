@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import {
   Form,
   FormCheckProps,
-  FormControlProps,
   FormGroupProps,
   FormLabelProps,
   FormProps,
@@ -38,16 +37,6 @@ HtForm.Label = function (props: FormLabelProps): ReactElement {
     </Form.Label>
   );
 };
-
-HtForm.Control = React.forwardRef<HTMLInputElement, FormControlProps>(
-  (props: FormControlProps, ref: React.Ref<HTMLInputElement>) => {
-    return (
-      <Form.Control autoFocus={true} ref={ref} {...props} className="mt-0">
-        {props.children}
-      </Form.Control>
-    );
-  }
-);
 
 HtForm.Check = React.forwardRef<HTMLInputElement, FormCheckProps>(
   (props: FormCheckProps, ref: React.Ref<HTMLInputElement>) => {

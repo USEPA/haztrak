@@ -2,7 +2,7 @@ import useTitle from 'hooks/useTitle';
 import React, { ReactElement, useEffect } from 'react';
 import { addMsg, RootState, useAppDispatch, useAppSelector } from 'store';
 import { getProfile } from 'store/rcraProfileSlice';
-import { UserState } from 'types/store';
+import { UserState } from 'store/userSlice/user.slice';
 import { HtButton } from 'components/Ht';
 
 /**

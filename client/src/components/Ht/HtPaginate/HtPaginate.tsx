@@ -1,7 +1,18 @@
 import React from 'react';
 import usePagination from 'hooks/usePagination';
 import { Pagination } from 'react-bootstrap';
-import { usePaginationProps } from 'types/hooks';
+
+/**
+ * Objects representing the necessary props used by Haztrak's pagination custom hook.
+ */
+interface usePaginationProps {
+  currentPage: number;
+  totalCount: number;
+  pageSize: number;
+  siblingCount?: number;
+  maxVisiblePages?: number;
+  useEllipsis?: boolean;
+}
 
 interface HtPaginateProps extends usePaginationProps {
   onPageChange: any;

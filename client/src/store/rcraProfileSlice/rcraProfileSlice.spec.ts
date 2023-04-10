@@ -1,8 +1,11 @@
 /**
  *  RcraProfile tests
  */
-import { ProfileEpaSite, RcraProfileState } from 'types/store';
-import rcraProfileReducer, { getProfile } from './rcraProfile.slice';
+import rcraProfileReducer, {
+  getProfile,
+  ProfileEpaSite,
+  RcraProfileState,
+} from './rcraProfile.slice';
 
 const initialState: RcraProfileState = {
   user: undefined,
