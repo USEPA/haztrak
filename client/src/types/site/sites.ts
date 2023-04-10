@@ -84,15 +84,15 @@ const transporterSchema = manifestHandlerSchema.extend({
  */
 export type Transporter = z.infer<typeof transporterSchema>;
 
-const siteSchema = z.object({
+const haztrakSiteSchema = z.object({
   name: z.string(),
   handler: rcraSite,
 });
 
 /**
- *  The Site type encapsulates the Handler model as well as other details specific to
- *  that hazardous waste site. It is not directly associated with the EPA RCRAInfo system
+ *  The Haztrak Site type encapsulates the RCRA site model as well as other details specific to
+ *  that site. It is not directly associated with the EPA RCRAInfo system
  *  directly and can be extended as needed. For example, Haztrak users are given permission to
- *  sites, not Handlers.
+ *  haztrak sites, not RCRA sites.
  */
-export type Site = z.infer<typeof siteSchema>;
+export type HaztrakSite = z.infer<typeof haztrakSiteSchema>;

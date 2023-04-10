@@ -1,4 +1,4 @@
-import { RcraSite, ManifestHandler, Site, Transporter } from 'types/site';
+import { RcraSite, ManifestHandler, HaztrakSite, Transporter } from 'types/site';
 
 /**
  * A mock handler object for tests
@@ -71,7 +71,7 @@ export function createMockMTNHandler(overWrites?: Partial<ManifestHandler>): Man
   };
 }
 
-export function createMockSite(overWrites?: Partial<Site>): Site {
+export function createMockSite(overWrites?: Partial<HaztrakSite>): HaztrakSite {
   return {
     handler: createMockHandler(),
     name: 'mySiteName',

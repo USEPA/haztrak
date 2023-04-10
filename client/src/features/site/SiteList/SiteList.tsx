@@ -3,16 +3,16 @@ import useHtAPI from 'hooks/useHtAPI';
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Site } from 'types/site';
+import { HaztrakSite } from 'types/site';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faFileLines } from '@fortawesome/free-solid-svg-icons';
 
 /**
- * Returns a table displaying the users sites.
+ * Returns a table displaying the Haztrak sites a user has access to.
  * @constructor
  */
 function SiteList() {
-  const [siteData, loading, error] = useHtAPI<Array<Site>>('site/');
+  const [siteData, loading, error] = useHtAPI<Array<HaztrakSite>>('site/');
   const [showErrorModal, setShowErrorModal] = useState(false);
 
   useEffect(() => {
