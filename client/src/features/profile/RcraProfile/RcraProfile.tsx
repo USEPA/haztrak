@@ -28,7 +28,7 @@ type RcraProfileForm = z.infer<typeof rcraProfileForm>;
 function RcraProfile({ profile }: ProfileViewProps) {
   const [editable, setEditable] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
-  const { error, epaSites, loading, ...formValues } = profile;
+  const { error, rcraSites, loading, ...formValues } = profile;
   const dispatch = useAppDispatch();
 
   const {
@@ -160,8 +160,8 @@ function RcraProfile({ profile }: ProfileViewProps) {
             </tr>
           </thead>
           <tbody>
-            {profile.epaSites &&
-              Object.values(profile.epaSites).map((site) => (
+            {profile.rcraSites &&
+              Object.values(profile.rcraSites).map((site) => (
                 <tr key={`permissionsRow${site.epaId}`}>
                   <td>
                     <Link to={`/site/${site.epaId}`}>{site.epaId}</Link>

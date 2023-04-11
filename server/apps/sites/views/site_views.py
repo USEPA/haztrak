@@ -128,7 +128,7 @@ class RcraSiteView(RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class EpaSiteSearchView(ListAPIView):
+class RcraSiteSearchView(ListAPIView):
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
 

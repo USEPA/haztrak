@@ -5,7 +5,7 @@ from .profile_views import (
     SyncProfileView,
 )
 from .site_views import (
-    EpaSiteSearchView,
+    RcraSiteSearchView,
     RcraSiteView,
     SiteDetailView,
     SiteListView,

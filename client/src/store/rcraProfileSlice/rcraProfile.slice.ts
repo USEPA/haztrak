@@ -31,7 +31,7 @@ export interface RcraProfileState {
    * Array of EPA sites a user has access to in RCRAInfo stored in key-value pairs
    * where the keys are the site's EPA ID number
    */
-  epaSites?: Record<string, RcraSitePermissions>;
+  rcraSites?: Record<string, RcraSitePermissions>;
   phoneNumber?: string;
   loading?: boolean;
   error?: string;
@@ -71,7 +71,7 @@ const initialState: RcraProfileState = {
   user: undefined,
   rcraAPIID: undefined,
   rcraUsername: undefined,
-  epaSites: {},
+  rcraSites: {},
   phoneNumber: undefined,
   apiUser: false,
   loading: false,
@@ -88,7 +88,7 @@ interface RcraProfileResponse {
   user: undefined;
   rcraAPIID: undefined;
   rcraUsername: undefined;
-  epaSites?: Array<RcraSitePermissions>;
+  rcraSites?: Array<RcraSitePermissions>;
   phoneNumber: undefined;
   apiUser: boolean;
   loading: false;
@@ -106,9 +106,9 @@ export const getProfile = createAsyncThunk<RcraProfileState>(
     const response = await axios.get(
       `${process.env.REACT_APP_HT_API_URL}/api/site/profile/${username}`
     );
-    const { epaSites, ...rest } = response.data as RcraProfileResponse;
+    const { rcraSites, ...rest } = response.data as RcraProfileResponse;
     let profile: RcraProfileState = { ...rest };
-    profile.epaSites = epaSites?.reduce(
+    profile.rcraSites = rcraSites?.reduce(
       (obj, site) => ({
         ...obj,
         [site.epaId]: site,

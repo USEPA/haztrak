@@ -1,9 +1,9 @@
 from django.urls import path
 
 from apps.sites.views import (
-    EpaSiteSearchView,
     RcraProfileView,
     RcraSitePermissionView,
+    RcraSiteSearchView,
     RcraSiteView,
     SiteDetailView,
     SiteListView,
@@ -23,6 +23,6 @@ urlpatterns = [
     path("<str:epa_id>/manifest", SiteMtnListView.as_view()),
     path("manifest/sync", SyncSiteManifestView.as_view()),
     # RcraSite
-    path("handler/search", EpaSiteSearchView.as_view()),
+    path("handler/search", RcraSiteSearchView.as_view()),
     path("handler/details/<int:pk>", RcraSiteView.as_view()),
 ]

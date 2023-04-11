@@ -170,7 +170,11 @@ class RcraProfileSerializer(ModelSerializer):
     """
 
     user = serializers.StringRelatedField()
-    epaSites = RcraSitePermissionSerializer(source="site_permission", required=False, many=True)
+    rcraSites = RcraSitePermissionSerializer(
+        source="permissions",
+        required=False,
+        many=True,
+    )
     phoneNumber = serializers.CharField(
         source="phone_number",
         required=False,
@@ -201,7 +205,7 @@ class RcraProfileSerializer(ModelSerializer):
             "rcraAPIID",
             "rcraAPIKey",
             "rcraUsername",
-            "epaSites",
+            "rcraSites",
             "phoneNumber",
             "apiUser",
         ]
