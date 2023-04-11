@@ -3,16 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { ButtonProps } from 'react-bootstrap';
 import { RcraApiUserBtn } from 'components/buttons';
-import { ManifestHandler } from 'types/site';
+import { Handler } from 'types/site';
 
 interface QuickerSignData {
-  handler: ManifestHandler | undefined;
+  handler: Handler | undefined;
   siteType: 'Generator' | 'Transporter' | 'Tsdf';
 }
 
 interface QuickerSignModalBtnProps extends ButtonProps {
   siteType: 'Generator' | 'Transporter' | 'Tsdf';
-  mtnHandler: ManifestHandler;
+  mtnHandler: Handler;
   handleClick: (data: QuickerSignData) => void;
   iconOnly?: boolean;
 }

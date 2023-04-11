@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 @shared_task(name="pull_federal_code", bind=True)
 def pull_federal_codes(self, api_user: Optional[str] = None):
-    from apps.trak.services import RcrainfoService
+    from apps.core.services import RcrainfoService
 
     logger.debug(f"start task {self.name}")
     try:

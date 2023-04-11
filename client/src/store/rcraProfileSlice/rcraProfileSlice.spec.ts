@@ -3,7 +3,7 @@
  */
 import rcraProfileReducer, {
   getProfile,
-  ProfileEpaSite,
+  RcraSitePermissions,
   RcraProfileState,
 } from './rcraProfile.slice';
 
@@ -11,13 +11,13 @@ const initialState: RcraProfileState = {
   user: undefined,
   rcraAPIID: undefined,
   rcraUsername: undefined,
-  epaSites: {},
+  rcraSites: {},
   phoneNumber: undefined,
   loading: false,
   error: undefined,
 };
 
-const mySite: ProfileEpaSite = {
+const mySite: RcraSitePermissions = {
   epaId: 'testId',
   permissions: {
     siteManagement: true,
@@ -33,7 +33,7 @@ const profilePayload: RcraProfileState = {
   user: 'testuser1',
   rcraAPIID: 'mockRcraApiId',
   rcraUsername: undefined,
-  epaSites: { [mySite.epaId]: mySite },
+  rcraSites: { [mySite.epaId]: mySite },
   phoneNumber: undefined,
 };
 

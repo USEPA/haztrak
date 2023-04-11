@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { ManifestHandler, Transporter } from 'types/site';
+import { Handler, Transporter } from 'types/site';
 import { QuickerSignData } from 'types/manifest/signatures';
 import { WasteLine } from 'types/wasteLine';
 import HandlerForm from './HandlerForm';
@@ -49,7 +49,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
     console.log(data);
   };
   // Generator controls
-  const generator: ManifestHandler = manifestMethods.getValues('generator');
+  const generator: Handler = manifestMethods.getValues('generator');
 
   // Transporter controls
   const [transFormShow, setTransFormShow] = useState<boolean>(false);
@@ -69,7 +69,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
   const toggleQuickerSignShow = () => setQuickerSignShow(!quickerSignShow);
   // function used to control the QuickerSign form (modal) and pass the necessary context
   const setupSign = (signContext: QuickerSignData) => {
-    setQuickerSignHandler(signContext); // set state to appropriate ManifestHandler
+    setQuickerSignHandler(signContext); // set state to appropriate Handler
     toggleQuickerSignShow(); // Toggle the Quicker Sign modal
   };
 
@@ -85,7 +85,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
   // Tsdf controls
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
-  const tsdf: ManifestHandler = manifestMethods.getValues('designatedFacility');
+  const tsdf: Handler = manifestMethods.getValues('designatedFacility');
 
   const signAble =
     manifestData?.status === 'Scheduled' ||

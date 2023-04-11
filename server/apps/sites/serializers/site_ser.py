@@ -1,14 +1,14 @@
 from rest_framework import serializers
 
-from apps.sites.models import EpaSite, Site
-from apps.sites.serializers import AddressSerializer, ContactSerializer, EpaPhoneSerializer
+from apps.sites.models import RcraSite, Site
+from apps.sites.serializers import AddressSerializer, ContactSerializer, RcraPhoneSerializer
 
 from .base_ser import SitesBaseSerializer
 
 
-class EpaSiteSerializer(SitesBaseSerializer):
+class RcraSiteSerializer(SitesBaseSerializer):
     """
-    EpaSite model serializer for JSON marshalling/unmarshalling
+    RcraSite model serializer for JSON marshalling/unmarshalling
     """
 
     epaSiteId = serializers.CharField(
@@ -32,7 +32,7 @@ class EpaSiteSerializer(SitesBaseSerializer):
         source="site_address",
     )
     contact = ContactSerializer()
-    emergencyPhone = EpaPhoneSerializer(
+    emergencyPhone = RcraPhoneSerializer(
         source="emergency_phone",
         allow_null=True,
         default=None,
@@ -70,7 +70,7 @@ class EpaSiteSerializer(SitesBaseSerializer):
         return self.Meta.model.objects.save(**validated_data)
 
     class Meta:
-        model = EpaSite
+        model = RcraSite
         fields = [
             "epaSiteId",
             "siteType",
@@ -96,8 +96,8 @@ class SiteSerializer(SitesBaseSerializer):
     name = serializers.CharField(
         required=False,
     )
-    handler = EpaSiteSerializer(
-        source="epa_site",
+    handler = RcraSiteSerializer(
+        source="rcra_site",
     )
 
     class Meta:

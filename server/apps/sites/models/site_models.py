@@ -7,15 +7,15 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.sites.models import Address, Contact
-from apps.sites.models.contact_models import SitePhone
+from apps.sites.models.contact_models import RcraPhone
 
 from .base_models import SitesBaseManager, SitesBaseModel
 
 logger = logging.getLogger(__name__)
 
 
-class EpaSiteType(models.TextChoices):
-    """A hazardous waste epa_site's type. Whether they are the epa_site
+class RcraSiteType(models.TextChoices):
+    """A hazardous waste rcra_site's type. Whether they are the rcra_site
     that generates, transports, or treats the waste (Tsdf).
     It's also possible they can be a broker although this is much less common"""
 
@@ -25,9 +25,9 @@ class EpaSiteType(models.TextChoices):
     BROKER = "BRO", _("Broker")
 
 
-class EpaSiteManager(SitesBaseManager):
+class RcraSiteManager(SitesBaseManager):
     """
-    Inter-model related functionality for EpaSite Model
+    Inter-model related functionality for RcraSite Model
     """
 
     def __init__(self):
@@ -36,7 +36,7 @@ class EpaSiteManager(SitesBaseManager):
 
     def save(self, **handler_data):
         """
-        Create an EpaSite and its related fields
+        Create an RcraSite and its related fields
 
         Keyword Args:
             contact (dict): Contact data in (ordered)dict format
@@ -47,7 +47,7 @@ class EpaSiteManager(SitesBaseManager):
         try:
             epa_id = handler_data.get("epa_id")
             if self.model.objects.filter(epa_id=epa_id).exists():
-                return EpaSite.objects.get(epa_id=epa_id)
+                return RcraSite.objects.get(epa_id=epa_id)
             self.handler_data = handler_data
             new_contact = Contact.objects.save(**self.handler_data.pop("contact"))
             emergency_phone = self.get_emergency_phone()
@@ -63,12 +63,12 @@ class EpaSiteManager(SitesBaseManager):
         except KeyError as exc:
             logger.warning(f"error while creating {self.model.__class__.__name__}{exc}")
 
-    def get_emergency_phone(self) -> Union[SitePhone, None]:
-        """Check if emergency phone is present and create an SitePhone row"""
+    def get_emergency_phone(self) -> Union[RcraPhone, None]:
+        """Check if emergency phone is present and create an RcraPhone row"""
         try:
             emergency_phone_data = self.handler_data.pop("emergency_phone")
             if emergency_phone_data is not None:
-                return SitePhone.objects.create(**emergency_phone_data)
+                return RcraPhone.objects.create(**emergency_phone_data)
         except KeyError as exc:
             logger.debug(exc)
             return None
@@ -85,15 +85,15 @@ class EpaSiteManager(SitesBaseManager):
             raise ValidationError(exc)
 
 
-class EpaSite(SitesBaseModel):
+class RcraSite(SitesBaseModel):
     """
-    RCRAInfo EpaSite model definition for entities on the uniform hazardous waste manifests
+    RCRAInfo RcraSite model definition for entities on the uniform hazardous waste manifests
     """
 
     class Meta:
         ordering = ["epa_id"]
 
-    objects = EpaSiteManager()
+    objects = RcraSiteManager()
 
     site_type = models.CharField(
         max_length=20,
@@ -138,7 +138,7 @@ class EpaSite(SitesBaseModel):
         verbose_name="contact information",
     )
     emergency_phone = models.ForeignKey(
-        SitePhone,
+        RcraPhone,
         on_delete=models.CASCADE,
         null=True,
         blank=True,
@@ -173,23 +173,23 @@ class EpaSite(SitesBaseModel):
 
 class Site(SitesBaseModel):
     """
-    Haztrak Site model used to control access to EpaSite object.
+    Haztrak Site model used to control access to RcraSite object.
 
     Not to be confused with what are frequently called 'sites' in RCRAInfo, for that,
-    see the EpaSite model.
+    see the RcraSite model.
     """
 
     class Meta:
-        ordering = ["epa_site__epa_id"]
+        ordering = ["rcra_site__epa_id"]
 
     name = models.CharField(
         verbose_name="site alias",
         max_length=200,
         validators=[MinValueValidator(2, "site aliases must be longer than 2 characters")],
     )
-    epa_site = models.OneToOneField(
-        verbose_name="epa_site",
-        to=EpaSite,
+    rcra_site = models.OneToOneField(
+        verbose_name="rcra_site",
+        to=RcraSite,
         on_delete=models.CASCADE,
     )
     last_rcra_sync = models.DateTimeField(
@@ -200,4 +200,4 @@ class Site(SitesBaseModel):
 
     def __str__(self):
         """Used in StringRelated fields in serializer classes"""
-        return f"{self.epa_site.epa_id}"
+        return f"{self.rcra_site.epa_id}"

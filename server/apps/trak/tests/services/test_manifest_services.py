@@ -6,7 +6,7 @@ from emanifest import RcrainfoResponse
 from rest_framework import status
 
 from apps.core.services import RcrainfoService
-from apps.sites.models import EpaSiteType
+from apps.sites.models import RcraSiteType
 from apps.trak.models import QuickerSign
 from apps.trak.services import ManifestService
 
@@ -56,7 +56,7 @@ class TestManifestService:
         """Test retrieves a manifest from RCRAInfo"""
         rcrainfo = RcrainfoService(api_username=self.user.username, auto_renew=False)
         manifest_service = ManifestService(username=self.user.username, rcrainfo=rcrainfo)
-        results = manifest_service.search_rcra_mtn(site_id=self.gen001.epa_site.epa_id)
+        results = manifest_service.search_rcra_mtn(site_id=self.gen001.rcra_site.epa_id)
         assert isinstance(results, list)
         assert self.json_100031134elc.get("manifestTrackingNumber") in results
 
@@ -70,13 +70,13 @@ class TestSignManifest:
         user_factory,
         site_factory,
         manifest_factory,
-        epa_site_factory,
+        rcra_site_factory,
         manifest_handler_factory,
     ):
         self.user = user_factory()
-        self.generator = epa_site_factory()
-        self.manifest_generator = manifest_handler_factory(epa_site=self.generator)
-        self.site = site_factory(epa_site=self.generator)
+        self.generator = rcra_site_factory()
+        self.manifest_generator = manifest_handler_factory(rcra_site=self.generator)
+        self.site = site_factory(rcra_site=self.generator)
         self.rcrainfo = RcrainfoService(api_username=self.user.username)
         self.manifests = [
             manifest_factory(mtn=mtn, generator=self.manifest_generator) for mtn in self.mtn
@@ -90,7 +90,7 @@ class TestSignManifest:
             return_value=mocker.Mock(
                 spec=RcrainfoResponse,
                 json=lambda: quicker_sign_response_factory(
-                    mtn=self.mtn, site_id=self.site.epa_site.epa_id
+                    mtn=self.mtn, site_id=self.site.rcra_site.epa_id
                 ),
             )
         )
@@ -108,8 +108,8 @@ class TestSignManifest:
         mtn = self.mtn + [bad_mtn]
         quicker_signature = QuickerSign(
             mtn=mtn,
-            site_id=self.site.epa_site.epa_id,
-            site_type=EpaSiteType.GENERATOR,
+            site_id=self.site.rcra_site.epa_id,
+            site_type=RcraSiteType.GENERATOR,
             printed_name="David Graham",
         )
         results: Dict[str, List[str]] = manifest_service.sign_manifest(quicker_signature)
@@ -122,8 +122,8 @@ class TestSignManifest:
         )
         quicker_sign = QuickerSign(
             mtn=self.mtn,
-            site_id=self.site.epa_site.epa_id,
-            site_type=EpaSiteType.GENERATOR,
+            site_id=self.site.rcra_site.epa_id,
+            site_type=RcraSiteType.GENERATOR,
             printed_name="David Graham",
         )
         manifest_service.sign_manifest(quicker_sign)

@@ -17,14 +17,14 @@ class RcraProfileTasks(Task):
 @shared_task(name="sync profile", base=RcraProfileTasks, bind=True, acks_late=True)
 def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
     """
-    This task initiates a call to the EpaProfileService to pull a user's RCRAInfo profile
+    This task initiates a call to the RcraProfileService to pull a user's RCRAInfo profile
     and update that information in Haztrak.
     """
-    from apps.sites.services import EpaProfileService
+    from apps.sites.services import RcraProfileService
 
     try:
-        profile_service = EpaProfileService(username=username)
-        profile_service.pull_epa_profile()
+        profile_service = RcraProfileService(username=username)
+        profile_service.pull_rcra_profile()
     except (ConnectionError, RequestException, TimeoutError):
         # ToDo retry if network error, see celery docs
         raise Reject()

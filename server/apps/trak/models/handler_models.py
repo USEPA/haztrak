@@ -3,7 +3,7 @@ import logging
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from apps.sites.models import EpaSite
+from apps.sites.models import RcraSite
 
 from .base_models import TrakBaseManager, TrakBaseModel
 from .signature_models import ESignature, PaperSignature
@@ -11,9 +11,9 @@ from .signature_models import ESignature, PaperSignature
 logger = logging.getLogger(__name__)
 
 
-class ManifestHandlerManager(TrakBaseManager):
+class HandlerManager(TrakBaseManager):
     """
-    Inter-model related functionality for ManifestHandler Model
+    Inter-model related functionality for the Handler Model
     """
 
     def save(self, **handler_data) -> models.QuerySet:
@@ -25,19 +25,19 @@ class ManifestHandlerManager(TrakBaseManager):
         if "paper_signature" in handler_data:
             paper_signature = PaperSignature.objects.create(**handler_data.pop("paper_signature"))
         try:
-            if EpaSite.objects.filter(epa_id=handler_data["epa_site"]["epa_id"]).exists():
-                epa_site = EpaSite.objects.get(epa_id=handler_data["epa_site"]["epa_id"])
-                handler_data.pop("epa_site")
-                logger.debug(f"using existing EpaSite {epa_site}")
+            if RcraSite.objects.filter(epa_id=handler_data["rcra_site"]["epa_id"]).exists():
+                rcra_site = RcraSite.objects.get(epa_id=handler_data["rcra_site"]["epa_id"])
+                handler_data.pop("rcra_site")
+                logger.debug(f"using existing RcraSite {rcra_site}")
             else:
-                epa_site = EpaSite.objects.save(**handler_data.pop("epa_site"))
-                logger.debug(f"EpaSite created {epa_site}")
+                rcra_site = RcraSite.objects.save(**handler_data.pop("rcra_site"))
+                logger.debug(f"RcraSite created {rcra_site}")
             manifest_handler = self.model.objects.create(
-                epa_site=epa_site,
+                rcra_site=rcra_site,
                 paper_signature=paper_signature,
                 **handler_data,
             )
-            logger.debug(f"ManifestHandler created {manifest_handler}")
+            logger.debug(f"Handler created {manifest_handler}")
             for e_signature_data in e_signatures:
                 e_sig = ESignature.objects.save(
                     manifest_handler=manifest_handler, **e_signature_data
@@ -45,27 +45,27 @@ class ManifestHandlerManager(TrakBaseManager):
                 logger.debug(f"ESignature created {e_sig}")
             return manifest_handler
         except KeyError as exc:
-            logger.warning(f"KeyError while creating Manifest epa_site {exc}")
+            logger.warning(f"KeyError while creating Manifest rcra_site {exc}")
         except ValidationError as exc:
-            logger.warning(f"ValidationError while creating Manifest epa_site {exc}")
+            logger.warning(f"ValidationError while creating Manifest rcra_site {exc}")
             raise exc
 
 
-class ManifestHandler(TrakBaseModel):
+class Handler(TrakBaseModel):
     """
-    ManifestHandler which contains a reference to hazardous waste
-    epa_site and data specific to that epa_site on the given manifest.
+    Handler which contains a reference to hazardous waste
+    rcra_site and data specific to that rcra_site on the given manifest.
     """
 
     class Meta:
-        ordering = ["epa_site"]
+        ordering = ["rcra_site"]
 
-    objects = ManifestHandlerManager()
+    objects = HandlerManager()
 
-    epa_site = models.ForeignKey(
-        "sites.EpaSite",
+    rcra_site = models.ForeignKey(
+        "sites.RcraSite",
         on_delete=models.CASCADE,
-        help_text="Hazardous waste epa_site associated with the manifest",
+        help_text="Hazardous waste rcra_site associated with the manifest",
     )
     paper_signature = models.OneToOneField(
         "PaperSignature",
@@ -85,4 +85,4 @@ class ManifestHandler(TrakBaseModel):
         return paper_signature_exists or e_signature_exists
 
     def __str__(self):
-        return f"{self.epa_site.epa_id}"
+        return f"{self.rcra_site.epa_id}"

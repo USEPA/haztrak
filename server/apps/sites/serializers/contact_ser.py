@@ -5,9 +5,9 @@ from apps.sites.models import Contact
 from .base_ser import SitesBaseSerializer
 
 
-class EpaPhoneSerializer(SitesBaseSerializer):
+class RcraPhoneSerializer(SitesBaseSerializer):
     """
-    EpaPhone model serializer for JSON marshalling/unmarshalling
+    ManifestPhone model serializer for JSON marshalling/unmarshalling
     """
 
     number = serializers.CharField()
@@ -40,7 +40,7 @@ class ContactSerializer(SitesBaseSerializer):
         source="last_name",
         required=False,
     )
-    phone = EpaPhoneSerializer(
+    phone = RcraPhoneSerializer(
         required=False,
     )
     email = serializers.CharField(

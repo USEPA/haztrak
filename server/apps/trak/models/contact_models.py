@@ -5,9 +5,9 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class EpaPhoneNumber(models.CharField):
+class ManifestPhoneNumber(models.CharField):
     """
-    EpaPhoneNumber encapsulates RCRAInfo's representation of a phone (not including extensions)
+    ManifestPhoneNumber encapsulates RCRAInfo's representation of a phone
     """
 
     def validate(self, value, model_instance):
@@ -18,7 +18,7 @@ class EpaPhoneNumber(models.CharField):
             )
 
 
-class EpaPhone(models.Model):
+class ManifestPhone(models.Model):
     """
     RCRAInfo phone model, stores phones in ###-###-#### format
     along with up to 6 digit extension.
@@ -27,7 +27,7 @@ class EpaPhone(models.Model):
     class Meta:
         ordering = ["number"]
 
-    number = EpaPhoneNumber(
+    number = ManifestPhoneNumber(
         max_length=12,
     )
     extension = models.CharField(

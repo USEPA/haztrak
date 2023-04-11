@@ -3,7 +3,7 @@ from rest_framework import routers
 
 from apps.trak.views import (
     FederalWasteCodes,
-    ManifestHandlerView,
+    HandlerView,
     ManifestView,
     MtnList,
     PullManifest,
@@ -23,7 +23,7 @@ urlpatterns = [
     path("mtn/<str:epa_id>", MtnList.as_view()),
     # Handler
     path("transporter/<int:pk>", TransporterView.as_view()),
-    path("mtnhandler/<int:pk>", ManifestHandlerView.as_view()),
+    path("mtnhandler/<int:pk>", HandlerView.as_view()),
     # code
     path("code/waste/federal", FederalWasteCodes.as_view()),
 ]

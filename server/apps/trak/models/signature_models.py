@@ -48,7 +48,7 @@ class Signer(TrakBaseModel):
         null=True,
     )
     phone = models.ForeignKey(
-        "EpaPhone",
+        "ManifestPhone",
         on_delete=models.CASCADE,
         null=True,
     )
@@ -107,7 +107,7 @@ class ESignature(TrakBaseModel):
     objects = ESignatureManager()
 
     manifest_handler = models.ForeignKey(
-        "ManifestHandler",
+        "Handler",
         related_name="e_signatures",
         on_delete=models.CASCADE,
     )
@@ -150,7 +150,7 @@ class ESignature(TrakBaseModel):
 
 class PaperSignature(TrakBaseModel):
     """
-    Contains printed name of the epa_site Signee and
+    Contains printed name of the rcra_site Signee and
     Date of Signature for paper manifests.
     """
 

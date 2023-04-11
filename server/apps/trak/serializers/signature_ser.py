@@ -3,7 +3,7 @@ from typing import Dict
 
 from rest_framework import serializers
 
-from apps.sites.serializers.contact_ser import EpaPhoneSerializer
+from apps.sites.serializers.contact_ser import RcraPhoneSerializer
 from apps.trak.models import ESignature, PaperSignature, QuickerSign, Signer
 
 from .base_ser import TrakBaseSerializer
@@ -68,7 +68,7 @@ class SignerSerializer(TrakBaseSerializer):
         source="last_name",
         required=False,
     )
-    phone = EpaPhoneSerializer(
+    phone = RcraPhoneSerializer(
         required=False,
     )
     email = serializers.CharField(

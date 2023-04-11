@@ -1,5 +1,5 @@
 import { RejectionInfo } from 'components/ManifestForm/manifestSchema';
-import { RcraLocality, ManifestHandler, Transporter, Signer } from 'types/site';
+import { RcraLocality, Handler, Transporter, Signer } from 'types/site';
 import { WasteLine } from 'types/wasteLine';
 import { AdditionalInfo, CorrectionInfo, CorrectionRequest } from 'types/manifest';
 import { z } from 'zod';
@@ -66,7 +66,7 @@ export interface Manifest {
   /**
    * The handler that generated the hazardous waste
    */
-  generator: ManifestHandler;
+  generator: Handler;
   /**
    * One or more handlers responsible for carrying the hazardous waste from the generator to the
    * designated receiving facility.
@@ -76,8 +76,8 @@ export interface Manifest {
    * The hazardous waste handler responsible for treating, storing,
    * or disposing of the hazardous waste.
    */
-  designatedFacility: ManifestHandler;
-  broker?: ManifestHandler;
+  designatedFacility: Handler;
+  broker?: Handler;
   /**
    * One or more lines on the manifest, each corresponding to a hazardous waste stream
    * and its relevant information.
@@ -133,7 +133,7 @@ export interface Manifest {
  * Details required if the hazardous waste is internationally imported
  */
 interface ImportInfo {
-  importGenerator: ManifestHandler;
+  importGenerator: Handler;
   portOfEntry: PortOfEntry;
 }
 

@@ -10,9 +10,9 @@ from .base_models import SitesBaseManager, SitesBaseModel
 logger = logging.getLogger(__name__)
 
 
-class SitePhoneNumber(models.CharField):
+class RcraPhoneNumber(models.CharField):
     """
-    SitePhoneNumber encapsulates RCRAInfo's representation of a phone (not including extensions)
+    RcraPhoneNumber encapsulates RCRAInfo's representation of a phone (not including extensions)
     """
 
     def validate(self, value, model_instance):
@@ -23,7 +23,7 @@ class SitePhoneNumber(models.CharField):
             )
 
 
-class SitePhone(models.Model):
+class RcraPhone(models.Model):
     """
     RCRAInfo phone model, stores phones in ###-###-#### format
     along with up to 6 digit extension.
@@ -32,7 +32,7 @@ class SitePhone(models.Model):
     class Meta:
         ordering = ["number"]
 
-    number = SitePhoneNumber(
+    number = RcraPhoneNumber(
         max_length=12,
     )
     extension = models.CharField(
@@ -184,10 +184,10 @@ class ContactManager(SitesBaseManager):
         """
         if "phone" in contact_data:
             phone_data = contact_data.pop("phone")
-            if isinstance(phone_data, SitePhone):
+            if isinstance(phone_data, RcraPhone):
                 phone = phone_data
             else:
-                phone = SitePhone.objects.create(**phone_data)
+                phone = RcraPhone.objects.create(**phone_data)
             return self.create(**contact_data, phone=phone)
         return super().save(**contact_data)
 
@@ -219,7 +219,7 @@ class Contact(SitesBaseModel):
         blank=True,
     )
     phone = models.ForeignKey(
-        SitePhone,
+        RcraPhone,
         on_delete=models.CASCADE,
         null=True,
         blank=True,

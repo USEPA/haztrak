@@ -1,3 +1,14 @@
-from .epa_site_views import EpaSiteSearchView, EpaSiteView
-from .profile_views import EpaPermissionView, EpaProfileView, SitePermissionView, SyncProfileView
-from .site_views import SiteDetailView, SiteListView, SiteMtnListView, SyncSiteManifestView
+from .profile_views import (
+    RcraPermissionView,
+    RcraProfileView,
+    RcraSitePermissionView,
+    SyncProfileView,
+)
+from .site_views import (
+    RcraSiteSearchView,
+    RcraSiteView,
+    SiteDetailView,
+    SiteListView,
+    SiteMtnListView,
+    SyncSiteManifestView,
+)

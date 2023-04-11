@@ -41,6 +41,7 @@ share/python-wheels/
 
 # client
 **/node_modules
+**/.yarn
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

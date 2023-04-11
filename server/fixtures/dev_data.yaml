@@ -634,12 +634,12 @@
     description: WASTEWATER TREATMENT SLUDGE FROM THE PRODUCTION OF IRON BLUE PIGMENTS.
     code: K007
     code_type: FD
-- model: trak.epaphone
+- model: trak.manifestphone
   pk: 1
   fields:
     number: 321-321-3214
     extension: null
-- model: sites.sitephone
+- model: sites.rcraphone
   pk: 1
   fields:
     number: 321-321-3214
@@ -653,7 +653,7 @@
     phone: 1
     email: testuser1@haztrak.net
     company_name: haztrak
-- model: sites.epasite
+- model: sites.rcrasite
   pk: 1
   fields:
     site_type: Generator
@@ -669,7 +669,7 @@
     can_esign: true
     limited_esign: true
     registered_emanifest_user: true
-- model: sites.epaprofile
+- model: sites.rcraprofile
   pk: 1
   fields:
     user: 2
@@ -682,9 +682,9 @@
   pk: 1
   fields:
     name: VA TEST GEN 2021
-    epa_site: 1
+    rcra_site: 1
     last_rcra_sync: null
-- model: sites.sitepermission
+- model: sites.rcrasitepermission
   pk: 1
   fields:
     site: 1

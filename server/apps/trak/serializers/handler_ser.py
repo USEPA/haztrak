@@ -3,16 +3,16 @@ from typing import Dict
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.sites.serializers import EpaSiteSerializer
-from apps.trak.models import ManifestHandler, Transporter
+from apps.sites.serializers import RcraSiteSerializer
+from apps.trak.models import Handler, Transporter
 
 from .signature_ser import ESignatureSerializer, PaperSignatureSerializer
 
 
-class ManifestHandlerSerializer(EpaSiteSerializer):
-    """Serializer for EpaSite on manifest"""
+class HandlerSerializer(RcraSiteSerializer):
+    """Serializer for RcraSite on manifest"""
 
-    epa_site = EpaSiteSerializer()
+    rcra_site = RcraSiteSerializer()
     electronicSignaturesInfo = ESignatureSerializer(
         source="e_signatures",
         many=True,
@@ -32,7 +32,7 @@ class ManifestHandlerSerializer(EpaSiteSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        handler_rep = representation.pop("epa_site")
+        handler_rep = representation.pop("rcra_site")
         for key in handler_rep:
             representation[key] = handler_rep[key]
         return representation
@@ -43,22 +43,22 @@ class ManifestHandlerSerializer(EpaSiteSerializer):
             instance["electronicSignaturesInfo"] = data.pop("electronicSignaturesInfo")
         if "paperSignatureInfo" in data:
             instance["paperSignatureInfo"] = data.pop("paperSignatureInfo")
-        instance["epa_site"] = data
-        if "order" in instance["epa_site"]:
-            instance["order"] = instance["epa_site"]["order"]
+        instance["rcra_site"] = data
+        if "order" in instance["rcra_site"]:
+            instance["order"] = instance["rcra_site"]["order"]
         return super().to_internal_value(instance)
 
     class Meta:
-        model = ManifestHandler
+        model = Handler
         fields = [
-            "epa_site",
+            "rcra_site",
             "electronicSignaturesInfo",
             "paperSignatureInfo",
             "signed",
         ]
 
 
-class TransporterSerializer(ManifestHandlerSerializer):
+class TransporterSerializer(HandlerSerializer):
     """
     Transporter model serializer for JSON marshalling/unmarshalling
     """
@@ -66,7 +66,7 @@ class TransporterSerializer(ManifestHandlerSerializer):
     class Meta:
         model = Transporter
         fields = [
-            "epa_site",
+            "rcra_site",
             "order",
             "paperSignatureInfo",
             "electronicSignaturesInfo",
@@ -74,7 +74,7 @@ class TransporterSerializer(ManifestHandlerSerializer):
         ]
 
     def to_internal_value(self, data):
-        """Move fields related to epa_site to an internal epa_site dictionary."""
+        """Move fields related to rcra_site to an internal rcra_site dictionary."""
         try:
             internal = super().to_internal_value(data)
             return internal

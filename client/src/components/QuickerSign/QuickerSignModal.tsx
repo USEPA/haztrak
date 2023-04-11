@@ -1,13 +1,13 @@
 import { HtModal } from 'components/Ht';
 import React from 'react';
-import { ManifestHandler } from 'types/site';
+import { Handler } from 'types/site';
 import QuickerSignForm from 'components/QuickerSign/QuickerSignForm';
 
 interface QuickerSignModalProps {
   handleClose: () => void;
   show: boolean;
   mtn?: Array<string>;
-  mtnHandler?: ManifestHandler;
+  mtnHandler?: Handler;
   siteType: 'Generator' | 'Transporter' | 'Tsdf';
 }
 

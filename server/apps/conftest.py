@@ -14,13 +14,13 @@ from rest_framework.test import APIClient
 from apps.sites.models import (
     Address,
     Contact,
-    EpaProfile,
-    EpaSite,
+    RcraPhone,
+    RcraProfile,
+    RcraSite,
     Site,
-    SitePhone,
 )
 from apps.trak.models import (
-    EpaPhone,
+    ManifestPhone,
 )
 
 
@@ -70,16 +70,16 @@ def user_factory(db):
 
 
 @pytest.fixture
-def epa_profile_factory(db, user_factory):
-    """Abstract factory for Haztrak EpaProfile model"""
+def rcra_profile_factory(db, user_factory):
+    """Abstract factory for Haztrak RcraProfile model"""
 
     def create_profile(
         rcra_api_id: Optional[str] = "rcraApiId",
         rcra_api_key: Optional[str] = "rcraApikey",
         rcra_username: Optional[str] = "dpgraham4401",
         user: Optional[User] = None,
-    ) -> EpaProfile:
-        return EpaProfile.objects.create(
+    ) -> RcraProfile:
+        return RcraProfile.objects.create(
             rcra_api_id=rcra_api_id,
             rcra_api_key=rcra_api_key,
             rcra_username=rcra_username,
@@ -111,13 +111,13 @@ def address_factory(db):
 
 @pytest.fixture
 def site_phone_factory(db):
-    """Abstract factory for Haztrak EpaPhone model"""
+    """Abstract factory for Haztrak ManifestPhone model"""
 
     def create_site_phone(
         number: Optional[str] = "123-123-1234",
         extension: Optional[str] = "1234",
-    ) -> SitePhone:
-        return SitePhone.objects.create(
+    ) -> RcraPhone:
+        return RcraPhone.objects.create(
             number=number,
             extension=extension,
         )
@@ -127,13 +127,13 @@ def site_phone_factory(db):
 
 @pytest.fixture
 def epa_phone_factory(db):
-    """Abstract factory for Haztrak EpaPhone model"""
+    """Abstract factory for Haztrak ManifestPhone model"""
 
     def create_epa_phone(
         number: Optional[str] = "123-123-1234",
         extension: Optional[str] = "1234",
-    ) -> EpaPhone:
-        return EpaPhone.objects.create(
+    ) -> ManifestPhone:
+        return ManifestPhone.objects.create(
             number=number,
             extension=extension,
         )
@@ -150,7 +150,7 @@ def contact_factory(db, site_phone_factory):
         middle_initial: Optional[str] = "Q",
         last_name: Optional[str] = "user",
         email: Optional[str] = "testuser@haztrak.net",
-        phone: Optional[SitePhone] = None,
+        phone: Optional[RcraPhone] = None,
     ) -> Contact:
         contact = Contact.objects.create(
             first_name=first_name,
@@ -165,17 +165,17 @@ def contact_factory(db, site_phone_factory):
 
 
 @pytest.fixture
-def epa_site_factory(db, address_factory, contact_factory):
-    """Abstract factory for Haztrak EpaSite model"""
+def rcra_site_factory(db, address_factory, contact_factory):
+    """Abstract factory for Haztrak RcraSite model"""
 
-    def create_epa_site(
+    def create_rcra_site(
         epa_id: Optional[str] = None,
-        name: Optional[str] = "my epa_site name",
+        name: Optional[str] = "my rcra_site name",
         site_type: Optional[str] = "Generator",
         site_address: Optional[Address] = None,
         mail_address: Optional[Address] = None,
-    ) -> EpaSite:
-        return EpaSite.objects.create(
+    ) -> RcraSite:
+        return RcraSite.objects.create(
             epa_id=epa_id or f"VAD{''.join(random.choices(string.digits, k=9))}",
             name=name,
             site_type=site_type,
@@ -184,19 +184,19 @@ def epa_site_factory(db, address_factory, contact_factory):
             contact=contact_factory(),
         )
 
-    yield create_epa_site
+    yield create_rcra_site
 
 
 @pytest.fixture
-def site_factory(db, epa_site_factory):
+def site_factory(db, rcra_site_factory):
     """Abstract factory for Haztrak Site model"""
 
     def create_site(
-        epa_site: Optional[EpaSite] = None,
+        rcra_site: Optional[RcraSite] = None,
         name: Optional[str] = "my site name",
     ) -> Site:
         return Site.objects.create(
-            epa_site=epa_site or epa_site_factory(),
+            rcra_site=rcra_site or rcra_site_factory(),
             name=name,
         )
 

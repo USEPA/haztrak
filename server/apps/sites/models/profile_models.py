@@ -6,11 +6,10 @@ from .base_models import SitesBaseModel
 from .site_models import Site
 
 
-class EpaProfile(SitesBaseModel):
+class RcraProfile(SitesBaseModel):
     """
-    Provides the user's EpaProfile information, excluding their RCRAInfo
-    API key (see EpaProfileUpdateSerializer). Has a one-to-one relationship with
-    the User model.
+    Contains a user's RcraProfile information, such as username, and API credentials.
+    Has a one-to-one relationship with the User model.
     """
 
     class Meta:
@@ -60,28 +59,31 @@ class EpaProfile(SitesBaseModel):
         return False
 
 
-EPA_PERMISSION_LEVEL = [
-    ("Certifier", "Certifier"),
-    ("Preparer", "Preparer"),
-    ("Viewer", "Viewer"),
-]
-
-
-class SitePermission(SitesBaseModel):
+class RcraSitePermission(SitesBaseModel):
     """
-    RCRAInfo Site Permissions per module connected to a user's EpaProfile
+    RCRAInfo Site Permissions per module connected to a user's RcraProfile
     and the corresponding Site
     """
 
+    CERTIFIER = "Certifier"
+    PREPARER = "Preparer"
+    VIEWER = "Viewer"
+
+    EPA_PERMISSION_LEVEL = [
+        (CERTIFIER, "Certifier"),
+        (PREPARER, "Preparer"),
+        (VIEWER, "Viewer"),
+    ]
+
     class Meta:
         verbose_name = "EPA Site Permission"
-        ordering = ["site__epa_site__epa_id"]
+        ordering = ["site__rcra_site__epa_id"]
 
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     profile = models.ForeignKey(
-        EpaProfile,
+        RcraProfile,
         on_delete=models.PROTECT,
-        related_name="site_permission",
+        related_name="permissions",
     )
     site_manager = models.BooleanField(
         default=False,
@@ -108,7 +110,7 @@ class SitePermission(SitesBaseModel):
     )
 
     def __str__(self):
-        return f"{self.profile.user}: {self.site.epa_site.epa_id}"
+        return f"{self.profile.user}: {self.site.rcra_site.epa_id}"
 
     def clean(self):
         if self.site_manager:
