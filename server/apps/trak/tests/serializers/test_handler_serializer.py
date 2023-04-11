@@ -5,7 +5,7 @@ from apps.trak.serializers import HandlerSerializer
 
 
 @pytest.mark.django_db
-class TestManifestHandlerSerializer:
+class TestHandlerSerializer:
     @pytest.fixture
     def manifest_handler_serializer(self, haztrak_json) -> HandlerSerializer:
         manifest_handler_serializer = HandlerSerializer(data=haztrak_json.HANDLER.value)

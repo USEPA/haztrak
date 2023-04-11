@@ -50,7 +50,7 @@ class TransporterAdmin(admin.ModelAdmin):
 
 
 @admin.register(Handler)
-class ManifestHandlerAdmin(admin.ModelAdmin):
+class HandlerAdmin(admin.ModelAdmin):
     list_display = ["__str__", "related_manifest"]
     search_fields = ["handler__epa_id"]
 

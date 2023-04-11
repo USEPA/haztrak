@@ -4,7 +4,7 @@ from apps.trak.models import Handler
 
 
 @pytest.mark.django_db
-class TestManifestHandlerModel:
+class TestHandlerModel:
     """Test related to the Manifest Handler model and its API"""
 
     def test_manifest_handler_saves(self, manifest_handler_factory) -> None:

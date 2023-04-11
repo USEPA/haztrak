@@ -18,7 +18,7 @@ class TransporterView(RetrieveAPIView):
     permission_classes = [permissions.AllowAny]
 
 
-class ManifestHandlerView(RetrieveAPIView):
+class HandlerView(RetrieveAPIView):
     """
     For Viewing a user's Site Permissions in the same JSON structure as RCRAInfo.
 
