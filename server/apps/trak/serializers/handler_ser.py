@@ -3,16 +3,16 @@ from typing import Dict
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.sites.serializers import EpaSiteSerializer
-from apps.trak.models import ManifestHandler, Transporter
+from apps.sites.serializers import RcraSiteSerializer
+from apps.trak.models import Handler, Transporter
 
 from .signature_ser import ESignatureSerializer, PaperSignatureSerializer
 
 
-class ManifestHandlerSerializer(EpaSiteSerializer):
-    """Serializer for EpaSite on manifest"""
+class ManifestHandlerSerializer(RcraSiteSerializer):
+    """Serializer for RcraSite on manifest"""
 
-    epa_site = EpaSiteSerializer()
+    epa_site = RcraSiteSerializer()
     electronicSignaturesInfo = ESignatureSerializer(
         source="e_signatures",
         many=True,
@@ -49,7 +49,7 @@ class ManifestHandlerSerializer(EpaSiteSerializer):
         return super().to_internal_value(instance)
 
     class Meta:
-        model = ManifestHandler
+        model = Handler
         fields = [
             "epa_site",
             "electronicSignaturesInfo",

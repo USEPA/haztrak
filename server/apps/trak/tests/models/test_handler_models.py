@@ -1,6 +1,6 @@
 import pytest
 
-from apps.trak.models import ManifestHandler
+from apps.trak.models import Handler
 
 
 @pytest.mark.django_db
@@ -9,7 +9,7 @@ class TestManifestHandlerModel:
 
     def test_manifest_handler_saves(self, manifest_handler_factory) -> None:
         """simply check the model saves given our factory's defaults"""
-        assert type(manifest_handler_factory()) is ManifestHandler
+        assert type(manifest_handler_factory()) is Handler
 
     def test_is_signed_with_both_signatures_types(
         self, manifest_handler_factory, e_signature_factory, paper_signature_factory
@@ -29,11 +29,11 @@ class TestManifestHandlerModel:
         assert manifest_handler.signed is True
 
     def test_is_signed_when_electronic_signature_exists(
-        self, epa_site_factory, e_signature_factory
+        self, rcra_site_factory, e_signature_factory
     ):
         # Arrange
-        manifest_handler = ManifestHandler(
-            epa_site=epa_site_factory(),
+        manifest_handler = Handler(
+            epa_site=rcra_site_factory(),
             paper_signature=None,
         )
         manifest_handler.save()
@@ -41,10 +41,10 @@ class TestManifestHandlerModel:
         # Act/Assert
         assert manifest_handler.signed is True
 
-    def test_is_not_signed_with_no_signatures(self, epa_site_factory):
+    def test_is_not_signed_with_no_signatures(self, rcra_site_factory):
         # Arrange
-        manifest_handler = ManifestHandler(
-            epa_site=epa_site_factory(),
+        manifest_handler = Handler(
+            epa_site=rcra_site_factory(),
             paper_signature=None,
         )
         manifest_handler.save()

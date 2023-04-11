@@ -48,7 +48,7 @@ class Signer(TrakBaseModel):
         null=True,
     )
     phone = models.ForeignKey(
-        "EpaPhone",
+        "ManifestPhone",
         on_delete=models.CASCADE,
         null=True,
     )
@@ -107,7 +107,7 @@ class ESignature(TrakBaseModel):
     objects = ESignatureManager()
 
     manifest_handler = models.ForeignKey(
-        "ManifestHandler",
+        "Handler",
         related_name="e_signatures",
         on_delete=models.CASCADE,
     )

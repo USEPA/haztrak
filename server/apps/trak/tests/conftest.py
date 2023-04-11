@@ -5,11 +5,11 @@ from typing import Dict, List, Optional
 
 import pytest
 
-from apps.sites.models import EpaSite, EpaSiteType
+from apps.sites.models import RcraSite, RcraSiteType
 from apps.trak.models import (
     ESignature,
+    Handler,
     Manifest,
-    ManifestHandler,
     PaperSignature,
     Signer,
     WasteCode,
@@ -17,15 +17,15 @@ from apps.trak.models import (
 
 
 @pytest.fixture
-def manifest_handler_factory(db, epa_site_factory, paper_signature_factory):
-    """Abstract factory for Haztrak ManifestHandler model"""
+def manifest_handler_factory(db, rcra_site_factory, paper_signature_factory):
+    """Abstract factory for Haztrak Handler model"""
 
     def create_manifest_handler(
-        epa_site: Optional[EpaSite] = None,
+        epa_site: Optional[RcraSite] = None,
         paper_signature: Optional[PaperSignature] = None,
-    ) -> ManifestHandler:
-        return ManifestHandler.objects.create(
-            epa_site=epa_site or epa_site_factory(),
+    ) -> Handler:
+        return Handler.objects.create(
+            epa_site=epa_site or rcra_site_factory(),
             paper_signature=paper_signature or paper_signature_factory(),
         )
 
@@ -41,7 +41,7 @@ def quicker_sign_response_factory():
     def create_quicker_sign(
         mtn: List[str],
         site_id: str,
-        site_type: Optional[EpaSiteType] = EpaSiteType.GENERATOR,
+        site_type: Optional[RcraSiteType] = RcraSiteType.GENERATOR,
         printed_name: Optional[str] = "David Graham",
         sign_date: Optional[datetime] = datetime.utcnow().replace(tzinfo=timezone.utc),
         transporter_order: Optional[int] = None,
@@ -85,11 +85,11 @@ def paper_signature_factory(db):
 
 @pytest.fixture
 def e_signature_factory(db, signer_factory, manifest_handler_factory):
-    """Abstract factory for Haztrak ManifestHandler model"""
+    """Abstract factory for Haztrak Handler model"""
 
     def create_e_signature(
         signer: Optional[Signer] = None,
-        manifest_handler: Optional[ManifestHandler] = None,
+        manifest_handler: Optional[Handler] = None,
     ) -> ESignature:
         return ESignature.objects.create(
             signer=signer or signer_factory(),
@@ -147,24 +147,24 @@ def signer_factory(db):
 
 
 @pytest.fixture
-def manifest_factory(db, manifest_handler_factory, epa_site_factory):
+def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
     """Abstract factory for Haztrak Manifest model"""
 
     def create_manifest(
         mtn: Optional[str] = "123456789ELC",
-        generator: Optional[ManifestHandler] = None,
-        tsd: Optional[ManifestHandler] = None,
+        generator: Optional[Handler] = None,
+        tsdf: Optional[Handler] = None,
     ) -> Manifest:
-        if tsd is None:
+        if tsdf is None:
             # ensure the TSD is a different EPA site
-            epa_site = epa_site_factory()
-            tsd = manifest_handler_factory(epa_site=epa_site)
+            epa_site = rcra_site_factory()
+            tsdf = manifest_handler_factory(epa_site=epa_site)
         return Manifest.objects.create(
             mtn=mtn,
             created_date=datetime.now().replace(tzinfo=timezone.utc),
             potential_ship_date=datetime.now().replace(tzinfo=timezone.utc),
             generator=generator or manifest_handler_factory(),
-            tsd=tsd or manifest_handler_factory(epa_site=epa_site_factory(epa_id="tsd001")),
+            tsdf=tsdf or manifest_handler_factory(epa_site=rcra_site_factory(epa_id="tsd001")),
         )
 
     yield create_manifest

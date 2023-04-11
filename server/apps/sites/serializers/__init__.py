@@ -1,8 +1,8 @@
 from .address_ser import AddressSerializer
-from .contact_ser import ContactSerializer, EpaPhoneSerializer
-from .epa_profile_ser import (
-    EpaPermissionSerializer,
-    EpaProfileSerializer,
-    SitePermissionSerializer,
+from .contact_ser import ContactSerializer, RcraPhoneSerializer
+from .profile_ser import (
+    RcraPermissionSerializer,
+    RcraProfileSerializer,
+    RcraSitePermissionSerializer,
 )
-from .site_ser import EpaSiteSerializer, SiteSerializer
+from .site_ser import RcraSiteSerializer, SiteSerializer

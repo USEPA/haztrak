@@ -7,14 +7,14 @@ from apps.core.admin import HiddenListView
 
 from .models import (
     ESignature,
+    Handler,
     Manifest,
-    ManifestHandler,
     Signer,
     Transporter,
     WasteCode,
     WasteLine,
 )
-from .models.contact_models import EpaPhone
+from .models.contact_models import ManifestPhone
 
 
 class IsApiUser(admin.SimpleListFilter):
@@ -49,12 +49,12 @@ class TransporterAdmin(admin.ModelAdmin):
     related_manifest.short_description = "Manifest"
 
 
-@admin.register(ManifestHandler)
+@admin.register(Handler)
 class ManifestHandlerAdmin(admin.ModelAdmin):
     list_display = ["__str__", "related_manifest"]
     search_fields = ["handler__epa_id"]
 
-    def related_manifest(self, obj: ManifestHandler):
+    def related_manifest(self, obj: Handler):
         if obj.generator:
             return obj.generator.get()
         if obj.designated_facility:
@@ -109,9 +109,9 @@ class WasteCodeAdmin(admin.ModelAdmin):
 
 @admin.register(Manifest)
 class ManifestAdmin(admin.ModelAdmin):
-    list_display = ["mtn", "generator", "tsd", "status", "transporter_count"]
+    list_display = ["mtn", "generator", "tsdf", "status", "transporter_count"]
     list_filter = [IsDraftMtn, "status"]
-    search_fields = ["mtn__icontains", "generator__handler__epa_id", "tsd__handler__epa_id"]
+    search_fields = ["mtn__icontains", "generator__handler__epa_id", "tsdf__handler__epa_id"]
     inlines = [WasteLineInline]
 
     @admin.display(description="Transporters")
@@ -121,6 +121,6 @@ class ManifestAdmin(admin.ModelAdmin):
 
 
 # Register models That should only be edited within the context of another form here.
-admin.site.register(EpaPhone, HiddenListView)
+admin.site.register(ManifestPhone, HiddenListView)
 admin.site.register(ESignature, HiddenListView)
 admin.site.register(Signer, HiddenListView)

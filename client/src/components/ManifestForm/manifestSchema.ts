@@ -34,7 +34,7 @@ export const manifestSchema = z.object({
 export type Manifest = z.infer<typeof manifestSchema>;
 /**
  * Used to specify whether a handler is a generator, transporter, or
- * designated receiving facility (AKA Treatment, Storage and Disposal Facility or TSD/TSDF for short).
+ * designated receiving facility (AKA Treatment, Storage and Disposal Facility or TSDF for short).
  */
 export const HandlerType = z.enum(['generator', 'designatedFacility', 'transporter']);
 

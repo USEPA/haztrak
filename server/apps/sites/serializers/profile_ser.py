@@ -2,17 +2,17 @@ from rest_framework import serializers
 from rest_framework.exceptions import APIException
 from rest_framework.serializers import ModelSerializer
 
-from apps.sites.models.epa_profile_models import EpaProfile, SitePermission
+from apps.sites.models.profile_models import RcraProfile, RcraSitePermission
 
 from .base_ser import SitesBaseSerializer
 
 
-class SitePermissionSerializer(SitesBaseSerializer):
+class RcraSitePermissionSerializer(SitesBaseSerializer):
     """
-    SitePermission model serializer
+    RcraSitePermission model serializer
     We use this internally because it's easier to handle, using consistent naming,
     Haztrak has a separate serializer for user permissions from RCRAInfo.
-    See EpaPermissionSerializer.
+    See RcraPermissionSerializer.
     """
 
     rcrainfo_modules = [
@@ -54,7 +54,7 @@ class SitePermissionSerializer(SitesBaseSerializer):
         return ret
 
     class Meta:
-        model = SitePermission
+        model = RcraSitePermission
         fields = [
             "epaId",
             "siteManagement",
@@ -66,7 +66,7 @@ class SitePermissionSerializer(SitesBaseSerializer):
         ]
 
 
-class EpaPermissionField(serializers.Field):
+class RcraPermissionField(serializers.Field):
     """
     Serializer for communicating with RCRAInfo, translates Haztrak's
     storage to the way RCRAInfo describes a user's permissions for a
@@ -96,7 +96,7 @@ class EpaPermissionField(serializers.Field):
         return data
 
 
-class EpaPermissionSerializer(SitePermissionSerializer):
+class RcraPermissionSerializer(RcraSitePermissionSerializer):
     rcrainfo_modules = [
         "AnnualReport",
         "BiennialReport",
@@ -106,7 +106,7 @@ class EpaPermissionSerializer(SitePermissionSerializer):
         "SiteManagement",
     ]
     """
-    SitePermission model serializer specifically for reading a user's site permissions
+    RcraSitePermission model serializer specifically for reading a user's site permissions
     from RCRAInfo. It's not used for serializing, only deserializing permissions from RCRAinfo
     """
     siteId = serializers.StringRelatedField(
@@ -116,20 +116,20 @@ class EpaPermissionSerializer(SitePermissionSerializer):
         source="site.epa_site.name",
         required=False,
     )
-    SiteManagement = EpaPermissionField(source="site_manager")
-    AnnualReport = EpaPermissionField(
+    SiteManagement = RcraPermissionField(source="site_manager")
+    AnnualReport = RcraPermissionField(
         source="annual_report",
     )
-    BiennialReport = EpaPermissionField(
+    BiennialReport = RcraPermissionField(
         source="biennial_report",
     )
-    eManifest = EpaPermissionField(
+    eManifest = RcraPermissionField(
         source="e_manifest",
     )
-    WIETS = EpaPermissionField(
+    WIETS = RcraPermissionField(
         source="wiets",
     )
-    myRCRAid = EpaPermissionField(
+    myRCRAid = RcraPermissionField(
         source="my_rcra_id",
     )
 
@@ -150,7 +150,7 @@ class EpaPermissionSerializer(SitePermissionSerializer):
             raise APIException(f"malformed JSON: {exc}")
 
     class Meta:
-        model = SitePermission
+        model = RcraSitePermission
         # Note the Pascal case, instead of camel case for (some) Rcrainfo modules.
         fields = [
             "siteId",
@@ -164,13 +164,13 @@ class EpaPermissionSerializer(SitePermissionSerializer):
         ]
 
 
-class EpaProfileSerializer(ModelSerializer):
+class RcraProfileSerializer(ModelSerializer):
     """
-    Model serializer for marshalling/unmarshalling a user's EpaProfile
+    Model serializer for marshalling/unmarshalling a user's RcraProfile
     """
 
     user = serializers.StringRelatedField()
-    epaSites = SitePermissionSerializer(source="site_permission", required=False, many=True)
+    epaSites = RcraSitePermissionSerializer(source="site_permission", required=False, many=True)
     phoneNumber = serializers.CharField(
         source="phone_number",
         required=False,
@@ -195,7 +195,7 @@ class EpaProfileSerializer(ModelSerializer):
     )
 
     class Meta:
-        model = EpaProfile
+        model = RcraProfile
         fields = [
             "user",
             "rcraAPIID",

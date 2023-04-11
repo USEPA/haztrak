@@ -3,10 +3,10 @@ from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
 from apps.core.admin import HiddenListView
-from apps.sites.models import Address, Contact, EpaProfile, EpaSite, Site, SitePermission
+from apps.sites.models import Address, Contact, RcraProfile, RcraSite, RcraSitePermission, Site
 
 
-@admin.register(EpaSite)
+@admin.register(RcraSite)
 class HandlerAdmin(admin.ModelAdmin):
     list_display = ["__str__", "site_type", "site_address", "mail_address"]
     list_filter = ["site_type"]
@@ -28,7 +28,7 @@ class SiteAdmin(admin.ModelAdmin):
         return format_html("<a href='{}'>{}</a>", url, site.epa_site.epa_id)
 
 
-@admin.register(EpaProfile)
+@admin.register(RcraProfile)
 class RcraProfileAdmin(admin.ModelAdmin):
     list_display = ["__str__", "related_user", "rcra_username", "api_user"]
     search_fields = ["user__username", "rcra_username"]
@@ -37,7 +37,7 @@ class RcraProfileAdmin(admin.ModelAdmin):
         url = reverse("admin:auth_user_changelist") + "?" + urlencode({"q": str(user.id)})
         return format_html("<a href='{}'>{}</a>", url, user)
 
-    def api_user(self, profile: EpaProfile) -> bool:
+    def api_user(self, profile: RcraProfile) -> bool:
         return profile.is_api_user
 
     api_user.boolean = True
@@ -45,8 +45,8 @@ class RcraProfileAdmin(admin.ModelAdmin):
     related_user.short_description = "User"
 
 
-@admin.register(SitePermission)
-class SitePermissionAdmin(admin.ModelAdmin):
+@admin.register(RcraSitePermission)
+class RcraSitePermissionAdmin(admin.ModelAdmin):
     list_display = [
         "__str__",
         "site_manager",

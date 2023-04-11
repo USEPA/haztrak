@@ -138,7 +138,7 @@ class ManifestSerializer(TrakBaseSerializer):
     generator = ManifestHandlerSerializer()
     transporters = TransporterSerializer(many=True)
     designatedFacility = ManifestHandlerSerializer(
-        source="tsd",
+        source="tsdf",
     )
     # broker
     wastes = WasteLineSerializer(many=True)

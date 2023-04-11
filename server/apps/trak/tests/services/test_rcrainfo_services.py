@@ -12,9 +12,9 @@ from apps.trak.serializers import QuickerSignSerializer
 
 class TestRcrainfoService:
     @pytest.fixture(autouse=True)
-    def _setup(self, user_factory, epa_profile_factory):
+    def _setup(self, user_factory, rcra_profile_factory):
         self.testuser1 = user_factory()
-        self.profile = epa_profile_factory(user=self.testuser1)
+        self.profile = rcra_profile_factory(user=self.testuser1)
 
     def test_class_inits(self):
         rcrainfo = RcrainfoService(api_username=self.testuser1.username, rcrainfo_env="preprod")
@@ -24,7 +24,7 @@ class TestRcrainfoService:
 
     def test_auto_authorized(self):
         rcrainfo = RcrainfoService(api_username=self.testuser1.username)
-        # retrieve_id() should get their API credentials from their EpaProfile
+        # retrieve_id() should get their API credentials from their RcraProfile
         testuser_id = rcrainfo.retrieve_id()
         assert testuser_id == self.profile.rcra_api_id
 
@@ -64,9 +64,9 @@ class TestQuickerSign:
     sign_date = datetime.utcnow().replace(tzinfo=timezone.utc)
 
     @pytest.fixture(autouse=True)
-    def _setup(self, user_factory, epa_profile_factory, quicker_sign_response_factory):
+    def _setup(self, user_factory, rcra_profile_factory, quicker_sign_response_factory):
         self.testuser1 = user_factory()
-        self.profile = epa_profile_factory(user=self.testuser1)
+        self.profile = rcra_profile_factory(user=self.testuser1)
         self.rcrainfo = RcrainfoService(api_username=self.testuser1.username, auto_renew=False)
         self.quicker_sign_url = f"{self.rcrainfo.base_url}/api/v1/emanifest/manifest/quicker-sign"
         self.response_json = quicker_sign_response_factory(

@@ -5,23 +5,23 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpd
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.sites.models import EpaProfile, SitePermission
+from apps.sites.models import RcraProfile, RcraSitePermission
 from apps.sites.serializers import (
-    EpaPermissionSerializer,
-    EpaProfileSerializer,
-    SitePermissionSerializer,
+    RcraPermissionSerializer,
+    RcraProfileSerializer,
+    RcraSitePermissionSerializer,
 )
 
 
-class EpaProfileView(RetrieveUpdateAPIView):
+class RcraProfileView(RetrieveUpdateAPIView):
     """
-    Responsible for Create/Update operations related to the user EpaProfile,
+    Responsible for Create/Update operations related to the user RcraProfile,
     which maintains a user's RCRAInfo profile data. This info is necessary for
     actions that interface with RCRAInfo.
     """
 
-    queryset = EpaProfile.objects.all()
-    serializer_class = EpaProfileSerializer
+    queryset = RcraProfile.objects.all()
+    serializer_class = RcraProfileSerializer
     response = Response
     lookup_field = "user__username"
     lookup_url_kwarg = "user"
@@ -40,31 +40,31 @@ class SyncProfileView(GenericAPIView):
     def get(self, request: Request, user: str = None) -> Response:
         """Sync Profile GET method epa_site"""
         try:
-            profile = EpaProfile.objects.get(user=request.user)
+            profile = RcraProfile.objects.get(user=request.user)
             task = profile.sync()
             return self.response({"task": task.id})
         except (User.DoesNotExist, CeleryError) as exc:
             return self.response(data=exc, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class SitePermissionView(RetrieveAPIView):
+class RcraSitePermissionView(RetrieveAPIView):
     """
     For Viewing a user's Site Permissions in haztrak's internal JSON structure.
     This is not included in the current URL configs, but kept here for documentation.
     """
 
-    queryset = SitePermission.objects.all()
-    serializer_class = SitePermissionSerializer
+    queryset = RcraSitePermission.objects.all()
+    serializer_class = RcraSitePermissionSerializer
     permission_classes = [permissions.AllowAny]
 
 
-class EpaPermissionView(RetrieveAPIView):
+class RcraPermissionView(RetrieveAPIView):
     """
     For Viewing a user's Site Permissions in the same JSON structure as RCRAInfo.
 
     This is not included in the current URL configs, but kept here for documentation.
     """
 
-    queryset = SitePermission.objects.all()
-    serializer_class = EpaPermissionSerializer
+    queryset = RcraSitePermission.objects.all()
+    serializer_class = RcraPermissionSerializer
     permission_classes = [permissions.AllowAny]

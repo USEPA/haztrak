@@ -2,7 +2,7 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
-from apps.sites.models import Address, Contact, EpaProfile
+from apps.sites.models import Address, Contact, RcraProfile
 
 
 @pytest.mark.django_db
@@ -33,29 +33,29 @@ class TestContactModel:
 
 
 @pytest.mark.django_db
-class TestEpaProfileModel:
-    """Test related to the EpaProfile model and its API"""
+class TestRcraProfileModel:
+    """Test related to the RcraProfile model and its API"""
 
-    def test_rcra_profile_saves(self, epa_profile_factory):
+    def test_rcra_profile_saves(self, rcra_profile_factory):
         """simply check the model saves given our factory's defaults"""
-        epa_profile = epa_profile_factory()
-        assert isinstance(epa_profile, EpaProfile)
+        rcra_profile = rcra_profile_factory()
+        assert isinstance(rcra_profile, RcraProfile)
 
     @pytest.mark.parametrize("rcra_username", ["username", None])
     @pytest.mark.parametrize("rcra_api_id", ["id", None])
     @pytest.mark.parametrize("rcra_api_key", ["key", None])
-    def test_epa_profile_is_not_api_user_if_one_missing(
-        self, epa_profile_factory, rcra_username, rcra_api_id, rcra_api_key
+    def test_rcra_profile_is_not_api_user_if_one_missing(
+        self, rcra_profile_factory, rcra_username, rcra_api_id, rcra_api_key
     ):
         """If any of the three are None, the user should not be considered an API user"""
         # Arrange
         expected = True
         if rcra_username is None or rcra_api_id is None or rcra_api_key is None:
             expected = False
-        epa_profile = epa_profile_factory(
+        rcra_profile = rcra_profile_factory(
             rcra_username=rcra_username, rcra_api_id=rcra_api_id, rcra_api_key=rcra_api_key
         )
         # Act
-        api_user = epa_profile.is_api_user
+        api_user = rcra_profile.is_api_user
         # Assert
         assert api_user is expected

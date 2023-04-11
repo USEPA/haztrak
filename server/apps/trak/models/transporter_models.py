@@ -2,10 +2,10 @@ from typing import Dict
 
 from django.db import models
 
-from .handler_models import ManifestHandler, ManifestHandlerManager
+from .handler_models import Handler, HandlerManager
 
 
-class TransporterManager(ManifestHandlerManager):
+class TransporterManager(HandlerManager):
     """
     Inter-model related functionality for Transporter Model
     """
@@ -18,7 +18,7 @@ class TransporterManager(ManifestHandlerManager):
         return super().save(**transporter_data)
 
 
-class Transporter(ManifestHandler):
+class Transporter(Handler):
     """
     Model definition for entities listed as transporters of hazardous waste on the manifest.
     """

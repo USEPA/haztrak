@@ -1,15 +1,16 @@
 import logging
 
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-from rest_framework import status
+from drf_spectacular.utils import extend_schema
+from rest_framework import permissions, status
 from rest_framework.exceptions import APIException
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.sites.models import Site
-from apps.sites.serializers import SiteSerializer
+from apps.sites.models import RcraSite, RcraSiteType, Site
+from apps.sites.serializers import RcraSiteSerializer, SiteSerializer
 from apps.sites.tasks import sync_site_manifests
 from apps.trak.models import Manifest
 from apps.trak.serializers import MtnSerializer
@@ -27,12 +28,12 @@ class SiteListView(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Site.objects.filter(sitepermission__profile__user=user)
+        return Site.objects.filter(rcrasitepermission__profile__user=user)
 
 
 class SiteDetailView(RetrieveAPIView):
     """
-    View to GET a Haztrak Site, which encapsulates the EPA EpaSite plus some.
+    View to GET a Haztrak Site, which encapsulates the EPA RcraSite plus some.
     """
 
     serializer_class = SiteSerializer
@@ -43,7 +44,7 @@ class SiteDetailView(RetrieveAPIView):
     def get_queryset(self):
         epa_id = self.kwargs["epa_id"]
         queryset = Site.objects.filter(
-            epa_site__epa_id=epa_id, sitepermission__profile__user=self.request.user
+            epa_site__epa_id=epa_id, rcrasitepermission__profile__user=self.request.user
         )
         return queryset
 
@@ -84,11 +85,11 @@ class SiteMtnListView(GenericAPIView):
         """GET method epa_site"""
         try:
             profile_sites = [
-                str(i) for i in Site.objects.filter(sitepermission__profile__user=request.user)
+                str(i) for i in Site.objects.filter(rcrasitepermission__profile__user=request.user)
             ]
             if epa_id not in profile_sites:
                 raise PermissionDenied
-            tsd_manifests = Manifest.objects.filter(tsd__epa_site__epa_id=epa_id).values(
+            tsdf_manifests = Manifest.objects.filter(tsdf__epa_site__epa_id=epa_id).values(
                 "mtn", "status"
             )
             gen_manifests = Manifest.objects.filter(generator__epa_site__epa_id=epa_id).values(
@@ -100,7 +101,7 @@ class SiteMtnListView(GenericAPIView):
             return self.response(
                 status=status.HTTP_200_OK,
                 data={
-                    "tsd": tsd_manifests,
+                    "tsdf": tsdf_manifests,
                     "generator": gen_manifests,
                     "transporter": tran_manifests,
                 },
@@ -112,3 +113,43 @@ class SiteMtnListView(GenericAPIView):
             return self.response(
                 status=status.HTTP_404_NOT_FOUND, data={"Error": f"{epa_id} not found"}
             )
+
+
+@extend_schema(
+    description="Retrieve details on a epa_site stored in the Haztrak database",
+)
+class RcraSiteView(RetrieveAPIView):
+    """
+    RcraSiteView returns details on a single RcraSite known to haztrak
+    """
+
+    queryset = RcraSite.objects.all()
+    serializer_class = RcraSiteSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class EpaSiteSearchView(ListAPIView):
+    queryset = RcraSite.objects.all()
+    serializer_class = RcraSiteSerializer
+
+    def get_queryset(self):
+        queryset = RcraSite.objects.all()
+        epa_id_param = self.request.query_params.get("epaId")
+        name_param = self.request.query_params.get("siteName")
+        site_type_param: str = self.request.query_params.get("siteType")
+        if epa_id_param is not None:
+            queryset = queryset.filter(epa_id__contains=epa_id_param)
+        if name_param is not None:
+            queryset = queryset.filter(name__contains=name_param)
+        if site_type_param is not None:
+            match site_type_param.lower():
+                case "transporter":
+                    site_type = RcraSiteType.TRANSPORTER.label
+                case "tsdf":
+                    site_type = RcraSiteType.TSDF.label
+                case "generator":
+                    site_type = RcraSiteType.GENERATOR.label
+                case _:
+                    site_type = RcraSiteType.TSDF
+            queryset = queryset.filter(site_type=site_type)
+        return queryset

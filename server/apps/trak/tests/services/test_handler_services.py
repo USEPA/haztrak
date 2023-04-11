@@ -1,15 +1,15 @@
 import pytest
 
 from apps.core.services import RcrainfoService
-from apps.sites.models import EpaSite
-from apps.sites.services import EpaSiteService
+from apps.sites.models import RcraSite
+from apps.sites.services import RcraSiteService
 
 
 class TestHandlerService:
     @pytest.fixture(autouse=True)
-    def _setup(self, user_factory, epa_profile_factory, haztrak_json):
+    def _setup(self, user_factory, rcra_profile_factory, haztrak_json):
         self.user = user_factory()
-        self.profile = epa_profile_factory(user=self.user)
+        self.profile = rcra_profile_factory(user=self.user)
         self.handler_json = haztrak_json.HANDLER.value
         self.epa_id = self.handler_json.get("epaSiteId", "handler001")
 
@@ -27,7 +27,7 @@ class TestHandlerService:
         """test pulling a epa_site's information from rcrainfo"""
         # Arrange
         rcrainfo = RcrainfoService(api_username=self.user.username, auto_renew=False)
-        handler_service = EpaSiteService(username=self.user.username, rcrainfo=rcrainfo)
+        handler_service = RcraSiteService(username=self.user.username, rcrainfo=rcrainfo)
         rcrainfo_site_details_url = f"{rcrainfo.base_url}/api/v1/site-details/{self.epa_id}"
         # mock response from Rcrainfo
         mock_responses.get(
@@ -36,6 +36,6 @@ class TestHandlerService:
             status=200,
         )
         # Act
-        epa_site = handler_service.pull_epa_site(site_id=self.epa_id)
+        epa_site = handler_service.pull_rcra_site(site_id=self.epa_id)
         # Assert
-        assert isinstance(epa_site, EpaSite)
+        assert isinstance(epa_site, RcraSite)

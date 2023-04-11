@@ -1,7 +1,7 @@
 from rest_framework import permissions
 from rest_framework.generics import RetrieveAPIView
 
-from apps.trak.models import ManifestHandler, Transporter
+from apps.trak.models import Handler, Transporter
 from apps.trak.serializers import (
     ManifestHandlerSerializer,
     TransporterSerializer,
@@ -25,6 +25,6 @@ class ManifestHandlerView(RetrieveAPIView):
     This is not included in the current URL configs, but kept here for documentation.
     """
 
-    queryset = ManifestHandler.objects.all()
+    queryset = Handler.objects.all()
     serializer_class = ManifestHandlerSerializer
     permission_classes = [permissions.AllowAny]

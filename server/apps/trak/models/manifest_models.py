@@ -7,8 +7,8 @@ from django.db import models
 from django.db.models import Max, Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from apps.sites.models import EpaSiteType
-from apps.trak.models import ManifestHandler
+from apps.sites.models import RcraSiteType
+from apps.trak.models import Handler
 from apps.trak.models.base_models import TrakBaseManager, TrakBaseModel
 
 from .transporter_models import Transporter
@@ -51,17 +51,17 @@ class ManifestManager(TrakBaseManager):
         return self.model.objects.filter(*args, mtn__in=mtn)
 
     @staticmethod
-    def get_handler_query(site_id: str, site_type: EpaSiteType | str):
+    def get_handler_query(site_id: str, site_type: RcraSiteType | str):
         """Returns a Django Query object for filtering by epa_site type"""
-        if isinstance(site_type, str) and not isinstance(site_type, EpaSiteType):
+        if isinstance(site_type, str) and not isinstance(site_type, RcraSiteType):
             site_type = site_type.lower()
         match site_type:
-            case EpaSiteType.GENERATOR | "generator":
+            case RcraSiteType.GENERATOR | "generator":
                 return Q(generator__epa_site__epa_id=site_id)
-            case EpaSiteType.TRANSPORTER | "transporter":
+            case RcraSiteType.TRANSPORTER | "transporter":
                 return Q(transporters__epa_site__epa_id=site_id)
-            case EpaSiteType.TSDF | "tsdf":
-                return Q(tsd__epa_site__epa_id=site_id)
+            case RcraSiteType.TSDF | "tsdf":
+                return Q(tsdf__epa_site__epa_id=site_id)
             case _:
                 raise ValueError(f"unrecognized site_type argument {site_type}")
 
@@ -71,22 +71,22 @@ class ManifestManager(TrakBaseManager):
         trans_data = []
         additional_info = None
         manifest_generator = None
-        manifest_tsd = None
+        manifest_tsdf = None
         if "wastes" in manifest_data:
             waste_data = manifest_data.pop("wastes")
         if "transporters" in manifest_data:
             trans_data = manifest_data.pop("transporters")
-        # Create manifest handlers (generator and TSD) and all related models
+        # Create manifest handlers (generator and TSDF) and all related models
         if "generator" in manifest_data:
-            manifest_generator = ManifestHandler.objects.save(**manifest_data.pop("generator"))
-        if "tsd" in manifest_data:
-            manifest_tsd = ManifestHandler.objects.save(**manifest_data.pop("tsd"))
+            manifest_generator = Handler.objects.save(**manifest_data.pop("generator"))
+        if "tsdf" in manifest_data:
+            manifest_tsdf = Handler.objects.save(**manifest_data.pop("tsdf"))
         if "additional_info" in manifest_data:
             additional_info = AdditionalInfo.objects.create(**manifest_data.pop("additional_info"))
         # Create model instances
         manifest = super().save(
             generator=manifest_generator,
-            tsd=manifest_tsd,
+            tsdf=manifest_tsdf,
             additional_info=additional_info,
             **manifest_data,
         )
@@ -192,13 +192,13 @@ class Manifest(TrakBaseModel):
         blank=True,
     )
     generator = models.ForeignKey(
-        "ManifestHandler",
+        "Handler",
         on_delete=models.PROTECT,
         related_name="generator",
     )
     # transporters
-    tsd = models.ForeignKey(
-        "ManifestHandler",
+    tsdf = models.ForeignKey(
+        "Handler",
         verbose_name="designated facility",
         on_delete=models.PROTECT,
         related_name="designated_facility",
