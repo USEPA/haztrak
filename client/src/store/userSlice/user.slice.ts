@@ -12,6 +12,7 @@ export interface UserState {
 }
 
 const initialState: UserState = {
+  // Retrieve the user's username and token from local storage. For convenience
   user: JSON.parse(localStorage.getItem('user') || 'null') || null,
   token: JSON.parse(localStorage.getItem('token') || 'null') || null,
   loading: false,

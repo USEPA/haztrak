@@ -19,6 +19,15 @@ interface QuickerSignProps {
   handleClose?: () => void;
 }
 
+/**
+ * Form used to collect signature information, following the RCRAInfo QuickerSignature schema,
+ * which can sent to EPA's RCRAInfo to electronically sign manifests.
+ * @param mtn
+ * @param mtnHandler
+ * @param handleClose
+ * @param siteType
+ * @constructor
+ */
 function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSignProps) {
   const { user } = useAppSelector<UserState>((state: RootState) => state.user);
   const dispatch = useAppDispatch();

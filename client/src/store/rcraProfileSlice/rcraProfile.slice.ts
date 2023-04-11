@@ -31,7 +31,7 @@ export interface RcraProfileState {
    * Array of EPA sites a user has access to in RCRAInfo stored in key-value pairs
    * where the keys are the site's EPA ID number
    */
-  epaSites?: Record<string, ProfileEpaSite>;
+  epaSites?: Record<string, RcraSitePermissions>;
   phoneNumber?: string;
   loading?: boolean;
   error?: string;
@@ -45,7 +45,7 @@ export interface RcraProfileState {
  * The user's site permissions for an EPA site in RCRAInfo, including each the user's
  * permission for each RCRAInfo module
  */
-export interface ProfileEpaSite {
+export interface RcraSitePermissions {
   epaId: string;
   permissions: {
     /**
@@ -88,7 +88,7 @@ interface RcraProfileResponse {
   user: undefined;
   rcraAPIID: undefined;
   rcraUsername: undefined;
-  epaSites?: Array<ProfileEpaSite>;
+  epaSites?: Array<RcraSitePermissions>;
   phoneNumber: undefined;
   apiUser: boolean;
   loading: false;

@@ -3,7 +3,7 @@
  */
 import rcraProfileReducer, {
   getProfile,
-  ProfileEpaSite,
+  RcraSitePermissions,
   RcraProfileState,
 } from './rcraProfile.slice';
 
@@ -17,7 +17,7 @@ const initialState: RcraProfileState = {
   error: undefined,
 };
 
-const mySite: ProfileEpaSite = {
+const mySite: RcraSitePermissions = {
   epaId: 'testId',
   permissions: {
     siteManagement: true,

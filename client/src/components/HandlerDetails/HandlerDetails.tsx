@@ -10,7 +10,7 @@ interface HandlerDetailsProps {
 }
 
 /**
- * Returns the details of an EPA hazardous waste handler including address information
+ * Returns the details of an EPA hazardous waste handler
  * @param handler
  * @constructor
  */
