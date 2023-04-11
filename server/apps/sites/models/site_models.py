@@ -181,6 +181,8 @@ class Site(SitesBaseModel):
 
     class Meta:
         ordering = ["rcra_site__epa_id"]
+        verbose_name = "Haztrak Site"
+        verbose_name_plural = "Haztrak Sites"
 
     name = models.CharField(
         verbose_name="site alias",

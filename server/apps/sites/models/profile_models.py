@@ -76,7 +76,7 @@ class RcraSitePermission(SitesBaseModel):
     ]
 
     class Meta:
-        verbose_name = "EPA Site Permission"
+        verbose_name = "RCRA Site Permission"
         ordering = ["site__rcra_site__epa_id"]
 
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
