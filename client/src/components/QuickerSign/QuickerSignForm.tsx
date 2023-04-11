@@ -5,7 +5,7 @@ import React from 'react';
 import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { UserState } from 'store/userSlice/user.slice';
-import { ManifestHandler, Transporter } from 'types/site';
+import { Handler, Transporter } from 'types/site';
 import { QuickerSignature } from 'types/manifest/signatures';
 import { useNavigate } from 'react-router-dom';
 import { addMsg, RootState, useAppDispatch, useAppSelector } from 'store';
@@ -14,7 +14,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 interface QuickerSignProps {
   mtn: Array<string>;
-  mtnHandler: ManifestHandler | Transporter;
+  mtnHandler: Handler | Transporter;
   siteType: 'Generator' | 'Transporter' | 'Tsdf';
   handleClose?: () => void;
 }

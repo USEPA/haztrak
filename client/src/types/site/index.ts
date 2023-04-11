@@ -1,5 +1,5 @@
 import { ElectronicSignature, Signer } from 'types/manifest';
-import { RcraSite, ManifestHandler, Transporter, HaztrakSite } from 'types/site/sites';
+import { RcraSite, Handler, Transporter, HaztrakSite } from 'types/site/sites';
 
 import { RcraAddress, RcraLocality } from './address';
 import { RcraContact, RcraPhone } from './contact';
@@ -11,7 +11,7 @@ export type {
   Signer,
   RcraAddress,
   RcraLocality,
-  ManifestHandler,
+  Handler,
   ElectronicSignature,
   RcraContact,
   RcraPhone,

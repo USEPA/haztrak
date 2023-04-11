@@ -1,9 +1,9 @@
-import { RcraSite, ManifestHandler, HaztrakSite, Transporter } from 'types/site';
+import { RcraSite, Handler, HaztrakSite, Transporter } from 'types/site';
 
 /**
  * A mock handler object for tests
  */
-const DEFAULT_HANDLER: ManifestHandler = {
+const DEFAULT_HANDLER: Handler = {
   epaSiteId: 'testSiteIdNumber',
   name: 'TEST TRANSPORTER 2 OF VA',
   siteAddress: {
@@ -63,7 +63,7 @@ export function createMockHandler(overWrites?: Partial<RcraSite>): RcraSite {
   };
 }
 
-export function createMockMTNHandler(overWrites?: Partial<ManifestHandler>): ManifestHandler {
+export function createMockMTNHandler(overWrites?: Partial<Handler>): Handler {
   return {
     ...createMockHandler(),
     electronicSignaturesInfo: [],

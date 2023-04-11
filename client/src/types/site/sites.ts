@@ -60,7 +60,7 @@ export const rcraSite = z.object({
  */
 export type RcraSite = z.infer<typeof rcraSite>;
 
-const manifestHandlerSchema = rcraSite.extend({
+const handlerSchema = rcraSite.extend({
   paperSignatureInfo: paperSignatureSchema.optional(),
   electronicSignaturesInfo: electronicSignatureSchema.array().optional(),
   /**
@@ -70,17 +70,18 @@ const manifestHandlerSchema = rcraSite.extend({
 });
 
 /**
- * The ManifestHandler extends to RCRA site schema and adds manifest specific data
+ * The Handler extends the RcraSite schema and adds manifest specific data
  */
-export type ManifestHandler = z.infer<typeof manifestHandlerSchema>;
+export type Handler = z.infer<typeof handlerSchema>;
 
-const transporterSchema = manifestHandlerSchema.extend({
+const transporterSchema = handlerSchema.extend({
   order: z.number(),
   manifest: z.number().optional(),
 });
 
 /**
- *  The Transporter type extends the ManifestHandler schema
+ *  The Transporter type extends the Handler schema and adds transporter
+ *  specific data, such as their order on the manifest
  */
 export type Transporter = z.infer<typeof transporterSchema>;
 
