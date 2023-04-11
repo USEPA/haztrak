@@ -682,7 +682,7 @@
   pk: 1
   fields:
     name: VA TEST GEN 2021
-    epa_site: 1
+    rcra_site: 1
     last_rcra_sync: null
 - model: sites.rcrasitepermission
   pk: 1

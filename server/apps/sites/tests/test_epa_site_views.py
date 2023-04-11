@@ -22,7 +22,7 @@ class TestEpaSiteView:
     def generator(self, rcra_site_factory, api_client_factory):
         return rcra_site_factory()
 
-    def test_endpoint_returns_json_with_epa_site(self, client, generator):
+    def test_endpoint_returns_json_with_rcra_site(self, client, generator):
         response: Response = client.get(f"{self.URL}/details/{generator.pk}")
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK

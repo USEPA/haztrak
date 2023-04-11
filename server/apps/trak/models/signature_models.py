@@ -150,7 +150,7 @@ class ESignature(TrakBaseModel):
 
 class PaperSignature(TrakBaseModel):
     """
-    Contains printed name of the epa_site Signee and
+    Contains printed name of the rcra_site Signee and
     Date of Signature for paper manifests.
     """
 

@@ -1,27 +1,25 @@
 import pytest
 
 from apps.trak.models import Handler, PaperSignature
-from apps.trak.serializers import ManifestHandlerSerializer
+from apps.trak.serializers import HandlerSerializer
 
 
 @pytest.mark.django_db
 class TestManifestHandlerSerializer:
     @pytest.fixture
-    def manifest_handler_serializer(self, haztrak_json) -> ManifestHandlerSerializer:
-        manifest_handler_serializer = ManifestHandlerSerializer(data=haztrak_json.HANDLER.value)
+    def manifest_handler_serializer(self, haztrak_json) -> HandlerSerializer:
+        manifest_handler_serializer = HandlerSerializer(data=haztrak_json.HANDLER.value)
         manifest_handler_serializer.is_valid()
         return manifest_handler_serializer
 
     @pytest.fixture
-    def paper_handler_serializer(self, haztrak_json) -> ManifestHandlerSerializer:
-        handler_serializer = ManifestHandlerSerializer(
-            data=haztrak_json.PAPER_MANIFEST_HANDLER.value
-        )
+    def paper_handler_serializer(self, haztrak_json) -> HandlerSerializer:
+        handler_serializer = HandlerSerializer(data=haztrak_json.PAPER_MANIFEST_HANDLER.value)
         handler_serializer.is_valid()
         return handler_serializer
 
     def test_m_handler_serializes(self, haztrak_json) -> None:
-        manifest_handler_serializer = ManifestHandlerSerializer(data=haztrak_json.HANDLER.value)
+        manifest_handler_serializer = HandlerSerializer(data=haztrak_json.HANDLER.value)
         assert manifest_handler_serializer.is_valid()
 
     def test_serializer_saves_handler(self, manifest_handler_serializer) -> None:
@@ -29,7 +27,7 @@ class TestManifestHandlerSerializer:
         assert isinstance(manifest_handler, Handler)
 
     def test_paper_manifest_handler_serializes(self, haztrak_json) -> None:
-        manifest_handler_serializer = ManifestHandlerSerializer(
+        manifest_handler_serializer = HandlerSerializer(
             data=haztrak_json.PAPER_MANIFEST_HANDLER.value
         )
         assert manifest_handler_serializer.is_valid()
@@ -42,4 +40,4 @@ class TestManifestHandlerSerializer:
         # The Handler holds a foreign key to a RcraSite instance
         # however it should flatten that representation.
         assert "epaSiteId" in manifest_handler_serializer.data
-        assert "epa_site" not in manifest_handler_serializer.data
+        assert "rcra_site" not in manifest_handler_serializer.data

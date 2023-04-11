@@ -21,7 +21,7 @@ class SiteService:
         self.username = username
         self.rcrainfo = rcrainfo or RcrainfoService(api_username=username)
         if site_id:
-            self.site = Site.objects.get(epa_site__epa_id=site_id)
+            self.site = Site.objects.get(rcra_site__epa_id=site_id)
 
     def sync_rcra_manifest(self, *, site_id: str = None) -> Dict[str, List[str]]:
         """
@@ -33,7 +33,7 @@ class SiteService:
         logger.info(f"{self} sync rcra manifest, site ID {site_id}")
         try:
             manifest_service = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
-            site = Site.objects.get(epa_site__epa_id=site_id or self.site)
+            site = Site.objects.get(rcra_site__epa_id=site_id or self.site)
             logger.info(f"site: {site}, manifest_service: {manifest_service}")
             tracking_numbers: List[str] = manifest_service.search_rcra_mtn(
                 site_id=site_id, start_date=site.last_rcra_sync
@@ -55,25 +55,25 @@ class SiteService:
             raise Exception
 
     @transaction.atomic
-    def create_or_update_site(self, *, epa_site: RcraSite, site_name: str = None) -> Site:
+    def create_or_update_site(self, *, rcra_site: RcraSite, site_name: str = None) -> Site:
         """
         Retrieve a site from the database or create.
 
         Keyword Args:
-            epa_site (RcraSite): An instance of the (hazardous waste) Handler model
+            rcra_site (RcraSite): An instance of the (hazardous waste) Handler model
             site_name (str): A haztrak alias for a site
         """
         if site_name is None:
-            site_name = epa_site.name
-        if Site.objects.filter(epa_site__epa_id=epa_site.epa_id).exists():
-            return Site.objects.get(epa_site__epa_id=epa_site.epa_id)
+            site_name = rcra_site.name
+        if Site.objects.filter(rcra_site__epa_id=rcra_site.epa_id).exists():
+            return Site.objects.get(rcra_site__epa_id=rcra_site.epa_id)
         else:
-            return Site.objects.create(epa_site=epa_site, name=site_name)
+            return Site.objects.create(rcra_site=rcra_site, name=site_name)
 
 
 class RcraSiteService:
     """
-    RcraSiteService houses the (high-level) epa_site subdomain specific business logic.
+    RcraSiteService houses the (high-level) rcra_site subdomain specific business logic.
     RcraSiteService's public interface needs to be controlled strictly, public method
     directly relate to use cases.
     """
@@ -91,7 +91,7 @@ class RcraSiteService:
 
     def pull_rcra_site(self, *, site_id: str) -> RcraSite:
         """
-        Retrieve a site/epa_site from Rcrainfo and return RcraSiteSerializer
+        Retrieve a site/rcra_site from Rcrainfo and return RcraSiteSerializer
         """
         rcra_site_data: Dict = self.rcrainfo.get_site(site_id).json()
         rcra_site_serializer: RcraSiteSerializer = self._deserialize_rcra_site(
@@ -99,17 +99,17 @@ class RcraSiteService:
         )
         return self._create_or_update_rcra_site(rcra_site_data=rcra_site_serializer.validated_data)
 
-    def get_or_pull_epa_site(self, site_id: str) -> RcraSite:
+    def get_or_pull_rcra_site(self, site_id: str) -> RcraSite:
         """
-        Retrieves an epa_site from the database or Pull it from RCRAInfo.
+        Retrieves an rcra_site from the database or Pull it from RCRAInfo.
         This may be trying to do too much
         """
         if RcraSite.objects.filter(epa_id=site_id).exists():
-            self.logger.debug(f"using existing epa_site {site_id}")
+            self.logger.debug(f"using existing rcra_site {site_id}")
             return RcraSite.objects.get(epa_id=site_id)
-        new_epa_site = self.pull_rcra_site(site_id=site_id)
-        self.logger.debug(f"pulled new epa_site {new_epa_site}")
-        return new_epa_site
+        new_rcra_site = self.pull_rcra_site(site_id=site_id)
+        self.logger.debug(f"pulled new rcra_site {new_rcra_site}")
+        return new_rcra_site
 
     def _deserialize_rcra_site(self, *, rcra_site_data: dict) -> RcraSiteSerializer:
         serializer = RcraSiteSerializer(data=rcra_site_data)

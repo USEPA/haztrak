@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class RcraSiteType(models.TextChoices):
-    """A hazardous waste epa_site's type. Whether they are the epa_site
+    """A hazardous waste rcra_site's type. Whether they are the rcra_site
     that generates, transports, or treats the waste (Tsdf).
     It's also possible they can be a broker although this is much less common"""
 
@@ -180,15 +180,15 @@ class Site(SitesBaseModel):
     """
 
     class Meta:
-        ordering = ["epa_site__epa_id"]
+        ordering = ["rcra_site__epa_id"]
 
     name = models.CharField(
         verbose_name="site alias",
         max_length=200,
         validators=[MinValueValidator(2, "site aliases must be longer than 2 characters")],
     )
-    epa_site = models.OneToOneField(
-        verbose_name="epa_site",
+    rcra_site = models.OneToOneField(
+        verbose_name="rcra_site",
         to=RcraSite,
         on_delete=models.CASCADE,
     )
@@ -200,4 +200,4 @@ class Site(SitesBaseModel):
 
     def __str__(self):
         """Used in StringRelated fields in serializer classes"""
-        return f"{self.epa_site.epa_id}"
+        return f"{self.rcra_site.epa_id}"

@@ -52,16 +52,16 @@ class ManifestManager(TrakBaseManager):
 
     @staticmethod
     def get_handler_query(site_id: str, site_type: RcraSiteType | str):
-        """Returns a Django Query object for filtering by epa_site type"""
+        """Returns a Django Query object for filtering by rcra_site type"""
         if isinstance(site_type, str) and not isinstance(site_type, RcraSiteType):
             site_type = site_type.lower()
         match site_type:
             case RcraSiteType.GENERATOR | "generator":
-                return Q(generator__epa_site__epa_id=site_id)
+                return Q(generator__rcra_site__epa_id=site_id)
             case RcraSiteType.TRANSPORTER | "transporter":
-                return Q(transporters__epa_site__epa_id=site_id)
+                return Q(transporters__rcra_site__epa_id=site_id)
             case RcraSiteType.TSDF | "tsdf":
-                return Q(tsdf__epa_site__epa_id=site_id)
+                return Q(tsdf__rcra_site__epa_id=site_id)
             case _:
                 raise ValueError(f"unrecognized site_type argument {site_type}")
 

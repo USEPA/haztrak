@@ -24,7 +24,7 @@ class TestHandlerService:
         assert rcrainfo  # should return true
 
     def test_pulls_site_details_from_rcrainfo(self, mock_responses):
-        """test pulling a epa_site's information from rcrainfo"""
+        """test pulling a rcra_site's information from rcrainfo"""
         # Arrange
         rcrainfo = RcrainfoService(api_username=self.user.username, auto_renew=False)
         handler_service = RcraSiteService(username=self.user.username, rcrainfo=rcrainfo)
@@ -36,6 +36,6 @@ class TestHandlerService:
             status=200,
         )
         # Act
-        epa_site = handler_service.pull_rcra_site(site_id=self.epa_id)
+        rcra_site = handler_service.pull_rcra_site(site_id=self.epa_id)
         # Assert
-        assert isinstance(epa_site, RcraSite)
+        assert isinstance(rcra_site, RcraSite)

@@ -33,7 +33,7 @@ class TestManifestHandlerModel:
     ):
         # Arrange
         manifest_handler = Handler(
-            epa_site=rcra_site_factory(),
+            rcra_site=rcra_site_factory(),
             paper_signature=None,
         )
         manifest_handler.save()
@@ -44,7 +44,7 @@ class TestManifestHandlerModel:
     def test_is_not_signed_with_no_signatures(self, rcra_site_factory):
         # Arrange
         manifest_handler = Handler(
-            epa_site=rcra_site_factory(),
+            rcra_site=rcra_site_factory(),
             paper_signature=None,
         )
         manifest_handler.save()

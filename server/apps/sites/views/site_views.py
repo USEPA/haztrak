@@ -37,14 +37,14 @@ class SiteDetailView(RetrieveAPIView):
     """
 
     serializer_class = SiteSerializer
-    lookup_field = "epa_site__epa_id"
+    lookup_field = "rcra_site__epa_id"
     lookup_url_kwarg = "epa_id"
     queryset = Site.objects.all()
 
     def get_queryset(self):
         epa_id = self.kwargs["epa_id"]
         queryset = Site.objects.filter(
-            epa_site__epa_id=epa_id, rcrasitepermission__profile__user=self.request.user
+            rcra_site__epa_id=epa_id, rcrasitepermission__profile__user=self.request.user
         )
         return queryset
 
@@ -59,7 +59,7 @@ class SyncSiteManifestView(GenericAPIView):
     response = Response
 
     def post(self, request: Request) -> Response:
-        """POST method epa_site"""
+        """POST method rcra_site"""
         try:
             site_id = request.data["siteId"]
             task = sync_site_manifests.delay(site_id=site_id, username=str(request.user))
@@ -82,21 +82,21 @@ class SiteMtnListView(GenericAPIView):
     serializer_class = MtnSerializer
 
     def get(self, request: Request, epa_id: str = None) -> Response:
-        """GET method epa_site"""
+        """GET method rcra_site"""
         try:
             profile_sites = [
                 str(i) for i in Site.objects.filter(rcrasitepermission__profile__user=request.user)
             ]
             if epa_id not in profile_sites:
                 raise PermissionDenied
-            tsdf_manifests = Manifest.objects.filter(tsdf__epa_site__epa_id=epa_id).values(
+            tsdf_manifests = Manifest.objects.filter(tsdf__rcra_site__epa_id=epa_id).values(
                 "mtn", "status"
             )
-            gen_manifests = Manifest.objects.filter(generator__epa_site__epa_id=epa_id).values(
+            gen_manifests = Manifest.objects.filter(generator__rcra_site__epa_id=epa_id).values(
                 "mtn", "status"
             )
             tran_manifests = Manifest.objects.filter(
-                transporters__epa_site__epa_id__contains=epa_id
+                transporters__rcra_site__epa_id__contains=epa_id
             ).values("mtn", "status")
             return self.response(
                 status=status.HTTP_200_OK,
@@ -116,7 +116,7 @@ class SiteMtnListView(GenericAPIView):
 
 
 @extend_schema(
-    description="Retrieve details on a epa_site stored in the Haztrak database",
+    description="Retrieve details on a rcra_site stored in the Haztrak database",
 )
 class RcraSiteView(RetrieveAPIView):
     """

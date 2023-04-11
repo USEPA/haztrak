@@ -21,11 +21,11 @@ def manifest_handler_factory(db, rcra_site_factory, paper_signature_factory):
     """Abstract factory for Haztrak Handler model"""
 
     def create_manifest_handler(
-        epa_site: Optional[RcraSite] = None,
+        rcra_site: Optional[RcraSite] = None,
         paper_signature: Optional[PaperSignature] = None,
     ) -> Handler:
         return Handler.objects.create(
-            epa_site=epa_site or rcra_site_factory(),
+            rcra_site=rcra_site or rcra_site_factory(),
             paper_signature=paper_signature or paper_signature_factory(),
         )
 
@@ -157,14 +157,14 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
     ) -> Manifest:
         if tsdf is None:
             # ensure the TSD is a different EPA site
-            epa_site = rcra_site_factory()
-            tsdf = manifest_handler_factory(epa_site=epa_site)
+            rcra_site = rcra_site_factory()
+            tsdf = manifest_handler_factory(rcra_site=rcra_site)
         return Manifest.objects.create(
             mtn=mtn,
             created_date=datetime.now().replace(tzinfo=timezone.utc),
             potential_ship_date=datetime.now().replace(tzinfo=timezone.utc),
             generator=generator or manifest_handler_factory(),
-            tsdf=tsdf or manifest_handler_factory(epa_site=rcra_site_factory(epa_id="tsd001")),
+            tsdf=tsdf or manifest_handler_factory(rcra_site=rcra_site_factory(epa_id="tsd001")),
         )
 
     yield create_manifest

@@ -23,9 +23,9 @@ class SiteAdmin(admin.ModelAdmin):
         url = (
             reverse("admin:sites_epasite_changelist")
             + "?"
-            + urlencode({"epa_id": str(site.epa_site.epa_id)})
+            + urlencode({"epa_id": str(site.rcra_site.epa_id)})
         )
-        return format_html("<a href='{}'>{}</a>", url, site.epa_site.epa_id)
+        return format_html("<a href='{}'>{}</a>", url, site.rcra_site.epa_id)
 
 
 @admin.register(RcraProfile)
@@ -57,7 +57,7 @@ class RcraSitePermissionAdmin(admin.ModelAdmin):
         "my_rcra_id",
     ]
     list_filter = ["site_manager"]
-    search_fields = ["profile__user__username", "site__epa_site__epa_id"]
+    search_fields = ["profile__user__username", "site__rcra_site__epa_id"]
 
 
 @admin.register(Address)

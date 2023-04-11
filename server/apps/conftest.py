@@ -192,11 +192,11 @@ def site_factory(db, rcra_site_factory):
     """Abstract factory for Haztrak Site model"""
 
     def create_site(
-        epa_site: Optional[RcraSite] = None,
+        rcra_site: Optional[RcraSite] = None,
         name: Optional[str] = "my site name",
     ) -> Site:
         return Site.objects.create(
-            epa_site=epa_site or rcra_site_factory(),
+            rcra_site=rcra_site or rcra_site_factory(),
             name=name,
         )
 

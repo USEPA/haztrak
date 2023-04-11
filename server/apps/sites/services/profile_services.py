@@ -48,7 +48,7 @@ class RcraProfileService:
         """
         This high level function makes several requests to RCRAInfo to pull...
         1. A user's rcrainfo site permissions, it creates a RcraSitePermission for each
-        2. For each rcra site permission, it pulls the epa_site details, and creates or updates
+        2. For each rcra site permission, it pulls the rcra_site details, and creates or updates
          a RcraSite instance for each
         3. If a Haztrak Site is not present, create one
         """
@@ -62,8 +62,8 @@ class RcraProfileService:
             user_profile_response = self.rcrainfo.get_user_profile(username=user_to_update)
             permissions = self._parse_rcra_response(rcra_response=user_profile_response)
             for rcra_site_permission in permissions:
-                epa_site = handler_service.get_or_pull_epa_site(rcra_site_permission["siteId"])
-                site = site_service.create_or_update_site(epa_site=epa_site)
+                rcra_site = handler_service.get_or_pull_rcra_site(rcra_site_permission["siteId"])
+                site = site_service.create_or_update_site(rcra_site=rcra_site)
                 self._create_or_update_rcra_permission(
                     epa_permission=rcra_site_permission, site=site
                 )

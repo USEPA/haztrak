@@ -113,7 +113,7 @@ class RcraPermissionSerializer(RcraSitePermissionSerializer):
         source="site",
     )
     name = serializers.StringRelatedField(
-        source="site.epa_site.name",
+        source="site.rcra_site.name",
         required=False,
     )
     SiteManagement = RcraPermissionField(source="site_manager")

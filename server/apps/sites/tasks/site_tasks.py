@@ -23,12 +23,12 @@ def sync_site_manifests(self, *, site_id: str, username: str):
         raise Ignore()
 
 
-@shared_task(name="get epa_site", bind=True)
+@shared_task(name="get rcra_site", bind=True)
 def get_rcra_site(self, *, site_id: str, username: str) -> str:
     try:
         site_service = RcraSiteService(username=username)
-        epa_site = site_service.pull_rcra_site(site_id=site_id)
-        return epa_site.epa_id
+        rcra_site = site_service.pull_rcra_site(site_id=site_id)
+        return rcra_site.epa_id
     except Exception as exc:
         self.update_state(state=states.FAILURE, meta=f"Internal Error {exc}")
         raise Ignore()

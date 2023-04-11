@@ -77,7 +77,7 @@ class RcraSitePermission(SitesBaseModel):
 
     class Meta:
         verbose_name = "EPA Site Permission"
-        ordering = ["site__epa_site__epa_id"]
+        ordering = ["site__rcra_site__epa_id"]
 
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     profile = models.ForeignKey(
@@ -110,7 +110,7 @@ class RcraSitePermission(SitesBaseModel):
     )
 
     def __str__(self):
-        return f"{self.profile.user}: {self.site.epa_site.epa_id}"
+        return f"{self.profile.user}: {self.site.rcra_site.epa_id}"
 
     def clean(self):
         if self.site_manager:

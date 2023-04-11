@@ -25,15 +25,15 @@ class HandlerManager(TrakBaseManager):
         if "paper_signature" in handler_data:
             paper_signature = PaperSignature.objects.create(**handler_data.pop("paper_signature"))
         try:
-            if RcraSite.objects.filter(epa_id=handler_data["epa_site"]["epa_id"]).exists():
-                epa_site = RcraSite.objects.get(epa_id=handler_data["epa_site"]["epa_id"])
-                handler_data.pop("epa_site")
-                logger.debug(f"using existing RcraSite {epa_site}")
+            if RcraSite.objects.filter(epa_id=handler_data["rcra_site"]["epa_id"]).exists():
+                rcra_site = RcraSite.objects.get(epa_id=handler_data["rcra_site"]["epa_id"])
+                handler_data.pop("rcra_site")
+                logger.debug(f"using existing RcraSite {rcra_site}")
             else:
-                epa_site = RcraSite.objects.save(**handler_data.pop("epa_site"))
-                logger.debug(f"RcraSite created {epa_site}")
+                rcra_site = RcraSite.objects.save(**handler_data.pop("rcra_site"))
+                logger.debug(f"RcraSite created {rcra_site}")
             manifest_handler = self.model.objects.create(
-                epa_site=epa_site,
+                rcra_site=rcra_site,
                 paper_signature=paper_signature,
                 **handler_data,
             )
@@ -45,27 +45,27 @@ class HandlerManager(TrakBaseManager):
                 logger.debug(f"ESignature created {e_sig}")
             return manifest_handler
         except KeyError as exc:
-            logger.warning(f"KeyError while creating Manifest epa_site {exc}")
+            logger.warning(f"KeyError while creating Manifest rcra_site {exc}")
         except ValidationError as exc:
-            logger.warning(f"ValidationError while creating Manifest epa_site {exc}")
+            logger.warning(f"ValidationError while creating Manifest rcra_site {exc}")
             raise exc
 
 
 class Handler(TrakBaseModel):
     """
     Handler which contains a reference to hazardous waste
-    epa_site and data specific to that epa_site on the given manifest.
+    rcra_site and data specific to that rcra_site on the given manifest.
     """
 
     class Meta:
-        ordering = ["epa_site"]
+        ordering = ["rcra_site"]
 
     objects = HandlerManager()
 
-    epa_site = models.ForeignKey(
+    rcra_site = models.ForeignKey(
         "sites.RcraSite",
         on_delete=models.CASCADE,
-        help_text="Hazardous waste epa_site associated with the manifest",
+        help_text="Hazardous waste rcra_site associated with the manifest",
     )
     paper_signature = models.OneToOneField(
         "PaperSignature",
@@ -85,4 +85,4 @@ class Handler(TrakBaseModel):
         return paper_signature_exists or e_signature_exists
 
     def __str__(self):
-        return f"{self.epa_site.epa_id}"
+        return f"{self.rcra_site.epa_id}"

@@ -12,7 +12,7 @@ class TransporterManager(HandlerManager):
 
     def save(self, **transporter_data: Dict):
         """
-        Create a Transporter from a manifest instance and epa_site dict
+        Create a Transporter from a manifest instance and rcra_site dict
         ToDo: fix this implementation
         """
         return super().save(**transporter_data)
@@ -36,4 +36,4 @@ class Transporter(Handler):
     order = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.epa_site.epa_id}"
+        return f"{self.rcra_site.epa_id}"

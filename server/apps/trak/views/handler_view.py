@@ -3,7 +3,7 @@ from rest_framework.generics import RetrieveAPIView
 
 from apps.trak.models import Handler, Transporter
 from apps.trak.serializers import (
-    ManifestHandlerSerializer,
+    HandlerSerializer,
     TransporterSerializer,
 )
 
@@ -26,5 +26,5 @@ class ManifestHandlerView(RetrieveAPIView):
     """
 
     queryset = Handler.objects.all()
-    serializer_class = ManifestHandlerSerializer
+    serializer_class = HandlerSerializer
     permission_classes = [permissions.AllowAny]

@@ -97,7 +97,7 @@ class SiteSerializer(SitesBaseSerializer):
         required=False,
     )
     handler = RcraSiteSerializer(
-        source="epa_site",
+        source="rcra_site",
     )
 
     class Meta:
