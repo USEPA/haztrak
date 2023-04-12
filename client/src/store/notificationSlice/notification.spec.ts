@@ -13,7 +13,7 @@ const alertPayload = {
   uniqueId: Date.now() - 1,
   createdDate: new Date().toISOString(),
   read: false,
-  alertType: 'Info',
+  status: 'Error' as const,
   message: 'Welcome to Haztrak',
   timeout: 5000,
 };

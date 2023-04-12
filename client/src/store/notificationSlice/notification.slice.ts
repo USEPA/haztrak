@@ -16,8 +16,9 @@ export interface Notification {
   createdDate: string;
   read: boolean;
   message: string;
-  alertType: 'Warning' | 'Error' | 'Info' | String;
+  status: 'Warning' | 'Error' | 'Info' | 'Success';
   timeout: number;
+  inProgress?: boolean;
 }
 
 const initialState: NotificationState = {
@@ -29,10 +30,6 @@ const notificationSlice = createSlice({
   initialState,
   reducers: {
     addMsg: (state: NotificationState, action: PayloadAction<Notification>) => {
-      state.notifications.push(action.payload);
-      return state;
-    },
-    readMsg: (state: NotificationState, action: PayloadAction<Notification>) => {
       state.notifications.push(action.payload);
       return state;
     },

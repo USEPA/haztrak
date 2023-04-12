@@ -5,7 +5,7 @@ import { useAppSelector } from 'store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
-function Notification() {
+function NotificationBtn() {
   const notificationState = useAppSelector((state) => state.notification);
   const numberAlerts = notificationState.notifications.length;
   const alertsExists: boolean = numberAlerts > 0;
@@ -38,4 +38,4 @@ function Notification() {
   );
 }
 
-export default Notification;
+export default NotificationBtn;

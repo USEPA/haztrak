@@ -1,3 +1,3 @@
-import Notification from 'components/Notification/Notification';
+import NotificationBtn from 'components/Notification/NotificationBtn';
 
-export default Notification;
+export default NotificationBtn;

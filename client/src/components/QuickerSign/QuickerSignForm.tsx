@@ -65,7 +65,7 @@ function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSign
             uniqueId: Date.now(),
             createdDate: new Date().toISOString(),
             message: `${response.data.task} ${response.statusText}`,
-            alertType: 'Info',
+            status: 'Info',
             read: false,
             timeout: 5000,
           })
@@ -77,7 +77,7 @@ function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSign
             uniqueId: Date.now(),
             createdDate: new Date().toISOString(),
             message: `${error.message}`,
-            alertType: 'Error',
+            status: 'Error',
             read: false,
             timeout: 5000,
           })

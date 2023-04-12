@@ -2,11 +2,13 @@ import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolki
 import rcraProfileReducers from 'store/rcraProfileSlice/index';
 import notificationReducers from 'store/notificationSlice';
 import userReducers, { login } from 'store/userSlice';
+import { wasteCodeApi } from 'store/wasteCode.slice';
 
 const rootReducer = combineReducers({
   user: userReducers,
   notification: notificationReducers,
   rcraProfile: rcraProfileReducers,
+  [wasteCodeApi.reducerPath]: wasteCodeApi.reducer,
 });
 
 /**
@@ -16,6 +18,7 @@ const rootReducer = combineReducers({
 const setupStore = (preloadedState?: PreloadedState<RootState>) => {
   return configureStore({
     reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(wasteCodeApi.middleware),
     preloadedState,
   });
 };

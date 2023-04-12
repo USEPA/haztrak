@@ -29,10 +29,11 @@ function Home(): ReactElement {
             addMsg({
               uniqueId: Date.now(),
               createdDate: new Date().toISOString(),
-              message: 'que paso? blah blah blah',
-              alertType: 'Error',
+              message: 'Example notification message',
+              status: 'Error',
               read: false,
               timeout: 5000,
+              inProgress: true,
             })
           )
         }

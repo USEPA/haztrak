@@ -36,7 +36,7 @@ function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
                 uniqueId: Date.now(),
                 createdDate: new Date().toISOString(),
                 message: 'Sync Manifest Task Launched',
-                alertType: 'Info',
+                status: 'Info',
                 read: false,
                 timeout: 5000,
               })
