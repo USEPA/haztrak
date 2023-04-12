@@ -1,58 +1,39 @@
 import React from 'react';
-import { Badge, Button, Dropdown } from 'react-bootstrap';
-import { removeMsg, useAppDispatch, useAppSelector } from 'store';
+import { Badge, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { useAppSelector } from 'store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 function Notification() {
   const notificationState = useAppSelector((state) => state.notification);
-  const dispatch = useAppDispatch();
   const numberAlerts = notificationState.notifications.length;
+  const alertsExists: boolean = numberAlerts > 0;
 
   return (
-    <div className="mx-3">
-      <Dropdown drop="start" className="shadow">
-        <Dropdown.Toggle className="bg-transparent border-0 text-primary" bsPrefix="p-0">
-          <FontAwesomeIcon icon={faEnvelope} size="lg" />
-          <Badge
-            pill
-            bg="danger px-1"
-            bsPrefix="badge badge-top-right"
-            aria-label="unread Messages"
-          >
-            {numberAlerts > 0 ? (numberAlerts < 9 ? `${numberAlerts}` : '9+') : null}
-          </Badge>
-        </Dropdown.Toggle>
-        <Dropdown.Menu className="pt-0 alert-mw">
-          <Dropdown.Header className="bg-primary text-white rounded-top mt-n1">
-            Notification Center
-          </Dropdown.Header>
-          {notificationState.notifications.map((notification, index) => {
-            return (
-              <React.Fragment key={`alertId${index}`}>
-                <Dropdown.ItemText className="text-nowrap">
-                  <div className="d-flex align-items-center justify-content-between">
-                    <div className="me-5 text-truncate">{notification.message}</div>
-                    <Button
-                      variant="success"
-                      className="btn-circle"
-                      onClick={() => dispatch(removeMsg(notification))}
-                    >
-                      <FontAwesomeIcon icon={faCheck} size="lg" className="text-white" />
-                    </Button>
-                  </div>
-                </Dropdown.ItemText>
-                {/* If it's the last one, do not include a divider */}
-                {index + 1 === numberAlerts ? (
-                  <></>
-                ) : (
-                  <Dropdown.Divider key={`notificationDivider${index}`} className="my-0" />
-                )}
-              </React.Fragment>
-            );
-          })}
-        </Dropdown.Menu>
-      </Dropdown>
+    <div className="mx-3 px-2 position-relative d-inline-block">
+      <Link to={'/notifications'}>
+        <Button
+          className={`bg-transparent border-0 ${alertsExists ? 'text-primary' : 'text-muted'}`}
+        >
+          <div>
+            <FontAwesomeIcon icon={faEnvelope} size="lg" />
+          </div>
+          {numberAlerts > 0 ? (
+            <Badge
+              pill
+              bg="danger"
+              aria-label="unread messages"
+              className="position-absolute mx-1 pe-2"
+            >
+              {numberAlerts < 9 ? `${numberAlerts}` : '9+'}
+              <span className="visually-hidden">unread messages</span>
+            </Badge>
+          ) : (
+            <></>
+          )}
+        </Button>
+      </Link>
     </div>
   );
 }
