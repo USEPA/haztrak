@@ -8,7 +8,7 @@ import { UserState } from 'store/userSlice/user.slice';
 import { Handler, Transporter } from 'types/site';
 import { QuickerSignature } from 'types/manifest/signatures';
 import { useNavigate } from 'react-router-dom';
-import { addMsg, RootState, useAppDispatch, useAppSelector } from 'store';
+import { addNotification, RootState, useAppDispatch, useAppSelector } from 'store';
 import htApi from 'services';
 import { AxiosError, AxiosResponse } from 'axios';
 
@@ -61,10 +61,10 @@ function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSign
       .post('/trak/manifest/sign', signature)
       .then((response: AxiosResponse) => {
         dispatch(
-          addMsg({
-            uniqueId: Date.now(),
+          addNotification({
+            uniqueId: response.data.task,
             createdDate: new Date().toISOString(),
-            message: `${response.data.task} ${response.statusText}`,
+            message: `e-Manifest electronic signature task started. Task ID: ${response.data.task}`,
             status: 'Info',
             read: false,
             timeout: 5000,
@@ -73,7 +73,7 @@ function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSign
       })
       .catch((error: AxiosError) => {
         dispatch(
-          addMsg({
+          addNotification({
             uniqueId: Date.now(),
             createdDate: new Date().toISOString(),
             message: `${error.message}`,

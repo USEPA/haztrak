@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import htApi from 'services';
 import { RcraApiUserBtn } from 'components/buttons';
-import { addMsg, useAppDispatch } from 'store';
+import { addNotification, useAppDispatch } from 'store';
 
 interface SyncManifestProps {
   siteId?: string;
@@ -30,12 +30,12 @@ function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
         setSyncingMtn(!syncingMtn);
         htApi
           .post('/site/manifest/sync', { siteId: `${siteId}` })
-          .then(() => {
+          .then((response) => {
             dispatch(
-              addMsg({
-                uniqueId: Date.now(),
+              addNotification({
+                uniqueId: response.data.task,
                 createdDate: new Date().toISOString(),
-                message: 'Sync Manifest Task Launched',
+                message: `Sync Manifest Task Launched. Task ID: ${response.data.task}`,
                 status: 'Info',
                 read: false,
                 timeout: 5000,

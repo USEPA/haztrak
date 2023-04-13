@@ -2,7 +2,10 @@
  * Test for the notification Redux slice
  */
 import { cleanup } from '@testing-library/react';
-import NotificationReducer, { addMsg, removeMsg } from 'store/notificationSlice/notification.slice';
+import NotificationReducer, {
+  addNotification,
+  removeNotification,
+} from 'store/notificationSlice/notification.slice';
 import { NotificationState } from './notification.slice';
 
 const initialState: NotificationState = {
@@ -27,13 +30,15 @@ describe('Notification Slice', () => {
   it('returns the initial state', () => {
     expect(NotificationReducer(undefined, { type: undefined })).toEqual(initialState);
   });
-  test('addMsg appends a new message', () => {
-    expect(NotificationReducer(initialState, addMsg(alertPayload)).notifications.length).toEqual(1);
+  test('addNotification appends a new message', () => {
+    expect(
+      NotificationReducer(initialState, addNotification(alertPayload)).notifications.length
+    ).toEqual(1);
   });
-  test('removeMsg remove the alert', () => {
+  test('removeNotification remove the alert', () => {
     const nonEmptyState: NotificationState = { notifications: [alertPayload] };
     expect(
-      NotificationReducer(nonEmptyState, removeMsg(alertPayload)).notifications.length
+      NotificationReducer(nonEmptyState, removeNotification(alertPayload)).notifications.length
     ).toEqual(0);
   });
 });

@@ -1,6 +1,7 @@
 import useTitle from 'hooks/useTitle';
 import React, { ReactElement, useEffect } from 'react';
-import { addMsg, RootState, useAppDispatch, useAppSelector } from 'store';
+import { RootState, useAppDispatch, useAppSelector } from 'store';
+import { getExampleTask } from 'store/notificationSlice/notification.slice';
 import { getProfile } from 'store/rcraProfileSlice';
 import { UserState } from 'store/userSlice/user.slice';
 import { HtButton } from 'components/Ht';
@@ -24,19 +25,9 @@ function Home(): ReactElement {
       <h1>{`Hello ${user}!`}</h1>
       <HtButton
         align="start"
-        onClick={() =>
-          dispatch(
-            addMsg({
-              uniqueId: Date.now(),
-              createdDate: new Date().toISOString(),
-              message: 'Example notification message',
-              status: 'Error',
-              read: false,
-              timeout: 5000,
-              inProgress: true,
-            })
-          )
-        }
+        onClick={() => {
+          dispatch(getExampleTask());
+        }}
       >
         Click me
       </HtButton>

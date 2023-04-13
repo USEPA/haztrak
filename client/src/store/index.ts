@@ -1,7 +1,15 @@
-import { addMsg, removeMsg } from './notificationSlice';
+import { addNotification, removeNotification } from './notificationSlice';
 import { useAppDispatch, useAppSelector } from './hooks';
 import type { AppDispatch, RootState } from './rootStore';
 import { AppStore, login, rootStore, setupStore } from './rootStore';
 
-export { rootStore, login, setupStore, addMsg, removeMsg, useAppSelector, useAppDispatch };
+export {
+  rootStore,
+  login,
+  setupStore,
+  addNotification,
+  removeNotification,
+  useAppSelector,
+  useAppDispatch,
+};
 export type { RootState, AppDispatch, AppStore };

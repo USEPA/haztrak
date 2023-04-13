@@ -1,18 +1,19 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 /**
  * Schema of a user's alerts stored in the Redux store
  * Note, we don't store these in the back end database, this is just for looks.
  */
 export interface NotificationState {
-  notifications: Array<Notification>;
+  notifications: Array<HtNotification>;
 }
 
 /**
  * Alert describes the payload used to interact with the Redux store 'notification' slice.
  */
-export interface Notification {
-  uniqueId: number;
+export interface HtNotification {
+  uniqueId: number | string;
   createdDate: string;
   read: boolean;
   message: string;
@@ -25,15 +26,35 @@ const initialState: NotificationState = {
   notifications: [],
 };
 
+/**
+ * Retrieves a user's RcraProfile from the server.
+ */
+export const getExampleTask = createAsyncThunk<HtNotification>(
+  'notification/getExampleTask',
+  async () => {
+    const response = await axios.get(`${process.env.REACT_APP_HT_API_URL}/api/task/example`);
+    const newNotification: HtNotification = {
+      inProgress: false,
+      message: `Background task launched. Task ID: ${response.data.task}`,
+      status: 'Info',
+      createdDate: new Date().toISOString(),
+      read: false,
+      timeout: 5000,
+      uniqueId: response.data.task,
+    };
+    return newNotification;
+  }
+);
+
 const notificationSlice = createSlice({
   name: 'notification',
   initialState,
   reducers: {
-    addMsg: (state: NotificationState, action: PayloadAction<Notification>) => {
+    addNotification: (state: NotificationState, action: PayloadAction<HtNotification>) => {
       state.notifications.push(action.payload);
       return state;
     },
-    removeMsg: (state: NotificationState, action: PayloadAction<Notification>) => {
+    removeNotification: (state: NotificationState, action: PayloadAction<HtNotification>) => {
       const idToDelete = action.payload.uniqueId;
       for (let i = 0; i < state.notifications.length; i++) {
         if (state.notifications[i].uniqueId === idToDelete) {
@@ -42,8 +63,32 @@ const notificationSlice = createSlice({
       }
       return state;
     },
+    updateNotification: (state: NotificationState, action: PayloadAction<HtNotification>) => {
+      const idToUpdate = action.payload.uniqueId;
+      for (let i = 0; i < state.notifications.length; i++) {
+        if (state.notifications[i].uniqueId === idToUpdate) {
+          state.notifications[i] = action.payload;
+        }
+      }
+      return state;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getExampleTask.pending, (state) => {
+        return {
+          ...state,
+        };
+      })
+      .addCase(getExampleTask.fulfilled, (state, action) => {
+        state.notifications.push(action.payload);
+      })
+      .addCase(getExampleTask.rejected, (state) => {
+        return state;
+      });
   },
 });
 
 export default notificationSlice.reducer;
-export const { addMsg, removeMsg } = notificationSlice.actions;
+export const { addNotification, removeNotification, updateNotification } =
+  notificationSlice.actions;
