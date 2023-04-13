@@ -6,6 +6,7 @@ import About from 'features/help';
 import Home from 'features/home';
 import Login from 'features/login';
 import Manifest from 'features/manifest';
+import Notifications from 'features/notifications';
 import Profile from 'features/profile';
 import Sites from 'features/site';
 import React, { ReactElement } from 'react';
@@ -31,6 +32,14 @@ function App(): ReactElement {
                 element={
                   <PrivateRoute authUser={user}>
                     <Home />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/notifications"
+                element={
+                  <PrivateRoute authUser={user}>
+                    <Notifications />
                   </PrivateRoute>
                 }
               />

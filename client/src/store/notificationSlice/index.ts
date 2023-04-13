@@ -1,4 +1,10 @@
-import notificationReducer, { addMsg, removeMsg } from 'store/notificationSlice/notification.slice';
+import notificationReducer, {
+  addNotification,
+  removeNotification,
+  updateNotification,
+} from 'store/notificationSlice/notification.slice';
+import Notification from './notification.slice';
 
 export default notificationReducer;
-export { addMsg, removeMsg };
+export { addNotification, removeNotification, updateNotification };
+export type { Notification };

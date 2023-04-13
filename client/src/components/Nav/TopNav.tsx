@@ -3,7 +3,7 @@ import { Button, Dropdown } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
-import Notification from 'components/Notification';
+import { NotificationBtn } from 'components/Notification';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowRightFromBracket,
@@ -45,7 +45,7 @@ function TopNav() {
           <FontAwesomeIcon icon={faBars} />
         </Button>
       </div>
-      <Notification />
+      <NotificationBtn />
       <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li className="nav-item dropdown">
           <Dropdown>

@@ -28,10 +28,23 @@ class SiteAdmin(admin.ModelAdmin):
         return format_html("<a href='{}'>{}</a>", url, site.rcra_site.epa_id)
 
 
+class RcraSitePermissionInline(admin.TabularInline):
+    model = RcraSitePermission
+    extra = 0
+    ordering = ["site"]
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
 @admin.register(RcraProfile)
 class RcraProfileAdmin(admin.ModelAdmin):
     list_display = ["__str__", "related_user", "rcra_username", "api_user"]
     search_fields = ["user__username", "rcra_username"]
+    inlines = [RcraSitePermissionInline]
 
     def related_user(self, user):
         url = reverse("admin:auth_user_changelist") + "?" + urlencode({"q": str(user.id)})
@@ -43,21 +56,6 @@ class RcraProfileAdmin(admin.ModelAdmin):
     api_user.boolean = True
     api_user.short_description = "Rcrainfo API User"
     related_user.short_description = "User"
-
-
-@admin.register(RcraSitePermission)
-class RcraSitePermissionAdmin(admin.ModelAdmin):
-    list_display = [
-        "__str__",
-        "site_manager",
-        "biennial_report",
-        "annual_report",
-        "e_manifest",
-        "wiets",
-        "my_rcra_id",
-    ]
-    list_filter = ["site_manager"]
-    search_fields = ["profile__user__username", "site__rcra_site__epa_id"]
 
 
 @admin.register(Address)

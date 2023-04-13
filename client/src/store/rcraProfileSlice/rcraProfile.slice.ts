@@ -107,6 +107,8 @@ export const getProfile = createAsyncThunk<RcraProfileState>(
       `${process.env.REACT_APP_HT_API_URL}/api/site/profile/${username}`
     );
     const { rcraSites, ...rest } = response.data as RcraProfileResponse;
+    // Convert the array of RcraSite permissions we get from our backend
+    // to an object which each key corresponding to the RcraSite's ID number
     let profile: RcraProfileState = { ...rest };
     profile.rcraSites = rcraSites?.reduce(
       (obj, site) => ({

@@ -3,7 +3,7 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
-import useHtAPI from 'hooks/useHtAPI';
+import { useGetWasteCodesQuery } from 'store/wasteCode.slice';
 import { Code } from 'types/wasteLine';
 
 // ToDo: For temporary development purposes, We retrieve federal wastes codes
@@ -39,9 +39,11 @@ const options = [
 function HazardousWasteForm() {
   const { control } = useFormContext();
   // Retrieve federal waste codes from the server
-  const [federalWasteCodes, federalLoading, federalError] =
-    useHtAPI<Array<Code>>('trak/code/waste/federal');
-  if (federalError) console.error(federalError);
+  const {
+    data: federalWasteCodes,
+    isLoading: federalLoading,
+    error: federalError,
+  } = useGetWasteCodesQuery('federal');
 
   /**
    * Styles for our waste code react-select dropdowns

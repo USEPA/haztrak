@@ -4,7 +4,7 @@ import { HtForm } from 'components/Ht';
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch } from 'store';
+import { addNotification, useAppDispatch } from 'store';
 import { getProfile, updateProfile } from 'store/rcraProfileSlice';
 import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
 import htApi from 'services';
@@ -181,7 +181,22 @@ function RcraProfile({ profile }: ProfileViewProps) {
           className="mx-2"
           variant="primary"
           onClick={() =>
-            htApi.get(`site/profile/${profile.user}/sync`).catch((r) => console.error(r))
+            htApi
+              .get(`site/profile/${profile.user}/sync`)
+              .then((response) => {
+                console.log('data', response.data);
+                dispatch(
+                  addNotification({
+                    uniqueId: response.data.task,
+                    createdDate: new Date().toISOString(),
+                    message: `Sync Profile task started. Task ID: ${response.data.task}`,
+                    status: 'Info',
+                    read: false,
+                    timeout: 5000,
+                  })
+                );
+              })
+              .catch((r) => console.error(r))
           }
         >
           Sync Site Permissions

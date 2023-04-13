@@ -31,7 +31,7 @@ class ManifestView(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]  # uncomment for debugging via (browsable API)
 
 
-class PullManifest(GenericAPIView):
+class PullManifestView(GenericAPIView):
     """
     This endpoint launches a task to pull a manifest (by MTN) from RCRAInfo.
     On success, returns the task queue ID.

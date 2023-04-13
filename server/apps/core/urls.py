@@ -1,8 +1,9 @@
 from django.urls import path
 
-from . import views
+from .views import ExampleTaskView, Login, TaskStatusView
 
 urlpatterns = [
-    # Authentication
-    path("login/", views.Login.as_view()),
+    path("user/login/", Login.as_view()),
+    path("task/example", ExampleTaskView.as_view()),
+    path("task/<str:task_id>", TaskStatusView.as_view()),
 ]
