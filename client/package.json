@@ -39,7 +39,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
-    "msw": "npx msw init public/ --save"
+    "msw": "npx msw init public/ --save",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {
     "extends": [
@@ -64,7 +65,8 @@
   },
   "devDependencies": {
     "msw": "^1.0.1",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "source-map-explorer": "^2.5.3"
   },
   "msw": {
     "workerDirectory": "public"
