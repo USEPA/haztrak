@@ -138,18 +138,19 @@ class RcraSiteSearchView(ListAPIView):
         name_param = self.request.query_params.get("siteName")
         site_type_param: str = self.request.query_params.get("siteType")
         if epa_id_param is not None:
-            queryset = queryset.filter(epa_id__contains=epa_id_param)
+            queryset = queryset.filter(epa_id__icontains=epa_id_param)
         if name_param is not None:
-            queryset = queryset.filter(name__contains=name_param)
+            queryset = queryset.filter(name__icontains=name_param)
         if site_type_param is not None:
             match site_type_param.lower():
                 case "transporter":
                     site_type = RcraSiteType.TRANSPORTER.label
-                case "tsdf":
+                case "designatedfacility":
                     site_type = RcraSiteType.TSDF.label
                 case "generator":
                     site_type = RcraSiteType.GENERATOR.label
                 case _:
-                    site_type = RcraSiteType.TSDF
+                    logger.warning("siteType query parameter not recognized")
+                    site_type = RcraSiteType.GENERATOR.label
             queryset = queryset.filter(site_type=site_type)
         return queryset
