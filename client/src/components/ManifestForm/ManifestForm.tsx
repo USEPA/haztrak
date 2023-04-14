@@ -6,6 +6,7 @@ import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import ContactForm from 'components/ManifestForm/ContactForm';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
 import { WasteLineTable } from 'components/ManifestForm/WasteLine/WasteLineTable/WasteLineTable';
+import { d } from 'msw/lib/glossary-de6278a9';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
@@ -33,7 +34,7 @@ interface ManifestFormProps {
  * @constructor
  */
 function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps) {
-  console.log('initial pot. ship date', manifestData?.potentialShipDate);
+  // console.log('initial pot. ship date', manifestData?.potentialShipDate);
 
   // Top level ManifestForm methods and objects
   const manifestMethods = useForm<Manifest>({
@@ -49,6 +50,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log('Manifest Submitted', data);
+    console.log('submit pot ship date: ', data.potentialShipDate);
   };
 
   // Generator controls
@@ -242,7 +244,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 </Col>
                 <Col>
                   <HtForm.Group>
-                    <HtForm.Label htmlFor="potentialShipDate">Potential Shipped Date</HtForm.Label>
+                    <HtForm.Label htmlFor="potentialShipDate">Potential Ship Date</HtForm.Label>
                     <Form.Control
                       id="potentialShipDate"
                       disabled={readOnly}

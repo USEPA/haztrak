@@ -43,7 +43,6 @@ export const manifestSchema = z
   })
   .refine(
     (manifest) => {
-      console.log('object refine');
       if (manifest.status === 'Pending' || manifest.status === 'NotAssigned') {
         if (manifest.potentialShipDate && new Date(manifest.potentialShipDate) < new Date()) {
           return false;
