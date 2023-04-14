@@ -1,3 +1,5 @@
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { TooltipProps } from 'react-bootstrap';
 import { ReactElement } from 'react';
@@ -26,4 +28,22 @@ function HtTooltip(props: HtToolTipProps): ReactElement {
   );
 }
 
+interface InfoTooltipProps {
+  message: string;
+}
+
+/**
+ * Returns an info icon with a tooltip message
+ * that explains that this Field is set by EPA's RCRAInfo.
+ * @constructor
+ */
+function InfoIconTooltip({ message }: InfoTooltipProps) {
+  return (
+    <HtTooltip text={message}>
+      <FontAwesomeIcon icon={faInfoCircle} size={'1x'} className={'pb-1 text-muted'} />
+    </HtTooltip>
+  );
+}
+
 export default HtTooltip;
+export { InfoIconTooltip };

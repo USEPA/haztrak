@@ -18,6 +18,7 @@ import AddTsdf from './Tsdf';
 import AddWasteLine from './WasteLine';
 import { QuickerSignModal, QuickerSignModalBtn } from 'components/QuickerSign';
 import { manifestSchema, Manifest, HandlerType } from './manifestSchema';
+import { InfoIconTooltip } from 'components/Ht/HtTooltip';
 
 interface ManifestFormProps {
   readOnly?: boolean;
@@ -32,6 +33,8 @@ interface ManifestFormProps {
  * @constructor
  */
 function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps) {
+  // console.log('initial pot. ship date', manifestData?.potentialShipDate);
+
   // Top level ManifestForm methods and objects
   const manifestMethods = useForm<Manifest>({
     values: manifestData,
@@ -43,11 +46,12 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
   const isDraft = !manifestData?.manifestTrackingNumber;
   // On load, focus the generator EPA ID.
   useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
-  // const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
-    console.log(data);
+    console.log('Manifest Submitted', data);
+    console.log('submit pot ship date: ', data.potentialShipDate);
   };
+
   // Generator controls
   const generator: Handler = manifestMethods.getValues('generator');
 
@@ -139,6 +143,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                         <option value="NotAssigned">Draft</option>
                         <option value="Pending">Pending</option>
                         <option value="Scheduled">Scheduled</option>
+                        <option value="ReadyForSignature">Ready for Signature</option>
                       </HtForm.Select>
                     )}
                   </HtForm.Group>
@@ -167,12 +172,16 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
               <Row>
                 <Col>
                   <HtForm.Group>
-                    <HtForm.Label htmlFor="createdDate">Created Date</HtForm.Label>
+                    <HtForm.Label htmlFor="createdDate">
+                      {'Created Date '}
+                      <InfoIconTooltip message={'This field is managed by EPA'} />
+                    </HtForm.Label>
                     <Form.Control
                       id="createdDate"
+                      plaintext
                       disabled
                       type="date"
-                      {...manifestMethods.register('createdDate', { valueAsDate: true })}
+                      {...manifestMethods.register('createdDate')}
                       className={errors.createdDate && 'is-invalid'}
                     />
                     <div className="invalid-feedback">{errors.createdDate?.message}</div>
@@ -180,12 +189,16 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 </Col>
                 <Col>
                   <HtForm.Group>
-                    <HtForm.Label htmlFor="updatedDate">Last Update Date</HtForm.Label>
+                    <HtForm.Label htmlFor="updatedDate">
+                      {'Last Update Date '}
+                      <InfoIconTooltip message={'This field is managed by EPA'} />
+                    </HtForm.Label>
                     <Form.Control
                       id="updatedDate"
+                      plaintext
                       disabled={readOnly}
                       type="date"
-                      {...manifestMethods.register('updatedDate', { valueAsDate: true })}
+                      {...manifestMethods.register('updatedDate')}
                       className={errors.updatedDate && 'is-invalid'}
                     />
                     <div className="invalid-feedback">{errors.updatedDate?.message}</div>
@@ -201,7 +214,9 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                       {...manifestMethods.register('shippedDate', { valueAsDate: true })}
                       className={errors.shippedDate && 'is-invalid'}
                     />
-                    <div className="invalid-feedback">{errors.shippedDate?.message}</div>
+                    <div className="invalid-feedback">
+                      {errors.shippedDate?.message?.toString()}
+                    </div>
                   </HtForm.Group>
                 </Col>
               </Row>
@@ -228,12 +243,12 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 </Col>
                 <Col>
                   <HtForm.Group>
-                    <HtForm.Label htmlFor="potentialShipDate">Potential Shipped Date</HtForm.Label>
+                    <HtForm.Label htmlFor="potentialShipDate">Potential Ship Date</HtForm.Label>
                     <Form.Control
                       id="potentialShipDate"
                       disabled={readOnly}
                       type="date"
-                      {...manifestMethods.register('potentialShipDate', { valueAsDate: true })}
+                      {...manifestMethods.register('potentialShipDate')}
                       className={errors.potentialShipDate && 'is-invalid'}
                     />
                     <div className="invalid-feedback">{errors.potentialShipDate?.message}</div>

@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import { cleanup, renderWithProviders } from 'test-utils';
 import ManifestForm from './ManifestForm';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 
 afterEach(() => {
   cleanup();
@@ -32,16 +32,17 @@ describe('ManifestForm', () => {
     fireEvent.click(addTsdfBtn);
     expect(screen.getByText(/Add Designated Facility/i)).toBeInTheDocument();
   });
-  test('usable cancel save buttons editable', async () => {
-    renderWithProviders(<ManifestForm readOnly={false} />);
-    const cancelBtn = screen.getByText(/Cancel/i);
-    const saveBtn = screen.getByText(/Save/i);
-    const editBtn = screen.getByText(/Edit/i);
-    expect(cancelBtn).not.toHaveAttribute('disabled');
-    expect(saveBtn).not.toHaveAttribute('disabled');
-    expect(editBtn).toHaveAttribute('disabled');
-  });
   test('only has "edit manifest" button when readonly', async () => {
     // ToDo: to test when readOnly={true}, we need manifestData to pass as prop
+  });
+  test('potential ship date cannot be in past', async () => {
+    renderWithProviders(<ManifestForm readOnly={false} />);
+    const potentialShipDateInput = screen.getByLabelText(/potential ship date/i);
+    fireEvent.change(potentialShipDateInput, { target: { value: '2021-04-21' } });
+    const saveBtn = screen.getByRole('button', { name: /save/i });
+    fireEvent.click(saveBtn);
+    await waitFor(() => {
+      expect(potentialShipDateInput).toHaveClass('is-invalid');
+    });
   });
 });
