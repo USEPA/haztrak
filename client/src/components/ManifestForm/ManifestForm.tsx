@@ -18,6 +18,7 @@ import AddTsdf from './Tsdf';
 import AddWasteLine from './WasteLine';
 import { QuickerSignModal, QuickerSignModalBtn } from 'components/QuickerSign';
 import { manifestSchema, Manifest, HandlerType } from './manifestSchema';
+import { InfoIconTooltip } from 'components/Ht/HtTooltip';
 
 interface ManifestFormProps {
   readOnly?: boolean;
@@ -139,6 +140,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                         <option value="NotAssigned">Draft</option>
                         <option value="Pending">Pending</option>
                         <option value="Scheduled">Scheduled</option>
+                        <option value="ReadyForSignature">Ready for Signature</option>
                       </HtForm.Select>
                     )}
                   </HtForm.Group>
@@ -167,9 +169,13 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
               <Row>
                 <Col>
                   <HtForm.Group>
-                    <HtForm.Label htmlFor="createdDate">Created Date</HtForm.Label>
+                    <HtForm.Label htmlFor="createdDate">
+                      {'Created Date '}
+                      <InfoIconTooltip message={'This field is managed by EPA'} />
+                    </HtForm.Label>
                     <Form.Control
                       id="createdDate"
+                      plaintext
                       disabled
                       type="date"
                       {...manifestMethods.register('createdDate', { valueAsDate: true })}
@@ -180,9 +186,13 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 </Col>
                 <Col>
                   <HtForm.Group>
-                    <HtForm.Label htmlFor="updatedDate">Last Update Date</HtForm.Label>
+                    <HtForm.Label htmlFor="updatedDate">
+                      {'Last Update Date '}
+                      <InfoIconTooltip message={'This field is managed by EPA'} />
+                    </HtForm.Label>
                     <Form.Control
                       id="updatedDate"
+                      plaintext
                       disabled={readOnly}
                       type="date"
                       {...manifestMethods.register('updatedDate', { valueAsDate: true })}
