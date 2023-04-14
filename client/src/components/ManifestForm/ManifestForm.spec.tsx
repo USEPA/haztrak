@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import { cleanup, renderWithProviders } from 'test-utils';
 import ManifestForm from './ManifestForm';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 
 afterEach(() => {
   cleanup();
@@ -36,15 +36,13 @@ describe('ManifestForm', () => {
     // ToDo: to test when readOnly={true}, we need manifestData to pass as prop
   });
   test('potential ship date cannot be in past', async () => {
-    // Arrange
     renderWithProviders(<ManifestForm readOnly={false} />);
     const potentialShipDateInput = screen.getByLabelText(/potential ship date/i);
     fireEvent.change(potentialShipDateInput, { target: { value: '2021-04-21' } });
     const saveBtn = screen.getByRole('button', { name: /save/i });
-    // Act
     fireEvent.click(saveBtn);
-    // Assert
-    const newShipDate = await screen.findByLabelText(/potential ship date/i);
-    expect(newShipDate).toHaveClass('is-invalid');
+    await waitFor(() => {
+      expect(potentialShipDateInput).toHaveClass('is-invalid');
+    });
   });
 });
