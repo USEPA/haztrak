@@ -7,7 +7,7 @@ django-celery-beat==2.5.0
 djangorestframework==3.14.0
 gunicorn==20.1.0
 emanifest==3.0.3
-psycopg2-binary==2.9.6
+psycopg-binary>=3.1.8,<3.2
 pytz==2023.3
 requests-toolbelt==0.10.1
 sqlparse==0.4.3
