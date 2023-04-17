@@ -360,3 +360,65 @@ class AdditionalInfo(TrakBaseModel):
 
     def __str__(self):
         return f"{self.original_mtn or 'Unknown'}"
+
+
+class Locality(TrakBaseModel):
+    """
+    Contains Locality code and City or City name
+    """
+
+    class Meta:
+        verbose_name = "Locality"
+        verbose_name_plural = "Locality"
+    
+    code = models.CharField(
+        max_length=2,
+        )
+    name = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True
+    )
+
+
+class PortOfEntry(TrakBaseModel):
+    """
+    Contains Port of entry State code and City or City name plus Port or Airport name
+    """
+
+    class Meta:
+        verbose_name = "Port of Entry"
+        verbose_name_plural = "Port of Entry"
+
+    state = models.ForeignKey(
+        "Locality",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+    city_port = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True
+    )
+
+
+class ImportInfo(TrakBaseModel):
+    """
+    Contains Import related information
+    """
+
+    class Meta:
+        verbose_name = "Import Info"
+        verbose_name_plural = "Impcommentsort Info"
+
+    import_generator = models.JSONField(
+        null=True,
+        blank=True,
+    )
+    port_of_entry = models.ForeignKey(
+        "PortOfEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
