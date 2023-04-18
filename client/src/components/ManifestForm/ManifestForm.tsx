@@ -181,6 +181,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                       plaintext
                       disabled
                       type="date"
+                      value={manifestData?.createdDate?.slice(0, 10)}
                       {...manifestMethods.register('createdDate')}
                       className={errors.createdDate && 'is-invalid'}
                     />
@@ -196,8 +197,9 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                     <Form.Control
                       id="updatedDate"
                       plaintext
-                      disabled={readOnly}
+                      disabled
                       type="date"
+                      value={manifestData?.updatedDate?.slice(0, 10)}
                       {...manifestMethods.register('updatedDate')}
                       className={errors.updatedDate && 'is-invalid'}
                     />
@@ -206,12 +208,17 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 </Col>
                 <Col>
                   <HtForm.Group>
-                    <HtForm.Label htmlFor="shippedDate">Shipped Date</HtForm.Label>
+                    <HtForm.Label htmlFor="shippedDate">
+                      {'Shipped Date '}
+                      <InfoIconTooltip message={'This field is managed by EPA'} />
+                    </HtForm.Label>
                     <Form.Control
                       id="shippedDate"
-                      disabled={readOnly}
+                      disabled
+                      plaintext
                       type="date"
-                      {...manifestMethods.register('shippedDate', { valueAsDate: true })}
+                      value={manifestData?.shippedDate?.slice(0, 10)}
+                      {...manifestMethods.register('shippedDate')}
                       className={errors.shippedDate && 'is-invalid'}
                     />
                     <div className="invalid-feedback">
