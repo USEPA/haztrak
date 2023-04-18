@@ -3,6 +3,7 @@ import React from 'react';
 import { cleanup, renderWithProviders } from 'test-utils';
 import ManifestForm from './ManifestForm';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { createMockManifest } from 'test-utils/fixtures';
 
 afterEach(() => {
   cleanup();
@@ -33,7 +34,7 @@ describe('ManifestForm', () => {
     expect(screen.getByText(/Add Designated Facility/i)).toBeInTheDocument();
   });
   test('only has "edit manifest" button when readonly', async () => {
-    // ToDo: to test when readOnly={true}, we need manifestData to pass as prop
+    // ToDo: to test when readOnly={true}, we need manifestData as prop
   });
   test('potential ship date cannot be in past', async () => {
     renderWithProviders(<ManifestForm readOnly={false} />);
@@ -44,5 +45,19 @@ describe('ManifestForm', () => {
     await waitFor(() => {
       expect(potentialShipDateInput).toHaveClass('is-invalid');
     });
+  });
+  test('displays e-Manifest managed dates', async () => {
+    const manifestDate = new Date();
+    const expectedDateValue = manifestDate.toISOString().slice(0, 10);
+    const myManifest = createMockManifest({
+      status: 'InTransit',
+      createdDate: manifestDate.toISOString(),
+      updatedDate: manifestDate.toISOString(),
+      shippedDate: manifestDate.toISOString(),
+    });
+    renderWithProviders(<ManifestForm manifestData={myManifest} readOnly={false} />);
+    expect(screen.getByLabelText(/Created Date/i)).toHaveValue(expectedDateValue);
+    expect(screen.getByLabelText(/Last Update Date/i)).toHaveValue(expectedDateValue);
+    expect(screen.getByLabelText(/Shipped Date/i)).toHaveValue(expectedDateValue);
   });
 });
