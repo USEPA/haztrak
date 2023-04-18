@@ -6,3 +6,4 @@
 **/.ruff_cache
 **/*.bak
 /client/public/mockServiceWorker.js
+.github/pull_request_template.md
