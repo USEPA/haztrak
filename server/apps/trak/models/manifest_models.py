@@ -7,10 +7,10 @@ from django.db import models
 from django.db.models import Max, Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from apps.sites.models import RcraSiteType
+from apps.sites.models import RcraSiteType, RcraStates
 from apps.trak.models import Handler
-from apps.trak.models.base_models import TrakBaseManager, TrakBaseModel
 
+from .base_models import TrakBaseManager, TrakBaseModel
 from .transporter_models import Transporter
 from .waste_models import WasteLine
 
@@ -362,55 +362,36 @@ class AdditionalInfo(TrakBaseModel):
         return f"{self.original_mtn or 'Unknown'}"
 
 
-class Locality(TrakBaseModel):
-    """
-    Contains Locality code and City or City name
-    """
-
-    class Meta:
-        verbose_name = "Locality"
-        verbose_name_plural = "Locality"
-    
-    code = models.CharField(
-        max_length=2,
-        )
-    name = models.CharField(
-        max_length=100,
-        null=True,
-        blank=True
-    )
-
-
 class PortOfEntry(TrakBaseModel):
     """
-    Contains Port of entry State code and City or City name plus Port or Airport name
+    Contains location information pertaining to where hazardous waste was imported
     """
 
     class Meta:
         verbose_name = "Port of Entry"
-        verbose_name_plural = "Port of Entry"
+        verbose_name_plural = "Ports of Entry"
 
-    state = models.ForeignKey(
-        "Locality",
-        on_delete=models.PROTECT,
+    state = models.CharField(
+        choices=RcraStates.choices,
+        max_length=2,
         null=True,
         blank=True,
     )
     city_port = models.CharField(
         max_length=100,
         null=True,
-        blank=True
+        blank=True,
     )
 
 
 class ImportInfo(TrakBaseModel):
     """
-    Contains Import related information
+    Contains information on hazardous waste imported to the United Stated
     """
 
     class Meta:
         verbose_name = "Import Info"
-        verbose_name_plural = "Impcommentsort Info"
+        verbose_name_plural = "Import Info"
 
     import_generator = models.JSONField(
         null=True,

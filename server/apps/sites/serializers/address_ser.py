@@ -3,8 +3,9 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.sites.models import Address
+from apps.sites.models import Address, RcraStates
 
+from ..models.contact_models import RcraCountries
 from .base_ser import SitesBaseSerializer
 
 
@@ -39,11 +40,11 @@ class AddressSerializer(SitesBaseSerializer):
         allow_blank=True,
     )
     state = LocalityField(
-        choices=Address.EpaStates.choices,
+        choices=RcraStates.choices,
         required=False,
     )
     country = LocalityField(
-        choices=Address.EpaCountries.choices,
+        choices=RcraCountries.choices,
         required=False,
     )
 
