@@ -1,4 +1,4 @@
-import { Manifest } from 'types/manifest';
+import { Manifest } from 'components/ManifestForm/manifestSchema';
 import { createMockMTNHandler, createMockTransporter } from 'test-utils/fixtures/mockHandler';
 import { createMockWaste } from 'test-utils/fixtures/mockWaste';
 
@@ -7,9 +7,10 @@ export const DEFAULT_MANIFEST: Manifest = {
   import: false,
   status: 'NotAssigned',
   rejection: false,
-  locked: false,
-  containsPreviousRejectOrResidue: false,
+  // locked: false,
+  // containsPreviousRejectOrResidue: false,
   potentialShipDate: '2022-12-14T12:50:12+0000',
+  submissionType: 'FullElectronic',
   generator: createMockMTNHandler({ epaSiteId: 'VATESTGEN001' }),
   transporters: [
     { ...createMockTransporter({ order: 1 }) },

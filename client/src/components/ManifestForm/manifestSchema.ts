@@ -4,9 +4,21 @@ import { z } from 'zod';
 export const manifestSchema = z
   .object({
     manifestTrackingNumber: z.string().optional(),
-    createdDate: z.date().optional(),
-    updatedDate: z.string(),
-    shippedDate: z.any(),
+    /**
+     * The date-time the manifest was created in the e-Manifest system.
+     * Managed by EPA's systems.
+     */
+    createdDate: z.string().optional(),
+    /**
+     * The last date-time manifest was updated in the e-Manifest system.
+     * Managed by EPA's systems.
+     */
+    updatedDate: z.string().optional(),
+    /**
+     * The date-time the hazardous waste shipment departed (was signed by) the generator.
+     * Managed by EPA's systems, but not present on pre-shipment manifests.
+     */
+    shippedDate: z.string().optional(),
     import: z.boolean().optional(),
     rejection: z.boolean().optional(),
     potentialShipDate: z
@@ -42,6 +54,7 @@ export const manifestSchema = z
     submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image']),
   })
   .refine(
+    // Check potential ship date is greater than today if the manifest is still in a pre-shipment phase
     (manifest) => {
       if (manifest.status === 'Pending' || manifest.status === 'NotAssigned') {
         if (manifest.potentialShipDate && new Date(manifest.potentialShipDate) < new Date()) {
