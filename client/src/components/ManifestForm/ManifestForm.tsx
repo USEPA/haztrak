@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HtButton, HtCard, HtForm } from 'components/Ht';
 import HandlerDetails from 'components/HandlerDetails';
-import HtP from 'components/Ht/HtP';
 import AdditionalInfoForm from 'components/ManifestForm/AdditionalInfo';
 import ContactForm from 'components/ManifestForm/ContactForm';
 import { AddTransporter, TransporterTable } from 'components/ManifestForm/Transporter';
@@ -20,6 +19,13 @@ import { QuickerSignModal, QuickerSignModalBtn } from 'components/QuickerSign';
 import { manifestSchema, Manifest, HandlerType } from './manifestSchema';
 import { InfoIconTooltip } from 'components/Ht/HtTooltip';
 
+const defaultValues: Manifest = {
+  transporters: [],
+  wastes: [],
+  status: 'NotAssigned',
+  submissionType: 'FullElectronic',
+};
+
 interface ManifestFormProps {
   readOnly?: boolean;
   manifestData?: Manifest;
@@ -32,7 +38,7 @@ interface ManifestFormProps {
  * as the current method of viewing manifest when the form is read only.
  * @constructor
  */
-function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps) {
+function ManifestForm({ readOnly, manifestData = defaultValues, siteId, mtn }: ManifestFormProps) {
   // console.log('initial pot. ship date', manifestData?.potentialShipDate);
 
   // Top level ManifestForm methods and objects
@@ -43,6 +49,7 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
   const {
     formState: { errors },
   } = manifestMethods;
+  const [manifestStatus, setManifestStatus] = useState(manifestData?.status);
   const isDraft = !manifestData?.manifestTrackingNumber;
   // On load, focus the generator EPA ID.
   useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
@@ -92,9 +99,9 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
   const tsdf: Handler = manifestMethods.getValues('designatedFacility');
 
   const signAble =
-    manifestData?.status === 'Scheduled' ||
-    manifestData?.status === 'InTransit' ||
-    manifestData?.status === 'ReadyForSignature';
+    manifestStatus === 'Scheduled' ||
+    manifestStatus === 'InTransit' ||
+    manifestStatus === 'ReadyForSignature';
 
   return (
     <>
@@ -129,23 +136,51 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                 <Col>
                   <HtForm.Group>
                     <HtForm.Label htmlFor="status" className="mb-0">
-                      Status
+                      {'Status '}
+                      {readOnly ||
+                      (manifestStatus !== 'NotAssigned' && manifestStatus !== 'Pending') ? (
+                        <InfoIconTooltip
+                          message={'Once set to scheduled, this field is managed by EPA'}
+                        />
+                      ) : (
+                        <></>
+                      )}
                     </HtForm.Label>
-                    {readOnly ? (
-                      <HtP>{manifestData?.status}</HtP>
-                    ) : (
-                      <HtForm.Select
-                        id="status"
-                        disabled={readOnly}
-                        aria-label="manifestStatus"
-                        {...manifestMethods.register('status')}
-                      >
-                        <option value="NotAssigned">Draft</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Scheduled">Scheduled</option>
-                        <option value="ReadyForSignature">Ready for Signature</option>
-                      </HtForm.Select>
-                    )}
+                    <HtForm.Select
+                      id="status"
+                      disabled={
+                        readOnly ||
+                        (manifestStatus !== 'NotAssigned' &&
+                          manifestStatus !== 'Pending' &&
+                          manifestStatus !== undefined)
+                      }
+                      aria-label="manifestStatus"
+                      {...manifestMethods.register('status')}
+                      // @ts-ignore
+                      onChange={(event) => setManifestStatus(event.target.value)}
+                    >
+                      <option value="NotAssigned">Draft</option>
+                      <option value="Pending">Pending</option>
+                      <option value="Scheduled">Scheduled</option>
+                      <option hidden value="InTransit">
+                        In Transit
+                      </option>
+                      <option hidden value="ReadyForSignature">
+                        Ready for TSDF Signature
+                      </option>
+                      <option hidden value="Signed">
+                        Signed
+                      </option>
+                      <option hidden value="Corrected">
+                        Corrected
+                      </option>
+                      <option hidden value="UnderCorrection">
+                        Under Correction
+                      </option>
+                      <option hidden value="MtnValidationFailed">
+                        MTN Validation Failed
+                      </option>
+                    </HtForm.Select>
                   </HtForm.Group>
                 </Col>
                 <Col>
@@ -153,19 +188,24 @@ function ManifestForm({ readOnly, manifestData, siteId, mtn }: ManifestFormProps
                     <HtForm.Label htmlFor="submissionType" className="mb-0">
                       Manifest Type
                     </HtForm.Label>
-                    {readOnly ? (
-                      <HtP>{manifestData?.submissionType}</HtP>
-                    ) : (
-                      <HtForm.Select
-                        id="submissionType"
-                        disabled={readOnly}
-                        aria-label="submissionType"
-                        {...manifestMethods.register('submissionType')}
-                      >
-                        <option value="FullElectronic">Electronic</option>
-                        <option value="Hybrid">Hybrid</option>
-                      </HtForm.Select>
-                    )}
+                    <HtForm.Select
+                      id="submissionType"
+                      disabled={
+                        readOnly ||
+                        (manifestStatus !== 'NotAssigned' && manifestStatus !== 'Pending')
+                      }
+                      aria-label="submissionType"
+                      {...manifestMethods.register('submissionType')}
+                    >
+                      <option value="FullElectronic">Electronic</option>
+                      <option value="Hybrid">Hybrid</option>
+                      <option hidden value="DataImage5Copy">
+                        Data + Image
+                      </option>
+                      <option hidden value="Image">
+                        Image Only
+                      </option>
+                    </HtForm.Select>
                   </HtForm.Group>
                 </Col>
               </Row>

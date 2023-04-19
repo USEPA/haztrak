@@ -64,7 +64,11 @@ export const manifestSchema = z
       return true;
     },
     { path: ['potentialShipDate'], message: 'Date must be after today' }
-  );
+  )
+  .refine((manifest) => {
+    // ToDo Validate that if submission Type is FullElectronic, generator.canEsign is true
+    return true;
+  });
 
 export type Manifest = z.infer<typeof manifestSchema>;
 /**
