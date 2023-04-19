@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { Alert, Col, Container, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
 
 interface Props {
   children?: ReactNode;
@@ -43,6 +43,11 @@ class ErrorBoundary extends Component<Props, State> {
                 {`${this.state.error}`}
               </Alert>
             </Row>
+            <div className="mx-1 d-flex flex-row-reverse">
+              <Button variant="danger" onClick={() => this.setState({ hasError: false })}>
+                Go back
+              </Button>
+            </div>
           </Col>
         </Container>
       );
