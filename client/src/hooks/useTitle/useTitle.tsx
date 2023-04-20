@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react';
  * @param resetOnUnmount {boolean}
  * @param excludeSuffix {boolean}
  */
-function useTitle(title: string, resetOnUnmount = false, excludeSuffix = false) {
+export function useTitle(title: string, resetOnUnmount = false, excludeSuffix = false) {
   const defaultTitle = useRef(document.title);
   const [dynTitle, setDynTitle] = useState<string | undefined>(undefined);
 
@@ -33,5 +33,3 @@ function useTitle(title: string, resetOnUnmount = false, excludeSuffix = false) 
   );
   return [dynTitle, setDynTitle] as const;
 }
-
-export default useTitle;

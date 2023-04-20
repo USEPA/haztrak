@@ -1,3 +1,3 @@
-import SyncManifestBtn from './SyncManifestBtn';
+import { SyncManifestBtn } from './SyncManifestBtn';
 
-export default SyncManifestBtn;
+export { SyncManifestBtn };

@@ -1,3 +1,3 @@
-import SiteDetails from './SiteDetails';
+import { SiteDetails } from './SiteDetails';
 
-export default SiteDetails;
+export { SiteDetails };

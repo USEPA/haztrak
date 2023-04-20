@@ -1,10 +1,10 @@
 import {
   createMockHandler,
-  createMockTransporter,
   createMockMTNHandler,
   createMockSite,
-} from 'test-utils/fixtures/mockHandler';
-import { createMockManifest } from 'test-utils/fixtures/mockManifest';
+  createMockTransporter,
+} from './mockHandler';
+import { createMockManifest } from './mockManifest';
 
 export {
   createMockHandler,

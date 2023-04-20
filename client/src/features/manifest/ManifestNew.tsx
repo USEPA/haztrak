@@ -1,11 +1,9 @@
-import ManifestForm from 'components/ManifestForm';
-import useTitle from 'hooks/useTitle';
+import { ManifestForm } from 'components/Manifest';
+import { useTitle } from 'hooks';
 import React from 'react';
 
-function ManifestNew() {
+export function ManifestNew() {
   useTitle('New Manifest');
 
   return <ManifestForm />;
 }
-
-export default ManifestNew;

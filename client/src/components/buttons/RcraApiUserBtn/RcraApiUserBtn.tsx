@@ -11,7 +11,7 @@ interface HtApiUserBtnProps extends ButtonProps {}
  * The permissions are determined in a user's RcraProfile redux store
  * @constructor
  */
-function RcraApiUserBtn(props: HtApiUserBtnProps) {
+export function RcraApiUserBtn(props: HtApiUserBtnProps) {
   const profile = useAppSelector<RcraProfileState>((state) => state.rcraProfile);
   let { children, ...btnProps } = props;
   // In order for the button to be active,
@@ -24,5 +24,3 @@ function RcraApiUserBtn(props: HtApiUserBtnProps) {
     </Button>
   );
 }
-
-export default RcraApiUserBtn;

@@ -1,12 +1,11 @@
 import { HtSpinner } from 'components/Ht';
-import ManifestForm from 'components/ManifestForm';
-import useHtAPI from 'hooks/useHtAPI';
-import useTitle from 'hooks/useTitle';
+import { ManifestForm } from 'components/Manifest';
+import { useTitle, useHtAPI } from 'hooks';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Manifest } from 'components/ManifestForm/manifestSchema';
+import { Manifest } from 'components/Manifest/manifestSchema';
 
-function ManifestDetails() {
+export function ManifestDetails() {
   const { mtn, action, siteId } = useParams();
   useTitle(`${mtn}`);
   const [manifestData, loading, error] = useHtAPI<Manifest>(`trak/manifest/${mtn}`);
@@ -26,5 +25,3 @@ function ManifestDetails() {
     <></>
   );
 }
-
-export default ManifestDetails;

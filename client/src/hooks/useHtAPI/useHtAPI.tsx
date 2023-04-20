@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import htApi from 'services';
+import { htApi } from 'services';
 
 /**
  * On success, returns the body of the GET request as well as loading and errors
@@ -15,7 +15,7 @@ import htApi from 'services';
  * @example
  * const [data, loading , error ] = useHtApi<MyType>(`/api/resource/path/${id}`)
  */
-export default function useHtAPI<T>(url: string) {
+export function useHtAPI<T>(url: string) {
   const [data, setData] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | undefined>(undefined);

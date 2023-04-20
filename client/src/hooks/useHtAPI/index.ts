@@ -1,3 +1,3 @@
-import useHtAPI from 'hooks/useHtAPI/useHtAPI';
+import { useHtAPI } from './useHtAPI';
 
-export default useHtAPI;
+export { useHtAPI };

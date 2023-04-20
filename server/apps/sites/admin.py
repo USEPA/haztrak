@@ -58,11 +58,6 @@ class RcraProfileAdmin(admin.ModelAdmin):
     related_user.short_description = "User"
 
 
-@admin.register(Address)
-class AddressAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "state", "country"]
-    list_filter = ["state", "country"]
-
-
 # Register models That should only be edited within the context of another form here.
 admin.site.register(Contact, HiddenListView)
+admin.site.register(Address, HiddenListView)

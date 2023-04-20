@@ -12,7 +12,7 @@ interface HtButtonProps extends ButtonProps {
  * to easily control alignment
  * @constructor
  */
-function HtButton(props: HtButtonProps) {
+export function HtButton(props: HtButtonProps) {
   const align = props.align || 'center';
   return (
     <Col className={`text-${align}`}>
@@ -22,5 +22,3 @@ function HtButton(props: HtButtonProps) {
     </Col>
   );
 }
-
-export default HtButton;

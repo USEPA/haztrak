@@ -1,5 +1,5 @@
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import SideBarNavItem from 'components/Nav/SideBarNavItem';
+import { SideBarNavItem } from './SideBarNavItem';
 import React, { ReactElement, useState } from 'react';
 import { Button, Collapse } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -25,7 +25,7 @@ import {
  * @returns {ReactElement|null}
  * @constructor
  */
-function Sidebar(): ReactElement | null {
+export function Sidebar(): ReactElement | null {
   const [siteNav, setSiteNav] = useState(false);
   const [helpNav, setHelpNav] = useState(false);
   const [mtnNav, setMtnNav] = useState(false);
@@ -153,5 +153,3 @@ function Sidebar(): ReactElement | null {
     </div>
   );
 }
-
-export default Sidebar;

@@ -1,26 +1,9 @@
-import { RejectionInfo } from 'components/ManifestForm/manifestSchema';
-import { RcraLocality, Handler, Transporter, Signer } from 'types/site';
+import { RejectionInfo } from 'components/Manifest/manifestSchema';
+import { Handler, RcraLocality, Signer, Transporter } from 'types/site';
 import { WasteLine } from 'types/wasteLine';
 import { AdditionalInfo, CorrectionInfo, CorrectionRequest } from 'types/manifest';
-import { z } from 'zod';
 
-const mtnDetailsSchema = z.object({
-  manifestTrackingNumber: z.string(),
-  status: z.string(),
-});
-
-/**
- * Select details about a manifest for display, navigation, and analysis.
- * Often used in composite types (arrays).
- */
-export type MtnDetails = z.infer<typeof mtnDetailsSchema>;
-
-/**
- * The Manifest, also known as hazardous waste manifest, is a key component of the
- * United States Environmental Protection Agency's (US EPA) hazardous waste tracking
- * program. It captures information on the type and quantity of waste being transported,
- * instructions for handling, and custody exchange data (signatures).
- */
+// ToDo Remove this, replace with completed version of schema defined through zod library
 export interface Manifest {
   createdDate?: string;
   updatedDate?: string;

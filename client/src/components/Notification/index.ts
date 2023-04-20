@@ -1,4 +1,4 @@
-import NotificationBtn from 'components/Notification/NotificationBtn';
-import NotificationRow from 'components/Notification/NotificationRow';
+import { NotificationBtn } from './NotificationBtn';
+import { NotificationRow } from './NotificationRow';
 
 export { NotificationBtn, NotificationRow };

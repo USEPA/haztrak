@@ -1,6 +1,6 @@
-import HandlerDetails from 'components/HandlerDetails';
+import { RcraSiteDetails } from 'components/RcraSiteDetails';
 import { HtCard } from 'components/Ht';
-import useHtAPI from 'hooks/useHtAPI';
+import { useHtAPI } from 'hooks';
 import React, { ReactElement } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { HaztrakSite } from 'types/site';
@@ -11,7 +11,7 @@ import { Container, Button } from 'react-bootstrap';
  * GET and Display details of the Haztrak site including RCRA site details.
  * @constructor
  */
-function SiteDetails(): ReactElement {
+export function SiteDetails(): ReactElement {
   let { siteId } = useParams();
   const [siteData, loading, error] = useHtAPI<HaztrakSite>(`site/${siteId}`);
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ function SiteDetails(): ReactElement {
           {loading ? (
             <HtCard.Spinner message="Loading site details..." />
           ) : siteData ? (
-            <HandlerDetails handler={siteData.handler} />
+            <RcraSiteDetails handler={siteData.handler} />
           ) : (
             <></>
           )}
@@ -40,5 +40,3 @@ function SiteDetails(): ReactElement {
     </Container>
   );
 }
-
-export default SiteDetails;

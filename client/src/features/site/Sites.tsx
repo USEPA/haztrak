@@ -1,8 +1,8 @@
-import Manifest from 'features/manifest';
+import { Manifest } from 'features/manifest';
 import React, { ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import SiteList from './SiteList';
-import SiteDetails from './SiteDetails';
+import { SiteList } from './SiteList';
+import { SiteDetails } from './SiteDetails';
 
 interface Props {
   user: string;
@@ -12,7 +12,7 @@ interface Props {
  * Request and display a list of site a user has access to
  * @constructor
  */
-function Sites({ user }: Props): ReactElement {
+export function Sites({ user }: Props): ReactElement {
   return (
     <>
       <Routes>
@@ -23,5 +23,3 @@ function Sites({ user }: Props): ReactElement {
     </>
   );
 }
-
-export default Sites;

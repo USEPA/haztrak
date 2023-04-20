@@ -4,7 +4,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { login, useAppDispatch, useAppSelector } from 'store';
 import { useNavigate } from 'react-router-dom';
-import useTitle from '../../hooks/useTitle';
+import { useTitle } from 'hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruckFast } from '@fortawesome/free-solid-svg-icons';
 import { z } from 'zod';
@@ -21,7 +21,7 @@ type LoginSchema = z.infer<typeof loginSchema>;
  * Haztrak Login component, redirects if user is already logged in
  * @constructor
  */
-function Login(): ReactElement {
+export function Login(): ReactElement {
   useTitle('Login');
   const dispatch = useAppDispatch();
   const useSelector = useAppSelector;
@@ -88,5 +88,3 @@ function Login(): ReactElement {
     </div>
   );
 }
-
-export default Login;

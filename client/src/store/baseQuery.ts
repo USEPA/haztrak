@@ -1,6 +1,6 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/react';
 import { AxiosError, AxiosRequestConfig } from 'axios';
-import htApi from 'services';
+import { htApi } from 'services';
 
 /**
  * Used by the RTK Query api to hook into our existing htApi

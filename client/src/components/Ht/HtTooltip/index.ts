@@ -1,4 +1,3 @@
-import HtTooltip, { InfoIconTooltip } from 'components/Ht/HtTooltip/HtTooltip';
+import { HtTooltip, InfoIconTooltip } from './HtTooltip';
 
-export default HtTooltip;
-export { InfoIconTooltip };
+export { InfoIconTooltip, HtTooltip };

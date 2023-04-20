@@ -1,6 +1,6 @@
 import { WasteLine } from 'types/wasteLine';
 
-export const DEFAULT_WASTELINE: WasteLine = {
+const DEFAULT_WASTELINE: WasteLine = {
   dotHazardous: false,
   epaWaste: true,
   br: false,

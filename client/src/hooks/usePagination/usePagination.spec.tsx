@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, waitFor } from '@testing-library/react';
-import usePagination from 'hooks/usePagination/index';
+import { usePagination } from './usePagination';
 import React, { useState } from 'react';
 import { render, screen } from 'test-utils';
 

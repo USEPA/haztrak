@@ -1,5 +1,5 @@
-import ErrorBoundary from 'components/ErrorBoundary';
-import HtSpinner from 'components/Ht/HtSpinner';
+import { ErrorBoundary } from 'components/ErrorBoundary';
+import { HtSpinner } from 'components/Ht';
 import React, { ReactElement } from 'react';
 import { Card, CardProps } from 'react-bootstrap';
 
@@ -23,7 +23,7 @@ interface SpinnerProps extends CardProps {
  *   <HtCard.Footer>submit button here<HtCard.Footer>
  * </HtCard>
  */
-function HtCard(props: CardProps): ReactElement {
+export function HtCard(props: CardProps): ReactElement {
   const baseAttributes = `my-3 shadow-lg bg-light rounded ${props.className}`;
   const classAttributes =
     props.border || props.className?.includes('border')
@@ -110,5 +110,3 @@ HtCard.Body = function (props: CardProps): ReactElement {
 HtCard.Spinner = function ({ message, className }: SpinnerProps): ReactElement {
   return <HtSpinner message={message} className={className} />;
 };
-
-export default HtCard;

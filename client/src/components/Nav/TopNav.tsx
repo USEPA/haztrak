@@ -13,7 +13,7 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
-function TopNav() {
+export function TopNav() {
   const authUser = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
   const navigation = useNavigate();
@@ -78,5 +78,3 @@ function TopNav() {
     </nav>
   );
 }
-
-export default TopNav;

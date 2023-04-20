@@ -1,13 +1,13 @@
 import React from 'react';
 import { Card, Container } from 'react-bootstrap';
-import useTitle from 'hooks/useTitle';
+import { useTitle } from 'hooks';
 
 /**
  * Static page that talks about Haztrak's licensing, maybe versioning in future
  * @constructor
  * @example "<About/>"
  */
-function About() {
+export function About() {
   useTitle('Help');
   return (
     <Container fluid className="text-lg-center py-4">
@@ -59,5 +59,3 @@ function About() {
     </Container>
   );
 }
-
-export default About;

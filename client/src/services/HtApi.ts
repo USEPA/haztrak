@@ -4,7 +4,7 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import { rootStore } from 'store';
 
-const htApi = axios.create({
+export const htApi = axios.create({
   baseURL: `${process.env.REACT_APP_HT_API_URL}/api`,
   headers: {
     Accept: 'application/json',
@@ -32,5 +32,3 @@ htApi.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-export default htApi;

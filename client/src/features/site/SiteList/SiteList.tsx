@@ -1,5 +1,5 @@
 import { HtCard, HtDropdown, HtModal, HtTooltip } from 'components/Ht';
-import useHtAPI from 'hooks/useHtAPI';
+import { useHtAPI } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -11,7 +11,7 @@ import { faEye, faFileLines } from '@fortawesome/free-solid-svg-icons';
  * Returns a table displaying the Haztrak sites a user has access to.
  * @constructor
  */
-function SiteList() {
+export function SiteList() {
   const [siteData, loading, error] = useHtAPI<Array<HaztrakSite>>('site/');
   const [showErrorModal, setShowErrorModal] = useState(false);
 
@@ -120,5 +120,3 @@ function SiteList() {
     </>
   );
 }
-
-export default SiteList;

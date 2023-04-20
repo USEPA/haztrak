@@ -26,7 +26,7 @@ interface usePaginationProps {
  * @param maxPages Maximum number of visible pages (defaults to 9)
  * @param useEllipsis Do not return ellipsis (defaults to false)
  */
-function usePagination({
+export function usePagination({
   totalCount,
   pageSize,
   siblingCount = 1,
@@ -77,5 +77,3 @@ function usePagination({
     }
   }, [totalCount, pageSize, siblingCount, currentPage]);
 }
-
-export default usePagination;
