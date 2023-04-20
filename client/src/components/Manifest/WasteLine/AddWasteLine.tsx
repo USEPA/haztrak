@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap';
 import { WasteLineForm } from './WasteLineForm';
 import { UseFieldArrayAppend } from 'react-hook-form';
 import { Manifest } from 'components/Manifest/manifestSchema';
-import { WasteLine } from 'types/wasteLine';
+import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { HtModal } from 'components/Ht';
 
 interface Props {

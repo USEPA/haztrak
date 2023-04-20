@@ -8,7 +8,7 @@ import { Login } from 'features/login';
 import { Manifest } from 'features/manifest';
 import { Notifications } from 'features/notifications';
 import { Profile } from 'features/profile';
-import { Sites } from 'features/site';
+import { Sites } from 'features/haztrakSite';
 import React, { ReactElement } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { Route, Routes, useNavigate } from 'react-router-dom';

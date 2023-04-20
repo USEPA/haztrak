@@ -2,12 +2,12 @@ import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import { Manifest } from 'components/Manifest/manifestSchema';
-import { Transporter } from 'types/site';
 import { QuickerSignData } from 'components/Manifest/QuickerSign';
 import { TransporterRowActions } from './TransporterRowActions';
 import { UseFieldArrayReturn } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { QuickerSignModalBtn } from 'components/Manifest/QuickerSign';
+import { Transporter } from 'components/Manifest/Transporter/transporterSchema';
 
 interface TransporterTableProps {
   transporters?: Array<Transporter>;

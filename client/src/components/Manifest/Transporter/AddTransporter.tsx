@@ -3,8 +3,8 @@ import { TransporterSearchForm } from 'components/Manifest/Handler';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { UseFieldArrayAppend } from 'react-hook-form';
-import { RcraSite } from 'types/site';
 import { Manifest } from 'components/Manifest/manifestSchema';
+import { RcraSite } from 'components/RcraSite';
 
 interface Props {
   handleClose: () => void;

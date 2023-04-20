@@ -1,11 +1,11 @@
 import { faCircleCheck, faCircleXmark, faSignature } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AddressListGroup } from 'components/RcraSiteDetails';
+import { AddressListGroup, RcraSite } from 'components/RcraSite';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { RcraSite, Handler } from 'types/site';
+import { Handler } from 'components/Manifest/Handler';
 
-interface HandlerDetailsProps {
+interface RcraSiteDetailsProps {
   handler: Handler | RcraSite;
 }
 
@@ -14,7 +14,7 @@ interface HandlerDetailsProps {
  * @param handler
  * @constructor
  */
-export function RcraSiteDetails({ handler }: HandlerDetailsProps) {
+export function RcraSiteDetails({ handler }: RcraSiteDetailsProps) {
   return (
     <div className="py-2">
       <Row>

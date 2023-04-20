@@ -4,7 +4,7 @@ import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
 import { useGetWasteCodesQuery } from 'store/wasteCode.slice';
-import { Code } from 'types/wasteLine';
+import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
 
 // ToDo: For temporary development purposes, We retrieve federal wastes codes
 //  but still need to implement state waste codes on backend

@@ -5,12 +5,13 @@ import React from 'react';
 import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { UserState } from 'store/userSlice/user.slice';
-import { Handler, Transporter } from 'types/site';
 import { useNavigate } from 'react-router-dom';
 import { addNotification, RootState, useAppDispatch, useAppSelector } from 'store';
 import { htApi } from 'services';
 import { AxiosError, AxiosResponse } from 'axios';
 import { QuickerSignature } from 'components/Manifest/QuickerSign/quickerSignSchema';
+import { Handler } from 'components/Manifest/Handler';
+import { Transporter } from 'components/Manifest/Transporter';
 
 interface QuickerSignProps {
   mtn: Array<string>;

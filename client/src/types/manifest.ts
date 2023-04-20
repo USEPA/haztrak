@@ -1,9 +1,38 @@
 import { RejectionInfo } from 'components/Manifest/manifestSchema';
-import { Handler, RcraLocality, Signer, Transporter } from 'types/site';
-import { WasteLine } from 'types/wasteLine';
-import { AdditionalInfo, CorrectionInfo, CorrectionRequest } from 'types/manifest';
+import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { AdditionalInfo } from 'components/AdditionalInfo';
+import { Handler, Signer } from 'components/Manifest/Handler';
+import { Transporter } from 'components/Manifest/Transporter';
+import { RcraLocality, rcraLocalitySchema } from 'components/RcraSite';
+import { z } from 'zod';
+
+/**
+ * Object containing info from a request for a correction from a RCRA authorized
+ * state (e.g., Texas, California)
+ */
+const correctionRequestSchema = z.object({
+  correctionRequestStatus: z.enum(['NotSend', 'Sent', 'IndustryResponded']),
+  correctionRequestDate: z.string(),
+  initiatorState: rcraLocalitySchema,
+  active: z.boolean(),
+  // stateUser
+  // sections
+});
+
+const partRole = z.enum(['Industry', 'State', 'Ppc', 'Epa']);
+
+const correctionInfoSchema = z.object({
+  versionNumber: z.number(),
+  active: z.boolean(),
+  ppcActive: z.boolean(),
+  // electronicSignatureInfo
+  // epaSiteId
+  initiatorRole: partRole,
+  updateRole: partRole,
+});
 
 // ToDo Remove this, replace with completed version of schema defined through zod library
+//  which is already started in components/Manifest/manifestSchema
 export interface Manifest {
   createdDate?: string;
   updatedDate?: string;
@@ -136,3 +165,10 @@ interface Document {
   size: number;
   mimeType: 'APPLICATION_PDF' | 'TEXT_HTML';
 }
+
+/**
+ * RCRAInfo schema for when a regulator requests a correction on a manifest
+ */
+export type CorrectionRequest = z.infer<typeof correctionRequestSchema>;
+
+export type CorrectionInfo = z.infer<typeof correctionInfoSchema>;

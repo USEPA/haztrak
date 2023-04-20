@@ -4,7 +4,7 @@ import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockHandler, createMockSite } from 'test-utils/fixtures/mockHandler';
 import { API_BASE_URL } from 'test-utils/mock/handlers';
-import { SiteList } from 'features/site/SiteList';
+import { SiteList } from 'features/haztrakSite/SiteList';
 
 const mockSites = [createMockSite(), createMockSite()];
 const server = setupServer(

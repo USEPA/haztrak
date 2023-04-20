@@ -1,4 +1,7 @@
-import { RcraSite, Handler, HaztrakSite, Transporter } from 'types/site';
+import { HaztrakSite } from 'components/HaztrakSite';
+import { RcraSite } from 'components/RcraSite';
+import { Handler } from 'components/Manifest/Handler';
+import { Transporter } from 'components/Manifest/Transporter';
 
 /**
  * A mock handler object for tests

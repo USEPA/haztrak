@@ -1,8 +1,51 @@
-import { electronicSignatureSchema, paperSignatureSchema } from 'types/manifest/signatures';
-import { rcraContactSchema, rcraPhoneSchema } from 'types/site/contact';
 import { z } from 'zod';
-import { rcraAddressSchema } from './address';
 
+export const rcraPhoneSchema = z.object({
+  number: z.string(),
+  extension: z.string().optional(),
+});
+
+/**
+ * RCRA Phone schema defined by RCRAInfo including Phone and optional extension
+ */
+export type RcraPhone = z.infer<typeof rcraPhoneSchema>;
+
+export const rcraContactSchema = z.object({
+  firstName: z.string().optional(),
+  middleInitial: z.string().optional(),
+  lastName: z.string().optional(),
+  phone: rcraPhoneSchema.optional(),
+  email: z.string().optional(),
+  companyName: z.string().optional(),
+});
+
+/**
+ * Contact information for a given handler listed on the hazardous waste manifest
+ */
+export type RcraContact = z.infer<typeof rcraContactSchema>;
+/**
+ * Locality Schema for EPA's Rcrainfo which contains information on a geographic region (state, country)
+ * used for RCRA sites and handlers on a hazardous waste manifest
+ */
+// ToDo: rcraLocality code and name should be validated togather so codes correspond geographic regions
+//  For example: if code === "TX" is true then name === "Texas" should also be true.
+export const rcraLocalitySchema = z.object({
+  code: z.string(),
+  name: z.string().optional(),
+});
+
+/**
+ * Address Schema  information for handlers on a hazardous waste manifest
+ */
+export const rcraAddressSchema = z.object({
+  address1: z.string(),
+  address2: z.string().optional(),
+  city: z.string().optional(),
+  country: rcraLocalitySchema.optional(),
+  state: rcraLocalitySchema,
+  streetNumber: z.string().optional(),
+  zip: z.string().optional(),
+});
 export const rcraSite = z.object({
   name: z.string(),
   /**
@@ -60,40 +103,13 @@ export const rcraSite = z.object({
  */
 export type RcraSite = z.infer<typeof rcraSite>;
 
-const handlerSchema = rcraSite.extend({
-  paperSignatureInfo: paperSignatureSchema.optional(),
-  electronicSignaturesInfo: electronicSignatureSchema.array().optional(),
-  /**
-   * Property on by back end to signify whether the handler has signed
-   */
-  signed: z.boolean().optional(),
-});
+/**
+ * format of address information stored by EPA's RCRAInfo
+ */
+export type RcraAddress = z.infer<typeof rcraAddressSchema>;
 
 /**
- * The Handler extends the RcraSite schema and adds manifest specific data
+ * format of regional data including a code (e.g., TX) and name (e.g., Texas)
+ * stored by EPA's RCRAInfo
  */
-export type Handler = z.infer<typeof handlerSchema>;
-
-const transporterSchema = handlerSchema.extend({
-  order: z.number(),
-  manifest: z.number().optional(),
-});
-
-/**
- *  The Transporter type extends the Handler schema and adds transporter
- *  specific data, such as their order on the manifest
- */
-export type Transporter = z.infer<typeof transporterSchema>;
-
-const haztrakSiteSchema = z.object({
-  name: z.string(),
-  handler: rcraSite,
-});
-
-/**
- *  The Haztrak Site type encapsulates the RCRA site model as well as other details specific to
- *  that site. It is not directly associated with the EPA RCRAInfo system
- *  directly and can be extended as needed. For example, Haztrak users are given permission to
- *  haztrak sites, not RCRA sites.
- */
-export type HaztrakSite = z.infer<typeof haztrakSiteSchema>;
+export type RcraLocality = z.infer<typeof rcraLocalitySchema>;

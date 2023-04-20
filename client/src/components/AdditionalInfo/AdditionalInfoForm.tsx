@@ -5,7 +5,7 @@ import React from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Manifest } from 'types/manifest';
-import { WasteLine } from 'types/wasteLine';
+import { WasteLine } from 'components/Manifest/WasteLine';
 
 interface AdditionalFormProps {
   readOnly?: boolean;

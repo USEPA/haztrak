@@ -5,7 +5,8 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import { htApi } from 'services';
 import { HandlerType, Manifest } from 'components/Manifest/manifestSchema';
-import { RcraSite, Transporter } from 'types/site';
+import { RcraSite } from 'components/RcraSite';
+import { Transporter } from 'components/Manifest/Transporter';
 
 interface Props {
   handleClose: () => void;

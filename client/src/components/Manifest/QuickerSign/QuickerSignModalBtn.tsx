@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { ButtonProps } from 'react-bootstrap';
 import { RcraApiUserBtn } from 'components/buttons';
-import { Handler } from 'types/site';
+import { Handler } from 'components/Manifest/Handler';
 
 interface QuickerSignData {
   handler: Handler | undefined;

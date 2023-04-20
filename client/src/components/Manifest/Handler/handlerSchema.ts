@@ -1,14 +1,10 @@
-import { rcraPhoneSchema } from 'types/site/contact';
+import { rcraPhoneSchema, rcraSite } from 'components/RcraSite';
 import { z } from 'zod';
 
-/**
- * The Signature that appears on paper versions of the manifest
- */
 export const paperSignatureSchema = z.object({
   printedName: z.string(),
   signatureDate: z.string(),
 });
-export type PaperSignature = z.infer<typeof paperSignatureSchema>;
 
 /**
  * Schema for signer of a hazardous waste manifest
@@ -28,11 +24,6 @@ const signerSchema = z.object({
 });
 
 /**
- * A signer of a hazardous waste manifest
- */
-export type Signer = z.infer<typeof signerSchema>;
-
-/**
  * EPA's RCRAInfo electronic signature schema
  */
 export const electronicSignatureSchema = z.object({
@@ -45,4 +36,30 @@ export const electronicSignatureSchema = z.object({
   humanReadableDocument: z.any().optional(),
 });
 
+export const handlerSchema = rcraSite.extend({
+  paperSignatureInfo: paperSignatureSchema.optional(),
+  electronicSignaturesInfo: electronicSignatureSchema.array().optional(),
+  /**
+   * Property on by back end to signify whether the handler has signed
+   */
+  signed: z.boolean().optional(),
+});
+
+/**
+ * The Handler extends the RcraSite schema and adds manifest specific data
+ */
+export type Handler = z.infer<typeof handlerSchema>;
+
+/**
+ * The Signature that appears on paper versions of the manifest
+ */
+export type PaperSignature = z.infer<typeof paperSignatureSchema>;
+
+/**
+ * A signer of a hazardous waste manifest
+ */
+export type Signer = z.infer<typeof signerSchema>;
+/**
+ * RCRAInfo electronic signature definition
+ */
 export type ElectronicSignature = z.infer<typeof electronicSignatureSchema>;

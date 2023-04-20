@@ -1,5 +1,5 @@
-import { rcraSite } from 'types/site/sites';
 import { z } from 'zod';
+import { rcraSite } from 'components/RcraSite';
 
 export const manifestSchema = z
   .object({
@@ -65,7 +65,7 @@ export const manifestSchema = z
     },
     { path: ['potentialShipDate'], message: 'Date must be after today' }
   )
-  .refine((manifest) => {
+  .refine(() => {
     // ToDo Validate that if submission Type is FullElectronic, generator.canEsign is true
     return true;
   });
@@ -75,7 +75,7 @@ const rejectionInfoSchema = z.object({
   alternateDesignatedFacilityType: z.enum(['Generator', 'Tsdf']),
   // generatorPaperSignature: ???
   // generatorElectronicSignature: ???
-  alternateDesignatedFacility: rcraSite,
+  alternateDesignatedFacility: rcraSite, // ToDo this should be a handler
   newManifestTrackingNumber: z.string(),
   rejectionComments: z.string(),
 });

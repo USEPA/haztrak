@@ -1,18 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/Ht';
-import { RcraSiteDetails } from 'components/RcraSiteDetails';
-import { AdditionalInfoForm } from './AdditionalInfo';
+import { RcraSiteDetails } from 'components/RcraSite';
+import { AdditionalInfoForm } from '../AdditionalInfo';
 import { ContactForm } from './Contact';
-import { AddTransporter, TransporterTable } from './Transporter';
+import { AddTransporter, Transporter, TransporterTable } from './Transporter';
 import { WasteLineTable, AddWasteLine } from './WasteLine';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { Handler, Transporter } from 'types/site';
 import { QuickerSignData } from './QuickerSign';
-import { WasteLine } from 'types/wasteLine';
-import { AddHandler, HandlerForm } from './Handler';
+import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { AddHandler, Handler, HandlerForm } from './Handler';
 import { QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
 import { manifestSchema, Manifest, HandlerType } from './manifestSchema';
 

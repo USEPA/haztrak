@@ -1,11 +1,8 @@
-import { HtCard, HtDropdown, HtModal, HtTooltip } from 'components/Ht';
+import { HtCard, HtDropdown, HtModal } from 'components/Ht';
 import { useHtAPI } from 'hooks';
 import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { HaztrakSite } from 'types/site';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faFileLines } from '@fortawesome/free-solid-svg-icons';
+import { HaztrakSite, HtSiteTable } from 'components/HaztrakSite';
 
 /**
  * Returns a table displaying the Haztrak sites a user has access to.
@@ -22,53 +19,6 @@ export function SiteList() {
   const handleClose = () => {
     setShowErrorModal(false);
   };
-
-  // ToDo: This is POC source, It needs to be refactored desperately
-  function SitesTable() {
-    return (
-      <Table striped hover>
-        <thead>
-          <tr>
-            <th>Site Alias</th>
-            <th>EPA ID number</th>
-            <th className="d-grid justify-content-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {siteData ? (
-            siteData.map((site, i) => {
-              return (
-                <tr key={i}>
-                  <td>{site.name}</td>
-                  <td>{site.handler.epaSiteId}</td>
-                  <td className="d-flex justify-content-evenly">
-                    <HtTooltip text={`${site.name} Details`}>
-                      <Link
-                        to={`/site/${site.handler.epaSiteId}`}
-                        aria-label={`${site.name}Details`}
-                      >
-                        <FontAwesomeIcon icon={faEye} />
-                      </Link>
-                    </HtTooltip>
-                    <HtTooltip text={`${site.name}'s manifest`}>
-                      <Link
-                        to={`/site/${site.handler.epaSiteId}/manifest`}
-                        aria-label={`${site.name}Manifests`}
-                      >
-                        <FontAwesomeIcon icon={faFileLines} />
-                      </Link>
-                    </HtTooltip>
-                  </td>
-                </tr>
-              );
-            })
-          ) : (
-            <p>nothing</p>
-          )}
-        </tbody>
-      </Table>
-    );
-  }
 
   return (
     <>
@@ -89,7 +39,7 @@ export function SiteList() {
           ) : //  else check if siteData is present
           siteData ? (
             // if yes, display the table
-            SitesTable()
+            <HtSiteTable sitesData={siteData} />
           ) : // else check if there's an error
           error ? (
             <>
@@ -103,7 +53,6 @@ export function SiteList() {
                   </p>
                 </HtModal.Body>
               </HtModal>
-              {SitesTable()}
             </>
           ) : (
             // lastly, if no error but siteData is empty, suggest

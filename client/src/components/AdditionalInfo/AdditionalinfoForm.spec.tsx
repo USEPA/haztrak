@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { fireEvent } from '@testing-library/react';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { AdditionalInfoForm } from './AdditionalInfoForm';
+import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
 
 afterEach(() => {
   cleanup();

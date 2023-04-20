@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockMTNHandler } from 'test-utils/fixtures';
-import { RcraSiteDetails } from 'components/RcraSiteDetails';
+import { RcraSiteDetails } from 'components/RcraSite';
 
 afterEach(() => {
   cleanup();
