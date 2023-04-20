@@ -1,5 +1,5 @@
 import { HtCard, HtForm } from 'components/Ht';
-import { AdditionalInfoForm } from 'components/AdditionalInfo';
+import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
 import { HazardousWasteForm } from './HazardousWasteForm';
 import React from 'react';
 import { Button, Container, Form, Row } from 'react-bootstrap';

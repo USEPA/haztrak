@@ -13,7 +13,7 @@ import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { AddHandler, Handler, HandlerForm } from './Handler';
 import { QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
 import { manifestSchema, Manifest, HandlerType } from './manifestSchema';
-import { AdditionalInfoForm } from 'components/AdditionalInfo';
+import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
 
 const defaultValues: Manifest = {
   transporters: [],

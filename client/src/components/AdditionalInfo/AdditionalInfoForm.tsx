@@ -14,7 +14,7 @@ interface AdditionalFormProps {
 // ToDo: this is POC source, clean up work appreciated
 //  see this example from react-hook-form
 //  https://codesandbox.io/s/6j1760jkjk
-function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
+export function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
   const { register, control } = useFormContext<Manifest | WasteLine>();
   const { fields, append, remove } = useFieldArray<Manifest | WasteLine, 'additionalInfo.comments'>(
     {
@@ -129,5 +129,3 @@ function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
     </>
   );
 }
-
-export { AdditionalInfoForm };
