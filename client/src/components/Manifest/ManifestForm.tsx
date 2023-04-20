@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/Ht';
 import { RcraSiteDetails } from 'components/RcraSite';
-import { AdditionalInfoForm } from '../AdditionalInfo';
 import { ContactForm } from './Contact';
 import { AddTransporter, Transporter, TransporterTable } from './Transporter';
 import { WasteLineTable, AddWasteLine } from './WasteLine';
@@ -14,6 +13,7 @@ import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { AddHandler, Handler, HandlerForm } from './Handler';
 import { QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
 import { manifestSchema, Manifest, HandlerType } from './manifestSchema';
+import { AdditionalInfoForm } from 'components/AdditionalInfo';
 
 const defaultValues: Manifest = {
   transporters: [],
