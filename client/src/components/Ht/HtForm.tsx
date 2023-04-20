@@ -10,7 +10,7 @@ import {
   InputGroupProps,
 } from 'react-bootstrap';
 
-function HtForm(props: FormProps): ReactElement {
+export function HtForm(props: FormProps): ReactElement {
   return <Form {...props}>{props.children}</Form>;
 }
 
@@ -67,5 +67,3 @@ HtForm.Switch = React.forwardRef<HTMLInputElement, FormCheckProps>(
     );
   }
 );
-
-export default HtForm;

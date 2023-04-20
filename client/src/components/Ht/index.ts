@@ -1,10 +1,20 @@
-import HtCard from 'components/Ht/HtCard';
-import HtDropdown from 'components/Ht/HtDropdown';
-import HtModal from 'components/Ht/HtModal';
-import HtSpinner from 'components/Ht/HtSpinner';
-import HtTooltip from 'components/Ht/HtTooltip';
-import HtButton from 'components/Ht/HtButton';
-import HtForm from 'components/Ht/HtForm';
-import HtPaginate from 'components/Ht/HtPaginate';
+import { HtCard } from './HtCard';
+import { HtDropdown } from './HtDropdown';
+import { HtModal } from './HtModal';
+import { HtSpinner } from './HtSpinner';
+import { HtButton } from 'components/Ht/HtButton';
+import { HtForm } from 'components/Ht/HtForm';
+import { HtPaginate } from 'components/Ht/HtPaginate';
+import { HtTooltip, InfoIconTooltip } from './HtTooltip';
 
-export { HtCard, HtTooltip, HtDropdown, HtModal, HtSpinner, HtButton, HtForm, HtPaginate };
+export {
+  InfoIconTooltip,
+  HtCard,
+  HtTooltip,
+  HtDropdown,
+  HtModal,
+  HtSpinner,
+  HtButton,
+  HtForm,
+  HtPaginate,
+};

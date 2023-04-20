@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { HtPaginate } from 'components/Ht/index';
+import { HtPaginate } from 'components/Ht';
 import React from 'react';
 import { cleanup, render, screen } from 'test-utils';
 

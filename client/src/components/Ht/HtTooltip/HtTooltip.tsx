@@ -14,7 +14,7 @@ interface HtToolTipProps extends TooltipProps {
 // renderTooltip function passed to OverlayTrigger's overlay property
 const renderTooltip = (text: string) => <Tooltip>{text}</Tooltip>;
 
-function HtTooltip(props: HtToolTipProps): ReactElement {
+export function HtTooltip(props: HtToolTipProps): ReactElement {
   // create copy of props intended for the OverlayTrigger
   const overlayProps = (({ text, children, ...props }: HtToolTipProps) => props)(props);
   return (
@@ -37,13 +37,10 @@ interface InfoTooltipProps {
  * that explains that this Field is set by EPA's RCRAInfo.
  * @constructor
  */
-function InfoIconTooltip({ message }: InfoTooltipProps) {
+export function InfoIconTooltip({ message }: InfoTooltipProps) {
   return (
     <HtTooltip text={message}>
       <FontAwesomeIcon icon={faInfoCircle} size={'1x'} className={'pb-1 text-muted'} />
     </HtTooltip>
   );
 }
-
-export default HtTooltip;
-export { InfoIconTooltip };

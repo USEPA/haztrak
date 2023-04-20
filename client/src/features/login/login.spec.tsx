@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderWithProviders, screen } from 'test-utils';
-import Login from './index';
+import { Login } from 'features/login';
 
 describe('Login component', () => {
   test('renders', () => {

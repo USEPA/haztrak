@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { htApiBaseQuery } from 'store/baseQuery';
-import { Code } from 'types/wasteLine';
+import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
 
 /**
  * A RTK Query Api for fetching codes.

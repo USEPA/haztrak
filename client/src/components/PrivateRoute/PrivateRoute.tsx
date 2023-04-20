@@ -11,7 +11,7 @@ interface Props {
  * @param { children } Route to wrap around
  * @constructor
  */
-function PrivateRoute({ children, authUser }: Props): ReactElement {
+export function PrivateRoute({ children, authUser }: Props): ReactElement {
   if (!authUser) {
     // not logged in so redirect to login page with the return url
     return <Navigate to="/login" />;
@@ -19,5 +19,3 @@ function PrivateRoute({ children, authUser }: Props): ReactElement {
   // authorized so return child components
   return children;
 }
-
-export default PrivateRoute;

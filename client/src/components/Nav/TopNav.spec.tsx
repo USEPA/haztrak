@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
-import TopNav from './TopNav';
+import { TopNav } from 'components/Nav';
 
 afterEach(() => {
   cleanup();

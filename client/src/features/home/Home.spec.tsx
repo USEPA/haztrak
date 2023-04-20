@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { handlers } from 'test-utils/mock/handlers';
-import Home from './index';
+import { Home } from 'features/home';
 
 const server = setupServer(...handlers);
 const username = 'testuser1';

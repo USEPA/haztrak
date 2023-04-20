@@ -2,17 +2,15 @@ import { HtCard } from 'components/Ht';
 import React, { ReactElement, useState } from 'react';
 import { Button, Col, Container, Dropdown, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import useHtAPI from 'hooks/useHtAPI';
-import useTitle from 'hooks/useTitle';
+import { useTitle, useHtAPI } from 'hooks';
 import { SyncManifestBtn } from 'components/buttons';
-import MtnTable from 'components/MtnTable';
-import { MtnDetails } from 'types/manifest';
+import { MtnTable, MtnDetails } from 'components/Mtn';
 
 /**
  * Fetch and display all the manifest tracking number (MTN) known by haztrak
  * @constructor
  */
-function MtnList(): ReactElement {
+export function MtnList(): ReactElement {
   let { siteId } = useParams();
   useTitle(`${siteId || ''} Manifest`);
   const navigate = useNavigate();
@@ -82,5 +80,3 @@ function MtnList(): ReactElement {
     </>
   );
 }
-
-export default MtnList;

@@ -26,7 +26,7 @@ interface Props {
  *            ]}
  * />
  */
-function HtDropdown({ keyName, links }: Props): ReactElement {
+export function HtDropdown({ keyName, links }: Props): ReactElement {
   return (
     <Dropdown>
       <Dropdown.Toggle className="bg-transparent ht-ellipsis shadow-none">
@@ -44,5 +44,3 @@ function HtDropdown({ keyName, links }: Props): ReactElement {
     </Dropdown>
   );
 }
-
-export default HtDropdown;

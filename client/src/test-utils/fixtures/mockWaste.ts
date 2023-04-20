@@ -1,6 +1,6 @@
-import { WasteLine } from 'types/wasteLine';
+import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 
-export const DEFAULT_WASTELINE: WasteLine = {
+const DEFAULT_WASTELINE: WasteLine = {
   dotHazardous: false,
   epaWaste: true,
   br: false,

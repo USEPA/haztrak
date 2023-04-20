@@ -1,3 +1,3 @@
-import RcraApiUserBtn from 'components/buttons/RcraApiUserBtn/RcraApiUserBtn';
+import { RcraApiUserBtn } from './RcraApiUserBtn';
 
-export default RcraApiUserBtn;
+export { RcraApiUserBtn };

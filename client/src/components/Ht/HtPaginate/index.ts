@@ -1,3 +1,3 @@
-import HtPaginate from './HtPaginate';
+import { HtPaginate } from './HtPaginate';
 
-export default HtPaginate;
+export { HtPaginate };

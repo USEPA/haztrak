@@ -1,8 +1,8 @@
-import { Manifest } from 'components/ManifestForm/manifestSchema';
+import { Manifest } from 'components/Manifest/manifestSchema';
 import { createMockMTNHandler, createMockTransporter } from 'test-utils/fixtures/mockHandler';
 import { createMockWaste } from 'test-utils/fixtures/mockWaste';
 
-export const DEFAULT_MANIFEST: Manifest = {
+const DEFAULT_MANIFEST: Manifest = {
   manifestTrackingNumber: '123456789ELC',
   import: false,
   status: 'NotAssigned',

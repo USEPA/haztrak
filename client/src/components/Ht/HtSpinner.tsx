@@ -7,7 +7,7 @@ interface SpinnerProps {
   className?: string;
 }
 
-function HtSpinner({ message, className }: SpinnerProps): ReactElement {
+export function HtSpinner({ message, className }: SpinnerProps): ReactElement {
   return (
     <>
       <p
@@ -19,5 +19,3 @@ function HtSpinner({ message, className }: SpinnerProps): ReactElement {
     </>
   );
 }
-
-export default HtSpinner;

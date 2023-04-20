@@ -10,7 +10,7 @@ interface NavItemProps extends FontAwesomeIconProps {
   children?: ReactNode;
 }
 
-function SideBarNavItem({ children, text, to, targetBlank, className, icon }: NavItemProps) {
+export function SideBarNavItem({ children, text, to, targetBlank, className, icon }: NavItemProps) {
   return (
     <Link className="nav-link" to={`${to}`} target={targetBlank ? '_blank' : undefined}>
       <Col xs={3} className="d-flex justify-content-center">
@@ -23,5 +23,3 @@ function SideBarNavItem({ children, text, to, targetBlank, className, icon }: Na
     </Link>
   );
 }
-
-export default SideBarNavItem;

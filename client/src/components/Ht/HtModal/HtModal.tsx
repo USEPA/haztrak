@@ -33,7 +33,7 @@ interface HtModalHeaderProps extends ModalHeaderProps {
  *  <HtModal.Title title='sample title' />
  * </HtModal>
  */
-function HtModal({
+export function HtModal({
   showModal,
   handleClose,
   className,
@@ -99,5 +99,3 @@ HtModal.Body = function (props: ModalProps): ReactElement {
 HtModal.Footer = function (props: ModalProps): ReactElement {
   return <ModalFooter {...props}>{props.children}</ModalFooter>;
 };
-
-export default HtModal;

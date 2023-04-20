@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { cleanup, render, screen } from 'test-utils';
-import HtCard from 'components/Ht/HtCard/HtCard';
+import { HtCard } from 'components/Ht';
 
 afterEach(() => {
   cleanup();

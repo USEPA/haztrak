@@ -15,7 +15,7 @@ interface NotificationRowProps {
  * Responsible for retrieving information about long-running tasks and displaying the results.
  * @constructor
  */
-function NotificationRow({ notification }: NotificationRowProps) {
+export function NotificationRow({ notification }: NotificationRowProps) {
   const dispatch = useAppDispatch();
   const createdDate = new Date(notification.createdDate);
   const pollingIntervalMs = 5000;
@@ -47,5 +47,3 @@ function NotificationRow({ notification }: NotificationRowProps) {
     </tr>
   );
 }
-
-export default NotificationRow;

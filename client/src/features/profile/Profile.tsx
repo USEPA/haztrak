@@ -1,7 +1,7 @@
 import { HtCard } from 'components/Ht';
-import RcraProfile from 'features/profile/RcraProfile';
-import UserProfile from 'features/profile/UserProfile';
-import useTitle from 'hooks/useTitle';
+import { RcraProfile } from './RcraProfile';
+import { UserProfile } from './UserProfile';
+import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from 'store';
@@ -12,7 +12,7 @@ import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
  * Display user profile
  * @constructor
  */
-function Profile(): ReactElement {
+export function Profile(): ReactElement {
   const dispatch = useAppDispatch();
   const profile = useAppSelector<RcraProfileState>((state) => state.rcraProfile);
   useTitle('Profile');
@@ -47,5 +47,3 @@ function Profile(): ReactElement {
     </>
   );
 }
-
-export default Profile;

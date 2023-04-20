@@ -1,4 +1,4 @@
-import useTitle from 'hooks/useTitle';
+import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { RootState, useAppDispatch, useAppSelector } from 'store';
 import { getExampleTask } from 'store/notificationSlice/notification.slice';
@@ -10,7 +10,7 @@ import { HtButton } from 'components/Ht';
  * Home page for logged-in user, currently does not really include anything
  * @constructor
  */
-function Home(): ReactElement {
+export function Home(): ReactElement {
   useTitle(`Haztrak`, false, true);
   const dispatch = useAppDispatch();
   const { user } = useAppSelector<UserState>((state: RootState) => state.user);
@@ -34,5 +34,3 @@ function Home(): ReactElement {
     </div>
   );
 }
-
-export default Home;

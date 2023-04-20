@@ -2,7 +2,7 @@ import { faFaceSmile } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { HtCard } from 'components/Ht';
 import { NotificationRow } from 'components/Notification';
-import useTitle from 'hooks/useTitle';
+import { useTitle } from 'hooks';
 import React from 'react';
 import { Col, Container, Table } from 'react-bootstrap';
 import { useAppSelector } from 'store';
@@ -12,7 +12,7 @@ import { NotificationState } from 'store/notificationSlice/notification.slice';
  * Table showing the user's current notifications
  * @constructor
  */
-function Notifications() {
+export function Notifications() {
   useTitle('Notifications');
   const notificationState: NotificationState = useAppSelector((state) => state.notification);
 
@@ -54,5 +54,3 @@ function Notifications() {
     </>
   );
 }
-
-export default Notifications;

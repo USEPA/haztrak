@@ -1,9 +1,6 @@
 # HT
 
-This directory contains a number of UI components that wrap around lower level components to provide default styling or
-functionality.
-
-## Overview
+This directory contains a number of wrapper UI components to provide default styling or
 
 Most of what you'll find here are Bootstrap styled components with some default
 styling and UI functionality. Components should be flexible enough to work in

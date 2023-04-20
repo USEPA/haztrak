@@ -1,3 +1,3 @@
-import HtCard from 'components/Ht/HtCard/HtCard';
+import { HtCard } from 'components/Ht/HtCard/HtCard';
 
-export default HtCard;
+export { HtCard };

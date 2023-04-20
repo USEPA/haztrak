@@ -1,5 +1,5 @@
 import React from 'react';
-import usePagination from 'hooks/usePagination';
+import { usePagination } from 'hooks/usePagination';
 import { Pagination } from 'react-bootstrap';
 
 /**
@@ -32,7 +32,7 @@ interface HtPaginateProps extends usePaginationProps {
  * defaults to 9)
  * @constructor
  */
-function HtPaginate({
+export function HtPaginate({
   totalCount,
   currentPage,
   onPageChange,
@@ -97,5 +97,3 @@ function HtPaginate({
     </div>
   );
 }
-
-export default HtPaginate;

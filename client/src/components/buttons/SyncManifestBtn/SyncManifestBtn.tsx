@@ -1,7 +1,7 @@
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import htApi from 'services';
+import { htApi } from 'services';
 import { RcraApiUserBtn } from 'components/buttons';
 import { addNotification, useAppDispatch } from 'store';
 
@@ -15,7 +15,7 @@ interface SyncManifestProps {
  * The button will be disabled if siteId (the EPA ID number) is not provided
  * @constructor
  */
-function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
+export function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
   const [syncingMtn, setSyncingMtn] = useState(false);
   const dispatch = useAppDispatch();
   let active: boolean = siteId ? true : false;
@@ -50,5 +50,3 @@ function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
     </RcraApiUserBtn>
   );
 }
-
-export default SyncManifestBtn;
