@@ -31,18 +31,18 @@ export function RcraSiteDetails({ handler }: RcraSiteDetailsProps) {
       </Row>
       <Row className="mb-0">
         <Col>
-          <label className="fw-bold">EPA ID number</label>
+          <p className="fw-bold">EPA ID number</p>
           <p>{handler.epaSiteId}</p>
         </Col>
         <Col>
-          <p className="mb-0">
-            <label className="fw-bold">Can e-Sign: </label>{' '}
+          <div className="mb-0">
+            <p className="fw-bold">Can e-Sign: </p>{' '}
             {handler.canEsign ? (
               <FontAwesomeIcon icon={faCircleCheck} className="text-success align-text-bottom" />
             ) : (
               <FontAwesomeIcon icon={faCircleXmark} className="text-danger align-text-bottom" />
             )}
-          </p>
+          </div>
           <p>
             Has registered e-Manifest user:{' '}
             {handler.hasRegisteredEmanifestUser ? (
