@@ -5,7 +5,6 @@ import { HtModal } from 'components/Ht';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('HtModal', () => {

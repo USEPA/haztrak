@@ -6,7 +6,6 @@ import { QuickerSignForm } from 'components/Manifest/QuickerSign';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('QuickerSignForm', () => {

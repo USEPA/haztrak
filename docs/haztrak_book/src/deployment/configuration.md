@@ -132,10 +132,10 @@ will default to `HT_LOG_LEVEL`s default.
 
 ### Required (client)
 
-- `REACT_APP_HT_API_URL`
+- `VITE_HT_API_URL`
   - Value: host/domain name of the haztrak back end
   - Default: `http://localhost:8000`
-- `REACT_APP_HT_ENV`
+- `VITE_HT_ENV`
   - Default: `PROD`
   - Options: `PROD`, `DEV`, `TEST`
   - Description: The deployment environments, `TEST` mock service worker that intercepts API calls

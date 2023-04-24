@@ -23,7 +23,6 @@ const alertPayload = {
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('Notification Slice', () => {

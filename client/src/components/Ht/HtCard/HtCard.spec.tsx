@@ -5,7 +5,6 @@ import { HtCard } from 'components/Ht';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('HtCard', () => {

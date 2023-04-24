@@ -7,7 +7,6 @@ import { HandlerForm } from './HandlerForm';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('HandlerForm', () => {

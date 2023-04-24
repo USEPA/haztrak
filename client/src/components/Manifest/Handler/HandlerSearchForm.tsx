@@ -104,7 +104,7 @@ export function HandlerSearchForm({ handleClose, handlerType }: Props) {
                   placeholder="VATESTRAN03"
                   {...register(`epaId`)}
                   // @ts-ignore
-                  autoFocus
+                  // autoFocus
                 />
               </HtForm.Group>
             </Col>

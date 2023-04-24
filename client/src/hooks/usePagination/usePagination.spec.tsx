@@ -51,7 +51,6 @@ function TestPaginationHook({
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('usePagination', () => {

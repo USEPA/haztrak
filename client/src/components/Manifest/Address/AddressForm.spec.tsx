@@ -6,7 +6,6 @@ import { AddressForm } from './AddressForm';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('AddressForm', () => {

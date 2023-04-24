@@ -104,7 +104,7 @@ export function TransporterSearchForm({ handleClose, tranAppend, currentTranspor
                   placeholder="VATESTRAN03"
                   {...register(`epaId`)}
                   // @ts-ignore
-                  autoFocus
+                  // autoFocus
                 />
               </HtForm.Group>
             </Col>

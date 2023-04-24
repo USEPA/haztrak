@@ -5,7 +5,6 @@ import { ContactForm } from './ContactForm';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('ContactForm', () => {

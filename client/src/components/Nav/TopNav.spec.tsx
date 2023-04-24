@@ -5,7 +5,6 @@ import { TopNav } from 'components/Nav';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('TopNav', () => {

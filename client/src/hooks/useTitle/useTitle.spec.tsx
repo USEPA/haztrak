@@ -24,7 +24,6 @@ function TestComponent({ prevailOnUnmount, excludeAppend }: TestCompProps) {
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('useTitle', () => {

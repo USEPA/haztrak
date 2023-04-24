@@ -104,10 +104,9 @@ process.
 
 To test Haztrak, we use the following dependencies:
 
-- [Jest](https://jestjs.io/):
-  - A popular JavaScript testing framework that is widely used in the React
-    community. It provides an easy-to-use API for writing tests, as well as a range
-    of built-in matchers and assertions.
+- [Vitest](https://vitest.dev/):
+  - A JavaScript test runner specific to the [Vite](https://vitejs.dev/) framework.
+    It provides an easy-to-use API, that's similar to [Jest](https://jestjs.io/).
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/):
   - A library that provides utilities for testing React components in a way that
     is more closely aligned with how users interact with the application.

@@ -7,7 +7,6 @@ import { ManifestForm } from 'components/Manifest';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('ManifestForm', () => {

@@ -5,7 +5,6 @@ import { HtTooltip } from 'components/Ht';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('HtTooltip', () => {

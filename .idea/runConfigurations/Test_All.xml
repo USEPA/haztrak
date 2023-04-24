@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Test All" type="CompoundRunConfigurationType">
-    <toRun name="Jest" type="JavaScriptTestRunnerJest" />
     <toRun name="PyTest" type="tests" />
+    <toRun name="Vitest" type="JavaScriptTestRunnerVitest" />
     <method v="2" />
   </configuration>
 </component>

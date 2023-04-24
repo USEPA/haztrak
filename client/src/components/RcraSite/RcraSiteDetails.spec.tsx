@@ -6,7 +6,6 @@ import { RcraSiteDetails } from 'components/RcraSite';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('RcraSiteDetails', () => {

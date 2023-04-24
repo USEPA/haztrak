@@ -1,4 +1,5 @@
 import { cleanup } from '@testing-library/react';
+import { vi } from 'vitest';
 import { useHtAPI } from './useHtAPI';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -30,7 +31,7 @@ function TestComponent({ url }: exampleProps) {
 /**
  * mock Rest API
  */
-const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
+const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
 export const testURL = [
   rest.get(`${API_BASE_URL}/api/test/url`, (req, res, ctx) => {
     return res(
@@ -61,13 +62,13 @@ beforeAll(() => server.listen()); // setup mock http server
 afterEach(() => {
   server.resetHandlers();
   cleanup();
-  jest.resetAllMocks();
+  vi.resetAllMocks();
 });
 afterAll(() => server.close()); // Disable API mocking after the tests are done.
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
+  vi.resetAllMocks();
 });
 
 describe('useHtAPI', () => {

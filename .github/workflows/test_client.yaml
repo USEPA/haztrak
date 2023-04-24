@@ -33,4 +33,4 @@ jobs:
       - name: Test Node.js-${{ matrix.node }}
         run: npm test
         env:
-          REACT_APP_HT_ENV: 'TEST'
+          VITE_HT_ENV: 'TEST'

@@ -43,7 +43,7 @@ export function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) 
                     id="dotHazardousSwitch"
                     label="DOT Hazardous Material?"
                     {...register('dotHazardous')}
-                    autoFocus
+                    // autoFocus
                   />
                 </Row>
                 <Row>

@@ -6,7 +6,6 @@ import { createMockMTNHandler } from 'test-utils/fixtures';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('QuickerSignModalBtn', () => {
