@@ -13,7 +13,6 @@ const mtnData = [manifestDetail, manifestDetail];
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('MtnTable', () => {

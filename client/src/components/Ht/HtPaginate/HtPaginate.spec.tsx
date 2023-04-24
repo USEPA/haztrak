@@ -5,7 +5,6 @@ import { cleanup, render, screen } from 'test-utils';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('HtPaginate', () => {

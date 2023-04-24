@@ -1,4 +1,5 @@
 import { cleanup } from '@testing-library/react';
+import { vi } from 'vitest';
 import { useHtAPI } from './useHtAPI';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -61,13 +62,13 @@ beforeAll(() => server.listen()); // setup mock http server
 afterEach(() => {
   server.resetHandlers();
   cleanup();
-  jest.resetAllMocks();
+  vi.resetAllMocks();
 });
 afterAll(() => server.close()); // Disable API mocking after the tests are done.
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
+  vi.resetAllMocks();
 });
 
 describe('useHtAPI', () => {

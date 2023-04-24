@@ -1,8 +1,9 @@
 // test userSlice
 import { UserState } from 'store/userSlice/user.slice';
 import userReducers, { login } from 'store/userSlice';
+import { vi } from 'vitest';
 
-jest.spyOn(Storage.prototype, 'setItem');
+vi.spyOn(Storage.prototype, 'setItem');
 const initialState: UserState = {
   user: undefined,
   token: undefined,

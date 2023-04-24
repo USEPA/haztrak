@@ -4,6 +4,7 @@ import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { handlers } from 'test-utils/mock/handlers';
 import { Home } from 'features/home';
+import { vi } from 'vitest';
 
 const server = setupServer(...handlers);
 const username = 'testuser1';
@@ -12,7 +13,7 @@ beforeAll(() => server.listen()); // setup mock http server
 afterEach(() => {
   server.resetHandlers();
   cleanup();
-  jest.resetAllMocks();
+  vi.resetAllMocks();
 });
 afterAll(() => server.close()); // Disable API mocking after the tests are done.
 

@@ -5,7 +5,6 @@ import { Sidebar } from 'components/Nav';
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('Sidebar', () => {

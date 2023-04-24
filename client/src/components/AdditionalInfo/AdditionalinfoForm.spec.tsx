@@ -6,7 +6,6 @@ import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm
 
 afterEach(() => {
   cleanup();
-  jest.resetAllMocks();
 });
 
 describe('AdditionalInfoForm', () => {
