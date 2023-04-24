@@ -8,7 +8,7 @@ import { htApiBaseQuery } from 'store/baseQuery';
 export const taskApi = createApi({
   reducerPath: 'taskApi',
   baseQuery: htApiBaseQuery({
-    baseUrl: `${process.env.REACT_APP_HT_API_URL}/api/task/`,
+    baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/task/`,
   }),
   endpoints: (build) => ({
     getTaskStatus: build.query({

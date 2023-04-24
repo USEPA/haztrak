@@ -32,7 +32,7 @@ const initialState: NotificationState = {
 export const getExampleTask = createAsyncThunk<HtNotification>(
   'notification/getExampleTask',
   async () => {
-    const response = await axios.get(`${process.env.REACT_APP_HT_API_URL}/api/task/example`);
+    const response = await axios.get(`${import.meta.env.VITE_HT_API_URL}/api/task/example`);
     const newNotification: HtNotification = {
       inProgress: false,
       message: `Background task launched. Task ID: ${response.data.task}`,

@@ -5,7 +5,7 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import { rootStore } from 'store';
 
 export const htApi = axios.create({
-  baseURL: `${process.env.REACT_APP_HT_API_URL}/api`,
+  baseURL: `${import.meta.env.VITE_HT_API_URL}/api`,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',

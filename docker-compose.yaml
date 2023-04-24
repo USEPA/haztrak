@@ -108,8 +108,8 @@ services:
     volumes:
       - ./client:/app
     environment:
-      REACT_APP_HT_API_URL: ${REACT_APP_HT_API_URL}
-      REACT_APP_HT_ENV: ${REACT_APP_HT_ENV}
+      VITE_HT_API_URL: ${VITE_HT_API_URL}
+      VITE_HT_ENV: ${VITE_HT_ENV}
     command: sh -c "cd /app; npm install; npm start"
 
 volumes:

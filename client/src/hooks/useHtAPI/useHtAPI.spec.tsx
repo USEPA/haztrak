@@ -30,7 +30,7 @@ function TestComponent({ url }: exampleProps) {
 /**
  * mock Rest API
  */
-const API_BASE_URL = process.env.REACT_APP_HT_API_URL;
+const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
 export const testURL = [
   rest.get(`${API_BASE_URL}/api/test/url`, (req, res, ctx) => {
     return res(

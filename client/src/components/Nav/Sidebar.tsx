@@ -113,7 +113,7 @@ export function Sidebar(): ReactElement | null {
                 <nav className="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                   <SideBarNavItem to="/about" text="About" icon={faCircleQuestion} />
                   <SideBarNavItem
-                    to={`${process.env.REACT_APP_HT_API_URL}/api/schema/swagger-ui`}
+                    to={`${import.meta.env.VITE_HT_API_URL}/api/schema/swagger-ui`}
                     targetBlank={true}
                     icon={faNetworkWired}
                   >
