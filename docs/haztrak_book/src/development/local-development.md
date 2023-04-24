@@ -100,5 +100,5 @@ style guide. Most popular IDEs have a plugin to support these configs.
 ## Local Development Without Docker
 
 If you don't have a way to build and run containers, or you're a gluten for punishment, you can make use of the Django
-management scripts and Create-React-App's npm scripts to set up a local
+management scripts and the npm scripts to set up a local
 development environment, however it's not recommended.
