@@ -1,4 +1,3 @@
-import { ErrorMessage } from '@hookform/error-message';
 import { HtForm } from 'components/Ht';
 import { AddressForm } from 'components/Manifest/Address';
 import { HandlerTypeEnum } from 'components/Manifest/manifestSchema';
@@ -55,7 +54,9 @@ export function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactE
               readOnly={readOnly}
               placeholder={'EPA ID number'}
               {...register(`generator.epaSiteId`)}
+              className={errors.generator?.epaSiteId && 'is-invalid'}
             />
+            <div className="invalid-feedback">{errors.generator?.epaSiteId?.message}</div>
           </HtForm.Group>
         </Col>
         <Col className="col-sm-8">
@@ -68,19 +69,11 @@ export function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactE
               type="text"
               placeholder={`${handlerType} Name`}
               {...register(`generator.name`)}
+              className={errors.generator?.name && 'is-invalid'}
             />
+            <div className="invalid-feedback">{errors.generator?.name?.message}</div>
           </HtForm.Group>
         </Col>
-        <ErrorMessage
-          errors={errors}
-          name={`epaSiteId`}
-          render={({ message }) => <span className="text-danger">{message}</span>}
-        />
-        <ErrorMessage
-          errors={errors}
-          name={`name`}
-          render={({ message }) => <span className="text-danger">{message}</span>}
-        />
       </Row>
       <AddressForm addressType={'siteAddress'} handlerType={handlerType} readOnly={readOnly} />
       <Row className="mb-2">
