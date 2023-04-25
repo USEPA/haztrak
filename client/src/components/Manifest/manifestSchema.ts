@@ -1,6 +1,68 @@
+import { rcraPhoneSchema, rcraSite } from 'components/RcraSite';
 import { z } from 'zod';
-import { rcraSite } from 'components/RcraSite';
 
+/**
+ * Used to specify whether a handler is a generator, transporter, or
+ * designated receiving facility (AKA Treatment, Storage and Disposal Facility or TSDF for short).
+ */
+export const HandlerType = z.enum(['generator', 'designatedFacility', 'transporter']);
+export type HandlerTypeEnum = z.infer<typeof HandlerType>;
+export const paperSignatureSchema = z.object({
+  printedName: z.string(),
+  signatureDate: z.string(),
+});
+/**
+ * Schema for signer of a hazardous waste manifest
+ */
+const signerSchema = z.object({
+  /**
+   * User's RCRAInfo username
+   */
+  userId: z.string().optional(),
+  firstName: z.string().optional(),
+  middleInitial: z.string().optional(),
+  lastName: z.string().optional(),
+  phone: rcraPhoneSchema.optional(),
+  email: z.string().optional(),
+  companyName: z.string().optional(),
+  contactType: z.enum(['Email', 'Text', 'Voice']),
+});
+/**
+ * EPA's RCRAInfo electronic signature schema
+ */
+export const electronicSignatureSchema = z.object({
+  signer: signerSchema.optional(),
+  signatureDate: z.date().optional(),
+  /**
+   * Object representing metadata on a printable, human friendly, version of the manifest
+   * ToDo: see the USEPA/e-Manifest documentation on GitHub
+   */
+  humanReadableDocument: z.any().optional(),
+});
+export const handlerSchema = rcraSite.extend({
+  paperSignatureInfo: paperSignatureSchema.optional(),
+  electronicSignaturesInfo: electronicSignatureSchema.array().optional(),
+  /**
+   * Property on by back end to signify whether the handler has signed
+   */
+  signed: z.boolean().optional(),
+});
+/**
+ * The Handler extends the RcraSite schema and adds manifest specific data
+ */
+export type Handler = z.infer<typeof handlerSchema>;
+/**
+ * The Signature that appears on paper versions of the manifest
+ */
+export type PaperSignature = z.infer<typeof paperSignatureSchema>;
+/**
+ * A signer of a hazardous waste manifest
+ */
+export type Signer = z.infer<typeof signerSchema>;
+/**
+ * RCRAInfo electronic signature definition
+ */
+export type ElectronicSignature = z.infer<typeof electronicSignatureSchema>;
 export const manifestSchema = z
   .object({
     manifestTrackingNumber: z.string().optional(),
@@ -47,7 +109,7 @@ export const manifestSchema = z
      * Whether the manifest is publicly available through EPA
      */
     isPublic: z.boolean().optional(),
-    generator: z.any().optional(),
+    generator: handlerSchema.optional(),
     transporters: z.array(z.any()),
     wastes: z.array(z.any()),
     designatedFacility: z.any().optional(),
@@ -88,9 +150,3 @@ const rejectionInfoSchema = z.object({
  */
 export type Manifest = z.infer<typeof manifestSchema>;
 export type RejectionInfo = z.infer<typeof rejectionInfoSchema>;
-/**
- * Used to specify whether a handler is a generator, transporter, or
- * designated receiving facility (AKA Treatment, Storage and Disposal Facility or TSDF for short).
- */
-export const HandlerType = z.enum(['generator', 'designatedFacility', 'transporter']);
-export type HandlerTypeEnum = z.infer<typeof HandlerType>;

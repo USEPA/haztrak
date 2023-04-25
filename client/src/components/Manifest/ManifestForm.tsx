@@ -61,7 +61,7 @@ export function ManifestForm({
   };
 
   // Generator controls
-  const generator: Handler = manifestMethods.getValues('generator');
+  const generator: Handler | undefined = manifestMethods.getValues('generator');
 
   // Transporter controls
   const [transFormShow, setTransFormShow] = useState<boolean>(false);
@@ -320,7 +320,7 @@ export function ManifestForm({
                         siteType={'Generator'}
                         mtnHandler={generator}
                         handleClick={setupSign}
-                        disabled={generator.signed || !signAble}
+                        disabled={generator?.signed || !signAble}
                       />
                     </Col>
                   </div>

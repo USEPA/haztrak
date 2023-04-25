@@ -1,6 +1,7 @@
 import { faFileSignature } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { HtForm } from 'components/Ht';
+import { Handler } from 'components/Manifest/manifestSchema';
 import React from 'react';
 import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -10,7 +11,6 @@ import { addNotification, RootState, useAppDispatch, useAppSelector } from 'stor
 import { htApi } from 'services';
 import { AxiosError, AxiosResponse } from 'axios';
 import { QuickerSignature } from 'components/Manifest/QuickerSign/quickerSignSchema';
-import { Handler } from 'components/Manifest/Handler';
 import { Transporter } from 'components/Manifest/Transporter';
 
 interface QuickerSignProps {

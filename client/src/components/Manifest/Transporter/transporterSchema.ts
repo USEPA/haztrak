@@ -1,5 +1,5 @@
+import { handlerSchema } from 'components/Manifest/manifestSchema';
 import { z } from 'zod';
-import { handlerSchema } from 'components/Manifest/Handler';
 
 export const transporterSchema = handlerSchema.extend({
   order: z.number(),
