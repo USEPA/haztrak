@@ -54,6 +54,18 @@ export type Handler = z.infer<typeof handlerSchema>;
 /**
  * The Signature that appears on paper versions of the manifest
  */
+
+export const transporterSchema = handlerSchema.extend({
+  order: z.number(),
+  manifest: z.number().optional(),
+});
+
+/**
+ *  The Transporter type extends the Handler schema and adds transporter
+ *  specific data, such as their order on the manifest
+ */
+export type Transporter = z.infer<typeof transporterSchema>;
+
 export type PaperSignature = z.infer<typeof paperSignatureSchema>;
 /**
  * A signer of a hazardous waste manifest
@@ -110,9 +122,9 @@ export const manifestSchema = z
      */
     isPublic: z.boolean().optional(),
     generator: handlerSchema.optional(),
-    transporters: z.array(z.any()),
+    transporters: z.array(transporterSchema),
     wastes: z.array(z.any()),
-    designatedFacility: z.any().optional(),
+    designatedFacility: handlerSchema.optional(),
     submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image']),
   })
   .refine(

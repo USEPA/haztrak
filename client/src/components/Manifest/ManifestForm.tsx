@@ -97,7 +97,7 @@ export function ManifestForm({
   // Tsdf controls
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
-  const tsdf: Handler = manifestMethods.getValues('designatedFacility');
+  const tsdf: Handler | undefined = manifestMethods.getValues('designatedFacility');
 
   const signAble =
     manifestStatus === 'Scheduled' ||

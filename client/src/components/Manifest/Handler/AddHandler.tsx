@@ -1,6 +1,6 @@
 import { HtModal } from 'components/Ht';
 import { HandlerSearchForm } from 'components/Manifest/Handler/index';
-import { HandlerType } from 'components/Manifest/manifestSchema';
+import { HandlerType } from 'components/Manifest';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 

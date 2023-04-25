@@ -1,4 +1,4 @@
-import { Handler, RejectionInfo, Signer } from 'components/Manifest/manifestSchema';
+import { Handler, RejectionInfo, Signer } from 'components/Manifest';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { AdditionalInfo } from 'components/AdditionalInfo';
 import { Transporter } from 'components/Manifest/Transporter';
