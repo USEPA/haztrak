@@ -1,14 +1,10 @@
 import { z } from 'zod';
 
 export const rcraPhoneSchema = z.object({
-  number: z.string(),
+  // ToDo validate length and phone format/content separately
+  number: z.string().min(12, 'Phone in {3}-{3}-{4} format Required'),
   extension: z.string().optional(),
 });
-
-/**
- * RCRA Phone schema defined by RCRAInfo including Phone and optional extension
- */
-export type RcraPhone = z.infer<typeof rcraPhoneSchema>;
 
 export const rcraContactSchema = z.object({
   firstName: z.string().optional(),
@@ -19,10 +15,6 @@ export const rcraContactSchema = z.object({
   companyName: z.string().optional(),
 });
 
-/**
- * Contact information for a given handler listed on the hazardous waste manifest
- */
-export type RcraContact = z.infer<typeof rcraContactSchema>;
 /**
  * Locality Schema for EPA's Rcrainfo which contains information on a geographic region (state, country)
  * used for RCRA sites and handlers on a hazardous waste manifest
@@ -113,3 +105,13 @@ export type RcraAddress = z.infer<typeof rcraAddressSchema>;
  * stored by EPA's RCRAInfo
  */
 export type RcraLocality = z.infer<typeof rcraLocalitySchema>;
+
+/**
+ * RCRA Phone schema defined by RCRAInfo including Phone and optional extension
+ */
+export type RcraPhone = z.infer<typeof rcraPhoneSchema>;
+
+/**
+ * Contact information for a given handler listed on the hazardous waste manifest
+ */
+export type RcraContact = z.infer<typeof rcraContactSchema>;
