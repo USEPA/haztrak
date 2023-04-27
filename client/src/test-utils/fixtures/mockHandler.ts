@@ -1,6 +1,6 @@
 import { HaztrakSite } from 'components/HaztrakSite';
+import { Handler } from 'components/Manifest';
 import { RcraSite } from 'components/RcraSite';
-import { Handler } from 'components/Manifest/Handler';
 import { Transporter } from 'components/Manifest/Transporter';
 
 /**

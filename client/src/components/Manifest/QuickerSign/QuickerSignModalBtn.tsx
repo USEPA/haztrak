@@ -1,9 +1,9 @@
 import { faFeather } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Handler } from 'components/Manifest/manifestSchema';
 import React from 'react';
 import { ButtonProps } from 'react-bootstrap';
 import { RcraApiUserBtn } from 'components/buttons';
-import { Handler } from 'components/Manifest/Handler';
 
 interface QuickerSignData {
   handler: Handler | undefined;
@@ -12,7 +12,7 @@ interface QuickerSignData {
 
 interface QuickerSignModalBtnProps extends ButtonProps {
   siteType: 'Generator' | 'Transporter' | 'Tsdf';
-  mtnHandler: Handler;
+  mtnHandler?: Handler;
   handleClick: (data: QuickerSignData) => void;
   iconOnly?: boolean;
 }
@@ -29,6 +29,9 @@ export function QuickerSignModalBtn({
   disabled,
   iconOnly = false,
 }: QuickerSignModalBtnProps) {
+  if (mtnHandler === undefined) {
+    return null;
+  }
   return (
     <RcraApiUserBtn
       onClick={() => {

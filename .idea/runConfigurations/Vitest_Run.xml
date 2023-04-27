@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Vitest" type="JavaScriptTestRunnerVitest">
+  <configuration default="false" name="Vitest Run" type="JavaScriptTestRunnerVitest">
     <config value="$PROJECT_DIR$/client/vite.config.ts" />
     <node-interpreter value="project" />
     <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
     <working-dir value="$PROJECT_DIR$/client" />
-    <vitest-options value="--watch" />
+    <vitest-options value="--run" />
     <envs />
     <scope-kind value="ALL" />
     <method v="2" />

@@ -1,7 +1,7 @@
 import { HtModal } from 'components/Ht';
+import { Handler } from 'components/Manifest/manifestSchema';
 import React from 'react';
 import { QuickerSignForm } from './QuickerSignForm';
-import { Handler } from 'components/Manifest/Handler';
 
 interface QuickerSignModalProps {
   handleClose: () => void;

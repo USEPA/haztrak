@@ -3,7 +3,7 @@ import React from 'react';
 import { renderWithProviders } from 'test-utils';
 import { TransporterTable } from './index';
 import { createMockTransporter } from 'test-utils/fixtures';
-import { Transporter } from 'components/Manifest/Transporter/transporterSchema';
+import { Transporter } from 'components/Manifest';
 
 const HANDLER_ID_1 = 'siteId1';
 const HANDLER_ID_2 = 'siteId2';

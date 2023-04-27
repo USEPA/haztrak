@@ -7,7 +7,7 @@ import { TransporterRowActions } from './TransporterRowActions';
 import { UseFieldArrayReturn } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { QuickerSignModalBtn } from 'components/Manifest/QuickerSign';
-import { Transporter } from 'components/Manifest/Transporter/transporterSchema';
+import { Transporter } from 'components/Manifest';
 
 interface TransporterTableProps {
   transporters?: Array<Transporter>;

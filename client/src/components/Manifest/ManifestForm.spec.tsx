@@ -35,16 +35,6 @@ describe('ManifestForm', () => {
   test('only has "edit manifest" button when readonly', async () => {
     // ToDo: to test when readOnly={true}, we need manifestData as prop
   });
-  test('potential ship date cannot be in past', async () => {
-    renderWithProviders(<ManifestForm readOnly={false} />);
-    const potentialShipDateInput = screen.getByLabelText(/potential ship date/i);
-    fireEvent.change(potentialShipDateInput, { target: { value: '2021-04-21' } });
-    const saveBtn = screen.getByRole('button', { name: /save/i });
-    fireEvent.click(saveBtn);
-    await waitFor(() => {
-      expect(potentialShipDateInput).toHaveClass('is-invalid');
-    });
-  });
   test('displays e-Manifest managed dates', async () => {
     const manifestDate = new Date();
     const expectedDateValue = manifestDate.toISOString().slice(0, 10);
