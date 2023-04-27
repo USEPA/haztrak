@@ -1,7 +1,7 @@
 import { PreloadedState } from '@reduxjs/toolkit';
 import { render, RenderOptions } from '@testing-library/react';
 import React, { PropsWithChildren, ReactElement } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { AppStore, RootState, setupStore } from 'store';
@@ -9,7 +9,7 @@ import { AppStore, RootState, setupStore } from 'store';
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: PreloadedState<RootState>;
   store?: AppStore;
-  defaultValues?: object;
+  useFormProps?: UseFormProps;
 }
 
 /**
@@ -33,13 +33,13 @@ export function renderWithProviders(
   ui: React.ReactElement,
   {
     preloadedState = {}, // an object with partial slices of our redux state
-    defaultValues = {}, // for Forms
+    useFormProps = {},
     store = setupStore(preloadedState), // Automatically create a store instance if no store was passed in
     ...renderOptions // react-testing library function options
   }: ExtendedRenderOptions = {} // default to empty object
 ) {
   function Wrapper({ children }: PropsWithChildren<{}>): ReactElement {
-    const formMethods = useForm({ defaultValues });
+    const formMethods = useForm(useFormProps);
     return (
       <Provider store={store}>
         <BrowserRouter>
