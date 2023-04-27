@@ -1,23 +1,15 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { HtForm } from 'components/Ht';
-import { HandlerTypeEnum } from 'components/Manifest/manifestSchema';
+import { Manifest } from 'components/Manifest/manifestSchema';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
-import { z } from 'zod';
 import { CountryCode, StateCode } from './StateSelect';
 
-/**
- * indicates whether an address is the site's physical location or mailing location
- */
-const addressType = z.enum(['siteAddress', 'mailingAddress']);
-
-type AddressType = z.infer<typeof addressType>;
-
 interface Props {
-  addressType: AddressType;
-  handlerType: HandlerTypeEnum;
+  addressType: 'siteAddress' | 'mailingAddress';
+  handlerType: 'generator' | 'designatedFacility';
   readOnly?: boolean;
 }
 
@@ -26,13 +18,29 @@ interface Props {
  * Needs to be used in the context of a FormProvider
  */
 export function AddressForm({ addressType, handlerType, readOnly }: Props) {
-  const namePrefix = `${handlerType}.${addressType}`;
   const {
     getValues,
     control,
     register,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext<Manifest>();
+
+  // Destructure the handler errors depending on whether this is form for
+  // manifest generator of designated facility for use in the form.
+  let handlerErrors = errors.generator;
+  if (handlerType === 'designatedFacility') {
+    handlerErrors = errors.designatedFacility;
+  }
+
+  // Destructure the handler errors depending on whether this is form for
+  // manifest generator of designated facility for use in the form.
+  let addressErrors = undefined;
+  if (handlerErrors) {
+    addressErrors = handlerErrors.siteAddress;
+    if (addressType === 'mailingAddress') {
+      addressErrors = handlerErrors.mailingAddress;
+    }
+  }
 
   return (
     <>
@@ -46,7 +54,7 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
               plaintext={readOnly}
               readOnly={readOnly}
               placeholder="1234"
-              {...register(`${namePrefix}.streetNumber`)}
+              {...register(`${handlerType}.${addressType}.streetNumber`)}
             />
           </HtForm.Group>
         </Col>
@@ -59,8 +67,10 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
               plaintext={readOnly}
               readOnly={readOnly}
               placeholder="Main St."
-              {...register(`${namePrefix}.address1`)}
+              {...register(`${handlerType}.${addressType}.address1`)}
+              className={addressErrors?.address1 && 'is-invalid'}
             />
+            <div className="invalid-feedback">{addressErrors?.address1?.message}</div>
           </HtForm.Group>
         </Col>
         <Col>
@@ -72,44 +82,32 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
               plaintext={readOnly}
               readOnly={readOnly}
               placeholder="Springfield"
-              {...register(`${namePrefix}.city`)}
+              {...register(`${handlerType}.${addressType}.city`)}
+              className={addressErrors?.city && 'is-invalid'}
             />
+            <div className="invalid-feedback">{addressErrors?.city?.message}</div>
           </HtForm.Group>
         </Col>
-        <ErrorMessage
-          errors={errors}
-          name={`${namePrefix}.address1`}
-          render={({ message }) => <span className="text-danger">{message}</span>}
-        />
-        <ErrorMessage
-          errors={errors}
-          name={`${namePrefix}.streetNumber`}
-          render={({ message }) => <span className="text-danger">{message}</span>}
-        />
-        <ErrorMessage
-          errors={errors}
-          name={`${namePrefix}.city`}
-          render={({ message }) => <span className="text-danger">{message}</span>}
-        />
       </Row>
       <Row className="mb-2">
         <Col>
           <HtForm.Group className="mb-2">
-            <HtForm.Label className="mb-0" htmlFor={`${namePrefix}State`}>
+            <HtForm.Label className="mb-0" htmlFor={`${handlerType}.${addressType}.State`}>
               State
             </HtForm.Label>
             {readOnly ? (
-              <p className="mt-2">{getValues(`${namePrefix}.state.name`)}</p>
+              <p className="mt-2">{getValues(`${handlerType}.${addressType}.state.name`)}</p>
             ) : (
               <Controller
                 control={control}
-                name={`${namePrefix}.state`}
+                name={`${handlerType}.${addressType}.state`}
                 render={({ field }) => {
                   return (
                     <Select
-                      id={`${namePrefix}State`}
+                      id={`${handlerType}${addressType}State`}
                       {...field}
                       options={StateCode}
+                      // @ts-ignore
                       getOptionLabel={(option) => option.name}
                       getOptionValue={(option) => option.code}
                       openMenuOnFocus={false}
@@ -119,6 +117,11 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
                 }}
               />
             )}
+            <ErrorMessage
+              errors={errors}
+              name={`${handlerType}.${addressType}.state`}
+              render={({ message }) => <span className="text-danger">{message}</span>}
+            />
           </HtForm.Group>
         </Col>
         <Col>
@@ -132,28 +135,31 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
               plaintext={readOnly}
               readOnly={readOnly}
               placeholder="12345"
-              {...register(`${namePrefix}.zip`)}
+              {...register(`${handlerType}.${addressType}.zip`)}
+              className={addressErrors?.zip && 'is-invalid'}
             />
+            <div className="invalid-feedback">{addressErrors?.zip?.message}</div>
           </HtForm.Group>
         </Col>
         <Col>
           <HtForm.Group className="mb-2">
-            <HtForm.Label className="mb-0" htmlFor={`${namePrefix}Country`}>
+            <HtForm.Label className="mb-0" htmlFor={`${handlerType}.${addressType}Country`}>
               Country
             </HtForm.Label>
             {readOnly ? (
-              <p className="mt-2">{getValues(`${namePrefix}.country.name`)}</p>
+              <p className="mt-2">{getValues(`${handlerType}.${addressType}.country.name`)}</p>
             ) : (
               <Controller
                 control={control}
-                name={`${namePrefix}.country`}
+                name={`${handlerType}.${addressType}.country`}
                 render={({ field }) => {
                   return (
                     <Select
-                      id={`${namePrefix}Country`}
+                      id={`${handlerType}.${addressType}Country`}
                       {...field}
                       defaultValue={CountryCode[0]}
                       options={CountryCode}
+                      // @ts-ignore
                       getOptionLabel={(option) => option.name}
                       getOptionValue={(option) => option.code}
                       openMenuOnFocus={false}
@@ -163,18 +169,13 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
                 }}
               />
             )}
+            <ErrorMessage
+              errors={errors}
+              name={`${handlerType}.${addressType}.country`}
+              render={({ message }) => <span className="text-danger">{message}</span>}
+            />
           </HtForm.Group>
         </Col>
-        <ErrorMessage
-          errors={errors}
-          name={`${namePrefix}.zip`}
-          render={({ message }) => <span className="text-danger">{message}</span>}
-        />
-        <ErrorMessage
-          errors={errors}
-          name={`${namePrefix}.state`}
-          render={({ message }) => <span className="text-danger">{message}</span>}
-        />
       </Row>
     </>
   );
