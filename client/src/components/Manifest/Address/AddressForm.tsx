@@ -46,7 +46,7 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
   return (
     <>
       <Row className="mb-2">
-        <Col>
+        <Col xs={3}>
           <HtForm.Group>
             <HtForm.Label htmlFor="addressStreetNumber">Street Number</HtForm.Label>
             <Form.Control
@@ -59,7 +59,7 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
             />
           </HtForm.Group>
         </Col>
-        <Col>
+        <Col xs={5}>
           <HtForm.Group>
             <HtForm.Label htmlFor="addressStreetName">Street Name</HtForm.Label>
             <Form.Control
@@ -128,7 +128,7 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
             />
           </HtForm.Group>
         </Col>
-        <Col>
+        <Col xs={2}>
           <HtForm.Group>
             <HtForm.Label className="mb-0" htmlFor="addressZip">
               Zip

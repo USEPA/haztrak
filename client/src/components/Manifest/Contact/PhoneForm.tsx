@@ -41,7 +41,7 @@ export function PhoneForm({ handlerType, readOnly }: ContactFormProps) {
             <div className="invalid-feedback">{handlerErrors?.emergencyPhone?.number?.message}</div>
           </HtForm.Group>
         </Col>
-        <Col>
+        <Col xs={3}>
           <HtForm.Group>
             <HtForm.Label htmlFor={`${handlerType}Extension`}>Extension</HtForm.Label>
             <Form.Control

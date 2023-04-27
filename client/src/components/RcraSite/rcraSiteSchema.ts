@@ -30,7 +30,7 @@ export const rcraLocalitySchema = z.object({
  * Address Schema  information for handlers on a hazardous waste manifest
  */
 export const rcraAddressSchema = z.object({
-  address1: z.string().min(3, { message: 'Address must be at least 3 characters' }),
+  address1: z.string().min(3, { message: 'Required' }),
   address2: z.string().optional(),
   city: z.string().optional(),
   country: rcraLocalitySchema.optional(),
@@ -45,7 +45,7 @@ export const rcraSite = z.object({
    * physical location for a generator, transporter, or TSDF
    * that should be used on documents and forms submitted to EPA and states
    */
-  epaSiteId: z.string().min(4, { message: "EPA ID should be 9 numbers and 3 letters of 'VSQG'" }),
+  epaSiteId: z.string().min(4, { message: "EPA ID should be 9 numbers and 3 letters or 'VSQG'" }),
   mailingAddress: rcraAddressSchema,
   /**
    * Represents the physical address of a facility regulated under RCRA, it should be tied to an EPA ID

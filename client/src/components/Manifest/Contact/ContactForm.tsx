@@ -30,7 +30,7 @@ export function ContactForm({ handlerType, readOnly }: ContactFormProps) {
             />
           </HtForm.Group>
         </Col>
-        <Col>
+        <Col xs={3}>
           <HtForm.Group>
             <HtForm.Label htmlFor={`${namePrefix}MiddleInitial`}>Middle Initial</HtForm.Label>
             <Form.Control
