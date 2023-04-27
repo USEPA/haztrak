@@ -307,7 +307,7 @@ class ImportInfoSerializer(TrakBaseSerializer):
         allow_null=True,
         required=False,
     )
-    PortOfEntry = PortOfEntrySerializer(
+    portOfEntry = PortOfEntrySerializer(
         source="port_of_entry",
         required=False,
         allow_null=True,
