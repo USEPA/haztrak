@@ -1,9 +1,10 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { HtForm } from 'components/Ht';
 import { Manifest } from 'components/Manifest/manifestSchema';
+import { RcraAddress } from 'components/RcraSite';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, FieldError, FieldErrorsImpl, Merge, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 import { CountryCode, StateCode } from './StateSelect';
 
@@ -32,9 +33,9 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
     handlerErrors = errors.designatedFacility;
   }
 
-  // Destructure the handler errors depending on whether this is form for
-  // manifest generator of designated facility for use in the form.
-  let addressErrors = undefined;
+  // Destructure the address errors from handlerErrors depending on whether this is form for
+  // manifest the handler's site address or mailing address.
+  let addressErrors: Merge<FieldError, FieldErrorsImpl<RcraAddress>> | undefined = undefined;
   if (handlerErrors) {
     addressErrors = handlerErrors.siteAddress;
     if (addressType === 'mailingAddress') {
@@ -107,11 +108,14 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
                       id={`${handlerType}${addressType}State`}
                       {...field}
                       options={StateCode}
-                      // @ts-ignore
-                      getOptionLabel={(option) => option.name}
+                      getOptionLabel={(option) => option.name ?? 'error'}
                       getOptionValue={(option) => option.code}
                       openMenuOnFocus={false}
                       isDisabled={readOnly}
+                      classNames={{
+                        control: () =>
+                          `form-control p-0 rounded-2 ${addressErrors?.state && 'border-danger'} `,
+                      }}
                     />
                   );
                 }}
@@ -159,11 +163,16 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
                       {...field}
                       defaultValue={CountryCode[0]}
                       options={CountryCode}
-                      // @ts-ignore
-                      getOptionLabel={(option) => option.name}
+                      getOptionLabel={(option) => option.name ?? 'error'}
                       getOptionValue={(option) => option.code}
                       openMenuOnFocus={false}
                       isDisabled={readOnly}
+                      classNames={{
+                        control: () =>
+                          `form-control p-0 rounded-2 ${
+                            addressErrors?.country && 'border-danger'
+                          } `,
+                      }}
                     />
                   );
                 }}
