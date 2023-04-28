@@ -4,8 +4,9 @@ from typing import Dict
 from rest_framework import serializers
 
 from apps.trak.models import Manifest
-from apps.trak.models.manifest_models import AdditionalInfo
+from apps.trak.models.manifest_models import AdditionalInfo, ImportInfo, PortOfEntry
 from apps.trak.serializers.handler_ser import HandlerSerializer
+from apps.sites.models import RcraStates
 
 from .base_ser import TrakBaseSerializer
 from .handler_ser import TransporterSerializer
@@ -268,4 +269,53 @@ class ManifestSerializer(TrakBaseSerializer):
             "ppcStatus",
             "locked",
             "lockReason",
+        ]
+
+
+class PortOfEntrySerializer(TrakBaseSerializer):
+    """
+    Serializer for Port Of Entry
+    """
+    
+    state = serializers.ChoiceField(
+        choices=RcraStates.choices,
+        required=False,
+        allow_null=True,
+    )
+    
+    cityPort = serializers.CharField(
+        source = 'city_port',
+        required=False,
+        allow_null=True,
+    )
+    
+    class Meta:
+        model = PortOfEntry
+        fields = [
+            'state',
+            'cityPort'
+        ]
+
+
+class ImportInfoSerializer(TrakBaseSerializer):
+    """
+    Serializer for import information
+    """
+
+    importGenerator = serializers.JSONField(
+        source="import_generator",
+        allow_null=True,
+        required=False,
+    )
+    portOfEntry = PortOfEntrySerializer(
+        source="port_of_entry",
+        required=False,
+        allow_null=True,
+    )
+
+    class Meta:
+        model = ImportInfo
+        fields = [
+            'importGenerator',
+            'PortOfEntry'
         ]
