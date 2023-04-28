@@ -3,6 +3,7 @@ import { HandlerSearchForm } from 'components/Manifest/Handler/index';
 import { HandlerType } from 'components/Manifest';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
+import { HtSearchForm } from 'components/Manifest/Handler/HtSearchForm';
 
 interface Props {
   handleClose: () => void;
@@ -35,6 +36,7 @@ export function AddHandler({ show, handleClose }: Props) {
           handleClose={handleClose}
           handlerType={HandlerType.enum.designatedFacility}
         />
+        <HtSearchForm handleClose={handleClose} handlerType={'generator'} />
       </HtModal.Body>
     </HtModal>
   );

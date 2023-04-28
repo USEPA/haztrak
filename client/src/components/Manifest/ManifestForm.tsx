@@ -40,8 +40,6 @@ export function ManifestForm({
   siteId,
   mtn,
 }: ManifestFormProps) {
-  // console.log('initial pot. ship date', manifestData?.potentialShipDate);
-
   // Top level ManifestForm methods and objects
   const manifestMethods = useForm<Manifest>({
     values: manifestData,
@@ -57,7 +55,6 @@ export function ManifestForm({
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log('Manifest Submitted', data);
-    console.log('submit pot ship date: ', data.potentialShipDate);
   };
 
   // Generator controls
@@ -389,7 +386,7 @@ export function ManifestForm({
               ) : (
                 <></>
               )}
-              {readOnly ? (
+              {readOnly || tsdf ? (
                 <></>
               ) : (
                 <HtButton onClick={toggleTsdfFormShow} children={'Add TSDF'} variant="success" />
