@@ -1,22 +1,17 @@
 import { HtForm } from 'components/Ht';
 import { AddressForm } from 'components/Manifest/Address';
-import { HandlerTypeEnum } from 'components/Manifest/manifestSchema';
 import { ReactElement, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 import { Manifest } from 'types/manifest';
 
 interface HandlerFormProps {
-  handlerType: HandlerTypeEnum;
+  handlerType: 'generator' | 'designatedFacility';
   readOnly?: boolean;
 }
 
 export function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement {
   const [mailCheck, setMailCheck] = useState(false);
-  if (handlerType !== 'generator') {
-    throw new Error();
-  }
-
   const {
     register,
     getValues,
@@ -41,6 +36,13 @@ export function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactE
     watch(`${handlerType}.siteAddress.state`),
   ]);
 
+  // Destructure the handler errors depending on whether this is form for
+  // manifest generator of designated facility for use in the form.
+  let handlerErrors = errors.generator;
+  if (handlerType === 'designatedFacility') {
+    handlerErrors = errors.designatedFacility;
+  }
+
   return (
     <>
       <Row className="mb-2">
@@ -54,9 +56,9 @@ export function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactE
               readOnly={readOnly}
               placeholder={'EPA ID number'}
               {...register(`generator.epaSiteId`)}
-              className={errors.generator?.epaSiteId && 'is-invalid'}
+              className={handlerErrors?.epaSiteId && 'is-invalid'}
             />
-            <div className="invalid-feedback">{errors.generator?.epaSiteId?.message}</div>
+            <div className="invalid-feedback">{handlerErrors?.epaSiteId?.message}</div>
           </HtForm.Group>
         </Col>
         <Col className="col-sm-8">
@@ -69,15 +71,17 @@ export function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactE
               type="text"
               placeholder={`${handlerType} Name`}
               {...register(`generator.name`)}
-              className={errors.generator?.name && 'is-invalid'}
+              className={handlerErrors?.name && 'is-invalid'}
             />
-            <div className="invalid-feedback">{errors.generator?.name?.message}</div>
+            <div className="invalid-feedback">{handlerErrors?.name?.message}</div>
           </HtForm.Group>
         </Col>
       </Row>
       <AddressForm addressType={'siteAddress'} handlerType={handlerType} readOnly={readOnly} />
       <Row className="mb-2">
         <Col>
+          {/* Check box that indicated whether the mailing address is different from the*/}
+          {/* handler's address*/}
           <HtForm.Check
             defaultChecked={mailCheck}
             onChange={(e) => {

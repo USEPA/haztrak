@@ -32,7 +32,7 @@ submitting a PR. we also welcome draft PRs.
 If you're looking to contribute code or documentation, here's the general process...
 
 - Ask to be assigned an [Issues](https://github.com/USEPA/haztrak/issues).
-- Fork this repo to your GitHub account.
+- Fork this repo to your GitHub account (click 'Fork').
 - Clone your fork to your local workstation.
 
 ```shell
@@ -40,7 +40,7 @@ git clone git@github.com/<yourgithubusername>/haztrak.git
 ```
 
 - Install the [pre-commit](https://pre-commit.com/) hooks
-  - Once installed, will lint and format your changes to ensure we have a consistent style
+  - Once installed, will lint and format your changes to ensure we have a consistent style upon every commit.
   - See [pre-commit installation docs](https://pre-commit.com/#installation)
 
 ```shell
@@ -48,15 +48,23 @@ pre-commit install
 ```
 
 - See our documentation on setting up a [local development environment](./local-development.md)
-- If you are adding or changing haztrak's functionality, include new test(s) and
-  make sure the test suite passes.
+- Create a new branch, make and commit your changes
+
+```shell
+git checkout -b "my_awesome_feature"
+```
+
+- If you are adding or changing haztrak's functionality, include a new test and
+  make sure the entire test suite passes.
   - [See our documentation on Testing Haztrak](../design/testing.md)
 - Submit a pull request to [USEPA/haztrak](https://github.com/USEPA/haztrak/pulls)
+  - Your PR should come from a new branch, not the default branch (usually 'main') and please leave "Allow edits from maintainers" checked.
+  - This way, if small edits need to be made, we can still do that.
 
 ## Pull Request Guidelines
 
 Before you submit a pull request, please make sure that your changes align with
-our project goals and vision. Here are some guidelines to follow when submitting a pull request:
+our project goals and vision (create an issue if you're not sure). Here are some guidelines to follow when submitting a pull request:
 
 - Keep your pull requests small and focused.
 - Make sure your code is well-documented and tested.

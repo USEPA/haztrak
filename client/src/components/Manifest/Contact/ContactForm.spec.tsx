@@ -9,7 +9,7 @@ afterEach(() => {
 
 describe('ContactForm', () => {
   test('renders with basic information inputs', () => {
-    renderWithProviders(<ContactForm handlerFormType={'generator'} />);
+    renderWithProviders(<ContactForm handlerType={'generator'} />);
     expect(screen.getByText(/First Name/i)).toBeInTheDocument();
     expect(screen.getByText(/Last Name/i)).toBeInTheDocument();
   });

@@ -1,6 +1,6 @@
 import { ManifestForm } from './ManifestForm';
-import { Manifest } from './manifestSchema';
 import {
+  Manifest,
   Handler,
   HandlerType,
   Signer,

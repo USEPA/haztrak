@@ -312,7 +312,7 @@ export function ManifestForm({
                 <>
                   <RcraSiteDetails handler={generator} />
                   <h4>Emergency Contact Information</h4>
-                  <ContactForm handlerFormType="generator" readOnly={readOnly} />
+                  <ContactForm handlerType="generator" readOnly={readOnly} />
                   <div className="d-flex justify-content-between">
                     {/* Button to bring up the Quicker Sign modal*/}
                     <Col className="text-end">
@@ -329,7 +329,7 @@ export function ManifestForm({
                 <>
                   <HandlerForm handlerType={HandlerType.enum.generator} readOnly={readOnly} />
                   <h4>Emergency Contact Information</h4>
-                  <ContactForm handlerFormType="generator" readOnly={readOnly} />
+                  <ContactForm handlerType="generator" readOnly={readOnly} />
                 </>
               )}
             </HtCard.Body>

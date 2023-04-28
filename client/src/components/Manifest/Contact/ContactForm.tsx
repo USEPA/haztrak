@@ -1,3 +1,4 @@
+import { PhoneForm } from 'components/Manifest/Contact/PhoneForm';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Col, Form, Row } from 'react-bootstrap';
@@ -5,12 +6,12 @@ import { Manifest } from 'types/manifest';
 import { HtForm } from 'components/Ht';
 
 interface ContactFormProps {
-  handlerFormType: 'generator' | 'designatedFacility';
+  handlerType: 'generator' | 'designatedFacility';
   readOnly?: boolean;
 }
 
-export function ContactForm({ handlerFormType, readOnly }: ContactFormProps) {
-  const namePrefix = `${handlerFormType}.contact`;
+export function ContactForm({ handlerType, readOnly }: ContactFormProps) {
+  const namePrefix = `${handlerType}.contact`;
   const { register } = useFormContext<Manifest>();
 
   return (
@@ -25,11 +26,11 @@ export function ContactForm({ handlerFormType, readOnly }: ContactFormProps) {
               plaintext={readOnly}
               readOnly={readOnly}
               placeholder="John"
-              {...register(`${handlerFormType}.contact.firstName`)}
+              {...register(`${handlerType}.contact.firstName`)}
             />
           </HtForm.Group>
         </Col>
-        <Col>
+        <Col xs={3}>
           <HtForm.Group>
             <HtForm.Label htmlFor={`${namePrefix}MiddleInitial`}>Middle Initial</HtForm.Label>
             <Form.Control
@@ -38,7 +39,7 @@ export function ContactForm({ handlerFormType, readOnly }: ContactFormProps) {
               plaintext={readOnly}
               readOnly={readOnly}
               placeholder="G"
-              {...register(`${handlerFormType}.contact.middleInitial`)}
+              {...register(`${handlerType}.contact.middleInitial`)}
             />
           </HtForm.Group>
         </Col>
@@ -51,7 +52,7 @@ export function ContactForm({ handlerFormType, readOnly }: ContactFormProps) {
               plaintext={readOnly}
               readOnly={readOnly}
               placeholder="Doe"
-              {...register(`${handlerFormType}.contact.firstName`)}
+              {...register(`${handlerType}.contact.firstName`)}
             />
           </HtForm.Group>
         </Col>
@@ -66,7 +67,7 @@ export function ContactForm({ handlerFormType, readOnly }: ContactFormProps) {
               plaintext={readOnly}
               readOnly={readOnly}
               placeholder="john.doe@haztrak.net"
-              {...register(`${handlerFormType}.contact.email`)}
+              {...register(`${handlerType}.contact.email`)}
             />
           </HtForm.Group>
         </Col>
@@ -79,11 +80,12 @@ export function ContactForm({ handlerFormType, readOnly }: ContactFormProps) {
               plaintext={readOnly}
               readOnly={readOnly}
               placeholder="HazTek LLC."
-              {...register(`${handlerFormType}.contact.companyName`)}
+              {...register(`${handlerType}.contact.companyName`)}
             />
           </HtForm.Group>
         </Col>
       </Row>
+      <PhoneForm handlerType={handlerType} readOnly={readOnly} />
     </>
   );
 }
