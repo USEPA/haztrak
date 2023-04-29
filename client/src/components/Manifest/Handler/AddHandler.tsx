@@ -1,6 +1,5 @@
 import { HtModal } from 'components/Ht';
 import { HandlerSearchForm } from 'components/Manifest/Handler/index';
-import { HandlerType } from 'components/Manifest';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { HtSearchForm } from 'components/Manifest/Handler/HtSearchForm';
@@ -8,6 +7,7 @@ import { HtSearchForm } from 'components/Manifest/Handler/HtSearchForm';
 interface Props {
   handleClose: () => void;
   show: boolean | undefined;
+  handlerType: 'generator' | 'designatedFacility' | 'transporter';
 }
 
 /**
@@ -16,7 +16,7 @@ interface Props {
  * @param handleClose
  * @constructor
  */
-export function AddHandler({ show, handleClose }: Props) {
+export function AddHandler({ show, handleClose, handlerType }: Props) {
   return (
     <HtModal showModal={show ? show : false} handleClose={handleClose}>
       <HtModal.Header closeButton>
@@ -32,11 +32,8 @@ export function AddHandler({ show, handleClose }: Props) {
         </Col>
       </HtModal.Header>
       <HtModal.Body>
-        <HandlerSearchForm
-          handleClose={handleClose}
-          handlerType={HandlerType.enum.designatedFacility}
-        />
-        <HtSearchForm handleClose={handleClose} handlerType={'generator'} />
+        <HandlerSearchForm handleClose={handleClose} handlerType={handlerType} />
+        <HtSearchForm handleClose={handleClose} handlerType={handlerType} />
       </HtModal.Body>
     </HtModal>
   );

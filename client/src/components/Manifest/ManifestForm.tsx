@@ -447,7 +447,11 @@ export function ManifestForm({
           handleClose={toggleWlFormShow}
           show={wlFormShow}
         />
-        <AddHandler handleClose={toggleTsdfFormShow} show={tsdfFormShow} />
+        <AddHandler
+          handleClose={toggleTsdfFormShow}
+          show={tsdfFormShow}
+          handlerType="designatedFacility"
+        />
       </FormProvider>
     </>
   );

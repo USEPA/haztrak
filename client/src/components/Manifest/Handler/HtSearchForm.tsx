@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Controller, SubmitHandler, useForm, useFormContext } from 'react-hook-form';
 import { RcraSite } from 'components/RcraSite';
-import { z } from 'zod';
 import AsyncSelect from 'react-select/async';
 import { htApi } from 'services';
 
@@ -13,7 +12,7 @@ interface Props {
   handlerType: HandlerTypeEnum;
 }
 
-interface addHandlerForm {
+interface searchHandlerForm {
   handler: string;
   epaId: string;
 }
@@ -23,14 +22,20 @@ export function HtSearchForm({ handleClose, handlerType }: Props) {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<addHandlerForm>();
+  } = useForm<searchHandlerForm>();
   const manifestMethods = useFormContext<Manifest>();
   const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
   const [inputValue, setInputValue] = useState<string>('');
 
-  const onSubmit: SubmitHandler<addHandlerForm> = (data) => {
-    // @ts-ignore
-    manifestMethods.setValue(handlerType, selectedHandler);
+  const onSubmit: SubmitHandler<searchHandlerForm> = () => {
+    if (selectedHandler !== null) {
+      console.log('selectedHandler', selectedHandler);
+      if (handlerType === 'generator' || handlerType === 'designatedFacility') {
+        manifestMethods.setValue(handlerType, { ...selectedHandler });
+      } else if (handlerType === 'transporter') {
+        // ToDo add to react-hook-form's useFieldArray
+      }
+    }
     handleClose();
   };
 
@@ -39,15 +44,15 @@ export function HtSearchForm({ handleClose, handlerType }: Props) {
     setInputValue(value);
   };
 
-  // handle input change event
-  const handleChange = (value: RcraSite) => {
+  // handle selection change event
+  const handleChange = (value: RcraSite | null): void => {
     setSelectedHandler(value);
   };
 
   // load options using API call
   const loadOptions = async (inputValue: string) => {
     return htApi
-      .get('site/handler/search', { params: { epaId: inputValue } })
+      .get('site/handler/search', { params: { epaId: inputValue, siteType: handlerType } })
       .then((res) => res.data as Array<RcraSite>);
   };
 
