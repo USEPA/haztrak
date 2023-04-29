@@ -36,7 +36,7 @@ export function AddTransporter({
           </Row>
           <Row>
             <i>
-              <small>Type at least three characters to search for known Transporters</small>
+              <small></small>
             </i>
           </Row>
         </Col>

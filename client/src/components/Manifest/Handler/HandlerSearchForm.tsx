@@ -1,158 +1,115 @@
-import { ErrorMessage } from '@hookform/error-message';
-import { HtForm, HtModal } from 'components/Ht';
-import { HandlerTypeEnum } from 'components/Manifest/manifestSchema';
-import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
-import { SubmitHandler, useForm, useFormContext } from 'react-hook-form';
-import { htApi } from 'services';
+import { HtForm } from 'components/Ht';
+import { HandlerTypeEnum, Manifest, Transporter } from 'components/Manifest/manifestSchema';
+import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
+import {
+  Controller,
+  SubmitHandler,
+  UseFieldArrayAppend,
+  useForm,
+  useFormContext,
+} from 'react-hook-form';
 import { RcraSite } from 'components/RcraSite';
+import AsyncSelect from 'react-select/async';
+import { htApi } from 'services';
 
 interface Props {
   handleClose: () => void;
   handlerType: HandlerTypeEnum;
+  currentTransporters?: Array<RcraSite>;
+  appendTransporter?: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 
-interface SearchCriteria {
-  epaId: string | undefined;
-  name: string | undefined;
-
-  siteType: string;
-}
-
-interface addHandlerForm {
+interface searchHandlerForm {
   handler: string;
   epaId: string;
-  name: string;
 }
 
-/**
- * HandlerSearchForm is responsible for watching the input parameters, querying the
- * server for known handlers (of specified type) rendering those options in a form
- * @param handleClose
- * @param handlerType {HandlerType}
- * @constructor
- */
-export function HandlerSearchForm({ handleClose, handlerType }: Props) {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<addHandlerForm>();
-  const manifestMethods = useFormContext();
-  const [handlerOptions, setHandlerOptions] = useState<Array<RcraSite> | undefined>(undefined);
+export function HandlerSearchForm({
+  handleClose,
+  handlerType,
+  currentTransporters,
+  appendTransporter,
+}: Props) {
+  const { handleSubmit, control } = useForm<searchHandlerForm>();
+  const manifestMethods = useFormContext<Manifest>();
+  const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
+  const [inputValue, setInputValue] = useState<string>('');
 
-  /**
-   This is the data that is sent to the RESTful api, it's automatically updated
-   when the form is updated via react-hook-form's 'watch' function.
-   */
-  const searchData: SearchCriteria = {
-    epaId: watch('epaId'),
-    name: watch('name'),
-    siteType: handlerType,
-  };
-
-  /**
-   * This useEffect is responsible for watching the search fields
-   * and querying the server and set the field options upon return
-   */
-  useEffect(() => {
-    async function fetchOptions() {
-      if (typeof searchData.epaId === 'string' && typeof searchData.name === 'string') {
-        if (searchData.epaId.length >= 3 || searchData.name.length >= 3) {
-          const response = await htApi.get('site/handler/search', {
-            params: searchData,
-          });
-          return response.data;
-        }
-      }
-    }
-
-    fetchOptions()
-      .then((trans: Array<RcraSite>) => setHandlerOptions(trans))
-      .catch((error) => console.error(error));
-  }, [watch('epaId'), watch('name')]);
-
-  /**Use the value (string) set in the Form.Select to look up
-   what transporter object was selected, add that transporter to the array field in the manifest form
-   */
-  const onSubmit: SubmitHandler<addHandlerForm> = (data) => {
-    if (handlerOptions !== undefined) {
-      for (let i = 0; i < handlerOptions?.length; i++) {
-        if (handlerOptions[i].epaSiteId === data.handler) {
-          const newTsdf: RcraSite = {
-            ...handlerOptions[i],
-          };
-          manifestMethods.setValue(handlerType, newTsdf);
+  const onSubmit: SubmitHandler<searchHandlerForm> = () => {
+    if (selectedHandler !== null) {
+      console.log('selectedHandler', selectedHandler);
+      if (handlerType === 'generator' || handlerType === 'designatedFacility') {
+        manifestMethods.setValue(handlerType, { ...selectedHandler });
+      } else if (handlerType === 'transporter') {
+        // ToDo add to react-hook-form's useFieldArray
+        const numberOfTransporter = currentTransporters ? currentTransporters.length : 0;
+        const newTransporter: Transporter = {
+          order: numberOfTransporter + 1,
+          ...selectedHandler,
+        };
+        if (appendTransporter) {
+          appendTransporter(newTransporter);
         }
       }
     }
     handleClose();
   };
 
+  // handle input change event
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+  };
+
+  // handle selection change event
+  const handleChange = (value: RcraSite | null): void => {
+    setSelectedHandler(value);
+  };
+
+  // load options using API call
+  const loadOptions = async (inputValue: string) => {
+    return htApi
+      .get('site/handler/search', { params: { epaId: inputValue, siteType: handlerType } })
+      .then((res) => res.data as Array<RcraSite>);
+  };
+
   return (
     <>
       <HtForm onSubmit={handleSubmit(onSubmit)}>
-        <HtModal.Body>
-          <Row>
-            <Col>
-              <HtForm.Group>
-                <HtForm.Label htmlFor={`${handlerType}SearchEPAId`}>EPA ID Number</HtForm.Label>
-                <Form.Control
-                  id={`${handlerType}SearchEPAId`}
-                  type="text"
-                  placeholder="VATESTRAN03"
-                  {...register(`epaId`)}
-                  // @ts-ignore
-                  // autoFocus
+        <HtForm.Group>
+          <HtForm.Label htmlFor="epaId">EPA ID Number</HtForm.Label>
+          <Controller
+            control={control}
+            name="epaId"
+            render={({ field }) => {
+              return (
+                <AsyncSelect
+                  id="epaId"
+                  {...field}
+                  value={selectedHandler}
+                  inputValue={inputValue}
+                  loadOptions={loadOptions}
+                  getOptionLabel={(option) => `${option.epaSiteId} -- ${option.name}`}
+                  getOptionValue={(option) => option.epaSiteId}
+                  openMenuOnFocus={false}
+                  onInputChange={handleInputChange}
+                  onChange={handleChange}
+                  isSearchable
+                  isClearable
+                  cacheOptions
                 />
-              </HtForm.Group>
-            </Col>
-            <Col>
-              <HtForm.Group>
-                <HtForm.Label htmlFor={`${handlerType}SearchName`}>Name</HtForm.Label>
-                <Form.Control
-                  id={`${handlerType}SearchName`}
-                  type="text"
-                  placeholder="VA TEST GEN 2021"
-                  {...register(`name`)}
-                />
-              </HtForm.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              {handlerOptions ? (
-                <HtForm.Select {...register('handler', { required: true })}>
-                  {handlerOptions.map((option) => {
-                    return (
-                      <option key={`tran-select-${option.epaSiteId}`} value={option.epaSiteId}>
-                        {`${option.epaSiteId} -- ${option.name} `}
-                      </option>
-                    );
-                  })}
-                </HtForm.Select>
-              ) : (
-                <></>
-              )}
-            </Col>
-          </Row>
-          <Row>
-            <ErrorMessage
-              errors={errors}
-              name={'epaId'}
-              render={({ message }) => <span className="text-danger">{message}</span>}
-            />
-          </Row>
-        </HtModal.Body>
-        <HtModal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+              );
+            }}
+          />
+        </HtForm.Group>
+        <div className="d-flex justify-content-end">
+          <Button variant="secondary" onClick={handleClose} className="mx-2">
             Cancel
           </Button>
           <Button variant="success" type="submit">
             Add
           </Button>
-        </HtModal.Footer>
+        </div>
       </HtForm>
     </>
   );

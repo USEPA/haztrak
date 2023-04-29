@@ -428,11 +428,12 @@ export function ManifestForm({
             </Button>
           </div>
         </HtForm>
-        <AddTransporter
+        <AddHandler
           handleClose={toggleTranSearchShow}
           show={transFormShow}
           currentTransporters={transporters}
           appendTransporter={tranArrayMethods.append}
+          handlerType="transporter"
         />
         <QuickerSignModal
           handleClose={toggleQuickerSignShow}
