@@ -19,6 +19,8 @@ interface Props {
  * @param show
  * @param handleClose
  * @param handlerType
+ * @param currentTransporters
+ * @param appendTransporter
  * @constructor
  */
 export function AddHandler({
