@@ -14,6 +14,7 @@ import { AddHandler, Handler, HandlerForm } from './Handler';
 import { QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
 import { manifestSchema, Manifest } from './manifestSchema';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
+import { ErrorMessage } from '@hookform/error-message';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -103,6 +104,8 @@ export function ManifestForm({
     manifestStatus === 'Scheduled' ||
     manifestStatus === 'InTransit' ||
     manifestStatus === 'ReadyForSignature';
+
+  console.log('errors', errors);
 
   return (
     <>
@@ -366,6 +369,11 @@ export function ManifestForm({
                   </Row>
                 </>
               )}
+              <ErrorMessage
+                errors={errors}
+                name={'generator'}
+                render={({ message }) => <span className="text-danger">{message}</span>}
+              />
             </HtCard.Body>
           </HtCard>
           <HtCard id="transporter-form-card">
@@ -387,6 +395,11 @@ export function ManifestForm({
                   variant="success"
                 />
               )}
+              <ErrorMessage
+                errors={errors}
+                name={'transporters'}
+                render={({ message }) => <span className="text-danger">{message}</span>}
+              />
             </HtCard.Body>
           </HtCard>
           <HtCard id="waste-form-card">
@@ -399,6 +412,11 @@ export function ManifestForm({
               ) : (
                 <HtButton onClick={toggleWlFormShow} children={'Add Waste'} variant="success" />
               )}
+              <ErrorMessage
+                errors={errors}
+                name={'wastes'}
+                render={({ message }) => <span className="text-danger">{message}</span>}
+              />
             </HtCard.Body>
           </HtCard>
           {/* Where The Tsdf information is added and displayed */}
@@ -429,6 +447,11 @@ export function ManifestForm({
               ) : (
                 <HtButton onClick={toggleTsdfFormShow} children={'Add TSDF'} variant="success" />
               )}
+              <ErrorMessage
+                errors={errors}
+                name={'designatedFacility'}
+                render={({ message }) => <span className="text-danger">{message}</span>}
+              />
             </HtCard.Body>
           </HtCard>
           <HtCard id="manifest-additional-info-card">
