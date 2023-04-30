@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 export const rcraPhoneSchema = z.object({
   // ToDo validate length and phone format/content separately
-  number: z.string().min(12, 'Phone in {3}-{3}-{4} format Required'),
-  extension: z.string().optional(),
+  number: z.string().min(12, '10 digit phone number required'),
+  extension: z.string().max(6).optional(),
 });
 
 export const rcraContactSchema = z.object({
@@ -47,23 +47,10 @@ export const rcraSite = z.object({
    */
   epaSiteId: z.string().min(4, { message: "EPA ID should be 9 numbers and 3 letters or 'VSQG'" }),
   mailingAddress: rcraAddressSchema,
-  /**
-   * Represents the physical address of a facility regulated under RCRA, it should be tied to an EPA ID
-   */
   siteAddress: rcraAddressSchema,
-  /**
-   * Contact information registered in RCRAInfo
-   */
   contact: rcraContactSchema,
-  /**
-   * Emergency contact for incidents during transportation of the hazardous waste
-   * ToDo: this should probably be on the Manifest Handler since it's manifest specific
-   */
-  emergencyPhone: rcraPhoneSchema,
-  /**
-   * Whether the handler has a registered user in RCRAInfo
-   */
-  registered: z.boolean().optional(),
+  emergencyPhone: rcraPhoneSchema.optional(),
+  registered: z.boolean().optional(), // Whether the handler has a registered user in RCRAInfo
   /**
    * Indicates if a site's information has been modified on a manifest
    * from what was on the handler’s notification form (a form used to

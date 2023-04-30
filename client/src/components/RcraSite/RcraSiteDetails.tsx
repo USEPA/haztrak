@@ -39,14 +39,16 @@ export function RcraSiteDetails({ handler }: RcraSiteDetailsProps) {
         </Col>
         <Col>
           <div className="mb-0">
-            <p className="fw-bold">Can e-Sign: </p>{' '}
-            {handler.canEsign ? (
-              <FontAwesomeIcon icon={faCircleCheck} className="text-success align-text-bottom" />
-            ) : (
-              <FontAwesomeIcon icon={faCircleXmark} className="text-danger align-text-bottom" />
-            )}
+            <p className="fw-bold">
+              Can e-Sign:{' '}
+              {handler.canEsign ? (
+                <FontAwesomeIcon icon={faCircleCheck} className="text-success align-text-bottom" />
+              ) : (
+                <FontAwesomeIcon icon={faCircleXmark} className="text-danger align-text-bottom" />
+              )}
+            </p>
           </div>
-          <p>
+          <p className="fw-bold">
             Has registered e-Manifest user:{' '}
             {handler.hasRegisteredEmanifestUser ? (
               <FontAwesomeIcon icon={faCircleCheck} className="text-success align-text-bottom" />

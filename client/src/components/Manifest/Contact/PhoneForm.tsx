@@ -1,5 +1,4 @@
-import { ErrorMessage } from '@hookform/error-message';
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Manifest } from 'types/manifest';
@@ -15,6 +14,23 @@ export function PhoneForm({ handlerType, readOnly }: ContactFormProps) {
     register,
     formState: { errors },
   } = useFormContext<Manifest>();
+  const [number, setNumber] = useState<string | undefined>('');
+  const handlerNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    // The input value stripped of non-numeric character
+    const rawNumber = value.trim().replace(/[^0-9]/g, '');
+    let formattedNumber;
+
+    if (rawNumber.length <= 3) {
+      formattedNumber = rawNumber;
+    } else if (rawNumber.length > 3 && rawNumber.length <= 6) {
+      formattedNumber = rawNumber.replace(/(\d{3})(\d)/, '$1-$2');
+    } else {
+      formattedNumber = rawNumber.replace(/(\d{3})(\d{3})(\d)/, '$1-$2-$3');
+    }
+
+    setNumber(formattedNumber);
+  };
 
   // Destructure the handler errors depending on whether this is form for
   // manifest generator of designated facility for use in the form.
@@ -31,11 +47,15 @@ export function PhoneForm({ handlerType, readOnly }: ContactFormProps) {
             <HtForm.Label htmlFor={`${handlerType}Number`}>Phone Number</HtForm.Label>
             <Form.Control
               id={`${handlerType}Number`}
+              value={number}
+              maxLength={12}
               type="text"
               plaintext={readOnly}
               readOnly={readOnly}
               placeholder="202-505-5505"
-              {...register(`${handlerType}.emergencyPhone.number`)}
+              {...register(`${handlerType}.emergencyPhone.number`, {
+                onChange: handlerNumberChange,
+              })}
               className={handlerErrors?.emergencyPhone?.number && 'is-invalid'}
             />
             <div className="invalid-feedback">{handlerErrors?.emergencyPhone?.number?.message}</div>
@@ -56,11 +76,6 @@ export function PhoneForm({ handlerType, readOnly }: ContactFormProps) {
             <div className="invalid-feedback">
               {handlerErrors?.emergencyPhone?.extension?.message}
             </div>
-            <ErrorMessage
-              errors={errors}
-              name={`${handlerType}.emergencyPhone.extension`}
-              render={({ message }) => <span className="text-danger">{message}</span>}
-            />
           </HtForm.Group>
         </Col>
       </Row>

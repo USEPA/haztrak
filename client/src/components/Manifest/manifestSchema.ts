@@ -142,7 +142,39 @@ export const manifestSchema = z
   .refine(() => {
     // ToDo Validate that if submission Type is FullElectronic, generator.canEsign is true
     return true;
-  });
+  })
+  .refine(
+    (manifest) => {
+      if (!manifest.generator) {
+        return false;
+      }
+    },
+    { path: ['generator'], message: 'Add a Generator for this manifest' }
+  )
+  .refine(
+    (manifest) => {
+      if (!manifest.designatedFacility) {
+        return false;
+      }
+    },
+    { path: ['designatedFacility'], message: 'Add a designated Facility for this manifest' }
+  )
+  .refine(
+    (manifest) => {
+      if (manifest.wastes.length < 1) {
+        return false;
+      }
+    },
+    { path: ['wastes'], message: 'At least 1 wasteline is required' }
+  )
+  .refine(
+    (manifest) => {
+      if (manifest.transporters.length < 1) {
+        return false;
+      }
+    },
+    { path: ['transporters'], message: 'At least 1 transporter is required' }
+  );
 
 const rejectionInfoSchema = z.object({
   rejectionType: z.enum(['FullRejection', 'PartialRejection']),

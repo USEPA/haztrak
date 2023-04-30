@@ -1,8 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/Ht';
 import { RcraSiteDetails } from 'components/RcraSite';
-import { ContactForm } from './Contact';
-import { AddTransporter, Transporter, TransporterTable } from './Transporter';
+import { ContactForm, PhoneForm } from './Contact';
+import { Transporter, TransporterTable } from './Transporter';
 import { WasteLineTable, AddWasteLine } from './WasteLine';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
@@ -12,8 +12,9 @@ import { QuickerSignData } from './QuickerSign';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { AddHandler, Handler, HandlerForm } from './Handler';
 import { QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
-import { manifestSchema, Manifest, HandlerType } from './manifestSchema';
+import { manifestSchema, Manifest } from './manifestSchema';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
+import { ErrorMessage } from '@hookform/error-message';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -40,9 +41,7 @@ export function ManifestForm({
   siteId,
   mtn,
 }: ManifestFormProps) {
-  // console.log('initial pot. ship date', manifestData?.potentialShipDate);
-
-  // Top level ManifestForm methods and objects
+  // methods and top level state related to the manifest to be rendered
   const manifestMethods = useForm<Manifest>({
     values: manifestData,
     resolver: zodResolver(manifestSchema),
@@ -51,58 +50,62 @@ export function ManifestForm({
     formState: { errors },
   } = manifestMethods;
   const [manifestStatus, setManifestStatus] = useState(manifestData?.status);
-  const isDraft = !manifestData?.manifestTrackingNumber;
-  // On load, focus the generator EPA ID.
   useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log('Manifest Submitted', data);
-    console.log('submit pot ship date: ', data.potentialShipDate);
   };
 
-  // Generator controls
+  // Generator state and methods
   const generator: Handler | undefined = manifestMethods.getValues('generator');
+  const [showAddGenerator, setShowAddGenerator] = useState<boolean>(false);
+  const [showGeneratorForm, setShowGeneratorForm] = useState<boolean>(false);
+  const toggleShowAddGenerator = () => setShowAddGenerator(!showAddGenerator);
+  const toggleShowGeneratorForm = () => setShowGeneratorForm(!showGeneratorForm);
 
-  // Transporter controls
-  const [transFormShow, setTransFormShow] = useState<boolean>(false);
-  const toggleTranSearchShow = () => setTransFormShow(!transFormShow);
+  // Transporter state and methods
+  const [showAddTransporterForm, setShowAddTransporterForm] = useState<boolean>(false);
+  const toggleTranSearchShow = () => setShowAddTransporterForm(!showAddTransporterForm);
   const transporters: Array<Transporter> = manifestMethods.getValues('transporters');
   const tranArrayMethods = useFieldArray<Manifest, 'transporters'>({
     control: manifestMethods.control,
     name: 'transporters',
   });
 
-  // Quicker Sign controls
-  const [quickerSignShow, setQuickerSignShow] = useState<boolean>(false);
+  // State and methods for the manifest's designatedFacility field (TSDF)
+  const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
+  const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
+  const tsdf: Handler | undefined = manifestMethods.getValues('designatedFacility');
+
+  // Quicker Sign state and methods
+  const [showSignForm, setShowSignForm] = useState<boolean>(false);
   const [quickerSignHandler, setQuickerSignHandler] = useState<QuickerSignData>({
     handler: undefined,
     siteType: 'Generator', // ToDo initialize to undefined
   });
-  const toggleQuickerSignShow = () => setQuickerSignShow(!quickerSignShow);
+  const toggleQuickerSignShow = () => setShowSignForm(!showSignForm);
   // function used to control the QuickerSign form (modal) and pass the necessary context
   const setupSign = (signContext: QuickerSignData) => {
     setQuickerSignHandler(signContext); // set state to appropriate Handler
     toggleQuickerSignShow(); // Toggle the Quicker Sign modal
   };
 
-  // WasteLine controls
-  const [wlFormShow, setWlFormShow] = useState<boolean>(false);
-  const toggleWlFormShow = () => setWlFormShow(!wlFormShow);
+  // State and methods for the manifest's waste lines
+  const [showWasteLineForm, setShowWasteLineForm] = useState<boolean>(false);
+  const toggleWlFormShow = () => setShowWasteLineForm(!showWasteLineForm);
   const wastes: Array<WasteLine> = manifestMethods.getValues('wastes');
   const wasteArrayMethods = useFieldArray<Manifest, 'wastes'>({
     control: manifestMethods.control,
     name: 'wastes',
   });
 
-  // Tsdf controls
-  const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
-  const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
-  const tsdf: Handler | undefined = manifestMethods.getValues('designatedFacility');
-
+  // Indicates whether the manifest is in a status that can be signed by any of the handlers
   const signAble =
     manifestStatus === 'Scheduled' ||
     manifestStatus === 'InTransit' ||
     manifestStatus === 'ReadyForSignature';
+
+  // console.log('errors', errors);
 
   return (
     <>
@@ -126,7 +129,9 @@ export function ManifestForm({
                       readOnly
                       type="text"
                       placeholder={
-                        isDraft ? 'Draft Manifest' : manifestData?.manifestTrackingNumber
+                        !manifestData?.manifestTrackingNumber
+                          ? 'Draft Manifest'
+                          : manifestData?.manifestTrackingNumber
                       }
                       {...manifestMethods.register('manifestTrackingNumber')}
                       className={errors.manifestTrackingNumber && 'is-invalid'}
@@ -219,6 +224,7 @@ export function ManifestForm({
                     </HtForm.Label>
                     <Form.Control
                       id="createdDate"
+                      aria-label={'created date'}
                       plaintext
                       disabled
                       type="date"
@@ -309,12 +315,13 @@ export function ManifestForm({
             <HtCard.Header title="Generator" />
             <HtCard.Body>
               {readOnly ? (
+                // if readOnly is true, show the generator in a nice read only way and display
+                // the button to sign for the generator.
                 <>
                   <RcraSiteDetails handler={generator} />
                   <h4>Emergency Contact Information</h4>
                   <ContactForm handlerType="generator" readOnly={readOnly} />
                   <div className="d-flex justify-content-between">
-                    {/* Button to bring up the Quicker Sign modal*/}
                     <Col className="text-end">
                       <QuickerSignModalBtn
                         siteType={'Generator'}
@@ -325,13 +332,49 @@ export function ManifestForm({
                     </Col>
                   </div>
                 </>
-              ) : (
+              ) : generator && !showGeneratorForm ? (
+                // If the form holds a value for generator, but they don't need to edit the
+                // generators values (allowed) then display the site details in a nice read only way
                 <>
-                  <HandlerForm handlerType={HandlerType.enum.generator} readOnly={readOnly} />
+                  <RcraSiteDetails handler={generator} />
+                  <PhoneForm handlerType={'generator'} />
+                  <div className="d-flex justify-content-end">
+                    <Button onClick={toggleShowGeneratorForm}>Edit</Button>
+                  </div>
+                </>
+              ) : showGeneratorForm ? (
+                // Show the Handler form with current value for the generator
+                // The HandlerForm allows for fine-grained control over the handler inputs
+                <>
+                  <HandlerForm handlerType={'generator'} readOnly={readOnly} />
                   <h4>Emergency Contact Information</h4>
                   <ContactForm handlerType="generator" readOnly={readOnly} />
                 </>
+              ) : (
+                // default on a blank manifest, ask if they'd like to search for a generator to
+                // add, or if the user would like to manually enter the generator's info.
+                <>
+                  <Row className="mb-2">
+                    <HtButton
+                      onClick={toggleShowAddGenerator}
+                      children={'Add Generator'}
+                      variant="success"
+                    />
+                  </Row>
+                  <Row>
+                    <HtButton
+                      onClick={toggleShowGeneratorForm}
+                      children={'Manually enter The Generator'}
+                      variant="primary"
+                    />
+                  </Row>
+                </>
               )}
+              <ErrorMessage
+                errors={errors}
+                name={'generator'}
+                render={({ message }) => <span className="text-danger">{message}</span>}
+              />
             </HtCard.Body>
           </HtCard>
           <HtCard id="transporter-form-card">
@@ -353,6 +396,11 @@ export function ManifestForm({
                   variant="success"
                 />
               )}
+              <ErrorMessage
+                errors={errors}
+                name={'transporters'}
+                render={({ message }) => <span className="text-danger">{message}</span>}
+              />
             </HtCard.Body>
           </HtCard>
           <HtCard id="waste-form-card">
@@ -365,6 +413,11 @@ export function ManifestForm({
               ) : (
                 <HtButton onClick={toggleWlFormShow} children={'Add Waste'} variant="success" />
               )}
+              <ErrorMessage
+                errors={errors}
+                name={'wastes'}
+                render={({ message }) => <span className="text-danger">{message}</span>}
+              />
             </HtCard.Body>
           </HtCard>
           {/* Where The Tsdf information is added and displayed */}
@@ -374,6 +427,7 @@ export function ManifestForm({
               {tsdf ? (
                 <>
                   <RcraSiteDetails handler={tsdf} />
+                  <PhoneForm handlerType={'designatedFacility'} />
                   <div className="d-flex justify-content-between">
                     {/* Button to bring up the Quicker Sign modal*/}
                     <Col className="text-end">
@@ -389,11 +443,16 @@ export function ManifestForm({
               ) : (
                 <></>
               )}
-              {readOnly ? (
+              {readOnly || tsdf ? (
                 <></>
               ) : (
                 <HtButton onClick={toggleTsdfFormShow} children={'Add TSDF'} variant="success" />
               )}
+              <ErrorMessage
+                errors={errors}
+                name={'designatedFacility'}
+                render={({ message }) => <span className="text-danger">{message}</span>}
+              />
             </HtCard.Body>
           </HtCard>
           <HtCard id="manifest-additional-info-card">
@@ -431,15 +490,26 @@ export function ManifestForm({
             </Button>
           </div>
         </HtForm>
-        <AddTransporter
+        <AddHandler
+          handleClose={toggleShowAddGenerator}
+          show={showAddGenerator}
+          handlerType="generator"
+        />
+        <AddHandler
           handleClose={toggleTranSearchShow}
-          show={transFormShow}
+          show={showAddTransporterForm}
           currentTransporters={transporters}
           appendTransporter={tranArrayMethods.append}
+          handlerType="transporter"
+        />
+        <AddHandler
+          handleClose={toggleTsdfFormShow}
+          show={tsdfFormShow}
+          handlerType="designatedFacility"
         />
         <QuickerSignModal
           handleClose={toggleQuickerSignShow}
-          show={quickerSignShow}
+          show={showSignForm}
           mtn={[mtn ? mtn : '']}
           mtnHandler={quickerSignHandler.handler}
           siteType={quickerSignHandler.siteType}
@@ -448,9 +518,8 @@ export function ManifestForm({
           appendWaste={wasteArrayMethods.append}
           currentWastes={wastes}
           handleClose={toggleWlFormShow}
-          show={wlFormShow}
+          show={showWasteLineForm}
         />
-        <AddHandler handleClose={toggleTsdfFormShow} show={tsdfFormShow} />
       </FormProvider>
     </>
   );
