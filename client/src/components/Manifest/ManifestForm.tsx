@@ -105,7 +105,7 @@ export function ManifestForm({
     manifestStatus === 'InTransit' ||
     manifestStatus === 'ReadyForSignature';
 
-  console.log('errors', errors);
+  // console.log('errors', errors);
 
   return (
     <>
@@ -224,6 +224,7 @@ export function ManifestForm({
                     </HtForm.Label>
                     <Form.Control
                       id="createdDate"
+                      aria-label={'created date'}
                       plaintext
                       disabled
                       type="date"
