@@ -38,7 +38,6 @@ export function HandlerSearchForm({
 
   const onSubmit: SubmitHandler<searchHandlerForm> = () => {
     if (selectedHandler !== null) {
-      console.log('selectedHandler', selectedHandler);
       if (handlerType === 'generator' || handlerType === 'designatedFacility') {
         manifestMethods.setValue(handlerType, { ...selectedHandler });
       } else if (handlerType === 'transporter') {

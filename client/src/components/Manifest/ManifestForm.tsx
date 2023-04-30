@@ -104,6 +104,8 @@ export function ManifestForm({
     manifestStatus === 'InTransit' ||
     manifestStatus === 'ReadyForSignature';
 
+  console.log(errors);
+
   return (
     <>
       <FormProvider {...manifestMethods}>
@@ -408,6 +410,7 @@ export function ManifestForm({
               {tsdf ? (
                 <>
                   <RcraSiteDetails handler={tsdf} />
+                  <PhoneForm handlerType={'designatedFacility'} />
                   <div className="d-flex justify-content-between">
                     {/* Button to bring up the Quicker Sign modal*/}
                     <Col className="text-end">
