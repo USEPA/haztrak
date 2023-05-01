@@ -19,7 +19,7 @@ describe('TopNav', () => {
         },
       },
     });
-    expect(screen.getByText(/Haztrak/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'toggleSidebarNavigation' })).toBeInTheDocument();
   });
   test('returns nothing when user not logged in', () => {
     renderWithProviders(<TopNav />);
