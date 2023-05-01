@@ -1,4 +1,4 @@
-# Haztrak
+![haztrak logo](assets/haztrak-low-resolution-logo-teal-on-transparent-background.svg)
 
 Haztrak is, for lack of a better term, a proof of concept (POC) project that
 illustrates how third party system can leverage the resources exposed by the
