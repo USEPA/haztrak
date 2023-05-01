@@ -3,9 +3,9 @@
   "name": "Haztrak React",
   "icons": [
     {
-      "src": "./favicon.ico",
-      "sizes": "16x16",
-      "type": "image/png"
+      "src": "./favicon.svg",
+      "sizes": "128x128",
+      "type": "image/svg"
     }
   ],
   "start_url": ".",
