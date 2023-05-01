@@ -69,7 +69,7 @@ function App(): ReactElement {
               />
               <Route path="/login" element={<Login />} />
               <Route path="/about" element={<About />} />
-              {/* ToDo: navigate to error boundary(?)*/}
+              {/* If unknown route, display 404*/}
               <Route
                 path="*"
                 element={
