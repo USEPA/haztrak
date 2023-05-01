@@ -5,13 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { NotificationBtn } from 'components/Notification';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faArrowRightFromBracket,
-  faBars,
-  faGear,
-  faTruckFast,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/free-solid-svg-icons';
+import logo from 'assets/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
 
 export function TopNav() {
   const authUser = useSelector((state: RootState) => state.user.user);
@@ -32,8 +27,13 @@ export function TopNav() {
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex">
       <div className="flex-grow-1 ps-2">
         <Link to="/" className="navbar-brand ps-3 pe-5">
-          <FontAwesomeIcon icon={faTruckFast} className="pe-2" />
-          Haztrak
+          <img
+            src={logo}
+            alt="haztrak logo, hazardous waste tracking made easy."
+            width={125}
+            height={'auto'}
+            className="my-3"
+          />
         </Link>
         <Button
           aria-label="toggleSidebarNavigation"

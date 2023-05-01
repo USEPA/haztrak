@@ -5,8 +5,6 @@ import { useForm } from 'react-hook-form';
 import { login, useAppDispatch, useAppSelector } from 'store';
 import { useNavigate } from 'react-router-dom';
 import { useTitle } from 'hooks';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTruckFast } from '@fortawesome/free-solid-svg-icons';
 import { z } from 'zod';
 import { Col, Container, Form, Row } from 'react-bootstrap';
 import logo from 'assets/haztrak-logos/low-resolution/svg/haztrak-low-resolution-logo-black-on-transparent-background.svg';
@@ -53,8 +51,8 @@ export function Login(): ReactElement {
           <img
             src={logo}
             alt="haztrak logo, hazardous waste tracking made easy."
-            width={400}
-            height="auto"
+            width="auto"
+            height={100}
             className="my-3"
           />
         </Row>
