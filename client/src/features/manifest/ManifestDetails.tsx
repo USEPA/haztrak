@@ -20,7 +20,12 @@ export function ManifestDetails() {
   return loading ? (
     <HtSpinner />
   ) : manifestData ? (
-    <ManifestForm manifestData={manifestData} readOnly={readOnly} siteId={siteId} mtn={mtn} />
+    <ManifestForm
+      manifestData={manifestData}
+      readOnly={readOnly}
+      manifestingSiteID={siteId}
+      mtn={mtn}
+    />
   ) : (
     <></>
   );
