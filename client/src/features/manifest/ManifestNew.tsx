@@ -1,5 +1,6 @@
+import { HtCard } from 'components/Ht';
 import { ManifestForm } from 'components/Manifest';
-import { SiteTypeSelect } from 'components/Manifest/SiteTypeSelect';
+import { SiteSelect, SiteTypeSelect } from 'components/Manifest/SiteSelect';
 import { useTitle } from 'hooks';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -11,15 +12,30 @@ export function ManifestNew() {
   const [manifestingSiteType, setManifestingSiteType] = useState<
     'generator' | 'designatedFacility' | 'transporter' | undefined
   >(undefined);
+  const [manifestingSite, setManifestingSite] = useState();
+  console.log(manifestingSite);
   const { control } = useForm();
-  if (manifestingSiteType === undefined) {
+  if (!manifestingSiteType || !siteId) {
     return (
-      <SiteTypeSelect
-        control={control}
-        siteType={manifestingSiteType}
-        setSiteType={setManifestingSiteType}
-        siteId={siteId}
-      />
+      <HtCard>
+        <HtCard.Body>
+          {siteId ? null : (
+            <>
+              <SiteSelect
+                control={control}
+                selectedSite={manifestingSite}
+                setSelectedSite={setManifestingSite}
+              />
+            </>
+          )}
+          <SiteTypeSelect
+            control={control}
+            siteType={manifestingSiteType}
+            setSiteType={setManifestingSiteType}
+            siteId={siteId}
+          />
+        </HtCard.Body>
+      </HtCard>
     );
   }
   return <ManifestForm />;
