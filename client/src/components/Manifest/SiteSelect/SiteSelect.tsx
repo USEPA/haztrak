@@ -1,3 +1,4 @@
+import { RcraSite } from 'components/RcraSite';
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 import Select, { GroupBase, OptionsOrGroups } from 'react-select';
@@ -6,17 +7,20 @@ import { RcraProfileState, RcraSitePermissions } from 'store/rcraProfileSlice/rc
 
 interface SiteSelectProps<T> {
   control: Control;
-  selectedSite: T;
-  setSelectedSite: (option: T) => void;
+  selectedSite: T | null;
+  setSelectedSite: (option: T | null) => void;
 }
 
-export function SiteSelect({ control, selectedSite, setSelectedSite }: SiteSelectProps<any>) {
+export function SiteSelect({
+  control,
+  selectedSite,
+  setSelectedSite,
+}: SiteSelectProps<RcraSite | null>) {
   const { rcraSites } = useAppSelector<RcraProfileState>((state: RootState) => state.rcraProfile);
-  let rcraSitesArray: OptionsOrGroups<any, GroupBase<any>> | undefined;
-  if (rcraSites !== undefined) {
-    rcraSitesArray = Object.keys(rcraSites).map(
-      (rcraSiteNamedIndex) => rcraSites[rcraSiteNamedIndex]
-    );
+
+  let siteOptions: Array<RcraSite> | undefined = undefined;
+  if (rcraSites) {
+    siteOptions = Object.values(rcraSites).map((obj) => obj.site.handler);
   }
   return (
     <Controller
@@ -29,11 +33,11 @@ export function SiteSelect({ control, selectedSite, setSelectedSite }: SiteSelec
           openMenuOnFocus={false}
           onChange={setSelectedSite}
           components={{ IndicatorSeparator: () => null }}
-          options={rcraSitesArray}
+          options={siteOptions}
           noOptionsMessage={() => 'No Sites found'}
           value={selectedSite}
-          getOptionLabel={(option) => option.epaId}
-          getOptionValue={(option) => option.epaId}
+          getOptionLabel={(option) => `${option.epaSiteId} -- ${option.name}`}
+          getOptionValue={(option) => option.epaSiteId}
           isSearchable
           isClearable
           classNames={{
