@@ -17,6 +17,7 @@ export function SiteTypeSelect({ siteType, setSiteType, control, siteId }: SiteT
       <Form>
         <Controller
           control={control}
+          data-testid="siteTypeSelect"
           render={() => (
             <div className="mt-2">
               <HtForm.Label htmlFor="siteType">Site Role</HtForm.Label>

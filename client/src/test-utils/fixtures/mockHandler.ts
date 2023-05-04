@@ -2,7 +2,7 @@ import { HaztrakSite } from 'components/HaztrakSite';
 import { Handler } from 'components/Manifest';
 import { RcraSite } from 'components/RcraSite';
 import { Transporter } from 'components/Manifest/Transporter';
-import { RcraSitePermissions, ProfileRcraSite } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { RcraSitePermissions, RcraProfileSite } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 /**
  * A mock handler object for tests

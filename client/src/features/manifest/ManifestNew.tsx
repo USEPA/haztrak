@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState, useAppSelector } from 'store';
-import { RcraProfileState, selectSiteByEpaId } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { RcraProfileState, getSiteByEpaId } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 export function ManifestNew() {
   useTitle('New Manifest');
@@ -16,7 +16,7 @@ export function ManifestNew() {
   const [manifestingSiteType, setManifestingSiteType] = useState<
     'generator' | 'designatedFacility' | 'transporter' | undefined
   >(undefined);
-  const rcraSite = useAppSelector(selectSiteByEpaId(siteId));
+  const rcraSite = useAppSelector(getSiteByEpaId(siteId));
   const [manifestingSite, setManifestingSite] = useState<RcraSite | undefined | null>(rcraSite);
   const { control } = useForm();
   // If the site that needs to start a manifest, or its role on the manifest

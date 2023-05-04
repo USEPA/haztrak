@@ -4,7 +4,7 @@ import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 import Select from 'react-select';
 import { RootState, useAppSelector } from 'store';
-import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { getUserSites, RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 interface SiteSelectProps<T> {
   control: Control;
@@ -17,18 +17,15 @@ export function SiteSelect({
   selectedSite,
   setSelectedSite,
 }: SiteSelectProps<RcraSite | undefined | null>) {
-  const { rcraSites } = useAppSelector<RcraProfileState>((state: RootState) => state.rcraProfile);
-
-  let siteOptions: Array<RcraSite> | undefined = undefined;
-  if (rcraSites) {
-    siteOptions = Object.values(rcraSites).map((obj) => obj.site.handler);
-  }
+  const rcraSite = useAppSelector(getUserSites);
+  const siteOptions = rcraSite?.map((site) => site.site.handler);
   return (
     <>
       <HtForm.Label htmlFor="site">Site</HtForm.Label>
       <Controller
         control={control}
         name="site"
+        data-testid="siteSelect"
         render={({ field }) => (
           <Select
             id="site"

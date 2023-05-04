@@ -12,9 +12,10 @@ import { createMockSite } from 'test-utils/fixtures';
 import { createMockPermission } from 'test-utils/fixtures/mockHandler';
 import rcraProfileReducer, {
   getProfile,
-  ProfileRcraSite,
+  RcraProfileSite,
   RcraProfileState,
-  selectSiteByEpaId,
+  getSiteByEpaId,
+  getUserSites,
 } from './rcraProfile.slice';
 
 const initialState: RcraProfileState = {
@@ -27,7 +28,7 @@ const initialState: RcraProfileState = {
   error: undefined,
 };
 
-const mySite: ProfileRcraSite = {
+const mySite: RcraProfileSite = {
   site: createMockSite(),
   permissions: {
     siteManagement: true,
@@ -85,7 +86,7 @@ interface TestComponentProps {
 }
 
 function TestComponent({ siteId }: TestComponentProps) {
-  const rcraSite = useAppSelector(selectSiteByEpaId(siteId));
+  const rcraSite = useAppSelector(getSiteByEpaId(siteId));
   return (
     <>
       <p>{rcraSite?.epaSiteId}</p>
@@ -94,7 +95,7 @@ function TestComponent({ siteId }: TestComponentProps) {
 }
 
 describe('RcraProfileSlice selectors', () => {
-  test('selectSiteById retrieves RcraSite', () => {
+  test('Retrieve RcraProfileSite by EPA ID', () => {
     const mySite = createMockSite();
     renderWithProviders(<TestComponent siteId={mySite.handler.epaSiteId} />, {
       preloadedState: {
@@ -112,5 +113,41 @@ describe('RcraProfileSlice selectors', () => {
       },
     });
     expect(screen.getByText(mySite.handler.epaSiteId)).toBeInTheDocument();
+  });
+  test('retrieve all RcraProfileSites', () => {
+    const mySite = createMockSite();
+    const TestComp = () => {
+      const myRcraSite = useAppSelector(getUserSites);
+      return (
+        <>
+          <p>{myRcraSite ? Object.keys(myRcraSite).length : 'not defined'}</p>
+          {myRcraSite
+            ? myRcraSite.map((site) => <p>{site.site.handler.epaSiteId}</p>)
+            : 'not defined'}
+        </>
+      );
+    };
+    renderWithProviders(<TestComp />, {
+      preloadedState: {
+        rcraProfile: {
+          user: 'username',
+          phoneNumber: '1231231234',
+          apiUser: false,
+          rcraSites: {
+            VATESTGEN001: {
+              site: mySite,
+              permissions: createMockPermission(),
+            },
+            VATEST00001: {
+              site: mySite,
+              permissions: createMockPermission(),
+            },
+          },
+        },
+      },
+    });
+    screen.debug();
+    expect(screen.getByText('2')).toBeInTheDocument();
+    expect(screen.queryByText(/Not Defined/i)).not.toBeInTheDocument();
   });
 });

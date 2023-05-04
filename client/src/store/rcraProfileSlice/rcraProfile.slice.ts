@@ -32,7 +32,7 @@ export interface RcraProfileState {
    * EPA sites a user has access to in RCRAInfo stored in key-value pairs
    * where the keys are the site's EPA ID number
    */
-  rcraSites?: Record<string, ProfileRcraSite>;
+  rcraSites?: Record<string, RcraProfileSite>;
   phoneNumber?: string;
   loading?: boolean;
   error?: string;
@@ -52,7 +52,7 @@ export interface RcraSitePermissions {
  * The user's site permissions for an EPA site in RCRAInfo, including each the user's
  * permission for each RCRAInfo module
  */
-export interface ProfileRcraSite {
+export interface RcraProfileSite {
   site: HaztrakSite;
   permissions: RcraSitePermissions;
 }
@@ -81,7 +81,7 @@ interface RcraProfileResponse {
   user: undefined;
   rcraAPIID: undefined;
   rcraUsername: undefined;
-  rcraSites?: Array<ProfileRcraSite>;
+  rcraSites?: Array<RcraProfileSite>;
   phoneNumber: undefined;
   apiUser: boolean;
   loading: false;
@@ -155,10 +155,10 @@ const rcraProfileSlice = createSlice({
  * Retrieve a RcraSite that the user has access to in their RcraProfile by the site's EPA ID number
  * @param epaId
  */
-export const selectSiteByEpaId = (epaId: string | undefined) =>
+export const getSiteByEpaId = (epaId: string | undefined) =>
   createSelector(
     (state: { rcraProfile: RcraProfileState }) => state.rcraProfile.rcraSites,
-    (rcraSites: Record<string, ProfileRcraSite> | undefined) => {
+    (rcraSites: Record<string, RcraProfileSite> | undefined) => {
       if (!rcraSites) return undefined;
 
       const siteId = Object.keys(rcraSites).find(
@@ -172,6 +172,19 @@ export const selectSiteByEpaId = (epaId: string | undefined) =>
       return sitePermissions.site.handler;
     }
   );
+
+/**
+ * Retrieve a RcraSite that the user has access to in their RcraProfile by the site's EPA ID number
+ * @param epaId
+ */
+export const getUserSites = createSelector(
+  (state: { rcraProfile: RcraProfileState }) => state.rcraProfile.rcraSites,
+  (rcraSites: Record<string, RcraProfileSite> | undefined) => {
+    if (!rcraSites) return undefined;
+
+    return Object.values(rcraSites).map((site) => site);
+  }
+);
 
 export default rcraProfileSlice.reducer;
 export const { updateProfile } = rcraProfileSlice.actions;
