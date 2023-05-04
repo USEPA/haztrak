@@ -1,4 +1,4 @@
-import { HtCard } from 'components/Ht';
+import { HtCard, HtForm } from 'components/Ht';
 import { HandlerTypeEnum } from 'components/Manifest/manifestSchema';
 import React from 'react';
 import { Form } from 'react-bootstrap';
@@ -14,13 +14,14 @@ interface SiteTypeSelectProps {
 export function SiteTypeSelect({ siteType, setSiteType, control, siteId }: SiteTypeSelectProps) {
   return (
     <>
-      <p>{`Please select the role of ${siteId ? siteId : 'this handler'} on this manifest`}</p>
       <Form>
         <Controller
           control={control}
-          render={() => {
-            return (
+          render={() => (
+            <div className="mt-2">
+              <HtForm.Label htmlFor="siteType">Site Role</HtForm.Label>
               <Form.Select
+                id="siteType"
                 value={siteType}
                 // @ts-ignore
                 onChange={(event) => setSiteType(event.target.value)}
@@ -33,8 +34,8 @@ export function SiteTypeSelect({ siteType, setSiteType, control, siteId }: SiteT
                 <option value={'transporter'}>Transporter</option>
                 <option value={'designatedFacility'}>TSDF</option>
               </Form.Select>
-            );
-          }}
+            </div>
+          )}
           name={'test'}
         />
       </Form>

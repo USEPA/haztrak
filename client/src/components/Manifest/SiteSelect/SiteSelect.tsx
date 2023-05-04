@@ -1,3 +1,4 @@
+import { HtForm } from 'components/Ht';
 import { RcraSite } from 'components/RcraSite';
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
@@ -23,28 +24,31 @@ export function SiteSelect({
     siteOptions = Object.values(rcraSites).map((obj) => obj.site.handler);
   }
   return (
-    <Controller
-      control={control}
-      name="site"
-      render={({ field }) => (
-        <Select
-          id="site"
-          {...field} // object {name, onChange(), onBLur(), value, ref}
-          openMenuOnFocus={false}
-          onChange={setSelectedSite}
-          components={{ IndicatorSeparator: () => null }}
-          options={siteOptions}
-          noOptionsMessage={() => 'No Sites found'}
-          value={selectedSite}
-          getOptionLabel={(option) => `${option.epaSiteId} -- ${option.name}`}
-          getOptionValue={(option) => option.epaSiteId}
-          isSearchable
-          isClearable
-          classNames={{
-            control: () => 'form-control p-0 rounded-2',
-          }}
-        />
-      )}
-    />
+    <>
+      <HtForm.Label htmlFor="site">Site</HtForm.Label>
+      <Controller
+        control={control}
+        name="site"
+        render={({ field }) => (
+          <Select
+            id="site"
+            {...field} // object {name, onChange(), onBLur(), value, ref}
+            openMenuOnFocus={false}
+            onChange={setSelectedSite}
+            components={{ IndicatorSeparator: () => null }}
+            options={siteOptions}
+            noOptionsMessage={() => 'No Sites found'}
+            value={selectedSite}
+            getOptionLabel={(option) => `${option.epaSiteId} -- ${option.name}`}
+            getOptionValue={(option) => option.epaSiteId}
+            isSearchable
+            isClearable
+            classNames={{
+              control: () => 'form-control p-0 rounded-2',
+            }}
+          />
+        )}
+      />
+    </>
   );
 }

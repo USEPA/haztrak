@@ -28,6 +28,7 @@ export function ManifestNew() {
     return (
       <HtCard>
         <HtCard.Body>
+          <p>Which site are you starting a manifest as?</p>
           <SiteSelect
             control={control}
             selectedSite={manifestingSite}
