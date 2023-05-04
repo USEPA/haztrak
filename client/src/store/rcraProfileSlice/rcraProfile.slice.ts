@@ -2,7 +2,7 @@
  * A user's RcraProfile slice encapsulates our logic related what actions and data a user
  * has access to for each EPA site ID.
  */
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { HaztrakSite } from 'components/HaztrakSite';
 import { RootState } from 'store';
@@ -29,7 +29,7 @@ export interface RcraProfileState {
    */
   rcraAPIKey?: string;
   /**
-   * Array of EPA sites a user has access to in RCRAInfo stored in key-value pairs
+   * EPA sites a user has access to in RCRAInfo stored in key-value pairs
    * where the keys are the site's EPA ID number
    */
   rcraSites?: Record<string, RcraSitePermissions>;
@@ -154,6 +154,28 @@ const rcraProfileSlice = createSlice({
       });
   },
 });
+
+/**
+ * Retrieve a RcraSite that the user has access to in their RcraProfile by the site's EPA ID number
+ * @param epaId
+ */
+export const selectSiteByEpaId = (epaId: string | undefined) =>
+  createSelector(
+    (state: { rcraProfile: RcraProfileState }) => state.rcraProfile.rcraSites,
+    (rcraSites: Record<string, RcraSitePermissions> | undefined) => {
+      if (!rcraSites) return undefined;
+
+      const siteId = Object.keys(rcraSites).find(
+        (key) => rcraSites[key]?.site?.handler.epaSiteId === epaId
+      );
+      if (!siteId) return undefined;
+
+      const sitePermissions = rcraSites[siteId];
+      if (!sitePermissions?.site) return undefined;
+
+      return sitePermissions.site.handler;
+    }
+  );
 
 export default rcraProfileSlice.reducer;
 export const { updateProfile } = rcraProfileSlice.actions;

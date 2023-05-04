@@ -5,9 +5,10 @@ import { RcraSite } from 'components/RcraSite';
 import { useTitle } from 'hooks';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState, useAppSelector } from 'store';
-import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { RcraProfileState, selectSiteByEpaId } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 export function ManifestNew() {
   useTitle('New Manifest');
@@ -15,15 +16,11 @@ export function ManifestNew() {
   const [manifestingSiteType, setManifestingSiteType] = useState<
     'generator' | 'designatedFacility' | 'transporter' | undefined
   >(undefined);
-  const { rcraSites } = useAppSelector<RcraProfileState>((state: RootState) => state.rcraProfile);
-  let userSite = null;
-  if (rcraSites) {
-    if (siteId) {
-      userSite = rcraSites[siteId].site.handler;
-    }
-  }
-  const [manifestingSite, setManifestingSite] = useState<RcraSite | null>(userSite);
+  const rcraSite = useAppSelector(selectSiteByEpaId(siteId));
+  const [manifestingSite, setManifestingSite] = useState<RcraSite | undefined | null>(rcraSite);
   const { control } = useForm();
+  // If the site that needs to start a manifest, or its role on the manifest
+  // can't be determined, ask the user.
   if (!manifestingSiteType || !manifestingSite) {
     return (
       <HtCard>

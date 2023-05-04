@@ -8,15 +8,15 @@ import { RcraProfileState, RcraSitePermissions } from 'store/rcraProfileSlice/rc
 
 interface SiteSelectProps<T> {
   control: Control;
-  selectedSite: T | null;
-  setSelectedSite: (option: T | null) => void;
+  selectedSite: T | undefined;
+  setSelectedSite: (option: T | undefined) => void;
 }
 
 export function SiteSelect({
   control,
   selectedSite,
   setSelectedSite,
-}: SiteSelectProps<RcraSite | null>) {
+}: SiteSelectProps<RcraSite | undefined | null>) {
   const { rcraSites } = useAppSelector<RcraProfileState>((state: RootState) => state.rcraProfile);
 
   let siteOptions: Array<RcraSite> | undefined = undefined;
