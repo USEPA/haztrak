@@ -4,7 +4,7 @@ import { HtForm } from 'components/Ht';
 import React from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Manifest } from 'types/manifest';
+import { Manifest } from 'components/Manifest';
 import { WasteLine } from 'components/Manifest/WasteLine';
 
 interface AdditionalFormProps {

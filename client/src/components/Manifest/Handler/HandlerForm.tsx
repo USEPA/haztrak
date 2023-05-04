@@ -3,7 +3,7 @@ import { AddressForm } from 'components/Manifest/Address';
 import { ReactElement, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
-import { Manifest } from 'types/manifest';
+import { Manifest } from 'components/Manifest';
 
 interface HandlerFormProps {
   handlerType: 'generator' | 'designatedFacility';
