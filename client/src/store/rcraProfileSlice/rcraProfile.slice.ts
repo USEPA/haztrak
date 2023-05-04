@@ -4,6 +4,7 @@
  */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { HaztrakSite } from 'components/HaztrakSite';
 import { RootState } from 'store';
 
 /**
@@ -46,13 +47,9 @@ export interface RcraProfileState {
  * permission for each RCRAInfo module
  */
 export interface RcraSitePermissions {
-  epaId: string;
+  site: HaztrakSite;
   permissions: {
-    /**
-     * Whether the user has 'Site Manager' level access.
-     * If true, all other modules should be equal to 'Certifier'
-     */
-    siteManagement: boolean;
+    siteManagement: boolean; // Whether the user has 'Site Manager' level access in RCRAInfo.
     annualReport: string;
     biennialReport: string;
     eManifest: string;
@@ -107,17 +104,15 @@ export const getProfile = createAsyncThunk<RcraProfileState>(
       `${import.meta.env.VITE_HT_API_URL}/api/site/profile/${username}`
     );
     const { rcraSites, ...rest } = response.data as RcraProfileResponse;
-    console.log(rcraSites);
     // Convert the array of RcraSite permissions we get from our backend
     // to an object which each key corresponding to the RcraSite's ID number
     let profile: RcraProfileState = { ...rest };
-    profile.rcraSites = rcraSites?.reduce(
-      (obj, site) => ({
+    profile.rcraSites = rcraSites?.reduce((obj, site) => {
+      return {
         ...obj,
-        [site.epaId]: site,
-      }),
-      {}
-    );
+        [site.site.handler.epaSiteId]: { site: site.site, permissions: site.permissions },
+      };
+    }, {});
     return profile;
   }
 );

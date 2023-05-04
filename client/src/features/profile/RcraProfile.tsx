@@ -162,9 +162,11 @@ export function RcraProfile({ profile }: ProfileViewProps) {
           <tbody>
             {profile.rcraSites &&
               Object.values(profile.rcraSites).map((site) => (
-                <tr key={`permissionsRow${site.epaId}`}>
+                <tr key={`permissionsRow${site.site.handler.epaSiteId}`}>
                   <td>
-                    <Link to={`/site/${site.epaId}`}>{site.epaId}</Link>
+                    <Link to={`/site/${site.site.handler.epaSiteId}`}>
+                      {site.site.handler.epaSiteId}
+                    </Link>
                   </td>
                   <td>{site.permissions.eManifest}</td>
                   <td>{site.permissions.biennialReport}</td>

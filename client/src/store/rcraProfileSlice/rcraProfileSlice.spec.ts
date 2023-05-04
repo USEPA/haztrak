@@ -1,6 +1,7 @@
 /**
  *  RcraProfile tests
  */
+import { createMockSite } from 'test-utils/fixtures';
 import rcraProfileReducer, {
   getProfile,
   RcraSitePermissions,
@@ -18,7 +19,7 @@ const initialState: RcraProfileState = {
 };
 
 const mySite: RcraSitePermissions = {
-  epaId: 'testId',
+  site: createMockSite(),
   permissions: {
     siteManagement: true,
     annualReport: 'Certifier',
@@ -33,7 +34,7 @@ const profilePayload: RcraProfileState = {
   user: 'testuser1',
   rcraAPIID: 'mockRcraApiId',
   rcraUsername: undefined,
-  rcraSites: { [mySite.epaId]: mySite },
+  rcraSites: { [mySite.site.handler.epaSiteId]: mySite },
   phoneNumber: undefined,
 };
 
