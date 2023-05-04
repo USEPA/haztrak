@@ -32,14 +32,14 @@ export interface RcraProfileState {
    * EPA sites a user has access to in RCRAInfo stored in key-value pairs
    * where the keys are the site's EPA ID number
    */
-  rcraSites?: Record<string, RcraSitePermissions>;
+  rcraSites?: Record<string, ProfileRcraSite>;
   phoneNumber?: string;
   loading?: boolean;
   error?: string;
   apiUser?: boolean; // Indicates whether the user is authorized ti utilize the RCRAInfo API
 }
 
-export interface RcraPermissions {
+export interface RcraSitePermissions {
   siteManagement: boolean; // Whether the user has 'Site Manager' level access in RCRAInfo.
   annualReport: string;
   biennialReport: string;
@@ -52,9 +52,9 @@ export interface RcraPermissions {
  * The user's site permissions for an EPA site in RCRAInfo, including each the user's
  * permission for each RCRAInfo module
  */
-export interface RcraSitePermissions {
+export interface ProfileRcraSite {
   site: HaztrakSite;
-  permissions: RcraPermissions;
+  permissions: RcraSitePermissions;
 }
 
 /**
@@ -81,7 +81,7 @@ interface RcraProfileResponse {
   user: undefined;
   rcraAPIID: undefined;
   rcraUsername: undefined;
-  rcraSites?: Array<RcraSitePermissions>;
+  rcraSites?: Array<ProfileRcraSite>;
   phoneNumber: undefined;
   apiUser: boolean;
   loading: false;
@@ -158,7 +158,7 @@ const rcraProfileSlice = createSlice({
 export const selectSiteByEpaId = (epaId: string | undefined) =>
   createSelector(
     (state: { rcraProfile: RcraProfileState }) => state.rcraProfile.rcraSites,
-    (rcraSites: Record<string, RcraSitePermissions> | undefined) => {
+    (rcraSites: Record<string, ProfileRcraSite> | undefined) => {
       if (!rcraSites) return undefined;
 
       const siteId = Object.keys(rcraSites).find(

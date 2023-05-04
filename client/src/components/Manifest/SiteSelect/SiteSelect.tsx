@@ -2,9 +2,9 @@ import { HtForm } from 'components/Ht';
 import { RcraSite } from 'components/RcraSite';
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
-import Select, { GroupBase, OptionsOrGroups } from 'react-select';
+import Select from 'react-select';
 import { RootState, useAppSelector } from 'store';
-import { RcraProfileState, RcraSitePermissions } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 interface SiteSelectProps<T> {
   control: Control;

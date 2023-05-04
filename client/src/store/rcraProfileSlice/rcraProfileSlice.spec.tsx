@@ -12,7 +12,7 @@ import { createMockSite } from 'test-utils/fixtures';
 import { createMockPermission } from 'test-utils/fixtures/mockHandler';
 import rcraProfileReducer, {
   getProfile,
-  RcraSitePermissions,
+  ProfileRcraSite,
   RcraProfileState,
   selectSiteByEpaId,
 } from './rcraProfile.slice';
@@ -27,7 +27,7 @@ const initialState: RcraProfileState = {
   error: undefined,
 };
 
-const mySite: RcraSitePermissions = {
+const mySite: ProfileRcraSite = {
   site: createMockSite(),
   permissions: {
     siteManagement: true,
