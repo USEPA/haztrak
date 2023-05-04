@@ -25,7 +25,7 @@ const defaultValues: Manifest = {
 
 interface ManifestFormProps {
   readOnly?: boolean;
-  manifestData?: Manifest;
+  manifestData?: Partial<Manifest>;
   manifestingSiteID?: string;
   mtn?: string;
 }
@@ -37,13 +37,20 @@ interface ManifestFormProps {
  */
 export function ManifestForm({
   readOnly,
-  manifestData = defaultValues,
+  manifestData,
   manifestingSiteID,
   mtn,
 }: ManifestFormProps) {
   // methods and top level state related to the manifest to be rendered
+  let values: Manifest = defaultValues;
+  if (manifestData) {
+    values = {
+      ...defaultValues,
+      ...manifestData,
+    };
+  }
   const manifestMethods = useForm<Manifest>({
-    values: manifestData,
+    values: values,
     resolver: zodResolver(manifestSchema),
   });
   const {
