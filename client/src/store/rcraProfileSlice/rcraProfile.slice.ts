@@ -36,10 +36,16 @@ export interface RcraProfileState {
   phoneNumber?: string;
   loading?: boolean;
   error?: string;
-  /**
-   * Indicates whether the user is authorized
-   */
-  apiUser?: boolean;
+  apiUser?: boolean; // Indicates whether the user is authorized ti utilize the RCRAInfo API
+}
+
+export interface RcraPermissions {
+  siteManagement: boolean; // Whether the user has 'Site Manager' level access in RCRAInfo.
+  annualReport: string;
+  biennialReport: string;
+  eManifest: string;
+  WIETS: string; // The RCRAInfo Waste Import Export Tracking System (WIETS) module
+  myRCRAid: string;
 }
 
 /**
@@ -48,17 +54,7 @@ export interface RcraProfileState {
  */
 export interface RcraSitePermissions {
   site: HaztrakSite;
-  permissions: {
-    siteManagement: boolean; // Whether the user has 'Site Manager' level access in RCRAInfo.
-    annualReport: string;
-    biennialReport: string;
-    eManifest: string;
-    /**
-     * The RCRAInfo Waste Import Export Tracking System (WIETS)
-     */
-    WIETS: string;
-    myRCRAid: string;
-  };
+  permissions: RcraPermissions;
 }
 
 /**

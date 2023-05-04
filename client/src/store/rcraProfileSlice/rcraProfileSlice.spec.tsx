@@ -1,11 +1,20 @@
 /**
  *  RcraProfile tests
  */
+import { screen } from '@testing-library/react';
+import { ManifestForm } from 'components/Manifest';
+import { useTitle } from 'hooks';
+import React from 'react';
+import { multiValueAsValue } from 'react-select/dist/declarations/src/utils';
+import { useAppSelector } from 'store/hooks';
+import { renderWithProviders } from 'test-utils';
 import { createMockSite } from 'test-utils/fixtures';
+import { createMockPermission } from 'test-utils/fixtures/mockHandler';
 import rcraProfileReducer, {
   getProfile,
   RcraSitePermissions,
   RcraProfileState,
+  selectSiteByEpaId,
 } from './rcraProfile.slice';
 
 const initialState: RcraProfileState = {
@@ -68,5 +77,40 @@ describe('rcraProfile', () => {
       error: errorMsg,
       loading: false,
     });
+  });
+});
+
+interface TestComponentProps {
+  siteId: string;
+}
+
+function TestComponent({ siteId }: TestComponentProps) {
+  const rcraSite = useAppSelector(selectSiteByEpaId(siteId));
+  return (
+    <>
+      <p>{rcraSite?.epaSiteId}</p>
+    </>
+  );
+}
+
+describe('RcraProfileSlice selectors', () => {
+  test('selectSiteById retrieves RcraSite', () => {
+    const mySite = createMockSite();
+    renderWithProviders(<TestComponent siteId={mySite.handler.epaSiteId} />, {
+      preloadedState: {
+        rcraProfile: {
+          user: 'username',
+          phoneNumber: '1231231234',
+          apiUser: false,
+          rcraSites: {
+            VATESTGEN001: {
+              site: mySite,
+              permissions: createMockPermission(),
+            },
+          },
+        },
+      },
+    });
+    expect(screen.getByText(mySite.handler.epaSiteId)).toBeInTheDocument();
   });
 });
