@@ -9,15 +9,23 @@ import { Manifest } from 'features/manifest';
 import { Notifications } from 'features/notifications';
 import { Profile } from 'features/profile';
 import { Sites } from 'features/haztrakSite';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { RootState, useAppSelector } from 'store';
+import { RootState, useAppDispatch, useAppSelector } from 'store';
 import './App.scss';
+import { getProfile } from 'store/rcraProfileSlice';
+import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 function App(): ReactElement {
   const { user } = useAppSelector((state: RootState) => state.user);
+  const profile = useAppSelector<RcraProfileState>((state) => state.rcraProfile);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getProfile());
+  }, [profile.user]);
 
   return (
     <div className="App">
