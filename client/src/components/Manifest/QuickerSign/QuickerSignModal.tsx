@@ -1,5 +1,5 @@
 import { HtModal } from 'components/Ht';
-import { Handler } from 'components/Manifest/manifestSchema';
+import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import React from 'react';
 import { QuickerSignForm } from './QuickerSignForm';
 
@@ -8,7 +8,7 @@ interface QuickerSignModalProps {
   show: boolean;
   mtn?: Array<string>;
   mtnHandler?: Handler;
-  siteType: 'Generator' | 'Transporter' | 'Tsdf';
+  siteType: RcraSiteType;
 }
 
 export function QuickerSignModal({

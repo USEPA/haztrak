@@ -25,8 +25,8 @@ const defaultValues: Manifest = {
 
 interface ManifestFormProps {
   readOnly?: boolean;
-  manifestData?: Manifest;
-  siteId?: string;
+  manifestData?: Partial<Manifest>;
+  manifestingSiteID?: string;
   mtn?: string;
 }
 
@@ -37,13 +37,20 @@ interface ManifestFormProps {
  */
 export function ManifestForm({
   readOnly,
-  manifestData = defaultValues,
-  siteId,
+  manifestData,
+  manifestingSiteID,
   mtn,
 }: ManifestFormProps) {
   // methods and top level state related to the manifest to be rendered
+  let values: Manifest = defaultValues;
+  if (manifestData) {
+    values = {
+      ...defaultValues,
+      ...manifestData,
+    };
+  }
   const manifestMethods = useForm<Manifest>({
-    values: manifestData,
+    values: values,
     resolver: zodResolver(manifestSchema),
   });
   const {
@@ -475,7 +482,7 @@ export function ManifestForm({
                 if (!mtn) {
                   navigate(-1);
                 } else {
-                  navigate(`/site/${siteId}/manifest/${mtn}/view`);
+                  navigate(`/site/${manifestingSiteID}/manifest/${mtn}/view`);
                 }
               }}
             >
@@ -484,7 +491,7 @@ export function ManifestForm({
             <Button
               variant="primary"
               disabled={!readOnly}
-              onClick={() => navigate(`/site/${siteId}/manifest/${mtn}/edit`)}
+              onClick={() => navigate(`/site/${manifestingSiteID}/manifest/${mtn}/edit`)}
             >
               Edit
             </Button>

@@ -1,12 +1,20 @@
+import { additionalInfoSchema } from 'components/AdditionalInfo/additionalInfoSchema';
 import { rcraPhoneSchema, rcraSite } from 'components/RcraSite';
 import { z } from 'zod';
 
+export const siteType = z.enum(['generator', 'designatedFacility', 'transporter']);
 /**
  * Used to specify whether a handler is a generator, transporter, or
  * designated receiving facility (AKA Treatment, Storage and Disposal Facility or TSDF for short).
  */
-export const HandlerType = z.enum(['generator', 'designatedFacility', 'transporter']);
-export type HandlerTypeEnum = z.infer<typeof HandlerType>;
+export type SiteType = z.infer<typeof siteType>;
+
+export const rcraSiteType = z.enum(['Generator', 'Tsdf', 'Transporter']);
+/**
+ * The RCRAInfo/e-Manifest enum used to indicate site type
+ */
+export type RcraSiteType = z.infer<typeof rcraSiteType>;
+
 export const paperSignatureSchema = z.object({
   printedName: z.string(),
   signatureDate: z.string(),
@@ -126,6 +134,7 @@ export const manifestSchema = z
     wastes: z.array(z.any()),
     designatedFacility: handlerSchema.optional(),
     submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image']),
+    additionalInfo: additionalInfoSchema.optional(),
   })
   .refine(
     // Check potential ship date is greater than today if the manifest is still in a pre-shipment phase
@@ -142,39 +151,7 @@ export const manifestSchema = z
   .refine(() => {
     // ToDo Validate that if submission Type is FullElectronic, generator.canEsign is true
     return true;
-  })
-  .refine(
-    (manifest) => {
-      if (!manifest.generator) {
-        return false;
-      }
-    },
-    { path: ['generator'], message: 'Add a Generator for this manifest' }
-  )
-  .refine(
-    (manifest) => {
-      if (!manifest.designatedFacility) {
-        return false;
-      }
-    },
-    { path: ['designatedFacility'], message: 'Add a designated Facility for this manifest' }
-  )
-  .refine(
-    (manifest) => {
-      if (manifest.wastes.length < 1) {
-        return false;
-      }
-    },
-    { path: ['wastes'], message: 'At least 1 wasteline is required' }
-  )
-  .refine(
-    (manifest) => {
-      if (manifest.transporters.length < 1) {
-        return false;
-      }
-    },
-    { path: ['transporters'], message: 'At least 1 transporter is required' }
-  );
+  });
 
 const rejectionInfoSchema = z.object({
   rejectionType: z.enum(['FullRejection', 'PartialRejection']),

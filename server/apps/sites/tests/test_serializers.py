@@ -43,13 +43,15 @@ class TestRcraSitePermissionSerializer:
     def permission_serializer(self, haztrak_json) -> RcraSitePermissionSerializer:
         return RcraSitePermissionSerializer(data=haztrak_json.SITE_PERMISSION.value)
 
-    def test_serializes(self, permission_serializer) -> None:
+    def test_deserializes_json(self, permission_serializer) -> None:
         assert permission_serializer.is_valid() is True
 
-    def test_object_serializes_permission_object(self) -> None:
+    def test_object_serializes_permission_object(self, rcra_permission_factory) -> None:
         serializer = RcraSitePermissionSerializer(self.permissions)
-        site_permission_json = json.dumps(serializer.data)
-        assert str(self.permissions.biennial_report) in site_permission_json
+        assert (
+            str(self.permissions.biennial_report)
+            == serializer.data["permissions"]["biennialReport"]
+        )
 
 
 class TestEpaPermissionSerializer:

@@ -1,5 +1,5 @@
 import { HtForm } from 'components/Ht';
-import { HandlerTypeEnum, Manifest, Transporter } from 'components/Manifest/manifestSchema';
+import { SiteType, Manifest, Transporter } from 'components/Manifest/manifestSchema';
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import {
@@ -15,7 +15,7 @@ import { htApi } from 'services';
 
 interface Props {
   handleClose: () => void;
-  handlerType: HandlerTypeEnum;
+  handlerType: SiteType;
   currentTransporters?: Array<RcraSite>;
   appendTransporter?: UseFieldArrayAppend<Manifest, 'transporters'>;
 }

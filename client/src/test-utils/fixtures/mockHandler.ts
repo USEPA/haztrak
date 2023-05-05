@@ -2,6 +2,7 @@ import { HaztrakSite } from 'components/HaztrakSite';
 import { Handler } from 'components/Manifest';
 import { RcraSite } from 'components/RcraSite';
 import { Transporter } from 'components/Manifest/Transporter';
+import { RcraSitePermissions, RcraProfileSite } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 /**
  * A mock handler object for tests
@@ -86,6 +87,20 @@ export function createMockTransporter(overWrites?: Partial<Transporter>): Transp
   return {
     ...createMockHandler(),
     order: 1,
+    ...overWrites,
+  };
+}
+
+export function createMockPermission(
+  overWrites?: Partial<RcraSitePermissions>
+): RcraSitePermissions {
+  return {
+    siteManagement: true,
+    eManifest: 'Certifier',
+    biennialReport: 'Certifier',
+    WIETS: 'Certifier',
+    annualReport: 'Certifier',
+    myRCRAid: 'Certifier',
     ...overWrites,
   };
 }

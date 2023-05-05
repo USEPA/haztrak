@@ -5,6 +5,7 @@ from rest_framework.serializers import ModelSerializer
 from apps.sites.models.profile_models import RcraProfile, RcraSitePermission
 
 from .base_ser import SitesBaseSerializer
+from .site_ser import SiteSerializer
 
 
 class RcraSitePermissionSerializer(SitesBaseSerializer):
@@ -24,8 +25,8 @@ class RcraSitePermissionSerializer(SitesBaseSerializer):
         "myRCRAid",
     ]
 
-    epaId = serializers.StringRelatedField(
-        source="site",
+    site = SiteSerializer(
+        read_only=True,
     )
     siteManagement = serializers.BooleanField(
         source="site_manager",
@@ -47,16 +48,16 @@ class RcraSitePermissionSerializer(SitesBaseSerializer):
     )
 
     def to_representation(self, instance):
-        ret = super().to_representation(instance)
-        ret["permissions"] = {}
+        representation = super().to_representation(instance)
+        representation["permissions"] = {}
         for module in self.rcrainfo_modules:
-            ret["permissions"][module] = ret.pop(module)
-        return ret
+            representation["permissions"][module] = representation.pop(module)
+        return representation
 
     class Meta:
         model = RcraSitePermission
         fields = [
-            "epaId",
+            "site",
             "siteManagement",
             "annualReport",
             "biennialReport",

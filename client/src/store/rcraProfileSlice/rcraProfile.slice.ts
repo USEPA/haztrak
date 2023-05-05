@@ -2,8 +2,9 @@
  * A user's RcraProfile slice encapsulates our logic related what actions and data a user
  * has access to for each EPA site ID.
  */
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { HaztrakSite } from 'components/HaztrakSite';
 import { RootState } from 'store';
 
 /**
@@ -28,40 +29,32 @@ export interface RcraProfileState {
    */
   rcraAPIKey?: string;
   /**
-   * Array of EPA sites a user has access to in RCRAInfo stored in key-value pairs
+   * EPA sites a user has access to in RCRAInfo stored in key-value pairs
    * where the keys are the site's EPA ID number
    */
-  rcraSites?: Record<string, RcraSitePermissions>;
+  rcraSites?: Record<string, RcraProfileSite>;
   phoneNumber?: string;
   loading?: boolean;
   error?: string;
-  /**
-   * Indicates whether the user is authorized
-   */
-  apiUser?: boolean;
+  apiUser?: boolean; // Indicates whether the user is authorized ti utilize the RCRAInfo API
+}
+
+export interface RcraSitePermissions {
+  siteManagement: boolean; // Whether the user has 'Site Manager' level access in RCRAInfo.
+  annualReport: string;
+  biennialReport: string;
+  eManifest: string;
+  WIETS: string; // The RCRAInfo Waste Import Export Tracking System (WIETS) module
+  myRCRAid: string;
 }
 
 /**
  * The user's site permissions for an EPA site in RCRAInfo, including each the user's
  * permission for each RCRAInfo module
  */
-export interface RcraSitePermissions {
-  epaId: string;
-  permissions: {
-    /**
-     * Whether the user has 'Site Manager' level access.
-     * If true, all other modules should be equal to 'Certifier'
-     */
-    siteManagement: boolean;
-    annualReport: string;
-    biennialReport: string;
-    eManifest: string;
-    /**
-     * The RCRAInfo Waste Import Export Tracking System (WIETS)
-     */
-    WIETS: string;
-    myRCRAid: string;
-  };
+export interface RcraProfileSite {
+  site: HaztrakSite;
+  permissions: RcraSitePermissions;
 }
 
 /**
@@ -88,7 +81,7 @@ interface RcraProfileResponse {
   user: undefined;
   rcraAPIID: undefined;
   rcraUsername: undefined;
-  rcraSites?: Array<RcraSitePermissions>;
+  rcraSites?: Array<RcraProfileSite>;
   phoneNumber: undefined;
   apiUser: boolean;
   loading: false;
@@ -110,13 +103,12 @@ export const getProfile = createAsyncThunk<RcraProfileState>(
     // Convert the array of RcraSite permissions we get from our backend
     // to an object which each key corresponding to the RcraSite's ID number
     let profile: RcraProfileState = { ...rest };
-    profile.rcraSites = rcraSites?.reduce(
-      (obj, site) => ({
+    profile.rcraSites = rcraSites?.reduce((obj, site) => {
+      return {
         ...obj,
-        [site.epaId]: site,
-      }),
-      {}
-    );
+        [site.site.handler.epaSiteId]: { site: site.site, permissions: site.permissions },
+      };
+    }, {});
     return profile;
   }
 );
@@ -158,6 +150,41 @@ const rcraProfileSlice = createSlice({
       });
   },
 });
+
+/**
+ * Retrieve a RcraSite that the user has access to in their RcraProfile by the site's EPA ID number
+ * @param epaId
+ */
+export const getSiteByEpaId = (epaId: string | undefined) =>
+  createSelector(
+    (state: { rcraProfile: RcraProfileState }) => state.rcraProfile.rcraSites,
+    (rcraSites: Record<string, RcraProfileSite> | undefined) => {
+      if (!rcraSites) return undefined;
+
+      const siteId = Object.keys(rcraSites).find(
+        (key) => rcraSites[key]?.site?.handler.epaSiteId === epaId
+      );
+      if (!siteId) return undefined;
+
+      const sitePermissions = rcraSites[siteId];
+      if (!sitePermissions?.site) return undefined;
+
+      return sitePermissions.site.handler;
+    }
+  );
+
+/**
+ * Retrieve a RcraSite that the user has access to in their RcraProfile by the site's EPA ID number
+ * @param epaId
+ */
+export const getUserSites = createSelector(
+  (state: { rcraProfile: RcraProfileState }) => state.rcraProfile.rcraSites,
+  (rcraSites: Record<string, RcraProfileSite> | undefined) => {
+    if (!rcraSites) return undefined;
+
+    return Object.values(rcraSites).map((site) => site);
+  }
+);
 
 export default rcraProfileSlice.reducer;
 export const { updateProfile } = rcraProfileSlice.actions;
