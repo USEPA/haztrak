@@ -1,7 +1,7 @@
 import { faFileSignature } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { HtForm } from 'components/Ht';
-import { Handler } from 'components/Manifest/manifestSchema';
+import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import React from 'react';
 import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -16,7 +16,7 @@ import { Transporter } from 'components/Manifest/Transporter';
 interface QuickerSignProps {
   mtn: Array<string>;
   mtnHandler: Handler | Transporter;
-  siteType: 'Generator' | 'Transporter' | 'Tsdf';
+  siteType: RcraSiteType;
   handleClose?: () => void;
 }
 

@@ -75,6 +75,7 @@ export const rcraSite = z.object({
    * Indicates if a site's address1 uses latitude/longitude
    */
   gisPrimary: z.boolean().optional(),
+  siteType: z.enum(['Generator', 'Transporter', 'Tsdf']).optional(),
 });
 
 /**

@@ -2,12 +2,19 @@ import { additionalInfoSchema } from 'components/AdditionalInfo/additionalInfoSc
 import { rcraPhoneSchema, rcraSite } from 'components/RcraSite';
 import { z } from 'zod';
 
+export const siteType = z.enum(['generator', 'designatedFacility', 'transporter']);
 /**
  * Used to specify whether a handler is a generator, transporter, or
  * designated receiving facility (AKA Treatment, Storage and Disposal Facility or TSDF for short).
  */
-export const HandlerType = z.enum(['generator', 'designatedFacility', 'transporter']);
-export type HandlerTypeEnum = z.infer<typeof HandlerType>;
+export type SiteType = z.infer<typeof siteType>;
+
+export const rcraSiteType = z.enum(['Generator', 'Tsdf', 'Transporter']);
+/**
+ * The RCRAInfo/e-Manifest enum used to indicate site type
+ */
+export type RcraSiteType = z.infer<typeof rcraSiteType>;
+
 export const paperSignatureSchema = z.object({
   printedName: z.string(),
   signatureDate: z.string(),

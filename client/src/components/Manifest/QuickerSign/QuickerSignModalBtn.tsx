@@ -1,17 +1,17 @@
 import { faFeather } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Handler } from 'components/Manifest/manifestSchema';
+import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import React from 'react';
 import { ButtonProps } from 'react-bootstrap';
 import { RcraApiUserBtn } from 'components/buttons';
 
 interface QuickerSignData {
   handler: Handler | undefined;
-  siteType: 'Generator' | 'Transporter' | 'Tsdf';
+  siteType: RcraSiteType;
 }
 
 interface QuickerSignModalBtnProps extends ButtonProps {
-  siteType: 'Generator' | 'Transporter' | 'Tsdf';
+  siteType: RcraSiteType;
   mtnHandler?: Handler;
   handleClick: (data: QuickerSignData) => void;
   iconOnly?: boolean;
