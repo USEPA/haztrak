@@ -17,7 +17,9 @@ export function ManifestNew() {
   const { control } = useForm();
   const rcraSite = useAppSelector(getSiteByEpaId(siteId));
   const [manifestingSite, setManifestingSite] = useState<RcraSite | undefined | null>(rcraSite);
-  const [manifestingSiteType, setManifestingSiteType] = useState<RcraSiteType | undefined>();
+  const [manifestingSiteType, setManifestingSiteType] = useState<RcraSiteType | undefined>(
+    manifestingSite?.siteType === 'Generator' ? manifestingSite.siteType : undefined
+  );
 
   if (!manifestingSiteType || !manifestingSite) {
     // If the site that needs to start a manifest, or its role on the manifest

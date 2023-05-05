@@ -23,16 +23,17 @@ export function SiteTypeSelect({ siteType, setSiteType, control, siteId }: SiteT
             <Form.Select
               id="siteType"
               value={siteType}
-              // @ts-ignore
-              onChange={(event) => setSiteType(event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+                setSiteType(event.target.value as RcraSiteType)
+              }
               defaultValue={''}
             >
               <option value={''} disabled>
                 - -
               </option>
-              <option value={'generator'}>Generator</option>
-              <option value={'transporter'}>Transporter</option>
-              <option value={'designatedFacility'}>TSDF</option>
+              <option value={'Generator'}>Generator</option>
+              <option value={'Transporter'}>Transporter</option>
+              <option value={'Tsdf'}>TSDF</option>
             </Form.Select>
           </div>
         )}
