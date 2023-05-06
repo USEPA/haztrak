@@ -47,7 +47,7 @@ class RcraProfileAdmin(admin.ModelAdmin):
     inlines = [RcraSitePermissionInline]
 
     def related_user(self, user):
-        url = reverse("admin:auth_user_changelist") + "?" + urlencode({"q": str(user.id)})
+        url = reverse("admin:core_haztrakuser_changelist") + "?" + urlencode({"q": str(user.id)})
         return format_html("<a href='{}'>{}</a>", url, user)
 
     def api_user(self, profile: RcraProfile) -> bool:

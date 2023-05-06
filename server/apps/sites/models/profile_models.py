@@ -1,6 +1,7 @@
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
+
+from haztrak import settings
 
 from .base_models import SitesBaseModel
 from .site_models import Site
@@ -16,7 +17,7 @@ class RcraProfile(SitesBaseModel):
         ordering = ["rcra_username"]
 
     user = models.OneToOneField(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
     rcra_api_key = models.CharField(

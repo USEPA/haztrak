@@ -1,4 +1,4 @@
-- model: auth.user
+- model: core.haztrakuser
   pk: 1
   fields:
     password: pbkdf2_sha256$390000$iVFyQyb6N3g06Wan8YLnTv$MgFhKBvwPSwctgxWSviA/OXClEKtDXg87iPU+g9+Zjs=
@@ -13,7 +13,7 @@
     date_joined: 2022-12-17 19:14:17.239000+00:00
     groups: []
     user_permissions: []
-- model: auth.user
+- model: core.haztrakuser
   pk: 2
   fields:
     password: pbkdf2_sha256$390000$SB7EHpYC88CjsX5tcbxa8E$yh1TWONkGI2z/bjblkPSTyjpd1UdhnivPW5nzA9NGOk=

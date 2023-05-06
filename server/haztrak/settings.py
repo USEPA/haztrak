@@ -22,6 +22,8 @@ HT_CORE_LOG_LEVEL = os.getenv("HT_CORE_LOG_LEVEL", HT_LOG_LEVEL)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+AUTH_USER_MODEL = "core.HaztrakUser"
+
 if not os.getenv(RCRAINFO_ENV):
     os.environ[RCRAINFO_ENV] = "PREPROD"
 

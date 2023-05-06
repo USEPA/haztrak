@@ -11,6 +11,7 @@ import responses
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
+from apps.core.models import HaztrakUser
 from apps.sites.models import (
     Address,
     Contact,
@@ -57,8 +58,8 @@ def user_factory(db):
         last_name: Optional[str] = "Doe",
         email: Optional[str] = "testuser1@haztrak.net",
         password: Optional[str] = "password1",
-    ) -> User:
-        return User.objects.create_user(
+    ) -> HaztrakUser:
+        return HaztrakUser.objects.create_user(
             username=username,
             first_name=first_name,
             last_name=last_name,
