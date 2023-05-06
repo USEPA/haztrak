@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+
+from .models import HaztrakUser
 
 
 class HiddenListView(admin.ModelAdmin):
@@ -10,3 +13,6 @@ class HiddenListView(admin.ModelAdmin):
 
     def has_module_permission(self, request):
         return False
+
+
+admin.site.register(HaztrakUser, UserAdmin)
