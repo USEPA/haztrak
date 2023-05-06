@@ -16,3 +16,10 @@ class HiddenListView(admin.ModelAdmin):
 
 
 admin.site.register(HaztrakUser, UserAdmin)
+
+try:
+    from rest_framework.authtoken.models import TokenProxy as DRFToken
+except ImportError:
+    from rest_framework.authtoken.models import Token as DRFToken
+
+admin.site.unregister(DRFToken)
