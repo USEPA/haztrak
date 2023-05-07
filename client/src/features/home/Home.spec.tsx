@@ -29,20 +29,6 @@ describe('Home', () => {
         },
       },
     });
-    expect(screen.getByText(/Hello/i)).toBeInTheDocument();
-  });
-  test('User information is retrieved', async () => {
-    // This is mostly just a placeholder. As the Home component expands we ce build on this
-    renderWithProviders(<Home />, {
-      preloadedState: {
-        user: {
-          user: username,
-          token: 'fake_token',
-          loading: false,
-          error: undefined,
-        },
-      },
-    });
-    expect(await screen.findByText('Hello testuser1!')).toBeInTheDocument();
+    expect(screen.getByText(/Welcome/i)).toBeInTheDocument();
   });
 });
