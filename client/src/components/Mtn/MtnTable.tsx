@@ -64,7 +64,7 @@ export function MtnTable({ manifests, pageSize = 10 }: MtnTableProps): ReactElem
     const lastPageIndex = firstPageIndex + pageSize;
     return manifests.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, pageSize, manifests]);
-  const { getTableProps, headerGroups, rows, prepareRow } = useTable({
+  const { getTableProps, headerGroups, rows, prepareRow, getTableBodyProps } = useTable({
     columns: mtnColumns,
     data: manifests,
   });
@@ -90,6 +90,18 @@ export function MtnTable({ manifests, pageSize = 10 }: MtnTableProps): ReactElem
             </tr>
           ))}
         </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
         {/*<thead>*/}
         {/*  <tr>*/}
         {/*    <th>Manifest Tracking Number</th>*/}
@@ -97,36 +109,36 @@ export function MtnTable({ manifests, pageSize = 10 }: MtnTableProps): ReactElem
         {/*    <th className="d-flex justify-content-center">Actions</th>*/}
         {/*  </tr>*/}
         {/*</thead>*/}
-        <tbody>
-          {currentTableData.map(({ manifestTrackingNumber, status }, i) => {
-            return (
-              <tr key={`mtn${i}`}>
-                <td>{manifestTrackingNumber}</td>
-                <td>{status}</td>
-                <td>
-                  <div className="d-flex justify-content-evenly">
-                    <HtTooltip text={`View: ${manifestTrackingNumber}`}>
-                      <Link
-                        to={`./${manifestTrackingNumber}/view`}
-                        aria-label={`viewManifest${manifestTrackingNumber}`}
-                      >
-                        <FontAwesomeIcon icon={faEye} />
-                      </Link>
-                    </HtTooltip>
-                    <HtTooltip text={`Edit ${manifestTrackingNumber}`}>
-                      <Link
-                        to={`./${manifestTrackingNumber}/edit`}
-                        aria-label={`editManifest${manifestTrackingNumber}`}
-                      >
-                        <FontAwesomeIcon icon={faPen} />
-                      </Link>
-                    </HtTooltip>
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
+        {/*<tbody>*/}
+        {/*  {currentTableData.map(({ manifestTrackingNumber, status }, i) => {*/}
+        {/*    return (*/}
+        {/*      <tr key={`mtn${i}`}>*/}
+        {/*        <td>{manifestTrackingNumber}</td>*/}
+        {/*        <td>{status}</td>*/}
+        {/*        <td>*/}
+        {/*          <div className="d-flex justify-content-evenly">*/}
+        {/*            <HtTooltip text={`View: ${manifestTrackingNumber}`}>*/}
+        {/*              <Link*/}
+        {/*                to={`./${manifestTrackingNumber}/view`}*/}
+        {/*                aria-label={`viewManifest${manifestTrackingNumber}`}*/}
+        {/*              >*/}
+        {/*                <FontAwesomeIcon icon={faEye} />*/}
+        {/*              </Link>*/}
+        {/*            </HtTooltip>*/}
+        {/*            <HtTooltip text={`Edit ${manifestTrackingNumber}`}>*/}
+        {/*              <Link*/}
+        {/*                to={`./${manifestTrackingNumber}/edit`}*/}
+        {/*                aria-label={`editManifest${manifestTrackingNumber}`}*/}
+        {/*              >*/}
+        {/*                <FontAwesomeIcon icon={faPen} />*/}
+        {/*              </Link>*/}
+        {/*            </HtTooltip>*/}
+        {/*          </div>*/}
+        {/*        </td>*/}
+        {/*      </tr>*/}
+        {/*    );*/}
+        {/*  })}*/}
+        {/*</tbody>*/}
       </Table>
       <HtPaginate
         currentPage={currentPage}
