@@ -4,16 +4,20 @@ import { Row, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPen } from '@fortawesome/free-solid-svg-icons';
-import { Column, useTable } from 'react-table';
+import { CellProps, Column, useTable } from 'react-table';
 import { z } from 'zod';
 
 const mtnDetailsSchema = z.object({
   manifestTrackingNumber: z.string(),
   signatureStatus: z.boolean(),
-  submissionType: z.string(),
+  submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image']),
   status: z.string(),
   actions: z.any(),
 });
+
+const subTypeCell = ({ value }: CellProps<MtnDetails>) => {
+  if (value === 'FullElectronic') return 'Electronic';
+};
 
 /**
  * Select details about a manifest for display, navigation, and analysis.
@@ -31,7 +35,7 @@ interface MtnTableProps {
  * @param manifest
  */
 export function MtnTable({ manifests, pageSize = 10 }: MtnTableProps): ReactElement {
-  console.log(manifests);
+  // @ts-ignore
   const mtnColumns: Column<MtnDetails>[] = useMemo(
     () => [
       {
@@ -45,14 +49,43 @@ export function MtnTable({ manifests, pageSize = 10 }: MtnTableProps): ReactElem
       {
         Header: 'Type',
         accessor: 'submissionType',
-      },
-      {
-        Header: 'Signed',
-        accessor: 'signatureStatus',
+        Cell: ({ value }: CellProps<MtnDetails>) => {
+          if (value === 'FullElectronic') return 'Electronic';
+          if (value === 'DataImage5Copy') return 'Data + Image';
+          else return value;
+        },
       },
       {
         Header: 'Actions',
         accessor: 'actions',
+        Cell: ({
+          cell: {
+            row: {
+              values: { manifestTrackingNumber },
+            },
+          },
+        }: CellProps<MtnDetails>) => {
+          return (
+            <div className="d-flex justify-content-evenly">
+              <HtTooltip text={`View: ${manifestTrackingNumber}`}>
+                <Link
+                  to={`./${manifestTrackingNumber}/view`}
+                  aria-label={`viewManifest${manifestTrackingNumber}`}
+                >
+                  <FontAwesomeIcon icon={faEye} />
+                </Link>
+              </HtTooltip>
+              <HtTooltip text={`Edit ${manifestTrackingNumber}`}>
+                <Link
+                  to={`./${manifestTrackingNumber}/edit`}
+                  aria-label={`editManifest${manifestTrackingNumber}`}
+                >
+                  <FontAwesomeIcon icon={faPen} />
+                </Link>
+              </HtTooltip>
+            </div>
+          );
+        },
       },
     ],
     []

@@ -36,7 +36,7 @@ export function ManifestList(): ReactElement {
           <Col className="d-flex justify-content-start">
             <h2>{siteId}</h2>
           </Col>
-          <Col className="d-flex justify-content-end">
+          <Col className="d-flex justify-content-end" xl>
             <SyncManifestBtn siteId={siteId} disabled={!siteId} />
             <NewManifestBtn siteId={siteId} />
           </Col>
