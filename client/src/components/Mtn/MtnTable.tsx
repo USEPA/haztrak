@@ -4,11 +4,15 @@ import { Row, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPen } from '@fortawesome/free-solid-svg-icons';
+import { Column, useTable } from 'react-table';
 import { z } from 'zod';
 
 const mtnDetailsSchema = z.object({
   manifestTrackingNumber: z.string(),
+  signatureStatus: z.boolean(),
+  submissionType: z.string(),
   status: z.string(),
+  actions: z.any(),
 });
 
 /**
@@ -27,13 +31,43 @@ interface MtnTableProps {
  * @param manifest
  */
 export function MtnTable({ manifests, pageSize = 10 }: MtnTableProps): ReactElement {
+  console.log(manifests);
+  const mtnColumns: Column<MtnDetails>[] = useMemo(
+    () => [
+      {
+        Header: 'MTN',
+        accessor: 'manifestTrackingNumber', // accessor is the "key" in the data
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+      },
+      {
+        Header: 'Type',
+        accessor: 'submissionType',
+      },
+      {
+        Header: 'Signed',
+        accessor: 'signatureStatus',
+      },
+      {
+        Header: 'Actions',
+        accessor: 'actions',
+      },
+    ],
+    []
+  );
+
   const [currentPage, setCurrentPage] = useState(1);
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;
     return manifests.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, pageSize, manifests]);
-
+  const { getTableProps, headerGroups, rows, prepareRow } = useTable({
+    columns: mtnColumns,
+    data: manifests,
+  });
   if (manifests.length === 0) {
     return (
       <>
@@ -46,14 +80,23 @@ export function MtnTable({ manifests, pageSize = 10 }: MtnTableProps): ReactElem
 
   return (
     <>
-      <Table hover>
+      <Table hover {...getTableProps()}>
         <thead>
-          <tr>
-            <th>Manifest Tracking Number</th>
-            <th>Status</th>
-            <th className="d-flex justify-content-center">Actions</th>
-          </tr>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              ))}
+            </tr>
+          ))}
         </thead>
+        {/*<thead>*/}
+        {/*  <tr>*/}
+        {/*    <th>Manifest Tracking Number</th>*/}
+        {/*    <th>Status</th>*/}
+        {/*    <th className="d-flex justify-content-center">Actions</th>*/}
+        {/*  </tr>*/}
+        {/*</thead>*/}
         <tbody>
           {currentTableData.map(({ manifestTrackingNumber, status }, i) => {
             return (
