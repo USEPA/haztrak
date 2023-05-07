@@ -22,7 +22,6 @@ function App(): ReactElement {
   const profile = useAppSelector<RcraProfileState>((state) => state.rcraProfile);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  console.log('user', user);
 
   useEffect(() => {
     if (user) {
