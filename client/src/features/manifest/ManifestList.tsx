@@ -11,7 +11,7 @@ import { MtnTable, MtnDetails } from 'components/Mtn';
  * Fetch and display all the manifest tracking number (MTN) known by haztrak
  * @constructor
  */
-export function MtnList(): ReactElement {
+export function ManifestList(): ReactElement {
   let { siteId } = useParams();
   useTitle(`${siteId || ''} Manifest`);
   const navigate = useNavigate();
