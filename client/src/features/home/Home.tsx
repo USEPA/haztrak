@@ -1,5 +1,6 @@
 import { faRecycle, faSignature, faTruck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { NewManifestBtn } from 'components/buttons/NewManifestBtn';
 import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
@@ -25,7 +26,25 @@ export function Home(): ReactElement {
   }, [user]);
 
   return (
-    <div>
+    <>
+      <HtCard>
+        <HtCard.Header title="Get Started" />
+        <HtCard.Body>
+          <Row>
+            <Col>
+              <div className="text-center">
+                <NewManifestBtn />
+                <p>
+                  Create your first electronic manifest to track hazardous waste without ever
+                  logging into EPA's RCRAInfo system
+                </p>
+              </div>
+            </Col>
+            <Col className={'bg-black'}></Col>
+            <Col className={'bg-warning'}></Col>
+          </Row>
+        </HtCard.Body>
+      </HtCard>
       <HtCard>
         <HtCard.Header title="Manifests" />
         <HtCard.Body>
@@ -71,6 +90,6 @@ export function Home(): ReactElement {
       >
         Click me
       </HtButton>
-    </div>
+    </>
   );
 }

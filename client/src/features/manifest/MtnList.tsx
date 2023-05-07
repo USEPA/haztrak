@@ -1,6 +1,7 @@
+import { NewManifestBtn } from 'components/buttons/NewManifestBtn';
 import { HtCard } from 'components/Ht';
 import React, { ReactElement, useState } from 'react';
-import { Button, Col, Container, Dropdown, Row } from 'react-bootstrap';
+import { Col, Container, Dropdown, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTitle, useHtAPI } from 'hooks';
 import { SyncManifestBtn } from 'components/buttons';
@@ -37,9 +38,7 @@ export function MtnList(): ReactElement {
           </Col>
           <Col className="d-flex justify-content-end">
             <SyncManifestBtn siteId={siteId} disabled={!siteId} />
-            <Button variant="success" onClick={() => navigate('./new')}>
-              New
-            </Button>
+            <NewManifestBtn siteId={siteId} />
           </Col>
         </Row>
       </Container>
