@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NewManifestBtn } from 'components/buttons/NewManifestBtn';
 import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { RootState, useAppDispatch, useAppSelector } from 'store';
 import { getExampleTask } from 'store/notificationSlice/notification.slice';
@@ -26,35 +26,39 @@ export function Home(): ReactElement {
   }, [user]);
 
   return (
-    <>
+    <Container className="py-2">
       <HtCard>
-        <HtCard.Header title="Get Started" />
-        <HtCard.Body>
-          <Row>
-            <Col className="text-center">
-              <NewManifestBtn />
-              <p>
-                Create your first electronic manifest to track hazardous waste without ever logging
-                into EPA's RCRAInfo system
-              </p>
-            </Col>
-            <Col className="text-center">
-              <Link to={'/profile'}>
-                <Button variant="info text-light">Profile</Button>
-              </Link>
-              <p>
-                Update your Profile with your RCRAInfo API ID & key so you can electronically
-                manifest your waste through e-Manifest.
-              </p>
-            </Col>
-            <Col className="text-center">
-              <Link to={'/site'}>
-                <Button variant="dark">My Sites</Button>
-              </Link>
-              <p>View your site's information, check that EPA has the right information.</p>
-            </Col>
-          </Row>
-        </HtCard.Body>
+        <Accordion>
+          <Accordion.Item eventKey={'0'}>
+            <Accordion.Header title="Getting Started">Welcome, let's get started</Accordion.Header>
+            <Accordion.Body>
+              <Row>
+                <Col className="text-center">
+                  <NewManifestBtn />
+                  <p>
+                    Create your first electronic manifest to track hazardous waste without ever
+                    logging into EPA's RCRAInfo system
+                  </p>
+                </Col>
+                <Col className="text-center">
+                  <Link to={'/profile'}>
+                    <Button variant="info text-light">Profile</Button>
+                  </Link>
+                  <p>
+                    Update your Profile with your RCRAInfo API ID & key so you can electronically
+                    manifest your waste through e-Manifest.
+                  </p>
+                </Col>
+                <Col className="text-center">
+                  <Link to={'/site'}>
+                    <Button variant="dark">My Sites</Button>
+                  </Link>
+                  <p>View your site's information, check that EPA has the right information.</p>
+                </Col>
+              </Row>
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
       </HtCard>
       <HtCard>
         <HtCard.Header title="Manifests" />
@@ -101,6 +105,6 @@ export function Home(): ReactElement {
       >
         Click me
       </HtButton>
-    </>
+    </Container>
   );
 }
