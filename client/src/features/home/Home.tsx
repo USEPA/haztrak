@@ -1,6 +1,8 @@
+import { faRecycle, faSignature, faTruck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTitle } from 'hooks';
-import React, { ReactElement, useEffect, useState } from 'react';
-import { Col, Row, Toast, ToastContainer } from 'react-bootstrap';
+import React, { ReactElement, useEffect } from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { RootState, useAppDispatch, useAppSelector } from 'store';
 import { getExampleTask } from 'store/notificationSlice/notification.slice';
@@ -16,7 +18,6 @@ export function Home(): ReactElement {
   useTitle(`Haztrak`, false, true);
   const dispatch = useAppDispatch();
   const { user } = useAppSelector<UserState>((state: RootState) => state.user);
-  const [showWelcome, setShowWelcome] = useState(true);
 
   useEffect(() => {
     // get user profile information when the user changes
@@ -25,46 +26,37 @@ export function Home(): ReactElement {
 
   return (
     <div>
-      <ToastContainer position={'top-end'}>
-        <Toast show={showWelcome} onClose={() => setShowWelcome(!showWelcome)}>
-          <Toast.Header className="d-flex justify-content-between">Welcome</Toast.Header>
-          <Toast.Body>
-            <p>
-              Haztrak is an overkill proof of concept web application that shows how waste
-              management systems can interface with the EPA's{' '}
-              <Link to={'https://epa.gov/e-manifest'} target="_blank">
-                e-Manifest system
-              </Link>{' '}
-              to electronically track hazardous waste.
-            </p>
-            <p>
-              <Link to="https://usepa.github.io/haztrak/" target="_blank">
-                check out our documentation{' '}
-              </Link>
-              for more info!
-            </p>
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
       <HtCard>
-        <HtCard.Header title="Overview" />
+        <HtCard.Header title="Manifests" />
         <HtCard.Body>
           <Row>
             <Col>
               <h3 className="fw-bold d-flex justify-content-center">
-                <Link to={'/manifest/in-transit'}>Placeholder</Link>
+                <Link to={'/manifest/in-transit'}>
+                  <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
+                    <FontAwesomeIcon icon={faTruck} size={'2xl'} className="link-light" />
+                  </Button>
+                </Link>
               </h3>
               <p className="d-flex justify-content-center">Manifests in transit</p>
             </Col>
             <Col>
               <h3 className="fw-bold d-flex justify-content-center">
-                <Link to={'/manifest/ready-for-signature'}>Placeholder</Link>
+                <Link to={'/manifest/ready-for-signature'}>
+                  <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
+                    <FontAwesomeIcon icon={faSignature} size={'2xl'} className="link-light" />
+                  </Button>
+                </Link>
               </h3>
               <p className="d-flex justify-content-center">Ready for Signature</p>
             </Col>
             <Col>
               <h3 className="fw-bold d-flex justify-content-center">
-                <Link to={'/manifest/received'}>Placeholder</Link>
+                <Link to={'/manifest/received'}>
+                  <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
+                    <FontAwesomeIcon icon={faRecycle} size={'2xl'} className="link-light" />
+                  </Button>
+                </Link>
               </h3>
               <p className="d-flex justify-content-center">Received</p>
             </Col>
