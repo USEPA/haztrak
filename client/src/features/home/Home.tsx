@@ -32,7 +32,7 @@ export function Home(): ReactElement {
           <Row>
             <Col>
               <h3 className="fw-bold d-flex justify-content-center">
-                <Link to={'/manifest/in-transit'}>
+                <Link to={'/coming-soon'}>
                   <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
                     <FontAwesomeIcon icon={faTruck} size={'2xl'} className="link-light" />
                   </Button>
@@ -42,7 +42,7 @@ export function Home(): ReactElement {
             </Col>
             <Col>
               <h3 className="fw-bold d-flex justify-content-center">
-                <Link to={'/manifest/ready-for-signature'}>
+                <Link to={'/coming-soon'}>
                   <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
                     <FontAwesomeIcon icon={faSignature} size={'2xl'} className="link-light" />
                   </Button>
@@ -52,7 +52,7 @@ export function Home(): ReactElement {
             </Col>
             <Col>
               <h3 className="fw-bold d-flex justify-content-center">
-                <Link to={'/manifest/received'}>
+                <Link to={'/coming-soon'}>
                   <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
                     <FontAwesomeIcon icon={faRecycle} size={'2xl'} className="link-light" />
                   </Button>
