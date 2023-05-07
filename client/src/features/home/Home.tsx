@@ -31,17 +31,28 @@ export function Home(): ReactElement {
         <HtCard.Header title="Get Started" />
         <HtCard.Body>
           <Row>
-            <Col>
-              <div className="text-center">
-                <NewManifestBtn />
-                <p>
-                  Create your first electronic manifest to track hazardous waste without ever
-                  logging into EPA's RCRAInfo system
-                </p>
-              </div>
+            <Col className="text-center">
+              <NewManifestBtn />
+              <p>
+                Create your first electronic manifest to track hazardous waste without ever logging
+                into EPA's RCRAInfo system
+              </p>
             </Col>
-            <Col className={'bg-black'}></Col>
-            <Col className={'bg-warning'}></Col>
+            <Col className="text-center">
+              <Link to={'/profile'}>
+                <Button variant="info text-light">Profile</Button>
+              </Link>
+              <p>
+                Update your Profile with your RCRAInfo API ID & key so you can electronically
+                manifest your waste through e-Manifest.
+              </p>
+            </Col>
+            <Col className="text-center">
+              <Link to={'/site'}>
+                <Button variant="dark">My Sites</Button>
+              </Link>
+              <p>View your site's information, check that EPA has the right information.</p>
+            </Col>
           </Row>
         </HtCard.Body>
       </HtCard>
