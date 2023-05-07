@@ -2,6 +2,7 @@ import { ErrorBoundary } from 'components/ErrorBoundary';
 import { HtCard } from 'components/Ht';
 import { Sidebar, TopNav } from 'components/Nav';
 import { PrivateRoute } from 'components/PrivateRoute';
+import { UnderConstruction } from 'features/comingSoon';
 import { About } from 'features/help';
 import { Home } from 'features/home';
 import { Login } from 'features/login';
@@ -22,7 +23,6 @@ function App(): ReactElement {
   const profile = useAppSelector<RcraProfileState>((state) => state.rcraProfile);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  console.log('user', user);
 
   useEffect(() => {
     if (user) {
@@ -78,6 +78,7 @@ function App(): ReactElement {
                   </PrivateRoute>
                 }
               />
+              <Route path="/coming-soon" element={<UnderConstruction />} />
               <Route path="/login" element={<Login />} />
               <Route path="/about" element={<About />} />
               {/* If unknown route, display 404*/}

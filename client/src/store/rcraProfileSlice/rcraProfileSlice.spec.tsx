@@ -2,10 +2,7 @@
  *  RcraProfile tests
  */
 import { screen } from '@testing-library/react';
-import { ManifestForm } from 'components/Manifest';
-import { useTitle } from 'hooks';
 import React from 'react';
-import { multiValueAsValue } from 'react-select/dist/declarations/src/utils';
 import { useAppSelector } from 'store/hooks';
 import { renderWithProviders } from 'test-utils';
 import { createMockSite } from 'test-utils/fixtures';

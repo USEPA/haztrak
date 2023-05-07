@@ -4,7 +4,7 @@ import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
 
 /**
  * A RTK Query Api for fetching codes.
- * the createApi function takes autmatically generates react hooks,
+ * the createApi function takes automatically generates react hooks,
  */
 export const wasteCodeApi = createApi({
   reducerPath: 'wasteCodeApi',
