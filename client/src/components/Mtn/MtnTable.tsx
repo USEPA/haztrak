@@ -1,9 +1,11 @@
 import {
+  CellContext,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { MtnRowActions } from 'components/Mtn/MtnRowActions';
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import { z } from 'zod';
@@ -11,7 +13,7 @@ import { z } from 'zod';
 const mtnDetailsSchema = z.object({
   manifestTrackingNumber: z.string(),
   signatureStatus: z.boolean(),
-  submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image']),
+  submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image', 'NotSelected']),
   status: z.string(),
   actions: z.any(),
 });
@@ -31,7 +33,30 @@ const columnHelper = createColumnHelper<MtnDetails>();
 
 const columns = [
   columnHelper.accessor('manifestTrackingNumber', {
-    cell: (info) => info.getValue(),
+    header: 'MTN',
+    cell: (info) => info.getValue(), // example
+  }),
+  columnHelper.accessor('status', {
+    header: 'Status',
+    cell: (info) => {
+      if (info.getValue() === 'ReadyForSignature') return 'Ready for Signature';
+      else return info.getValue();
+    },
+  }),
+  columnHelper.accessor('submissionType', {
+    header: 'Type',
+    cell: (info) => {
+      if (info.getValue() === 'FullElectronic') return 'Electronic';
+      if (info.getValue() === 'NotSelected') return 'Not Selected';
+      if (info.getValue() === 'DataImage5Copy') return 'Data + Image';
+      else return info.getValue();
+    },
+  }),
+  columnHelper.accessor('actions', {
+    header: 'Actions',
+    cell: ({ row: { getValue } }: CellContext<MtnDetails, any>) => (
+      <MtnRowActions mtn={getValue('manifestTrackingNumber')} />
+    ),
   }),
 ];
 
@@ -71,19 +96,6 @@ export function MtnTable({ manifests }: MtnTableProps) {
             </tr>
           ))}
         </tbody>
-        <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.footer, header.getContext())}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
       </Table>
     </>
   );
