@@ -51,10 +51,12 @@ const columnHelper = createColumnHelper<MtnDetails>();
 const columns = [
   columnHelper.accessor('manifestTrackingNumber', {
     header: 'MTN',
+    enableColumnFilter: false,
     cell: (info) => info.getValue(), // example
   }),
   columnHelper.accessor('status', {
     header: 'Status',
+    enableColumnFilter: false,
     cell: (info) => {
       if (info.getValue() === 'ReadyForSignature') return 'Ready for Signature';
       else return info.getValue();
@@ -71,6 +73,7 @@ const columns = [
   }),
   columnHelper.accessor('actions', {
     header: 'Actions',
+    enableColumnFilter: false,
     cell: ({ row: { getValue } }: CellContext<MtnDetails, any>) => (
       <MtnRowActions mtn={getValue('manifestTrackingNumber')} />
     ),
@@ -122,6 +125,7 @@ export function MtnTable({ manifests }: MtnTableProps) {
     debugColumns: false,
   });
 
+  // @ts-ignore
   return (
     <>
       <Col xs={5}>
@@ -142,6 +146,19 @@ export function MtnTable({ manifests }: MtnTableProps) {
                   {header.isPlaceholder
                     ? null
                     : flexRender(header.column.columnDef.header, header.getContext())}
+                  {header.column.getCanFilter() ? (
+                    <div>
+                      <Form.Select
+                        className="py-0"
+                        // @ts-ignore
+                        value={header.column.getFilterValue()}
+                        onChange={(event) => header.column.setFilterValue(event.target.value)}
+                      >
+                        <option value="FullElectronic">Electronic</option>
+                        <option value="Hybrid">Hybrid</option>
+                      </Form.Select>
+                    </div>
+                  ) : null}
                 </th>
               ))}
             </tr>
