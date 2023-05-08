@@ -192,40 +192,48 @@ export function MtnTable({ manifests }: MtnTableProps) {
           <FontAwesomeIcon icon={faForwardFast} className="text-primary" />
         </Button>
       </div>
-      <Row>
-        <span className="flex items-center gap-1">
-          <div>Page</div>
-          <strong>
-            {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-          </strong>
-        </span>
-        <span className="flex items-center gap-1">
-          | Go to page:
-          <input
-            type="number"
-            defaultValue={table.getState().pagination.pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              table.setPageIndex(page);
-            }}
-            className="border p-1 rounded w-16"
-          />
-        </span>
-        <span>
-          <Form.Select
-            aria-label="page size"
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
-            }}
-          >
-            {[10, 20, 50, 100].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
-            ))}
-          </Form.Select>
-        </span>
+      <Row className="d-flex justify-content-between pt-2">
+        <Col>
+          {'Page '}
+          <strong>{table.getState().pagination.pageIndex + 1}</strong>
+          {' of '}
+          <strong>{table.getPageCount()}</strong>
+        </Col>
+        <Col>
+          <Row>
+            <Col className="me-0 pe-0">
+              <span className="align-bottom">{'Go to page:'}</span>
+            </Col>
+            <Col className="ms-0 ps-0" xs={5}>
+              <Form.Control
+                type="number"
+                value={table.getState().pagination.pageIndex + 1}
+                onChange={(e) => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                  table.setPageIndex(page);
+                }}
+                className="d-inline-block"
+              />
+            </Col>
+          </Row>
+        </Col>
+        <Col className="d-flex justify-content-end">
+          <Col xs={7}>
+            <Form.Select
+              aria-label="page size"
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => {
+                table.setPageSize(Number(e.target.value));
+              }}
+            >
+              {[10, 20, 50, 100].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  Show {pageSize}
+                </option>
+              ))}
+            </Form.Select>
+          </Col>
+        </Col>
       </Row>
     </>
   );
