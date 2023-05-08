@@ -7,6 +7,8 @@ import { MtnDetails } from 'components/Mtn';
 const manifestDetail: MtnDetails = {
   manifestTrackingNumber: '123456789ELC',
   status: 'InTransit',
+  submissionType: 'FullElectronic',
+  signatureStatus: false,
 };
 
 const mtnData = [manifestDetail, manifestDetail];

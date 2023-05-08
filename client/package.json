@@ -21,6 +21,7 @@
     "@hookform/error-message": "^2.0.0",
     "@hookform/resolvers": "^2.9.10",
     "@reduxjs/toolkit": "^1.9.2",
+    "@tanstack/match-sorter-utils": "^8.8.4",
     "@tanstack/react-table": "^8.9.1",
     "axios": "^1.2.0",
     "bootstrap": "^5.2.3",

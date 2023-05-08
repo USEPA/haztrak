@@ -1,13 +1,23 @@
+import { rankItem } from '@tanstack/match-sorter-utils';
 import {
   CellContext,
+  ColumnFiltersState,
   createColumnHelper,
+  FilterFn,
   flexRender,
   getCoreRowModel,
+  getFacetedMinMaxValues,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { HtForm } from 'components/Ht';
 import { MtnRowActions } from 'components/Mtn/MtnRowActions';
-import React from 'react';
-import { Table } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Col, Form, Table } from 'react-bootstrap';
 import { z } from 'zod';
 
 const mtnDetailsSchema = z.object({
@@ -15,7 +25,7 @@ const mtnDetailsSchema = z.object({
   signatureStatus: z.boolean(),
   submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image', 'NotSelected']),
   status: z.string(),
-  actions: z.any(),
+  actions: z.any().optional(),
 });
 
 /**
@@ -60,19 +70,62 @@ const columns = [
   }),
 ];
 
+const fuzzyFilter: FilterFn<MtnDetails> = (row, columnId, value, addMeta) => {
+  // Rank the item
+  const itemRank = rankItem(row.getValue(columnId), value);
+
+  // Store the itemRank info
+  addMeta({
+    itemRank,
+  });
+
+  // Return if the item should be filtered in/out
+  return itemRank.passed;
+};
+
 /**
  * Returns a card with a table of manifest tracking numbers (MTN) and select details
  * @param manifest
  */
 export function MtnTable({ manifests }: MtnTableProps) {
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = useState('');
   const table = useReactTable({
     columns,
     data: manifests,
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
+    state: {
+      columnFilters,
+      globalFilter,
+    },
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: fuzzyFilter,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getFacetedMinMaxValues: getFacetedMinMaxValues(),
+    debugTable: true,
+    debugHeaders: true,
+    debugColumns: false,
   });
 
   return (
     <>
+      <Col xs={3}>
+        <HtForm.Label htmlFor={'mtnGlobalSearch'}>Global Search</HtForm.Label>
+        <Form.Control
+          id={'mtnGlobalSearch'}
+          value={globalFilter ?? ''}
+          onChange={(event) => setGlobalFilter(event.target.value)}
+          placeholder="Search manifests..."
+        />
+      </Col>
       <Table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
