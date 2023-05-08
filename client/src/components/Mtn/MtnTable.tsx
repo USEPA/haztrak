@@ -1,3 +1,11 @@
+import {
+  faBackwardFast,
+  faCaretLeft,
+  faCaretRight,
+  faForward,
+  faForwardFast,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { rankItem } from '@tanstack/match-sorter-utils';
 import {
   CellContext,
@@ -17,7 +25,7 @@ import {
 import { HtForm } from 'components/Ht';
 import { MtnRowActions } from 'components/Mtn/MtnRowActions';
 import React, { useState } from 'react';
-import { Col, Form, Table } from 'react-bootstrap';
+import { Button, Col, Dropdown, Form, Row, Table } from 'react-bootstrap';
 import { z } from 'zod';
 
 const mtnDetailsSchema = z.object({
@@ -150,6 +158,75 @@ export function MtnTable({ manifests }: MtnTableProps) {
           ))}
         </tbody>
       </Table>
+      <div className="d-flex justify-content-center">
+        <Button
+          variant="outline-secondary"
+          className="p-1 mx-1"
+          onClick={() => table.setPageIndex(0)}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <FontAwesomeIcon icon={faBackwardFast} className="text-primary" />
+        </Button>
+        <Button
+          variant="outline-secondary"
+          className="p-1 mx-1"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <FontAwesomeIcon icon={faCaretLeft} className="text-primary" />
+        </Button>
+        <Button
+          variant="outline-secondary"
+          className="p-1 mx-1"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          <FontAwesomeIcon icon={faCaretRight} className="text-primary" />
+        </Button>
+        <Button
+          variant="outline-secondary"
+          className="p-1 mx-1"
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          disabled={!table.getCanNextPage()}
+        >
+          <FontAwesomeIcon icon={faForwardFast} className="text-primary" />
+        </Button>
+      </div>
+      <Row>
+        <span className="flex items-center gap-1">
+          <div>Page</div>
+          <strong>
+            {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+          </strong>
+        </span>
+        <span className="flex items-center gap-1">
+          | Go to page:
+          <input
+            type="number"
+            defaultValue={table.getState().pagination.pageIndex + 1}
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              table.setPageIndex(page);
+            }}
+            className="border p-1 rounded w-16"
+          />
+        </span>
+        <span>
+          <Form.Select
+            aria-label="page size"
+            value={table.getState().pagination.pageSize}
+            onChange={(e) => {
+              table.setPageSize(Number(e.target.value));
+            }}
+          >
+            {[10, 20, 50, 100].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </Form.Select>
+        </span>
+      </Row>
     </>
   );
 }
