@@ -2,7 +2,6 @@ import {
   faBackwardFast,
   faCaretLeft,
   faCaretRight,
-  faForward,
   faForwardFast,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,7 +24,7 @@ import {
 import { HtForm } from 'components/Ht';
 import { MtnRowActions } from 'components/Mtn/MtnRowActions';
 import React, { useState } from 'react';
-import { Button, Col, Dropdown, Form, Row, Table } from 'react-bootstrap';
+import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 import { z } from 'zod';
 
 const mtnDetailsSchema = z.object({
@@ -125,13 +124,13 @@ export function MtnTable({ manifests }: MtnTableProps) {
 
   return (
     <>
-      <Col xs={3}>
+      <Col xs={5}>
         <HtForm.Label htmlFor={'mtnGlobalSearch'}>Global Search</HtForm.Label>
         <Form.Control
           id={'mtnGlobalSearch'}
           value={globalFilter ?? ''}
           onChange={(event) => setGlobalFilter(event.target.value)}
-          placeholder="Search manifests..."
+          placeholder="Search manifests by all fields..."
         />
       </Col>
       <Table>
@@ -200,25 +199,23 @@ export function MtnTable({ manifests }: MtnTableProps) {
           <strong>{table.getPageCount()}</strong>
         </Col>
         <Col>
-          <Row>
-            <Col className="me-0 pe-0">
-              <span className="align-bottom">{'Go to page:'}</span>
-            </Col>
-            <Col className="ms-0 ps-0" xs={5}>
-              <Form.Control
-                type="number"
-                value={table.getState().pagination.pageIndex + 1}
-                onChange={(e) => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                  table.setPageIndex(page);
-                }}
-                className="d-inline-block"
-              />
-            </Col>
-          </Row>
+          <div className="d-flex align-content-center gap-1">
+            <Form.Label htmlFor={'mtnPageNumber'}>{'Go to page:'}</Form.Label>
+            <Form.Control
+              type="number"
+              id={'mtnPageNumber'}
+              value={table.getState().pagination.pageIndex + 1}
+              style={{ width: '4rem' }}
+              className="py-0 px-1"
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                table.setPageIndex(page);
+              }}
+            />
+          </div>
         </Col>
         <Col className="d-flex justify-content-end">
-          <Col xs={7}>
+          <Col xs={9} xl={7}>
             <Form.Select
               aria-label="page size"
               value={table.getState().pagination.pageSize}
