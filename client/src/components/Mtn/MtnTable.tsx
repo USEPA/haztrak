@@ -1,3 +1,4 @@
+import { MtnRowActions } from 'components/Mtn/MtnRowActions';
 import React, { ReactElement, useMemo, useState } from 'react';
 import { HtPaginate, HtTooltip } from 'components/Ht';
 import { Row, Table } from 'react-bootstrap';
@@ -64,28 +65,7 @@ export function MtnTable({ manifests, pageSize = 10 }: MtnTableProps): ReactElem
               values: { manifestTrackingNumber },
             },
           },
-        }: CellProps<MtnDetails>) => {
-          return (
-            <div className="d-flex justify-content-evenly">
-              <HtTooltip text={`View: ${manifestTrackingNumber}`}>
-                <Link
-                  to={`./${manifestTrackingNumber}/view`}
-                  aria-label={`viewManifest${manifestTrackingNumber}`}
-                >
-                  <FontAwesomeIcon icon={faEye} />
-                </Link>
-              </HtTooltip>
-              <HtTooltip text={`Edit ${manifestTrackingNumber}`}>
-                <Link
-                  to={`./${manifestTrackingNumber}/edit`}
-                  aria-label={`editManifest${manifestTrackingNumber}`}
-                >
-                  <FontAwesomeIcon icon={faPen} />
-                </Link>
-              </HtTooltip>
-            </div>
-          );
-        },
+        }: CellProps<MtnDetails>) => <MtnRowActions mtn={manifestTrackingNumber} />,
       },
     ],
     []
