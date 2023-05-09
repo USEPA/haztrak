@@ -106,7 +106,7 @@ interface StatusOption {
 const statusOptions: readonly StatusOption[] = [
   { value: 'Scheduled', label: 'Scheduled' },
   { value: 'InTransit', label: 'In Transit' },
-  { value: 'ReadyForSignature', label: 'Ready for Signature' },
+  { value: 'ReadyForSignature', label: 'Ready to Sign' },
   { value: 'Corrected', label: 'Corrected' },
   { value: 'Signed', label: 'Signed' },
   { value: 'NotAssigned', label: 'Draft' },
@@ -147,28 +147,16 @@ export function MtnTable({ manifests }: MtnTableProps) {
 
   return (
     <>
-      <div className="d-flex flex-row-reverse">
-        <Col xs={5}>
-          {/*<Form.Select*/}
-          {/*  className="py-0 ms-2"*/}
-          {/*  value={searchValue}*/}
-          {/*  placeholder={'Status'}*/}
-          {/*  onChange={(event) => {*/}
-          {/*    setSearchValue(event.target.value);*/}
-          {/*    setColumnFilters([{ id: 'status', value: event.target.value }]);*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*  <option value="" className="text-muted" hidden>*/}
-          {/*    Status*/}
-          {/*  </option>*/}
-          {/*  <option value="">--</option>*/}
-          {/*  <option value="Scheduled">Scheduled</option>*/}
-          {/*  <option value="NotAssigned">Draft</option>*/}
-          {/*  <option value="IntTransit">In Transit</option>*/}
-          {/*  <option value="ReadyForSignature">Ready for Signature</option>*/}
-          {/*  <option value="Signed">Signed</option>*/}
-          {/*  <option value="Corrected">Corrected</option>*/}
-          {/*</Form.Select>*/}
+      <div className="d-flex flex-row justify-content-end">
+        <Col xs={3}>
+          <Form.Control
+            id={'mtnGlobalSearch'}
+            value={globalFilter ?? ''}
+            onChange={(event) => setGlobalFilter(event.target.value)}
+            placeholder="Filter..."
+          />
+        </Col>
+        <Col xs={4} className="mx-2">
           <Select
             name="statusFilter"
             value={searchValue}
@@ -183,19 +171,9 @@ export function MtnTable({ manifests }: MtnTableProps) {
             placeholder="Status"
             classNames={{
               control: () => 'form-select py-0 ms-2 rounded-3',
-              valueContainer: () => 'p-0 m-0 ps-1',
-              placeholder: () => 'p-0 m-0',
+              placeholder: () => 'p-0 m-0 ps-1',
             }}
             components={{ IndicatorSeparator: () => null, DropdownIndicator: () => null }}
-          />
-        </Col>
-        <Col xs={3}>
-          <Form.Control
-            id={'mtnGlobalSearch'}
-            value={globalFilter ?? ''}
-            onChange={(event) => setGlobalFilter(event.target.value)}
-            placeholder="Filter..."
-            className="py-0"
           />
         </Col>
       </div>
