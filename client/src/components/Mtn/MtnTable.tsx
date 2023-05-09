@@ -24,6 +24,7 @@ import {
 import { MtnRowActions } from 'components/Mtn/MtnRowActions';
 import React, { useState } from 'react';
 import { Button, Col, Form, Row, Table } from 'react-bootstrap';
+import Select from 'react-select';
 import { z } from 'zod';
 
 const mtnDetailsSchema = z.object({
@@ -97,6 +98,20 @@ const fuzzyFilter: FilterFn<MtnDetails> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
+interface StatusOption {
+  value: string;
+  label: string;
+}
+
+const statusOptions: readonly StatusOption[] = [
+  { value: 'Scheduled', label: 'Scheduled' },
+  { value: 'InTransit', label: 'In Transit' },
+  { value: 'ReadyForSignature', label: 'Ready for Signature' },
+  { value: 'Corrected', label: 'Corrected' },
+  { value: 'Signed', label: 'Signed' },
+  { value: 'NotAssigned', label: 'Draft' },
+];
+
 /**
  * Returns a card with a table of manifest tracking numbers (MTN) and select details
  * @param manifest
@@ -134,23 +149,45 @@ export function MtnTable({ manifests }: MtnTableProps) {
     <>
       <div className="d-flex flex-row-reverse">
         <Col xs={5}>
-          <Form.Select
-            className="py-0 ms-2"
+          {/*<Form.Select*/}
+          {/*  className="py-0 ms-2"*/}
+          {/*  value={searchValue}*/}
+          {/*  placeholder={'Status'}*/}
+          {/*  onChange={(event) => {*/}
+          {/*    setSearchValue(event.target.value);*/}
+          {/*    setColumnFilters([{ id: 'status', value: event.target.value }]);*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  <option value="" className="text-muted" hidden>*/}
+          {/*    Status*/}
+          {/*  </option>*/}
+          {/*  <option value="">--</option>*/}
+          {/*  <option value="Scheduled">Scheduled</option>*/}
+          {/*  <option value="NotAssigned">Draft</option>*/}
+          {/*  <option value="IntTransit">In Transit</option>*/}
+          {/*  <option value="ReadyForSignature">Ready for Signature</option>*/}
+          {/*  <option value="Signed">Signed</option>*/}
+          {/*  <option value="Corrected">Corrected</option>*/}
+          {/*</Form.Select>*/}
+          <Select
+            name="statusFilter"
             value={searchValue}
-            placeholder={'Status'}
-            onChange={(event) => {
-              setSearchValue(event.target.value);
-              setColumnFilters([{ id: 'status', value: event.target.value }]);
+            onChange={(newValue) => {
+              setSearchValue(newValue ?? '');
+              setColumnFilters([{ id: 'status', value: newValue?.value ?? '' }]);
             }}
-          >
-            <option value="">--</option>
-            <option value="Scheduled">Scheduled</option>
-            <option value="NotAssigned">Draft</option>
-            <option value="IntTransit">In Transit</option>
-            <option value="ReadyForSignature">Ready for Signature</option>
-            <option value="Signed">Signed</option>
-            <option value="Corrected">Corrected</option>
-          </Form.Select>
+            options={statusOptions}
+            getOptionLabel={(option) => option.label}
+            getOptionValue={(option) => option.value}
+            isClearable={true}
+            placeholder="Status"
+            classNames={{
+              control: () => 'form-select py-0 ms-2 rounded-3',
+              valueContainer: () => 'p-0 m-0',
+              placeholder: () => 'p-0 m-0',
+            }}
+            components={{ IndicatorSeparator: () => null, DropdownIndicator: () => null }}
+          />
         </Col>
         <Col xs={3}>
           <Form.Control
