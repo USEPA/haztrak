@@ -24,7 +24,7 @@ interface SpinnerProps extends CardProps {
  * </HtCard>
  */
 export function HtCard(props: CardProps): ReactElement {
-  const baseAttributes = `my-3 shadow-lg bg-light rounded px-0 ${
+  const baseAttributes = `my-3 shadow-lg bg-white rounded px-0 ${
     props.className ? props.className : ''
   }`;
   const classAttributes =
