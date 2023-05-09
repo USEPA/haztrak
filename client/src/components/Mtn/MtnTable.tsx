@@ -128,15 +128,17 @@ export function MtnTable({ manifests }: MtnTableProps) {
   // @ts-ignore
   return (
     <>
-      <Col xs={5}>
-        <HtForm.Label htmlFor={'mtnGlobalSearch'}>Global Search</HtForm.Label>
-        <Form.Control
-          id={'mtnGlobalSearch'}
-          value={globalFilter ?? ''}
-          onChange={(event) => setGlobalFilter(event.target.value)}
-          placeholder="Search manifests by all fields..."
-        />
-      </Col>
+      <div className="d-flex flex-row-reverse">
+        <Col xs={5}>
+          <Form.Control
+            id={'mtnGlobalSearch'}
+            value={globalFilter ?? ''}
+            onChange={(event) => setGlobalFilter(event.target.value)}
+            placeholder="Filter..."
+            className="py-0"
+          />
+        </Col>
+      </div>
       <Table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -146,19 +148,6 @@ export function MtnTable({ manifests }: MtnTableProps) {
                   {header.isPlaceholder
                     ? null
                     : flexRender(header.column.columnDef.header, header.getContext())}
-                  {header.column.getCanFilter() ? (
-                    <div>
-                      <Form.Select
-                        className="py-0"
-                        // @ts-ignore
-                        value={header.column.getFilterValue()}
-                        onChange={(event) => header.column.setFilterValue(event.target.value)}
-                      >
-                        <option value="FullElectronic">Electronic</option>
-                        <option value="Hybrid">Hybrid</option>
-                      </Form.Select>
-                    </div>
-                  ) : null}
                 </th>
               ))}
             </tr>
