@@ -6,6 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Table } from '@tanstack/react-table';
+import { usePagination } from 'hooks';
 import React from 'react';
 import { Button, Pagination } from 'react-bootstrap';
 import { boolean } from 'zod';
@@ -22,10 +23,22 @@ interface HtPageBtnsProps<T> {
  * @constructor
  */
 export function HtPageBtns<T>({ table }: HtPageBtnsProps<T>) {
+  const paginationRange = usePagination({
+    totalCount: table.getFilteredRowModel().rows.length,
+    pageSize: table.getState().pagination.pageSize,
+    siblingCount: 2,
+    currentPage: table.getState().pagination.pageIndex,
+    maxVisiblePages: 5,
+    useEllipsis: true,
+  });
+  console.log('page index', table.getState().pagination.pageIndex);
+  if (!paginationRange) {
+    return null;
+  }
   return (
     <>
       <div className="d-flex justify-content-center">
-        <Pagination className="bg-light rounded-5 px-1">
+        <Pagination className="bg-light rounded-5 p-1 py-2">
           <Pagination.First
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
@@ -36,15 +49,18 @@ export function HtPageBtns<T>({ table }: HtPageBtnsProps<T>) {
             <FontAwesomeIcon icon={faCaretLeft} size={'lg'} />
           </Pagination.Prev>
 
-          {table.getPageOptions().map((pageNumber: number) => {
+          {paginationRange.map((pageNumber) => {
             const pageIndex = table.getState().pagination.pageIndex;
+            if (typeof pageNumber === 'string') {
+              return <Pagination.Ellipsis key={`mtnListPag${pageIndex}`} disabled={true} />;
+            }
             return (
               <Pagination.Item
-                onClick={() => table.setPageIndex(pageNumber)}
-                key={pageNumber}
-                active={pageNumber === pageIndex}
+                onClick={() => table.setPageIndex(pageNumber - 1)}
+                key={pageNumber - 1}
+                active={pageNumber === pageIndex + 1}
               >
-                {pageNumber + 1}
+                {pageNumber}
               </Pagination.Item>
             );
           })}
