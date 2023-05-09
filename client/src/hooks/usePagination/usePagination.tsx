@@ -30,7 +30,7 @@ export function usePagination({
   totalCount,
   pageSize,
   siblingCount = 1,
-  maxVisiblePages = 9,
+  maxVisiblePages = 7,
   currentPage,
   useEllipsis = false,
 }: usePaginationProps) {

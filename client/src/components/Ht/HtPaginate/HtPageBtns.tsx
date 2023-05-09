@@ -26,12 +26,13 @@ export function HtPageBtns<T>({ table }: HtPageBtnsProps<T>) {
   const paginationRange = usePagination({
     totalCount: table.getFilteredRowModel().rows.length,
     pageSize: table.getState().pagination.pageSize,
-    siblingCount: 2,
+    siblingCount: 1,
     currentPage: table.getState().pagination.pageIndex,
     maxVisiblePages: 5,
     useEllipsis: true,
   });
-  console.log('page index', table.getState().pagination.pageIndex);
+  console.log('paginationRange', paginationRange);
+  console.log('total count', table.getFilteredRowModel().rows.length);
   if (!paginationRange) {
     return null;
   }
@@ -49,15 +50,15 @@ export function HtPageBtns<T>({ table }: HtPageBtnsProps<T>) {
             <FontAwesomeIcon icon={faCaretLeft} size={'lg'} />
           </Pagination.Prev>
 
-          {paginationRange.map((pageNumber) => {
+          {paginationRange.map((pageNumber, index) => {
             const pageIndex = table.getState().pagination.pageIndex;
             if (typeof pageNumber === 'string') {
-              return <Pagination.Ellipsis key={`mtnListPag${pageIndex}`} disabled={true} />;
+              return <Pagination.Ellipsis key={`mtnListPag${index}`} disabled={true} />;
             }
             return (
               <Pagination.Item
                 onClick={() => table.setPageIndex(pageNumber - 1)}
-                key={pageNumber - 1}
+                key={`mtnListPag${index}`}
                 active={pageNumber === pageIndex + 1}
               >
                 {pageNumber}
