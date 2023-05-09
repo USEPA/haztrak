@@ -4,7 +4,7 @@ import { HtModal } from './HtModal';
 import { HtSpinner } from './HtSpinner';
 import { HtButton } from 'components/Ht/HtButton';
 import { HtForm } from 'components/Ht/HtForm';
-import { HtPaginate } from 'components/Ht/HtPaginate';
+import { HtPaginate, HtPageBtns } from 'components/Ht/HtPaginate';
 import { HtTooltip, InfoIconTooltip } from './HtTooltip';
 
 export {
@@ -17,4 +17,5 @@ export {
   HtButton,
   HtForm,
   HtPaginate,
+  HtPageBtns,
 };

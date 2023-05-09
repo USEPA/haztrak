@@ -1,10 +1,3 @@
-import {
-  faBackwardFast,
-  faCaretLeft,
-  faCaretRight,
-  faForwardFast,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { rankItem } from '@tanstack/match-sorter-utils';
 import {
   CellContext,
@@ -21,9 +14,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { HtPageBtns } from 'components/Ht';
 import { MtnRowActions } from 'components/Mtn/MtnRowActions';
 import React, { useState } from 'react';
-import { Button, Col, Form, Row, Table } from 'react-bootstrap';
+import { Col, Form, Row, Table } from 'react-bootstrap';
 import Select from 'react-select';
 import { z } from 'zod';
 
@@ -165,8 +159,6 @@ export function MtnTable({ manifests }: MtnTableProps) {
               setColumnFilters([{ id: 'status', value: newValue?.value ?? '' }]);
             }}
             options={statusOptions}
-            getOptionLabel={(option: StatusOption) => option.label}
-            getOptionValue={(option: StatusOption) => option.value}
             isClearable={true}
             placeholder="Status"
             classNames={{
@@ -201,40 +193,7 @@ export function MtnTable({ manifests }: MtnTableProps) {
           ))}
         </tbody>
       </Table>
-      <div className="d-flex justify-content-center">
-        <Button
-          variant="outline-secondary"
-          className="p-1 mx-1"
-          onClick={() => table.setPageIndex(0)}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <FontAwesomeIcon icon={faBackwardFast} className="text-primary" />
-        </Button>
-        <Button
-          variant="outline-secondary"
-          className="p-1 mx-1"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <FontAwesomeIcon icon={faCaretLeft} className="text-primary" />
-        </Button>
-        <Button
-          variant="outline-secondary"
-          className="p-1 mx-1"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <FontAwesomeIcon icon={faCaretRight} className="text-primary" />
-        </Button>
-        <Button
-          variant="outline-secondary"
-          className="p-1 mx-1"
-          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-          disabled={!table.getCanNextPage()}
-        >
-          <FontAwesomeIcon icon={faForwardFast} className="text-primary" />
-        </Button>
-      </div>
+      <HtPageBtns table={table} />
       <Row className="d-flex justify-content-between pt-2">
         <Col>
           {'Page '}
