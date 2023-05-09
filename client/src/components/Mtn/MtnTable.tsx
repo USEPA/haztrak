@@ -25,7 +25,15 @@ const mtnDetailsSchema = z.object({
   manifestTrackingNumber: z.string(),
   signatureStatus: z.boolean(),
   submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image', 'NotSelected']),
-  status: z.enum(['Scheduled', 'Signed', 'Corrected', 'ReadyForSignature', 'Draft', 'InTransit']),
+  status: z.enum([
+    'Scheduled',
+    'Signed',
+    'Corrected',
+    'ReadyForSignature',
+    'Draft',
+    'InTransit',
+    'UnderCorrection',
+  ]),
   actions: z.any().optional(),
 });
 
@@ -51,6 +59,7 @@ const columns = [
     header: 'Status',
     cell: (info) => {
       if (info.getValue() === 'ReadyForSignature') return 'Ready for Signature';
+      if (info.getValue() === 'UnderCorrection') return 'Under Correction';
       else return info.getValue();
     },
     enableGlobalFilter: false,
@@ -104,6 +113,7 @@ const statusOptions: readonly StatusOption[] = [
   { value: 'Corrected', label: 'Corrected' },
   { value: 'Signed', label: 'Signed' },
   { value: 'NotAssigned', label: 'Draft' },
+  { value: 'UnderCorrection', label: 'Under Correction' },
 ];
 
 /**
