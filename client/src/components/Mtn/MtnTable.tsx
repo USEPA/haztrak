@@ -118,7 +118,7 @@ const statusOptions: readonly StatusOption[] = [
  */
 export function MtnTable({ manifests }: MtnTableProps) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState<StatusOption | null>(null);
   const [globalFilter, setGlobalFilter] = useState('');
   const table = useReactTable({
     columns,
@@ -173,17 +173,17 @@ export function MtnTable({ manifests }: MtnTableProps) {
             name="statusFilter"
             value={searchValue}
             onChange={(newValue) => {
-              setSearchValue(newValue ?? '');
+              setSearchValue(newValue);
               setColumnFilters([{ id: 'status', value: newValue?.value ?? '' }]);
             }}
             options={statusOptions}
-            getOptionLabel={(option) => option.label}
-            getOptionValue={(option) => option.value}
+            getOptionLabel={(option: StatusOption) => option.label}
+            getOptionValue={(option: StatusOption) => option.value}
             isClearable={true}
             placeholder="Status"
             classNames={{
               control: () => 'form-select py-0 ms-2 rounded-3',
-              valueContainer: () => 'p-0 m-0',
+              valueContainer: () => 'p-0 m-0 ps-1',
               placeholder: () => 'p-0 m-0',
             }}
             components={{ IndicatorSeparator: () => null, DropdownIndicator: () => null }}
