@@ -8,8 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Table } from '@tanstack/react-table';
 import { usePagination } from 'hooks';
 import React from 'react';
-import { Button, Pagination } from 'react-bootstrap';
-import { boolean } from 'zod';
+import { Pagination } from 'react-bootstrap';
 
 interface HtPageBtnsProps<T> {
   table: Table<T>;
@@ -28,7 +27,7 @@ export function HtPageBtns<T>({ table }: HtPageBtnsProps<T>) {
     pageSize: table.getState().pagination.pageSize,
     siblingCount: 1,
     currentPage: table.getState().pagination.pageIndex,
-    maxVisiblePages: 5,
+    maxVisiblePages: 7,
     useEllipsis: true,
   });
   if (!paginationRange) {

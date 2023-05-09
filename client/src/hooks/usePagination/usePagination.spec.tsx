@@ -15,7 +15,7 @@ interface TestUsePagProps {
 const defaultTotalCount = 101;
 const defaultCurrentPage = 1;
 const defaultPageSize = 10;
-const newTotalCount = 151;
+const newTotalCount = 51;
 
 function TestPaginationHook({
   totalCount = defaultTotalCount,
@@ -55,7 +55,7 @@ afterEach(() => {
 
 describe('usePagination', () => {
   test('defaults to returning a simple array', async () => {
-    render(<TestPaginationHook />);
+    render(<TestPaginationHook maxVisiblePages={Math.ceil(defaultTotalCount / defaultPageSize)} />);
     const paginationRange = await screen.findAllByTestId('item');
     expect(paginationRange).toHaveLength(Math.ceil(defaultTotalCount / defaultPageSize));
   });
@@ -82,7 +82,7 @@ describe('usePagination', () => {
     expect(paginationRange).toHaveLength(numExpectedElements);
   });
   test('updates when number of elements changes', async () => {
-    render(<TestPaginationHook />);
+    render(<TestPaginationHook maxVisiblePages={Math.ceil(defaultTotalCount / defaultPageSize)} />);
     const paginationRange = await screen.findAllByTestId('item');
     expect(paginationRange).toHaveLength(Math.ceil(defaultTotalCount / defaultPageSize));
     fireEvent.click(screen.getByText('Click Me'));

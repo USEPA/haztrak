@@ -23,7 +23,7 @@ interface usePaginationProps {
  * @param totalCount Total number of items
  * @param pageSize Number of items in each page
  * @param siblingCount minimum number of page numbers on each side of active page (default 1)
- * @param maxPages Maximum number of visible pages (defaults to 9)
+ * @param maxVisiblePages number of visible pages (defaults to 7)
  * @param useEllipsis Do not return ellipsis (defaults to false)
  */
 export function usePagination({
@@ -31,49 +31,56 @@ export function usePagination({
   pageSize,
   siblingCount = 1,
   maxVisiblePages = 7,
-  currentPage,
-  useEllipsis = false,
+  currentPage: currentPageIndex,
+  useEllipsis = true,
 }: usePaginationProps) {
   return useMemo(() => {
-    // Total number of pages needed (rounded up) to present data
+    // Total number of pages needed (rounded up) show every row
     const totalPages = Math.ceil(totalCount / pageSize);
+    const currentPage = currentPageIndex + 1;
 
-    // If the total number of pages needed is less than the max number of visible
-    // pages, or we do not want to use ellipsis, just return the range of numbers
+    // If the total number of pages needed is either
+    // 1. less than the max number of visible
+    // 2. the component has explicitly said it doesn't want ellipsis
     if (maxVisiblePages >= totalPages || !useEllipsis) {
-      return range(1, totalPages);
+      return range(1, totalPages); // return a simple array of numbers
     }
+    // Past this point, we're adding ellipsis ('...'),
 
-    // Past this point, we're adding ellipsis ('...'), we need to figure out where to put those.
-    // Get our active page's current index from left
+    // The index of earliest sibling to the left of the current page (or first)
     const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
-    // Get our active page's current index from Right
+    // The index of the furthest page to the right of the current page (or last)
     const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPages);
 
     // Show dots if more than 3 pages to left or right beyond the current page's sibling
-    const showLeftDots = leftSiblingIndex > 2;
-    const showRightDots = rightSiblingIndex < totalPages - 2;
+    const showLeftDots = leftSiblingIndex > siblingCount;
+    const showRightDots = rightSiblingIndex < totalPages - siblingCount;
 
-    const firstPageIndex = 1;
-    const lastPageIndex = totalPages;
-
+    // show dots right of active page
+    // 1, [2], 3, ..., 8
     if (!showLeftDots && showRightDots) {
-      // We want to show a number of pages beyond the active and siblings
-      let leftItemCount = 3 + 2 * siblingCount;
+      // create an array that shows the max number of page minus
+      // 1 for the ellipsis, and 1 for the last page
+      let leftItemCount = maxVisiblePages - 2;
       let leftRange = range(1, leftItemCount);
       return [...leftRange, DOTS, totalPages];
     }
 
+    // show dots left of active page
+    // 1, ..., 6, [7], 8
     if (showLeftDots && !showRightDots) {
-      // We want to show a number of pages beyond the active and siblings
-      let rightItemCount = 3 + 2 * siblingCount;
+      // create an array that shows the max number of page minus
+      // 1 for the ellipsis, and 1 for the last page
+      let rightItemCount = maxVisiblePages - 2;
       let rightRange = range(totalPages - rightItemCount + 1, totalPages);
-      return [firstPageIndex, DOTS, ...rightRange];
+      return [1, DOTS, ...rightRange];
     }
 
+    // show dots on both sides of active page
+    // 1, ..., 4, [5], 6, ..., 8
     if (showLeftDots && showRightDots) {
       let middleRange = range(leftSiblingIndex, rightSiblingIndex);
-      return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
+      return [1, DOTS, ...middleRange, DOTS, totalPages];
     }
-  }, [totalCount, pageSize, siblingCount, currentPage]);
+  }, [totalCount, pageSize, siblingCount, currentPageIndex]);
 }
