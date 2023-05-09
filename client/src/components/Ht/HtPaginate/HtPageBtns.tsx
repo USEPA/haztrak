@@ -31,8 +31,6 @@ export function HtPageBtns<T>({ table }: HtPageBtnsProps<T>) {
     maxVisiblePages: 5,
     useEllipsis: true,
   });
-  console.log('paginationRange', paginationRange);
-  console.log('total count', table.getFilteredRowModel().rows.length);
   if (!paginationRange) {
     return null;
   }

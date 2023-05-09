@@ -119,7 +119,9 @@ describe('RcraProfileSlice selectors', () => {
         <>
           <p>{myRcraSite ? Object.keys(myRcraSite).length : 'not defined'}</p>
           {myRcraSite
-            ? myRcraSite.map((site) => <p>{site.site.handler.epaSiteId}</p>)
+            ? myRcraSite.map((site, index) => (
+                <p key={`${site.site.handler.epaSiteId}-${index}`}>{site.site.handler.epaSiteId}</p>
+              ))
             : 'not defined'}
         </>
       );
@@ -143,7 +145,6 @@ describe('RcraProfileSlice selectors', () => {
         },
       },
     });
-    screen.debug();
     expect(screen.getByText('2')).toBeInTheDocument();
     expect(screen.queryByText(/Not Defined/i)).not.toBeInTheDocument();
   });
