@@ -21,7 +21,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { HtForm } from 'components/Ht';
 import { MtnRowActions } from 'components/Mtn/MtnRowActions';
 import React, { useState } from 'react';
 import { Button, Col, Form, Row, Table } from 'react-bootstrap';
@@ -31,7 +30,7 @@ const mtnDetailsSchema = z.object({
   manifestTrackingNumber: z.string(),
   signatureStatus: z.boolean(),
   submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image', 'NotSelected']),
-  status: z.string(),
+  status: z.enum(['Scheduled', 'Signed', 'Corrected', 'ReadyForSignature', 'Draft', 'InTransit']),
   actions: z.any().optional(),
 });
 
@@ -51,16 +50,15 @@ const columnHelper = createColumnHelper<MtnDetails>();
 const columns = [
   columnHelper.accessor('manifestTrackingNumber', {
     header: 'MTN',
-    enableColumnFilter: false,
     cell: (info) => info.getValue(), // example
   }),
   columnHelper.accessor('status', {
     header: 'Status',
-    enableColumnFilter: false,
     cell: (info) => {
       if (info.getValue() === 'ReadyForSignature') return 'Ready for Signature';
       else return info.getValue();
     },
+    enableGlobalFilter: false,
   }),
   columnHelper.accessor('submissionType', {
     header: 'Type',
@@ -70,25 +68,31 @@ const columns = [
       if (info.getValue() === 'DataImage5Copy') return 'Data + Image';
       else return info.getValue();
     },
+    enableGlobalFilter: false,
   }),
   columnHelper.accessor('actions', {
     header: 'Actions',
-    enableColumnFilter: false,
     cell: ({ row: { getValue } }: CellContext<MtnDetails, any>) => (
       <MtnRowActions mtn={getValue('manifestTrackingNumber')} />
     ),
+    enableGlobalFilter: false,
   }),
 ];
 
+/**
+ * A fuzzy filter utility function from React table v8 docs
+ * @param row
+ * @param columnId
+ * @param value
+ * @param addMeta
+ */
 const fuzzyFilter: FilterFn<MtnDetails> = (row, columnId, value, addMeta) => {
   // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value);
-
   // Store the itemRank info
   addMeta({
     itemRank,
   });
-
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
@@ -99,6 +103,7 @@ const fuzzyFilter: FilterFn<MtnDetails> = (row, columnId, value, addMeta) => {
  */
 export function MtnTable({ manifests }: MtnTableProps) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [searchValue, setSearchValue] = useState('');
   const [globalFilter, setGlobalFilter] = useState('');
   const table = useReactTable({
     columns,
@@ -125,11 +130,29 @@ export function MtnTable({ manifests }: MtnTableProps) {
     debugColumns: false,
   });
 
-  // @ts-ignore
   return (
     <>
       <div className="d-flex flex-row-reverse">
         <Col xs={5}>
+          <Form.Select
+            className="py-0 ms-2"
+            value={searchValue}
+            placeholder={'Status'}
+            onChange={(event) => {
+              setSearchValue(event.target.value);
+              setColumnFilters([{ id: 'status', value: event.target.value }]);
+            }}
+          >
+            <option value="">--</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="NotAssigned">Draft</option>
+            <option value="IntTransit">In Transit</option>
+            <option value="ReadyForSignature">Ready for Signature</option>
+            <option value="Signed">Signed</option>
+            <option value="Corrected">Corrected</option>
+          </Form.Select>
+        </Col>
+        <Col xs={3}>
           <Form.Control
             id={'mtnGlobalSearch'}
             value={globalFilter ?? ''}
