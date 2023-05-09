@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 import { useAppSelector } from 'store';
 import { getSiteByEpaId } from 'store/rcraProfileSlice/rcraProfile.slice';
 
-export function ManifestNew() {
+export function NewManifest() {
   useTitle('New Manifest');
   const { siteId } = useParams();
   const { control } = useForm();

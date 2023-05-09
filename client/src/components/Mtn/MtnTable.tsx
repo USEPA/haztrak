@@ -1,10 +1,3 @@
-import {
-  faBackwardFast,
-  faCaretLeft,
-  faCaretRight,
-  faForwardFast,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { rankItem } from '@tanstack/match-sorter-utils';
 import {
   CellContext,
@@ -21,18 +14,26 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { HtForm } from 'components/Ht';
+import { HtPageBtns, HtPageControls } from 'components/Ht';
 import { MtnRowActions } from 'components/Mtn/MtnRowActions';
 import React, { useState } from 'react';
-import { Button, Col, Form, Row, Table } from 'react-bootstrap';
+import { Col, Form, Table } from 'react-bootstrap';
+import Select from 'react-select';
 import { z } from 'zod';
 
 const mtnDetailsSchema = z.object({
   manifestTrackingNumber: z.string(),
   signatureStatus: z.boolean(),
   submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image', 'NotSelected']),
-  status: z.string(),
-  actions: z.any().optional(),
+  status: z.enum([
+    'Scheduled',
+    'Signed',
+    'Corrected',
+    'ReadyForSignature',
+    'Draft',
+    'InTransit',
+    'UnderCorrection',
+  ]),
 });
 
 /**
@@ -48,6 +49,7 @@ interface MtnTableProps {
 
 const columnHelper = createColumnHelper<MtnDetails>();
 
+// This defines our MTN table's columns and their behavior
 const columns = [
   columnHelper.accessor('manifestTrackingNumber', {
     header: 'MTN',
@@ -57,8 +59,10 @@ const columns = [
     header: 'Status',
     cell: (info) => {
       if (info.getValue() === 'ReadyForSignature') return 'Ready for Signature';
+      if (info.getValue() === 'UnderCorrection') return 'Under Correction';
       else return info.getValue();
     },
+    enableGlobalFilter: false,
   }),
   columnHelper.accessor('submissionType', {
     header: 'Type',
@@ -68,8 +72,10 @@ const columns = [
       if (info.getValue() === 'DataImage5Copy') return 'Data + Image';
       else return info.getValue();
     },
+    enableGlobalFilter: false,
   }),
-  columnHelper.accessor('actions', {
+  columnHelper.display({
+    id: 'actions',
     header: 'Actions',
     cell: ({ row: { getValue } }: CellContext<MtnDetails, any>) => (
       <MtnRowActions mtn={getValue('manifestTrackingNumber')} />
@@ -77,18 +83,38 @@ const columns = [
   }),
 ];
 
+/**
+ * A fuzzy filter utility function from React table v8 docs
+ * @param row
+ * @param columnId
+ * @param value
+ * @param addMeta
+ */
 const fuzzyFilter: FilterFn<MtnDetails> = (row, columnId, value, addMeta) => {
   // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value);
-
   // Store the itemRank info
   addMeta({
     itemRank,
   });
-
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
+
+interface StatusOption {
+  value: string;
+  label: string;
+}
+
+const statusOptions: readonly StatusOption[] = [
+  { value: 'Scheduled', label: 'Scheduled' },
+  { value: 'InTransit', label: 'In Transit' },
+  { value: 'ReadyForSignature', label: 'Ready to Sign' },
+  { value: 'Corrected', label: 'Corrected' },
+  { value: 'Signed', label: 'Signed' },
+  { value: 'NotAssigned', label: 'Draft' },
+  { value: 'UnderCorrection', label: 'Under Correction' },
+];
 
 /**
  * Returns a card with a table of manifest tracking numbers (MTN) and select details
@@ -96,6 +122,7 @@ const fuzzyFilter: FilterFn<MtnDetails> = (row, columnId, value, addMeta) => {
  */
 export function MtnTable({ manifests }: MtnTableProps) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [searchValue, setSearchValue] = useState<StatusOption | null>(null);
   const [globalFilter, setGlobalFilter] = useState('');
   const table = useReactTable({
     columns,
@@ -124,15 +151,34 @@ export function MtnTable({ manifests }: MtnTableProps) {
 
   return (
     <>
-      <Col xs={5}>
-        <HtForm.Label htmlFor={'mtnGlobalSearch'}>Global Search</HtForm.Label>
-        <Form.Control
-          id={'mtnGlobalSearch'}
-          value={globalFilter ?? ''}
-          onChange={(event) => setGlobalFilter(event.target.value)}
-          placeholder="Search manifests by all fields..."
-        />
-      </Col>
+      <div className="d-flex flex-row justify-content-end">
+        <Col xs={3}>
+          <Form.Control
+            id={'mtnGlobalSearch'}
+            value={globalFilter ?? ''}
+            onChange={(event) => setGlobalFilter(event.target.value)}
+            placeholder="Filter..."
+          />
+        </Col>
+        <Col xs={4} className="mx-2">
+          <Select
+            name="statusFilter"
+            value={searchValue}
+            onChange={(newValue) => {
+              setSearchValue(newValue);
+              setColumnFilters([{ id: 'status', value: newValue?.value ?? '' }]);
+            }}
+            options={statusOptions}
+            isClearable={true}
+            placeholder="Status"
+            classNames={{
+              control: () => 'form-select py-0 ms-2 rounded-3',
+              placeholder: () => 'p-0 m-0 ps-1',
+            }}
+            components={{ IndicatorSeparator: () => null, DropdownIndicator: () => null }}
+          />
+        </Col>
+      </div>
       <Table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -157,81 +203,8 @@ export function MtnTable({ manifests }: MtnTableProps) {
           ))}
         </tbody>
       </Table>
-      <div className="d-flex justify-content-center">
-        <Button
-          variant="outline-secondary"
-          className="p-1 mx-1"
-          onClick={() => table.setPageIndex(0)}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <FontAwesomeIcon icon={faBackwardFast} className="text-primary" />
-        </Button>
-        <Button
-          variant="outline-secondary"
-          className="p-1 mx-1"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <FontAwesomeIcon icon={faCaretLeft} className="text-primary" />
-        </Button>
-        <Button
-          variant="outline-secondary"
-          className="p-1 mx-1"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <FontAwesomeIcon icon={faCaretRight} className="text-primary" />
-        </Button>
-        <Button
-          variant="outline-secondary"
-          className="p-1 mx-1"
-          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-          disabled={!table.getCanNextPage()}
-        >
-          <FontAwesomeIcon icon={faForwardFast} className="text-primary" />
-        </Button>
-      </div>
-      <Row className="d-flex justify-content-between pt-2">
-        <Col>
-          {'Page '}
-          <strong>{table.getState().pagination.pageIndex + 1}</strong>
-          {' of '}
-          <strong>{table.getPageCount()}</strong>
-        </Col>
-        <Col>
-          <div className="d-flex align-content-center gap-1">
-            <Form.Label htmlFor={'mtnPageNumber'}>{'Go to page:'}</Form.Label>
-            <Form.Control
-              type="number"
-              id={'mtnPageNumber'}
-              value={table.getState().pagination.pageIndex + 1}
-              style={{ width: '4rem' }}
-              className="py-0 px-1"
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                table.setPageIndex(page);
-              }}
-            />
-          </div>
-        </Col>
-        <Col className="d-flex justify-content-end">
-          <Col xs={9} xl={7}>
-            <Form.Select
-              aria-label="page size"
-              value={table.getState().pagination.pageSize}
-              onChange={(e) => {
-                table.setPageSize(Number(e.target.value));
-              }}
-            >
-              {[10, 20, 50, 100].map((pageSize) => (
-                <option key={pageSize} value={pageSize}>
-                  Show {pageSize}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-        </Col>
-      </Row>
+      <HtPageBtns table={table} />
+      <HtPageControls table={table} />
     </>
   );
 }

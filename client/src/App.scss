@@ -16,6 +16,15 @@ $info: #009999;
   left: -0.25rem !important;
 }
 
+// Custom Pagination
+.page-item .page-link {
+  background: white;
+  margin-inline: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-radius: 50px !important;
+}
+
 .modal-90w {
   width: 90% !important;
   max-width: none !important;
