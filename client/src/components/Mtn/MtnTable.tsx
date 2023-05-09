@@ -17,7 +17,7 @@ import {
 import { HtPageBtns, HtPageControls } from 'components/Ht';
 import { MtnRowActions } from 'components/Mtn/MtnRowActions';
 import React, { useState } from 'react';
-import { Col, Form, Row, Table } from 'react-bootstrap';
+import { Col, Form, Table } from 'react-bootstrap';
 import Select from 'react-select';
 import { z } from 'zod';
 
@@ -34,7 +34,6 @@ const mtnDetailsSchema = z.object({
     'InTransit',
     'UnderCorrection',
   ]),
-  actions: z.any().optional(),
 });
 
 /**
@@ -50,6 +49,7 @@ interface MtnTableProps {
 
 const columnHelper = createColumnHelper<MtnDetails>();
 
+// This defines our MTN table's columns and their behavior
 const columns = [
   columnHelper.accessor('manifestTrackingNumber', {
     header: 'MTN',
@@ -74,12 +74,12 @@ const columns = [
     },
     enableGlobalFilter: false,
   }),
-  columnHelper.accessor('actions', {
+  columnHelper.display({
+    id: 'actions',
     header: 'Actions',
     cell: ({ row: { getValue } }: CellContext<MtnDetails, any>) => (
       <MtnRowActions mtn={getValue('manifestTrackingNumber')} />
     ),
-    enableGlobalFilter: false,
   }),
 ];
 
