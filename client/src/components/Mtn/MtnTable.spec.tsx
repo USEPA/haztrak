@@ -1,4 +1,6 @@
 import '@testing-library/jest-dom';
+import { fireEvent } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event/setup/index';
 import { Manifest } from 'components/Manifest';
 import { MtnTable } from 'components/Mtn';
 import React from 'react';
@@ -24,5 +26,18 @@ describe('MtnTable', () => {
     const mtnData = [createMockMtnDetails(), createMockMtnDetails()];
     renderWithProviders(<MtnTable manifests={mtnData} />);
     expect(await screen.findAllByText(DEFAULT_MTN_DETAILS.manifestTrackingNumber)).toHaveLength(2);
+  });
+  test('filters', async () => {
+    const zeroMtn = '000000000ELC';
+    const oneMtn = '111111111ELC';
+    const mtnData = [
+      createMockMtnDetails({ manifestTrackingNumber: zeroMtn }),
+      createMockMtnDetails({ manifestTrackingNumber: oneMtn }),
+    ];
+    renderWithProviders(<MtnTable manifests={mtnData} />);
+    const filterInput = screen.getByPlaceholderText<HTMLInputElement>('Filter...');
+    fireEvent.change(filterInput, { target: { value: '00000' } });
+    expect(await screen.queryByText(oneMtn)).toBeNull();
+    expect(await screen.queryByText(zeroMtn)).not.toBeNull();
   });
 });
