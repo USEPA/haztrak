@@ -1,10 +1,8 @@
 import '@testing-library/jest-dom';
 import { fireEvent } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event/setup/index';
-import { Manifest } from 'components/Manifest';
 import { MtnTable } from 'components/Mtn';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test-utils';
+import { renderWithProviders, screen } from 'test-utils';
 import { MtnDetails } from 'components/Mtn';
 
 const DEFAULT_MTN_DETAILS: MtnDetails = {

@@ -17,9 +17,11 @@ import {
 import { HtPageBtns, HtPageControls } from 'components/Ht';
 import { MtnRowActions } from 'components/Mtn/MtnRowActions';
 import React, { useState } from 'react';
-import { Col, Form, Table } from 'react-bootstrap';
+import { Button, Col, Form, Table } from 'react-bootstrap';
 import Select from 'react-select';
 import { z } from 'zod';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 
 const mtnDetailsSchema = z.object({
   manifestTrackingNumber: z.string(),
@@ -77,6 +79,7 @@ const columns = [
   columnHelper.display({
     id: 'actions',
     header: 'Actions',
+
     cell: ({ row: { getValue } }: CellContext<MtnDetails, any>) => (
       <MtnRowActions mtn={getValue('manifestTrackingNumber')} />
     ),
@@ -185,9 +188,48 @@ export function MtnTable({ manifests }: MtnTableProps) {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
+                  {/* if sortable, column header is clickable */}
+                  {header.column.getCanSort() ? (
+                    header.isPlaceholder ? null : (
+                      <Button
+                        className="bg-transparent border-0 cursor-pointer select-none p-0 text-dark fw-bolder"
+                        {...{
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
+                        {/* If column is sortable */}
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {{
+                          // Column sort icon when ascending order
+                          asc: (
+                            <>
+                              {' '}
+                              <FontAwesomeIcon icon={faSortUp} className="text-info" />
+                            </>
+                          ),
+                          // Column sort icon when descending order
+                          desc: (
+                            <>
+                              {' '}
+                              <FontAwesomeIcon icon={faSortDown} className="text-info" />
+                            </>
+                          ),
+                        }[header.column.getIsSorted() as string] ?? (
+                          <>
+                            {' '}
+                            {/* Default column sort icon when not sorting by this column*/}
+                            <FontAwesomeIcon icon={faSort} className="text-info" />
+                          </>
+                        )}
+                      </Button>
+                    )
+                  ) : (
+                    // If column is defined a 'display' in our ColumnDef (columnHelpers)
+                    // Just display the 'Header' value as a string
+                    <div className="text-center">
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                    </div>
+                  )}
                 </th>
               ))}
             </tr>
