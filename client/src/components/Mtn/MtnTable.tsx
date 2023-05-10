@@ -17,7 +17,7 @@ import {
 import { HtPageBtns, HtPageControls } from 'components/Ht';
 import { MtnRowActions } from 'components/Mtn/MtnRowActions';
 import React, { useState } from 'react';
-import { Col, Form, Table } from 'react-bootstrap';
+import { Button, Col, Form, Table } from 'react-bootstrap';
 import Select from 'react-select';
 import { z } from 'zod';
 
@@ -77,6 +77,7 @@ const columns = [
   columnHelper.display({
     id: 'actions',
     header: 'Actions',
+
     cell: ({ row: { getValue } }: CellContext<MtnDetails, any>) => (
       <MtnRowActions mtn={getValue('manifestTrackingNumber')} />
     ),
@@ -185,9 +186,26 @@ export function MtnTable({ manifests }: MtnTableProps) {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
+                  {header.column.getCanSort() ? (
+                    header.isPlaceholder ? null : (
+                      <Button
+                        className="bg-transparent border-0 cursor-pointer select-none p-0 text-dark fw-bolder"
+                        {...{
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {{
+                          asc: ' 🔼',
+                          desc: ' 🔽',
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </Button>
+                    )
+                  ) : (
+                    <div className="text-center">
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                    </div>
+                  )}
                 </th>
               ))}
             </tr>
