@@ -153,9 +153,8 @@ export const manifestSchema = z
     return true;
   })
   .refine(
-    (manifest) => {
-      return manifest.transporters.length >= 1;
-    },
+    // check that the manifest has at least 1 transporter
+    (manifest) => manifest.transporters.length >= 1,
     { path: ['transporters'], message: 'A manifest requires at least 1 transporters' }
   );
 
