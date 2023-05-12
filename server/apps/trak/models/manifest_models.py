@@ -13,6 +13,7 @@ from apps.trak.models import Handler
 from .base_models import TrakBaseManager, TrakBaseModel
 from .transporter_models import Transporter
 from .waste_models import WasteLine
+from .signature_models import ESignature
 
 logger = logging.getLogger(__name__)
 
@@ -400,6 +401,59 @@ class ImportInfo(TrakBaseModel):
     port_of_entry = models.ForeignKey(
         "PortOfEntry",
         on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+
+class CorrectionInfo(TrakBaseModel):
+    """
+    Contains correction information.
+    Shall not be provided for Save  and Update Manifest services.
+    will be returned by Get manifest service
+    """
+
+    class Meta:
+        verbose_name = "Correction Info"
+        verbose_name_plural = "Correction Info"
+
+    class Role(models.TextChoices):
+        INDUSTRY = "IN", _("Industry")
+        PPC = "PP", _("Ppc")
+        EPA = "EP", _("Epa")
+        STATE = "ST", _("State")
+
+    version_number = models.IntegerField(
+        null=True,
+        blank=True,
+    )
+    active = models.BooleanField(
+        null=True,
+        blank=True,
+    )
+    ppc_active = models.BooleanField(
+        null=True,
+        blank=True,
+    )
+    electronic_signature_info = models.ForeignKey(
+        "ESignature",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+    epa_site_id = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+    )
+    initiator_role = models.CharField(
+        choices=Role.choices,
+        max_length=2,
+        null=True,
+        blank=True,
+    )
+    update_role = models.CharField(
+        choices=Role.choices,
+        max_length=2,
         null=True,
         blank=True,
     )
