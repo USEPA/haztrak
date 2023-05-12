@@ -156,7 +156,7 @@ export const manifestSchema = z
     (manifest) => {
       return manifest.transporters.length >= 1;
     },
-    { path: ['transporters'], message: 'A manifest requires 1 of more transporters' }
+    { path: ['transporters'], message: 'A manifest requires at least 1 transporters' }
   );
 
 const rejectionInfoSchema = z.object({
