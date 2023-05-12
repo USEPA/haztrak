@@ -5,7 +5,7 @@ import { ContactForm, PhoneForm } from './Contact';
 import { Transporter, TransporterTable } from './Transporter';
 import { WasteLineTable, AddWasteLine } from './WasteLine';
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { QuickerSignData } from './QuickerSign';
@@ -112,7 +112,8 @@ export function ManifestForm({
     manifestStatus === 'InTransit' ||
     manifestStatus === 'ReadyForSignature';
 
-  // console.log('errors', errors);
+  console.log(manifestData);
+  if (errors) console.log('errors', errors);
 
   return (
     <>
@@ -406,7 +407,11 @@ export function ManifestForm({
               <ErrorMessage
                 errors={errors}
                 name={'transporters'}
-                render={({ message }) => <span className="text-danger">{message}</span>}
+                render={({ message }) => (
+                  <Alert variant="danger" className="text-center m-3">
+                    {message}
+                  </Alert>
+                )}
               />
             </HtCard.Body>
           </HtCard>
