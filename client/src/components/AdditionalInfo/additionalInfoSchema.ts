@@ -10,9 +10,9 @@ export const additionalInfoCommentSchema = z.object({
 });
 
 export const additionalInfoSchema = z.object({
-  originalManifestTrackingNumbers: z.string().array().optional(),
-  newManifestDestination: z.enum(['Tsdf', 'OriginalGenerator']).optional(),
-  consentNumber: z.string().optional(),
+  originalManifestTrackingNumbers: z.string().array().optional().nullable(),
+  newManifestDestination: z.enum(['Tsdf', 'OriginalGenerator']).optional().nullable(),
+  consentNumber: z.string().optional().nullable(),
   comments: additionalInfoCommentSchema.array().optional(),
 });
 

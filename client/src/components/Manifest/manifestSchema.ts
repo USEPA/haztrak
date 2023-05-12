@@ -151,7 +151,13 @@ export const manifestSchema = z
   .refine(() => {
     // ToDo Validate that if submission Type is FullElectronic, generator.canEsign is true
     return true;
-  });
+  })
+  .refine(
+    (manifest) => {
+      return manifest.transporters.length >= 1;
+    },
+    { path: ['transporters'], message: 'A manifest requires 1 of more transporters' }
+  );
 
 const rejectionInfoSchema = z.object({
   rejectionType: z.enum(['FullRejection', 'PartialRejection']),
