@@ -11,8 +11,8 @@ import rcraProfileReducer, {
   getProfile,
   RcraProfileSite,
   RcraProfileState,
-  getSiteByEpaId,
-  userSiteSelector,
+  siteByEpaIdSelector,
+  userRcraSitesSelector,
 } from './rcraProfile.slice';
 
 const initialState: RcraProfileState = {
@@ -83,7 +83,7 @@ interface TestComponentProps {
 }
 
 function TestComponent({ siteId }: TestComponentProps) {
-  const rcraSite = useAppSelector(getSiteByEpaId(siteId));
+  const rcraSite = useAppSelector(siteByEpaIdSelector(siteId));
   return (
     <>
       <p>{rcraSite?.epaSiteId}</p>
@@ -114,7 +114,7 @@ describe('RcraProfileSlice selectors', () => {
   test('retrieve all RcraProfileSites', () => {
     const mySite = createMockSite();
     const TestComp = () => {
-      const myRcraSite = useAppSelector(userSiteSelector);
+      const myRcraSite = useAppSelector(userRcraSitesSelector);
       return (
         <>
           <p>{myRcraSite ? Object.keys(myRcraSite).length : 'not defined'}</p>

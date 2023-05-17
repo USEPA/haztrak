@@ -89,7 +89,6 @@ const userSlice = createSlice({
 /**
  * Get the current user's username from the Redux store
  */
-const selectUserName = (state: RootState) => state.user.user;
+export const selectUserName = (state: RootState) => state.user.user;
 
 export default userSlice.reducer;
-export { selectUserName };

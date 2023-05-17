@@ -155,7 +155,7 @@ const rcraProfileSlice = createSlice({
  * Retrieve a RcraSite that the user has access to in their RcraProfile by the site's EPA ID number
  * @param epaId
  */
-const getSiteByEpaId = (epaId: string | undefined) =>
+export const siteByEpaIdSelector = (epaId: string | undefined) =>
   createSelector(
     (state: { rcraProfile: RcraProfileState }) => state.rcraProfile.rcraSites,
     (rcraSites: Record<string, RcraProfileSite> | undefined) => {
@@ -173,13 +173,14 @@ const getSiteByEpaId = (epaId: string | undefined) =>
     }
   );
 
-const selectRcraSites = (state: { rcraProfile: RcraProfileState }) => state.rcraProfile.rcraSites;
+export const selectRcraSites = (state: { rcraProfile: RcraProfileState }) =>
+  state.rcraProfile.rcraSites;
 
 /**
  * Retrieve a RcraSite that the user has access to in their RcraProfile by the site's EPA ID number
  * @param epaId
  */
-const userSiteSelector = createSelector(
+export const userRcraSitesSelector = createSelector(
   selectRcraSites,
   (rcraSites: Record<string, RcraProfileSite> | undefined) => {
     if (!rcraSites) return undefined;
@@ -191,11 +192,10 @@ const userSiteSelector = createSelector(
 /**
  * Retrieve a user's RcraProfile from the Redux store
  */
-const selectRcraProfile = createSelector(
+export const selectRcraProfile = createSelector(
   (state: RootState) => state.rcraProfile,
   (rcraProfile: RcraProfileState) => rcraProfile
 );
 
 export default rcraProfileSlice.reducer;
 export const { updateProfile } = rcraProfileSlice.actions;
-export { selectRcraSites, userSiteSelector, selectRcraProfile, getSiteByEpaId };

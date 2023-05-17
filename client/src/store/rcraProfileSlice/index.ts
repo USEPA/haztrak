@@ -1,9 +1,9 @@
 import rcraProfileReducers, { getProfile, updateProfile } from './rcraProfile.slice';
 import {
   selectRcraSites,
-  userSiteSelector,
+  userRcraSitesSelector,
   selectRcraProfile,
-  getSiteByEpaId,
+  siteByEpaIdSelector,
 } from './rcraProfile.slice';
 
 export default rcraProfileReducers;
@@ -11,7 +11,7 @@ export {
   getProfile,
   updateProfile,
   selectRcraProfile,
-  userSiteSelector,
+  userRcraSitesSelector,
   selectRcraSites,
-  getSiteByEpaId,
+  siteByEpaIdSelector,
 };
