@@ -91,4 +91,9 @@ const userSlice = createSlice({
  */
 export const selectUserName = (state: RootState) => state.user.user;
 
+/**
+ * Select the current user
+ */
+export const selectUser = (state: RootState) => state.user;
+
 export default userSlice.reducer;

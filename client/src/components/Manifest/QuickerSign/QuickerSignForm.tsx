@@ -5,7 +5,7 @@ import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import React from 'react';
 import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { selectUserName, UserState } from 'store/userSlice/user.slice';
+import { selectUserName } from 'store/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { addNotification, useAppDispatch, useAppSelector } from 'store';
 import { htApi } from 'services';

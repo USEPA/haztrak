@@ -5,10 +5,10 @@ import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { RootState, useAppDispatch, useAppSelector } from 'store';
+import { useAppDispatch, useAppSelector } from 'store';
 import { getExampleTask } from 'store/notificationSlice/notification.slice';
 import { getProfile } from 'store/rcraProfileSlice';
-import { selectUserName, UserState } from 'store/userSlice/user.slice';
+import { selectUserName } from 'store/userSlice/user.slice';
 import { HtButton, HtCard } from 'components/Ht';
 
 /**
