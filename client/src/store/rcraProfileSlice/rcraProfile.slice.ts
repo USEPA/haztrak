@@ -177,7 +177,7 @@ export const getSiteByEpaId = (epaId: string | undefined) =>
  * Retrieve a RcraSite that the user has access to in their RcraProfile by the site's EPA ID number
  * @param epaId
  */
-export const getUserSites = createSelector(
+export const selectUserSites = createSelector(
   (state: { rcraProfile: RcraProfileState }) => state.rcraProfile.rcraSites,
   (rcraSites: Record<string, RcraProfileSite> | undefined) => {
     if (!rcraSites) return undefined;

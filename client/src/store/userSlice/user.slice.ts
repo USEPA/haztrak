@@ -85,6 +85,7 @@ const userSlice = createSlice({
       });
   },
 });
+
 /**
  * Get the current user's username from the Redux store
  */
