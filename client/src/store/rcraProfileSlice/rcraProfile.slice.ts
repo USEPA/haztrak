@@ -186,5 +186,13 @@ export const getUserSites = createSelector(
   }
 );
 
+/**
+ * Retrieve a user's RcraProfile from the Redux store
+ */
+export const selectRcraProfile = createSelector(
+  (state: RootState) => state.rcraProfile,
+  (rcraProfile: RcraProfileState) => rcraProfile
+);
+
 export default rcraProfileSlice.reducer;
 export const { updateProfile } = rcraProfileSlice.actions;

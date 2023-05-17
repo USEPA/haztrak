@@ -16,12 +16,12 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store';
 import './App.scss';
 import { getProfile } from 'store/rcraProfileSlice';
-import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { RcraProfileState, selectRcraProfile } from 'store/rcraProfileSlice/rcraProfile.slice';
 import { selectUserName } from 'store/userSlice/user.slice';
 
 function App(): ReactElement {
   const userName = useAppSelector(selectUserName);
-  const profile = useAppSelector<RcraProfileState>((state) => state.rcraProfile);
+  const profile = useAppSelector(selectRcraProfile);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
