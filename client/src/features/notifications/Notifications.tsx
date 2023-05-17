@@ -6,7 +6,7 @@ import { useTitle } from 'hooks';
 import React from 'react';
 import { Col, Container, Table } from 'react-bootstrap';
 import { useAppSelector } from 'store';
-import { NotificationState } from 'store/notificationSlice/notification.slice';
+import { HtNotification, selectNotifications } from 'store/notificationSlice/notification.slice';
 
 /**
  * Table showing the user's current notifications
@@ -14,7 +14,7 @@ import { NotificationState } from 'store/notificationSlice/notification.slice';
  */
 export function Notifications() {
   useTitle('Notifications');
-  const notificationState: NotificationState = useAppSelector((state) => state.notification);
+  const notifications: Array<HtNotification> = useAppSelector(selectNotifications);
 
   return (
     <>
@@ -23,7 +23,7 @@ export function Notifications() {
           <HtCard>
             <HtCard.Header title="Notifications"></HtCard.Header>
             <HtCard.Body>
-              {notificationState.notifications.length === 0 ? (
+              {notifications.length === 0 ? (
                 <div className="text-center">
                   <h3>Nothing to see here, you're all caught up!</h3>
                   <FontAwesomeIcon className="text-info" icon={faFaceSmile} size={'6x'} />
@@ -39,7 +39,7 @@ export function Notifications() {
                     </tr>
                   </thead>
                   <tbody>
-                    {notificationState.notifications.map((notification) => {
+                    {notifications.map((notification) => {
                       return (
                         <NotificationRow key={notification.uniqueId} notification={notification} />
                       );

@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import { useAppSelector } from 'store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { selectNotifications } from 'store/notificationSlice';
 
 export function NotificationBtn() {
-  const notificationState = useAppSelector((state) => state.notification);
-  const numberAlerts = notificationState.notifications.length;
+  const notifications = useAppSelector(selectNotifications);
+  const numberAlerts = notifications.length;
   const alertsExists: boolean = numberAlerts > 0;
 
   return (

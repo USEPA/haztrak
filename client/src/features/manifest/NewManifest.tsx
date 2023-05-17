@@ -9,13 +9,13 @@ import { Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from 'store';
-import { getSiteByEpaId } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { siteByEpaIdSelector } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 export function NewManifest() {
   useTitle('New Manifest');
   const { siteId } = useParams();
   const { control } = useForm();
-  const rcraSite = useAppSelector(getSiteByEpaId(siteId));
+  const rcraSite = useAppSelector(siteByEpaIdSelector(siteId));
   const [manifestingSite, setManifestingSite] = useState<RcraSite | undefined | null>(rcraSite);
   const [manifestingSiteType, setManifestingSiteType] = useState<RcraSiteType | undefined>(
     manifestingSite?.siteType === 'Generator' ? manifestingSite.siteType : undefined

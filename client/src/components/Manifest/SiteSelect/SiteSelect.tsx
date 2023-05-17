@@ -3,8 +3,8 @@ import { RcraSite } from 'components/RcraSite';
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 import Select from 'react-select';
-import { RootState, useAppSelector } from 'store';
-import { getUserSites, RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { useAppSelector } from 'store';
+import { userRcraSitesSelector } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 interface SiteSelectProps<T> {
   control: Control;
@@ -17,8 +17,8 @@ export function SiteSelect({
   selectedSite,
   setSelectedSite,
 }: SiteSelectProps<RcraSite | undefined | null>) {
-  const rcraSite = useAppSelector(getUserSites);
-  const siteOptions = rcraSite?.map((site) => site.site.handler);
+  const userRcraSites = useAppSelector(userRcraSitesSelector);
+  const siteOptions = userRcraSites?.map((site) => site.site.handler);
   return (
     <>
       <HtForm.Label htmlFor="site">Site</HtForm.Label>

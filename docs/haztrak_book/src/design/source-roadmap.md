@@ -38,9 +38,15 @@ directory.
 
 ## Notable Directories
 
-[`/server/apps/trak`](https://github.com/USEPA/haztrak/tree/main/server/apps/trak)
-This is a Django reusable app, it's self-encapsulating, it contains
-all the necessary models, serializers, views use electronic manifests.
+[`server/apps`](https://github.com/USEPA/haztrak/tree/main/server/apps/trak)
+This directory houses all our Django apps, really just for organizational purposes.
+
+[`server/apps/trak`](https://github.com/USEPA/haztrak/tree/main/server/apps/trak)
+A Django reusable app that contains models related to hazardous waste tracking (electronic manifests)
+It depends on the `sites` app, the Handler model contains a foreign key to the RcraSite model (many-to-one relationship).
+
+[`server/apps/sites`](https://github.com/USEPA/haztrak/tree/main/server/apps/trak)
+A Django reusable app that contains models related to RCRAInfo sites.
 
 [`client/src/features`](https://github.com/USEPA/haztrak/tree/main/client/src/features)
 This directory, theoretically, contains the high level logic for

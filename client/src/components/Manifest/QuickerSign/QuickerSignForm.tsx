@@ -5,9 +5,9 @@ import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import React from 'react';
 import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { UserState } from 'store/userSlice/user.slice';
+import { selectUserName } from 'store/userSlice';
 import { useNavigate } from 'react-router-dom';
-import { addNotification, RootState, useAppDispatch, useAppSelector } from 'store';
+import { addNotification, useAppDispatch, useAppSelector } from 'store';
 import { htApi } from 'services';
 import { AxiosError, AxiosResponse } from 'axios';
 import { QuickerSignature } from 'components/Manifest/QuickerSign/quickerSignSchema';
@@ -30,11 +30,11 @@ interface QuickerSignProps {
  * @constructor
  */
 export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSignProps) {
-  const { user } = useAppSelector<UserState>((state: RootState) => state.user);
+  const userName = useAppSelector(selectUserName);
   const dispatch = useAppDispatch();
   const { register, handleSubmit, setValue } = useForm<QuickerSignature>({
     defaultValues: {
-      printedSignatureName: user,
+      printedSignatureName: userName,
       printedSignatureDate: new Date().toISOString().slice(0, -8),
     },
   });
