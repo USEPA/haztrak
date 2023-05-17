@@ -11,9 +11,9 @@ from apps.sites.models import RcraSiteType, RcraStates
 from apps.trak.models import Handler
 
 from .base_models import TrakBaseManager, TrakBaseModel
+from .signature_models import ESignature
 from .transporter_models import Transporter
 from .waste_models import WasteLine
-from .signature_models import ESignature
 
 logger = logging.getLogger(__name__)
 
@@ -404,6 +404,7 @@ class ImportInfo(TrakBaseModel):
         null=True,
         blank=True,
     )
+
 
 class CorrectionInfo(TrakBaseModel):
     """
