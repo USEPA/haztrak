@@ -5,8 +5,7 @@ import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from 'store';
-import { getProfile } from 'store/rcraProfileSlice';
-import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { getProfile, selectRcraProfile } from 'store/rcraProfileSlice';
 
 /**
  * Display user profile
@@ -14,7 +13,7 @@ import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
  */
 export function Profile(): ReactElement {
   const dispatch = useAppDispatch();
-  const profile = useAppSelector<RcraProfileState>((state) => state.rcraProfile);
+  const profile = useAppSelector(selectRcraProfile);
   useTitle('Profile');
 
   useEffect(() => {
