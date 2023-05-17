@@ -16,8 +16,8 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store';
 import './App.scss';
 import { getProfile } from 'store/rcraProfileSlice';
-import { RcraProfileState, selectRcraProfile } from 'store/rcraProfileSlice/rcraProfile.slice';
-import { selectUserName } from 'store/userSlice/user.slice';
+import { selectRcraProfile } from 'store/rcraProfileSlice';
+import { selectUserName } from 'store/userSlice';
 
 function App(): ReactElement {
   const userName = useAppSelector(selectUserName);

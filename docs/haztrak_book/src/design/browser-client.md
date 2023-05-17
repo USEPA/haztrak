@@ -28,7 +28,8 @@ We use two naming conventions for selectors:
 
 ```typescript
 // Selects the `user` field from the state.
-import { useAppSelector } from 'src/store/hooks';
+import { useAppSelector } from 'store/hooks';
+import { selectUserName } from 'store/userSlice';
 
-const userName = useAppSelector(selectUser);
+const userName = useAppSelector(selectUserName);
 ```
