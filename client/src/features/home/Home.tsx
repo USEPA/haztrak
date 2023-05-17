@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { RootState, useAppDispatch, useAppSelector } from 'store';
 import { getExampleTask } from 'store/notificationSlice/notification.slice';
 import { getProfile } from 'store/rcraProfileSlice';
-import { UserState } from 'store/userSlice/user.slice';
+import { selectUserName, UserState } from 'store/userSlice/user.slice';
 import { HtButton, HtCard } from 'components/Ht';
 
 /**
@@ -18,12 +18,12 @@ import { HtButton, HtCard } from 'components/Ht';
 export function Home(): ReactElement {
   useTitle(`Haztrak`, false, true);
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector<UserState>((state: RootState) => state.user);
+  const userName = useAppSelector(selectUserName);
 
   useEffect(() => {
     // get user profile information when the user changes
     dispatch(getProfile());
-  }, [user]);
+  }, [userName]);
 
   return (
     <Container className="py-2">

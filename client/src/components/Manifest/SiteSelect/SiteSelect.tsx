@@ -3,8 +3,8 @@ import { RcraSite } from 'components/RcraSite';
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 import Select from 'react-select';
-import { RootState, useAppSelector } from 'store';
-import { userRcraSitesSelector, RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { useAppSelector } from 'store';
+import { userRcraSitesSelector } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 interface SiteSelectProps<T> {
   control: Control;
