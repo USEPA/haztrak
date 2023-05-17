@@ -13,19 +13,20 @@ import { Sites } from 'features/haztrakSite';
 import React, { ReactElement, useEffect } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { RootState, useAppDispatch, useAppSelector } from 'store';
+import { useAppDispatch, useAppSelector } from 'store';
 import './App.scss';
 import { getProfile } from 'store/rcraProfileSlice';
 import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { selectUserName } from 'store/userSlice/user.slice';
 
 function App(): ReactElement {
-  const { user } = useAppSelector((state: RootState) => state.user);
+  const userName = useAppSelector(selectUserName);
   const profile = useAppSelector<RcraProfileState>((state) => state.rcraProfile);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (user) {
+    if (userName) {
       dispatch(getProfile());
     }
   }, [profile.user]);
@@ -41,7 +42,7 @@ function App(): ReactElement {
               <Route
                 path="/"
                 element={
-                  <PrivateRoute authUser={user}>
+                  <PrivateRoute authUser={userName}>
                     <Home />
                   </PrivateRoute>
                 }
@@ -49,7 +50,7 @@ function App(): ReactElement {
               <Route
                 path="/notifications"
                 element={
-                  <PrivateRoute authUser={user}>
+                  <PrivateRoute authUser={userName}>
                     <Notifications />
                   </PrivateRoute>
                 }
@@ -57,7 +58,7 @@ function App(): ReactElement {
               <Route
                 path="/profile/*"
                 element={
-                  <PrivateRoute authUser={user}>
+                  <PrivateRoute authUser={userName}>
                     <Profile />
                   </PrivateRoute>
                 }
@@ -65,15 +66,15 @@ function App(): ReactElement {
               <Route
                 path="/site/*"
                 element={
-                  <PrivateRoute authUser={user}>
-                    <Sites user={user ? user : ''} />
+                  <PrivateRoute authUser={userName}>
+                    <Sites user={userName ? userName : ''} />
                   </PrivateRoute>
                 }
               />
               <Route
                 path="/manifest/*"
                 element={
-                  <PrivateRoute authUser={user}>
+                  <PrivateRoute authUser={userName}>
                     <Manifest />
                   </PrivateRoute>
                 }

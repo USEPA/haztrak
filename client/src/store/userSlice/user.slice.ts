@@ -1,5 +1,7 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { RcraProfileSite, RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { RootState } from 'store/rootStore';
 
 /**
  * The Redux stored information on the current haztrak user
@@ -83,5 +85,9 @@ const userSlice = createSlice({
       });
   },
 });
+export const selectUserName = createSelector(
+  (state: RootState) => state.user,
+  (user: UserState) => user.user
+);
 
 export default userSlice.reducer;
