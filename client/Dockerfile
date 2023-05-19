@@ -6,6 +6,13 @@ COPY . .
 RUN npm ci --silent
 RUN npm run build
 
+# local
+FROM builder as local
+WORKDIR /app
+EXPOSE 3000
+RUN npm install
+CMD ["npm", "start"]
+
 # Bundle stage
 FROM nginx:1.21.0-alpine as production
 WORKDIR /app
