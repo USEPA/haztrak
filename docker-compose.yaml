@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   ht-server:
-    container_name: ht_server
+    container_name: ht-server
     restart: unless-stopped
     build: ./server
     ports:
@@ -35,14 +35,14 @@ services:
         condition: service_healthy
 
   ht-redis:
-    container_name: ht_redis
+    container_name: ht-redis
     image: 'redis:alpine'
     ports:
       - '6379:6379'
 
   ht-celery-worker:
     restart: unless-stopped
-    container_name: ht_celery_worker
+    container_name: ht-celery-worker
     build: ./server
     volumes:
       - ./server:/app
@@ -63,7 +63,7 @@ services:
 
   ht-celery-beat:
     restart: unless-stopped
-    container_name: ht_celery_beat
+    container_name: ht-celery-beat
     build: ./server
     volumes:
       - ./server:/app
@@ -84,7 +84,7 @@ services:
 
   ht-postgres:
     restart: unless-stopped
-    container_name: ht_postgres
+    container_name: ht-postgres
     image: 'postgres:14'
     environment:
       POSTGRES_DB: ${HT_DB_NAME}
@@ -101,7 +101,7 @@ services:
       - development:/var/lib/postgresql/data
 
   ht-client:
-    container_name: ht_client
+    container_name: ht-client
     image: 'node:18'
     ports:
       - '3000:3000'

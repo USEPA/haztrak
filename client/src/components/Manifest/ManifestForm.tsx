@@ -112,8 +112,8 @@ export function ManifestForm({
     manifestStatus === 'InTransit' ||
     manifestStatus === 'ReadyForSignature';
 
-  console.log(manifestData);
-  if (errors) console.log('errors', errors);
+  // console.log(manifestData);
+  // if (errors) console.log('errors', errors);
 
   return (
     <>
