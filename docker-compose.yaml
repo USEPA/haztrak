@@ -1,9 +1,12 @@
 version: '3.9'
 services:
   server:
-    container_name: ht_server
+    container_name: ht-server
     restart: unless-stopped
-    build: ./server
+    image: haztrak-server
+    build:
+      context: ./server
+      target: dev
     ports:
       - '8000:8000'
     volumes:
@@ -35,15 +38,15 @@ services:
         condition: service_healthy
 
   redis:
-    container_name: ht_redis
+    container_name: ht-redis
     image: 'redis:alpine'
     ports:
       - '6379:6379'
 
   celery-worker:
     restart: unless-stopped
-    container_name: ht_celery_worker
-    build: ./server
+    container_name: ht-celery-worker
+    image: haztrak-server
     volumes:
       - ./server:/app
     environment:
@@ -63,8 +66,8 @@ services:
 
   celery-beat:
     restart: unless-stopped
-    container_name: ht_celery_beat
-    build: ./server
+    container_name: celery-beat
+    image: haztrak-server
     volumes:
       - ./server:/app
     environment:
@@ -84,7 +87,7 @@ services:
 
   postgres:
     restart: unless-stopped
-    container_name: ht_postgres
+    container_name: postgres
     image: 'postgres:14'
     environment:
       POSTGRES_DB: ${HT_DB_NAME}
@@ -101,8 +104,10 @@ services:
       - development:/var/lib/postgresql/data
 
   client:
-    container_name: ht_client
-    image: 'node:18'
+    container_name: ht-client
+    build:
+      context: ./client
+      target: dev
     ports:
       - '3000:3000'
     volumes:
