@@ -18,7 +18,7 @@
   - [Continuous Delivery (CD)](development/cd.md)
 - [Deployment](deployment/index.md)
   - [Configuration](deployment/configuration.md)
-  - [Deploying to AWS](deployment/aws-deployment.md)
+  - [Containerization](deployment/containerization.md)
 - [References](references/index.md)
   - [Demos](references/demos.md)
   - [Notes for Future Maintainers](references/future-maintainers.md)

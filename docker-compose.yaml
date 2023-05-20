@@ -6,6 +6,7 @@ services:
     image: haztrak-server
     build:
       context: ./server
+      target: dev
     ports:
       - '8000:8000'
     volumes:
@@ -104,10 +105,9 @@ services:
 
   client:
     container_name: ht-client
-    #    image: 'node:18'
     build:
       context: ./client
-      target: local
+      target: dev
     ports:
       - '3000:3000'
     volumes:

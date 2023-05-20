@@ -16,7 +16,7 @@ ENV VIRTUAL_ENV="/opt/venv"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # local
-FROM builder as local
+FROM builder as dev
 EXPOSE 8000
 RUN python manage.py makemigrations
 RUN python manage.py migrate

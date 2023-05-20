@@ -7,7 +7,7 @@ RUN npm ci --silent
 RUN npm run build
 
 # local development
-FROM builder as local
+FROM builder as dev
 WORKDIR /app
 EXPOSE 3000
 RUN npm install
