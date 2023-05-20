@@ -34,6 +34,9 @@ cp ./configs/.env.dev .env
 docker compose up --build
 ```
 
+Don't forget the `--build` flag, or you'll be running the last built image instead of the Dockerfile's build target
+that we've specified in the [docker-compose.yaml](https://github.com/USEPA/haztrak/blob/main/docker-compose.yaml) file.
+
 ## Fixtures
 
 - On start, fixtures will be loaded to the database, including 2 users to aid local development.

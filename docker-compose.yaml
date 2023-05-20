@@ -103,7 +103,10 @@ services:
 
   client:
     container_name: ht-client
-    image: 'node:18'
+    #    image: 'node:18'
+    build:
+      context: ./client
+      target: local
     ports:
       - '3000:3000'
     volumes:
