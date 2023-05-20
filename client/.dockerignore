@@ -2,8 +2,6 @@
 .dockerignore
 README.md
 node_modules/
-**/*.spec.tsx
-**/*.spec.ts
 **/.vscode
 **/.idea
 **/*.bak
