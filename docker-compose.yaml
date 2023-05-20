@@ -3,7 +3,8 @@ services:
   server:
     container_name: ht-server
     restart: unless-stopped
-    build: ./server
+    build:
+      context: ./server
     ports:
       - '8000:8000'
     volumes:
