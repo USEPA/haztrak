@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-  ht-server:
+  server:
     container_name: ht-server
     restart: unless-stopped
     build: ./server
@@ -22,7 +22,7 @@ services:
       HT_DB_NAME: ${HT_DB_NAME}
       HT_DB_USER: ${HT_DB_USER}
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
-      HT_DB_HOST: ht-postgres
+      HT_DB_HOST: postgres
       HT_DB_PORT: ${HT_DB_PORT}
     command: |
       sh -c "
@@ -31,16 +31,16 @@ services:
       python manage.py loaddata dev_data.yaml &&
       python manage.py runserver 0.0.0.0:8000"
     depends_on:
-      ht-postgres:
+      postgres:
         condition: service_healthy
 
-  ht-redis:
+  redis:
     container_name: ht-redis
     image: 'redis:alpine'
     ports:
       - '6379:6379'
 
-  ht-celery-worker:
+  celery-worker:
     restart: unless-stopped
     container_name: ht-celery-worker
     build: ./server
@@ -54,16 +54,16 @@ services:
       HT_DB_NAME: ${HT_DB_NAME}
       HT_DB_USER: ${HT_DB_USER}
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
-      HT_DB_HOST: ht-postgres
+      HT_DB_HOST: postgres
       HT_DB_PORT: ${HT_DB_PORT}
     command: python manage.py celery_worker
     depends_on:
-      - ht-redis
-      - ht-server
+      - redis
+      - server
 
-  ht-celery-beat:
+  celery-beat:
     restart: unless-stopped
-    container_name: ht-celery-beat
+    container_name: celery-beat
     build: ./server
     volumes:
       - ./server:/app
@@ -75,16 +75,16 @@ services:
       HT_DB_NAME: ${HT_DB_NAME}
       HT_DB_USER: ${HT_DB_USER}
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
-      HT_DB_HOST: ht-postgres
+      HT_DB_HOST: postgres
       HT_DB_PORT: ${HT_DB_PORT}
     command: python manage.py celery_beat
     depends_on:
-      - ht-redis
-      - ht-server
+      - redis
+      - server
 
-  ht-postgres:
+  postgres:
     restart: unless-stopped
-    container_name: ht-postgres
+    container_name: postgres
     image: 'postgres:14'
     environment:
       POSTGRES_DB: ${HT_DB_NAME}
@@ -100,7 +100,7 @@ services:
     volumes:
       - development:/var/lib/postgresql/data
 
-  ht-client:
+  client:
     container_name: ht-client
     image: 'node:18'
     ports:
