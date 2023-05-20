@@ -37,14 +37,9 @@ spec:
             - name: http
               containerPort: {{ .Values.image.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+          envFrom:
+            - configMapRef:
+                name: {{ .Chart.Name }}-configmap
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
