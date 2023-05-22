@@ -4,7 +4,7 @@
     <img src="../assets/156px-Warning.svg" alt="Warning" style="vertical-align: middle; width: 50px; height: 50px;">
     <span style="font-size: 24px; font-weight: bold; vertical-align: middle; margin-left: 10px;" >Warning</span>
     <p>
-        This document includes guidance on hosting Haztrak using various cloud service providers,
+        This document includes guidance on hosting Haztrak using various cloud service providers.
         The United States Environmental Protection Agency (EPA) does not endorse any cloud service provider
         mentioned in this documentation. EPA is not responsible for any costs incurred by a third party
         that chooses to host Haztrak.
@@ -29,7 +29,25 @@ Where applicable, the Haztrak project embraces a number of _doctrines_<sup>1</su
     - [Continuous Monitoring](https://www.google.com/search?q=continuous+monitoring)
     - The [GitOps](https://www.gitops.tech/) operational framework
 
-## Example Deployment with Minikube
+### Tools Employed
+
+<p style="color: orange;">
+    Section Coming soon.
+</p>
+
+#### Infrastructure as Code (IaC)
+
+<p style="color: orange;">
+    Section Coming soon.
+</p>
+
+#### Continuous Deployment
+
+<p style="color: orange;">
+    Section Coming soon.
+</p>
+
+## Example local k8 Deployment
 
 As an example, you can deploy Haztrak to a local Minikube cluster.
 [Minikube](https://minikube.sigs.k8s.io/docs/start/) is a lightweight tool for creating a Kubernetes
