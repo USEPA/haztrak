@@ -19,6 +19,7 @@
 - [Deployment](deployment/index.md)
   - [Configuration](deployment/configuration.md)
   - [Containerization](deployment/containerization.md)
+  - [Deploying](deployment/deployment.md)
 - [References](references/index.md)
   - [Demos](references/demos.md)
   - [Notes for Future Maintainers](references/future-maintainers.md)
