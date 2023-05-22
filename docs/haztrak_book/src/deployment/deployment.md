@@ -1,24 +1,48 @@
 # Deployment
 
-This document provides guidance on deploying the Haztrak web application to various environments.
+<div style='background-color: rgba(255,165,0,0.49); border-radius: 10px; padding: 1rem;'>
+    <img src="../assets/156px-Warning.svg" alt="Warning" style="vertical-align: middle; width: 50px; height: 50px;">
+    <span style="font-size: 24px; font-weight: bold; vertical-align: middle; margin-left: 10px;" >Warning</span>
+    <p>
+        This document includes guidance on hosting Haztrak using various cloud service providers,
+        The United States Environmental Protection Agency (EPA) does not endorse any cloud service provider
+        mentioned in this documentation. EPA is not responsible for any costs incurred by a third party
+        that chooses to host Haztrak.
+    </p>
+</div>
 
-If you're looking to setup a development environment,
-See our [setting up a local development environment section](../development/local-development.md).
+If you're looking to contribute to the Haztrak project,
+see our [documentation setting up a local development environment section](../development/local-development.md).
 
-## Local Deployment with Minikube
+## Overview
+
+Where applicable, the Haztrak project embraces a number of _doctrines_<sup>1</sup> that are important to understand:
+
+- The [12 Factor App](https://12factor.net/)
+  - A methodology for building modern, scalable, maintainable software-as-a-service applications
+- [DevOps](https://www.google.com/search?q=devops)
+  - An approach that combines software development (Dev) and IT operations (Ops),
+    emphasizing collaboration and automation to deliver software faster and more reliably.
+  - Haztrak embraces the following DevOps practices:
+    - [Infrastructure as Code](<https://www.google.com/search?q=infrastructure+as+code+(iac)>)
+    - [Continuous Integration & Delivery](https://www.google.com/search?q=continuous+integration+and+continuous+delivery)
+    - [Continuous Monitoring](https://www.google.com/search?q=continuous+monitoring)
+    - The [GitOps](https://www.gitops.tech/) operational framework
+
+## Example Deployment with Minikube
 
 As an example, you can deploy Haztrak to a local Minikube cluster.
-[Minikube](https://minikube.sigs.k8s.io/docs/start/) is a lightweight tool for local
-development and testing of Kubernetes applications by creating a local single-node k8 cluster.
+[Minikube](https://minikube.sigs.k8s.io/docs/start/) is a lightweight tool for creating a Kubernetes
+cluster on your local machine.
 
-### Guide Prerequisites
+### Prerequisites
 
-Before proceeding with the deployment, ensure the following prerequisites are installed:
+Before proceeding, ensure the following prerequisites are installed:
 
-- `Docker`
-- `Minikube`
-- `Helm`
-- `kubectl`
+- [Docker](https://docs.docker.com/get-docker/)
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+- [Helm](https://helm.sh/docs/intro/install/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
 ### Steps
 
@@ -39,7 +63,7 @@ To deploy Haztrak locally to a Minikube cluster, follow these steps:
    ```
 
 3. Customize the Helm values: Open the `haztrak-charts/values.yaml` file and adjust the
-   configuration values to meet your requirements if different than currently stored values.
+   values to meet your requirements if different from what's present.
 
 4. Deploy Haztrak: Run the following Helm command to deploy Haztrak:
 
@@ -58,8 +82,15 @@ To deploy Haztrak locally to a Minikube cluster, follow these steps:
 
 6. Access Haztrak with `minikube service` command:
 
-```shell
-minikube service haztrak
-```
+   ```shell
+   minikube service haztrak
+   ```
 
 This will open a browser to IP address created by the haztrak k8 service for your viewing pleasure.
+
+<br>
+<hr>
+
+<sup>1</sup> This is a not 100% accurate since Haztrak will never be deployed, by the EPA, to a true production
+environment. Declaring that we embrace GitOps and continuous monitoring is a little like armchair quarterbacking.
+The Haztrak project implements these practices in our development process where we can.
