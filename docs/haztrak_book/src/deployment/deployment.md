@@ -1,7 +1,7 @@
 # Deployment
 
 <div style='background-color: rgba(255,165,0,0.49); border-radius: 10px; padding: 1rem;'>
-    <img src="../assets/156px-Warning.svg" alt="Warning" style="vertical-align: middle; width: 50px; height: 50px;">
+    <img src="../assets/images/156px-Warning.svg" alt="Warning" style="vertical-align: middle; width: 50px; height: 50px;">
     <span style="font-size: 24px; font-weight: bold; vertical-align: middle; margin-left: 10px;" >Warning</span>
     <p>
         This document includes guidance on hosting Haztrak using various cloud service providers.

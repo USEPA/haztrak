@@ -1,6 +1,6 @@
 # Database Design
 
-![ERD](../assets/erd.png)
+![ERD](../assets/images/erd.png)
 
 ## Overview
 
