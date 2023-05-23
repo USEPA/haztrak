@@ -11,7 +11,5 @@ data:
   HT_RCRAINFO_ENV: '{{ .Values.django.rcrainfoEnv }}'
   HT_DB_ENGINE: '{{ .Values.db.engine }}'
   HT_DB_NAME: '{{ .Values.db.name }}'
-  HT_DB_USER: '{{ .Values.db.user }}'
-  HT_DB_PASSWORD: '{{ .Values.db.password }}'
   HT_DB_PORT: '{{ .Values.db.port }}'
   HT_DB_HOST: '{{ .Values.db.host }}'

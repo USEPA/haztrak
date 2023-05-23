@@ -43,6 +43,16 @@ spec:
                 secretKeyRef:
                   name: {{ .Chart.Name }}-secret
                   key: djangoSecretKey
+            - name: HT_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}-secret
+                  key: dbPassword
+            - name: HT_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}-secret
+                  key: dbUser
           envFrom:
             - configMapRef:
                 name: {{ .Chart.Name }}-configmap
