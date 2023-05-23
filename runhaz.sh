@@ -2,7 +2,6 @@
 
 base_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 server_dir="$base_dir/server"
-client_dir="$base_dir/client"
 
 # check python is installed
 if command -v python3 > /dev/null 2>&1; then
@@ -25,9 +24,24 @@ elif [ "$ver" -lt "38" ]; then
     exit 1
 fi
 
+
+print_usage() {
+   # Display help
+   echo "Command line utility to help develop Haztrak"
+   echo
+   echo "Syntax: $(basename "$0") <option>"
+   echo "options:"
+   echo "-d, --db            Bring up the local development database and expose it on port 5432"
+   echo "-l, --load          load initial database data from fixture files"
+   echo "-p, --pre-commit    installs hooks, if necessary, and runs pre-commit run --all-files"
+   echo "-o, --openapi		   Generate the Open API Schema to /docs/API/"
+   echo "-e, --erd           Graph the django models to an entity relationship diagram (ERD), requires graphviz"
+   echo "-h, --help          Print this help message"
+   echo
+}
+
 # prints colored text
 print_style() {
-
     if [ "$2" == "info" ] ; then
         COLOR="96m";
     elif [ "$2" == "success" ] ; then
@@ -39,39 +53,9 @@ print_style() {
     else #default color
         COLOR="0m";
     fi
-
     START_COLOR="\e[$COLOR";
     END_COLOR="\e[0m";
-
     printf "$START_COLOR%b$END_COLOR" "$1";
-}
-
-print_usage() {
-   # Display help
-   echo "Command line utility to help develop Haztrak"
-   echo
-   echo "Syntax: $(basename "$0") <option>"
-   echo "options:"
-   echo "-m, --migrate       Make django migrations and apply (makemigrations and migrate)"
-   echo "-d, --db            Bring up the local development database and expose it on port 5432"
-   echo "-l, --load          load initial database data from fixture files"
-   echo "-t, --test          Run all tests, show output if exit status is not 0"
-   echo "-p, --pre-commit    installs hooks, if necessary, and runs pre-commit run --all-files"
-   echo "-o, --openapi		   Generate the Open API Schema to /docs/API/"
-   echo "-e, --erd           Graph the django models to an entity relationship diagram (ERD), requires graphviz"
-   echo "-h, --help          Print this help message"
-   echo
-}
-
-migrate_changes(){
-    # Use Django's 'makemigrations' and 'migrate' to propagate model changes
-    # since their typically executed together, this is just more convenient
-    echo "$base_py_cmd"
-    if eval "$base_py_cmd makemigrations"
-    then
-        eval "$base_py_cmd migrate"
-    fi
-    exit
 }
 
 start_db(){
@@ -115,47 +99,6 @@ graph_models() {
     exit
 }
 
-print_test_status(){
-        if [ "$1" -eq 0 ];
-    then
-        print_style "Passed!\n" "success";
-    else
-        print_style "Failed\n" "danger";
-    fi
-
-}
-
-test_django(){
-    # run all django's/server tests
-    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
-    echo "Running Haztrak test..."
-    printf "Testing Server: "
-    cd "$server_dir" || exit
-    django_output="$(eval "pytest 2>&1")"
-    django_exit_code=$?
-    print_test_status $django_exit_code
-    cd "$base_dir" || exit
-    cd "$client_dir" || exit
-    printf "Testing Client: "
-    npm_output="$(eval "npm test 2>&1")"
-    npm_exit_code=$?
-    print_test_status $npm_exit_code
-    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
-    sleep 2
-    if [ $django_exit_code -ne 0 ];
-    then
-        echo "DJANGO TEST OUTPUT..."
-        printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
-        echo "${django_output}"
-    fi
-    if [ $npm_exit_code -ne 0 ];
-    then
-        echo "NPM TEST OUTPUT..."
-        printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
-        echo "${npm_output}"
-    fi
-}
-
 run_pre_commit() {
     # This will install the pre-commit script, and run whatever pre-commit
     # hooks we have configured. Great to run before committing as a pre-commit hook
@@ -170,19 +113,9 @@ run_pre_commit() {
     fi
 }
 
-cleanup() {
-	echo
-	print_style "Haztrak shutting down...\n" "success";
-	kill -- -0
-	exit
-}
-
 # Parse CLI argument
 while [[ $# -gt 0 ]]; do
   case $1 in
-    -m|--migrate)
-        migrate_changes
-        ;;
     -d|--db)
         start_db "$@"
 #		shift # past argument
@@ -191,12 +124,6 @@ while [[ $# -gt 0 ]]; do
     -l|--load)
         load_django_fixtures
         ;;
-    -t|--test)
-		test_django "$@"
-		shift # past argument
-		shift # past value
-		exit 0
-		;;
     -p|--pre-commit)
         run_pre_commit
         ;;
