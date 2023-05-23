@@ -5,15 +5,16 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/usepa/haztrak-server
+  #  repository: ghcr.io/usepa/haztrak-server
+  repository: haztrak-server
   pullPolicy: IfNotPresent
   port: 8000
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 'v0.5.0'
+  tag: 'latest'
 
 django:
   secretKey: 'django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d'
-  debug: 'False'
+  debug: 'True'
   host: '*'
   timezone: 'America/New_York'
   corsDomains: 'http://localhost:3000'
@@ -55,17 +56,17 @@ securityContext: {}
 # runAsUser: 1000
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 80
 
 ingress:
-  enabled: true
+  enabled: false
   className: ''
   annotations: {}
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: localhost
+    - host: haztrak.local
       paths:
         - path: /
           pathType: ImplementationSpecific
