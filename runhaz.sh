@@ -53,11 +53,11 @@ print_usage() {
    echo "Syntax: $(basename "$0") <option>"
    echo "options:"
    echo "-m, --migrate       Make django migrations and apply (makemigrations and migrate)"
-   echo "-d, --dump          Dump data into fixtures files tests (if needed, migrate first)"
+   echo "-d, --db            Bring up the local development database and expose it on port 5432"
    echo "-l, --load          load initial database data from fixture files"
    echo "-t, --test          Run all tests, show output if exit status is not 0"
    echo "-p, --pre-commit    installs hooks, if necessary, and runs pre-commit run --all-files"
-   echo "-o, --openapi		 Generate the Open API Schema to /docs/API/"
+   echo "-o, --openapi		   Generate the Open API Schema to /docs/API/"
    echo "-e, --erd           Graph the django models to an entity relationship diagram (ERD), requires graphviz"
    echo "-h, --help          Print this help message"
    echo
@@ -74,19 +74,14 @@ migrate_changes(){
     exit
 }
 
-dump_fixtures(){
-    # hardcoded (data)dumps (hehe) for fixture files used for setting up a
-    # local development database
-    exec_cmd="$base_py_cmd dumpdata"
-    fixtures_dir="$server_dir/fixtures"
-    fixture_cmd=(
-    "-e contenttypes -e auth.permission -e django_celery_results.taskresult -e django_celery_beat.periodictasks -e django_celery_beat.crontabschedule -e admin.logentry -e sessions.session --format=yaml > $fixtures_dir/dev_data1.yaml"
-    )
-    for i in "${fixture_cmd[@]}"
-    do
-        eval "$exec_cmd $i"
-    done
-    print_style "Data successfully dumped\n" "success";
+start_db(){
+    if command -v docker> /dev/null 2>&1; then
+        docker_exec=$(command -v docker)
+    else
+      print_style "Docker not found" "danger"
+      exit 1
+    fi
+    eval "$docker_exec compose --env-file $base_dir/configs/.env.dev up -d postgres"
     exit
 }
 
@@ -188,8 +183,8 @@ while [[ $# -gt 0 ]]; do
     -m|--migrate)
         migrate_changes
         ;;
-    -d|--dump)
-        dump_fixtures "$@"
+    -d|--db)
+        start_db "$@"
 #		shift # past argument
 #		shift # past value
         ;;
