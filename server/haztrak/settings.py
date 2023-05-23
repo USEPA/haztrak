@@ -38,7 +38,7 @@ if debug == "TRUE":
 else:
     DEBUG = False
 
-ALLOWED_HOST = [os.getenv(HOST_ENV, "localhost")]
+ALLOWED_HOSTS = [os.getenv(HOST_ENV, "*")]
 
 WSGI_APPLICATION = "haztrak.wsgi.application"
 
