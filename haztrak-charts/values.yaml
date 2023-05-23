@@ -11,6 +11,23 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: 'v0.5.0'
 
+django:
+  secretKey: 'django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d'
+  debug: 'False'
+  host: '*'
+  timezone: 'America/New_York'
+  corsDomains: 'http://localhost:3000'
+  rcrainfoEnv: 'preprod'
+  logLevel: 'INFO'
+
+db:
+  engine: 'django.db.backends.postgresql'
+  name: 'haztrak_db'
+  user: 'admin'
+  password: 'password1'
+  port: '5432'
+  host: 'host.minikube.internal'
+
 imagePullSecrets: []
 nameOverride: ''
 fullnameOverride: ''
@@ -38,17 +55,17 @@ securityContext: {}
 # runAsUser: 1000
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 80
 
 ingress:
-  enabled: false
+  enabled: true
   className: ''
   annotations: {}
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: chart-example.local
+    - host: localhost
       paths:
         - path: /
           pathType: ImplementationSpecific
@@ -57,10 +74,9 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources:
-  {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
+resources: {}
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
 # resources, such as Minikube. If you do want to specify resources, uncomment the following
 # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
 # limits:
