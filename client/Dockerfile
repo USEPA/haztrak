@@ -1,6 +1,7 @@
 # Mutlistage dockerize dpgraham.com react.js front end
 # Build stage
 FROM node:18-alpine as builder
+LABEL maintainer="graham.david@epa.gov"
 WORKDIR /app
 COPY . .
 RUN npm ci --silent

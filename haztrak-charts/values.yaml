@@ -58,17 +58,19 @@ securityContext: {}
 # runAsUser: 1000
 
 service:
+  protocol: TCP
+  port: 8000
+  targetPort: 8000
   type: NodePort
-  port: 80
 
 ingress:
-  enabled: false
+  enabled: true
   className: ''
   annotations: {}
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: haztrak.local
+    - host: localhost
       paths:
         - path: /
           pathType: ImplementationSpecific

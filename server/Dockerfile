@@ -1,5 +1,6 @@
 # Builder
 FROM python:3.11.2-alpine3.17 as builder
+LABEL maintainer="graham.david@epa.gov"
 # Starting environment varibles
 ENV APP_DIRECTORY=/app/
 ENV PYTHONDONTWRITEBYTECODE 1
