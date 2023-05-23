@@ -75,7 +75,7 @@ workflow. As such, we expect to support the following functionality.
 
 ## Architecture
 
-![Architecture](../assets/haztrak_architecture_poc.svg)
+![Architecture](../assets/images/haztrak_on_gke_light.svg)
 
 This section provides a high-level overview of how responsibilities of the system
 are partitioned between system components/services.
