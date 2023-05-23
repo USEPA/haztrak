@@ -7,10 +7,10 @@ replicaCount: 1
 image:
   #  repository: ghcr.io/usepa/haztrak-server
   repository: haztrak-server
-  pullPolicy: IfNotPresent
+  pullPolicy: Never
   port: 8000
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 'latest'
+  tag: 'test'
 
 django:
   secretKey: 'django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d'
@@ -27,6 +27,8 @@ db:
   user: 'admin'
   password: 'password1'
   port: '5432'
+  # allows minikube deployments to connect to resources on the host machine (e.g., database)
+  # e.g., host.minikube.internal:5432 === localhost:5432
   host: 'host.minikube.internal'
 
 imagePullSecrets: []
@@ -56,7 +58,7 @@ securityContext: {}
 # runAsUser: 1000
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 80
 
 ingress:
