@@ -5,7 +5,6 @@ metadata:
 data:
   HT_DEBUG: '{{ .Values.django.debug }}'
   HT_HOST: '{{ .Values.django.host }}'
-  HT_SECRET_KEY: '{{ .Values.django.secretKey }}'
   HT_LOG_LEVEL: '{{ .Values.django.logLevel }}'
   HT_TIMEZONE: '{{ .Values.django.timezone }}'
   HT_CORS_DOMAIN: "{{ .Values.django.corsDomains }}"

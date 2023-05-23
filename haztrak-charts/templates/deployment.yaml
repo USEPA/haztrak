@@ -37,6 +37,12 @@ spec:
             - name: http
               containerPort: {{ .Values.image.port }}
               protocol: TCP
+          env:
+            - name: HT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}-secret
+                  key: djangoSecretKey
           envFrom:
             - configMapRef:
                 name: {{ .Chart.Name }}-configmap
