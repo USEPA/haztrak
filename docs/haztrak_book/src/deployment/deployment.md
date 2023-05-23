@@ -49,6 +49,8 @@ Where applicable, the Haztrak project embraces a number of _doctrines_<sup>1</su
 
 ## Example local k8 Deployment
 
+**Don't bother following this yet.** This is a work in progress meant to document the steps.
+
 As an example, you can deploy Haztrak to a local Minikube cluster.
 [Minikube](https://minikube.sigs.k8s.io/docs/start/) is a lightweight tool for creating a Kubernetes
 cluster on your local machine.
@@ -80,23 +82,25 @@ To deploy Haztrak locally to a Minikube cluster, follow these steps:
    cd haztrak
    ```
 
-3. Customize the Helm values: Open the `haztrak-charts/values.yaml` file and adjust the
-   values to meet your requirements if different from what's present.
+3. configure your minikube environment to use the docker daemon running on your local machine:
 
-4. Deploy Haztrak: Run the following Helm command to deploy Haztrak:
+   ```shell
+   eval $(minikube docker-env)
+   ```
+
+4. Build the docker images for the Haztrak services:
+
+   ```shell
+   docker build -t haztrak-server --target production ./server
+   ```
+
+5. Deploy Haztrak: Run the following Helm command to deploy Haztrak:
 
    ```shell
    helm install haztrak ./haztrak-charts
    ```
 
    This installs the Haztrak charts and creates the necessary Kubernetes resources in your minikube cluster.
-
-5. Use the kubectl CLI to get details on the deployment:
-
-   ```shell
-   kubectl get pods
-   kubectl get services
-   ```
 
 6. Access Haztrak with `minikube service` command:
 
