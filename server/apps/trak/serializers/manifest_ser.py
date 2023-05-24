@@ -3,10 +3,11 @@ from typing import Dict
 
 from rest_framework import serializers
 
-from apps.sites.models import RcraStates
+from apps.sites.models import RcraStates, Role
 from apps.trak.models import Manifest
-from apps.trak.models.manifest_models import AdditionalInfo, ImportInfo, PortOfEntry
+from apps.trak.models.manifest_models import AdditionalInfo, ImportInfo, PortOfEntry, CorrectionInfo
 from apps.trak.serializers.handler_ser import HandlerSerializer
+from apps.trak.serializers.signature_ser import ESignatureSerializer
 
 from .base_ser import TrakBaseSerializer
 from .handler_ser import TransporterSerializer
@@ -313,3 +314,60 @@ class ImportInfoSerializer(TrakBaseSerializer):
     class Meta:
         model = ImportInfo
         fields = ["importGenerator", "PortOfEntry"]
+
+
+class CorrectionInfoSerializer(TrakBaseSerializer):
+    """
+    Serializer for Correction Info
+    """
+    
+    versionNumber = serializers.CharField(
+        source="version_number",
+        required=False,
+        allow_null=True,
+    )
+    active = serializers.BooleanField(
+        required=False,
+        allow_null=True,
+        default=False,
+    )
+    ppcActive = serializers.BooleanField(
+        source="ppc_active",
+        required=False,
+        allow_null=True,
+        default=False,
+    )
+    electronicSignatureInfo = ESignatureSerializer(
+        source="electronic_signature_info",
+        required=False,
+        allow_null=True,
+    )
+    epaSiteId = serializers.CharField(
+        source = "epa_site_id",
+        required=False,
+        allow_null=True,
+    )
+    initiatorRole = serializers.ChoiceField(
+        source = "initiator_role",
+        choices=Role.choices,
+        required=False,
+        allow_null=True,
+    )
+    updateRole = serializers.ChoiceField(
+        source = "update_role",
+        choices=Role.choices,
+        required=False,
+        allow_null=True,
+    )
+
+    class Meta:
+        model = CorrectionInfo
+        fields = [
+            "versionNumber",
+            "active",
+            "ppcActive",
+            "electronicSignatureInfo",
+            "epaSiteId",
+            "initiatorRole",
+            "updateRole",
+            ]
