@@ -7,7 +7,7 @@ from django.db import models
 from django.db.models import Max, Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from apps.sites.models import RcraSiteType, RcraStates
+from apps.sites.models import RcraSiteType, RcraStates, Role
 from apps.trak.models import Handler
 
 from .base_models import TrakBaseManager, TrakBaseModel
@@ -416,12 +416,6 @@ class CorrectionInfo(TrakBaseModel):
     class Meta:
         verbose_name = "Correction Info"
         verbose_name_plural = "Correction Info"
-
-    class Role(models.TextChoices):
-        INDUSTRY = "IN", _("Industry")
-        PPC = "PP", _("Ppc")
-        EPA = "EP", _("Epa")
-        STATE = "ST", _("State")
 
     version_number = models.IntegerField(
         null=True,

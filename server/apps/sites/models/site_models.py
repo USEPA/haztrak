@@ -203,3 +203,10 @@ class Site(SitesBaseModel):
     def __str__(self):
         """Used in StringRelated fields in serializer classes"""
         return f"{self.rcra_site.epa_id}"
+
+
+class Role(models.TextChoices):
+        INDUSTRY = "IN", _("Industry")
+        PPC = "PP", _("Ppc")
+        EPA = "EP", _("Epa")
+        STATE = "ST", _("State")
