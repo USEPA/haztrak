@@ -17,19 +17,12 @@ jobs:
     steps:
       - name: 'Checkout Repository'
         uses: actions/checkout@v3
+
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@v3
         with:
           comment-summary-in-pr: true
-          fail-on-severity: moderate
-          license-check: true
-          vulnerability-check: true
-          # allow-licenses:
-          #   - MIT
-          #   - MIT-0
-          #   - CC-PDDC
-          #   - CC0-1.0
-          #   - NIST-PD
-          #   - PDDL-1.0
-          # deny-licenses:
-          #   - GPL-3.0
+          fail-on-severity: high
+          # We only want permissive licenses to allow
+          # people to take this project and run with it
+          deny-licenses: GPL-1.0-or-later
