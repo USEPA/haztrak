@@ -342,7 +342,7 @@ class CorrectionInfoSerializer(TrakBaseSerializer):
         required=False,
         allow_null=True,
     )
-    epaSiteId = serializers.Charfield(
+    epaSiteId = serializers.CharField(
         source = "epa_site_id",
         required=False,
         allow_null=True,
