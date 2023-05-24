@@ -5,6 +5,7 @@ on:
     branches: ['main']
     paths:
       - 'client/**'
+      - '.github/workflows/test_client.yaml'
   workflow_call:
   workflow_dispatch:
 
