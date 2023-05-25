@@ -145,7 +145,7 @@ STATICFILES_DIRS = [
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "haztrak.authentication.BearerAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     # 'DEFAULT_PERMISSION_CLASSES': [],  # uncomment to use browser to inspect the API for dev

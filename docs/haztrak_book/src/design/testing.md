@@ -129,7 +129,13 @@ git clone https://github.com/usepa/haztrak && cd haztrak/client
 npm install .
 ```
 
-3. Run Tests
+3. configure the environment
+
+```shell
+cp ../configs/.env.test ./.env
+```
+
+4. Run Tests
 
 ```shell
 npm test

@@ -23,7 +23,7 @@ htApi.interceptors.request.use(
     config.headers = config.headers ?? {};
     const token = rootStore.getState().user.token;
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers['Authorization'] = `Token ${token}`;
     }
     return config;
     // ToDo: if token does not exist
