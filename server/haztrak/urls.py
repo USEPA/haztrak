@@ -28,7 +28,7 @@ urlpatterns = [
             [
                 path("", include("apps.core.urls")),
                 path("", include("apps.trak.urls")),
-                path("site/", include("apps.sites.urls")),
+                path("", include("apps.sites.urls")),
                 path("schema/", SpectacularAPIView.as_view(), name="schema"),
                 path(
                     "schema/swagger-ui/",
