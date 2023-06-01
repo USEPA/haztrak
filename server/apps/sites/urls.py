@@ -23,6 +23,6 @@ urlpatterns = [
     path("site/<str:epa_id>/manifest", SiteMtnListView.as_view()),
     path("site/manifest/sync", SyncSiteManifestView.as_view()),
     # RcraSite
-    path("site/handler/search", RcraSiteSearchView.as_view()),
-    path("site/handler/details/<int:pk>", RcraSiteView.as_view()),
+    path("handler/search", RcraSiteSearchView.as_view()),
+    path("handler/<int:pk>", RcraSiteView.as_view()),
 ]

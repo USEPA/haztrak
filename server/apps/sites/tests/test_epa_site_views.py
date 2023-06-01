@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
 from apps.sites.models import RcraSiteType
-from apps.sites.views import RcraProfileView, RcraSiteSearchView
+from apps.sites.views import RcraSiteSearchView
 
 
 class TestEpaSiteView:
@@ -12,7 +12,7 @@ class TestEpaSiteView:
     Tests the for the endpoints related to the handlers
     """
 
-    URL = "/api/site/handler"
+    URL = "/api/handler"
 
     @pytest.fixture
     def client(self, rcra_site_factory, api_client_factory):
@@ -37,7 +37,7 @@ class TestEpaSiteSearchView:
     Tests for the RcraSite Search endpoint
     """
 
-    URL = "/api/site/handler/search"
+    URL = "/api/handler/search"
 
     @pytest.fixture(autouse=True)
     def generator(self, rcra_site_factory):
