@@ -9,7 +9,6 @@ from apps.sites.views import (
     SiteListView,
     SiteMtnListView,
     SyncProfileView,
-    SyncSiteManifestView,
 )
 
 urlpatterns = [
@@ -21,7 +20,6 @@ urlpatterns = [
     path("site/", SiteListView.as_view()),
     path("site/<str:epa_id>", SiteDetailView.as_view()),
     path("site/<str:epa_id>/manifest", SiteMtnListView.as_view()),
-    path("site/manifest/sync", SyncSiteManifestView.as_view()),
     path("site/rcra-site/search", RcraSiteSearchView.as_view()),
     path("site/rcra-site/<int:pk>", RcraSiteView.as_view()),
 ]

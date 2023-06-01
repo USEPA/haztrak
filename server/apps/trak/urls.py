@@ -8,6 +8,7 @@ from apps.trak.views import (
     MtnList,
     PullManifestView,
     SignManifestView,
+    SyncSiteManifestView,
     TransporterView,
 )
 
@@ -19,6 +20,7 @@ urlpatterns = [
     path("", include(manifest_router.urls)),
     path("manifest/pull", PullManifestView.as_view()),
     path("manifest/sign", SignManifestView.as_view()),
+    path("manifest/sync", SyncSiteManifestView.as_view()),
     path("mtn", MtnList.as_view()),
     path("mtn/<str:epa_id>", MtnList.as_view()),
     # Handler

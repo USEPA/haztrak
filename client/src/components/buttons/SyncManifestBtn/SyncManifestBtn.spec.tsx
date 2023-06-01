@@ -11,7 +11,7 @@ const testTaskID = 'testTaskId';
 
 const server = setupServer(
   ...[
-    rest.post(`${API_BASE_URL}/site/manifest/sync`, (req, res, ctx) => {
+    rest.post(`${API_BASE_URL}/manifest/sync`, (req, res, ctx) => {
       // Mock Sync Site Manifests response
       return res(
         ctx.status(200),

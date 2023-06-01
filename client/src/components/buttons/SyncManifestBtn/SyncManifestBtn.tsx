@@ -29,7 +29,7 @@ export function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
       onClick={() => {
         setSyncingMtn(!syncingMtn);
         htApi
-          .post('/site/manifest/sync', { siteId: `${siteId}` })
+          .post('/manifest/sync', { siteId: `${siteId}` })
           .then((response) => {
             dispatch(
               addNotification({
