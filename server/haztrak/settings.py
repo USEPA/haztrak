@@ -11,6 +11,7 @@ HAZTRAK_VERSION = "0.4.0"
 HOST_ENV = "HT_HOST"
 DEBUG_ENV = "HT_DEBUG"
 SECRET_ENV = "HT_SECRET_KEY"
+CACHE_URL = "HT_CACHE_URL"
 TIMEZONE_ENV = "HT_TIMEZONE"
 TEST_DB_NAME_ENV = "HT_TEST_DB_NAME"
 CORS_DOMAIN_ENV = "HT_CORS_DOMAIN"
@@ -169,6 +170,13 @@ SPECTACULAR_SETTINGS = {
         "persistAuthorization": True,
         "displayOperationId": False,
     },
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.getenv(CACHE_URL, "redis://localhost:6379"),
+    }
 }
 
 # Celery
