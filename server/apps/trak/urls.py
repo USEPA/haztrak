@@ -19,8 +19,8 @@ urlpatterns = [
     path("", include(manifest_router.urls)),
     path("manifest/pull", PullManifestView.as_view()),
     path("manifest/sign", SignManifestView.as_view()),
-    path("trak/mtn", MtnList.as_view()),
-    path("trak/mtn/<str:epa_id>", MtnList.as_view()),
+    path("mtn", MtnList.as_view()),
+    path("mtn/<str:epa_id>", MtnList.as_view()),
     # Handler
     path("trak/transporter/<int:pk>", TransporterView.as_view()),
     path("trak/mtnhandler/<int:pk>", HandlerView.as_view()),
