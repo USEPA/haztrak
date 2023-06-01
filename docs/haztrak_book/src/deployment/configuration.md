@@ -63,7 +63,10 @@ The follow variables are required, haztrak will exit if not present.
     the [e-Manifest API Client Library](https://github.com/USEPA/e-manifest/tree/master/emanifest-py)
 - `HT_CORS_DOMAIN`
   - Value for cross-origin resource sharing, the domain that the React app is deployed
-  - Example for local development: should be something like `http://localhost:3000'
+  - Example for local development: should be something like `http://localhost:3000`
+- `HT_CACHE_URL`
+  - URL that points to the cache, in this instance Redis
+  - Example for local development: should be something like `redis://localhost:6379`
 
 #### Database
 
