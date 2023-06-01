@@ -25,5 +25,5 @@ urlpatterns = [
     path("trak/transporter/<int:pk>", TransporterView.as_view()),
     path("trak/mtnhandler/<int:pk>", HandlerView.as_view()),
     # code
-    path("trak/code/waste/federal", FederalWasteCodes.as_view()),
+    path("code/waste/federal", FederalWasteCodes.as_view()),
 ]

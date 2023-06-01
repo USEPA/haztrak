@@ -9,7 +9,7 @@ import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
 export const wasteCodeApi = createApi({
   reducerPath: 'wasteCodeApi',
   baseQuery: htApiBaseQuery({
-    baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/trak/code/`,
+    baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/code/`,
   }),
   endpoints: (build) => ({
     getWasteCodes: build.query<Array<Code>, string>({
