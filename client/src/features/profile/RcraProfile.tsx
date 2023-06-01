@@ -49,7 +49,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
     setProfileLoading(!profileLoading);
     setEditable(!editable);
     htApi
-      .put(`/site/profile/${profile.user}`, data)
+      .put(`/profile/${profile.user}`, data)
       .then((r) => {
         dispatch(updateProfile(r.data));
       })
@@ -184,7 +184,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
           variant="primary"
           onClick={() =>
             htApi
-              .get(`site/profile/${profile.user}/sync`)
+              .get(`profile/${profile.user}/sync`)
               .then((response) => {
                 console.log('data', response.data);
                 dispatch(

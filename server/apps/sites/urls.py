@@ -14,8 +14,8 @@ from apps.sites.views import (
 
 urlpatterns = [
     # Rcra Profile
-    path("site/profile/<str:user>/sync", SyncProfileView.as_view()),
-    path("site/profile/<str:user>", RcraProfileView.as_view()),
+    path("profile/<str:user>/sync", SyncProfileView.as_view()),
+    path("profile/<str:user>", RcraProfileView.as_view()),
     path("site/permission/<int:pk>", RcraSitePermissionView.as_view()),
     # Site
     path("site/", SiteListView.as_view()),
