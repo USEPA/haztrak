@@ -16,14 +16,14 @@ manifest_router.register(r"manifest", ManifestView)
 
 urlpatterns = [
     # Manifest
-    path("", include(manifest_router.urls)),
-    path("manifest/pull", PullManifestView.as_view()),
-    path("manifest/sign", SignManifestView.as_view()),
-    path("mtn", MtnList.as_view()),
-    path("mtn/<str:epa_id>", MtnList.as_view()),
+    path("trak/", include(manifest_router.urls)),
+    path("trak/manifest/pull", PullManifestView.as_view()),
+    path("trak/manifest/sign", SignManifestView.as_view()),
+    path("trak/mtn", MtnList.as_view()),
+    path("trak/mtn/<str:epa_id>", MtnList.as_view()),
     # Handler
-    path("transporter/<int:pk>", TransporterView.as_view()),
-    path("mtnhandler/<int:pk>", HandlerView.as_view()),
+    path("trak/transporter/<int:pk>", TransporterView.as_view()),
+    path("trak/mtnhandler/<int:pk>", HandlerView.as_view()),
     # code
-    path("code/waste/federal", FederalWasteCodes.as_view()),
+    path("trak/code/waste/federal", FederalWasteCodes.as_view()),
 ]
