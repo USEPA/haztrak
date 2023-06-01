@@ -45,7 +45,6 @@ class SiteDetailView(RetrieveAPIView):
     queryset = Site.objects.all()
 
     def get_queryset(self):
-        print("get_queryset called")
         epa_id = self.kwargs["epa_id"]
         queryset = Site.objects.filter(
             rcra_site__epa_id=epa_id, rcrasitepermission__profile__user=self.request.user
