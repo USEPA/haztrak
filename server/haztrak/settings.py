@@ -11,6 +11,7 @@ HAZTRAK_VERSION = "0.4.0"
 HOST_ENV = "HT_HOST"
 DEBUG_ENV = "HT_DEBUG"
 SECRET_ENV = "HT_SECRET_KEY"
+CACHE_URL = "HT_CACHE_URL"
 TIMEZONE_ENV = "HT_TIMEZONE"
 TEST_DB_NAME_ENV = "HT_TEST_DB_NAME"
 CORS_DOMAIN_ENV = "HT_CORS_DOMAIN"
@@ -171,9 +172,24 @@ SPECTACULAR_SETTINGS = {
     },
 }
 
+if os.getenv(CACHE_URL, None):
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": os.getenv(CACHE_URL, "redis://redis:6379"),
+        }
+    }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+            "LOCATION": "./cache",
+        }
+    }
+
 # Celery
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379")
-CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost" ":6379")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://redis:6379")
 CELERY_RESULT_EXTENDED = True
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
