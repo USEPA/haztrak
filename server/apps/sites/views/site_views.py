@@ -1,6 +1,8 @@
 import logging
 
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, status
 from rest_framework.exceptions import APIException
@@ -31,6 +33,7 @@ class SiteListView(ListAPIView):
         return Site.objects.filter(rcrasitepermission__profile__user=user)
 
 
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class SiteDetailView(RetrieveAPIView):
     """
     View to GET a Haztrak Site, which encapsulates the EPA RcraSite plus some.
@@ -42,6 +45,7 @@ class SiteDetailView(RetrieveAPIView):
     queryset = Site.objects.all()
 
     def get_queryset(self):
+        print("get_queryset called")
         epa_id = self.kwargs["epa_id"]
         queryset = Site.objects.filter(
             rcra_site__epa_id=epa_id, rcrasitepermission__profile__user=self.request.user
