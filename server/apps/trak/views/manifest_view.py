@@ -12,8 +12,7 @@ from apps.sites.models import Site
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer, MtnSerializer
 from apps.trak.serializers.signature_ser import QuickerSignSerializer
-from apps.trak.tasks import pull_manifest, sign_manifest
-from apps.trak.tasks.manifest_task import sync_site_manifests
+from apps.trak.tasks import pull_manifest, sign_manifest, sync_site_manifests
 
 logger = logging.getLogger(__name__)
 

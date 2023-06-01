@@ -16,6 +16,7 @@ def pull_manifest(self: Task, *, mtn: List[str], username: str) -> dict:
     """
     This task initiates a call to the ManifestService to pull a manifest by MTN
     """
+
     from apps.trak.services import ManifestService
 
     logger.debug(f"start task {self.name}, manifest {mtn}")
