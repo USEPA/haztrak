@@ -16,9 +16,9 @@ manifest_router.register(r"manifest", ManifestView)
 
 urlpatterns = [
     # Manifest
-    path("trak/", include(manifest_router.urls)),
-    path("trak/manifest/pull", PullManifestView.as_view()),
-    path("trak/manifest/sign", SignManifestView.as_view()),
+    path("", include(manifest_router.urls)),
+    path("manifest/pull", PullManifestView.as_view()),
+    path("manifest/sign", SignManifestView.as_view()),
     path("trak/mtn", MtnList.as_view()),
     path("trak/mtn/<str:epa_id>", MtnList.as_view()),
     # Handler

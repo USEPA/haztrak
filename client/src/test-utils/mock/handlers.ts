@@ -57,7 +57,7 @@ export const handlers = [
   /**
    * mock Manifest
    */
-  rest.get(`${API_BASE_URL}/api/trak/manifest/${mockMTN}`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/manifest/${mockMTN}`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(createMockManifest()));
   }),
   /**

@@ -10,7 +10,7 @@ from apps.trak.views import ManifestView, SignManifestView
 class TestManifestCRUD:
     """Tests the for the Manifest ModelViewSet"""
 
-    base_url = "/api/trak/manifest"
+    base_url = "/api/manifest"
 
     @pytest.fixture
     def factory(self):
@@ -53,7 +53,7 @@ class TestManifestCRUD:
 class TestSignManifestVIew:
     """Quicker Sign endpoint test suite"""
 
-    base_url = "/api/trak/manifest/sign"
+    base_url = "/api/manifest/sign"
     factory = APIRequestFactory()
     mtn = ["123456789ELC", "987654321ELC"]
 
