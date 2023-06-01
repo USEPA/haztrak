@@ -12,7 +12,7 @@ class TestEpaSiteView:
     Tests the for the endpoints related to the handlers
     """
 
-    URL = "/api/handler"
+    URL = "/api/site/rcra-site"
 
     @pytest.fixture
     def client(self, rcra_site_factory, api_client_factory):
@@ -37,7 +37,7 @@ class TestEpaSiteSearchView:
     Tests for the RcraSite Search endpoint
     """
 
-    URL = "/api/handler/search"
+    URL = "/api/site/rcra-site/search"
 
     @pytest.fixture(autouse=True)
     def generator(self, rcra_site_factory):
