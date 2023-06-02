@@ -1,5 +1,5 @@
 import { HtModal } from 'components/Ht';
-import { HandlerSearchForm } from 'components/Manifest/Handler/index';
+import { HandlerSearchForm } from 'components/Manifest/Handler';
 import { RcraSite } from 'components/RcraSite';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';

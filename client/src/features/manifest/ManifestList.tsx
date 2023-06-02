@@ -16,9 +16,9 @@ export function ManifestList(): ReactElement {
   useTitle(`${siteId || ''} Manifest`);
   const [pageSize, setPageSize] = useState(10);
 
-  let getUrl = 'trak/mtn';
+  let getUrl = 'mtn';
   if (siteId) {
-    getUrl = `trak/mtn/${siteId}`;
+    getUrl = `mtn/${siteId}`;
   }
 
   const [mtnList, loading, error] = useHtAPI<Array<MtnDetails>>(getUrl);

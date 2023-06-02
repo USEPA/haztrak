@@ -12,7 +12,7 @@ from apps.sites.models import Site
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer, MtnSerializer
 from apps.trak.serializers.signature_ser import QuickerSignSerializer
-from apps.trak.tasks import pull_manifest, sign_manifest
+from apps.trak.tasks import pull_manifest, sign_manifest, sync_site_manifests
 
 logger = logging.getLogger(__name__)
 
@@ -101,3 +101,23 @@ class SignManifestView(GenericAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except TaskError as exc:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=exc)
+
+
+class SyncSiteManifestView(GenericAPIView):
+    """
+    This endpoint launches a task to pull a site's manifests that are out of sync with RCRAInfo
+    """
+
+    queryset = None
+    response = Response
+
+    def post(self, request: Request) -> Response:
+        """POST method rcra_site"""
+        try:
+            site_id = request.data["siteId"]
+            task = sync_site_manifests.delay(site_id=site_id, username=str(request.user))
+            return self.response(data={"task": task.id}, status=status.HTTP_200_OK)
+        except KeyError:
+            return self.response(
+                data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
+            )

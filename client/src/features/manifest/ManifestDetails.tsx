@@ -8,7 +8,7 @@ import { Manifest } from 'components/Manifest/manifestSchema';
 export function ManifestDetails() {
   const { mtn, action, siteId } = useParams();
   useTitle(`${mtn}`);
-  const [manifestData, loading, error] = useHtAPI<Manifest>(`trak/manifest/${mtn}`);
+  const [manifestData, loading, error] = useHtAPI<Manifest>(`manifest/${mtn}`);
 
   let readOnly = true;
   if (action === 'edit') {

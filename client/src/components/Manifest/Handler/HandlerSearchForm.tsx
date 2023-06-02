@@ -68,7 +68,7 @@ export function HandlerSearchForm({
   // load options using API call
   const loadOptions = async (inputValue: string) => {
     return htApi
-      .get('site/handler/search', { params: { epaId: inputValue, siteType: handlerType } })
+      .get('site/rcra-site/search', { params: { epaId: inputValue, siteType: handlerType } })
       .then((res) => res.data as Array<RcraSite>);
   };
 

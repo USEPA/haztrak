@@ -8,7 +8,7 @@ from requests import RequestException
 from apps.core.services import RcrainfoService
 from apps.trak.models import Manifest, QuickerSign
 from apps.trak.serializers import ManifestSerializer, QuickerSignSerializer
-from apps.trak.tasks.manifest_task import pull_manifest
+from apps.trak.tasks import pull_manifest
 
 
 class ManifestService:

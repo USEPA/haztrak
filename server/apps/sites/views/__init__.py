@@ -10,5 +10,4 @@ from .site_views import (
     SiteDetailView,
     SiteListView,
     SiteMtnListView,
-    SyncSiteManifestView,
 )

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
 from apps.sites.models import RcraSiteType
-from apps.sites.views import RcraProfileView, RcraSiteSearchView
+from apps.sites.views import RcraSiteSearchView
 
 
 class TestEpaSiteView:
@@ -12,7 +12,7 @@ class TestEpaSiteView:
     Tests the for the endpoints related to the handlers
     """
 
-    URL = "/api/site/handler"
+    URL = "/api/site/rcra-site"
 
     @pytest.fixture
     def client(self, rcra_site_factory, api_client_factory):
@@ -23,12 +23,12 @@ class TestEpaSiteView:
         return rcra_site_factory()
 
     def test_endpoint_returns_json_with_rcra_site(self, client, generator):
-        response: Response = client.get(f"{self.URL}/details/{generator.pk}")
+        response: Response = client.get(f"{self.URL}/{generator.pk}")
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK
 
     def test_returns_serialized_handler(self, client, generator):
-        response: Response = client.get(f"{self.URL}/details/{generator.pk}")
+        response: Response = client.get(f"{self.URL}/{generator.pk}")
         assert response.data["epaSiteId"] == generator.epa_id
 
 
@@ -37,7 +37,7 @@ class TestEpaSiteSearchView:
     Tests for the RcraSite Search endpoint
     """
 
-    URL = "/api/site/handler/search"
+    URL = "/api/site/rcra-site/search"
 
     @pytest.fixture(autouse=True)
     def generator(self, rcra_site_factory):

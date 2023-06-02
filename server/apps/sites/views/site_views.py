@@ -7,13 +7,11 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, status
 from rest_framework.exceptions import APIException
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from apps.sites.models import RcraSite, RcraSiteType, Site
 from apps.sites.serializers import RcraSiteSerializer, SiteSerializer
-from apps.sites.tasks import sync_site_manifests
 from apps.trak.models import Manifest
 from apps.trak.serializers import MtnSerializer
 
@@ -52,27 +50,6 @@ class SiteDetailView(RetrieveAPIView):
         return queryset
 
 
-class SyncSiteManifestView(GenericAPIView):
-    """
-    This endpoint launches a task to pull a site's manifests that are out of sync with RCRAInfo
-    """
-
-    queryset = None
-    permission_classes = [IsAuthenticated]
-    response = Response
-
-    def post(self, request: Request) -> Response:
-        """POST method rcra_site"""
-        try:
-            site_id = request.data["siteId"]
-            task = sync_site_manifests.delay(site_id=site_id, username=str(request.user))
-            return self.response(data={"task": task.id}, status=status.HTTP_200_OK)
-        except KeyError:
-            return self.response(
-                data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
-            )
-
-
 class SiteMtnListView(GenericAPIView):
     """
     Returns a site's manifest tracking numbers (MTN). Rhe MTN are broken down into three lists;
@@ -81,7 +58,6 @@ class SiteMtnListView(GenericAPIView):
     """
 
     response = Response
-    permission_classes = [IsAuthenticated]
     serializer_class = MtnSerializer
 
     def get(self, request: Request, epa_id: str = None) -> Response:

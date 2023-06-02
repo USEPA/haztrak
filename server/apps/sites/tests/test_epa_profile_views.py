@@ -11,7 +11,7 @@ class TestRcraProfileView:
     Tests the for the endpoints related to the user's RcraProfile
     """
 
-    URL = "/api/site/profile"
+    URL = "/api/profile"
     id_field = "rcraAPIID"
     key_field = "rcraAPIKey"
     username_field = "rcraUsername"
