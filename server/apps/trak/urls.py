@@ -3,13 +3,11 @@ from rest_framework import routers
 
 from apps.trak.views import (
     FederalWasteCodes,
-    HandlerView,
     ManifestView,
     MtnList,
     PullManifestView,
     SignManifestView,
     SyncSiteManifestView,
-    TransporterView,
 )
 
 manifest_router = routers.SimpleRouter()
@@ -21,11 +19,10 @@ urlpatterns = [
     path("manifest/pull", PullManifestView.as_view()),
     path("manifest/sign", SignManifestView.as_view()),
     path("manifest/sync", SyncSiteManifestView.as_view()),
+    # MTN
     path("mtn", MtnList.as_view()),
     path("mtn/<str:epa_id>", MtnList.as_view()),
-    # Handler
-    path("trak/transporter/<int:pk>", TransporterView.as_view()),
-    path("trak/mtnhandler/<int:pk>", HandlerView.as_view()),
-    # code
+    # Codes
     path("code/waste/federal", FederalWasteCodes.as_view()),
+    # path("code/waste/state/<str:state_id>", PLACEHOLDER.as_view()),
 ]
