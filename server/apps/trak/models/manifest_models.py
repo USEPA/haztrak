@@ -455,7 +455,7 @@ class CorrectionInfo(TrakBaseModel):
     )
 
 
-class RejectionInfo(models.Model):
+class RejectionInfo(TrakBaseModel):
     """
     Rejection information about the entity if the manifest is rejected
     """
