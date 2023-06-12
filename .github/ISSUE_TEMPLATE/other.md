@@ -1,10 +1,8 @@
 ---
 name: ':nut_and_bolt: Something else'
-about: 'Questions, discussion, or other'
+about: 'Questions, discussions, chores, or other'
 title: ''
-labels: ''
+labels: 'chore'
 ---
 
 # :nut_and_bolt: Something else
-
-<!-- The floor is yours... -->
