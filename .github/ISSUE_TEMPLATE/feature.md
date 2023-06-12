@@ -2,10 +2,10 @@
 name: '🚀 Feature Request'
 about: 'Suggest an idea or possible new feature.'
 title: ''
-labels: 'Type: feature'
+labels: 'enhancement'
 ---
 
-# 🚀 Feature Request
+# :rocket: Feature Request
 
 <!--
 Please provide a clear and concise description of what you'd like to see. Things like...
