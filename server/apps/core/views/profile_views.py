@@ -13,17 +13,15 @@ from apps.sites.serializers import (
 )
 
 
-class HaztrakUserView(GenericAPIView):
+class HaztrakUserView(RetrieveUpdateAPIView):
     """Retrieve the current user's base information"""
 
     queryset = HaztrakUser.objects.all()
     serializer_class = HaztrakUserSerializer
     permission_classes = [permissions.AllowAny]  # ToDo - temporary remove this
 
-    def get(self, request: Request) -> Response:
-        """GET Haztrak User"""
-        serializer = self.serializer_class(request.user)
-        return Response(serializer.data)
+    def get_object(self):
+        return self.request.user
 
 
 class RcraProfileView(RetrieveUpdateAPIView):
