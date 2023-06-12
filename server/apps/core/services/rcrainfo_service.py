@@ -4,7 +4,7 @@ import os
 from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse
 
-from apps.sites.models.profile_models import RcraProfile
+from apps.core.models import RcraProfile
 from apps.trak.models import WasteCode
 
 

@@ -2,8 +2,9 @@ from rest_framework import serializers
 from rest_framework.exceptions import APIException
 from rest_framework.serializers import ModelSerializer
 
-from apps.sites.models.profile_models import RcraProfile, RcraSitePermission
+from apps.sites.models.profile_models import RcraSitePermission
 
+from ...core.models import RcraProfile
 from .base_ser import SitesBaseSerializer
 from .site_ser import SiteSerializer
 

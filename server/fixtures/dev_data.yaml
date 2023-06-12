@@ -669,7 +669,7 @@
     can_esign: true
     limited_esign: true
     registered_emanifest_user: true
-- model: sites.rcraprofile
+- model: core.rcraprofile
   pk: 1
   fields:
     user: 2

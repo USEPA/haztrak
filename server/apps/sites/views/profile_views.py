@@ -5,7 +5,8 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpd
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.sites.models import RcraProfile, RcraSitePermission
+from apps.core.models import RcraProfile
+from apps.sites.models import RcraSitePermission
 from apps.sites.serializers import (
     RcraPermissionSerializer,
     RcraProfileSerializer,

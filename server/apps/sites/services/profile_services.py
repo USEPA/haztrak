@@ -3,9 +3,10 @@ import logging
 from django.db import transaction
 
 from apps.core.services import RcrainfoService
-from apps.sites.models import RcraProfile, RcraSitePermission, Site
+from apps.sites.models import RcraSitePermission, Site
 from apps.sites.serializers import RcraPermissionSerializer
 
+from ...core.models import RcraProfile
 from .site_services import RcraSiteService, SiteService
 
 

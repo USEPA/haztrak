@@ -2,7 +2,8 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
-from apps.sites.models import Address, Contact, RcraProfile
+from apps.core.models import RcraProfile
+from apps.sites.models import Address, Contact
 
 
 @pytest.mark.django_db

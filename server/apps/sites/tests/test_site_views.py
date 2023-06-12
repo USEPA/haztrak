@@ -6,7 +6,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.sites.models import RcraProfile, RcraSite, RcraSitePermission, Site
+from apps.core.models import RcraProfile
+from apps.sites.models import RcraSite, RcraSitePermission, Site
 from apps.sites.views import SiteDetailView, SiteMtnListView
 
 
