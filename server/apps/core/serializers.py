@@ -1,8 +1,28 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.core.models import RcraProfile
+from apps.core.models import HaztrakUser, RcraProfile
 from apps.sites.serializers import RcraSitePermissionSerializer
+
+
+class HaztrakUserSerializer(ModelSerializer):
+    """
+    Model serializer for marshalling/unmarshalling a user's HaztrakUser
+    """
+
+    class Meta:
+        model = HaztrakUser
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "is_staff",
+            "is_active",
+            "is_superuser",
+            "last_login",
+            "date_joined",
+        ]
 
 
 class RcraProfileSerializer(ModelSerializer):

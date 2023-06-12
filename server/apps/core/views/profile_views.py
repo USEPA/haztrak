@@ -1,16 +1,29 @@
 from celery.exceptions import CeleryError
 from django.contrib.auth.models import User
-from rest_framework import status
+from rest_framework import permissions, status
 from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.core.models import RcraProfile
-from apps.core.serializers import RcraProfileSerializer
+from apps.core.models import HaztrakUser, RcraProfile
+from apps.core.serializers import HaztrakUserSerializer, RcraProfileSerializer
 from apps.sites.models import RcraSitePermission
 from apps.sites.serializers import (
     RcraSitePermissionSerializer,
 )
+
+
+class HaztrakUserView(GenericAPIView):
+    """Retrieve the current user's base information"""
+
+    queryset = HaztrakUser.objects.all()
+    serializer_class = HaztrakUserSerializer
+    permission_classes = [permissions.AllowAny]  # ToDo - temporary remove this
+
+    def get(self, request: Request) -> Response:
+        """GET Haztrak User"""
+        serializer = self.serializer_class(request.user)
+        return Response(serializer.data)
 
 
 class RcraProfileView(RetrieveUpdateAPIView):
