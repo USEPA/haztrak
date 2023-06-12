@@ -22,6 +22,8 @@ class CoreBaseModel(models.Model):
 
 
 class HaztrakUser(AbstractUser):
+    """Haztrak abstract user model. It simply inherits from Django's AbstractUser model."""
+
     pass
 
 
