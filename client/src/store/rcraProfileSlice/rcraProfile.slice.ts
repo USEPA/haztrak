@@ -5,6 +5,7 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { HaztrakSite } from 'components/HaztrakSite';
+import { htApi } from 'services';
 import { RootState } from 'store';
 
 /**
@@ -96,7 +97,7 @@ export const getProfile = createAsyncThunk<RcraProfileState>(
   async (arg, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     const username = state.user.user;
-    const response = await axios.get(`${import.meta.env.VITE_HT_API_URL}/api/profile/${username}`);
+    const response = await htApi.get(`${import.meta.env.VITE_HT_API_URL}/api/profile/${username}`);
     const { rcraSites, ...rest } = response.data as RcraProfileResponse;
     // Convert the array of RcraSite permissions we get from our backend
     // to an object which each key corresponding to the RcraSite's ID number
