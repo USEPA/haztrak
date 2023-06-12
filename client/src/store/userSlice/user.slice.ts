@@ -104,6 +104,11 @@ export const selectUserName = (state: RootState): string | undefined => state.us
 /**
  * Select the current user
  */
-export const selectUser = (state: RootState): UserState => state.user;
+export const selectUser = (state: RootState): HaztrakUser | undefined => state.user.user;
+
+/**
+ * Select the current User State
+ */
+export const selectUserState = (state: RootState): UserState => state.user;
 
 export default userSlice.reducer;
