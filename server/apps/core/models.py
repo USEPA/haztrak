@@ -1,15 +1,31 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from apps.sites.models.base_models import SitesBaseModel
 from haztrak import settings
+
+
+class CoreBaseModel(models.Model):
+    """Base class for all apps.core models"""
+
+    class Meta:
+        abstract = True
+        ordering = ["pk"]
+
+    def __str__(self):
+        return f"{self.__class__.__name__}"
+
+    def __repr__(self):
+        field_values = ", ".join(
+            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
+        )
+        return f"<{self.__class__.__name__}({field_values})>"
 
 
 class HaztrakUser(AbstractUser):
     pass
 
 
-class RcraProfile(SitesBaseModel):
+class RcraProfile(CoreBaseModel):
     """
     Contains a user's RcraProfile information, such as username, and API credentials.
     Has a one-to-one relationship with the User model.

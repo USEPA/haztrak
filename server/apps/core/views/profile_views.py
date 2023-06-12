@@ -6,10 +6,10 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from apps.core.models import RcraProfile
+from apps.core.serializers import RcraProfileSerializer
 from apps.sites.models import RcraSitePermission
 from apps.sites.serializers import (
     RcraPermissionSerializer,
-    RcraProfileSerializer,
     RcraSitePermissionSerializer,
 )
 

@@ -25,7 +25,10 @@ class RcraSitePermission(SitesBaseModel):
         verbose_name = "RCRA Site Permission"
         ordering = ["site__rcra_site__epa_id"]
 
-    site = models.ForeignKey(Site, on_delete=models.CASCADE)
+    site = models.ForeignKey(
+        Site,
+        on_delete=models.CASCADE,
+    )
     profile = models.ForeignKey(
         "core.RcraProfile",
         on_delete=models.PROTECT,
