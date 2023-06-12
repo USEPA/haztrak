@@ -22,7 +22,7 @@ describe('Home', () => {
     renderWithProviders(<Home />, {
       preloadedState: {
         user: {
-          user: username,
+          user: { username: username },
           token: 'fake_token',
           loading: false,
           error: undefined,

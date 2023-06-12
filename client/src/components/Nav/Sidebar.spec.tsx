@@ -13,7 +13,7 @@ describe('Sidebar', () => {
     renderWithProviders(<Sidebar />, {
       preloadedState: {
         user: {
-          user: userName,
+          user: { username: userName },
           token: 'fakeToken',
           loading: false,
         },

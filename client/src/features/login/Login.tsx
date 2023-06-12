@@ -34,10 +34,10 @@ export function Login(): ReactElement {
 
   useEffect(() => {
     // redirect to home if already logged in
-    if (user.user) {
+    if (user.user?.username) {
       navigation('/');
     }
-  }, [user.user]);
+  }, [user.user?.username]);
 
   function onSubmit({ username, password }: LoginSchema) {
     return dispatch(login({ username, password }));

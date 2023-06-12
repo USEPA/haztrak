@@ -1,13 +1,19 @@
-import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { RcraProfileSite, RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
 import { RootState } from 'store/rootStore';
+
+export interface HaztrakUser {
+  username: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+}
 
 /**
  * The Redux stored information on the current haztrak user
  */
 export interface UserState {
-  user?: string;
+  user?: HaztrakUser;
   token?: string;
   loading?: boolean;
   error?: string;
@@ -15,7 +21,7 @@ export interface UserState {
 
 const initialState: UserState = {
   // Retrieve the user's username and token from local storage. For convenience
-  user: JSON.parse(localStorage.getItem('user') || 'null') || null,
+  user: { username: JSON.parse(localStorage.getItem('user') || 'null') || null },
   token: JSON.parse(localStorage.getItem('token') || 'null') || null,
   loading: false,
   error: undefined,
@@ -28,7 +34,11 @@ export const login = createAsyncThunk(
       username,
       password,
     });
-    return response.data as UserState;
+    // return response.data as UserState;
+    return {
+      user: { username: response.data.user },
+      token: response.data.token,
+    } as UserState;
   }
 );
 
@@ -67,7 +77,7 @@ const userSlice = createSlice({
         // Todo: currently, we store username and jwt token in local storage so
         //  the user stays logged in between page refreshes. This is a known vulnerability to be
         //  fixed in the future. For now, it's a development convenience.
-        localStorage.setItem('user', JSON.stringify(authResponse.user));
+        localStorage.setItem('user', JSON.stringify(authResponse.user?.username));
         localStorage.setItem('token', JSON.stringify(authResponse.token));
         return {
           loading: false,
@@ -89,11 +99,11 @@ const userSlice = createSlice({
 /**
  * Get the current user's username from the Redux store
  */
-export const selectUserName = (state: RootState) => state.user.user;
+export const selectUserName = (state: RootState): string | undefined => state.user.user?.username;
 
 /**
  * Select the current user
  */
-export const selectUser = (state: RootState) => state.user;
+export const selectUser = (state: RootState): UserState => state.user;
 
 export default userSlice.reducer;
