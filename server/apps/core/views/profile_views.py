@@ -1,6 +1,6 @@
 from celery.exceptions import CeleryError
 from django.contrib.auth.models import User
-from rest_framework import permissions, status
+from rest_framework import status
 from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -9,7 +9,6 @@ from apps.core.models import RcraProfile
 from apps.core.serializers import RcraProfileSerializer
 from apps.sites.models import RcraSitePermission
 from apps.sites.serializers import (
-    RcraPermissionSerializer,
     RcraSitePermissionSerializer,
 )
 
@@ -49,22 +48,12 @@ class SyncProfileView(GenericAPIView):
 
 class RcraSitePermissionView(RetrieveAPIView):
     """
-    For Viewing a user's Site Permissions in haztrak's internal JSON structure.
-    This is not included in the current URL configs, but kept here for documentation.
+    For Viewing the RcraSite Permissions for the given user
     """
 
     queryset = RcraSitePermission.objects.all()
     serializer_class = RcraSitePermissionSerializer
-    permission_classes = [permissions.AllowAny]
 
-
-class RcraPermissionView(RetrieveAPIView):
-    """
-    For Viewing a user's Site Permissions in the same JSON structure as RCRAInfo.
-
-    This is not included in the current URL configs, but kept here for documentation.
-    """
-
-    queryset = RcraSitePermission.objects.all()
-    serializer_class = RcraPermissionSerializer
-    permission_classes = [permissions.AllowAny]
+    def get_queryset(self):
+        user = self.request.user
+        return RcraSitePermission.objects.filter(profile__user=user)
