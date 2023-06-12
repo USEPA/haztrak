@@ -21,6 +21,7 @@ class HaztrakUserView(RetrieveUpdateAPIView):
     permission_classes = [permissions.AllowAny]  # ToDo - temporary remove this
 
     def get_object(self):
+        # return HaztrakUser.objects.get(username="testuser1")
         return self.request.user
 
 
