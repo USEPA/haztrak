@@ -5,7 +5,9 @@ import { HtForm } from 'components/Ht';
 import React, { createRef, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { HaztrakUser } from 'store/userSlice/user.slice';
+import { htApi } from 'services';
+import { useAppDispatch } from 'store';
+import { HaztrakUser, updateUserProfile } from 'store/userSlice/user.slice';
 import { z } from 'zod';
 
 interface UserProfileProps {
@@ -21,6 +23,7 @@ const haztrakUserForm = z.object({
 export function UserProfile({ user }: UserProfileProps) {
   const [editable, setEditable] = useState(false);
   const fileRef = createRef<HTMLInputElement>();
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -32,12 +35,18 @@ export function UserProfile({ user }: UserProfileProps) {
   const onSubmit = (data: any) => {
     setEditable(!editable);
     console.log('data', data);
+    htApi
+      .put('/user/', data)
+      .then((r) => {
+        dispatch(updateUserProfile(r.data));
+      })
+      .catch((r) => console.error(r));
   };
 
   return (
     <Container>
       <HtForm onSubmit={handleSubmit(onSubmit)}>
-        <Row className="p-5">
+        <Row className="p-2">
           <input
             type="file"
             accept="image/png,image/jpeg"

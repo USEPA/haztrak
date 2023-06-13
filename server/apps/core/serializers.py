@@ -10,11 +10,16 @@ class HaztrakUserSerializer(ModelSerializer):
     Model serializer for marshalling/unmarshalling a user's HaztrakUser
     """
 
+    username = serializers.CharField(
+        required=False,
+    )
     firstName = serializers.CharField(
         source="first_name",
+        required=False,
     )
     lastName = serializers.CharField(
         source="last_name",
+        required=False,
     )
 
     class Meta:

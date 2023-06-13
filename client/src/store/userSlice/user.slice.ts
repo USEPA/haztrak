@@ -69,11 +69,22 @@ function logout(user: UserState) {
   return { ...initialState, user: undefined, token: undefined } as UserState;
 }
 
+/**
+ * update the HaztrakUser state with the new user information
+ */
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     logout,
+    updateUserProfile(state: UserState, action: any) {
+      console.log('updateUserProfile action', action);
+      return {
+        ...state,
+        user: action.payload,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -146,3 +157,4 @@ export const selectUser = (state: RootState): HaztrakUser | undefined => state.u
 export const selectUserState = (state: RootState): UserState => state.user;
 
 export default userSlice.reducer;
+export const { updateUserProfile } = userSlice.actions;
