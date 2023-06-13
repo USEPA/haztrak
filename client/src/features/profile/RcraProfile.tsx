@@ -15,7 +15,6 @@ interface ProfileViewProps {
   profile: RcraProfileState;
 }
 
-// ToDo: Each field should be empty or meet the min length requirements
 // ToDo: Either rcraAPIId & rcraAPIID should both be empty or both be non-empty
 const rcraProfileForm = z.object({
   rcraAPIID: z.string().min(36).optional(),
