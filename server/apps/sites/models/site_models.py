@@ -206,7 +206,73 @@ class Site(SitesBaseModel):
 
 
 class Role(models.TextChoices):
-        INDUSTRY = "IN", _("Industry")
-        PPC = "PP", _("Ppc")
-        EPA = "EP", _("Epa")
-        STATE = "ST", _("State")
+    INDUSTRY = "IN", _("Industry")
+    PPC = "PP", _("Ppc")
+    EPA = "EP", _("Epa")
+    STATE = "ST", _("State")
+
+
+class RcraSitePermission(SitesBaseModel):
+    """
+    RCRAInfo Site Permissions per module connected to a user's RcraProfile
+    and the corresponding Site
+    """
+
+    CERTIFIER = "Certifier"
+    PREPARER = "Preparer"
+    VIEWER = "Viewer"
+
+    EPA_PERMISSION_LEVEL = [
+        (CERTIFIER, "Certifier"),
+        (PREPARER, "Preparer"),
+        (VIEWER, "Viewer"),
+    ]
+
+    class Meta:
+        verbose_name = "RCRA Site Permission"
+        ordering = ["site__rcra_site__epa_id"]
+
+    site = models.ForeignKey(
+        Site,
+        on_delete=models.CASCADE,
+    )
+    profile = models.ForeignKey(
+        "core.RcraProfile",
+        on_delete=models.PROTECT,
+        related_name="permissions",
+    )
+    site_manager = models.BooleanField(
+        default=False,
+    )
+    annual_report = models.CharField(
+        max_length=12,
+        choices=EPA_PERMISSION_LEVEL,
+    )
+    biennial_report = models.CharField(
+        max_length=12,
+        choices=EPA_PERMISSION_LEVEL,
+    )
+    e_manifest = models.CharField(
+        max_length=12,
+        choices=EPA_PERMISSION_LEVEL,
+    )
+    my_rcra_id = models.CharField(
+        max_length=12,
+        choices=EPA_PERMISSION_LEVEL,
+    )
+    wiets = models.CharField(
+        max_length=12,
+        choices=EPA_PERMISSION_LEVEL,
+    )
+
+    def __str__(self):
+        return f"{self.profile.user}: {self.site.rcra_site.epa_id}"
+
+    def clean(self):
+        if self.site_manager:
+            fields = ["annual_report", "biennial_report", "e_manifest", "my_rcra_id", "wiets"]
+            for field_name in fields:
+                if getattr(self, field_name) != "Certifier":
+                    raise ValidationError(
+                        f"The value for the '{field_name}' field must be set to 'Certifier'."
+                    )

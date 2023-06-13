@@ -12,7 +12,7 @@ const initialState: UserState = {
 };
 
 const userPayload: UserState = {
-  user: 'testuser1',
+  user: { username: 'testuser1' },
   token: 'mockToken',
 };
 

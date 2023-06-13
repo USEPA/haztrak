@@ -9,11 +9,11 @@ afterEach(() => {
 
 describe('TopNav', () => {
   test('renders when user is logged in', () => {
-    const userName = 'testuser1';
+    const username = 'testuser1';
     renderWithProviders(<TopNav />, {
       preloadedState: {
         user: {
-          user: userName,
+          user: { username: username, isLoading: false },
           token: 'fakeToken',
           loading: false,
         },

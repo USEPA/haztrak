@@ -1,4 +1,4 @@
-import userReducer, { login, selectUserName, selectUser } from './user.slice';
+import userReducer, { login, selectUserName, selectUser, selectUserState } from './user.slice';
 
 export default userReducer;
-export { login, selectUserName, selectUser };
+export { login, selectUserName, selectUser, selectUserState };

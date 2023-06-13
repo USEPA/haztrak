@@ -1,4 +1,5 @@
 import { HtCard } from 'components/Ht';
+import { HaztrakUser, selectUser } from 'store/userSlice/user.slice';
 import { RcraProfile } from './RcraProfile';
 import { UserProfile } from './UserProfile';
 import { useTitle } from 'hooks';
@@ -14,7 +15,12 @@ import { getProfile, selectRcraProfile } from 'store/rcraProfileSlice';
 export function Profile(): ReactElement {
   const dispatch = useAppDispatch();
   const profile = useAppSelector(selectRcraProfile);
+  const user: HaztrakUser | undefined = useAppSelector(selectUser);
   useTitle('Profile');
+
+  if (!user) {
+    return <div>loading...</div>;
+  }
 
   useEffect(() => {
     dispatch(getProfile());
@@ -31,7 +37,7 @@ export function Profile(): ReactElement {
             <HtCard>
               <HtCard.Header title="User Profile" />
               <HtCard.Body>
-                <UserProfile profile={profile} />
+                <UserProfile user={user} />
               </HtCard.Body>
             </HtCard>
             <HtCard>

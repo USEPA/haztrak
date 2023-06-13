@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from apps.sites.models.profile_models import RcraProfile
+from apps.core.models import RcraProfile
 
 
 @receiver(post_save, sender=User)

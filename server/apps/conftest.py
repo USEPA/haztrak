@@ -11,12 +11,11 @@ import responses
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
-from apps.core.models import HaztrakUser
+from apps.core.models import HaztrakUser, RcraProfile
 from apps.sites.models import (
     Address,
     Contact,
     RcraPhone,
-    RcraProfile,
     RcraSite,
     Site,
 )

@@ -163,8 +163,7 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "An open-source web app illustrating how hazardous waste "
     "management software can integrate with EPA's RCRAInfo",
     "VERSION": HAZTRAK_VERSION,
-    "SERVE_INCLUDE_SCHEMA": True,
-    # "SCHEMA_PATH_PREFIX": r"/api/[a-zA-Z]*/", # ToDo: redesign endpoints
+    "SERVE_INCLUDE_SCHEMA": False,
     "SWAGGER_UI_SETTINGS": {
         "deepLinking": True,
         "persistAuthorization": True,

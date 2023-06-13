@@ -1,5 +1,5 @@
 ---
-name: ':nut_and_bolt: Something else'
+name: 'Something Else'
 about: 'Questions, discussions, chores, or other'
 title: ''
 labels: 'chore'

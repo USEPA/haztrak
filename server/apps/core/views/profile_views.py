@@ -5,12 +5,24 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpd
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.sites.models import RcraProfile, RcraSitePermission
+from apps.core.models import HaztrakUser, RcraProfile
+from apps.core.serializers import HaztrakUserSerializer, RcraProfileSerializer
+from apps.sites.models import RcraSitePermission
 from apps.sites.serializers import (
-    RcraPermissionSerializer,
-    RcraProfileSerializer,
     RcraSitePermissionSerializer,
 )
+
+
+class HaztrakUserView(RetrieveUpdateAPIView):
+    """Retrieve the current user's base information"""
+
+    queryset = HaztrakUser.objects.all()
+    serializer_class = HaztrakUserSerializer
+    permission_classes = [permissions.AllowAny]  # ToDo - temporary remove this
+
+    def get_object(self):
+        # return HaztrakUser.objects.get(username="testuser1")
+        return self.request.user
 
 
 class RcraProfileView(RetrieveUpdateAPIView):
@@ -25,7 +37,6 @@ class RcraProfileView(RetrieveUpdateAPIView):
     response = Response
     lookup_field = "user__username"
     lookup_url_kwarg = "user"
-    permission_classes = [permissions.AllowAny]  # temporary, remove me
 
 
 class SyncProfileView(GenericAPIView):
@@ -49,22 +60,12 @@ class SyncProfileView(GenericAPIView):
 
 class RcraSitePermissionView(RetrieveAPIView):
     """
-    For Viewing a user's Site Permissions in haztrak's internal JSON structure.
-    This is not included in the current URL configs, but kept here for documentation.
+    For Viewing the RcraSite Permissions for the given user
     """
 
     queryset = RcraSitePermission.objects.all()
     serializer_class = RcraSitePermissionSerializer
-    permission_classes = [permissions.AllowAny]
 
-
-class RcraPermissionView(RetrieveAPIView):
-    """
-    For Viewing a user's Site Permissions in the same JSON structure as RCRAInfo.
-
-    This is not included in the current URL configs, but kept here for documentation.
-    """
-
-    queryset = RcraSitePermission.objects.all()
-    serializer_class = RcraPermissionSerializer
-    permission_classes = [permissions.AllowAny]
+    def get_queryset(self):
+        user = self.request.user
+        return RcraSitePermission.objects.filter(profile__user=user)

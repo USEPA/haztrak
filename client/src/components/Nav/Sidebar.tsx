@@ -147,7 +147,7 @@ export function Sidebar(): ReactElement | null {
         </div>
         <div className="sb-sidenav-footer">
           <div className="small">Logged in as:</div>
-          {authUser}
+          {authUser.username}
         </div>
       </nav>
     </div>

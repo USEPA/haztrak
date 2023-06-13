@@ -3,7 +3,8 @@ from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
 from apps.core.admin import HiddenListView
-from apps.sites.models import Address, Contact, RcraProfile, RcraSite, RcraSitePermission, Site
+from apps.core.models import RcraProfile
+from apps.sites.models import Address, Contact, RcraSite, RcraSitePermission, Site
 
 
 @admin.register(RcraSite)

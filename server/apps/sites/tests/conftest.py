@@ -2,8 +2,8 @@ from typing import Optional
 
 import pytest
 
+from apps.core.models import RcraProfile
 from apps.sites.models import (
-    RcraProfile,
     RcraSitePermission,
     Site,
 )

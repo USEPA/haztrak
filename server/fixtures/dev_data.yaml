@@ -20,9 +20,9 @@
     last_login: null
     is_superuser: false
     username: testuser1
-    first_name: ''
-    last_name: ''
-    email: ''
+    first_name: 'David'
+    last_name: 'Graham'
+    email: 'myemail@proton.me'
     is_staff: false
     is_active: true
     date_joined: 2022-12-17 19:17:58.260000+00:00
@@ -669,7 +669,7 @@
     can_esign: true
     limited_esign: true
     registered_emanifest_user: true
-- model: sites.rcraprofile
+- model: core.rcraprofile
   pk: 1
   fields:
     user: 2

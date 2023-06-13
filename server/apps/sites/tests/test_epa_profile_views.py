@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.sites.views import RcraProfileView
+from apps.core.views import RcraProfileView
 
 
 class TestRcraProfileView:
