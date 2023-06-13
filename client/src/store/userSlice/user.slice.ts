@@ -79,7 +79,6 @@ const userSlice = createSlice({
   reducers: {
     logout,
     updateUserProfile(state: UserState, action: any) {
-      console.log('updateUserProfile action', action);
       return {
         ...state,
         user: action.payload,
