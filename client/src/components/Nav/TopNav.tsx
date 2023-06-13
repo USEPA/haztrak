@@ -31,7 +31,8 @@ export function TopNav() {
           aria-hidden={false}
           id="sidebarToggle"
           onClick={toggleSidebar}
-          className="mx-3 btn-link btn btn-sm bg-transparent btn-outline-none btn-outline-dark"
+          variant="dark"
+          className="mx-3 rounded-circle btn-hover-info"
         >
           <FontAwesomeIcon icon={faBars} />
         </Button>

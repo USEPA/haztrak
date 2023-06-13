@@ -16,6 +16,13 @@ $info: #009999;
   left: -0.25rem !important;
 }
 
+.btn-hover-info {
+  &:hover {
+    background-color: $info !important;
+    color: white !important;
+  }
+}
+
 // Custom Pagination
 .page-item .page-link {
   background: white;
