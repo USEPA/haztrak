@@ -133,6 +133,10 @@ while [[ $# -gt 0 ]]; do
     -e|--erd)
 	  graph_models
 		;;
+    -h|--help)
+	  print_usage
+    exit 0
+		;;
     *)
       echo "Unknown option $1"
 	  print_usage
