@@ -18,6 +18,7 @@ import './App.scss';
 import { getProfile } from 'store/rcraProfileSlice';
 import { selectRcraProfile } from 'store/rcraProfileSlice';
 import { selectUserName } from 'store/userSlice';
+import { getHaztrakUser } from 'store/userSlice/user.slice';
 
 function App(): ReactElement {
   const userName = useAppSelector(selectUserName);
@@ -28,6 +29,7 @@ function App(): ReactElement {
   useEffect(() => {
     if (userName) {
       dispatch(getProfile());
+      dispatch(getHaztrakUser());
     }
   }, [profile.user]);
 

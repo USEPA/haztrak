@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { htApi } from 'services';
 import { RootState } from 'store/rootStore';
 
 export interface HaztrakUser {
@@ -7,6 +8,8 @@ export interface HaztrakUser {
   email?: string;
   firstName?: string;
   lastName?: string;
+  isLoading: boolean;
+  error?: string;
 }
 
 /**
@@ -21,7 +24,7 @@ export interface UserState {
 
 const initialState: UserState = {
   // Retrieve the user's username and token from local storage. For convenience
-  user: { username: JSON.parse(localStorage.getItem('user') || 'null') || null },
+  user: { username: JSON.parse(localStorage.getItem('user') || 'null') || null, isLoading: false },
   token: JSON.parse(localStorage.getItem('token') || 'null') || null,
   loading: false,
   error: undefined,
@@ -41,6 +44,16 @@ export const login = createAsyncThunk(
     } as UserState;
   }
 );
+
+export const getHaztrakUser = createAsyncThunk('user/getHaztrakUser', async (arg, thunkAPI) => {
+  const response = await htApi.get(`${import.meta.env.VITE_HT_API_URL}/api/user`);
+  if (response.status >= 200 && response.status < 300) {
+    console.log('getHaztrakUser response.data', response.data);
+    return response.data as HaztrakUser;
+  } else {
+    return thunkAPI.rejectWithValue(response.data);
+  }
+});
 
 /**
  * User logout Redux reducer Function
@@ -91,6 +104,28 @@ const userSlice = createSlice({
           // @ts-ignore
           error: action.payload.error,
           loading: false,
+        };
+      })
+      .addCase(getHaztrakUser.pending, (state) => {
+        return {
+          ...state,
+          error: undefined,
+          loading: true,
+        };
+      })
+      .addCase(getHaztrakUser.rejected, (state, action) => {
+        return {
+          ...state,
+          error: `Error: ${action.payload}`,
+          loading: true,
+        };
+      })
+      .addCase(getHaztrakUser.fulfilled, (state, action) => {
+        return {
+          ...state,
+          user: action.payload,
+          error: undefined,
+          loading: true,
         };
       });
   },
