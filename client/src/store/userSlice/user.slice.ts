@@ -8,7 +8,7 @@ export interface HaztrakUser {
   email?: string;
   firstName?: string;
   lastName?: string;
-  isLoading: boolean;
+  isLoading?: boolean;
   error?: string;
 }
 

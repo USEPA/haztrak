@@ -32,7 +32,7 @@ HtForm.InputGroup = function (props: InputGroupProps): ReactElement {
 
 HtForm.Label = function (props: FormLabelProps): ReactElement {
   return (
-    <Form.Label {...props} className="mb-0 fw-bold">
+    <Form.Label {...props} className={`mb-0 fw-bold ${props.className}`}>
       {props.children}
     </Form.Label>
   );

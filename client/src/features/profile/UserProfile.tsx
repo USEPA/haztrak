@@ -78,7 +78,7 @@ export function UserProfile({ user }: UserProfileProps) {
                 plaintext={!editable}
                 readOnly={!editable}
                 {...register('firstName')}
-                placeholder={user.firstName ? user.firstName : 'Unknown'}
+                placeholder={user.firstName ? user.firstName : 'Not Provided'}
                 className={errors.firstName && 'is-invalid'}
               />
               <div className="invalid-feedback">{errors.firstName?.message}</div>
@@ -92,7 +92,7 @@ export function UserProfile({ user }: UserProfileProps) {
                 plaintext={!editable}
                 readOnly={!editable}
                 {...register('lastName')}
-                placeholder={user.lastName ? user.lastName : 'Unknown'}
+                placeholder={user.lastName ? user.lastName : 'Not Provided'}
                 className={errors.lastName && 'is-invalid'}
               />
               <div className="invalid-feedback">{errors.lastName?.message}</div>
@@ -108,7 +108,7 @@ export function UserProfile({ user }: UserProfileProps) {
                 plaintext={!editable}
                 readOnly={!editable}
                 {...register('email')}
-                placeholder={user.email ? user.email : 'Unknown'}
+                placeholder={user.email ? user.email : 'Not Provided'}
                 className={errors.email && 'is-invalid'}
               />
               <div className="invalid-feedback">{errors.email?.message}</div>

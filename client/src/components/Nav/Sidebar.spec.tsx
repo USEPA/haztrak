@@ -9,17 +9,17 @@ afterEach(() => {
 
 describe('Sidebar', () => {
   test('renders when use is logged in', () => {
-    const userName = 'testuser1';
+    const username = 'testuser1';
     renderWithProviders(<Sidebar />, {
       preloadedState: {
         user: {
-          user: { username: userName },
+          user: { username: username, isLoading: false },
           token: 'fakeToken',
           loading: false,
         },
       },
     });
-    expect(screen.getByText(userName)).toBeInTheDocument();
+    expect(screen.getByText(username)).toBeInTheDocument();
   });
   test('returns nothing when user not logged in', () => {
     const userName = 'testuser1';
