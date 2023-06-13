@@ -25,7 +25,16 @@ export function TopNav() {
   // noinspection JSValidateTypes
   return (
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex">
-      <div className="flex-grow-1 ps-2">
+      <div className="flex-grow-1">
+        <Button
+          aria-label="toggleSidebarNavigation"
+          aria-hidden={false}
+          id="sidebarToggle"
+          onClick={toggleSidebar}
+          className="mx-3 btn-link btn btn-sm bg-transparent btn-outline-none btn-outline-dark"
+        >
+          <FontAwesomeIcon icon={faBars} />
+        </Button>
         <Link to="/" className="navbar-brand ps-3 pe-5">
           <img
             src={logo}
@@ -35,15 +44,6 @@ export function TopNav() {
             className="my-3"
           />
         </Link>
-        <Button
-          aria-label="toggleSidebarNavigation"
-          aria-hidden={false}
-          id="sidebarToggle"
-          onClick={toggleSidebar}
-          className="ms-5 btn-link btn btn-sm bg-transparent btn-outline-none btn-outline-dark"
-        >
-          <FontAwesomeIcon icon={faBars} />
-        </Button>
       </div>
       <NotificationBtn />
       <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
