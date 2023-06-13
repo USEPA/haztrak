@@ -48,7 +48,6 @@ export const login = createAsyncThunk(
 export const getHaztrakUser = createAsyncThunk('user/getHaztrakUser', async (arg, thunkAPI) => {
   const response = await htApi.get(`${import.meta.env.VITE_HT_API_URL}/api/user`);
   if (response.status >= 200 && response.status < 300) {
-    console.log('getHaztrakUser response.data', response.data);
     return response.data as HaztrakUser;
   } else {
     return thunkAPI.rejectWithValue(response.data);

@@ -28,7 +28,7 @@ type RcraProfileForm = z.infer<typeof rcraProfileForm>;
 export function RcraProfile({ profile }: ProfileViewProps) {
   const [editable, setEditable] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
-  const { error, rcraSites, loading, ...formValues } = profile;
+  const { rcraSites, loading, ...formValues } = profile;
   const dispatch = useAppDispatch();
 
   const {
