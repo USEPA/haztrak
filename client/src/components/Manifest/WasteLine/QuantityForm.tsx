@@ -1,4 +1,6 @@
+import { ErrorMessage } from '@hookform/error-message';
 import { HtForm } from 'components/Ht';
+import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -32,7 +34,11 @@ const containerTypes = [
 ];
 
 export function QuantityForm() {
-  const { register, control } = useFormContext();
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useFormContext<WasteLine>();
 
   return (
     <>
@@ -44,7 +50,9 @@ export function QuantityForm() {
               type="number"
               min={1}
               {...register(`quantity.containerNumber`, { min: 0, valueAsNumber: true })}
+              className={errors.quantity?.containerNumber && 'is-invalid'}
             />
+            <div className="invalid-feedback">{errors.quantity?.containerNumber?.message}</div>
           </HtForm.Group>
         </Col>
         <Col>
@@ -59,14 +67,29 @@ export function QuantityForm() {
                 return (
                   <Select
                     id="quantityContainerType"
+                    classNames={{
+                      control: () =>
+                        `form-control p-0 rounded-2 ${
+                          errors.quantity?.containerType && 'border-danger'
+                        }`,
+                    }}
                     {...field}
+                    // ToDo: WasteLine type expects a string enum literal as its possible values.
+                    // ToDo: Fix these minor typescript errors
+                    // @ts-ignore
                     options={containerTypes}
+                    // @ts-ignore
                     getOptionLabel={(option) => option.description}
                     getOptionValue={(option) => option.code}
                     openMenuOnFocus={false}
                   />
                 );
               }}
+            />
+            <ErrorMessage
+              errors={errors}
+              name={`quantity.containerType`}
+              render={({ message }) => <span className="text-danger">{message}</span>}
             />
           </HtForm.Group>
         </Col>
@@ -81,7 +104,9 @@ export function QuantityForm() {
               {...register(`quantity.quantity`, {
                 valueAsNumber: true,
               })}
+              className={errors.quantity?.quantity && 'is-invalid'}
             />
+            <div className="invalid-feedback">{errors.quantity?.quantity?.message}</div>
           </HtForm.Group>
         </Col>
         <Col>
@@ -97,13 +122,28 @@ export function QuantityForm() {
                   <Select
                     id="quantityUnitOfMeasurement"
                     {...field}
+                    // ToDo: WasteLine type expects a string enum literal as its possible values.
+                    // ToDo: Fix these minor typescript errors
+                    // @ts-ignore
                     options={unitsOfMeasurements}
+                    // @ts-ignore
                     getOptionLabel={(option) => option.description}
                     getOptionValue={(option) => option.code}
                     openMenuOnFocus={false}
+                    classNames={{
+                      control: () =>
+                        `form-control p-0 rounded-2 ${
+                          errors.quantity?.unitOfMeasurement && 'border-danger'
+                        } `,
+                    }}
                   />
                 );
               }}
+            />
+            <ErrorMessage
+              errors={errors}
+              name={`quantity.unitOfMeasurement`}
+              render={({ message }) => <span className="text-danger">{message}</span>}
             />
           </HtForm.Group>
         </Col>
