@@ -1,3 +1,5 @@
+import { faTools } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
@@ -24,7 +26,7 @@ export function WasteLineTable({ wastes }: WasteLineTableProps) {
           <th>Containers</th>
           <th>Type</th>
           <th>Codes</th>
-          <th>Actions</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -34,7 +36,7 @@ export function WasteLineTable({ wastes }: WasteLineTableProps) {
               <td>{wasteLine.lineNumber}</td>
               <td>{wasteLine.wasteDescription}</td>
               <td>{wasteLine.quantity?.containerNumber}</td>
-              <td>{String(wasteLine.quantity?.containerType)}</td>
+              <td>{String(wasteLine.quantity?.containerType.code)}</td>
               <td>
                 <small>
                   {wasteLine.hazardousWaste?.federalWasteCodes?.map((code, index) => {
@@ -46,8 +48,8 @@ export function WasteLineTable({ wastes }: WasteLineTableProps) {
                   })}
                 </small>
               </td>
-              <td>
-                <p>ToDo</p>
+              <td className="text-center">
+                <FontAwesomeIcon icon={faTools} className="text-info" />
               </td>
             </tr>
           );
