@@ -34,7 +34,6 @@ export function WasteLineTable({ wastes }: WasteLineTableProps) {
           return (
             <tr key={index}>
               <td>{wasteLine.lineNumber}</td>
-              {/*<td>{wasteLine.wasteDescription}</td>*/}
               <td
                 style={{
                   maxWidth: '200px',
@@ -48,14 +47,18 @@ export function WasteLineTable({ wastes }: WasteLineTableProps) {
               <td>{wasteLine.quantity?.containerNumber}</td>
               <td>{String(wasteLine.quantity?.containerType.code)}</td>
               <td>
-                <small>
-                  {wasteLine.hazardousWaste?.federalWasteCodes?.map((code, index) => {
-                    // ToDo: fix how hazardous waste codes are appended to wasteline
-                    // @ts-ignore
-                    return `${String(code.value)} ${
-                      index + 1 === wasteLine.hazardousWaste?.federalWasteCodes?.length ? ' ' : ', '
-                    }`;
-                  })}
+                <small
+                  style={{
+                    display: '-webkit-box',
+                    maxHeight: '60px',
+                    maxWidth: '100px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    WebkitBoxOrient: 'vertical',
+                    WebkitLineClamp: 2,
+                  }}
+                >
+                  {wasteLine.hazardousWaste?.federalWasteCodes?.map((item) => item.code).join(', ')}
                 </small>
               </td>
               <td className="text-center">

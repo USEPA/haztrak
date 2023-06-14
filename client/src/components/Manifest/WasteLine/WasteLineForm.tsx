@@ -35,14 +35,13 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
   });
   const { register, handleSubmit } = wasteMethods;
 
-  console.log(wasteMethods.formState.errors);
-
   /**
    * onSubmit is the callback function for the form submission.
-   * @param data
+   * @param wasteLine the data submitted from the form
    */
-  const onSubmit = (data: WasteLine) => {
-    appendWaste(data); // append the new waste line to the manifest
+  const onSubmit = (wasteLine: WasteLine) => {
+    console.log('wasteline', wasteLine);
+    appendWaste(wasteLine); // append the new waste line to the manifest
     handleClose();
   };
 

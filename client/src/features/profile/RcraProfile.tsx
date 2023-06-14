@@ -185,7 +185,6 @@ export function RcraProfile({ profile }: ProfileViewProps) {
             htApi
               .get(`profile/${profile.user}/sync`)
               .then((response) => {
-                console.log('data', response.data);
                 dispatch(
                   addNotification({
                     uniqueId: response.data.task,
