@@ -11,11 +11,14 @@ export function NotificationBtn() {
   const numberAlerts = notifications.length;
   const alertsExists: boolean = numberAlerts > 0;
 
+  console.log(alertsExists);
   return (
     <div className="mx-3 px-2 position-relative d-inline-block">
       <Link to={'/notifications'}>
         <Button
-          className={`bg-transparent border-0 ${alertsExists ? 'text-primary' : 'text-muted'}`}
+          className={`bg-transparent border-0 btn-hover-dark rounded-circle ${
+            alertsExists ? 'text-primary' : 'text-secondary'
+          }`}
         >
           <div>
             <FontAwesomeIcon icon={faEnvelope} size="lg" />
