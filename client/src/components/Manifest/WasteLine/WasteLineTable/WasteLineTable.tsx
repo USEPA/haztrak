@@ -34,7 +34,17 @@ export function WasteLineTable({ wastes }: WasteLineTableProps) {
           return (
             <tr key={index}>
               <td>{wasteLine.lineNumber}</td>
-              <td>{wasteLine.wasteDescription}</td>
+              {/*<td>{wasteLine.wasteDescription}</td>*/}
+              <td
+                style={{
+                  maxWidth: '200px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {wasteLine.wasteDescription}
+              </td>
               <td>{wasteLine.quantity?.containerNumber}</td>
               <td>{String(wasteLine.quantity?.containerType.code)}</td>
               <td>
