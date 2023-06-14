@@ -32,7 +32,7 @@ export function TopNav() {
           id="sidebarToggle"
           onClick={toggleSidebar}
           variant="dark"
-          className="mx-3 rounded-circle btn-hover-info"
+          className="mx-3 rounded-circle btn-hover-dark"
         >
           <FontAwesomeIcon icon={faBars} />
         </Button>
@@ -47,7 +47,7 @@ export function TopNav() {
         </Link>
       </div>
       <NotificationBtn />
-      <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+      <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4 btn-hover-dark rounded-circle">
         <li className="nav-item dropdown">
           <Dropdown>
             <Dropdown.Toggle

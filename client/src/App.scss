@@ -16,9 +16,9 @@ $info: #009999;
   left: -0.25rem !important;
 }
 
-.btn-hover-info {
+.btn-hover-dark {
   &:hover {
-    background-color: $info !important;
+    background-color: #333333 !important;
     color: white !important;
   }
 }
