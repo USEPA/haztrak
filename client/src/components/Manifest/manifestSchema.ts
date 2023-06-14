@@ -19,6 +19,9 @@ export const paperSignatureSchema = z.object({
   printedName: z.string(),
   signatureDate: z.string(),
 });
+
+export type PaperSignature = z.infer<typeof paperSignatureSchema>;
+
 /**
  * Schema for signer of a hazardous waste manifest
  */
@@ -74,7 +77,6 @@ export const transporterSchema = handlerSchema.extend({
  */
 export type Transporter = z.infer<typeof transporterSchema>;
 
-export type PaperSignature = z.infer<typeof paperSignatureSchema>;
 /**
  * A signer of a hazardous waste manifest
  */

@@ -11,7 +11,6 @@ export function NotificationBtn() {
   const numberAlerts = notifications.length;
   const alertsExists: boolean = numberAlerts > 0;
 
-  console.log(alertsExists);
   return (
     <div className="mx-3 px-2 position-relative d-inline-block">
       <Link to={'/notifications'}>

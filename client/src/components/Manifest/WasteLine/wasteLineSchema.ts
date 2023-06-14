@@ -1,3 +1,46 @@
+import { z } from 'zod';
+
+enum ContainerDescription {
+  BA = 'Burlap, cloth, paper, or plastic bags',
+  DT = 'Dump truck',
+  CF = 'Fiber or plastic boxes, cartons, cases',
+  DW = 'Wooden drums, barrels, kegs',
+  CM = 'Metal boxes, cartons, cases (including roll offs)',
+  HG = 'Hopper or gondola cars',
+  CW = 'Wooden boxes, cartons, cases',
+  TC = 'Tank cars',
+  CY = 'Cylinders',
+  TP = 'Portable tanks',
+  DF = 'Fiberboard or plastic drums, barrels, kegs',
+  TT = 'Cargo tanks (tank trucks)',
+  DM = 'Metal drums, barrels, kegs',
+}
+
+export const containerTypeSchema = z.object({
+  code: z.enum(['BA', 'DT', 'CF', 'DW', 'CM', 'HG', 'CW', 'TC', 'CY', 'TP', 'DF', 'TT', 'DM']),
+  description: z.string().optional(),
+});
+
+export const quantityUOMSchema = z.object({
+  code: z.enum(['P', 'T', 'K', 'M', 'G', 'L', 'Y', 'N']),
+  description: z.string().optional(),
+});
+
+const quantitySchema = z.object({
+  containerNumber: z.number(),
+  containerType: containerTypeSchema,
+  quantity: z.number(),
+  unitOfMeasurement: quantityUOMSchema,
+});
+
+export const wasteLineSchema = z.object({
+  lineNumber: z.number(),
+  dotHazardous: z.boolean(),
+  epaWaste: z.boolean(),
+  pcb: z.boolean(),
+  quantity: quantitySchema,
+});
+
 /**
  * Represents waste information captures on EPA's hazardous waste manifest
  */
@@ -86,22 +129,6 @@ enum QuantityDescription {
 interface ContainerType {
   code: 'BA' | 'DT' | 'CF' | 'DW' | 'CM' | 'HG' | 'CW' | 'TC' | 'CY' | 'TP' | 'DF' | 'TT' | 'DM';
   description?: ContainerDescription;
-}
-
-enum ContainerDescription {
-  BA = 'Burlap, cloth, paper, or plastic bags',
-  DT = 'Dump truck',
-  CF = 'Fiber or plastic boxes, cartons, cases',
-  DW = 'Wooden drums, barrels, kegs',
-  CM = 'Metal boxes, cartons, cases (including roll offs)',
-  HG = 'Hopper or gondola cars',
-  CW = 'Wooden boxes, cartons, cases',
-  TC = 'Tank cars',
-  CY = 'Cylinders',
-  TP = 'Portable tanks',
-  DF = 'Fiberboard or plastic drums, barrels, kegs',
-  TT = 'Cargo tanks (tank trucks)',
-  DM = 'Metal drums, barrels, kegs',
 }
 
 interface HazardousWaste {

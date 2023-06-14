@@ -39,9 +39,10 @@ export function QuantityForm() {
       <Row className="mb-2">
         <Col xs={3}>
           <HtForm.Group className="mb-2">
-            <HtForm.Label className="mb-0">Container Number</HtForm.Label>
+            <HtForm.Label className="mb-0">Number</HtForm.Label>
             <Form.Control
               type="number"
+              min={1}
               {...register(`quantity.containerNumber`, { min: 0, valueAsNumber: true })}
             />
           </HtForm.Group>
@@ -73,11 +74,11 @@ export function QuantityForm() {
       <Row>
         <Col xs={3}>
           <HtForm.Group className="mb-2">
-            <HtForm.Label className="mb-0">Total Quantity</HtForm.Label>
+            <HtForm.Label className="mb-0">Quantity</HtForm.Label>
             <Form.Control
               type="number"
+              min={1}
               {...register(`quantity.quantity`, {
-                min: 0,
                 valueAsNumber: true,
               })}
             />

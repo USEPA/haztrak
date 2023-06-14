@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { HtCard, HtForm } from 'components/Ht';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
 import { HazardousWasteForm } from './HazardousWasteForm';
@@ -5,7 +6,7 @@ import React from 'react';
 import { Button, Container, Form, Row } from 'react-bootstrap';
 import { FormProvider, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import { Manifest } from 'components/Manifest/manifestSchema';
-import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { WasteLine, wasteLineSchema } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { QuantityForm } from './QuantityForm';
 
 interface WasteLineFormProps {
@@ -14,21 +15,36 @@ interface WasteLineFormProps {
   appendWaste: UseFieldArrayAppend<Manifest, 'wastes'>;
 }
 
+const wasteLineDefaultValues: Partial<WasteLine> = {
+  dotHazardous: true,
+  epaWaste: false,
+  // @ts-ignore
+  quantity: { containerNumber: 1, quantity: 1 },
+};
+
 /**
  * WasteLineForm is the top level component/form for adding wastes to
  * the uniform hazardous waste manifest.
  * @constructor
  */
-export function WasteLineForm({ handleClose, appendWaste }: WasteLineFormProps) {
-  // ToDo: on submit, add new WasteLine object to the ManifestForm. we'll need
-  //  to add another useFieldArray hook for the 'wastes' field in the Manifest
-  //  and pass the necessary methods to this component (like we did the TransporterForm)
+export function WasteLineForm({ handleClose, appendWaste, currentWastes }: WasteLineFormProps) {
+  const newLineNumber = currentWastes ? currentWastes.length + 1 : 1;
+  const wasteMethods = useForm<WasteLine>({
+    resolver: zodResolver(wasteLineSchema),
+    defaultValues: { ...wasteLineDefaultValues, lineNumber: newLineNumber },
+  });
+  const { register, handleSubmit } = wasteMethods;
+
+  console.log(wasteMethods.formState.errors);
+
+  /**
+   * onSubmit is the callback function for the form submission.
+   * @param data
+   */
   const onSubmit = (data: WasteLine) => {
-    appendWaste(data);
+    appendWaste(data); // append the new waste line to the manifest
     handleClose();
   };
-  const wasteMethods = useForm<WasteLine>();
-  const { register, handleSubmit } = wasteMethods;
 
   return (
     <FormProvider {...wasteMethods}>
