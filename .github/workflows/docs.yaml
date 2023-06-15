@@ -1,10 +1,11 @@
 name: 'Deploy Documentation'
+# when changes are made to the documentation, build and deploy it to GitHub Pages
 
 on:
   push:
     branches: ['main']
     paths:
-      - 'docs/**'
+      - 'docs/**/*.md'
   workflow_dispatch:
 
 permissions:

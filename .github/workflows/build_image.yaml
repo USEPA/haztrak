@@ -1,4 +1,5 @@
 name: 'Build Docker Image'
+# This custom, reusable workflow builds and pushes a Docker image to GitHub Container Registry.
 
 on:
   workflow_call:
@@ -6,14 +7,11 @@ on:
       context:
         required: true
         type: string
+        description: 'The context to use for the Docker build.'
       image_name:
         required: true
         type: string
-    secrets:
-      DOCKERHUB_USERNAME:
-        required: false
-      DOCKERHUB_TOKEN:
-        required: false
+        description: 'The name of the image to build.'
 
 jobs:
   build_image:
@@ -43,8 +41,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          #  username: ${{ secrets.DOCKERHUB_USERNAME }}
-          #  password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push
         uses: docker/build-push-action@v3

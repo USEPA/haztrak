@@ -1,6 +1,8 @@
 name-template: 'v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+
+# map PR labels to changelog categories
 categories:
   - title: '🚀 Features'
     labels:
@@ -14,8 +16,11 @@ categories:
       - 'chore'
       - 'infrastructure'
       - 'documentation'
+
 exclude-labels:
   - 'skip-changelog'
+
+# map PR labels to semantic version updates (e.g., if  a feature is added, the minor version is incremented)
 version-resolver:
   major:
     labels:
@@ -29,6 +34,56 @@ version-resolver:
       - 'chore'
       - 'infrastructure'
   default: patch
+
+# used for auto-labeling PRs, used instead of actions/labeler
+# https://github.com/release-drafter/release-drafter#autolabeler
+autolabeler:
+  - label: 'server'
+    files:
+      - 'server/**/*.py'
+    body:
+      - '/django/gmi'
+  - label: 'test'
+    files:
+      - 'client/src/**/*.spec.{ts,tsx}'
+      - 'server/**/test_*.py'
+      - 'server/**/*_test.py'
+  - label: 'client'
+    files:
+      - 'client/**/*.{js,jsx,ts,tsx}'
+    body:
+      - '/react/gmi'
+      - '/redux/gmi'
+  - label: 'infrastructure'
+    files:
+      - 'docker-compose.yaml'
+      - 'infra/**/*.tf'
+    title:
+      - '/terraform/i'
+      - '/helm/i'
+      - '/kubernetes/i'
+      - '/k8/i'
+  - label: 'documentation'
+    files:
+      - 'docs/**/*'
+      - '**/README.md'
+  - label: 'CI/CD'
+    files:
+      - '.github/**/*'
+      - '**/*Dockerfile'
+      - '**/*.dockerignore'
+    body:
+      - '/pipeline/gmi'
+      - '/workflow/gmi'
+  - label: 'dependencies'
+    files:
+      - 'server/requirements*.txt'
+      - 'client/package*.json'
+  - label: 'database'
+    files:
+      - 'server/apps/**/migrations/*.py'
+
+  # template for the release notes (changelog)
 template: |
   ## Changes
 

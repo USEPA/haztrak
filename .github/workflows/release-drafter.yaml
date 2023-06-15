@@ -1,12 +1,13 @@
 name: Release Drafter
+# This workflow is responsible for analyzing PR labels and updating a draft release with the changes (our changelog).
+# we currently have a separate PR labeler (We used that before this was added to the USEPA approved list)
 
 on:
   push:
     branches:
       - main
-  # pull_request event is required only for autolabeler
+  # pull_request event is required for autolabeler (which we use)
   pull_request:
-    # Only following types are handled by the action, but one can default to all as well
     types: [opened, reopened, synchronize]
   # pull_request_target event is required for autolabeler to support PRs from forks
   pull_request_target:
@@ -18,8 +19,9 @@ permissions:
 jobs:
   update_release_draft:
     permissions:
+      # write permission is required to update the release draft
       contents: write
-      # PR write permission is required for autolabeler, otherwise read at least
+      # PR write permission is required for autolabeler
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
