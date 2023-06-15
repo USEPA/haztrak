@@ -1,4 +1,7 @@
 name: 'Create Release'
+# This workflow runs when we create a release. It uses a custom reusable action to
+# build our docker images and push them to the GitHub Container Registry.
+# Before building images we run the unit tests to double-check that the images are working.
 
 on:
   release:
