@@ -113,7 +113,7 @@ export function ManifestForm({
     manifestStatus === 'ReadyForSignature';
 
   // console.log(manifestData);
-  // if (errors) console.log('errors', errors);
+  if (errors) console.log('errors', errors);
 
   return (
     <>
@@ -381,7 +381,14 @@ export function ManifestForm({
               <ErrorMessage
                 errors={errors}
                 name={'generator'}
-                render={({ message }) => <span className="text-danger">{message}</span>}
+                render={({ message }) => {
+                  if (!message) return null;
+                  return (
+                    <Alert variant="danger" className="text-center m-3">
+                      {message}
+                    </Alert>
+                  );
+                }}
               />
             </HtCard.Body>
           </HtCard>
