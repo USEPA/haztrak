@@ -40,20 +40,15 @@ version-resolver:
 autolabeler:
   - label: 'server'
     files:
-      - 'server/**/*.py'
-    body:
-      - '/django/gmi'
+      - 'server/**/*'
+  - label: 'client'
+    files:
+      - 'client/**/*.{js,jsx,ts,tsx}'
   - label: 'test'
     files:
       - 'client/src/**/*.spec.{ts,tsx}'
       - 'server/**/test_*.py'
       - 'server/**/*_test.py'
-  - label: 'client'
-    files:
-      - 'client/**/*.{js,jsx,ts,tsx}'
-    body:
-      - '/react/gmi'
-      - '/redux/gmi'
   - label: 'infrastructure'
     files:
       - 'docker-compose.yaml'
