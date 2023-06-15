@@ -66,4 +66,12 @@ describe('ManifestForm validation', () => {
       await screen.findByText(/A manifest requires at least 1 waste line/i)
     ).toBeInTheDocument();
   });
+  test('a TSDF is required', async () => {
+    renderWithProviders(<ManifestForm readOnly={false} />);
+    const saveBtn = screen.getByRole('button', { name: /Save/i });
+    await userEvent.click(saveBtn);
+    expect(
+      await screen.findByText(/Designated receiving facility is required/i)
+    ).toBeInTheDocument();
+  });
 });
