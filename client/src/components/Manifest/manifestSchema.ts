@@ -157,7 +157,7 @@ export const manifestSchema = z
   .refine(
     // check that the manifest has a valid generator
     (manifest) => manifest.generator !== undefined,
-    { path: ['generator'], message: 'Provide the site that generated this waste' }
+    { path: ['generator'], message: 'Generator is required' }
   )
   .refine(
     // check that the manifest has at least 1 transporter

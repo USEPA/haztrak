@@ -3,6 +3,7 @@ import React from 'react';
 import { cleanup, renderWithProviders } from 'test-utils';
 import { fireEvent, screen } from '@testing-library/react';
 import { ManifestForm } from 'components/Manifest';
+import userEvent from '@testing-library/user-event';
 
 afterEach(() => {
   cleanup();
@@ -19,7 +20,7 @@ describe('ManifestForm', () => {
     fireEvent.click(addTransporterBtn);
     expect(screen.getByText(/EPA ID Number/i)).toBeInTheDocument();
   });
-  test('Can open wasteline form', async () => {
+  test('Can open waste line form', async () => {
     renderWithProviders(<ManifestForm readOnly={false} />);
     const addWasteBtn = screen.getByText(/Add Waste/i);
     fireEvent.click(addWasteBtn);
@@ -37,9 +38,24 @@ describe('ManifestForm', () => {
 });
 
 describe('ManifestForm validation', () => {
-  test('requires a generator', () => {
+  test('a generator is required', async () => {
     // Arrange
     renderWithProviders(<ManifestForm readOnly={false} />);
     const saveBtn = screen.getByRole('button', { name: /Save/i });
+    // Act
+    await userEvent.click(saveBtn);
+    // Assert
+    expect(await screen.findByText(/Generator is required/i)).toBeInTheDocument();
+  });
+  test('at least one transporter is required', async () => {
+    // Arrange
+    renderWithProviders(<ManifestForm readOnly={false} />);
+    const saveBtn = screen.getByRole('button', { name: /Save/i });
+    // Act
+    await userEvent.click(saveBtn);
+    // Assert
+    expect(
+      await screen.findByText(/A manifest requires at least 1 transporters/i)
+    ).toBeInTheDocument();
   });
 });
