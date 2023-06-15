@@ -34,21 +34,12 @@ describe('ManifestForm', () => {
   test('only has "edit manifest" button when readonly', async () => {
     // ToDo: to test when readOnly={true}, we need manifestData as prop
   });
-  // test('displays e-Manifest managed dates', async () => {
-  //   const manifestDate = new Date();
-  //   const expectedDateValue = manifestDate.toISOString().slice(0, 10);
-  //   const myManifest = createMockManifest({
-  //     status: 'InTransit',
-  //     createdDate: manifestDate.toISOString(),
-  //     updatedDate: manifestDate.toISOString(),
-  //     shippedDate: manifestDate.toISOString(),
-  //   });
-  //   renderWithProviders(<ManifestForm manifestData={myManifest} readOnly={false} />);
-  //   screen.debug(undefined, Infinity);
-  //   await waitFor(() => {
-  //     expect(screen.getByLabelText(/Created Date/i)).toHaveValue(expectedDateValue);
-  //     // expect(screen.getByLabelText(/Last Update Date/i)).toHaveValue(expectedDateValue);
-  //     // expect(screen.getByLabelText(/Shipped Date/i)).toHaveValue(expectedDateValue);
-  //   });
-  // });
+});
+
+describe('ManifestForm validation', () => {
+  test('requires a generator', () => {
+    // Arrange
+    renderWithProviders(<ManifestForm readOnly={false} />);
+    const saveBtn = screen.getByRole('button', { name: /Save/i });
+  });
 });
