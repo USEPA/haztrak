@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import { createMockHandler, createMockManifest, createMockSite } from '../fixtures';
 
-export const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
+export const API_BASE_URL = 'http://localhost:8000';
 const mockMTN = createMockManifest().manifestTrackingNumber;
 const mockEpaId = createMockHandler().epaSiteId;
 const mockUsername = 'testuser1';
