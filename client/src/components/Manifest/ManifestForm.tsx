@@ -475,7 +475,14 @@ export function ManifestForm({
               <ErrorMessage
                 errors={errors}
                 name={'designatedFacility'}
-                render={({ message }) => <span className="text-danger">{message}</span>}
+                render={({ message }) => {
+                  if (!message) return null;
+                  return (
+                    <Alert variant="danger" className="text-center m-3">
+                      {message}
+                    </Alert>
+                  );
+                }}
               />
             </HtCard.Body>
           </HtCard>
