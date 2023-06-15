@@ -40,8 +40,9 @@ version-resolver:
 autolabeler:
   - label: 'server'
     files:
-      - 'server/**/*'
-      - '**/*.py'
+      - 'server/**/*.py'
+    body:
+      - '/django/gmi'
   - label: 'test'
     files:
       - 'client/src/**/*.spec.{ts,tsx}'
@@ -49,12 +50,19 @@ autolabeler:
       - 'server/**/*_test.py'
   - label: 'client'
     files:
-      - 'client/**/*'
-      - '**/*.{js,jsx,ts,tsx}'
+      - 'client/**/*.{js,jsx,ts,tsx}'
+    body:
+      - '/react/gmi'
+      - '/redux/gmi'
   - label: 'infrastructure'
     files:
       - 'docker-compose.yaml'
       - 'infra/**/*.tf'
+    title:
+      - '/terraform/i'
+      - '/helm/i'
+      - '/kubernetes/i'
+      - '/k8/i'
   - label: 'documentation'
     files:
       - 'docs/**/*'
@@ -64,6 +72,9 @@ autolabeler:
       - '.github/**/*'
       - '**/*Dockerfile'
       - '**/*.dockerignore'
+    body:
+      - '/pipeline/gmi'
+      - '/workflow/gmi'
   - label: 'dependencies'
     files:
       - 'server/requirements*.txt'
