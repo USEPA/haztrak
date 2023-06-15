@@ -3,6 +3,7 @@ import React from 'react';
 import { cleanup, renderWithProviders } from 'test-utils';
 import { fireEvent, screen } from '@testing-library/react';
 import { ManifestForm } from 'components/Manifest';
+import userEvent from '@testing-library/user-event';
 
 afterEach(() => {
   cleanup();
@@ -19,7 +20,7 @@ describe('ManifestForm', () => {
     fireEvent.click(addTransporterBtn);
     expect(screen.getByText(/EPA ID Number/i)).toBeInTheDocument();
   });
-  test('Can open wasteline form', async () => {
+  test('Can open waste line form', async () => {
     renderWithProviders(<ManifestForm readOnly={false} />);
     const addWasteBtn = screen.getByText(/Add Waste/i);
     fireEvent.click(addWasteBtn);
@@ -34,21 +35,27 @@ describe('ManifestForm', () => {
   test('only has "edit manifest" button when readonly', async () => {
     // ToDo: to test when readOnly={true}, we need manifestData as prop
   });
-  // test('displays e-Manifest managed dates', async () => {
-  //   const manifestDate = new Date();
-  //   const expectedDateValue = manifestDate.toISOString().slice(0, 10);
-  //   const myManifest = createMockManifest({
-  //     status: 'InTransit',
-  //     createdDate: manifestDate.toISOString(),
-  //     updatedDate: manifestDate.toISOString(),
-  //     shippedDate: manifestDate.toISOString(),
-  //   });
-  //   renderWithProviders(<ManifestForm manifestData={myManifest} readOnly={false} />);
-  //   screen.debug(undefined, Infinity);
-  //   await waitFor(() => {
-  //     expect(screen.getByLabelText(/Created Date/i)).toHaveValue(expectedDateValue);
-  //     // expect(screen.getByLabelText(/Last Update Date/i)).toHaveValue(expectedDateValue);
-  //     // expect(screen.getByLabelText(/Shipped Date/i)).toHaveValue(expectedDateValue);
-  //   });
-  // });
+});
+
+describe('ManifestForm validation', () => {
+  test('a generator is required', async () => {
+    // Arrange
+    renderWithProviders(<ManifestForm readOnly={false} />);
+    const saveBtn = screen.getByRole('button', { name: /Save/i });
+    // Act
+    await userEvent.click(saveBtn);
+    // Assert
+    expect(await screen.findByText(/Generator is required/i)).toBeInTheDocument();
+  });
+  test('at least one transporter is required', async () => {
+    // Arrange
+    renderWithProviders(<ManifestForm readOnly={false} />);
+    const saveBtn = screen.getByRole('button', { name: /Save/i });
+    // Act
+    await userEvent.click(saveBtn);
+    // Assert
+    expect(
+      await screen.findByText(/A manifest requires at least 1 transporters/i)
+    ).toBeInTheDocument();
+  });
 });

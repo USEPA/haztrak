@@ -6,12 +6,8 @@ on:
   push:
     branches:
       - main
-  # pull_request event is required for autolabeler (which we use)
   pull_request:
-    types: [opened, reopened, synchronize]
-  # pull_request_target event is required for autolabeler to support PRs from forks
   pull_request_target:
-    types: [opened, reopened, synchronize]
 
 permissions:
   contents: read

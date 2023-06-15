@@ -155,6 +155,11 @@ export const manifestSchema = z
     return true;
   })
   .refine(
+    // check that the manifest has a valid generator
+    (manifest) => manifest.generator !== undefined,
+    { path: ['generator'], message: 'Generator is required' }
+  )
+  .refine(
     // check that the manifest has at least 1 transporter
     (manifest) => manifest.transporters.length >= 1,
     { path: ['transporters'], message: 'A manifest requires at least 1 transporters' }
