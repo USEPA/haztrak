@@ -51,6 +51,26 @@ autolabeler:
     files:
       - 'client/**/*'
       - '**/*.{js,jsx,ts,tsx}'
+  - label: 'infrastructure'
+    files:
+      - 'docker-compose.yaml'
+      - 'infra/**/*.tf'
+  - label: 'documentation'
+    files:
+      - 'docs/**/*'
+      - '**/README.md'
+  - label: 'CI/CD'
+    files:
+      - '.github/**/*'
+      - '**/*Dockerfile'
+      - '**/*.dockerignore'
+  - label: 'dependencies'
+    files:
+      - 'server/requirements*.txt'
+      - 'client/package*.json'
+  - label: 'database'
+    files:
+      - 'server/apps/**/migrations/*.py'
 
   # template for the release notes (changelog)
 template: |
