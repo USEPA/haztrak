@@ -18,21 +18,26 @@ jobs:
         working-directory: ./client
     strategy:
       matrix:
-        node: [16, 18]
+        node-version: [16, 18]
     steps:
       - uses: actions/checkout@v3
 
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: ${{ matrix.node-version }}
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
 
       - name: Install Dependencies
         run: npm ci
 
-      - name: Test Node.js-${{ matrix.node }}
+      - name: configure env
+        run: |
+          mv ../configs/.env.test .env
+          echo "VITE_HT_ENV=TEST" >> .env
+
+      - name: Test Node.js-${{ matrix.node-version }}
         run: npm test
         env:
           VITE_HT_ENV: 'TEST'
