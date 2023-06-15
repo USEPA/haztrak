@@ -1,15 +1,4 @@
 # This file will apply these (already existing) labels to PR upon opening.
-test:
-  - client/src/**/*.spec.ts
-  - client/src/**/*.spec.tsx
-  - server/apps/trak/tests/**/*
-
-server:
-  - server/**/*
-
-client:
-  - client/**/*
-
 infrastructure:
   - any: ['docker-compose.yaml', 'infra/**/*.tf']
 

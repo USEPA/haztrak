@@ -1,4 +1,6 @@
 name: Release Drafter
+# This workflow is responsible for analyzing PR labels and updating a draft release with the changes (our changelog).
+# we currently have a separate PR labeler (We used that before this was added to the USEPA approved list)
 
 on:
   push:
