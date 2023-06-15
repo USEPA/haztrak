@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Max, Q, QuerySet
 from django.utils.translation import gettext_lazy as _
+from django.contrib.postgres.fields import ArrayField
 
 from apps.sites.models import RcraSiteType, RcraStates, Role
 from apps.trak.models import Handler
@@ -452,3 +453,77 @@ class CorrectionInfo(TrakBaseModel):
         null=True,
         blank=True,
     )
+
+
+class RejectionInfo(TrakBaseModel):
+    """
+    Rejection information about the entity if the manifest is rejected
+    """
+    
+    class Meta:
+        verbose_name = "Rejection Info"
+        verbose_name_plural = "Rejection Info"
+    
+    class FacilityType(models.TextChoices):
+        """
+        Specifies the type of the alternate facility for shipping rejected waste
+        """
+
+        GENERATOR = "GEN", _("Generator")
+        TSDF = "TSD", _("Tsdf")
+    
+    class RejectionType(models.TextChoices):
+        
+        FR = "FR", _("Full Rejection")
+        PR = "PR", _("Partial Rejection")
+    
+    transporter_on_site = models.BooleanField(
+        null=True,
+        blank=True,
+    )
+    
+    rejection_type = models.CharField(
+        choices=RejectionType.choices,
+        max_length=2,
+        null=True,
+        blank=True,
+    )
+    
+    alternate_designated_facility_type = models.CharField(
+        choices=FacilityType.choices,
+        max_length=3,
+        null=True,
+        blank=True,
+    )
+    
+    generator_paper_signature = models.ForeignKey(
+        "PaperSignature",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+    
+    generator_electronic_signature = models.ForeignKey(
+        "ESignature",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+    
+    alternate_designated_facility = models.ForeignKey(
+        "Handler",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+    
+    new_manifest_tracking_numbers = ArrayField(
+        base_field=models.CharField(max_length=200, null=True), 
+        default=list
+        )
+    
+    rejection_comments = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        )
