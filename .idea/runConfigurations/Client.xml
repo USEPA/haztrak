@@ -7,8 +7,8 @@
     </scripts>
     <node-interpreter value="project" />
     <envs>
-      <env name="REACT_APP_HT_ENV" value="TEST" />
-      <env name="REACT_APP_HT_API_URL" value="http://localhost:8000" />
+      <env name="VITE_HT_API_URL" value="http://localhost:8000" />
+      <env name="VITE_HT_ENV" value="DEV" />
     </envs>
     <method v="2" />
   </configuration>

@@ -12,7 +12,7 @@ import { selectUserName } from 'store/userSlice/user.slice';
 import { HtButton, HtCard } from 'components/Ht';
 
 /**
- * Home page for logged-in user, currently does not really include anything
+ * Home page for logged-in user
  * @constructor
  */
 export function Home(): ReactElement {

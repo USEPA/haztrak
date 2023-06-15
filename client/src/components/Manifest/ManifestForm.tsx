@@ -436,7 +436,11 @@ export function ManifestForm({
               <ErrorMessage
                 errors={errors}
                 name={'wastes'}
-                render={({ message }) => <span className="text-danger">{message}</span>}
+                render={({ message }) => (
+                  <Alert variant="danger" className="text-center m-3">
+                    {message}
+                  </Alert>
+                )}
               />
             </HtCard.Body>
           </HtCard>

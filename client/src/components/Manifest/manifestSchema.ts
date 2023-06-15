@@ -160,6 +160,11 @@ export const manifestSchema = z
     { path: ['generator'], message: 'Generator is required' }
   )
   .refine(
+    // check that the manifest has at least 1 waste line
+    (manifest) => manifest.wastes.length >= 1,
+    { path: ['wastes'], message: 'A manifest requires at least 1 waste line' }
+  )
+  .refine(
     // check that the manifest has at least 1 transporter
     (manifest) => manifest.transporters.length >= 1,
     { path: ['transporters'], message: 'A manifest requires at least 1 transporters' }

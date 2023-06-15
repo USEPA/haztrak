@@ -2,12 +2,31 @@ import '@testing-library/jest-dom';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { handlers } from 'test-utils/mock/handlers';
+import { API_BASE_URL, handlers } from 'test-utils/mock/handlers';
 import { Home } from 'features/home';
 import { vi } from 'vitest';
+import { rest } from 'msw';
 
-const server = setupServer(...handlers);
-const username = 'testuser1';
+const USERNAME = 'testuser1';
+
+const myAPIHandlers = [
+  rest.get(`${API_BASE_URL}/api/profile/${USERNAME}`, (req, res, ctx) => {
+    return res(
+      // Respond with a 200 status code
+      ctx.status(200),
+      ctx.json({
+        user: USERNAME,
+        rcraAPIID: 'mockRcraAPIID',
+        rcraUsername: undefined,
+        epaSites: [],
+        phoneNumber: undefined,
+        apiUser: true,
+      })
+    );
+  }),
+];
+
+const server = setupServer(...handlers, ...myAPIHandlers);
 
 beforeAll(() => server.listen()); // setup mock http server
 afterEach(() => {
@@ -22,7 +41,7 @@ describe('Home', () => {
     renderWithProviders(<Home />, {
       preloadedState: {
         user: {
-          user: { username: username, isLoading: false },
+          user: { username: USERNAME, isLoading: false },
           token: 'fake_token',
           loading: false,
           error: undefined,

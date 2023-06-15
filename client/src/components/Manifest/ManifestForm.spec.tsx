@@ -58,4 +58,12 @@ describe('ManifestForm validation', () => {
       await screen.findByText(/A manifest requires at least 1 transporters/i)
     ).toBeInTheDocument();
   });
+  test('at least one waste line is required', async () => {
+    renderWithProviders(<ManifestForm readOnly={false} />);
+    const saveBtn = screen.getByRole('button', { name: /Save/i });
+    await userEvent.click(saveBtn);
+    expect(
+      await screen.findByText(/A manifest requires at least 1 waste line/i)
+    ).toBeInTheDocument();
+  });
 });
