@@ -108,7 +108,7 @@ DATABASES = {
         "HOST": os.environ.get("HT_DB_HOST", "localhost"),
         "PORT": os.environ.get("HT_DB_PORT", "5432"),
         "TEST": {
-            "NAME": BASE_DIR / "test_db.sqlite3",
+            "NAME": "test_db",
         },
     }
 }
@@ -181,7 +181,7 @@ if os.getenv(CACHE_URL, None):
 else:
     CACHES = {
         "default": {
-            "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
             "LOCATION": "./cache",
         }
     }

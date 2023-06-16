@@ -3,9 +3,9 @@ name: 'Haztrak Server Tests'
 # It spins up a postgres container and runs the tests against it.
 
 env:
-  POSTGRES_USER: 'postgres'
-  POSTGRES_PASSWORD: postgres
-  POSTGRES_DB: haztrak
+  POSTGRES_USER: admin
+  POSTGRES_PASSWORD: password1
+  POSTGRES_DB: haztrak_db
 
 on:
   pull_request:
@@ -35,6 +35,8 @@ jobs:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ env.POSTGRES_DB }}
+        ports:
+          - 5432/tcp
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -63,8 +65,11 @@ jobs:
           HT_HOST: localhost
           HT_RCRAINFO_ENV: preprod
           HT_DEBUG: true
+          HT_DB_ENGINE: django.db.backends.postgresql
+          HT_DB_HOST: localhost
           HT_DB_USER: ${{ env.POSTGRES_USER }}
           HT_DB_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           HT_DB_NAME: ${{ env.POSTGRES_DB }}
+          HT_DB_PORT: ${{ job.services.postgres.ports[5432] }}
         run: |
           pytest
