@@ -40,8 +40,8 @@ version-resolver:
 autolabeler:
   - label: 'client'
     files:
-      - 'client/**/*.ts'
-      - 'client/**/*.tsx'
+      - '**/*.ts'
+      - '**/*.tsx'
   #  - label: 'server'
   #    files:
   #      - 'server/**/*.py'
