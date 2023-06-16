@@ -181,7 +181,7 @@ if os.getenv(CACHE_URL, None):
 else:
     CACHES = {
         "default": {
-            "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
             "LOCATION": "./cache",
         }
     }
