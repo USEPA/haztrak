@@ -41,11 +41,14 @@ autolabeler:
   - label: 'server'
     files:
       - '**/*.py'
+      - 'server/**/*'
     body:
       - '/django/gmi'
   - label: 'client'
     files:
-      - '**/*.{js,jsx,ts,tsx}'
+      - '**/*.{js,jsx}'
+      - '**/*.{ts,tsx}'
+      - 'client/**/*'
     body:
       - '/react/gmi'
       - '/redux/gmi'
