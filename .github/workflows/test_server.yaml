@@ -3,11 +3,12 @@ name: 'Haztrak Server Tests'
 # It spins up a postgres container and runs the tests against it.
 
 env:
-  POSTGRES_USER: 'postgres'
+  POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
-  POSTGRES_DB: haztrak
+  POSTGRES_DB: haztrak_db
 
 on:
+  push:
   pull_request:
     branches: ['main']
     paths:
@@ -63,6 +64,8 @@ jobs:
           HT_HOST: localhost
           HT_RCRAINFO_ENV: preprod
           HT_DEBUG: true
+          HT_DB_ENGINE: django.db.backends.postgresql
+          HT_DB_HOST: localhost
           HT_DB_USER: ${{ env.POSTGRES_USER }}
           HT_DB_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           HT_DB_NAME: ${{ env.POSTGRES_DB }}

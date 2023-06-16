@@ -108,7 +108,7 @@ DATABASES = {
         "HOST": os.environ.get("HT_DB_HOST", "localhost"),
         "PORT": os.environ.get("HT_DB_PORT", "5432"),
         "TEST": {
-            "NAME": BASE_DIR / "test_db.sqlite3",
+            "NAME": "test_db",
         },
     }
 }
