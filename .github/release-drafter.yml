@@ -48,7 +48,7 @@ autolabeler:
     files:
       - '**/*.{js,jsx}'
       - '**/*.{ts,tsx}'
-      - 'client/**/*'
+      - '/client/**/*'
     body:
       - '/react/gmi'
       - '/redux/gmi'
