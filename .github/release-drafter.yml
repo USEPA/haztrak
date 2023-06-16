@@ -40,7 +40,6 @@ version-resolver:
 autolabeler:
   - label: 'client'
     files:
-      - '*.ts'
       - '*.tsx'
   #  - label: 'server'
   #    files:
