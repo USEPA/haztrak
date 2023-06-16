@@ -65,7 +65,7 @@ jobs:
           HT_RCRAINFO_ENV: preprod
           HT_DEBUG: true
           HT_DB_ENGINE: django.db.backends.postgresql
-          HT_DB_HOST: localhost
+          HT_DB_HOST: postgres
           HT_DB_USER: ${{ env.POSTGRES_USER }}
           HT_DB_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           HT_DB_NAME: ${{ env.POSTGRES_DB }}
