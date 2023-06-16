@@ -45,7 +45,10 @@ autolabeler:
       - '/django/gmi'
   - label: 'client'
     files:
-      - '**/*.{js,jsx,ts,tsx}'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.ts'
+      - '**/*.tsx'
     body:
       - '/react/gmi'
       - '/redux/gmi'
