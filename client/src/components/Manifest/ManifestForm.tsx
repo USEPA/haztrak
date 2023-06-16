@@ -167,6 +167,7 @@ export function ManifestForm({
                         readOnly ||
                         (manifestStatus !== 'NotAssigned' &&
                           manifestStatus !== 'Pending' &&
+                          manifestStatus !== 'Scheduled' &&
                           manifestStatus !== undefined)
                       }
                       aria-label="manifestStatus"
