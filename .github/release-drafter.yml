@@ -40,24 +40,15 @@ version-resolver:
 autolabeler:
   - label: 'server'
     files:
-      - 'server/**/*'
+      - 'server/**/*.py'
   - label: 'client'
     files:
-      - '/client/**/*'
-  #  - label: 'test'
-  #    files:
-  #      - 'client/src/**/*.spec.{ts,tsx}'
-  #      - 'server/**/test_*.py'
-  #      - 'server/**/*_test.py'
+      - 'client/**/*.ts'
+      - 'client/**/*.tsx'
   - label: 'infrastructure'
     files:
       - 'docker-compose.yaml'
       - 'infra/**/*.tf'
-  #    title:
-  #      - '/terraform/i'
-  #      - '/helm/i'
-  #      - '/kubernetes/i'
-  #      - '/k8/i'
   - label: 'documentation'
     files:
       - 'docs/**/*'
@@ -66,13 +57,13 @@ autolabeler:
       - '.github/**/*'
       - '**/*Dockerfile'
       - '**/*.dockerignore'
-  - label: 'dependencies'
-    files:
-      - 'server/requirements*.txt'
-      - 'client/package*.json'
-  - label: 'database'
-    files:
-      - 'server/apps/**/migrations/*.py'
+  #  - label: 'dependencies'
+  #    files:
+  #      - 'server/requirements*.txt'
+  #      - 'client/package*.json'
+  #  - label: 'database'
+  #    files:
+  #      - 'server/apps/**/migrations/*.py'
 
   # template for the release notes (changelog)
 template: |
