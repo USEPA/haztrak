@@ -113,8 +113,8 @@ export function ManifestForm({
     manifestStatus === 'ReadyForSignature';
 
   // Keep this here for development purposes
-  // console.log(manifestData);
-  // if (errors) console.log('errors', errors);
+  console.log(manifestData);
+  if (errors) console.log('errors', errors);
 
   return (
     <>
