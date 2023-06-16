@@ -8,7 +8,6 @@ env:
   POSTGRES_DB: haztrak_db
 
 on:
-  push:
   pull_request:
     branches: ['main']
     paths:
