@@ -38,25 +38,25 @@ version-resolver:
 # used for auto-labeling PRs, used instead of actions/labeler
 # https://github.com/release-drafter/release-drafter#autolabeler
 autolabeler:
-  - label: 'server'
-    files:
-      - 'server/**/*.py'
   - label: 'client'
     files:
       - 'client/**/*.ts'
       - 'client/**/*.tsx'
-  - label: 'infrastructure'
-    files:
-      - 'docker-compose.yaml'
-      - 'infra/**/*.tf'
-  - label: 'documentation'
-    files:
-      - 'docs/**/*'
-  - label: 'CI/CD'
-    files:
-      - '.github/**/*'
-      - '**/*Dockerfile'
-      - '**/*.dockerignore'
+  #  - label: 'server'
+  #    files:
+  #      - 'server/**/*.py'
+  #  - label: 'infrastructure'
+  #    files:
+  #      - 'docker-compose.yaml'
+  #      - 'infra/**/*.tf'
+  #  - label: 'documentation'
+  #    files:
+  #      - 'docs/**/*'
+  #  - label: 'CI/CD'
+  #    files:
+  #      - '.github/**/*'
+  #      - '**/*Dockerfile'
+  #      - '**/*.dockerignore'
   #  - label: 'dependencies'
   #    files:
   #      - 'server/requirements*.txt'
@@ -65,7 +65,7 @@ autolabeler:
   #    files:
   #      - 'server/apps/**/migrations/*.py'
 
-  # template for the release notes (changelog)
+# template for the release notes (changelog)
 template: |
   ## Changes
 
