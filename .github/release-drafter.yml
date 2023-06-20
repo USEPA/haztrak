@@ -80,11 +80,11 @@ autolabeler:
       - '/workflow/gmi'
   - label: 'dependencies'
     files:
-      - '**/requirements*.txt'
-      - '**/package*.json'
+      - 'server/requirements*.txt'
+      - 'client/package*.json'
   - label: 'database'
     files:
-      - '**/migrations/*.py'
+      - 'server/apps/**/migrations/*.py'
 
   # template for the release notes (changelog)
 template: |
