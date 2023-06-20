@@ -1,8 +1,8 @@
-pytest-mock==3.10.0
-pre-commit==3.3.2
-pytest==7.3.1
+pytest-mock==3.11.1
+pre-commit==3.3.3
+pytest==7.3.2
 pytest-django==4.5.2
 responses==0.23.1
-ruff==0.0.270
+ruff==0.0.272
 black==23.3.0
 -r requirements.txt
