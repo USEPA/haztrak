@@ -12,7 +12,7 @@ import { QuickerSignData } from './QuickerSign';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { AddHandler, Handler, HandlerForm } from './Handler';
 import { QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
-import { manifestSchema, Manifest } from './manifestSchema';
+import { manifestSchema, Manifest, ManifestStatus } from './manifestSchema';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
 import { ErrorMessage } from '@hookform/error-message';
 
@@ -56,7 +56,9 @@ export function ManifestForm({
   const {
     formState: { errors },
   } = manifestMethods;
-  const [manifestStatus, setManifestStatus] = useState(manifestData?.status);
+  const [manifestStatus, setManifestStatus] = useState<ManifestStatus | undefined>(
+    manifestData?.status
+  );
   useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
@@ -171,8 +173,9 @@ export function ManifestForm({
                       }
                       aria-label="manifestStatus"
                       {...manifestMethods.register('status')}
-                      // @ts-ignore
-                      onChange={(event) => setManifestStatus(event.target.value)}
+                      onChange={(event) =>
+                        setManifestStatus(event.target.value as ManifestStatus | undefined)
+                      }
                     >
                       <option value="NotAssigned">Draft</option>
                       <option value="Pending">Pending</option>

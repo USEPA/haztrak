@@ -71,6 +71,23 @@ export const transporterSchema = handlerSchema.extend({
   manifest: z.number().optional(),
 });
 
+const manifestStatusEnum = z.enum([
+  'NotAssigned',
+  'Pending',
+  'Scheduled',
+  'InTransit',
+  'ReadyForSignature',
+  'Signed',
+  'Corrected',
+  'UnderCorrection',
+  'MtnValidationFailed',
+]);
+
+/**
+ * Available statuses for a manifest as defined by EPA
+ */
+export type ManifestStatus = z.infer<typeof manifestStatusEnum>;
+
 /**
  *  The Transporter type extends the Handler schema and adds transporter
  *  specific data, such as their order on the manifest
@@ -116,17 +133,7 @@ export const manifestSchema = z
           return new Date(val).toISOString();
         }
       }),
-    status: z.enum([
-      'NotAssigned',
-      'Pending',
-      'Scheduled',
-      'InTransit',
-      'ReadyForSignature',
-      'Signed',
-      'Corrected',
-      'UnderCorrection',
-      'MtnValidationFailed',
-    ]),
+    status: manifestStatusEnum,
     /**
      * Whether the manifest is publicly available through EPA
      */
