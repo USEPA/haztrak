@@ -104,6 +104,10 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
                 name={`${handlerType}.${addressType}.state`}
                 render={({ field }) => {
                   return (
+                    // ToDo: 'true' controlled component by adding a value prop
+                    //  (state will likely need to be controlled by HandlerForm)
+                    //  and onChange handler, that has the same type expected by react-select
+                    // @ts-ignore
                     <Select
                       id={`${handlerType}${addressType}State`}
                       {...field}
@@ -158,6 +162,10 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
                 name={`${handlerType}.${addressType}.country`}
                 render={({ field }) => {
                   return (
+                    // ToDo: 'true' controlled component by adding a value prop
+                    //  (state will likely need to be controlled by HandlerForm)
+                    //  and onChange handler, that has the same type expected by react-select
+                    // @ts-ignore
                     <Select
                       id={`${handlerType}.${addressType}Country`}
                       {...field}
