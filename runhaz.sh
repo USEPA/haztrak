@@ -59,16 +59,14 @@ print_style() {
 }
 
 start_db(){
-    echo "starting database..."
-    # check if docker is installed
     if command -v docker> /dev/null 2>&1; then
         docker_exec=$(command -v docker)
     else
       print_style "Docker not found" "danger"
       exit 1
     fi
-    eval "$docker_exec compose -f $base_dir/docker-compose.yaml --env-file $base_dir/configs/.env.dev start postgres"
-    exit 0
+    eval "$docker_exec compose --env-file $base_dir/configs/.env.dev up -d postgres"
+    exit
 }
 
 load_django_fixtures() {
@@ -119,7 +117,9 @@ run_pre_commit() {
 while [[ $# -gt 0 ]]; do
   case $1 in
     -d|--db)
-        start_db
+        start_db "$@"
+#		shift # past argument
+#		shift # past value
         ;;
     -l|--load)
         load_django_fixtures
