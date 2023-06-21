@@ -49,6 +49,7 @@ export function ManifestForm({
       ...manifestData,
     };
   }
+  // React-Hook-Form methods and state
   const manifestMethods = useForm<Manifest>({
     values: values,
     resolver: zodResolver(manifestSchema),
@@ -59,8 +60,10 @@ export function ManifestForm({
   const [manifestStatus, setManifestStatus] = useState<ManifestStatus | undefined>(
     manifestData?.status
   );
-  useEffect(() => manifestMethods.setFocus('generator.epaSiteId'), []);
+  useEffect(() => manifestMethods.setFocus('status'), []);
   const navigate = useNavigate();
+
+  // Function to handle form submission
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log('Manifest Submitted', data);
   };
@@ -114,6 +117,8 @@ export function ManifestForm({
     manifestStatus === 'InTransit' ||
     manifestStatus === 'ReadyForSignature';
 
+  const isDraft = manifestData?.manifestTrackingNumber === undefined;
+
   // Keep this here for development purposes
   // console.log(manifestData);
   // if (errors) console.log('errors', errors);
@@ -154,23 +159,15 @@ export function ManifestForm({
                   <HtForm.Group>
                     <HtForm.Label htmlFor="status" className="mb-0">
                       {'Status '}
-                      {readOnly ||
-                      (manifestStatus !== 'NotAssigned' && manifestStatus !== 'Pending') ? (
+                      {!isDraft && (
                         <InfoIconTooltip
                           message={'Once set to scheduled, this field is managed by EPA'}
                         />
-                      ) : (
-                        <></>
                       )}
                     </HtForm.Label>
                     <HtForm.Select
                       id="status"
-                      disabled={
-                        readOnly ||
-                        (manifestStatus !== 'NotAssigned' &&
-                          manifestStatus !== 'Pending' &&
-                          manifestStatus !== undefined)
-                      }
+                      disabled={readOnly || !isDraft}
                       aria-label="manifestStatus"
                       {...manifestMethods.register('status')}
                       onChange={(event) =>
@@ -208,10 +205,7 @@ export function ManifestForm({
                     </HtForm.Label>
                     <HtForm.Select
                       id="submissionType"
-                      disabled={
-                        readOnly ||
-                        (manifestStatus !== 'NotAssigned' && manifestStatus !== 'Pending')
-                      }
+                      disabled={readOnly || !isDraft}
                       aria-label="submissionType"
                       {...manifestMethods.register('submissionType')}
                     >
