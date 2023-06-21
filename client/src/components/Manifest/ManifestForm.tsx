@@ -167,12 +167,7 @@ export function ManifestForm({
                     </HtForm.Label>
                     <HtForm.Select
                       id="status"
-                      disabled={
-                        readOnly ||
-                        (manifestStatus !== 'NotAssigned' &&
-                          manifestStatus !== 'Pending' &&
-                          manifestStatus !== undefined)
-                      }
+                      disabled={readOnly || !isDraft}
                       aria-label="manifestStatus"
                       {...manifestMethods.register('status')}
                       onChange={(event) =>
