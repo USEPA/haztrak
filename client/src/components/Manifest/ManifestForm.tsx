@@ -205,10 +205,7 @@ export function ManifestForm({
                     </HtForm.Label>
                     <HtForm.Select
                       id="submissionType"
-                      disabled={
-                        readOnly ||
-                        (manifestStatus !== 'NotAssigned' && manifestStatus !== 'Pending')
-                      }
+                      disabled={readOnly || !isDraft}
                       aria-label="submissionType"
                       {...manifestMethods.register('submissionType')}
                     >
