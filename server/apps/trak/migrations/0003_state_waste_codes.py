@@ -1,8 +1,9 @@
 from django.db import migrations
+from apps.trak.models.code_models import WasteCode
 
 
 def populate_state_waste_codes(apps, schema_editor):
-    WasteCode = apps.get_model("trak", "WasteCode")
+    # WasteCode = apps.get_model("trak", "WasteCode")
 
     # Replace this with your logic to fetch state waste codes from RCRAInfo
     state_waste_codes = [
