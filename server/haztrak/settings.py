@@ -171,20 +171,12 @@ SPECTACULAR_SETTINGS = {
     },
 }
 
-if os.getenv(CACHE_URL, None):
-    CACHES = {
-        "default": {
-            "BACKEND": "django.core.cache.backends.redis.RedisCache",
-            "LOCATION": os.getenv(CACHE_URL, "redis://redis:6379"),
-        }
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.getenv(CACHE_URL, "redis://redis:6379"),
     }
-else:
-    CACHES = {
-        "default": {
-            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
-            "LOCATION": "./cache",
-        }
-    }
+}
 
 # Celery
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379")
