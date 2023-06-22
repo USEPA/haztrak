@@ -92,7 +92,6 @@ export function ManifestForm({
     // manifestMethods.getValues('generator')?.siteAddress?.state.code
     manifestData?.generator?.siteAddress.state.code
   );
-  console.log('manifest generator state', generatorStateCode);
 
   // Transporter state and methods
   const [showAddTransporterForm, setShowAddTransporterForm] = useState<boolean>(false);
