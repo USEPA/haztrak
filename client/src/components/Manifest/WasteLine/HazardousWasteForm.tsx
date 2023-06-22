@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
-import { useGetFedWasteCodesQuery } from 'store/wasteCode.slice';
+import { useGetFedWasteCodesQuery, useGetStateWasteCodesQuery } from 'store/wasteCode.slice';
 import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { ManifestContext, ManifestContextProps } from 'components/Manifest/ManifestForm';
 
@@ -40,13 +40,20 @@ const options = [
 export function HazardousWasteForm() {
   const { control } = useFormContext();
   const { generatorState } = useContext<ManifestContextProps>(ManifestContext);
-  console.log('generatorState', generatorState);
   // Retrieve federal waste codes from the server
   const {
     data: federalWasteCodes,
     isLoading: federalLoading,
     error: federalError,
   } = useGetFedWasteCodesQuery();
+
+  const {
+    data: generatorStateWasteCodes,
+    isLoading: generatorStateLoading,
+    error: generatorStateError,
+  } = useGetStateWasteCodesQuery('VA');
+
+  console.log(generatorStateWasteCodes);
 
   /**
    * Styles for our waste code react-select dropdowns
@@ -113,7 +120,7 @@ export function HazardousWasteForm() {
             ></Controller>
             {federalError ? (
               <i className="text-danger">
-                We're sorry, we experienced an error retrieving the federal waste codes
+                We experienced an error retrieving the federal waste codes
               </i>
             ) : (
               <></>

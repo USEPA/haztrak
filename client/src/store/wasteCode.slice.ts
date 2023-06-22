@@ -15,7 +15,10 @@ export const wasteCodeApi = createApi({
     getFedWasteCodes: build.query<Array<Code>, void>({
       query: () => ({ url: 'waste/federal', method: 'get' }),
     }),
+    getStateWasteCodes: build.query<Array<Code>, string>({
+      query: (state) => ({ url: `waste/state/${state}`, method: 'get' }),
+    }),
   }),
 });
 
-export const { useGetFedWasteCodesQuery } = wasteCodeApi;
+export const { useGetFedWasteCodesQuery, useGetStateWasteCodesQuery } = wasteCodeApi;
