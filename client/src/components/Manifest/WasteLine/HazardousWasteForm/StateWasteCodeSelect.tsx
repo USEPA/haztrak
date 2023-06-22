@@ -5,12 +5,16 @@ import React, { useContext } from 'react';
 import { ManifestContext, ManifestContextProps } from 'components/Manifest/ManifestForm';
 import { useGetStateWasteCodesQuery } from 'store/wasteCode.slice';
 
-export function StateWasteCodeSelect() {
-  const { generatorState } = useContext<ManifestContextProps>(ManifestContext);
+interface StateWasteCodeSelectProps {
+  stateId?: string;
+  fieldName: 'hazardousWaste.generatorStateWasteCodes' | ' hazardousWaste.tsdfStateWasteCodes';
+}
+
+export function StateWasteCodeSelect({ stateId, fieldName }: StateWasteCodeSelectProps) {
   const { control } = useFormContext();
 
   // If the generator has yet to be added to the manifest, we can't retrieve state waste codes
-  if (!generatorState)
+  if (!stateId)
     return (
       <Select
         id="hazardousWasteGeneratorStateCodes"
@@ -27,27 +31,27 @@ export function StateWasteCodeSelect() {
     );
 
   const {
-    data: generatorStateWasteCodes,
-    isLoading: generatorStateLoading,
-    error: generatorStateError,
-  } = useGetStateWasteCodesQuery(generatorState);
+    data: stateWasteCodes,
+    isLoading: stateLoading,
+    error: stateError,
+  } = useGetStateWasteCodesQuery(stateId);
 
   const MultiValue = (props: any) => (
     <components.MultiValue {...props}>{props.data.code}</components.MultiValue>
   );
 
-  console.log('gen waste codes', generatorStateWasteCodes);
+  console.log('waste codes', stateWasteCodes);
   return (
     <Controller
       control={control}
-      name="hazardousWaste.generatorStateWasteCodes"
+      name={fieldName}
       render={({ field }) => {
         return (
           <Select
-            id="hazardousWasteGeneratorStateCodes"
+            id={fieldName}
             {...field}
-            options={generatorStateWasteCodes}
-            isLoading={generatorStateLoading}
+            options={stateWasteCodes}
+            isLoading={stateLoading}
             getOptionLabel={(option) => `${option.code}: ${option.description.toLowerCase()}`}
             getOptionValue={(option) => option.code}
             openMenuOnFocus={false}
