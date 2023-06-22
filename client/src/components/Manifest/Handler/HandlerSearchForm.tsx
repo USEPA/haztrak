@@ -1,6 +1,6 @@
 import { HtForm } from 'components/Ht';
 import { SiteType, Manifest, Transporter } from 'components/Manifest/manifestSchema';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import {
   Controller,
@@ -12,6 +12,7 @@ import {
 import { RcraSite } from 'components/RcraSite';
 import AsyncSelect from 'react-select/async';
 import { htApi } from 'services';
+import { ManifestContext, ManifestContextProps } from 'components/Manifest/ManifestForm';
 
 interface Props {
   handleClose: () => void;
@@ -35,10 +36,14 @@ export function HandlerSearchForm({
   const manifestMethods = useFormContext<Manifest>();
   const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
   const [inputValue, setInputValue] = useState<string>('');
+  const { setGeneratorStateCode } = useContext<ManifestContextProps>(ManifestContext);
 
   const onSubmit: SubmitHandler<searchHandlerForm> = () => {
     if (selectedHandler !== null) {
       if (handlerType === 'generator' || handlerType === 'designatedFacility') {
+        if (setGeneratorStateCode) {
+          setGeneratorStateCode(selectedHandler.siteAddress.state.code);
+        }
         manifestMethods.setValue(handlerType, { ...selectedHandler });
       } else if (handlerType === 'transporter') {
         // ToDo add to react-hook-form's useFieldArray

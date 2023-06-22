@@ -2,11 +2,12 @@ import { ErrorMessage } from '@hookform/error-message';
 import { HtForm } from 'components/Ht';
 import { Manifest } from 'components/Manifest/manifestSchema';
 import { RcraAddress } from 'components/RcraSite';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, FieldError, FieldErrorsImpl, Merge, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 import { CountryCode, StateCode } from './StateSelect';
+import { ManifestContext, ManifestContextProps } from 'components/Manifest/ManifestForm';
 
 interface Props {
   addressType: 'siteAddress' | 'mailingAddress';
@@ -19,6 +20,7 @@ interface Props {
  * Needs to be used in the context of a FormProvider
  */
 export function AddressForm({ addressType, handlerType, readOnly }: Props) {
+  const { setGeneratorStateCode } = useContext<ManifestContextProps>(ManifestContext);
   const {
     getValues,
     control,
@@ -104,9 +106,6 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
                 name={`${handlerType}.${addressType}.state`}
                 render={({ field }) => {
                   return (
-                    // ToDo: 'true' controlled component by adding a value prop
-                    //  (state will likely need to be controlled by HandlerForm)
-                    //  and onChange handler, that has the same type expected by react-select
                     // @ts-ignore
                     <Select
                       id={`${handlerType}${addressType}State`}
@@ -116,6 +115,14 @@ export function AddressForm({ addressType, handlerType, readOnly }: Props) {
                       getOptionValue={(option) => option.code}
                       openMenuOnFocus={false}
                       isDisabled={readOnly}
+                      onChange={(option) => {
+                        // on selection, set to the selected state object ({code: 'CA', name: 'California'})
+                        field.onChange(option);
+                        if (setGeneratorStateCode && option) {
+                          // set the generator state to the selected state code ('CA')
+                          setGeneratorStateCode(option.code);
+                        }
+                      }}
                       classNames={{
                         control: () =>
                           `form-control p-0 rounded-2 ${addressErrors?.state && 'border-danger'} `,

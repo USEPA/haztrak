@@ -1,10 +1,12 @@
 import { HtForm } from 'components/Ht';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
-import { useGetWasteCodesQuery } from 'store/wasteCode.slice';
+import { useGetFedWasteCodesQuery, useGetStateWasteCodesQuery } from 'store/wasteCode.slice';
 import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { ManifestContext, ManifestContextProps } from 'components/Manifest/ManifestForm';
+import { StateWasteCodeSelect } from 'components/Manifest/WasteLine/HazardousWasteForm/StateWasteCodeSelect';
 
 // ToDo: For temporary development purposes, We retrieve federal wastes codes
 //  but still need to implement state waste codes on backend
@@ -38,12 +40,13 @@ const options = [
  */
 export function HazardousWasteForm() {
   const { control } = useFormContext();
+  const { generatorStateCode } = useContext<ManifestContextProps>(ManifestContext);
   // Retrieve federal waste codes from the server
   const {
     data: federalWasteCodes,
     isLoading: federalLoading,
     error: federalError,
-  } = useGetWasteCodesQuery('federal');
+  } = useGetFedWasteCodesQuery();
 
   /**
    * Styles for our waste code react-select dropdowns
@@ -67,12 +70,8 @@ export function HazardousWasteForm() {
    * This is a custom component we use to display waste codes so that the full
    * description of the waste code is present when selecting from the dropdown
    * but only contains the ~4-digit code once selected.
-   *
    * see SO question here
    * https://stackoverflow.com/questions/52482985/react-select-show-different-text-label-for-drop-down-and-control
-   *
-   * @param props
-   * @constructor
    */
   const MultiValue = (props: any) => (
     <components.MultiValue {...props}>{props.data.code}</components.MultiValue>
@@ -86,8 +85,7 @@ export function HazardousWasteForm() {
             <HtForm.Label className="mb-0" htmlFor="hazardousWasteFederalWasteCodes">
               Federal Waste Codes
             </HtForm.Label>
-            {/* We need to use 'Controller' to wrap around the React-Select controlled component */}
-            {/*https://react-hook-form.com/api/usecontroller/controller*/}
+            {/* Federal waste code selection*/}
             <Controller
               control={control}
               name="hazardousWaste.federalWasteCodes"
@@ -114,7 +112,7 @@ export function HazardousWasteForm() {
             ></Controller>
             {federalError ? (
               <i className="text-danger">
-                We're sorry, we experienced an error retrieving the federal waste codes
+                We experienced an error retrieving the federal waste codes
               </i>
             ) : (
               <></>
@@ -124,25 +122,11 @@ export function HazardousWasteForm() {
             <HtForm.Label className="mb-0" htmlFor="hazardousWasteGeneratorStateCodes">
               Generator State Waste Codes
             </HtForm.Label>
-            <Controller
-              control={control}
-              name="hazardousWaste.generatorStateWasteCodes"
-              render={({ field }) => {
-                return (
-                  <Select
-                    id="hazardousWasteGeneratorStateCodes"
-                    {...field}
-                    options={options}
-                    getOptionLabel={(option) => option.code}
-                    getOptionValue={(option) => option.code}
-                    openMenuOnFocus={false}
-                    isMulti
-                    isClearable
-                    hideSelectedOptions
-                  />
-                );
-              }}
-            ></Controller>
+            {/* Generator state waste selection */}
+            <StateWasteCodeSelect
+              stateId={generatorStateCode}
+              fieldName="hazardousWaste.generatorStateWasteCodes"
+            />
           </HtForm.Group>
           <HtForm.Group>
             <HtForm.Label className="mb-0" htmlFor="hazardousWasteTsdfCodes">
@@ -166,7 +150,7 @@ export function HazardousWasteForm() {
                   />
                 );
               }}
-            ></Controller>
+            />
           </HtForm.Group>
         </Col>
       </Row>

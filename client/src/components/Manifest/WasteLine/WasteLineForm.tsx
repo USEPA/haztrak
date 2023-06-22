@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HtCard, HtForm } from 'components/Ht';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
-import { HazardousWasteForm } from './HazardousWasteForm';
+import { HazardousWasteForm } from 'components/Manifest/WasteLine/HazardousWasteForm';
 import React from 'react';
 import { Button, Container, Form, Row } from 'react-bootstrap';
 import { FormProvider, UseFieldArrayAppend, useForm } from 'react-hook-form';
@@ -40,7 +40,6 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
    * @param wasteLine the data submitted from the form
    */
   const onSubmit = (wasteLine: WasteLine) => {
-    console.log('wasteline', wasteLine);
     appendWaste(wasteLine); // append the new waste line to the manifest
     handleClose();
   };
