@@ -87,9 +87,10 @@ export function ManifestForm({
   const toggleShowAddGenerator = () => setShowGeneratorSearch(!showGeneratorSearch);
   const toggleShowGeneratorForm = () => setShowGeneratorForm(!showGeneratorForm);
   // we need to know the generator's geographic state to know what waste codes to retrieve
-  const [generatorRegion, setGeneratorRegion] = useState<string | undefined>(
+  const [generatorState, setGeneratorState] = useState<string | undefined>(
     manifestMethods.getValues('generator')?.siteAddress.state.code
   );
+  console.log('manifest generator state', generatorState);
 
   // Transporter state and methods
   const [showAddTransporterForm, setShowAddTransporterForm] = useState<boolean>(false);
@@ -142,7 +143,7 @@ export function ManifestForm({
   return (
     <>
       <ManifestContext.Provider
-        value={{ generatorState: generatorRegion, manifestStatus: manifestStatus }}
+        value={{ generatorState: generatorState, manifestStatus: manifestStatus }}
       >
         <FormProvider {...manifestMethods}>
           <HtForm onSubmit={manifestMethods.handleSubmit(onSubmit)}>
