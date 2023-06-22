@@ -23,8 +23,10 @@ const defaultValues: Manifest = {
   submissionType: 'FullElectronic',
 };
 
-interface ManifestContextProps {
-  generatorState: string | undefined;
+export interface ManifestContextProps {
+  manifestStatus?: ManifestStatus;
+  generatorState?: string;
+  tsdfState?: string;
 }
 
 interface ManifestFormProps {
@@ -34,7 +36,7 @@ interface ManifestFormProps {
   mtn?: string;
 }
 
-export const ManifestContext = createContext<ManifestContextProps>({ generatorState: undefined });
+export const ManifestContext = createContext<ManifestContextProps>({});
 
 /**
  * Returns form for the uniform hazardous waste manifest. It also acts
@@ -137,10 +139,11 @@ export function ManifestForm({
   // console.log(manifestData);
   // if (errors) console.log('errors', errors);
 
-  console.log('ManifestForm', generatorRegion);
   return (
     <>
-      <ManifestContext.Provider value={{ generatorState: generatorRegion }}>
+      <ManifestContext.Provider
+        value={{ generatorState: generatorRegion, manifestStatus: manifestStatus }}
+      >
         <FormProvider {...manifestMethods}>
           <HtForm onSubmit={manifestMethods.handleSubmit(onSubmit)}>
             <div className="d-flex justify-content-between">
