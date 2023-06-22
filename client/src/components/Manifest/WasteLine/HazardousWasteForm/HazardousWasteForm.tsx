@@ -85,8 +85,7 @@ export function HazardousWasteForm() {
             <HtForm.Label className="mb-0" htmlFor="hazardousWasteFederalWasteCodes">
               Federal Waste Codes
             </HtForm.Label>
-            {/* We need to use 'Controller' to wrap around the React-Select controlled component */}
-            {/*https://react-hook-form.com/api/usecontroller/controller*/}
+            {/* Federal waste code selection*/}
             <Controller
               control={control}
               name="hazardousWaste.federalWasteCodes"
@@ -123,6 +122,7 @@ export function HazardousWasteForm() {
             <HtForm.Label className="mb-0" htmlFor="hazardousWasteGeneratorStateCodes">
               Generator State Waste Codes
             </HtForm.Label>
+            {/* Generator state waste selection */}
             <StateWasteCodeSelect
               stateId={generatorState}
               fieldName="hazardousWaste.generatorStateWasteCodes"
