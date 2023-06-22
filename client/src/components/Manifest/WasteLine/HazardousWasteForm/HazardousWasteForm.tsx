@@ -150,7 +150,7 @@ export function HazardousWasteForm() {
                   />
                 );
               }}
-            ></Controller>
+            />
           </HtForm.Group>
         </Col>
       </Row>

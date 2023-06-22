@@ -1,8 +1,6 @@
-import { HtForm } from 'components/Ht';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components } from 'react-select';
 import React, { useContext } from 'react';
-import { ManifestContext, ManifestContextProps } from 'components/Manifest/ManifestForm';
 import { useGetStateWasteCodesQuery } from 'store/wasteCode.slice';
 
 interface StateWasteCodeSelectProps {
@@ -39,7 +37,7 @@ export function StateWasteCodeSelect({ stateId, fieldName }: StateWasteCodeSelec
   /**
    * This is a custom component we use to display waste codes so that the full
    * description of the waste code is present when selecting from the dropdown
-   * but only contains the ~4-digit code once selected.
+   * but only contains the 3 to 6-digit code once selected.
    * see SO question here
    * https://stackoverflow.com/questions/52482985/react-select-show-different-text-label-for-drop-down-and-control
    */
@@ -47,28 +45,34 @@ export function StateWasteCodeSelect({ stateId, fieldName }: StateWasteCodeSelec
     <components.MultiValue {...props}>{props.data.code}</components.MultiValue>
   );
 
-  console.log('waste codes', stateWasteCodes);
   return (
-    <Controller
-      control={control}
-      name={fieldName}
-      render={({ field }) => {
-        return (
-          <Select
-            id={fieldName}
-            {...field}
-            options={stateWasteCodes}
-            isLoading={stateLoading}
-            getOptionLabel={(option) => `${option.code}: ${option.description.toLowerCase()}`}
-            getOptionValue={(option) => option.code}
-            openMenuOnFocus={false}
-            components={{ MultiValue }}
-            isMulti
-            isClearable
-            hideSelectedOptions
-          />
-        );
-      }}
-    ></Controller>
+    <>
+      <Controller
+        control={control}
+        name={fieldName}
+        render={({ field }) => {
+          return (
+            <Select
+              id={fieldName}
+              {...field}
+              options={stateWasteCodes}
+              isLoading={stateLoading}
+              getOptionLabel={(option) => `${option.code}: ${option.description.toLowerCase()}`}
+              getOptionValue={(option) => option.code}
+              openMenuOnFocus={false}
+              components={{ MultiValue }}
+              isMulti
+              isClearable
+              hideSelectedOptions
+            />
+          );
+        }}
+      />
+      {stateError ? (
+        <i className="text-danger">We experienced an error retrieving the state waste codes</i>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
