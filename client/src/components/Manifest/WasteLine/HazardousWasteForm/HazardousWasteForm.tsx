@@ -40,7 +40,7 @@ const options = [
  */
 export function HazardousWasteForm() {
   const { control } = useFormContext();
-  const { generatorState } = useContext<ManifestContextProps>(ManifestContext);
+  const { generatorStateCode } = useContext<ManifestContextProps>(ManifestContext);
   // Retrieve federal waste codes from the server
   const {
     data: federalWasteCodes,
@@ -124,7 +124,7 @@ export function HazardousWasteForm() {
             </HtForm.Label>
             {/* Generator state waste selection */}
             <StateWasteCodeSelect
-              stateId={generatorState}
+              stateId={generatorStateCode}
               fieldName="hazardousWaste.generatorStateWasteCodes"
             />
           </HtForm.Group>

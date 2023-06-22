@@ -25,7 +25,8 @@ const defaultValues: Manifest = {
 
 export interface ManifestContextProps {
   manifestStatus?: ManifestStatus;
-  generatorState?: string;
+  generatorStateCode?: string;
+  setGeneratorStateCode?: React.Dispatch<React.SetStateAction<string | undefined>>;
   tsdfState?: string;
 }
 
@@ -87,10 +88,11 @@ export function ManifestForm({
   const toggleShowAddGenerator = () => setShowGeneratorSearch(!showGeneratorSearch);
   const toggleShowGeneratorForm = () => setShowGeneratorForm(!showGeneratorForm);
   // we need to know the generator's geographic state to know what waste codes to retrieve
-  const [generatorState, setGeneratorState] = useState<string | undefined>(
-    manifestMethods.getValues('generator')?.siteAddress.state.code
+  const [generatorStateCode, setGeneratorStateCode] = useState<string | undefined>(
+    // manifestMethods.getValues('generator')?.siteAddress?.state.code
+    manifestData?.generator?.siteAddress.state.code
   );
-  console.log('manifest generator state', generatorState);
+  console.log('manifest generator state', generatorStateCode);
 
   // Transporter state and methods
   const [showAddTransporterForm, setShowAddTransporterForm] = useState<boolean>(false);
@@ -143,7 +145,11 @@ export function ManifestForm({
   return (
     <>
       <ManifestContext.Provider
-        value={{ generatorState: generatorState, manifestStatus: manifestStatus }}
+        value={{
+          generatorStateCode: generatorStateCode,
+          setGeneratorStateCode: setGeneratorStateCode,
+          manifestStatus: manifestStatus,
+        }}
       >
         <FormProvider {...manifestMethods}>
           <HtForm onSubmit={manifestMethods.handleSubmit(onSubmit)}>
