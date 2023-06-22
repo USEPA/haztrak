@@ -20,3 +20,12 @@ class StateWasteCodesView(ListAPIView):
 
     serializer_class = WasteCodeSerializer
     queryset = WasteCode.state.all()
+    lookup_url_kwarg = "state_id"
+    lookup_field = "state_id"
+
+    def get_queryset(self):
+        try:
+            state_id = self.kwargs["state_id"]
+            return WasteCode.state.filter(state_id=state_id)
+        except KeyError:
+            raise ValueError("State ID is required")

@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name="wastecode",
-            name="rcra_state",
+            name="state_id",
             field=models.CharField(
                 blank=True,
                 choices=[

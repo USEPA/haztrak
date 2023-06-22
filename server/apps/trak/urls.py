@@ -7,6 +7,7 @@ from apps.trak.views import (
     MtnList,
     PullManifestView,
     SignManifestView,
+    StateWasteCodesView,
     SyncSiteManifestView,
 )
 
@@ -24,5 +25,5 @@ urlpatterns = [
     path("mtn/<str:epa_id>", MtnList.as_view()),
     # Codes
     path("code/waste/federal", FederalWasteCodesView.as_view()),
-    # path("code/waste/state/<str:state_id>", PLACEHOLDER.as_view()),
+    path("code/waste/state/<str:state_id>", StateWasteCodesView.as_view()),
 ]

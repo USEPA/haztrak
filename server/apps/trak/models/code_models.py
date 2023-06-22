@@ -176,7 +176,7 @@ class WasteCode(RcraCodeBaseModel):
         choices=CodeType.choices,
         max_length=2,
     )
-    rcra_state = models.CharField(
+    state_id = models.CharField(
         max_length=3,
         null=True,
         blank=True,
