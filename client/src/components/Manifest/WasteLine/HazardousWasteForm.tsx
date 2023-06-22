@@ -51,9 +51,9 @@ export function HazardousWasteForm() {
     data: generatorStateWasteCodes,
     isLoading: generatorStateLoading,
     error: generatorStateError,
-  } = useGetStateWasteCodesQuery('VA');
+  } = useGetStateWasteCodesQuery(generatorState);
 
-  console.log(generatorStateWasteCodes);
+  console.log('gen waste codes', generatorStateWasteCodes);
 
   /**
    * Styles for our waste code react-select dropdowns
@@ -138,10 +138,14 @@ export function HazardousWasteForm() {
                   <Select
                     id="hazardousWasteGeneratorStateCodes"
                     {...field}
-                    options={options}
-                    getOptionLabel={(option) => option.code}
+                    options={generatorStateWasteCodes}
+                    isLoading={generatorStateLoading}
+                    getOptionLabel={(option) =>
+                      `${option.code}: ${option.description.toLowerCase()}`
+                    }
                     getOptionValue={(option) => option.code}
                     openMenuOnFocus={false}
+                    components={{ MultiValue }}
                     isMulti
                     isClearable
                     hideSelectedOptions
