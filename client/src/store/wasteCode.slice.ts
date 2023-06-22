@@ -12,10 +12,10 @@ export const wasteCodeApi = createApi({
     baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/code/`,
   }),
   endpoints: (build) => ({
-    getWasteCodes: build.query<Array<Code>, string>({
-      query: (type) => ({ url: `waste/${type}`, method: 'get' }),
+    getFedWasteCodes: build.query<Array<Code>, void>({
+      query: () => ({ url: 'waste/federal', method: 'get' }),
     }),
   }),
 });
 
-export const { useGetWasteCodesQuery } = wasteCodeApi;
+export const { useGetFedWasteCodesQuery } = wasteCodeApi;

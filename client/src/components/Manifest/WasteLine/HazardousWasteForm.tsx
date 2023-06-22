@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
-import { useGetWasteCodesQuery } from 'store/wasteCode.slice';
+import { useGetFedWasteCodesQuery } from 'store/wasteCode.slice';
 import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { ManifestContext, ManifestContextProps } from 'components/Manifest/ManifestForm';
 
@@ -46,7 +46,7 @@ export function HazardousWasteForm() {
     data: federalWasteCodes,
     isLoading: federalLoading,
     error: federalError,
-  } = useGetWasteCodesQuery('federal');
+  } = useGetFedWasteCodesQuery();
 
   /**
    * Styles for our waste code react-select dropdowns
