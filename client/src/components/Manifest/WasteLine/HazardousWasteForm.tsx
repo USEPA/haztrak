@@ -1,10 +1,11 @@
 import { HtForm } from 'components/Ht';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
 import { useGetWasteCodesQuery } from 'store/wasteCode.slice';
 import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { ManifestContext } from 'components/Manifest/ManifestForm';
 
 // ToDo: For temporary development purposes, We retrieve federal wastes codes
 //  but still need to implement state waste codes on backend
@@ -38,6 +39,8 @@ const options = [
  */
 export function HazardousWasteForm() {
   const { control } = useFormContext();
+  const { generatorState } = useContext(ManifestContext);
+  console.log('Haz waste form gen state', generatorState);
   // Retrieve federal waste codes from the server
   const {
     data: federalWasteCodes,
@@ -67,12 +70,8 @@ export function HazardousWasteForm() {
    * This is a custom component we use to display waste codes so that the full
    * description of the waste code is present when selecting from the dropdown
    * but only contains the ~4-digit code once selected.
-   *
    * see SO question here
    * https://stackoverflow.com/questions/52482985/react-select-show-different-text-label-for-drop-down-and-control
-   *
-   * @param props
-   * @constructor
    */
   const MultiValue = (props: any) => (
     <components.MultiValue {...props}>{props.data.code}</components.MultiValue>
