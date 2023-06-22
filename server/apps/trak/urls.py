@@ -2,11 +2,12 @@ from django.urls import include, path
 from rest_framework import routers
 
 from apps.trak.views import (
-    FederalWasteCodes,
+    FederalWasteCodesView,
     ManifestView,
     MtnList,
     PullManifestView,
     SignManifestView,
+    StateWasteCodesView,
     SyncSiteManifestView,
 )
 
@@ -23,6 +24,6 @@ urlpatterns = [
     path("mtn", MtnList.as_view()),
     path("mtn/<str:epa_id>", MtnList.as_view()),
     # Codes
-    path("code/waste/federal", FederalWasteCodes.as_view()),
-    # path("code/waste/state/<str:state_id>", PLACEHOLDER.as_view()),
+    path("code/waste/federal", FederalWasteCodesView.as_view()),
+    path("code/waste/state/<str:state_id>", StateWasteCodesView.as_view()),
 ]
