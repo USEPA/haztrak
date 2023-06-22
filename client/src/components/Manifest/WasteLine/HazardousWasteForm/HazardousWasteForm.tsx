@@ -6,6 +6,7 @@ import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 're
 import { useGetFedWasteCodesQuery, useGetStateWasteCodesQuery } from 'store/wasteCode.slice';
 import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { ManifestContext, ManifestContextProps } from 'components/Manifest/ManifestForm';
+import { StateWasteCodeSelect } from 'components/Manifest/WasteLine/HazardousWasteForm/StateWasteCodeSelect';
 
 // ToDo: For temporary development purposes, We retrieve federal wastes codes
 //  but still need to implement state waste codes on backend
@@ -39,21 +40,12 @@ const options = [
  */
 export function HazardousWasteForm() {
   const { control } = useFormContext();
-  const { generatorState } = useContext<ManifestContextProps>(ManifestContext);
   // Retrieve federal waste codes from the server
   const {
     data: federalWasteCodes,
     isLoading: federalLoading,
     error: federalError,
   } = useGetFedWasteCodesQuery();
-
-  const {
-    data: generatorStateWasteCodes,
-    isLoading: generatorStateLoading,
-    error: generatorStateError,
-  } = useGetStateWasteCodesQuery(generatorState);
-
-  console.log('gen waste codes', generatorStateWasteCodes);
 
   /**
    * Styles for our waste code react-select dropdowns
@@ -126,34 +118,35 @@ export function HazardousWasteForm() {
               <></>
             )}
           </HtForm.Group>
-          <HtForm.Group className="mb-3">
-            <HtForm.Label className="mb-0" htmlFor="hazardousWasteGeneratorStateCodes">
-              Generator State Waste Codes
-            </HtForm.Label>
-            <Controller
-              control={control}
-              name="hazardousWaste.generatorStateWasteCodes"
-              render={({ field }) => {
-                return (
-                  <Select
-                    id="hazardousWasteGeneratorStateCodes"
-                    {...field}
-                    options={generatorStateWasteCodes}
-                    isLoading={generatorStateLoading}
-                    getOptionLabel={(option) =>
-                      `${option.code}: ${option.description.toLowerCase()}`
-                    }
-                    getOptionValue={(option) => option.code}
-                    openMenuOnFocus={false}
-                    components={{ MultiValue }}
-                    isMulti
-                    isClearable
-                    hideSelectedOptions
-                  />
-                );
-              }}
-            ></Controller>
-          </HtForm.Group>
+          <StateWasteCodeSelect />
+          {/*<HtForm.Group className="mb-3">*/}
+          {/*  <HtForm.Label className="mb-0" htmlFor="hazardousWasteGeneratorStateCodes">*/}
+          {/*    Generator State Waste Codes*/}
+          {/*  </HtForm.Label>*/}
+          {/*  <Controller*/}
+          {/*    control={control}*/}
+          {/*    name="hazardousWaste.generatorStateWasteCodes"*/}
+          {/*    render={({ field }) => {*/}
+          {/*      return (*/}
+          {/*        <Select*/}
+          {/*          id="hazardousWasteGeneratorStateCodes"*/}
+          {/*          {...field}*/}
+          {/*          options={generatorStateWasteCodes}*/}
+          {/*          isLoading={generatorStateLoading}*/}
+          {/*          getOptionLabel={(option) =>*/}
+          {/*            `${option.code}: ${option.description.toLowerCase()}`*/}
+          {/*          }*/}
+          {/*          getOptionValue={(option) => option.code}*/}
+          {/*          openMenuOnFocus={false}*/}
+          {/*          components={{ MultiValue }}*/}
+          {/*          isMulti*/}
+          {/*          isClearable*/}
+          {/*          hideSelectedOptions*/}
+          {/*        />*/}
+          {/*      );*/}
+          {/*    }}*/}
+          {/*  ></Controller>*/}
+          {/*</HtForm.Group>*/}
           <HtForm.Group>
             <HtForm.Label className="mb-0" htmlFor="hazardousWasteTsdfCodes">
               Destination State Waste Codes
