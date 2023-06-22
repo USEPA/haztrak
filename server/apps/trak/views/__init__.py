@@ -1,4 +1,4 @@
-from .lookup_views import FederalWasteCodes
+from .lookup_views import FederalWasteCodesView
 from .manifest_view import (
     ManifestView,
     MtnList,
