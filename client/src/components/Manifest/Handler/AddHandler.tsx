@@ -6,7 +6,7 @@ import { Col, Row } from 'react-bootstrap';
 import { Manifest, SiteType } from '../manifestSchema';
 import { UseFieldArrayAppend } from 'react-hook-form';
 
-interface Props {
+interface AddHandlerProps {
   handleClose: () => void;
   show: boolean | undefined;
   handlerType: SiteType;
@@ -29,10 +29,10 @@ export function AddHandler({
   handlerType,
   currentTransporters,
   appendTransporter,
-}: Props) {
+}: AddHandlerProps) {
+  // set the title and description based on the handlerType
   let title;
   let description;
-
   if (handlerType === 'designatedFacility') {
     title = 'Add Designated Facility';
     description = 'The Treatment, Storage, or Disposal Facility the waste will shipped to.';
