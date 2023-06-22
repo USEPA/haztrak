@@ -118,35 +118,12 @@ export function HazardousWasteForm() {
               <></>
             )}
           </HtForm.Group>
-          <StateWasteCodeSelect />
-          {/*<HtForm.Group className="mb-3">*/}
-          {/*  <HtForm.Label className="mb-0" htmlFor="hazardousWasteGeneratorStateCodes">*/}
-          {/*    Generator State Waste Codes*/}
-          {/*  </HtForm.Label>*/}
-          {/*  <Controller*/}
-          {/*    control={control}*/}
-          {/*    name="hazardousWaste.generatorStateWasteCodes"*/}
-          {/*    render={({ field }) => {*/}
-          {/*      return (*/}
-          {/*        <Select*/}
-          {/*          id="hazardousWasteGeneratorStateCodes"*/}
-          {/*          {...field}*/}
-          {/*          options={generatorStateWasteCodes}*/}
-          {/*          isLoading={generatorStateLoading}*/}
-          {/*          getOptionLabel={(option) =>*/}
-          {/*            `${option.code}: ${option.description.toLowerCase()}`*/}
-          {/*          }*/}
-          {/*          getOptionValue={(option) => option.code}*/}
-          {/*          openMenuOnFocus={false}*/}
-          {/*          components={{ MultiValue }}*/}
-          {/*          isMulti*/}
-          {/*          isClearable*/}
-          {/*          hideSelectedOptions*/}
-          {/*        />*/}
-          {/*      );*/}
-          {/*    }}*/}
-          {/*  ></Controller>*/}
-          {/*</HtForm.Group>*/}
+          <HtForm.Group className="mb-3">
+            <HtForm.Label className="mb-0" htmlFor="hazardousWasteGeneratorStateCodes">
+              Generator State Waste Codes
+            </HtForm.Label>
+            <StateWasteCodeSelect />
+          </HtForm.Group>
           <HtForm.Group>
             <HtForm.Label className="mb-0" htmlFor="hazardousWasteTsdfCodes">
               Destination State Waste Codes

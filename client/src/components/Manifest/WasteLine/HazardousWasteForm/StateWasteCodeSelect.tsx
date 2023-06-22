@@ -9,7 +9,22 @@ export function StateWasteCodeSelect() {
   const { generatorState } = useContext<ManifestContextProps>(ManifestContext);
   const { control } = useFormContext();
 
-  if (!generatorState) return null;
+  // If the generator has yet to be added to the manifest, we can't retrieve state waste codes
+  if (!generatorState)
+    return (
+      <Select
+        id="hazardousWasteGeneratorStateCodes"
+        isMulti
+        isClearable
+        hideSelectedOptions
+        placeholder={
+          <i className="text-muted">
+            Generator must be provided before adding origin state waste codes
+          </i>
+        }
+        isDisabled={true}
+      />
+    );
 
   const {
     data: generatorStateWasteCodes,
@@ -23,31 +38,26 @@ export function StateWasteCodeSelect() {
 
   console.log('gen waste codes', generatorStateWasteCodes);
   return (
-    <HtForm.Group className="mb-3">
-      <HtForm.Label className="mb-0" htmlFor="hazardousWasteGeneratorStateCodes">
-        Generator State Waste Codes
-      </HtForm.Label>
-      <Controller
-        control={control}
-        name="hazardousWaste.generatorStateWasteCodes"
-        render={({ field }) => {
-          return (
-            <Select
-              id="hazardousWasteGeneratorStateCodes"
-              {...field}
-              options={generatorStateWasteCodes}
-              isLoading={generatorStateLoading}
-              getOptionLabel={(option) => `${option.code}: ${option.description.toLowerCase()}`}
-              getOptionValue={(option) => option.code}
-              openMenuOnFocus={false}
-              components={{ MultiValue }}
-              isMulti
-              isClearable
-              hideSelectedOptions
-            />
-          );
-        }}
-      ></Controller>
-    </HtForm.Group>
+    <Controller
+      control={control}
+      name="hazardousWaste.generatorStateWasteCodes"
+      render={({ field }) => {
+        return (
+          <Select
+            id="hazardousWasteGeneratorStateCodes"
+            {...field}
+            options={generatorStateWasteCodes}
+            isLoading={generatorStateLoading}
+            getOptionLabel={(option) => `${option.code}: ${option.description.toLowerCase()}`}
+            getOptionValue={(option) => option.code}
+            openMenuOnFocus={false}
+            components={{ MultiValue }}
+            isMulti
+            isClearable
+            hideSelectedOptions
+          />
+        );
+      }}
+    ></Controller>
   );
 }
