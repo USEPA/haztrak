@@ -4,4 +4,5 @@ from .site_views import (
     SiteDetailView,
     SiteListView,
     SiteMtnListView,
+    rcrainfo_site_search_view,
 )
