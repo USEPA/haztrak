@@ -13,6 +13,8 @@ import { RcraSite } from 'components/RcraSite';
 import AsyncSelect from 'react-select/async';
 import { htApi } from 'services';
 import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
+import { siteApi, useSearchRcraSitesQuery } from 'store/site.slice';
+import { useAppDispatch } from 'store';
 
 interface Props {
   handleClose: () => void;
@@ -24,6 +26,7 @@ interface Props {
 interface searchHandlerForm {
   handler: string;
   epaId: string;
+  foo: string;
 }
 
 export function HandlerSearchForm({
@@ -36,6 +39,9 @@ export function HandlerSearchForm({
   const manifestMethods = useFormContext<Manifest>();
   const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
   const [inputValue, setInputValue] = useState<string>('');
+  const [rcraSelectedHandler, setRcraSelectedHandler] = useState<RcraSite | null>(null);
+  const [rcraInputValue, setRcraInputValue] = useState<string>('');
+  const dispatch = useAppDispatch();
   const { setGeneratorStateCode, setTsdfStateCode } =
     useContext<ManifestContextType>(ManifestContext);
 
@@ -78,6 +84,14 @@ export function HandlerSearchForm({
       .then((res) => res.data as Array<RcraSite>);
   };
 
+  const { data, isLoading, isError } = useSearchRcraSitesQuery();
+
+  const rcraSearchLoadOption = async (inputValue: string) => {
+    const result = dispatch(siteApi.endpoints?.searchRcraSites.initiate());
+    console.log('result', result);
+    return result.unwrap();
+  };
+
   return (
     <>
       <HtForm onSubmit={handleSubmit(onSubmit)}>
@@ -99,6 +113,29 @@ export function HandlerSearchForm({
                   openMenuOnFocus={false}
                   onInputChange={handleInputChange}
                   onChange={handleChange}
+                  isSearchable
+                  isClearable
+                  cacheOptions
+                />
+              );
+            }}
+          />
+          <Controller
+            control={control}
+            name="foo"
+            render={({ field }) => {
+              return (
+                <AsyncSelect
+                  id="foo"
+                  {...field}
+                  value={rcraSelectedHandler}
+                  inputValue={rcraInputValue}
+                  loadOptions={rcraSearchLoadOption}
+                  // getOptionLabel={(option) => `${option.epaSiteId} -- ${option.name}`}
+                  // getOptionValue={(option) => option.epaSiteId}
+                  // openMenuOnFocus={false}
+                  // onInputChange={handleInputChange}
+                  // onChange={handleChange}
                   isSearchable
                   isClearable
                   cacheOptions

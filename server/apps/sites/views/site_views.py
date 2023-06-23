@@ -1,10 +1,12 @@
 import logging
+import time
 
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, status
+from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.request import Request
@@ -133,3 +135,10 @@ class RcraSiteSearchView(ListAPIView):
                     site_type = RcraSiteType.GENERATOR.label
             queryset = queryset.filter(site_type=site_type)
         return queryset
+
+
+@api_view(["GET"])
+def rcrainfo_site_search_view(request: Request):
+    print("rcrainfo_site_search_view data", request.data)
+    time.sleep(5)
+    return Response(status=status.HTTP_200_OK, data=[])
