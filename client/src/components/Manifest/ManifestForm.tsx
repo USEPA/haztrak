@@ -96,7 +96,6 @@ export function ManifestForm({
     htApi
       .post<TaskStatus>('/rcra/manifest/create', data)
       .then((response) => {
-        console.log(response);
         return response;
       })
       .then((r) => {
@@ -176,7 +175,7 @@ export function ManifestForm({
 
   // Keep this here for development purposes
   // console.log(manifestData);
-  // if (errors) console.log('errors', errors);
+  if (errors) console.log('errors', errors);
   // console.log('tsdfStateCode', tsdfStateCode);
 
   return (
@@ -481,9 +480,9 @@ export function ManifestForm({
                 <ErrorMessage
                   errors={errors}
                   name={'transporters'}
-                  render={({ message }) => (
+                  render={(error) => (
                     <Alert variant="danger" className="text-center m-3">
-                      {message}
+                      We're sorry, there's a problem with the transporters.
                     </Alert>
                   )}
                 />

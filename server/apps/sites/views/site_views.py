@@ -1,5 +1,4 @@
 import logging
-import time
 
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.utils.decorators import method_decorator
@@ -12,8 +11,10 @@ from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from apps.core.services import RcrainfoService
 from apps.sites.models import RcraSite, RcraSiteType, Site
 from apps.sites.serializers import RcraSiteSerializer, SiteSerializer
+from apps.sites.services import RcraSiteService
 from apps.trak.models import Manifest
 from apps.trak.serializers import MtnSerializer
 
@@ -137,8 +138,27 @@ class RcraSiteSearchView(ListAPIView):
         return queryset
 
 
-@api_view(["GET"])
+handler_types = {
+    "designatedFacility": "Tsdf",
+    "generator": "Generator",
+    "transporter": "Transporter",
+    "broker": "Broker",
+}
+
+
+@api_view(["POST"])
 def rcrainfo_site_search_view(request: Request):
-    print("rcrainfo_site_search_view data", request.data)
-    time.sleep(5)
-    return Response(status=status.HTTP_200_OK, data=[])
+    rcrainfo = RcrainfoService(
+        api_username="testuser1",
+        api_key="wer63uZ8q8ZbmcllkCc2",
+        api_id="9eb85033-05e4-45e1-9cbf-024140c3b047",
+    )
+    site_service = RcraSiteService(username=request.user.username, rcrainfo=rcrainfo)
+    data = site_service.search_rcra_site(
+        epaSiteId=request.data["siteId"], siteType=handler_types[request.data["siteType"]]
+    )
+    print("request", data)
+    # queryset = RcraSite.objects.all().filter(epa_id__icontains=request.data["siteId"])
+    # serializer = RcraSiteSerializer(queryset, many=True)
+    # time.sleep(5)
+    return Response(status=status.HTTP_200_OK, data=data["sites"])

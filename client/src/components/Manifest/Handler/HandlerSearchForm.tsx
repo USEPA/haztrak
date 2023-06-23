@@ -1,5 +1,7 @@
 import { HtForm } from 'components/Ht';
-import { SiteType, Manifest, Transporter } from 'components/Manifest/manifestSchema';
+import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
+import { Manifest, SiteType, Transporter } from 'components/Manifest/manifestSchema';
+import { RcraSite } from 'components/RcraSite';
 import React, { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import {
@@ -9,12 +11,9 @@ import {
   useForm,
   useFormContext,
 } from 'react-hook-form';
-import { RcraSite } from 'components/RcraSite';
-import AsyncSelect from 'react-select/async';
-import { htApi } from 'services';
-import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
-import { siteApi, useSearchRcraSitesQuery } from 'store/site.slice';
+import Select from 'react-select';
 import { useAppDispatch } from 'store';
+import { siteApi } from 'store/site.slice';
 
 interface Props {
   handleClose: () => void;
@@ -26,7 +25,6 @@ interface Props {
 interface searchHandlerForm {
   handler: string;
   epaId: string;
-  foo: string;
 }
 
 export function HandlerSearchForm({
@@ -39,11 +37,15 @@ export function HandlerSearchForm({
   const manifestMethods = useFormContext<Manifest>();
   const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
   const [inputValue, setInputValue] = useState<string>('');
-  const [rcraSelectedHandler, setRcraSelectedHandler] = useState<RcraSite | null>(null);
   const [rcraInputValue, setRcraInputValue] = useState<string>('');
   const dispatch = useAppDispatch();
   const { setGeneratorStateCode, setTsdfStateCode } =
     useContext<ManifestContextType>(ManifestContext);
+
+  // const [options, setOptions] = useState<GroupBase<RcraSite>[]>([]);
+  const [options, setOptions] = useState<RcraSite[]>([]);
+  const [haztrakSitesLoading, setHaztrakSitesLoading] = useState<boolean>(false);
+  const [rcrainfoSitesLoading, setRcrainfoSitesLoading] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<searchHandlerForm> = () => {
     if (selectedHandler !== null) {
@@ -68,28 +70,34 @@ export function HandlerSearchForm({
   };
 
   // handle input change event
-  const handleInputChange = (value: string) => {
+  const handleInputChange = async (value: string) => {
     setInputValue(value);
+    // setHaztrakSitesLoading(true);
+    // const haztrakSites = await dispatch(
+    //   siteApi.endpoints?.searchRcraSites.initiate({
+    //     siteType: handlerType,
+    //     siteId: inputValue,
+    //   })
+    // );
+    // setOptions(haztrakSites.data as Array<RcraSite>);
+    // setHaztrakSitesLoading(false);
+    if (value.length >= 5) {
+      setRcrainfoSitesLoading(true);
+      const rcrainfoSites = await dispatch(
+        siteApi.endpoints?.searchRcrainfoSites.initiate({
+          siteType: handlerType,
+          siteId: value,
+        })
+      );
+      console.log('rcrainfoSites', rcrainfoSites.data);
+      setOptions(rcrainfoSites.data as Array<RcraSite>);
+      setRcrainfoSitesLoading(false);
+    }
   };
 
   // handle selection change event
   const handleChange = (value: RcraSite | null): void => {
     setSelectedHandler(value);
-  };
-
-  // load options using API call
-  const loadOptions = async (inputValue: string) => {
-    return htApi
-      .get('site/rcra-site/search', { params: { epaId: inputValue, siteType: handlerType } })
-      .then((res) => res.data as Array<RcraSite>);
-  };
-
-  const { data, isLoading, isError } = useSearchRcraSitesQuery();
-
-  const rcraSearchLoadOption = async (inputValue: string) => {
-    const result = dispatch(siteApi.endpoints?.searchRcraSites.initiate());
-    console.log('result', result);
-    return result.unwrap();
   };
 
   return (
@@ -102,12 +110,14 @@ export function HandlerSearchForm({
             name="epaId"
             render={({ field }) => {
               return (
-                <AsyncSelect
+                <Select
                   id="epaId"
                   {...field}
                   value={selectedHandler}
                   inputValue={inputValue}
-                  loadOptions={loadOptions}
+                  options={options}
+                  isLoading={haztrakSitesLoading || rcrainfoSitesLoading}
+                  // loadOptions={loadOptions}
                   getOptionLabel={(option) => `${option.epaSiteId} -- ${option.name}`}
                   getOptionValue={(option) => option.epaSiteId}
                   openMenuOnFocus={false}
@@ -115,34 +125,36 @@ export function HandlerSearchForm({
                   onChange={handleChange}
                   isSearchable
                   isClearable
-                  cacheOptions
+                  // cacheOptions
                 />
               );
             }}
           />
-          <Controller
-            control={control}
-            name="foo"
-            render={({ field }) => {
-              return (
-                <AsyncSelect
-                  id="foo"
-                  {...field}
-                  value={rcraSelectedHandler}
-                  inputValue={rcraInputValue}
-                  loadOptions={rcraSearchLoadOption}
-                  // getOptionLabel={(option) => `${option.epaSiteId} -- ${option.name}`}
-                  // getOptionValue={(option) => option.epaSiteId}
-                  // openMenuOnFocus={false}
-                  // onInputChange={handleInputChange}
-                  // onChange={handleChange}
-                  isSearchable
-                  isClearable
-                  cacheOptions
-                />
-              );
-            }}
-          />
+          {/*<Controller*/}
+          {/*  control={control}*/}
+          {/*  name="foo"*/}
+          {/*  render={({ field }) => {*/}
+          {/*    return (*/}
+          {/*      <AsyncSelect*/}
+          {/*        id="foo"*/}
+          {/*        {...field}*/}
+          {/*        value={rcraSelectedHandler}*/}
+          {/*        inputValue={rcraInputValue}*/}
+          {/*        loadOptions={rcraSearchLoadOption}*/}
+          {/*        getOptionLabel={(option) => `${option.epaSiteId} -- ${option.name}`}*/}
+          {/*        getOptionValue={(option) => option.epaSiteId}*/}
+          {/*        // openMenuOnFocus={false}*/}
+          {/*        onInputChange={() => {*/}
+          {/*          setRcraInputValue(field.value);*/}
+          {/*        }}*/}
+          {/*        // onChange={handleChange}*/}
+          {/*        isSearchable*/}
+          {/*        isClearable*/}
+          {/*        cacheOptions*/}
+          {/*      />*/}
+          {/*    );*/}
+          {/*  }}*/}
+          {/*/>*/}
         </HtForm.Group>
         <div className="d-flex justify-content-end">
           <Button variant="secondary" onClick={handleClose} className="mx-2">
