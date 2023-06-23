@@ -1,6 +1,7 @@
 import logging
 from typing import Dict, List
 
+from django.core.cache import cache
 from django.db import transaction
 from rest_framework.exceptions import ValidationError
 
@@ -101,7 +102,7 @@ class RcraSiteService:
 
     def get_or_pull_rcra_site(self, site_id: str) -> RcraSite:
         """
-        Retrieves an rcra_site from the database or Pull it from RCRAInfo.
+        Retrieves a rcra_site from the database or Pull it from RCRAInfo.
         This may be trying to do too much
         """
         if RcraSite.objects.filter(epa_id=site_id).exists():
@@ -110,6 +111,21 @@ class RcraSiteService:
         new_rcra_site = self.pull_rcra_site(site_id=site_id)
         self.logger.debug(f"pulled new rcra_site {new_rcra_site}")
         return new_rcra_site
+
+    def search_rcra_site(self, **search_parameters):
+        """
+        Search RCRAInfo for a site by name or EPA ID
+        """
+        data = cache.get(f'{search_parameters["epaSiteId"]}-{search_parameters["siteType"]}')
+        if not data:
+            data: Dict = self.rcrainfo.search_sites(**search_parameters).json()
+            print("data", data)
+            cache.set(
+                f'{search_parameters["epaSiteId"]}-{search_parameters["siteType"]}',
+                data,
+                60 * 60 * 24,
+            )
+        return data
 
     def _deserialize_rcra_site(self, *, rcra_site_data: dict) -> RcraSiteSerializer:
         serializer = RcraSiteSerializer(data=rcra_site_data)

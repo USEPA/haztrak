@@ -24,7 +24,9 @@ export function NewManifest() {
   const { siteId } = useParams();
   const rcraSite = useAppSelector(siteByEpaIdSelector(siteId));
   const [manifestingSite, setManifestingSite] = useState<RcraSite | undefined>(rcraSite);
-  const [selectedSiteType, setSelectedSiteType] = useState<RcraSiteType | undefined>(undefined);
+  const [selectedSiteType, setSelectedSiteType] = useState<RcraSiteType | undefined>(
+    rcraSite?.siteType === 'Generator' ? rcraSite.siteType : undefined
+  );
   const [manifestingSiteType, setManifestingSiteType] = useState<RcraSiteType | undefined>(
     rcraSite?.siteType
   );
