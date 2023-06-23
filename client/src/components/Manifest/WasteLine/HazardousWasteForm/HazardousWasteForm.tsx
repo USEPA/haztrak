@@ -3,35 +3,10 @@ import React, { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
-import { useGetFedWasteCodesQuery, useGetStateWasteCodesQuery } from 'store/wasteCode.slice';
+import { useGetFedWasteCodesQuery } from 'store/wasteCode.slice';
 import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 import { StateWasteCodeSelect } from 'components/Manifest/WasteLine/HazardousWasteForm/StateWasteCodeSelect';
-
-// ToDo: For temporary development purposes, We retrieve federal wastes codes
-//  but still need to implement state waste codes on backend
-const options = [
-  {
-    code: '121',
-    description: 'Alkaline solution (pH >12.5) with metals ',
-  },
-  {
-    code: '122',
-    description: 'Alkaline solution without metals (pH > 12.5)',
-  },
-  {
-    code: '123',
-    description: 'Unspecified alkaline solution',
-  },
-  {
-    code: '131',
-    description: 'Aqueous solution (2 < pH < 12.5) containing reactive anions',
-  },
-  {
-    code: '132',
-    description: 'Aqueous solution w/metals ',
-  },
-];
 
 /**
  * Returns a form for adding waste code(s), to a wasteline, for a given manifest.
@@ -40,7 +15,7 @@ const options = [
  */
 export function HazardousWasteForm() {
   const { control } = useFormContext();
-  const { generatorStateCode } = useContext<ManifestContextType>(ManifestContext);
+  const { generatorStateCode, tsdfStateCode } = useContext<ManifestContextType>(ManifestContext);
   // Retrieve federal waste codes from the server
   const {
     data: federalWasteCodes,
@@ -132,24 +107,10 @@ export function HazardousWasteForm() {
             <HtForm.Label className="mb-0" htmlFor="hazardousWasteTsdfCodes">
               Destination State Waste Codes
             </HtForm.Label>
-            <Controller
-              control={control}
-              name="hazardousWaste.tsdfStateWasteCodes"
-              render={({ field }) => {
-                return (
-                  <Select
-                    id="hazardousWasteTsdfCodes"
-                    {...field}
-                    getOptionLabel={(option) => option.code}
-                    getOptionValue={(option) => option.code}
-                    options={options}
-                    openMenuOnFocus={false}
-                    isMulti
-                    isClearable
-                    hideSelectedOptions
-                  />
-                );
-              }}
+            {/* Generator state waste selection */}
+            <StateWasteCodeSelect
+              stateId={tsdfStateCode}
+              fieldName="hazardousWaste.tsdfStateWasteCodes"
             />
           </HtForm.Group>
         </Col>

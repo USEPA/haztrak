@@ -27,7 +27,7 @@ export interface ManifestContextType {
   manifestStatus?: ManifestStatus;
   generatorStateCode?: string;
   setGeneratorStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
-  tsdfState?: string;
+  tsdfStateCode?: string;
   setTsdfStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
@@ -42,7 +42,7 @@ export const ManifestContext = createContext<ManifestContextType>({
   manifestStatus: undefined,
   generatorStateCode: undefined,
   setGeneratorStateCode: () => {},
-  tsdfState: undefined,
+  tsdfStateCode: undefined,
   setTsdfStateCode: () => {},
 });
 
@@ -159,7 +159,7 @@ export function ManifestForm({
           generatorStateCode: generatorStateCode,
           setGeneratorStateCode: setGeneratorStateCode,
           manifestStatus: manifestStatus,
-          tsdfState: tsdfStateCode,
+          tsdfStateCode: tsdfStateCode,
           setTsdfStateCode: setTsdfStateCode,
         }}
       >
