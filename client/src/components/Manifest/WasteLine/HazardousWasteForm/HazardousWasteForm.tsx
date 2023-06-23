@@ -5,7 +5,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
 import { useGetFedWasteCodesQuery, useGetStateWasteCodesQuery } from 'store/wasteCode.slice';
 import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
-import { ManifestContext, ManifestContextProps } from 'components/Manifest/ManifestForm';
+import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 import { StateWasteCodeSelect } from 'components/Manifest/WasteLine/HazardousWasteForm/StateWasteCodeSelect';
 
 // ToDo: For temporary development purposes, We retrieve federal wastes codes
@@ -40,7 +40,7 @@ const options = [
  */
 export function HazardousWasteForm() {
   const { control } = useFormContext();
-  const { generatorStateCode } = useContext<ManifestContextProps>(ManifestContext);
+  const { generatorStateCode } = useContext<ManifestContextType>(ManifestContext);
   // Retrieve federal waste codes from the server
   const {
     data: federalWasteCodes,

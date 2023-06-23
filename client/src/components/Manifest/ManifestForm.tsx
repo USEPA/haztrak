@@ -23,10 +23,10 @@ const defaultValues: Manifest = {
   submissionType: 'FullElectronic',
 };
 
-export interface ManifestContextProps {
+export interface ManifestContextType {
   manifestStatus?: ManifestStatus;
   generatorStateCode?: string;
-  setGeneratorStateCode?: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setGeneratorStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
   tsdfState?: string;
 }
 
@@ -37,7 +37,12 @@ interface ManifestFormProps {
   mtn?: string;
 }
 
-export const ManifestContext = createContext<ManifestContextProps>({});
+export const ManifestContext = createContext<ManifestContextType>({
+  manifestStatus: undefined,
+  generatorStateCode: undefined,
+  setGeneratorStateCode: () => {},
+  tsdfState: undefined,
+});
 
 /**
  * Returns form for the uniform hazardous waste manifest. It also acts

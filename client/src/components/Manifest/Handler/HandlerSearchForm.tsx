@@ -12,7 +12,7 @@ import {
 import { RcraSite } from 'components/RcraSite';
 import AsyncSelect from 'react-select/async';
 import { htApi } from 'services';
-import { ManifestContext, ManifestContextProps } from 'components/Manifest/ManifestForm';
+import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 
 interface Props {
   handleClose: () => void;
@@ -36,7 +36,7 @@ export function HandlerSearchForm({
   const manifestMethods = useFormContext<Manifest>();
   const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
   const [inputValue, setInputValue] = useState<string>('');
-  const { setGeneratorStateCode } = useContext<ManifestContextProps>(ManifestContext);
+  const { setGeneratorStateCode } = useContext<ManifestContextType>(ManifestContext);
 
   const onSubmit: SubmitHandler<searchHandlerForm> = () => {
     if (selectedHandler !== null) {
