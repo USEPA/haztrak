@@ -28,6 +28,7 @@ export interface ManifestContextType {
   generatorStateCode?: string;
   setGeneratorStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
   tsdfState?: string;
+  setTsdfStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 interface ManifestFormProps {
@@ -42,6 +43,7 @@ export const ManifestContext = createContext<ManifestContextType>({
   generatorStateCode: undefined,
   setGeneratorStateCode: () => {},
   tsdfState: undefined,
+  setTsdfStateCode: () => {},
 });
 
 /**
@@ -92,9 +94,8 @@ export function ManifestForm({
   const [showGeneratorForm, setShowGeneratorForm] = useState<boolean>(false);
   const toggleShowAddGenerator = () => setShowGeneratorSearch(!showGeneratorSearch);
   const toggleShowGeneratorForm = () => setShowGeneratorForm(!showGeneratorForm);
-  // we need to know the generator's geographic state to know what waste codes to retrieve
+  // The generator's geographic state used to retrieve the state waste codes
   const [generatorStateCode, setGeneratorStateCode] = useState<string | undefined>(
-    // manifestMethods.getValues('generator')?.siteAddress?.state.code
     manifestData?.generator?.siteAddress.state.code
   );
 
@@ -111,6 +112,10 @@ export function ManifestForm({
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
   const tsdf: Handler | undefined = manifestMethods.getValues('designatedFacility');
+  // The TSDF's geographic state used to retrieve the state waste codes
+  const [tsdfStateCode, setTsdfStateCode] = useState<string | undefined>(
+    manifestData?.designatedFacility?.siteAddress.state.code
+  );
 
   // Quicker Sign state and methods
   const [showSignForm, setShowSignForm] = useState<boolean>(false);
@@ -145,6 +150,7 @@ export function ManifestForm({
   // Keep this here for development purposes
   // console.log(manifestData);
   // if (errors) console.log('errors', errors);
+  console.log('tsdfStateCode', tsdfStateCode);
 
   return (
     <>
@@ -153,6 +159,8 @@ export function ManifestForm({
           generatorStateCode: generatorStateCode,
           setGeneratorStateCode: setGeneratorStateCode,
           manifestStatus: manifestStatus,
+          tsdfState: tsdfStateCode,
+          setTsdfStateCode: setTsdfStateCode,
         }}
       >
         <FormProvider {...manifestMethods}>

@@ -36,17 +36,18 @@ export function HandlerSearchForm({
   const manifestMethods = useFormContext<Manifest>();
   const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
   const [inputValue, setInputValue] = useState<string>('');
-  const { setGeneratorStateCode } = useContext<ManifestContextType>(ManifestContext);
+  const { setGeneratorStateCode, setTsdfStateCode } =
+    useContext<ManifestContextType>(ManifestContext);
 
   const onSubmit: SubmitHandler<searchHandlerForm> = () => {
     if (selectedHandler !== null) {
-      if (handlerType === 'generator' || handlerType === 'designatedFacility') {
-        if (setGeneratorStateCode) {
-          setGeneratorStateCode(selectedHandler.siteAddress.state.code);
-        }
-        manifestMethods.setValue(handlerType, { ...selectedHandler });
+      if (handlerType === 'generator') {
+        setGeneratorStateCode(selectedHandler.siteAddress.state.code);
+        manifestMethods.setValue('generator', { ...selectedHandler });
+      } else if (handlerType === 'designatedFacility') {
+        setTsdfStateCode(selectedHandler.siteAddress.state.code);
+        manifestMethods.setValue('designatedFacility', { ...selectedHandler });
       } else if (handlerType === 'transporter') {
-        // ToDo add to react-hook-form's useFieldArray
         const numberOfTransporter = currentTransporters ? currentTransporters.length : 0;
         const newTransporter: Transporter = {
           order: numberOfTransporter + 1,
