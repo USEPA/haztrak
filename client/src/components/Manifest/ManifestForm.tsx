@@ -10,7 +10,7 @@ import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-
 import { useNavigate } from 'react-router-dom';
 import { QuickerSignData } from './QuickerSign';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
-import { AddHandler, Handler, HandlerForm } from './Handler';
+import { AddHandler, Handler, GeneratorForm } from './Handler';
 import { QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
 import { manifestSchema, Manifest, ManifestStatus } from './manifestSchema';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
@@ -23,11 +23,12 @@ const defaultValues: Manifest = {
   submissionType: 'FullElectronic',
 };
 
-export interface ManifestContextProps {
+export interface ManifestContextType {
   manifestStatus?: ManifestStatus;
   generatorStateCode?: string;
-  setGeneratorStateCode?: React.Dispatch<React.SetStateAction<string | undefined>>;
-  tsdfState?: string;
+  setGeneratorStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
+  tsdfStateCode?: string;
+  setTsdfStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 interface ManifestFormProps {
@@ -37,7 +38,13 @@ interface ManifestFormProps {
   mtn?: string;
 }
 
-export const ManifestContext = createContext<ManifestContextProps>({});
+export const ManifestContext = createContext<ManifestContextType>({
+  manifestStatus: undefined,
+  generatorStateCode: undefined,
+  setGeneratorStateCode: () => {},
+  tsdfStateCode: undefined,
+  setTsdfStateCode: () => {},
+});
 
 /**
  * Returns form for the uniform hazardous waste manifest. It also acts
@@ -87,9 +94,8 @@ export function ManifestForm({
   const [showGeneratorForm, setShowGeneratorForm] = useState<boolean>(false);
   const toggleShowAddGenerator = () => setShowGeneratorSearch(!showGeneratorSearch);
   const toggleShowGeneratorForm = () => setShowGeneratorForm(!showGeneratorForm);
-  // we need to know the generator's geographic state to know what waste codes to retrieve
+  // The generator's geographic state used to retrieve the state waste codes
   const [generatorStateCode, setGeneratorStateCode] = useState<string | undefined>(
-    // manifestMethods.getValues('generator')?.siteAddress?.state.code
     manifestData?.generator?.siteAddress.state.code
   );
 
@@ -106,6 +112,10 @@ export function ManifestForm({
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
   const tsdf: Handler | undefined = manifestMethods.getValues('designatedFacility');
+  // The TSDF's geographic state used to retrieve the state waste codes
+  const [tsdfStateCode, setTsdfStateCode] = useState<string | undefined>(
+    manifestData?.designatedFacility?.siteAddress.state.code
+  );
 
   // Quicker Sign state and methods
   const [showSignForm, setShowSignForm] = useState<boolean>(false);
@@ -140,6 +150,7 @@ export function ManifestForm({
   // Keep this here for development purposes
   // console.log(manifestData);
   // if (errors) console.log('errors', errors);
+  console.log('tsdfStateCode', tsdfStateCode);
 
   return (
     <>
@@ -148,6 +159,8 @@ export function ManifestForm({
           generatorStateCode: generatorStateCode,
           setGeneratorStateCode: setGeneratorStateCode,
           manifestStatus: manifestStatus,
+          tsdfStateCode: tsdfStateCode,
+          setTsdfStateCode: setTsdfStateCode,
         }}
       >
         <FormProvider {...manifestMethods}>
@@ -379,7 +392,7 @@ export function ManifestForm({
                   // Show the Handler form with current value for the generator
                   // The HandlerForm allows for fine-grained control over the handler inputs
                   <>
-                    <HandlerForm handlerType={'generator'} readOnly={readOnly} />
+                    <GeneratorForm readOnly={readOnly} />
                     <h4>Emergency Contact Information</h4>
                     <ContactForm handlerType="generator" readOnly={readOnly} />
                   </>

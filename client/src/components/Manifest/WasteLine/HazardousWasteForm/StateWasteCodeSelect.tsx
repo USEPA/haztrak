@@ -5,13 +5,13 @@ import { useGetStateWasteCodesQuery } from 'store/wasteCode.slice';
 
 interface StateWasteCodeSelectProps {
   stateId?: string;
-  fieldName: 'hazardousWaste.generatorStateWasteCodes' | ' hazardousWaste.tsdfStateWasteCodes';
+  fieldName: 'hazardousWaste.generatorStateWasteCodes' | 'hazardousWaste.tsdfStateWasteCodes';
 }
 
 export function StateWasteCodeSelect({ stateId, fieldName }: StateWasteCodeSelectProps) {
   const { control } = useFormContext();
 
-  // If the generator has yet to be added to the manifest, we can't retrieve state waste codes
+  // If the generator/tsdf has yet to be added to the manifest, we can't retrieve state waste codes
   if (!stateId)
     return (
       <Select
