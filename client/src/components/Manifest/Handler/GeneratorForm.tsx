@@ -5,12 +5,18 @@ import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 import { Manifest } from 'components/Manifest';
 
-interface HandlerFormProps {
-  handlerType: 'generator' | 'designatedFacility';
+interface GeneratorFormProps {
   readOnly?: boolean;
 }
 
-export function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactElement {
+/**
+ * A form for the generator section of a manifest.
+ * Currently, we only support using for the generator since it's the only handler type that
+ * can be manually entered for an electronic/hybrid manifest.
+ * @param readOnly
+ * @constructor
+ */
+export function GeneratorForm({ readOnly }: GeneratorFormProps): ReactElement {
   const [mailCheck, setMailCheck] = useState(false);
   const {
     register,
@@ -20,28 +26,23 @@ export function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactE
     formState: { errors },
   } = useFormContext<Manifest>();
 
-  // Watch for When the user sets the site address copy to mailing address
-  // unless that is also supplied
+  // If
   useEffect(() => {
-    const siteAddress = getValues(`${handlerType}.siteAddress`);
+    const siteAddress = getValues(`generator.siteAddress`);
     if (!mailCheck) {
-      setValue(`${handlerType}.mailingAddress`, siteAddress);
+      setValue(`generator.mailingAddress`, siteAddress);
     }
   }, [
     mailCheck,
-    watch(`${handlerType}.siteAddress.streetNumber`),
-    watch(`${handlerType}.siteAddress.address1`),
-    watch(`${handlerType}.siteAddress.country`),
-    watch(`${handlerType}.siteAddress.city`),
-    watch(`${handlerType}.siteAddress.state`),
+    watch(`generator.siteAddress.streetNumber`),
+    watch(`generator.siteAddress.address1`),
+    watch(`generator.siteAddress.country`),
+    watch(`generator.siteAddress.city`),
+    watch(`generator.siteAddress.state`),
   ]);
 
   // Destructure the handler errors depending on whether this is form for
-  // manifest generator of designated facility for use in the form.
-  let handlerErrors = errors.generator;
-  if (handlerType === 'designatedFacility') {
-    handlerErrors = errors.designatedFacility;
-  }
+  const handlerErrors = errors.generator;
 
   return (
     <>
@@ -69,7 +70,7 @@ export function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactE
               plaintext={readOnly}
               readOnly={readOnly}
               type="text"
-              placeholder={`${handlerType} Name`}
+              placeholder={`generator Name`}
               {...register(`generator.name`)}
               className={handlerErrors?.name && 'is-invalid'}
             />
@@ -77,7 +78,7 @@ export function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactE
           </HtForm.Group>
         </Col>
       </Row>
-      <AddressForm addressType={'siteAddress'} handlerType={handlerType} readOnly={readOnly} />
+      <AddressForm addressType={'siteAddress'} readOnly={readOnly} />
       <Row className="mb-2">
         <Col>
           {/* Check box that indicated whether the mailing address is different from the*/}
@@ -97,11 +98,7 @@ export function HandlerForm({ handlerType, readOnly }: HandlerFormProps): ReactE
         {mailCheck ? (
           <>
             <h4>Mailing Address</h4>
-            <AddressForm
-              addressType={'mailingAddress'}
-              handlerType={handlerType}
-              readOnly={readOnly}
-            />
+            <AddressForm addressType={'mailingAddress'} readOnly={readOnly} />
           </>
         ) : (
           <></>

@@ -1,7 +1,7 @@
 import { Handler, handlerSchema, Signer } from 'components/Manifest/manifestSchema';
-import { HandlerForm } from './HandlerForm';
+import { GeneratorForm } from 'components/Manifest/Handler/GeneratorForm';
 import { HandlerSearchForm } from './HandlerSearchForm';
 import { AddHandler } from './AddHandler';
 
-export { HandlerForm, HandlerSearchForm, AddHandler, handlerSchema };
+export { GeneratorForm, HandlerSearchForm, AddHandler, handlerSchema };
 export type { Handler, Signer };

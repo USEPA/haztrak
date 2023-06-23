@@ -10,7 +10,7 @@ import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-
 import { useNavigate } from 'react-router-dom';
 import { QuickerSignData } from './QuickerSign';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
-import { AddHandler, Handler, HandlerForm } from './Handler';
+import { AddHandler, Handler, GeneratorForm } from './Handler';
 import { QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
 import { manifestSchema, Manifest, ManifestStatus } from './manifestSchema';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
@@ -384,7 +384,7 @@ export function ManifestForm({
                   // Show the Handler form with current value for the generator
                   // The HandlerForm allows for fine-grained control over the handler inputs
                   <>
-                    <HandlerForm handlerType={'generator'} readOnly={readOnly} />
+                    <GeneratorForm readOnly={readOnly} />
                     <h4>Emergency Contact Information</h4>
                     <ContactForm handlerType="generator" readOnly={readOnly} />
                   </>
