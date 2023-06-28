@@ -89,6 +89,10 @@ const notificationSlice = createSlice({
   },
 });
 
+/**
+ * Selects the user's alerts from the Redux store.
+ * @param state
+ */
 export const selectNotifications = (state: { notification: NotificationState }) =>
   state.notification.notifications;
 
