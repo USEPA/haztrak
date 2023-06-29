@@ -54,9 +54,9 @@ autolabeler:
       - '/redux/gmi'
   - label: 'test'
     files:
-      - 'client/src/**/*.spec.{ts,tsx}'
-      - 'server/**/test_*.py'
-      - 'server/**/*_test.py'
+      - '**/*.spec.{ts,tsx}'
+      - '**/test_*.py'
+      - '**/*_test.py'
   - label: 'infrastructure'
     files:
       - 'docker-compose.yaml'
