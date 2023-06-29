@@ -1,6 +1,6 @@
 from celery.exceptions import CeleryError
 from django.contrib.auth.models import User
-from rest_framework import permissions, status
+from rest_framework import status
 from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -18,7 +18,6 @@ class HaztrakUserView(RetrieveUpdateAPIView):
 
     queryset = HaztrakUser.objects.all()
     serializer_class = HaztrakUserSerializer
-    permission_classes = [permissions.AllowAny]  # ToDo - temporary remove this
 
     def get_object(self):
         # return HaztrakUser.objects.get(username="testuser1")
