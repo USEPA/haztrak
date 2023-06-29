@@ -3,7 +3,7 @@ import logging
 from celery.exceptions import TaskError
 from django.db.models import Q
 from drf_spectacular.utils import extend_schema
-from rest_framework import permissions, status, viewsets
+from rest_framework import status, viewsets
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -28,7 +28,6 @@ class ManifestView(viewsets.ModelViewSet):
     queryset = Manifest.objects.all()
     lookup_field = "mtn"
     serializer_class = ManifestSerializer
-    permission_classes = [permissions.AllowAny]  # uncomment for debugging via (browsable API)
 
 
 class PullManifestView(GenericAPIView):

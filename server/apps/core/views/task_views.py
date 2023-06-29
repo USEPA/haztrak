@@ -1,6 +1,6 @@
 from celery.result import AsyncResult
 from django_celery_results.models import TaskResult
-from rest_framework import permissions, serializers, status
+from rest_framework import serializers, status
 from rest_framework.generics import GenericAPIView, RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -29,8 +29,6 @@ class ExampleTaskView(RetrieveAPIView):
     Launches an example long-running background task
     """
 
-    permission_classes = [permissions.AllowAny]
-
     def retrieve(self, request, *args, **kwargs):
         try:
             task = example_task.delay()
@@ -49,7 +47,6 @@ class TaskStatusView(GenericAPIView):
 
     serializer_class = CeleryTaskResultSerializer
     queryset = None
-    permission_classes = [permissions.AllowAny]
 
     def get(self, request: Request, task_id):
         task_result = AsyncResult(task_id)
