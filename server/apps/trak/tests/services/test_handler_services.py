@@ -28,7 +28,7 @@ class TestHandlerService:
         # Arrange
         rcrainfo = RcrainfoService(api_username=self.user.username, auto_renew=False)
         handler_service = RcraSiteService(username=self.user.username, rcrainfo=rcrainfo)
-        rcrainfo_site_details_url = f"{rcrainfo.base_url}/api/v1/site-details/{self.epa_id}"
+        rcrainfo_site_details_url = f"{rcrainfo.base_url}v1/site-details/{self.epa_id}"
         # mock response from Rcrainfo
         mock_responses.get(
             rcrainfo_site_details_url,

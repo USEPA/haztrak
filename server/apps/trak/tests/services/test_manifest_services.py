@@ -24,7 +24,7 @@ class TestManifestService:
         rcrainfo = RcrainfoService(api_username="testuser1", rcrainfo_env="preprod")
         manifest_json = haztrak_json.MANIFEST.value
         mock_responses.get(
-            url=f'{rcrainfo.base_url}/api/v1/emanifest/manifest/{manifest_json.get("manifestTrackingNumber")}',
+            url=f'{rcrainfo.base_url}v1/emanifest/manifest/{manifest_json.get("manifestTrackingNumber")}',
             content_type="application/json",
             json=manifest_json,
             status=status.HTTP_200_OK,
@@ -34,7 +34,7 @@ class TestManifestService:
     def search_site_mtn_rcra_response(self, haztrak_json, mock_responses):
         rcrainfo = RcrainfoService(api_username="testuser1", rcrainfo_env="preprod")
         mock_responses.post(
-            url=f"{rcrainfo.base_url}/api/v1/emanifest/search",
+            url=f"{rcrainfo.base_url}v1/emanifest/search",
             content_type="application/json",
             json=[haztrak_json.MANIFEST.value.get("manifestTrackingNumber")],
             status=status.HTTP_200_OK,
