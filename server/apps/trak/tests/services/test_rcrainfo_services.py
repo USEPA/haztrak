@@ -32,7 +32,7 @@ class TestRcrainfoService:
         """Test our overridden retrieve_id() and retrieve_key() function as expected"""
         rcrainfo = RcrainfoService(api_username=self.testuser1.username)
         auth_url = (
-            f"{rcrainfo.base_url}/api/v1/auth/{self.profile.rcra_api_id}/"
+            f"{rcrainfo.base_url}v1/auth/{self.profile.rcra_api_id}/"
             f"{self.profile.rcra_api_key}"
         )
         mock_token = "thisIsAMockToken"
@@ -68,7 +68,7 @@ class TestQuickerSign:
         self.testuser1 = user_factory()
         self.profile = rcra_profile_factory(user=self.testuser1)
         self.rcrainfo = RcrainfoService(api_username=self.testuser1.username, auto_renew=False)
-        self.quicker_sign_url = f"{self.rcrainfo.base_url}/api/v1/emanifest/manifest/quicker-sign"
+        self.quicker_sign_url = f"{self.rcrainfo.base_url}v1/emanifest/manifest/quicker-sign"
         self.response_json = quicker_sign_response_factory(
             mtn=self.mtn, site_id=self.site_id, sign_date=self.sign_date
         )
