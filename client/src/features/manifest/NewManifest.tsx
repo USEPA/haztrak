@@ -11,6 +11,13 @@ import { useParams } from 'react-router-dom';
 import { useAppSelector } from 'store';
 import { siteByEpaIdSelector } from 'store/rcraProfileSlice/rcraProfile.slice';
 
+/**
+ * NewManifest component allows a user to create a new electronic manifest.
+ * It requires that the site the user is drafting the manifest for is specified,
+ * if haztrak cannot determine the site, the user will be prompted to select the site before
+ * presenting the manifest form.
+ * @constructor
+ */
 export function NewManifest() {
   useTitle('New Manifest');
   const { siteId } = useParams();

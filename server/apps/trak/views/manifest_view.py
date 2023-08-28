@@ -129,6 +129,8 @@ class CreateRcraManifestView(GenericAPIView):
 
     queryset = None
     response = Response
+    serializer_class = ManifestSerializer
+    http_method_names = ["post"]
 
     def post(self, request: Request) -> Response:
         """The Body of the POST request should contain the complete and valid manifest object"""
