@@ -2,6 +2,7 @@ from django.urls import include, path
 from rest_framework import routers
 
 from apps.trak.views import (
+    CreateRcraManifestView,
     FederalWasteCodesView,
     ManifestView,
     MtnList,
@@ -17,6 +18,7 @@ manifest_router.register(r"manifest", ManifestView)
 urlpatterns = [
     # Manifest
     path("", include(manifest_router.urls)),
+    path("manifest/create", CreateRcraManifestView.as_view()),
     path("manifest/pull", PullManifestView.as_view()),
     path("manifest/sign", SignManifestView.as_view()),
     path("manifest/sync", SyncSiteManifestView.as_view()),

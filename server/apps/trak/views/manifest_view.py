@@ -120,3 +120,19 @@ class SyncSiteManifestView(GenericAPIView):
             return self.response(
                 data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class CreateRcraManifestView(GenericAPIView):
+    """
+    This is a proxy endpoint used to create electronic manifest(s) in RCRAInfo/e-Manifest
+    """
+
+    queryset = None
+    response = Response
+
+    def post(self, request: Request) -> Response:
+        """The Body of the POST request should contain the complete and valid manifest object"""
+        # ToDo: Validate the manifest object
+        print("request.data: ", request.data)
+        # task = save_manifest.delay(manifest_json=request.data)
+        return self.response(data={"task": "scaffold"}, status=status.HTTP_201_CREATED)
