@@ -2,6 +2,7 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import { cleanup, render, screen } from 'test-utils';
 import { HtModal } from 'components/Ht';
+import { afterEach, describe, test, expect } from 'vitest';
 
 afterEach(() => {
   cleanup();

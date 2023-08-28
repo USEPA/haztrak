@@ -1,7 +1,8 @@
 import { cleanup, fireEvent, waitFor } from '@testing-library/react';
-import { usePagination } from './usePagination';
 import React, { useState } from 'react';
 import { render, screen } from 'test-utils';
+import { afterEach, describe, expect, test } from 'vitest';
+import { usePagination } from './usePagination';
 
 interface TestUsePagProps {
   totalCount?: number;

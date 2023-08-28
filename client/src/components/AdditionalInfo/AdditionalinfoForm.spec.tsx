@@ -3,6 +3,7 @@ import { fireEvent } from '@testing-library/react';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
+import { afterEach, describe, test, expect } from 'vitest';
 
 afterEach(() => {
   cleanup();

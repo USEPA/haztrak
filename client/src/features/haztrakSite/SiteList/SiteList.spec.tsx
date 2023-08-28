@@ -1,11 +1,11 @@
+import { SiteList } from 'features/haztrakSite/SiteList';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockHandler, createMockSite } from 'test-utils/fixtures/mockHandler';
 import { API_BASE_URL } from 'test-utils/mock/handlers';
-import { SiteList } from 'features/haztrakSite/SiteList';
-import { vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 const mockSites = [createMockSite(), createMockSite()];
 const server = setupServer(

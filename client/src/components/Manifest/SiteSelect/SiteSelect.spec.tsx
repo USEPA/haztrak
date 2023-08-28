@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { renderWithProviders } from 'test-utils';
 import { createMockSite } from 'test-utils/fixtures';
 import { createMockPermission } from 'test-utils/fixtures/mockHandler';
+import { describe, expect, test } from 'vitest';
 
 function TestComponent() {
   const [selected, setSelected] = useState();
