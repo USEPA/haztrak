@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from celery.exceptions import TaskError
@@ -12,7 +13,7 @@ from apps.sites.models import Site
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer, MtnSerializer
 from apps.trak.serializers.signature_ser import QuickerSignSerializer
-from apps.trak.tasks import pull_manifest, sign_manifest, sync_site_manifests
+from apps.trak.tasks import create_rcra_manifest, pull_manifest, sign_manifest, sync_site_manifests
 
 logger = logging.getLogger(__name__)
 
@@ -119,4 +120,33 @@ class SyncSiteManifestView(GenericAPIView):
         except KeyError:
             return self.response(
                 data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class CreateRcraManifestView(GenericAPIView):
+    """
+    This is a proxy endpoint used to create electronic manifest(s) in RCRAInfo/e-Manifest
+    """
+
+    queryset = None
+    response = Response
+    serializer_class = ManifestSerializer
+    http_method_names = ["post"]
+
+    def post(self, request: Request) -> Response:
+        """The Body of the POST request should contain the complete and valid manifest object"""
+        manifest_serializer = self.serializer_class(data=request.data)
+        if manifest_serializer.is_valid():
+            logger.info(
+                f"valid manifest data submitted for creation in RCRAInfo: "
+                f"{datetime.datetime.utcnow()}"
+            )
+            task = create_rcra_manifest.delay(
+                manifest=manifest_serializer.data, username=str(request.user)
+            )
+            return self.response(data={"task": task.id}, status=status.HTTP_201_CREATED)
+        else:
+            logger.error("manifest_serializer errors: ", manifest_serializer.errors)
+            return self.response(
+                exception=manifest_serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )

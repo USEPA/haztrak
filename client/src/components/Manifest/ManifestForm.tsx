@@ -8,6 +8,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { htApi } from 'services';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
 import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
@@ -85,6 +86,10 @@ export function ManifestForm({
   // Function to handle form submission
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log('Manifest Submitted', data);
+    htApi
+      .post('/rcra/manifest/create', data)
+      .then((response) => console.log(response))
+      .catch((r) => console.error(r));
   };
 
   // Generator state and methods

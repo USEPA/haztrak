@@ -84,3 +84,22 @@ def sync_site_manifests(self, *, site_id: str, username: str):
         logger.error(f"failed to sync {site_id} manifest")
         self.update_state(state=states.FAILURE, meta=f"Internal Error {exc}")
         raise Ignore()
+
+
+# create_rcra_manifest
+@shared_task(name="create rcra manifests", bind=True)
+def create_rcra_manifest(self, *, manifest: dict, username: str):
+    """
+    asynchronous task to use the RCRAInfo web services to create an electronic (RCRA) manifest
+    it accepts a Python dict of the manifest data to be submitted as JSON, and the username of the
+    user who is creating the manifest
+    """
+    from apps.trak.services import ManifestService
+
+    logger.info(f"start task: {self.name}")
+    try:
+        logger.debug(f"creating manifest: {manifest}")
+        manifest_service = ManifestService(username=username)
+        manifest_service.create_rcra_manifest(manifest=manifest)
+    except Exception as exc:
+        logger.error("error: ", exc)

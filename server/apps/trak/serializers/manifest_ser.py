@@ -5,7 +5,12 @@ from rest_framework import serializers
 
 from apps.sites.models import RcraStates, Role
 from apps.trak.models import Manifest
-from apps.trak.models.manifest_models import AdditionalInfo, ImportInfo, PortOfEntry, CorrectionInfo
+from apps.trak.models.manifest_models import (
+    AdditionalInfo,
+    CorrectionInfo,
+    ImportInfo,
+    PortOfEntry,
+)
 from apps.trak.serializers.handler_ser import HandlerSerializer
 from apps.trak.serializers.signature_ser import ESignatureSerializer
 
@@ -18,26 +23,28 @@ logger = logging.getLogger(__name__)
 
 class AdditionalInfoSerializer(serializers.ModelSerializer):
     originalManifestTrackingNumbers = serializers.JSONField(
-        allow_null=True,
+        allow_null=False,
         required=False,
         source="original_mtn",
     )
     newManifestDestination = serializers.CharField(
-        allow_null=True,
+        allow_null=False,
         required=False,
+        allow_blank=True,
         source="new_destination",
     )
     consentNumber = serializers.CharField(
-        allow_null=True,
+        allow_null=False,
         required=False,
+        allow_blank=True,
         source="consent_number",
     )
     comments = serializers.JSONField(
-        allow_null=True,
+        allow_null=False,
         required=False,
     )
     handlingInstructions = serializers.CharField(
-        allow_null=True,
+        allow_null=False,
         allow_blank=True,
         required=False,
         source="handling_instructions",
@@ -100,6 +107,7 @@ class ManifestSerializer(TrakBaseSerializer):
     manifestTrackingNumber = serializers.CharField(
         source="mtn",
         required=False,
+        allow_blank=True,
     )
     # status
     submissionType = serializers.CharField(
@@ -320,7 +328,7 @@ class CorrectionInfoSerializer(TrakBaseSerializer):
     """
     Serializer for Correction Info
     """
-    
+
     versionNumber = serializers.CharField(
         source="version_number",
         required=False,
@@ -343,18 +351,18 @@ class CorrectionInfoSerializer(TrakBaseSerializer):
         allow_null=True,
     )
     epaSiteId = serializers.CharField(
-        source = "epa_site_id",
+        source="epa_site_id",
         required=False,
         allow_null=True,
     )
     initiatorRole = serializers.ChoiceField(
-        source = "initiator_role",
+        source="initiator_role",
         choices=Role.choices,
         required=False,
         allow_null=True,
     )
     updateRole = serializers.ChoiceField(
-        source = "update_role",
+        source="update_role",
         choices=Role.choices,
         required=False,
         allow_null=True,
@@ -370,4 +378,4 @@ class CorrectionInfoSerializer(TrakBaseSerializer):
             "epaSiteId",
             "initiatorRole",
             "updateRole",
-            ]
+        ]
