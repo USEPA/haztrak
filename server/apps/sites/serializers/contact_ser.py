@@ -13,6 +13,7 @@ class RcraPhoneSerializer(SitesBaseSerializer):
     number = serializers.CharField()
     extension = serializers.CharField(
         required=False,
+        allow_blank=True,
     )
 
     class Meta:

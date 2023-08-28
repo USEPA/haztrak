@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from celery.exceptions import TaskError
@@ -135,5 +136,18 @@ class CreateRcraManifestView(GenericAPIView):
     def post(self, request: Request) -> Response:
         """The Body of the POST request should contain the complete and valid manifest object"""
         # ToDo: Validate the manifest object
-        task = create_rcra_manifest.delay(manifest=request.data, username=str(request.user))
-        return self.response(data={"task": task.id}, status=status.HTTP_201_CREATED)
+        manifest_serializer = self.serializer_class(data=request.data)
+        if manifest_serializer.is_valid():
+            logger.info(
+                f"valid manifest data submitted for creation in RCRAInfo: "
+                f"{datetime.datetime.utcnow()}"
+            )
+            task = create_rcra_manifest.delay(
+                manifest=manifest_serializer.data, username=str(request.user)
+            )
+            return self.response(data={"task": task.id}, status=status.HTTP_201_CREATED)
+        else:
+            logger.error("manifest_serializer errors: ", manifest_serializer.errors)
+            return self.response(
+                exception=manifest_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+            )
