@@ -10,6 +10,8 @@ from apps.trak.models import Manifest, QuickerSign
 from apps.trak.serializers import ManifestSerializer, QuickerSignSerializer
 from apps.trak.tasks import pull_manifest
 
+logger = logging.getLogger(__name__)
+
 
 class ManifestService:
     """
@@ -20,7 +22,6 @@ class ManifestService:
     def __init__(self, *, username: str, rcrainfo: RcrainfoService = None):
         self.username = username
         self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
-        self.logger = logging.getLogger(__name__)
 
     def __repr__(self):
         return (
@@ -30,22 +31,22 @@ class ManifestService:
     def _retrieve_manifest(self, mtn: str):
         response = self.rcrainfo.get_manifest(mtn)
         if response.ok:
-            self.logger.debug(f"manifest pulled {mtn}")
+            logger.debug(f"manifest pulled {mtn}")
             return response.json()
         else:
-            self.logger.warning(f"error retrieving manifest {mtn}")
+            logger.warning(f"error retrieving manifest {mtn}")
             raise RequestException(response.json())
 
     @transaction.atomic
     def _save_manifest(self, manifest_json: dict) -> Manifest:
         serializer = ManifestSerializer(data=manifest_json)
         if serializer.is_valid():
-            self.logger.debug("manifest serializer is valid")
+            logger.debug("manifest serializer is valid")
             manifest = serializer.save()
-            self.logger.info(f"saved manifest {manifest.mtn}")
+            logger.info(f"saved manifest {manifest.mtn}")
             return manifest
         else:
-            self.logger.warning(f"malformed serializer data: {serializer.errors}")
+            logger.warning(f"malformed serializer data: {serializer.errors}")
             raise Exception(serializer.errors)
 
     def search_rcra_mtn(
@@ -117,7 +118,7 @@ class ManifestService:
                 manifest = self._save_manifest(manifest_json)
                 results["success"].append(manifest.mtn)
             except Exception as exc:
-                self.logger.warning(f"error pulling manifest {mtn}: {exc}")
+                logger.warning(f"error pulling manifest {mtn}: {exc}")
                 results["error"].append(mtn)
         return results
 
@@ -143,7 +144,7 @@ class ManifestService:
                     mtn=[manifest["manifestTrackingNumber"]], username=self.username
                 )
         else:
-            self.logger.warning(
+            logger.warning(
                 f"Error Quicker signing manifests, "
                 f"response: {response.status_code} {response.json()}"
             )
@@ -156,11 +157,12 @@ class ManifestService:
         :param manifest: Dict
         :return:
         """
-        # print("manifest service manifest: ", manifest)
+        logger.info("create rcra manifest with arguments: ", manifest)
         resp = self.rcrainfo.save_manifest(manifest)
         print("resp: ", resp.json())
 
-    def _filter_mtn(self, signature: QuickerSign) -> dict[str, list[str]]:
+    @staticmethod
+    def _filter_mtn(signature: QuickerSign) -> dict[str, list[str]]:
         results = {"success": [], "error": []}
         site_filter = Manifest.objects.get_handler_query(signature.site_id, signature.site_type)
         existing_mtn = Manifest.objects.existing_mtn(site_filter, mtn=signature.mtn)
@@ -168,5 +170,5 @@ class ManifestService:
         results["success"] = [manifest.mtn for manifest in existing_mtn]
         # append any MTN, passed as an argument, not found in the DB to the error results
         results["error"].extend(list(set(signature.mtn).difference(set(results["success"]))))
-        self.logger.warning(f"MTN not found or site not listed as site type {results['error']}")
+        logger.warning(f"MTN not found or site not listed as site type {results['error']}")
         return results
