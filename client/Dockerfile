@@ -1,6 +1,6 @@
 # Mutlistage dockerize dpgraham.com react.js front end
 # Build stage
-FROM node:18-alpine as builder
+FROM node:20-alpine as builder
 LABEL maintainer="graham.david@epa.gov"
 WORKDIR /app
 COPY . .

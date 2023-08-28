@@ -1,6 +1,7 @@
 /**
  *  RcraProfile tests
  */
+import '@testing-library/jest-dom';
 import { screen } from '@testing-library/react';
 import React from 'react';
 import { useAppSelector } from 'store/hooks';
@@ -14,6 +15,7 @@ import rcraProfileReducer, {
   siteByEpaIdSelector,
   userRcraSitesSelector,
 } from './rcraProfile.slice';
+import { test, describe, expect } from 'vitest';
 
 const initialState: RcraProfileState = {
   user: undefined,

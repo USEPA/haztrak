@@ -6,6 +6,7 @@ import NotificationReducer, {
   addNotification,
   removeNotification,
 } from 'store/notificationSlice/notification.slice';
+import { afterEach, describe, expect, test } from 'vitest';
 import { NotificationState } from './notification.slice';
 
 const initialState: NotificationState = {
@@ -26,7 +27,7 @@ afterEach(() => {
 });
 
 describe('Notification Slice', () => {
-  it('returns the initial state', () => {
+  test('returns the initial state', () => {
     expect(NotificationReducer(undefined, { type: undefined })).toEqual(initialState);
   });
   test('addNotification appends a new message', () => {

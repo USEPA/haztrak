@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom';
 import { fireEvent } from '@testing-library/react';
-import { MtnTable } from 'components/Mtn';
+import { MtnDetails, MtnTable } from 'components/Mtn';
 import React from 'react';
 import { renderWithProviders, screen } from 'test-utils';
-import { MtnDetails } from 'components/Mtn';
+import { describe, expect, test } from 'vitest';
 
 const DEFAULT_MTN_DETAILS: MtnDetails = {
   manifestTrackingNumber: '123456789ELC',

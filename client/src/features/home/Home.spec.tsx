@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom';
+import { Home } from 'features/home';
+import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { API_BASE_URL, handlers } from 'test-utils/mock/handlers';
-import { Home } from 'features/home';
-import { vi } from 'vitest';
-import { rest } from 'msw';
+import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 const USERNAME = 'testuser1';
 

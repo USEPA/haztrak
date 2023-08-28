@@ -1,20 +1,19 @@
+import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
 import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/Ht';
+import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
-import { ContactForm, PhoneForm } from './Contact';
-import { Transporter, TransporterTable } from './Transporter';
-import { WasteLineTable, AddWasteLine } from './WasteLine';
 import React, { createContext, useEffect, useState } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { QuickerSignData } from './QuickerSign';
-import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
-import { AddHandler, Handler, GeneratorForm } from './Handler';
-import { QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
-import { manifestSchema, Manifest, ManifestStatus } from './manifestSchema';
-import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
-import { ErrorMessage } from '@hookform/error-message';
+import { ContactForm, PhoneForm } from './Contact';
+import { AddHandler, GeneratorForm, Handler } from './Handler';
+import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
+import { QuickerSignData, QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
+import { Transporter, TransporterTable } from './Transporter';
+import { AddWasteLine, WasteLineTable } from './WasteLine';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -150,7 +149,7 @@ export function ManifestForm({
   // Keep this here for development purposes
   // console.log(manifestData);
   // if (errors) console.log('errors', errors);
-  console.log('tsdfStateCode', tsdfStateCode);
+  // console.log('tsdfStateCode', tsdfStateCode);
 
   return (
     <>

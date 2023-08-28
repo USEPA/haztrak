@@ -1,9 +1,10 @@
-import { screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import React from 'react';
-import { renderWithProviders } from 'test-utils';
+import { renderWithProviders, screen } from 'test-utils';
 import { TransporterTable } from './index';
 import { createMockTransporter } from 'test-utils/fixtures';
 import { Transporter } from 'components/Manifest';
+import { describe, test, expect } from 'vitest';
 
 const HANDLER_ID_1 = 'siteId1';
 const HANDLER_ID_2 = 'siteId2';

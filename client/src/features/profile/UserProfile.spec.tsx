@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserProfile } from 'features/profile/UserProfile';
@@ -7,7 +8,7 @@ import React from 'react';
 import { HaztrakUser } from 'store/userSlice/user.slice';
 import { renderWithProviders, screen } from 'test-utils';
 import { API_BASE_URL } from 'test-utils/mock/handlers';
-import { vi } from 'vitest';
+import { vi, beforeAll, afterAll, afterEach, describe, test, expect } from 'vitest';
 
 const DEFAULT_USER: HaztrakUser = {
   username: 'test',
