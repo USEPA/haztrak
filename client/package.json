@@ -36,7 +36,7 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/jest-dom": "^6.1.2",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/node": "^20.5.7",
@@ -62,7 +62,7 @@
     "vite": "^4.4.9",
     "vite-plugin-eslint": "^1.8.1",
     "vite-tsconfig-paths": "^4.2.0",
-    "vitest": "^0.31.4",
+    "vitest": "^0.34.3",
     "web-vitals": "^3.4.0"
   },
   "msw": {
