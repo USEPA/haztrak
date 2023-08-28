@@ -84,3 +84,9 @@ def sync_site_manifests(self, *, site_id: str, username: str):
         logger.error(f"failed to sync {site_id} manifest")
         self.update_state(state=states.FAILURE, meta=f"Internal Error {exc}")
         raise Ignore()
+
+
+# create_rcra_manifest
+@shared_task(name="create rcra manifests", bind=True)
+def create_rcra_manifest(self, *, manifest: dict):
+    print("manifest data from task: ", manifest)

@@ -86,7 +86,10 @@ export function ManifestForm({
   // Function to handle form submission
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log('Manifest Submitted', data);
-    htApi.post('/rcra/manifest/create', data).catch((r) => console.error(r));
+    htApi
+      .post('/rcra/manifest/create', data)
+      .then((response) => console.log(response))
+      .catch((r) => console.error(r));
   };
 
   // Generator state and methods

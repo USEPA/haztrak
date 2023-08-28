@@ -12,7 +12,7 @@ from apps.sites.models import Site
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer, MtnSerializer
 from apps.trak.serializers.signature_ser import QuickerSignSerializer
-from apps.trak.tasks import pull_manifest, sign_manifest, sync_site_manifests
+from apps.trak.tasks import create_rcra_manifest, pull_manifest, sign_manifest, sync_site_manifests
 
 logger = logging.getLogger(__name__)
 
@@ -135,6 +135,5 @@ class CreateRcraManifestView(GenericAPIView):
     def post(self, request: Request) -> Response:
         """The Body of the POST request should contain the complete and valid manifest object"""
         # ToDo: Validate the manifest object
-        print("request.data: ", request.data)
-        # task = save_manifest.delay(manifest_json=request.data)
-        return self.response(data={"task": "scaffold"}, status=status.HTTP_201_CREATED)
+        task = create_rcra_manifest.delay(manifest=request.data)
+        return self.response(data={"task": task.id}, status=status.HTTP_201_CREATED)
