@@ -14,6 +14,7 @@ permissions:
 
 jobs:
   update_release_draft:
+    name: 'Update Release Draft'
     permissions:
       # write permission is required to update the release draft
       contents: write

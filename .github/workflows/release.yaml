@@ -9,12 +9,15 @@ on:
 
 jobs:
   test_server:
+    name: 'Run Server Tests'
     uses: ./.github/workflows/test_server.yaml
 
   test_client:
+    name: 'Run Client Tests'
     uses: ./.github/workflows/test_client.yaml
 
   build_server:
+    name: 'Build Server Image'
     needs: [test_server]
     uses: ./.github/workflows/build_image.yaml
     with:
@@ -22,6 +25,7 @@ jobs:
       image_name: haztrak-server
 
   build_client:
+    name: 'Build Client Image'
     needs: [test_client]
     uses: ./.github/workflows/build_image.yaml
     with:

@@ -19,28 +19,30 @@ concurrency:
 
 jobs:
   build:
+    name: 'Build Documentation'
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./docs/haztrak_book
     steps:
-      - name: Checkout
+      - name: 'Checkout Repo'
         uses: actions/checkout@v2
 
-      - name: Setup mdBook
+      - name: 'Setup mdBook'
         run: |
           mkdir bin
           curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.25/mdbook-v0.4.25-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
 
-      - name: Build Documentation
+      - name: 'Build Documentation'
         run: bin/mdbook build
 
-      - name: upload Docs
+      - name: 'Upload Docs'
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./docs/haztrak_book/book
 
   deploy_pages:
+    name: 'Deploy Documentation'
     needs: build
     environment:
       name: github-pages
