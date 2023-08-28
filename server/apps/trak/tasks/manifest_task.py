@@ -99,8 +99,7 @@ def create_rcra_manifest(self, *, manifest: dict, username: str):
     logger.info(f"start task: {self.name}")
     try:
         logger.debug(f"creating manifest: {manifest}")
-        ManifestService(username=username)
-        print(manifest["additionalInfo"])
-        # manifest_service.create_rcra_manifest(manifest=manifest)
+        manifest_service = ManifestService(username=username)
+        manifest_service.create_rcra_manifest(manifest=manifest)
     except Exception as exc:
         logger.error("error: ", exc)

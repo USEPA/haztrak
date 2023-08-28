@@ -135,7 +135,6 @@ class CreateRcraManifestView(GenericAPIView):
 
     def post(self, request: Request) -> Response:
         """The Body of the POST request should contain the complete and valid manifest object"""
-        # ToDo: Validate the manifest object
         manifest_serializer = self.serializer_class(data=request.data)
         if manifest_serializer.is_valid():
             logger.info(
