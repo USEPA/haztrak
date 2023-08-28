@@ -88,5 +88,12 @@ def sync_site_manifests(self, *, site_id: str, username: str):
 
 # create_rcra_manifest
 @shared_task(name="create rcra manifests", bind=True)
-def create_rcra_manifest(self, *, manifest: dict):
-    print("manifest data from task: ", manifest)
+def create_rcra_manifest(self, *, manifest: dict, username: str):
+    from apps.trak.services import ManifestService
+
+    logger.info(f"start task: {self.name}; manifest: ToDo")
+    try:
+        manifest_service = ManifestService(username=username)
+        manifest_service.create_rcra_manifest(manifest=manifest)
+    except Exception as exc:
+        print("error: ", exc)

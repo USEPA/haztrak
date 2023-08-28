@@ -150,6 +150,16 @@ class ManifestService:
             results["error"].extend(results["success"])  # Temporary
         return results
 
+    def create_rcra_manifest(self, *, manifest: Dict):
+        """
+        Create a manifest in RCRAInfo through the RESTful API.
+        :param manifest: Dict
+        :return:
+        """
+        # print("manifest service manifest: ", manifest)
+        resp = self.rcrainfo.save_manifest(manifest)
+        print("resp: ", resp.json())
+
     def _filter_mtn(self, signature: QuickerSign) -> dict[str, list[str]]:
         results = {"success": [], "error": []}
         site_filter = Manifest.objects.get_handler_query(signature.site_id, signature.site_type)

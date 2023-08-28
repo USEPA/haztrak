@@ -135,5 +135,5 @@ class CreateRcraManifestView(GenericAPIView):
     def post(self, request: Request) -> Response:
         """The Body of the POST request should contain the complete and valid manifest object"""
         # ToDo: Validate the manifest object
-        task = create_rcra_manifest.delay(manifest=request.data)
+        task = create_rcra_manifest.delay(manifest=request.data, username=str(request.user))
         return self.response(data={"task": task.id}, status=status.HTTP_201_CREATED)
