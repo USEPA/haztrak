@@ -120,8 +120,10 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
                     <Form.Control
                       id="wasteDescription"
                       as="textarea"
+                      className={errors.wasteDescription && 'is-invalid'}
                       {...register(`wasteDescription`)}
                     />
+                    <div className="invalid-feedback">{errors.wasteDescription?.message}</div>
                   </HtForm.Group>
                 </Row>
               )}

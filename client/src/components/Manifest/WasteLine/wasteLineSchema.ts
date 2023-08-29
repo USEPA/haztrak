@@ -79,9 +79,20 @@ export const wasteLineSchema = z
     managementMethod: z.any().optional(),
     additionalInfo: z.any().optional(),
   })
-  .partial()
   .refine(
     (wasteLine) => {
+      // if DOT hazardous, then just DOT information is required
+      // else, if a federal waste (epaWaste), then waste description is required
+      return !wasteLine.dotHazardous && wasteLine.epaWaste && wasteLine.wasteDescription;
+    },
+    {
+      path: ['wasteDescription'],
+      message: 'Required if federally regulated hazardous waste',
+    }
+  )
+  .refine(
+    (wasteLine) => {
+      // If material is DOT hazardous, then dotInformation.idNumber.code is required
       return !(wasteLine.dotHazardous && !wasteLine.dotInformation?.idNumber.code);
     },
     {
@@ -91,6 +102,7 @@ export const wasteLineSchema = z
   )
   .refine(
     (wasteLine) => {
+      // If material is DOT hazardous, then dotInformation.idNumber.code is required
       return !(wasteLine.dotHazardous && !wasteLine.dotInformation?.printedDotInformation);
     },
     {
