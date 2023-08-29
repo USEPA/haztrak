@@ -18,7 +18,6 @@ interface WasteLineFormProps {
 
 const wasteLineDefaultValues: Partial<WasteLine> = {
   dotHazardous: true,
-  epaWaste: false,
   // @ts-ignore
   quantity: { containerNumber: 1, quantity: 1 },
 };
@@ -30,17 +29,22 @@ const wasteLineDefaultValues: Partial<WasteLine> = {
  */
 export function WasteLineForm({ handleClose, appendWaste, currentWastes }: WasteLineFormProps) {
   const newLineNumber = currentWastes ? currentWastes.length + 1 : 1;
+  const [dotHazardous, setDotHazardous] = React.useState<boolean>(true);
+  const [epaWaste, setEpaWaste] = React.useState<boolean>(true);
   const wasteMethods = useForm<WasteLine>({
     resolver: zodResolver(wasteLineSchema),
-    defaultValues: { ...wasteLineDefaultValues, lineNumber: newLineNumber },
+    defaultValues: {
+      ...wasteLineDefaultValues,
+      dotHazardous: dotHazardous,
+      epaWaste: epaWaste,
+      lineNumber: newLineNumber,
+    },
   });
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = wasteMethods;
-  const [dotHazardous, setDotHazardous] = React.useState<boolean>(true);
-  const [epaHazardous, setEpaHazardous] = React.useState<boolean>(true);
 
   /**
    * onSubmit is the callback function for the form submission.
@@ -52,8 +56,8 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
     console.log('dotInformation', wasteLine.dotInformation);
   };
 
-  // console.log(`dotHazardous ${dotHazardous}, epaHaz ${epaHazardous}`);
-  console.log(errors.dotInformation);
+  // console.log(`dotHazardous ${dotHazardous}, epaHaz ${epaWaste}`);
+  // console.log(errors.dotInformation);
   // console.log(wasteMethods.getValues('dotInformation.printedDotInformation'));
 
   return (
@@ -87,7 +91,7 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
                         id="epaWasteSwitch"
                         label="EPA Hazardous Waste?"
                         {...register('epaWaste')}
-                        onChange={(e) => setEpaHazardous(e.target.checked)}
+                        onChange={(e) => setEpaWaste(e.target.checked)}
                       />
                     )}
                   />
@@ -175,7 +179,7 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
             <HtCard.Body>
               <h5>Waste Codes</h5>
               <Row className="mb-2">
-                <HazardousWasteForm />
+                <HazardousWasteForm epaWaste={epaWaste} />
               </Row>
             </HtCard.Body>
           </HtCard>
