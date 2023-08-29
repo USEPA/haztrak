@@ -79,17 +79,18 @@ export const wasteLineSchema = z
     managementMethod: z.any().optional(),
     additionalInfo: z.any().optional(),
   })
+  .partial()
   .refine(
     (wasteLine) => {
       if (wasteLine.dotHazardous) {
-        if (!wasteLine.dotInformation?.idNumber) {
+        if (!wasteLine.dotInformation?.idNumber.code) {
           return false;
         }
       }
       return true;
     },
     {
-      path: ['dotInformation.idNumber'],
+      path: ['dotInformation.idNumber.code'],
       message: 'DOT ID number is required',
     }
   )

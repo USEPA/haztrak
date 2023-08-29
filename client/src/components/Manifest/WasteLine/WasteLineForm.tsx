@@ -143,14 +143,20 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
                       <Form.Select
                         id="dotIdNumber"
                         as="input"
+                        defaultValue={''}
                         {...register(`dotInformation.idNumber.code`)}
                         className={errors.dotInformation?.idNumber && 'is-invalid'}
                       >
-                        <option value="">Select</option>
+                        <option value="">Select ID Number</option>
                         {dotIdNumbers.map((idNumber) => (
-                          <option key={idNumber}>{idNumber}</option>
+                          <option key={idNumber} value={idNumber}>
+                            {idNumber}
+                          </option>
                         ))}
                       </Form.Select>
+                      <div className="invalid-feedback">
+                        {errors.dotInformation?.idNumber?.code?.message}
+                      </div>
                     </HtForm.Group>
                   </Col>
                 </Row>
