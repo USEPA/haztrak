@@ -111,6 +111,18 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
                   />
                 </HtForm.Group>
               </Row>
+              {/*{dotHazardous && (*/}
+              {/*  <Row>*/}
+              {/*    <HtForm.Group>*/}
+              {/*      <HtForm.Label htmlFor="dotDescription">DOT Description</HtForm.Label>*/}
+              {/*      <Form.Control*/}
+              {/*        id="dotDescription"*/}
+              {/*        as="textarea"*/}
+              {/*        {...register(`dotInformation.dotDescription`)}*/}
+              {/*      />*/}
+              {/*    </HtForm.Group>*/}
+              {/*  </Row>*/}
+              {/*)}*/}
             </HtCard.Body>
           </HtCard>
           <HtCard border={'secondary'}>

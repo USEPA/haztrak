@@ -51,22 +51,51 @@ const hazardousWasteSchema = z.object({
   generatorStateWasteCodes: z.array(codeSchema).optional(),
 });
 
-export const wasteLineSchema = z.object({
-  lineNumber: z.number(),
-  dotHazardous: z.boolean(),
-  epaWaste: z.boolean(),
-  pcb: z.boolean(),
-  dotInformation: z.any().optional(),
-  wasteDescription: z.string().optional(),
-  quantity: quantitySchema,
-  brInfo: z.any().optional(),
-  br: z.boolean(),
-  hazardousWaste: hazardousWasteSchema.optional(),
-  pcbInfos: z.any().optional(),
-  discrepancyResidueInfo: z.any().optional(),
-  managementMethod: z.any().optional(),
-  additionalInfo: z.any().optional(),
+const dotInformationSchema = z.object({
+  idNumber: codeSchema,
+  printedDotInformation: z.string(),
 });
+
+/**
+ * Object containing DOT information for the manifest
+ * If the manifest contains DOT hazardous material, both these fields are required
+ */
+export type DotInformation = z.infer<typeof dotInformationSchema>;
+
+export const wasteLineSchema = z
+  .object({
+    lineNumber: z.number(),
+    dotHazardous: z.boolean(),
+    epaWaste: z.boolean(),
+    pcb: z.boolean(),
+    dotInformation: dotInformationSchema.optional(),
+    wasteDescription: z.string().optional(),
+    quantity: quantitySchema,
+    brInfo: z.any().optional(),
+    br: z.boolean(),
+    hazardousWaste: hazardousWasteSchema.optional(),
+    pcbInfos: z.any().optional(),
+    discrepancyResidueInfo: z.any().optional(),
+    managementMethod: z.any().optional(),
+    additionalInfo: z.any().optional(),
+  })
+  .refine(
+    (wasteLine) => {
+      if (wasteLine.dotHazardous) {
+        if (
+          !wasteLine.dotInformation?.printedDotInformation ||
+          !wasteLine.dotInformation?.idNumber
+        ) {
+          return false;
+        }
+      }
+      return true;
+    },
+    {
+      path: ['dotInformation.idNumber', 'dotInformation.printedDotInformation'],
+      message: 'DOT info is required when shipment is DOT hazardous',
+    }
+  );
 
 export type WasteLine = z.infer<typeof wasteLineSchema>;
 
@@ -90,17 +119,17 @@ export type WasteLine = z.infer<typeof wasteLineSchema>;
 //   additionalInfo?: AdditionalInfo;
 // }
 
-/**
- * United States Department of Transportation (DOT) information
- */
-interface DotInformation {
-  idNumber: Code;
-  /**
-   * Contains various information for DOT requirements such as
-   * RQ Description, Technical Name, Hazard Class, Packing Group and any user edits
-   */
-  printedDotInformation: string;
-}
+// /**
+//  * United States Department of Transportation (DOT) information
+//  */
+// interface DotInformation {
+//   idNumber: Code;
+//   /**
+//    * Contains various information for DOT requirements such as
+//    * RQ Description, Technical Name, Hazard Class, Packing Group and any user edits
+//    */
+//   printedDotInformation: string;
+// }
 
 /**
  * Biennial Report information for the hazardous waste manifest
