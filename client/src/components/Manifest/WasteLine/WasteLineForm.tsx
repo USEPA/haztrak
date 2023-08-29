@@ -44,6 +44,8 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    getValues,
   } = wasteMethods;
 
   /**
@@ -55,6 +57,8 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
     handleClose();
     console.log('dotInformation', wasteLine.dotInformation);
   };
+
+  console.log('epaWaste', epaWaste, 'dotHazardous', dotHazardous);
 
   return (
     <FormProvider {...wasteMethods}>
@@ -73,7 +77,14 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
                         id="dotHazardousSwitch"
                         label="DOT Hazardous Material?"
                         {...register('dotHazardous')}
-                        onChange={(e) => setDotHazardous(e.target.checked)}
+                        onChange={(e) => {
+                          if (!e.target.checked) {
+                            setValue('epaWaste', false);
+                            setDotHazardous(e.target.checked);
+                          } else {
+                            setDotHazardous(e.target.checked);
+                          }
+                        }}
                       />
                     )}
                   />
@@ -87,7 +98,15 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
                         id="epaWasteSwitch"
                         label="EPA Hazardous Waste?"
                         {...register('epaWaste')}
-                        onChange={(e) => setEpaWaste(e.target.checked)}
+                        onChange={(e) => {
+                          const dotHazardous = getValues('dotHazardous');
+                          console.log('dotHazardous', dotHazardous);
+                          if (e.target.checked) {
+                            setValue('dotHazardous', true);
+                            setDotHazardous(true);
+                          }
+                          setEpaWaste(e.target.checked);
+                        }}
                       />
                     )}
                   />
