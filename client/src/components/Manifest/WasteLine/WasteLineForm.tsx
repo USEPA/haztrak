@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtCard, HtForm } from 'components/Ht';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
+import { HtCard, HtForm } from 'components/Ht';
+import { Manifest } from 'components/Manifest/manifestSchema';
 import { HazardousWasteForm } from 'components/Manifest/WasteLine/HazardousWasteForm';
+import { WasteLine, wasteLineSchema } from 'components/Manifest/WasteLine/wasteLineSchema';
 import React from 'react';
 import { Button, Container, Form, Row } from 'react-bootstrap';
-import { FormProvider, UseFieldArrayAppend, useForm } from 'react-hook-form';
-import { Manifest } from 'components/Manifest/manifestSchema';
-import { WasteLine, wasteLineSchema } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { Controller, FormProvider, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import { QuantityForm } from './QuantityForm';
 
 interface WasteLineFormProps {
@@ -34,6 +34,7 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
     defaultValues: { ...wasteLineDefaultValues, lineNumber: newLineNumber },
   });
   const { register, handleSubmit } = wasteMethods;
+  const [dotHazardous, setDotHazardous] = React.useState<boolean>(true);
 
   /**
    * onSubmit is the callback function for the form submission.
@@ -44,6 +45,8 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
     handleClose();
   };
 
+  console.log('dotHazardous', dotHazardous);
+
   return (
     <FormProvider {...wasteMethods}>
       <HtForm onSubmit={handleSubmit(onSubmit)}>
@@ -53,12 +56,18 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
               <h5>General Information</h5>
               <Container className="ms-2">
                 <Row>
-                  <HtForm.Switch
-                    id="dotHazardousSwitch"
-                    label="DOT Hazardous Material?"
-                    {...register('dotHazardous')}
-                    // autoFocus
-                  />
+                  <Controller
+                    control={wasteMethods.control}
+                    name={'dotHazardous'}
+                    render={({ field }) => (
+                      <HtForm.Switch
+                        id="dotHazardousSwitch"
+                        label="DOT Hazardous Material?"
+                        {...register('dotHazardous')}
+                        onChange={(e) => setDotHazardous(e.target.checked)}
+                      />
+                    )}
+                  ></Controller>
                 </Row>
                 <Row>
                   <HtForm.Switch
