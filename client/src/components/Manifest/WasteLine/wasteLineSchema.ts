@@ -83,7 +83,7 @@ export const wasteLineSchema = z
     (wasteLine) => {
       // if DOT hazardous, then just DOT information is required
       // else, if a federal waste (epaWaste), then waste description is required
-      return !wasteLine.dotHazardous && wasteLine.epaWaste && wasteLine.wasteDescription;
+      return wasteLine.dotHazardous || wasteLine.wasteDescription;
     },
     {
       path: ['wasteDescription'],

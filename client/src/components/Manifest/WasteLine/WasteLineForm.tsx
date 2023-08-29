@@ -56,10 +56,6 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
     console.log('dotInformation', wasteLine.dotInformation);
   };
 
-  // console.log(`dotHazardous ${dotHazardous}, epaHaz ${epaWaste}`);
-  // console.log(errors.dotInformation);
-  // console.log(wasteMethods.getValues('dotInformation.printedDotInformation'));
-
   return (
     <FormProvider {...wasteMethods}>
       <HtForm onSubmit={handleSubmit(onSubmit)}>
