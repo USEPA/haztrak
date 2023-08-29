@@ -35,6 +35,7 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
   });
   const { register, handleSubmit } = wasteMethods;
   const [dotHazardous, setDotHazardous] = React.useState<boolean>(true);
+  const [epaHazardous, setEpaHazardous] = React.useState<boolean>(true);
 
   /**
    * onSubmit is the callback function for the form submission.
@@ -45,7 +46,7 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
     handleClose();
   };
 
-  console.log('dotHazardous', dotHazardous);
+  console.log(`dotHazardous ${dotHazardous}, epaHaz ${epaHazardous}`);
 
   return (
     <FormProvider {...wasteMethods}>
@@ -67,13 +68,20 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
                         onChange={(e) => setDotHazardous(e.target.checked)}
                       />
                     )}
-                  ></Controller>
+                  />
                 </Row>
                 <Row>
-                  <HtForm.Switch
-                    id="epaWasteSwitch"
-                    label="EPA Hazardous Waste?"
-                    {...register('epaWaste')}
+                  <Controller
+                    control={wasteMethods.control}
+                    name={'epaWaste'}
+                    render={({ field }) => (
+                      <HtForm.Switch
+                        id="epaWasteSwitch"
+                        label="EPA Hazardous Waste?"
+                        {...register('epaWaste')}
+                        onChange={(e) => setEpaHazardous(e.target.checked)}
+                      />
+                    )}
                   />
                 </Row>
                 <Row>
