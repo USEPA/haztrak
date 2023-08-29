@@ -82,18 +82,32 @@ export const wasteLineSchema = z
   .refine(
     (wasteLine) => {
       if (wasteLine.dotHazardous) {
-        if (
-          !wasteLine.dotInformation?.printedDotInformation ||
-          !wasteLine.dotInformation?.idNumber
-        ) {
+        if (!wasteLine.dotInformation?.idNumber) {
           return false;
         }
       }
       return true;
     },
     {
-      path: ['dotInformation.idNumber', 'dotInformation.printedDotInformation'],
-      message: 'DOT info is required when shipment is DOT hazardous',
+      path: ['dotInformation.idNumber'],
+      message: 'DOT ID number is required',
+    }
+  )
+  .refine(
+    (wasteLine) => {
+      console.log('test');
+      if (wasteLine.dotHazardous) {
+        console.log('yes is dot hazardous');
+        if (!wasteLine.dotInformation?.printedDotInformation) {
+          return false;
+        }
+        console.log(wasteLine.dotInformation.printedDotInformation);
+      }
+      return true;
+    },
+    {
+      path: ['dotInformation.printedDotInformation'],
+      message: 'DOT description is required',
     }
   );
 

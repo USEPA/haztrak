@@ -2,10 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
 import { HtCard, HtForm } from 'components/Ht';
 import { Manifest } from 'components/Manifest/manifestSchema';
+import { dotIdNumbers } from 'components/Manifest/WasteLine/dotInfo';
 import { HazardousWasteForm } from 'components/Manifest/WasteLine/HazardousWasteForm';
 import { WasteLine, wasteLineSchema } from 'components/Manifest/WasteLine/wasteLineSchema';
 import React from 'react';
-import { Button, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Controller, FormProvider, UseFieldArrayAppend, useForm } from 'react-hook-form';
 import { QuantityForm } from './QuantityForm';
 
@@ -33,7 +34,11 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
     resolver: zodResolver(wasteLineSchema),
     defaultValues: { ...wasteLineDefaultValues, lineNumber: newLineNumber },
   });
-  const { register, handleSubmit } = wasteMethods;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = wasteMethods;
   const [dotHazardous, setDotHazardous] = React.useState<boolean>(true);
   const [epaHazardous, setEpaHazardous] = React.useState<boolean>(true);
 
@@ -44,9 +49,12 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
   const onSubmit = (wasteLine: WasteLine) => {
     appendWaste(wasteLine); // append the new waste line to the manifest
     handleClose();
+    console.log('dotInformation', wasteLine.dotInformation);
   };
 
-  console.log(`dotHazardous ${dotHazardous}, epaHaz ${epaHazardous}`);
+  // console.log(`dotHazardous ${dotHazardous}, epaHaz ${epaHazardous}`);
+  console.log(errors.dotInformation);
+  // console.log(wasteMethods.getValues('dotInformation.printedDotInformation'));
 
   return (
     <FormProvider {...wasteMethods}>
@@ -101,28 +109,52 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
                   />
                 </Row>
               </Container>
-              <Row>
-                <HtForm.Group>
-                  <HtForm.Label htmlFor="wasteDescription">Waste Description</HtForm.Label>
-                  <Form.Control
-                    id="wasteDescription"
-                    as="textarea"
-                    {...register(`wasteDescription`)}
-                  />
-                </HtForm.Group>
-              </Row>
-              {/*{dotHazardous && (*/}
-              {/*  <Row>*/}
-              {/*    <HtForm.Group>*/}
-              {/*      <HtForm.Label htmlFor="dotDescription">DOT Description</HtForm.Label>*/}
-              {/*      <Form.Control*/}
-              {/*        id="dotDescription"*/}
-              {/*        as="textarea"*/}
-              {/*        {...register(`dotInformation.dotDescription`)}*/}
-              {/*      />*/}
-              {/*    </HtForm.Group>*/}
-              {/*  </Row>*/}
-              {/*)}*/}
+              {!dotHazardous && (
+                <Row>
+                  <HtForm.Group>
+                    <HtForm.Label htmlFor="wasteDescription">Waste Description</HtForm.Label>
+                    <Form.Control
+                      id="wasteDescription"
+                      as="textarea"
+                      {...register(`wasteDescription`)}
+                    />
+                  </HtForm.Group>
+                </Row>
+              )}
+              {dotHazardous && (
+                <Row>
+                  <Col xs={9}>
+                    <HtForm.Group>
+                      <HtForm.Label htmlFor="dotDescription">DOT Description</HtForm.Label>
+                      <Form.Control
+                        id="dotDescription"
+                        as="textarea"
+                        {...register(`dotInformation.printedDotInformation`)}
+                        className={errors.dotInformation?.printedDotInformation && 'is-invalid'}
+                      />
+                      <div className="invalid-feedback">
+                        {errors.dotInformation?.printedDotInformation?.message}
+                      </div>
+                    </HtForm.Group>
+                  </Col>
+                  <Col>
+                    <HtForm.Group>
+                      <HtForm.Label htmlFor="dotDescription">DOT ID Number</HtForm.Label>
+                      <Form.Select
+                        id="dotIdNumber"
+                        as="input"
+                        {...register(`dotInformation.idNumber.code`)}
+                        className={errors.dotInformation?.idNumber && 'is-invalid'}
+                      >
+                        <option value="">Select</option>
+                        {dotIdNumbers.map((idNumber) => (
+                          <option key={idNumber}>{idNumber}</option>
+                        ))}
+                      </Form.Select>
+                    </HtForm.Group>
+                  </Col>
+                </Row>
+              )}
             </HtCard.Body>
           </HtCard>
           <HtCard border={'secondary'}>
