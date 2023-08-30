@@ -1,19 +1,23 @@
 import { HtForm } from 'components/Ht';
+import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
+import { StateWasteCodeSelect } from 'components/Manifest/WasteLine/HazardousWasteForm/StateWasteCodeSelect';
+import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
 import React, { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
 import { useGetFedWasteCodesQuery } from 'store/wasteCode.slice';
-import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
-import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
-import { StateWasteCodeSelect } from 'components/Manifest/WasteLine/HazardousWasteForm/StateWasteCodeSelect';
+
+interface HazardousWasteFormProps {
+  epaWaste: boolean;
+}
 
 /**
  * Returns a form for adding waste code(s), to a wasteline, for a given manifest.
  * It expects to be within the context of a manifest form.
  * @constructor
  */
-export function HazardousWasteForm() {
+export function HazardousWasteForm({ epaWaste }: HazardousWasteFormProps) {
   const { control } = useFormContext();
   const { generatorStateCode, tsdfStateCode } = useContext<ManifestContextType>(ManifestContext);
   // Retrieve federal waste codes from the server
@@ -69,6 +73,8 @@ export function HazardousWasteForm() {
                   <Select
                     id="hazardousWasteFederalWasteCodes"
                     {...field}
+                    aria-label="Federal Waste Codes"
+                    isDisabled={!epaWaste}
                     options={federalWasteCodes}
                     isLoading={federalLoading}
                     getOptionLabel={(option) =>

@@ -51,22 +51,65 @@ const hazardousWasteSchema = z.object({
   generatorStateWasteCodes: z.array(codeSchema).optional(),
 });
 
-export const wasteLineSchema = z.object({
-  lineNumber: z.number(),
-  dotHazardous: z.boolean(),
-  epaWaste: z.boolean(),
-  pcb: z.boolean(),
-  dotInformation: z.any().optional(),
-  wasteDescription: z.string().optional(),
-  quantity: quantitySchema,
-  brInfo: z.any().optional(),
-  br: z.boolean(),
-  hazardousWaste: hazardousWasteSchema.optional(),
-  pcbInfos: z.any().optional(),
-  discrepancyResidueInfo: z.any().optional(),
-  managementMethod: z.any().optional(),
-  additionalInfo: z.any().optional(),
+const dotInformationSchema = z.object({
+  idNumber: codeSchema,
+  printedDotInformation: z.string(),
 });
+
+/**
+ * Object containing DOT information for the manifest
+ * If the manifest contains DOT hazardous material, both these fields are required
+ */
+export type DotInformation = z.infer<typeof dotInformationSchema>;
+
+export const wasteLineSchema = z
+  .object({
+    lineNumber: z.number(),
+    dotHazardous: z.boolean(),
+    epaWaste: z.boolean(),
+    pcb: z.boolean(),
+    dotInformation: dotInformationSchema.optional(),
+    wasteDescription: z.string().optional(),
+    quantity: quantitySchema,
+    brInfo: z.any().optional(),
+    br: z.boolean(),
+    hazardousWaste: hazardousWasteSchema.optional(),
+    pcbInfos: z.any().optional(),
+    discrepancyResidueInfo: z.any().optional(),
+    managementMethod: z.any().optional(),
+    additionalInfo: z.any().optional(),
+  })
+  .refine(
+    (wasteLine) => {
+      // if DOT hazardous, then just DOT information is required
+      // else, if a federal waste (epaWaste), then waste description is required
+      return wasteLine.dotHazardous || wasteLine.wasteDescription;
+    },
+    {
+      path: ['wasteDescription'],
+      message: 'Required if federally regulated hazardous waste',
+    }
+  )
+  .refine(
+    (wasteLine) => {
+      // If material is DOT hazardous, then dotInformation.idNumber.code is required
+      return !(wasteLine.dotHazardous && !wasteLine.dotInformation?.idNumber.code);
+    },
+    {
+      path: ['dotInformation.idNumber.code'],
+      message: 'DOT ID number is required',
+    }
+  )
+  .refine(
+    (wasteLine) => {
+      // If material is DOT hazardous, then dotInformation.idNumber.code is required
+      return !(wasteLine.dotHazardous && !wasteLine.dotInformation?.printedDotInformation);
+    },
+    {
+      path: ['dotInformation.printedDotInformation'],
+      message: 'DOT description is required',
+    }
+  );
 
 export type WasteLine = z.infer<typeof wasteLineSchema>;
 
@@ -90,103 +133,4 @@ export type WasteLine = z.infer<typeof wasteLineSchema>;
 //   additionalInfo?: AdditionalInfo;
 // }
 
-/**
- * United States Department of Transportation (DOT) information
- */
-interface DotInformation {
-  idNumber: Code;
-  /**
-   * Contains various information for DOT requirements such as
-   * RQ Description, Technical Name, Hazard Class, Packing Group and any user edits
-   */
-  printedDotInformation: string;
-}
-
-/**
- * Biennial Report information for the hazardous waste manifest
- * https://www.epa.gov/hwgenerators/biennial-hazardous-waste-report
- */
-interface BrInfo {
-  density: number;
-  densityUnitOfMeasurement: Code;
-  formCode: Code;
-  sourceCode: Code;
-  wasteMinimizationCode: Code;
-}
-
-/**
- * Hazardous waste quantity information such as container, quantity, UOM data
- */
-interface Quantity {
-  containerNumber: number;
-  containerType: ContainerType;
-  quantity: number;
-  unitOfMeasurement: QuantityUOM;
-}
-
-/**
- * Quantity Units of Measurement
- */
-interface QuantityUOM {
-  code: 'P' | 'T' | 'K' | 'M' | 'G' | 'L' | 'Y' | 'N';
-  description?: QuantityDescription;
-}
-
-/**
- * Choices for different types of Quantity UOM
- */
-enum QuantityDescription {
-  P = 'Pounds',
-  T = 'Tons (2000 Pounds)',
-  K = 'Kilograms',
-  M = 'Metric Tons (1000 Kilograms)',
-  G = 'Gallons',
-  L = 'Liters',
-  Y = 'Cubic Yards',
-  N = 'Cubic Meters',
-}
-
-interface ContainerType {
-  code: 'BA' | 'DT' | 'CF' | 'DW' | 'CM' | 'HG' | 'CW' | 'TC' | 'CY' | 'TP' | 'DF' | 'TT' | 'DM';
-  description?: ContainerDescription;
-}
-
-interface HazardousWaste {
-  federalWasteCodes?: Code[];
-  tsdfStateWasteCodes?: Code[];
-  txWasteCodes?: string;
-  generatorStateWasteCodes?: Code[];
-}
-
-interface PcbInfo {
-  loadType: Code;
-  articleContainerId: string;
-  dateOfRemoval: string;
-  weight: number;
-  wasteType: string;
-  bulkIdentity: string;
-}
-
-interface DiscrepancyResidueInfo {
-  wasteQuantity: boolean;
-  wasteType: boolean;
-  discrepancyComments: string;
-  residue: boolean;
-  residueComments: string;
-}
-
-interface AdditionalInfo {
-  originalManifestTrackingNumbers: string[];
-  newManifestDestination: 'OriginalGenerator' | 'Tsdf';
-  consentNumber: string;
-  comments: Comment[];
-  handlingInstructions: string;
-}
-
-interface Comment {
-  label: string;
-  description: string;
-  handlerId: string;
-}
-
-export type { ContainerType, ContainerDescription, QuantityDescription };
+export type { ContainerDescription };

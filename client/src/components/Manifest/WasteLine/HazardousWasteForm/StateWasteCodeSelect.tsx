@@ -1,6 +1,6 @@
+import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components } from 'react-select';
-import React, { useContext } from 'react';
 import { useGetStateWasteCodesQuery } from 'store/wasteCode.slice';
 
 interface StateWasteCodeSelectProps {
@@ -21,7 +21,9 @@ export function StateWasteCodeSelect({ stateId, fieldName }: StateWasteCodeSelec
         hideSelectedOptions
         placeholder={
           <i className="text-muted">
-            Generator must be provided before adding origin state waste codes
+            {fieldName === 'hazardousWaste.generatorStateWasteCodes'
+              ? 'Generator must be provided before adding generator state waste codes'
+              : 'TSDF must be provided before adding destination state waste codes'}
           </i>
         }
         isDisabled={true}
