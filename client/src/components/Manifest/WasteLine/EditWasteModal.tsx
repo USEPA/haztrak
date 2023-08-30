@@ -21,11 +21,11 @@ interface Props {
  */
 export function EditWasteModal({ show, handleClose, currentWastes, wasteArrayMethods }: Props) {
   const { editWasteLine, setEditWasteLine } = useContext<ManifestContextType>(ManifestContext);
-  // const waste = editWasteLine ? currentWastes[editWasteLine] : undefined;
-  const waste = currentWastes[editWasteLine];
+  let waste: WasteLine | undefined = undefined;
+  if (editWasteLine !== undefined) {
+    waste = currentWastes[editWasteLine];
+  }
   const lineNumber = editWasteLine ? editWasteLine : currentWastes.length + 1;
-  console.log('currentWaste', currentWastes);
-  console.log('waste', waste);
 
   const handleCloseAndReset = () => {
     setEditWasteLine(undefined);
@@ -53,9 +53,9 @@ export function EditWasteModal({ show, handleClose, currentWastes, wasteArrayMet
       <HtModal.Body>
         <WasteLineForm
           wasteArrayMethods={wasteArrayMethods}
-          lineNumber={lineNumber}
+          lineNumber={lineNumber - 1}
           waste={waste}
-          handleClose={handleClose}
+          handleClose={handleCloseAndReset}
         />
       </HtModal.Body>
     </HtModal>

@@ -16,11 +16,12 @@ export function WasteLineTable({ wastes, toggleWLModal }: WasteLineTableProps) {
   if (!wastes || wastes.length < 1) {
     return <></>;
   }
-  if (wastes) {
-    for (let i = 0; i < wastes?.length; i++) {
-      wastes[i].lineNumber = i + 1;
-    }
-  }
+  // if (wastes) {
+  //   for (let i = 0; i < wastes?.length; i++) {
+  //     console.log('waste', wastes[i]);
+  //     wastes[i].lineNumber = i + 1;
+  //   }
+  // }
   return (
     <Table striped>
       <thead>
