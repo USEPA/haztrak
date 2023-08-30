@@ -4,25 +4,21 @@ import React, { useContext } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
+import { WasteRowActions } from 'components/Manifest/WasteLine/WasteLineTable/WasteRowActions';
+import { UseFieldArrayReturn } from 'react-hook-form';
+import { Manifest } from 'components/Manifest';
 
 interface WasteLineTableProps {
   wastes: Array<WasteLine>;
   toggleWLModal: () => void;
+  wasteArrayMethods: UseFieldArrayReturn<Manifest, 'wastes'>;
 }
 
-export function WasteLineTable({ wastes, toggleWLModal }: WasteLineTableProps) {
+export function WasteLineTable({ wastes, toggleWLModal, wasteArrayMethods }: WasteLineTableProps) {
   const { editWasteLine, setEditWasteLine } = useContext<ManifestContextType>(ManifestContext);
   if (!wastes || wastes.length < 1) {
     return <></>;
   }
-  // if (wastes) {
-  //   for (let i = 0; i < wastes?.length; i++) {
-  //     console.log('waste', wastes[i]);
-  //     wastes[i].lineNumber = i + 1;
-  //   }
-  // }
-  console.log('waste line desc', wastes[0].wasteDescription);
-  console.log('waste line dot', wastes[0].dotInformation?.printedDotInformation);
   return (
     <Table striped>
       <thead>
@@ -39,7 +35,7 @@ export function WasteLineTable({ wastes, toggleWLModal }: WasteLineTableProps) {
         {wastes.map((wasteLine, index) => {
           return (
             <tr key={index}>
-              <td>{wasteLine.lineNumber}</td>
+              <td>{wasteLine.lineNumber + 1}</td>
               <td
                 style={{
                   maxWidth: '200px',
@@ -68,14 +64,12 @@ export function WasteLineTable({ wastes, toggleWLModal }: WasteLineTableProps) {
                 </small>
               </td>
               <td className="text-center">
-                <Button
-                  onClick={() => {
-                    setEditWasteLine(index);
-                    toggleWLModal();
-                  }}
-                >
-                  <FontAwesomeIcon icon={faTools} className="text-info" />
-                </Button>
+                <WasteRowActions
+                  index={index}
+                  wasteArrayMethods={wasteArrayMethods}
+                  toggleWLModal={toggleWLModal}
+                  setEditWasteLine={setEditWasteLine}
+                />
               </td>
             </tr>
           );

@@ -476,7 +476,11 @@ export function ManifestForm({
               <HtCard.Header title="Waste" />
               <HtCard.Body className="pb-4">
                 {/* Table Showing current Waste Lines included on the manifest */}
-                <WasteLineTable wastes={allWastes} toggleWLModal={toggleWlFormShow} />
+                <WasteLineTable
+                  wastes={allWastes}
+                  toggleWLModal={toggleWlFormShow}
+                  wasteArrayMethods={wasteArrayMethods}
+                />
                 {readOnly ? (
                   <></>
                 ) : (
