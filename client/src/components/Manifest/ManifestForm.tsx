@@ -15,6 +15,7 @@ import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
 import { EditWasteModal, WasteLineTable } from './WasteLine';
+import { number } from 'zod';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -29,6 +30,8 @@ export interface ManifestContextType {
   setGeneratorStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
   tsdfStateCode?: string;
   setTsdfStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
+  editWasteLine?: number;
+  setEditWasteLine: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 interface ManifestFormProps {
@@ -44,6 +47,8 @@ export const ManifestContext = createContext<ManifestContextType>({
   setGeneratorStateCode: () => {},
   tsdfStateCode: undefined,
   setTsdfStateCode: () => {},
+  editWasteLine: undefined,
+  setEditWasteLine: () => {},
 });
 
 /**
@@ -137,6 +142,7 @@ export function ManifestForm({
   // State and methods for the manifest's waste lines
   const [showWasteLineForm, setShowWasteLineForm] = useState<boolean>(false);
   const toggleWlFormShow = () => setShowWasteLineForm(!showWasteLineForm);
+  const [editWasteLine, setEditWasteLine] = useState<number | undefined>(undefined);
   const wastes: Array<WasteLine> = manifestMethods.getValues('wastes');
   const wasteArrayMethods = useFieldArray<Manifest, 'wastes'>({
     control: manifestMethods.control,
@@ -165,6 +171,8 @@ export function ManifestForm({
           manifestStatus: manifestStatus,
           tsdfStateCode: tsdfStateCode,
           setTsdfStateCode: setTsdfStateCode,
+          editWasteLine: editWasteLine,
+          setEditWasteLine: setEditWasteLine,
         }}
       >
         <FormProvider {...manifestMethods}>
