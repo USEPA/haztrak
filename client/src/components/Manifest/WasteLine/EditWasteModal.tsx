@@ -20,14 +20,24 @@ interface Props {
  * @constructor
  */
 export function EditWasteModal({ show, handleClose, currentWastes, wasteArrayMethods }: Props) {
-  const { editWasteLine } = useContext<ManifestContextType>(ManifestContext);
+  const { editWasteLine, setEditWasteLine } = useContext<ManifestContextType>(ManifestContext);
   // const waste = editWasteLine ? currentWastes[editWasteLine] : undefined;
   const waste = currentWastes[editWasteLine];
   const lineNumber = editWasteLine ? editWasteLine : currentWastes.length + 1;
   console.log('currentWaste', currentWastes);
   console.log('waste', waste);
+
+  const handleCloseAndReset = () => {
+    setEditWasteLine(undefined);
+    handleClose();
+  };
+
   return (
-    <HtModal showModal={show ? show : false} handleClose={handleClose} dialogClassName="modal-90w">
+    <HtModal
+      showModal={show ? show : false}
+      handleClose={handleCloseAndReset}
+      dialogClassName="modal-90w"
+    >
       <HtModal.Header closeButton>
         <Col>
           <Row>
