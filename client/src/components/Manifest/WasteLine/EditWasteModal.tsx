@@ -25,7 +25,12 @@ export function EditWasteModal({ show, handleClose, currentWastes, wasteArrayMet
   if (editWasteLine !== undefined) {
     waste = currentWastes[editWasteLine];
   }
-  const lineNumber = editWasteLine ? editWasteLine : currentWastes.length + 1;
+  let lineNumber = undefined;
+  if (editWasteLine !== undefined) {
+    lineNumber = editWasteLine;
+  } else {
+    lineNumber = currentWastes.length;
+  }
 
   const handleCloseAndReset = () => {
     setEditWasteLine(undefined);
@@ -53,7 +58,7 @@ export function EditWasteModal({ show, handleClose, currentWastes, wasteArrayMet
       <HtModal.Body>
         <WasteLineForm
           wasteArrayMethods={wasteArrayMethods}
-          lineNumber={lineNumber - 1}
+          lineNumber={lineNumber}
           waste={waste}
           handleClose={handleCloseAndReset}
         />

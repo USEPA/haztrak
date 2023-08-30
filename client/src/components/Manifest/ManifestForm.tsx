@@ -143,7 +143,7 @@ export function ManifestForm({
   const [showWasteLineForm, setShowWasteLineForm] = useState<boolean>(false);
   const toggleWlFormShow = () => setShowWasteLineForm(!showWasteLineForm);
   const [editWasteLine, setEditWasteLine] = useState<number | undefined>(undefined);
-  const wastes: Array<WasteLine> = manifestMethods.getValues('wastes');
+  const allWastes: Array<WasteLine> = manifestMethods.getValues('wastes');
   const wasteArrayMethods = useFieldArray<Manifest, 'wastes'>({
     control: manifestMethods.control,
     name: 'wastes',
@@ -476,7 +476,7 @@ export function ManifestForm({
               <HtCard.Header title="Waste" />
               <HtCard.Body className="pb-4">
                 {/* Table Showing current Waste Lines included on the manifest */}
-                <WasteLineTable wastes={wastes} toggleWLModal={toggleWlFormShow} />
+                <WasteLineTable wastes={allWastes} toggleWLModal={toggleWlFormShow} />
                 {readOnly ? (
                   <></>
                 ) : (
@@ -596,7 +596,7 @@ export function ManifestForm({
           />
           <EditWasteModal
             wasteArrayMethods={wasteArrayMethods}
-            currentWastes={wastes}
+            currentWastes={allWastes}
             handleClose={toggleWlFormShow}
             show={showWasteLineForm}
           />
