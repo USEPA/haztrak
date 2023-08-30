@@ -58,7 +58,33 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
     console.log('dotInformation', wasteLine.dotInformation);
   };
 
-  console.log('epaWaste', epaWaste, 'dotHazardous', dotHazardous);
+  /**
+   * toggleDotHazardous - set state and form value for DOT hazardous
+   * If DOT hazardous is set to false, then EPA waste must also be false.
+   * @param checked
+   */
+  const toggleDotHazardous = (checked: boolean) => {
+    setValue('dotHazardous', checked);
+    setDotHazardous(checked);
+    if (!checked) {
+      setValue('epaWaste', false);
+      setEpaWaste(false);
+    }
+  };
+
+  /**
+   * toggleEpaWaste - set state and form value for EPA waste
+   * If EPA waste is set to true, then DOT hazardous must also be true.
+   * @param checked
+   */
+  const toggleEpaWaste = (checked: boolean) => {
+    setValue('epaWaste', checked);
+    setEpaWaste(checked);
+    if (checked) {
+      setValue('dotHazardous', true);
+      setDotHazardous(true);
+    }
+  };
 
   return (
     <FormProvider {...wasteMethods}>
@@ -77,14 +103,7 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
                         id="dotHazardousSwitch"
                         label="DOT Hazardous Material?"
                         {...register('dotHazardous')}
-                        onChange={(e) => {
-                          if (!e.target.checked) {
-                            setValue('epaWaste', false);
-                            setDotHazardous(e.target.checked);
-                          } else {
-                            setDotHazardous(e.target.checked);
-                          }
-                        }}
+                        onChange={(e) => toggleDotHazardous(e.target.checked)}
                       />
                     )}
                   />
@@ -98,15 +117,7 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
                         id="epaWasteSwitch"
                         label="EPA Hazardous Waste?"
                         {...register('epaWaste')}
-                        onChange={(e) => {
-                          const dotHazardous = getValues('dotHazardous');
-                          console.log('dotHazardous', dotHazardous);
-                          if (e.target.checked) {
-                            setValue('dotHazardous', true);
-                            setDotHazardous(true);
-                          }
-                          setEpaWaste(e.target.checked);
-                        }}
+                        onChange={(e) => toggleEpaWaste(e.target.checked)}
                       />
                     )}
                   />
