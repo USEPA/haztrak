@@ -7,37 +7,44 @@ import { HazardousWasteForm } from 'components/Manifest/WasteLine/HazardousWaste
 import { WasteLine, wasteLineSchema } from 'components/Manifest/WasteLine/wasteLineSchema';
 import React from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { Controller, FormProvider, UseFieldArrayAppend, useForm } from 'react-hook-form';
+import { Controller, FormProvider, UseFieldArrayReturn, useForm } from 'react-hook-form';
 import { QuantityForm } from './QuantityForm';
 
 interface WasteLineFormProps {
   handleClose: () => void;
-  currentWastes?: Array<WasteLine>;
-  appendWaste: UseFieldArrayAppend<Manifest, 'wastes'>;
+  waste?: WasteLine;
+  lineNumber: number;
+  wasteArrayMethods: UseFieldArrayReturn<Manifest, 'wastes'>;
 }
-
-const wasteLineDefaultValues: Partial<WasteLine> = {
-  dotHazardous: true,
-  // @ts-ignore
-  quantity: { containerNumber: 1, quantity: 1 },
-};
 
 /**
  * WasteLineForm is the top level component/form for adding wastes to
  * the uniform hazardous waste manifest.
  * @constructor
  */
-export function WasteLineForm({ handleClose, appendWaste, currentWastes }: WasteLineFormProps) {
-  const newLineNumber = currentWastes ? currentWastes.length + 1 : 1;
-  const [dotHazardous, setDotHazardous] = React.useState<boolean>(true);
-  const [epaWaste, setEpaWaste] = React.useState<boolean>(true);
+export function WasteLineForm({
+  handleClose,
+  wasteArrayMethods,
+  waste,
+  lineNumber,
+}: WasteLineFormProps) {
+  const [dotHazardous, setDotHazardous] = React.useState<boolean>(
+    waste?.dotHazardous ? waste.dotHazardous : true
+  );
+  const [epaWaste, setEpaWaste] = React.useState<boolean>(waste?.epaWaste ? waste.epaWaste : true);
+  // @ts-ignore
+  const wasteLineDefaultValues: Partial<WasteLine> = waste
+    ? waste
+    : {
+        lineNumber: lineNumber,
+        dotHazardous: dotHazardous,
+        epaWaste: epaWaste,
+        quantity: { containerNumber: 1, quantity: 1 },
+      };
   const wasteMethods = useForm<WasteLine>({
     resolver: zodResolver(wasteLineSchema),
     defaultValues: {
       ...wasteLineDefaultValues,
-      dotHazardous: dotHazardous,
-      epaWaste: epaWaste,
-      lineNumber: newLineNumber,
     },
   });
   const {
@@ -45,7 +52,6 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
     handleSubmit,
     formState: { errors },
     setValue,
-    getValues,
   } = wasteMethods;
 
   /**
@@ -53,7 +59,7 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
    * @param wasteLine the data submitted from the form
    */
   const onSubmit = (wasteLine: WasteLine) => {
-    appendWaste(wasteLine); // append the new waste line to the manifest
+    wasteArrayMethods.append(wasteLine); // append the new waste line to the manifest
     handleClose();
     console.log('dotInformation', wasteLine.dotInformation);
   };

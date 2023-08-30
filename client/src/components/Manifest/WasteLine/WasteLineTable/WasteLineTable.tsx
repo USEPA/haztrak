@@ -1,14 +1,18 @@
 import { faTools } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import { Table } from 'react-bootstrap';
+import React, { useContext } from 'react';
+import { Button, Table } from 'react-bootstrap';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 
 interface WasteLineTableProps {
   wastes: Array<WasteLine>;
+  toggleWLModal: () => void;
 }
 
-export function WasteLineTable({ wastes }: WasteLineTableProps) {
+export function WasteLineTable({ wastes, toggleWLModal }: WasteLineTableProps) {
+  const { editWasteLine, setEditWasteLine } = useContext<ManifestContextType>(ManifestContext);
+  console.log('editWasteLine', editWasteLine);
   if (!wastes || wastes.length < 1) {
     return <></>;
   }
@@ -26,7 +30,7 @@ export function WasteLineTable({ wastes }: WasteLineTableProps) {
           <th>Containers</th>
           <th>Type</th>
           <th>Codes</th>
-          <th></th>
+          <th>Edit</th>
         </tr>
       </thead>
       <tbody>
@@ -62,7 +66,14 @@ export function WasteLineTable({ wastes }: WasteLineTableProps) {
                 </small>
               </td>
               <td className="text-center">
-                <FontAwesomeIcon icon={faTools} className="text-info" />
+                <Button
+                  onClick={() => {
+                    setEditWasteLine(index);
+                    toggleWLModal();
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTools} className="text-info" />
+                </Button>
               </td>
             </tr>
           );

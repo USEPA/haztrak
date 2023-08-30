@@ -476,7 +476,7 @@ export function ManifestForm({
               <HtCard.Header title="Waste" />
               <HtCard.Body className="pb-4">
                 {/* Table Showing current Waste Lines included on the manifest */}
-                <WasteLineTable wastes={wastes} />
+                <WasteLineTable wastes={wastes} toggleWLModal={toggleWlFormShow} />
                 {readOnly ? (
                   <></>
                 ) : (
@@ -595,7 +595,7 @@ export function ManifestForm({
             siteType={quickerSignHandler.siteType}
           />
           <EditWasteModal
-            appendWaste={wasteArrayMethods.append}
+            wasteArrayMethods={wasteArrayMethods}
             currentWastes={wastes}
             handleClose={toggleWlFormShow}
             show={showWasteLineForm}

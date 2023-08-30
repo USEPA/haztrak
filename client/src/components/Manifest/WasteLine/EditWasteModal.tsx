@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { WasteLineForm } from './WasteLineForm';
-import { UseFieldArrayAppend } from 'react-hook-form';
+import { UseFieldArrayReturn } from 'react-hook-form';
 import { Manifest } from 'components/Manifest/manifestSchema';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { HtModal } from 'components/Ht';
+import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 
 interface Props {
   handleClose: () => void;
   show: boolean | undefined;
-  currentWastes?: Array<WasteLine>;
-  appendWaste: UseFieldArrayAppend<Manifest, 'wastes'>;
+  currentWastes: Array<WasteLine>;
+  wasteArrayMethods: UseFieldArrayReturn<Manifest, 'wastes'>;
 }
 
 /**
@@ -18,7 +19,13 @@ interface Props {
  * pleasant to look at modal.
  * @constructor
  */
-export function EditWasteModal({ show, handleClose, appendWaste, currentWastes }: Props) {
+export function EditWasteModal({ show, handleClose, currentWastes, wasteArrayMethods }: Props) {
+  const { editWasteLine } = useContext<ManifestContextType>(ManifestContext);
+  // const waste = editWasteLine ? currentWastes[editWasteLine] : undefined;
+  const waste = currentWastes[editWasteLine];
+  const lineNumber = editWasteLine ? editWasteLine : currentWastes.length + 1;
+  console.log('currentWaste', currentWastes);
+  console.log('waste', waste);
   return (
     <HtModal showModal={show ? show : false} handleClose={handleClose} dialogClassName="modal-90w">
       <HtModal.Header closeButton>
@@ -35,8 +42,9 @@ export function EditWasteModal({ show, handleClose, appendWaste, currentWastes }
       </HtModal.Header>
       <HtModal.Body>
         <WasteLineForm
-          appendWaste={appendWaste}
-          currentWastes={currentWastes}
+          wasteArrayMethods={wasteArrayMethods}
+          lineNumber={lineNumber}
+          waste={waste}
           handleClose={handleClose}
         />
       </HtModal.Body>
