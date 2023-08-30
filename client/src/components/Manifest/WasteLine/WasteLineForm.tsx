@@ -75,6 +75,7 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
   /**
    * toggleEpaWaste - set state and form value for EPA waste
    * If EPA waste is set to true, then DOT hazardous must also be true.
+   * If EPA waste is set to false, then federal waste codes must be cleared.
    * @param checked
    */
   const toggleEpaWaste = (checked: boolean) => {
@@ -83,6 +84,9 @@ export function WasteLineForm({ handleClose, appendWaste, currentWastes }: Waste
     if (checked) {
       setValue('dotHazardous', true);
       setDotHazardous(true);
+    }
+    if (!checked) {
+      setValue('hazardousWaste.federalWasteCodes', []);
     }
   };
 

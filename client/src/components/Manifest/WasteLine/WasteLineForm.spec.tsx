@@ -88,4 +88,22 @@ describe('WasteLineForm', () => {
     // Assert
     expect(federalWasteCodeSelect).toBeDisabled();
   });
+  test('If epaWaste is false, federal waste codes are cleared', async () => {
+    // Arrange
+    renderWithProviders(
+      <WasteLineForm
+        appendWaste={() => console.log('waste appended')}
+        handleClose={() => console.log('close action handled')}
+      />,
+      {}
+    );
+    const epaWasteSwitch = await screen.findByRole('checkbox', { name: /EPA Hazardous Waste?/i });
+    const federalWasteCodeSelect = await screen.findByLabelText('Federal Waste Codes');
+    await userEvent.type(federalWasteCodeSelect, 'D001');
+    expect(federalWasteCodeSelect).toHaveValue('D001');
+    // Act
+    await userEvent.click(epaWasteSwitch);
+    // Assert
+    expect(federalWasteCodeSelect).toHaveValue('');
+  });
 });
