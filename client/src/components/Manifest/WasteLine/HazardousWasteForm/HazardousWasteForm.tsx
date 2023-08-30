@@ -73,6 +73,7 @@ export function HazardousWasteForm({ epaWaste }: HazardousWasteFormProps) {
                   <Select
                     id="hazardousWasteFederalWasteCodes"
                     {...field}
+                    aria-label="Federal Waste Codes"
                     isDisabled={!epaWaste}
                     options={federalWasteCodes}
                     isLoading={federalLoading}

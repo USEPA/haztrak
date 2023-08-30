@@ -71,4 +71,21 @@ describe('WasteLineForm', () => {
     expect(epaWasteSwitch).toBeChecked();
     expect(dotHazSwitch).toBeChecked();
   });
+  test('If epaWaste is false, federal waste code select is disabled', async () => {
+    // Arrange
+    renderWithProviders(
+      <WasteLineForm
+        appendWaste={() => console.log('waste appended')}
+        handleClose={() => console.log('close action handled')}
+      />,
+      {}
+    );
+    const epaWasteSwitch = await screen.findByRole('checkbox', { name: /EPA Hazardous Waste?/i });
+    const federalWasteCodeSelect = await screen.findByLabelText('Federal Waste Codes');
+    // Act
+    await userEvent.click(epaWasteSwitch);
+    expect(epaWasteSwitch).not.toBeChecked(); // check EPA waste is false
+    // Assert
+    expect(federalWasteCodeSelect).toBeDisabled();
+  });
 });
