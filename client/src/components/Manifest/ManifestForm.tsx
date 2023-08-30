@@ -14,7 +14,7 @@ import { AddHandler, GeneratorForm, Handler } from './Handler';
 import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
-import { AddWasteLine, WasteLineTable } from './WasteLine';
+import { EditWasteModal, WasteLineTable } from './WasteLine';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -586,7 +586,7 @@ export function ManifestForm({
             mtnHandler={quickerSignHandler.handler}
             siteType={quickerSignHandler.siteType}
           />
-          <AddWasteLine
+          <EditWasteModal
             appendWaste={wasteArrayMethods.append}
             currentWastes={wastes}
             handleClose={toggleWlFormShow}

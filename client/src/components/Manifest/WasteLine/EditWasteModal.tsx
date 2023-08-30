@@ -18,7 +18,7 @@ interface Props {
  * pleasant to look at modal.
  * @constructor
  */
-export function AddWasteLine({ show, handleClose, appendWaste, currentWastes }: Props) {
+export function EditWasteModal({ show, handleClose, appendWaste, currentWastes }: Props) {
   return (
     <HtModal showModal={show ? show : false} handleClose={handleClose} dialogClassName="modal-90w">
       <HtModal.Header closeButton>
