@@ -12,7 +12,6 @@ interface WasteLineTableProps {
 
 export function WasteLineTable({ wastes, toggleWLModal }: WasteLineTableProps) {
   const { editWasteLine, setEditWasteLine } = useContext<ManifestContextType>(ManifestContext);
-  console.log('editWasteLine', editWasteLine);
   if (!wastes || wastes.length < 1) {
     return <></>;
   }
@@ -22,12 +21,14 @@ export function WasteLineTable({ wastes, toggleWLModal }: WasteLineTableProps) {
   //     wastes[i].lineNumber = i + 1;
   //   }
   // }
+  console.log('waste line desc', wastes[0].wasteDescription);
+  console.log('waste line dot', wastes[0].dotInformation?.printedDotInformation);
   return (
     <Table striped>
       <thead>
         <tr>
           <th>#</th>
-          <th>U.S. DOT Description</th>
+          <th>Description</th>
           <th>Containers</th>
           <th>Type</th>
           <th>Codes</th>
@@ -47,7 +48,7 @@ export function WasteLineTable({ wastes, toggleWLModal }: WasteLineTableProps) {
                   textOverflow: 'ellipsis',
                 }}
               >
-                {wasteLine.wasteDescription}
+                {wasteLine.wasteDescription ?? wasteLine.dotInformation?.printedDotInformation}
               </td>
               <td>{wasteLine.quantity?.containerNumber}</td>
               <td>{String(wasteLine.quantity?.containerType.code)}</td>

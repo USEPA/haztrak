@@ -60,10 +60,8 @@ export function WasteLineForm({
    */
   const onSubmit = (wasteLine: WasteLine) => {
     if (waste) {
-      console.log('lineNumber onSubmit update waste', lineNumber);
       wasteArrayMethods.update(lineNumber, wasteLine); // append the new waste line to the manifest
     } else {
-      console.log('lineNumber onSubmit new waste line', lineNumber);
       wasteArrayMethods.append(wasteLine); // append the new waste line to the manifest
     }
     handleClose();
