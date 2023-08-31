@@ -60,8 +60,6 @@ export function HazardousWasteForm({ epaWaste }: HazardousWasteFormProps) {
     <components.MultiValue {...props}>{props.data.code}</components.MultiValue>
   );
 
-  console.log('federal erros', errors);
-
   return (
     <>
       <Row className="mb-2">
