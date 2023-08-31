@@ -1,12 +1,13 @@
 import { HtForm } from 'components/Ht';
 import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 import { StateWasteCodeSelect } from 'components/Manifest/WasteLine/HazardousWasteForm/StateWasteCodeSelect';
-import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { Code, HazardousWaste, WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import React, { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
 import { useGetFedWasteCodesQuery } from 'store/wasteCode.slice';
+import { ErrorMessage } from '@hookform/error-message';
 
 interface HazardousWasteFormProps {
   epaWaste: boolean;
@@ -18,7 +19,10 @@ interface HazardousWasteFormProps {
  * @constructor
  */
 export function HazardousWasteForm({ epaWaste }: HazardousWasteFormProps) {
-  const { control } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<WasteLine>();
   const { generatorStateCode, tsdfStateCode } = useContext<ManifestContextType>(ManifestContext);
   // Retrieve federal waste codes from the server
   const {
@@ -78,6 +82,7 @@ export function HazardousWasteForm({ epaWaste }: HazardousWasteFormProps) {
                     options={federalWasteCodes}
                     isLoading={federalLoading}
                     getOptionLabel={(option) =>
+                      // @ts-ignore
                       `${option.code}: ${option.description.toLowerCase()}`
                     }
                     getOptionValue={(option) => option.code}
@@ -87,10 +92,21 @@ export function HazardousWasteForm({ epaWaste }: HazardousWasteFormProps) {
                     isMulti
                     isClearable
                     hideSelectedOptions
+                    classNames={{
+                      control: () =>
+                        `form-control p-0 rounded-2 ${
+                          errors.hazardousWaste?.federalWasteCodes && 'border-danger'
+                        } `,
+                    }}
                   />
                 );
               }}
-            ></Controller>
+            />
+            <ErrorMessage
+              errors={errors}
+              name={'hazardousWaste.federalWasteCodes'}
+              render={({ message }) => <span className="text-danger">{message}</span>}
+            />
             {federalError ? (
               <i className="text-danger">
                 We experienced an error retrieving the federal waste codes

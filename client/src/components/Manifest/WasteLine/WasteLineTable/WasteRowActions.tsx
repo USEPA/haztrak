@@ -13,7 +13,7 @@ interface WasteRowActionProps {
 }
 
 /**
- * WasteRowActions - actions for controlling waste lines on a manifest
+ * WasteRowActions - actions for controlling wast lines on a manifest
  * @constructor
  */
 function WasteRowActions({

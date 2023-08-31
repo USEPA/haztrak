@@ -51,6 +51,8 @@ const hazardousWasteSchema = z.object({
   generatorStateWasteCodes: z.array(codeSchema).optional(),
 });
 
+export type HazardousWaste = z.infer<typeof hazardousWasteSchema>;
+
 const dotInformationSchema = z.object({
   idNumber: codeSchema,
   printedDotInformation: z.string(),
@@ -102,6 +104,16 @@ export const wasteLineSchema = z
   )
   .refine(
     (wasteLine) => {
+      // If stream is federally hazardous waste, a federal waste code is required
+      return wasteLine.epaWaste && wasteLine.hazardousWaste?.federalWasteCodes;
+    },
+    {
+      path: ['hazardousWaste.federalWasteCodes'],
+      message: 'Federal waste code is required if the waste is EPA Waste',
+    }
+  )
+  .refine(
+    (wasteLine) => {
       // If material is DOT hazardous, then dotInformation.idNumber.code is required
       return !(wasteLine.dotHazardous && !wasteLine.dotInformation?.printedDotInformation);
     },
@@ -111,26 +123,8 @@ export const wasteLineSchema = z
     }
   );
 
+/**
+ * WasteLine is the interface for the waste line object in the manifest
+ */
 export type WasteLine = z.infer<typeof wasteLineSchema>;
-
-// /**
-//  * Represents waste information captures on EPA's hazardous waste manifest
-//  */
-// interface WasteLine {
-//   dotHazardous: boolean;
-//   epaWaste: boolean;
-//   pcb: boolean;
-//   lineNumber: number;
-//   dotInformation?: DotInformation;
-//   wasteDescription?: string;
-//   quantity?: Quantity;
-//   brInfo?: BrInfo;
-//   br: boolean;
-//   hazardousWaste?: HazardousWaste;
-//   pcbInfos?: PcbInfo[];
-//   discrepancyResidueInfo?: DiscrepancyResidueInfo;
-//   managementMethod?: Code;
-//   additionalInfo?: AdditionalInfo;
-// }
-
 export type { ContainerDescription };
