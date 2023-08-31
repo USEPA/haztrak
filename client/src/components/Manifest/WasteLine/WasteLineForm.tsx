@@ -59,6 +59,8 @@ export function WasteLineForm({
    * @param wasteLine the data submitted from the form
    */
   const onSubmit = (wasteLine: WasteLine) => {
+    console.log('epaWaste', wasteLine.epaWaste);
+    console.log('waste codes', wasteLine.hazardousWaste?.federalWasteCodes);
     if (waste) {
       wasteArrayMethods.update(lineNumber, wasteLine); // append the new waste line to the manifest
     } else {
