@@ -14,7 +14,8 @@ import { AddHandler, GeneratorForm, Handler } from './Handler';
 import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
-import { AddWasteLine, WasteLineTable } from './WasteLine';
+import { EditWasteModal, WasteLineTable } from './WasteLine';
+import { number } from 'zod';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -29,6 +30,8 @@ export interface ManifestContextType {
   setGeneratorStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
   tsdfStateCode?: string;
   setTsdfStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
+  editWasteLine?: number;
+  setEditWasteLine: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 interface ManifestFormProps {
@@ -44,6 +47,8 @@ export const ManifestContext = createContext<ManifestContextType>({
   setGeneratorStateCode: () => {},
   tsdfStateCode: undefined,
   setTsdfStateCode: () => {},
+  editWasteLine: undefined,
+  setEditWasteLine: () => {},
 });
 
 /**
@@ -137,7 +142,8 @@ export function ManifestForm({
   // State and methods for the manifest's waste lines
   const [showWasteLineForm, setShowWasteLineForm] = useState<boolean>(false);
   const toggleWlFormShow = () => setShowWasteLineForm(!showWasteLineForm);
-  const wastes: Array<WasteLine> = manifestMethods.getValues('wastes');
+  const [editWasteLine, setEditWasteLine] = useState<number | undefined>(undefined);
+  const allWastes: Array<WasteLine> = manifestMethods.getValues('wastes');
   const wasteArrayMethods = useFieldArray<Manifest, 'wastes'>({
     control: manifestMethods.control,
     name: 'wastes',
@@ -165,6 +171,8 @@ export function ManifestForm({
           manifestStatus: manifestStatus,
           tsdfStateCode: tsdfStateCode,
           setTsdfStateCode: setTsdfStateCode,
+          editWasteLine: editWasteLine,
+          setEditWasteLine: setEditWasteLine,
         }}
       >
         <FormProvider {...manifestMethods}>
@@ -468,7 +476,11 @@ export function ManifestForm({
               <HtCard.Header title="Waste" />
               <HtCard.Body className="pb-4">
                 {/* Table Showing current Waste Lines included on the manifest */}
-                <WasteLineTable wastes={wastes} />
+                <WasteLineTable
+                  wastes={allWastes}
+                  toggleWLModal={toggleWlFormShow}
+                  wasteArrayMethods={wasteArrayMethods}
+                />
                 {readOnly ? (
                   <></>
                 ) : (
@@ -586,9 +598,9 @@ export function ManifestForm({
             mtnHandler={quickerSignHandler.handler}
             siteType={quickerSignHandler.siteType}
           />
-          <AddWasteLine
-            appendWaste={wasteArrayMethods.append}
-            currentWastes={wastes}
+          <EditWasteModal
+            wasteArrayMethods={wasteArrayMethods}
+            currentWastes={allWastes}
             handleClose={toggleWlFormShow}
             show={showWasteLineForm}
           />
