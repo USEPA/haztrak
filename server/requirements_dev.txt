@@ -3,6 +3,6 @@ pre-commit==3.3.3
 pytest==7.4.0
 pytest-django==4.5.2
 responses==0.23.3
-ruff==0.0.286
+ruff==0.0.287
 black==23.7.0
 -r requirements.txt
