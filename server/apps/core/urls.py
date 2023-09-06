@@ -8,6 +8,7 @@ from .views import (
     RcraSitePermissionView,
     SyncProfileView,
     TaskStatusView,
+    TaskStatusView2,
 )
 
 urlpatterns = [
@@ -19,4 +20,5 @@ urlpatterns = [
     path("user/login/", Login.as_view()),
     path("task/example", ExampleTaskView.as_view()),
     path("task/<str:task_id>", TaskStatusView.as_view()),
+    path("task/status/<str:task_id>", TaskStatusView2.as_view()),
 ]

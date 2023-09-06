@@ -24,12 +24,18 @@ export function NotificationRow({ notification }: NotificationRowProps) {
   const { data, isLoading } = useGetTaskStatusQuery(notification.uniqueId, {
     pollingInterval: pollingIntervalMs,
   });
+  // const data2 = useGetTaskStatus2Query(notification.uniqueId, {
+  //   pollingInterval: pollingIntervalMs,
+  // });
+  // console.log(data2.data, data2.isLoading);
+
+  console.log('data', data);
 
   return (
     <tr key={notification.uniqueId}>
       <td className="col-8">{notification.message}</td>
       <td className="text-center">
-        {isLoading || data.taskStatus === 'PENDING' ? (
+        {isLoading || data.status === 'PENDING' ? (
           <FontAwesomeIcon spin icon={faCircleNotch} />
         ) : (
           notification.status

@@ -14,7 +14,10 @@ export const taskApi = createApi({
     getTaskStatus: build.query({
       query: (taskId) => ({ url: `${taskId}`, method: 'get' }),
     }),
+    getTaskStatus2: build.query({
+      query: (taskId) => ({ url: `status/${taskId}`, method: 'get' }),
+    }),
   }),
 });
 
-export const { useGetTaskStatusQuery } = taskApi;
+export const { useGetTaskStatusQuery, useGetTaskStatus2Query } = taskApi;
