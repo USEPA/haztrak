@@ -25,7 +25,7 @@ class CeleryTaskResultSerializer(serializers.ModelSerializer):
         fields = ["taskId", "taskName", "status", "createdDate", "doneDate"]
 
 
-class ExampleTaskView(RetrieveAPIView):
+class LaunchExampleTaskView(RetrieveAPIView):
     """
     Launches an example long-running background task
     """
