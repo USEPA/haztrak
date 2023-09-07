@@ -25,7 +25,10 @@ class TaskService:
             if cache_data is not None:
                 task_serializer = TaskStatusSerializer(data=cache_data)
                 if task_serializer.is_valid():
-                    if task_serializer.data["status"] != "PENDING":
+                    if (
+                        task_serializer.data["status"] == "SUCCESS"
+                        or task_serializer.data["status"] == "FAILURE"
+                    ):
                         return cls.get_task_results(task_id)
                     return task_serializer.data
                 if task_serializer.errors:

@@ -14,7 +14,7 @@ const initialState: NotificationState = {
 };
 
 const alertPayload = {
-  uniqueId: Date.now() - 1,
+  uniqueId: Date.now().toString(),
   createdDate: new Date().toISOString(),
   read: false,
   status: 'Error' as const,
