@@ -32,7 +32,7 @@ export function Notifications() {
                 <Table hover>
                   <thead>
                     <tr>
-                      <th className="col-8">Message</th>
+                      <th className="col-8">Task</th>
                       <th className="text-center">Status</th>
                       <th className="text-center">Time Completed</th>
                       <th className="text-center">Clear</th>
