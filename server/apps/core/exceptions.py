@@ -8,8 +8,11 @@ from rest_framework.views import exception_handler
 
 def haztrak_exception_handler(exc, context):
     """
-    This is our custom exception rcra_site that builds on DRF
-    see https://www.django-rest-framework.org/api-guide/exceptions/
+    This maps exceptions that are not directly handled by our handler functions
+    to DRF exceptions. For example, if a django ValidationError is raised,
+    it will be mapped to a DRF ValidationError.
+
+    See https://www.django-rest-framework.org/api-guide/exceptions/
     and the django-styleguide
     https://github.com/HackSoftware/Django-Styleguide#approach-1---use-drfs-default-exceptions-with-very-little-modifications
     """

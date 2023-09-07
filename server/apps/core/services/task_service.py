@@ -1,4 +1,5 @@
-from django.core.cache import cache
+from django.core.cache import CacheKeyWarning, cache
+from rest_framework.exceptions import ValidationError
 
 from apps.core.serializers import TaskStatusSerializer
 from apps.core.tasks import example_task
@@ -17,16 +18,19 @@ class TaskService:
         """
         Gets the status of a long-running celery task
         """
-        cache_data = cache.get(task_id)
-        print("cache_data", cache_data)
-        if cache_data is not None:
-            print("cache_data is not None")
-            task_serializer = TaskStatusSerializer(data=cache_data)
-            if task_serializer.is_valid():
-                return task_serializer.data
+        try:
+            cache_data = cache.get(task_id)
+            print("cache_data", cache_data)
+            if cache_data is not None:
+                task_serializer = TaskStatusSerializer(data=cache_data)
+                if task_serializer.is_valid():
+                    return task_serializer.data
+                if task_serializer.errors:
+                    raise ValidationError(f"error retrieving task ID: {task_id}")
             else:
-                print(task_serializer.errors)
-        return "NOT FOUND"
+                raise KeyError(f"error retrieving task ID: {task_id}")
+        except CacheKeyWarning:
+            return KeyError(f"error retrieving task ID: {task_id}")
 
     @staticmethod
     def launch_example_task():

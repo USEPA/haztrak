@@ -1,5 +1,6 @@
 from django_celery_results.models import TaskResult
 from rest_framework import permissions, serializers, status
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -52,6 +53,14 @@ class TaskStatusView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: Request, task_id):
-        data = TaskService.get_task_status(task_id)
-        print("task status view data: ", data)
-        return self.response(data=data, status=status.HTTP_200_OK)
+        try:
+            data = TaskService.get_task_status(task_id)
+            return self.response(data=data, status=status.HTTP_200_OK)
+        except KeyError:
+            return self.response(
+                data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
+            )
+        except ValidationError as exc:
+            return self.response(
+                data={"error": exc.detail}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
