@@ -13,7 +13,7 @@ export interface NotificationState {
  * Alert describes the payload used to interact with the Redux store 'notification' slice.
  */
 export interface HtNotification {
-  uniqueId: number | string;
+  uniqueId: string;
   createdDate: string;
   read: boolean;
   message: string;

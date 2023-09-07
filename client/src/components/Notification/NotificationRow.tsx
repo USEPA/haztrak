@@ -24,32 +24,32 @@ export function NotificationRow({ notification }: NotificationRowProps) {
   const { data, isLoading } = useGetTaskStatusQuery(notification.uniqueId, {
     pollingInterval: pollingIntervalMs,
   });
-  // const data2 = useGetTaskStatus2Query(notification.uniqueId, {
-  //   pollingInterval: pollingIntervalMs,
-  // });
-  // console.log(data2.data, data2.isLoading);
-
-  console.log('data', data);
 
   return (
-    <tr key={notification.uniqueId}>
-      <td className="col-8">{notification.message}</td>
-      <td className="text-center">
-        {isLoading || data.status === 'PENDING' ? (
-          <FontAwesomeIcon spin icon={faCircleNotch} />
-        ) : (
-          notification.status
-        )}
-      </td>
-      <td className="text-truncate">{createdDate.toLocaleTimeString()}</td>
-      <td className="text-center">
-        <Button
-          className="bg-transparent border-0"
-          onClick={() => dispatch(removeNotification(notification))}
-        >
-          <FontAwesomeIcon icon={faTrash} size="lg" className="text-danger" />
-        </Button>
-      </td>
-    </tr>
+    <>
+      {isLoading || !data ? (
+        <p>loading...</p>
+      ) : (
+        <tr key={notification.uniqueId}>
+          <td className="col-8">{data.taskName}</td>
+          <td className="text-center">
+            {data.status === 'PENDING' || data.status === 'STARTED' ? (
+              <FontAwesomeIcon spin icon={faCircleNotch} />
+            ) : (
+              data.status
+            )}
+          </td>
+          <td className="text-truncate">{data.doneDate ? data.doneDate : <p>in progress</p>}</td>
+          <td className="text-center">
+            <Button
+              className="bg-transparent border-0"
+              onClick={() => dispatch(removeNotification(notification))}
+            >
+              <FontAwesomeIcon icon={faTrash} size="lg" className="text-danger" />
+            </Button>
+          </td>
+        </tr>
+      )}
+    </>
   );
 }

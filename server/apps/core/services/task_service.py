@@ -17,10 +17,10 @@ class TaskService:
     def get_task_status(task_id):
         """
         Gets the status of a long-running celery task
+        Retrieves the task status from the cache (the default cache configured in django settings)
         """
         try:
             cache_data = cache.get(task_id)
-            print("cache_data", cache_data)
             if cache_data is not None:
                 task_serializer = TaskStatusSerializer(data=cache_data)
                 if task_serializer.is_valid():
