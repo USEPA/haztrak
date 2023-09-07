@@ -49,8 +49,12 @@ class TaskStatusView(APIView):
     """
 
     queryset = None
+    response = Response
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: Request, task_id):
-        task_data = cache.get(task_id)
-        return Response({f"{task_id}": task_data})
+        cache_status = cache.get(task_id)
+        if cache_status is not None:
+            return self.response({f"{task_id}": cache_status})
+        else:
+            return self.response({f"{task_id}": "NOT FOUND"})
