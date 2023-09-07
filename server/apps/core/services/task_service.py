@@ -1,5 +1,6 @@
-from django_celery_results.models import TaskResult
+from django.core.cache import cache
 
+from apps.core.serializers import TaskStatusSerializer
 from apps.core.tasks import example_task
 
 
@@ -16,12 +17,16 @@ class TaskService:
         """
         Gets the status of a long-running celery task
         """
-        try:
-            task = TaskResult.objects.get(task_id=task_id)
-            print(task.id)
-            return task.id
-        except TaskResult.DoesNotExist:
-            return "NOT FOUND"
+        cache_data = cache.get(task_id)
+        print("cache_data", cache_data)
+        if cache_data is not None:
+            print("cache_data is not None")
+            task_serializer = TaskStatusSerializer(data=cache_data)
+            if task_serializer.is_valid():
+                return task_serializer.data
+            else:
+                print(task_serializer.errors)
+        return "NOT FOUND"
 
     @staticmethod
     def launch_example_task():

@@ -1,4 +1,3 @@
-from django.core.cache import cache
 from django_celery_results.models import TaskResult
 from rest_framework import permissions, serializers, status
 from rest_framework.generics import RetrieveAPIView
@@ -53,8 +52,6 @@ class TaskStatusView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: Request, task_id):
-        cache_status = cache.get(task_id)
-        if cache_status is not None:
-            return self.response({f"{task_id}": cache_status})
-        else:
-            return self.response({f"{task_id}": "NOT FOUND"})
+        data = TaskService.get_task_status(task_id)
+        print("task status view data: ", data)
+        return self.response(data=data, status=status.HTTP_200_OK)
