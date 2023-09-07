@@ -77,3 +77,33 @@ class RcraProfileSerializer(ModelSerializer):
             "phoneNumber",
             "apiUser",
         ]
+
+
+class TaskStatusSerializer(serializers.Serializer):
+    """
+    Serializer for status of long-running celery tasks
+    """
+
+    taskId = serializers.CharField(
+        source="task_id",
+        required=True,
+    )
+    taskName = serializers.CharField(
+        source="task_name",
+        required=True,
+    )
+    status = serializers.ChoiceField(
+        required=True,
+        choices=["PENDING", "STARTED", "SUCCESS", "FAILURE", "NOT FOUND"],
+    )
+    createdDate = serializers.DateTimeField(
+        source="date_created",
+        required=False,
+    )
+    doneDate = serializers.DateTimeField(
+        source="date_done",
+        required=False,
+    )
+    result = serializers.JSONField(
+        required=False,
+    )
