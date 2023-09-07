@@ -1,7 +1,7 @@
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
-import { taskApi } from 'store/exampleTask.slice';
-import rcraProfileReducers from 'store/rcraProfileSlice/index';
 import notificationReducers from 'store/notificationSlice';
+import rcraProfileReducers from 'store/rcraProfileSlice/index';
+import { taskApi } from 'store/task.slice';
 import userReducers, { login } from 'store/userSlice';
 import { wasteCodeApi } from 'store/wasteCode.slice';
 

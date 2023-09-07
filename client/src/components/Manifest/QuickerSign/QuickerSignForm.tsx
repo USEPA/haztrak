@@ -1,17 +1,17 @@
 import { faFileSignature } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AxiosError, AxiosResponse } from 'axios';
 import { HtForm } from 'components/Ht';
 import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
+import { QuickerSignature } from 'components/Manifest/QuickerSign/quickerSignSchema';
+import { Transporter } from 'components/Manifest/Transporter';
 import React from 'react';
 import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { selectUserName } from 'store/userSlice';
 import { useNavigate } from 'react-router-dom';
-import { addNotification, useAppDispatch, useAppSelector } from 'store';
 import { htApi } from 'services';
-import { AxiosError, AxiosResponse } from 'axios';
-import { QuickerSignature } from 'components/Manifest/QuickerSign/quickerSignSchema';
-import { Transporter } from 'components/Manifest/Transporter';
+import { addNotification, useAppDispatch, useAppSelector } from 'store';
+import { selectUserName } from 'store/userSlice';
 
 interface QuickerSignProps {
   mtn: Array<string>;
@@ -75,7 +75,7 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
       .catch((error: AxiosError) => {
         dispatch(
           addNotification({
-            uniqueId: Date.now(),
+            uniqueId: Date.now().toString(),
             createdDate: new Date().toISOString(),
             message: `${error.message}`,
             status: 'Error',

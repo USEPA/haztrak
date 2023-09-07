@@ -30,6 +30,7 @@ class TaskService:
             else:
                 raise KeyError(f"error retrieving task ID: {task_id}")
         except CacheKeyWarning:
+            # Cache keys have a max length, raise a predictable error if the key is too long
             return KeyError(f"error retrieving task ID: {task_id}")
 
     @staticmethod

@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { removeNotification, useAppDispatch } from 'store';
-import { useGetTaskStatusQuery } from 'store/exampleTask.slice';
 import { HtNotification } from 'store/notificationSlice/notification.slice';
+import { useGetTaskStatusQuery } from 'store/task.slice';
 
 interface NotificationRowProps {
   notification: HtNotification;
@@ -39,7 +39,7 @@ export function NotificationRow({ notification }: NotificationRowProps) {
               data.status
             )}
           </td>
-          <td className="text-truncate">{data.doneDate ? data.doneDate : <p>in progress</p>}</td>
+          <td className="text-truncate">{data.doneDate ? data.doneDate : ''}</td>
           <td className="text-center">
             <Button
               className="bg-transparent border-0"

@@ -34,7 +34,7 @@ export function Notifications() {
                     <tr>
                       <th className="col-8">Message</th>
                       <th className="text-center">Status</th>
-                      <th className="text-center">Time</th>
+                      <th className="text-center">Time Completed</th>
                       <th className="text-center">Clear</th>
                     </tr>
                   </thead>
