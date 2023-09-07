@@ -54,15 +54,3 @@ class TaskStatusView(APIView):
     def get(self, request: Request, task_id):
         task_data = cache.get(task_id)
         return Response({f"{task_id}": task_data})
-
-
-class TaskStatusView2(APIView):
-    """
-    Endpoint for retrieving the status of long-running celery tasks
-    """
-
-    permission_classes = [permissions.AllowAny]
-
-    def get(self, request: Request, task_id):
-        print("task_requested", task_id)
-        return Response({"taskId": "test", "status": "blah", "taskResult": "success"})

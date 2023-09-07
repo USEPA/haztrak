@@ -5,4 +5,4 @@ from .profile_views import (
     RcraSitePermissionView,
     SyncProfileView,
 )
-from .task_views import ExampleTaskView, TaskStatusView, TaskStatusView2
+from .task_views import ExampleTaskView, TaskStatusView
