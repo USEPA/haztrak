@@ -16,6 +16,8 @@ export function Notifications() {
   useTitle('Notifications');
   const notifications: Array<HtNotification> = useAppSelector(selectNotifications);
 
+  console.log('notifications', notifications);
+
   return (
     <>
       <Container className="py-2">

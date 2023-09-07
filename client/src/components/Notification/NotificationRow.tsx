@@ -25,8 +25,6 @@ export function NotificationRow({ notification }: NotificationRowProps) {
     pollingInterval: pollingIntervalMs,
   });
 
-  console.log('data', data);
-
   return (
     <>
       {isLoading || !data ? (

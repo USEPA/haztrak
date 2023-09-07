@@ -29,7 +29,7 @@ const initialState: NotificationState = {
 /**
  * Retrieves a user's RcraProfile from the server.
  */
-export const getExampleTask = createAsyncThunk<HtNotification>(
+export const launchExampleTask = createAsyncThunk<HtNotification>(
   'notification/getExampleTask',
   async () => {
     const response = await axios.get(`${import.meta.env.VITE_HT_API_URL}/api/task/example`);
@@ -75,15 +75,15 @@ const notificationSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getExampleTask.pending, (state) => {
+      .addCase(launchExampleTask.pending, (state) => {
         return {
           ...state,
         };
       })
-      .addCase(getExampleTask.fulfilled, (state, action) => {
+      .addCase(launchExampleTask.fulfilled, (state, action) => {
         state.notifications.push(action.payload);
       })
-      .addCase(getExampleTask.rejected, (state) => {
+      .addCase(launchExampleTask.rejected, (state) => {
         return state;
       });
   },
