@@ -17,7 +17,6 @@ interface NotificationRowProps {
  */
 export function NotificationRow({ notification }: NotificationRowProps) {
   const dispatch = useAppDispatch();
-  const createdDate = new Date(notification.createdDate);
   const pollingIntervalMs = 5000;
 
   // Poll the back end to check on the status of background running tasks
@@ -25,10 +24,12 @@ export function NotificationRow({ notification }: NotificationRowProps) {
     pollingInterval: pollingIntervalMs,
   });
 
+  const doneDate = new Date(data?.doneDate ? data.doneDate : '').toLocaleTimeString();
+
   return (
     <>
       {isLoading || !data ? (
-        <p>loading...</p>
+        ''
       ) : (
         <tr key={notification.uniqueId}>
           <td className="col-8">{data.taskName}</td>
@@ -39,7 +40,7 @@ export function NotificationRow({ notification }: NotificationRowProps) {
               data.status
             )}
           </td>
-          <td className="text-truncate">{data.doneDate ? data.doneDate : ''}</td>
+          <td className="text-truncate">{doneDate}</td>
           <td className="text-center">
             <Button
               className="bg-transparent border-0"
