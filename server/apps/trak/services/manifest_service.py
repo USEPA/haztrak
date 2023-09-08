@@ -158,8 +158,7 @@ class ManifestService:
         :return:
         """
         logger.info("create rcra manifest with arguments: ", manifest)
-        resp = self.rcrainfo.save_manifest(manifest)
-        print("resp: ", resp.json())
+        return self.rcrainfo.save_manifest(manifest)
 
     @staticmethod
     def _filter_mtn(signature: QuickerSign) -> dict[str, list[str]]:

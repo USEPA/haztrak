@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { htApiBaseQuery } from 'store/baseQuery';
 
-interface TaskStatus {
+export interface TaskStatus {
   status: 'PENDING' | 'STARTED' | 'SUCCESS' | 'FAILURE' | 'NOT FOUND';
   taskId: string;
   taskName: string;
