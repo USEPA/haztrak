@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
 import { HtCard, HtForm } from 'components/Ht';
+import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 import { Manifest } from 'components/Manifest/manifestSchema';
 import { dotIdNumbers } from 'components/Manifest/WasteLine/dotInfo';
 import { HazardousWasteForm } from 'components/Manifest/WasteLine/HazardousWasteForm';
 import { WasteLine, wasteLineSchema } from 'components/Manifest/WasteLine/wasteLineSchema';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Controller, FormProvider, UseFieldArrayReturn, useForm } from 'react-hook-form';
 import { QuantityForm } from './QuantityForm';
@@ -29,9 +30,12 @@ export function WasteLineForm({
   lineNumber,
 }: WasteLineFormProps) {
   const [dotHazardous, setDotHazardous] = React.useState<boolean>(
-    waste?.dotHazardous ? waste.dotHazardous : true
+    waste?.dotHazardous === undefined ? true : waste.dotHazardous
   );
-  const [epaWaste, setEpaWaste] = React.useState<boolean>(waste?.epaWaste ? waste.epaWaste : true);
+  const { editWasteLineIndex } = useContext<ManifestContextType>(ManifestContext);
+  const [epaWaste, setEpaWaste] = React.useState<boolean>(
+    waste?.epaWaste === undefined ? true : waste.epaWaste
+  );
   // @ts-ignore
   const wasteLineDefaultValues: Partial<WasteLine> = waste
     ? waste
@@ -54,15 +58,17 @@ export function WasteLineForm({
     setValue,
   } = wasteMethods;
 
+  console.log('initial waste: ', waste);
+  console.log('errors : ', errors);
+
   /**
    * onSubmit is the callback function for the form submission.
    * @param wasteLine the data submitted from the form
    */
   const onSubmit = (wasteLine: WasteLine) => {
-    console.log('epaWaste', wasteLine.epaWaste);
-    console.log('waste codes', wasteLine.hazardousWaste?.federalWasteCodes);
-    if (waste) {
-      wasteArrayMethods.update(lineNumber, wasteLine); // append the new waste line to the manifest
+    console.log('waste added', wasteLine);
+    if (editWasteLineIndex) {
+      wasteArrayMethods.update(editWasteLineIndex, wasteLine); // append the new waste line to the manifest
     } else {
       wasteArrayMethods.append(wasteLine); // append the new waste line to the manifest
     }
@@ -113,7 +119,7 @@ export function WasteLineForm({
                   <Controller
                     control={wasteMethods.control}
                     name={'dotHazardous'}
-                    render={({ field }) => (
+                    render={() => (
                       <HtForm.Switch
                         id="dotHazardousSwitch"
                         label="DOT Hazardous Material?"
@@ -127,7 +133,7 @@ export function WasteLineForm({
                   <Controller
                     control={wasteMethods.control}
                     name={'epaWaste'}
-                    render={({ field }) => (
+                    render={() => (
                       <HtForm.Switch
                         id="epaWasteSwitch"
                         label="EPA Hazardous Waste?"
@@ -154,7 +160,8 @@ export function WasteLineForm({
                   />
                 </Row>
               </Container>
-              {!dotHazardous && (
+
+              {!dotHazardous ? (
                 <Row>
                   <HtForm.Group>
                     <HtForm.Label htmlFor="wasteDescription">Waste Description</HtForm.Label>
@@ -167,8 +174,7 @@ export function WasteLineForm({
                     <div className="invalid-feedback">{errors.wasteDescription?.message}</div>
                   </HtForm.Group>
                 </Row>
-              )}
-              {dotHazardous && (
+              ) : (
                 <Row>
                   <Col xs={9}>
                     <HtForm.Group>

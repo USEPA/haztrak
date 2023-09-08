@@ -31,8 +31,8 @@ export interface ManifestContextType {
   setGeneratorStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
   tsdfStateCode?: string;
   setTsdfStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
-  editWasteLine?: number;
-  setEditWasteLine: React.Dispatch<React.SetStateAction<number | undefined>>;
+  editWasteLineIndex?: number;
+  setEditWasteLineIndex: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 interface ManifestFormProps {
@@ -48,8 +48,8 @@ export const ManifestContext = createContext<ManifestContextType>({
   setGeneratorStateCode: () => {},
   tsdfStateCode: undefined,
   setTsdfStateCode: () => {},
-  editWasteLine: undefined,
-  setEditWasteLine: () => {},
+  editWasteLineIndex: undefined,
+  setEditWasteLineIndex: () => {},
 });
 
 /**
@@ -195,8 +195,8 @@ export function ManifestForm({
           manifestStatus: manifestStatus,
           tsdfStateCode: tsdfStateCode,
           setTsdfStateCode: setTsdfStateCode,
-          editWasteLine: editWasteLine,
-          setEditWasteLine: setEditWasteLine,
+          editWasteLineIndex: editWasteLine,
+          setEditWasteLineIndex: setEditWasteLine,
         }}
       >
         <FormProvider {...manifestMethods}>

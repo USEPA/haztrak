@@ -89,7 +89,7 @@ export const wasteLineSchema = z
     },
     {
       path: ['wasteDescription'],
-      message: 'Required if federally regulated hazardous waste',
+      message: 'Required',
     }
   )
   .refine(
@@ -104,8 +104,14 @@ export const wasteLineSchema = z
   )
   .refine(
     (wasteLine) => {
-      // If stream is federally hazardous waste, a federal waste code is required
-      return wasteLine.epaWaste && wasteLine.hazardousWaste?.federalWasteCodes;
+      // If waste is EPA federal hazardous, an EPA waste code is required
+      if (wasteLine.epaWaste) {
+        if (wasteLine.hazardousWaste?.federalWasteCodes) {
+          return wasteLine.hazardousWaste?.federalWasteCodes?.length > 0;
+        }
+        return false;
+      }
+      return true;
     },
     {
       path: ['hazardousWaste.federalWasteCodes'],
