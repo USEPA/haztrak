@@ -144,7 +144,7 @@ class CreateRcraManifestView(GenericAPIView):
             task = create_rcra_manifest.delay(
                 manifest=manifest_serializer.data, username=str(request.user)
             )
-            return self.response(data={"task": task.id}, status=status.HTTP_201_CREATED)
+            return self.response(data={"taskId": task.id}, status=status.HTTP_201_CREATED)
         else:
             logger.error("manifest_serializer errors: ", manifest_serializer.errors)
             return self.response(

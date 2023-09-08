@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Dict, List
 
 from django.db import transaction
+from emanifest import RcrainfoResponse
 from requests import RequestException
 
 from apps.core.services import RcrainfoService
@@ -112,6 +113,7 @@ class ManifestService:
             that corresponds to what manifest where successfully pulled or not.
         """
         results = {"success": [], "error": []}
+        logger.info(f"pulling manifests {tracking_numbers}")
         for mtn in tracking_numbers:
             try:
                 manifest_json: dict = self._retrieve_manifest(mtn)
@@ -120,6 +122,7 @@ class ManifestService:
             except Exception as exc:
                 logger.warning(f"error pulling manifest {mtn}: {exc}")
                 results["error"].append(mtn)
+        logger.info(f"pull manifests results: {results}")
         return results
 
     def sign_manifest(self, signature: QuickerSign) -> dict[str, list[str]]:
@@ -151,15 +154,27 @@ class ManifestService:
             results["error"].extend(results["success"])  # Temporary
         return results
 
-    def create_rcra_manifest(self, *, manifest: Dict):
+    def create_rcra_manifest(self, *, manifest: dict) -> RcrainfoResponse:
         """
         Create a manifest in RCRAInfo through the RESTful API.
         :param manifest: Dict
         :return:
         """
-        logger.info("create rcra manifest with arguments: ", manifest)
-        resp = self.rcrainfo.save_manifest(manifest)
-        print("resp: ", resp.json())
+        logger.info(f"create rcra manifest with arguments: {manifest}")
+        create_resp: RcrainfoResponse = self.rcrainfo.save_manifest(manifest)
+        try:
+            if create_resp.ok:
+                logger.info(
+                    f"successfully created manifest "
+                    f"{create_resp.json()['manifestTrackingNumber']} in RCRAInfo"
+                )
+                self.pull_manifests([create_resp.json()["manifestTrackingNumber"]])
+            return create_resp
+        except KeyError:
+            logger.error(
+                f"error retrieving manifestTrackingNumber from response: {create_resp.json()}"
+            )
+            raise ValueError("malformed payload")
 
     @staticmethod
     def _filter_mtn(signature: QuickerSign) -> dict[str, list[str]]:

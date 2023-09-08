@@ -4,6 +4,7 @@ from typing import Dict, List, Optional
 
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
+from emanifest import RcrainfoResponse
 
 from apps.sites.models import RcraSiteType
 from apps.trak.models import QuickerSign
@@ -100,6 +101,12 @@ def create_rcra_manifest(self, *, manifest: dict, username: str):
     try:
         logger.debug(f"creating manifest: {manifest}")
         manifest_service = ManifestService(username=username)
-        manifest_service.create_rcra_manifest(manifest=manifest)
+        resp: RcrainfoResponse = manifest_service.create_rcra_manifest(manifest=manifest)
+        if resp.ok:
+            logger.info(f"successfully created manifest: {manifest}")
+            return resp.json()
+        logger.error(f"failed to create manifest ({manifest}): {resp.json()}")
+        return resp.json()
     except Exception as exc:
         logger.error("error: ", exc)
+        return {"error": f"Internal Error: {exc}"}

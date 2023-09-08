@@ -11,7 +11,6 @@ from apps.sites.models import RcraSiteType, RcraStates, Role
 from apps.trak.models import Handler
 
 from .base_models import TrakBaseManager, TrakBaseModel
-from .signature_models import ESignature
 from .transporter_models import Transporter
 from .waste_models import WasteLine
 
@@ -208,7 +207,7 @@ class Manifest(TrakBaseModel):
     # wastes
     rejection = models.BooleanField(
         blank=True,
-        default=False,
+        null=True,
     )
     rejection_info = models.JSONField(
         verbose_name="Rejection Information",

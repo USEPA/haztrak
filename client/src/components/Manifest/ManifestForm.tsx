@@ -9,13 +9,14 @@ import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { htApi } from 'services';
+import { addNotification, useAppDispatch } from 'store';
+import { TaskStatus } from 'store/task.slice';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
 import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal, QuickerSignModalBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
 import { EditWasteModal, WasteLineTable } from './WasteLine';
-import { number } from 'zod';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -30,8 +31,8 @@ export interface ManifestContextType {
   setGeneratorStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
   tsdfStateCode?: string;
   setTsdfStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
-  editWasteLine?: number;
-  setEditWasteLine: React.Dispatch<React.SetStateAction<number | undefined>>;
+  editWasteLineIndex?: number;
+  setEditWasteLineIndex: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 interface ManifestFormProps {
@@ -47,8 +48,8 @@ export const ManifestContext = createContext<ManifestContextType>({
   setGeneratorStateCode: () => {},
   tsdfStateCode: undefined,
   setTsdfStateCode: () => {},
-  editWasteLine: undefined,
-  setEditWasteLine: () => {},
+  editWasteLineIndex: undefined,
+  setEditWasteLineIndex: () => {},
 });
 
 /**
@@ -71,6 +72,7 @@ export function ManifestForm({
       ...manifestData,
     };
   }
+  const dispatch = useAppDispatch();
   // React-Hook-Form methods and state
   const manifestMethods = useForm<Manifest>({
     values: values,
@@ -92,8 +94,23 @@ export function ManifestForm({
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log('Manifest Submitted', data);
     htApi
-      .post('/rcra/manifest/create', data)
-      .then((response) => console.log(response))
+      .post<TaskStatus>('/rcra/manifest/create', data)
+      .then((response) => {
+        console.log(response);
+        return response;
+      })
+      .then((r) => {
+        dispatch(
+          addNotification(
+            // @ts-ignore
+            {
+              uniqueId: r.data.taskId,
+              createdDate: new Date().toISOString(),
+              inProgress: true,
+            }
+          )
+        );
+      })
       .catch((r) => console.error(r));
   };
 
@@ -171,8 +188,8 @@ export function ManifestForm({
           manifestStatus: manifestStatus,
           tsdfStateCode: tsdfStateCode,
           setTsdfStateCode: setTsdfStateCode,
-          editWasteLine: editWasteLine,
-          setEditWasteLine: setEditWasteLine,
+          editWasteLineIndex: editWasteLine,
+          setEditWasteLineIndex: setEditWasteLine,
         }}
       >
         <FormProvider {...manifestMethods}>

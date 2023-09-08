@@ -1,3 +1,4 @@
+from django_celery_results.models import TaskResult
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
@@ -77,3 +78,69 @@ class RcraProfileSerializer(ModelSerializer):
             "phoneNumber",
             "apiUser",
         ]
+
+
+class TaskResultSerializer(serializers.ModelSerializer):
+    taskId = serializers.CharField(
+        source="task_id",
+        required=True,
+    )
+    taskName = serializers.CharField(
+        source="task_name",
+        required=True,
+    )
+    status = serializers.ChoiceField(
+        required=True,
+        choices=["PENDING", "STARTED", "SUCCESS", "FAILURE", "NOT FOUND"],
+    )
+    createdDate = serializers.DateTimeField(
+        source="date_created",
+        required=False,
+    )
+    doneDate = serializers.DateTimeField(
+        source="date_done",
+        required=False,
+    )
+    result = serializers.JSONField(
+        required=True,
+    )
+
+    class Meta:
+        model = TaskResult
+        fields = [
+            "taskId",
+            "taskName",
+            "status",
+            "createdDate",
+            "doneDate",
+        ]
+
+
+class TaskStatusSerializer(serializers.Serializer):
+    """
+    Serializer for status of long-running celery tasks
+    """
+
+    taskId = serializers.CharField(
+        source="task_id",
+        required=True,
+    )
+    taskName = serializers.CharField(
+        source="task_name",
+        required=True,
+    )
+    status = serializers.ChoiceField(
+        required=True,
+        choices=["PENDING", "STARTED", "SUCCESS", "FAILURE", "NOT FOUND"],
+    )
+    createdDate = serializers.DateTimeField(
+        source="date_created",
+        required=False,
+    )
+    doneDate = serializers.DateTimeField(
+        source="date_done",
+        required=False,
+    )
+    result = serializers.JSONField(
+        required=False,
+    )

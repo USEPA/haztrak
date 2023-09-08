@@ -1,12 +1,10 @@
-import { faTools } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useContext } from 'react';
-import { Button, Table } from 'react-bootstrap';
-import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
-import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
-import { WasteRowActions } from 'components/Manifest/WasteLine/WasteLineTable/WasteRowActions';
-import { UseFieldArrayReturn } from 'react-hook-form';
 import { Manifest } from 'components/Manifest';
+import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
+import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { WasteRowActions } from 'components/Manifest/WasteLine/WasteLineTable/WasteRowActions';
+import React, { useContext } from 'react';
+import { Table } from 'react-bootstrap';
+import { UseFieldArrayReturn } from 'react-hook-form';
 
 interface WasteLineTableProps {
   wastes: Array<WasteLine>;
@@ -15,7 +13,8 @@ interface WasteLineTableProps {
 }
 
 export function WasteLineTable({ wastes, toggleWLModal, wasteArrayMethods }: WasteLineTableProps) {
-  const { editWasteLine, setEditWasteLine } = useContext<ManifestContextType>(ManifestContext);
+  const { editWasteLineIndex, setEditWasteLineIndex } =
+    useContext<ManifestContextType>(ManifestContext);
   if (!wastes || wastes.length < 1) {
     return <></>;
   }
@@ -35,7 +34,7 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteArrayMethods }: Was
         {wastes.map((wasteLine, index) => {
           return (
             <tr key={index}>
-              <td>{wasteLine.lineNumber + 1}</td>
+              <td>{wasteLine.lineNumber}</td>
               <td
                 style={{
                   maxWidth: '200px',
@@ -68,7 +67,7 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteArrayMethods }: Was
                   index={index}
                   wasteArrayMethods={wasteArrayMethods}
                   toggleWLModal={toggleWLModal}
-                  setEditWasteLine={setEditWasteLine}
+                  setEditWasteLine={setEditWasteLineIndex}
                 />
               </td>
             </tr>

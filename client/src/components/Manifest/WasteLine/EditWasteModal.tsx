@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
-import { Col, Row } from 'react-bootstrap';
-import { WasteLineForm } from './WasteLineForm';
-import { UseFieldArrayReturn } from 'react-hook-form';
-import { Manifest } from 'components/Manifest/manifestSchema';
-import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { HtModal } from 'components/Ht';
 import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
+import { Manifest } from 'components/Manifest/manifestSchema';
+import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
+import React, { useContext } from 'react';
+import { Col, Row } from 'react-bootstrap';
+import { UseFieldArrayReturn } from 'react-hook-form';
+import { WasteLineForm } from './WasteLineForm';
 
 interface Props {
   handleClose: () => void;
@@ -20,20 +20,21 @@ interface Props {
  * @constructor
  */
 export function EditWasteModal({ show, handleClose, currentWastes, wasteArrayMethods }: Props) {
-  const { editWasteLine, setEditWasteLine } = useContext<ManifestContextType>(ManifestContext);
+  const { editWasteLineIndex, setEditWasteLineIndex } =
+    useContext<ManifestContextType>(ManifestContext);
   let waste: WasteLine | undefined = undefined;
-  if (editWasteLine !== undefined) {
-    waste = currentWastes[editWasteLine];
+  if (editWasteLineIndex !== undefined) {
+    waste = currentWastes[editWasteLineIndex];
   }
-  let lineNumber = undefined;
-  if (editWasteLine !== undefined) {
-    lineNumber = editWasteLine;
+  let lineNumber: number;
+  if (editWasteLineIndex !== undefined) {
+    lineNumber = editWasteLineIndex + 1;
   } else {
-    lineNumber = currentWastes.length;
+    lineNumber = currentWastes.length + 1;
   }
 
   const handleCloseAndReset = () => {
-    setEditWasteLine(undefined);
+    setEditWasteLineIndex(undefined);
     handleClose();
   };
 
