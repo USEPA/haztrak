@@ -206,7 +206,6 @@ class ManifestSerializer(TrakBaseSerializer):
     locked = serializers.BooleanField(
         required=False,
         allow_null=True,
-        default=False,
     )
 
     lockReason = serializers.ChoiceField(

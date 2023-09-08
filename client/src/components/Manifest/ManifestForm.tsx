@@ -8,9 +8,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { htApi } from 'services';
-import { addNotification, useAppDispatch } from 'store';
-import { TaskStatus } from 'store/task.slice';
+import { useAppDispatch } from 'store';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
 import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
@@ -93,32 +91,25 @@ export function ManifestForm({
   // Function to handle form submission
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log('Manifest Submitted', data);
-    htApi
-      .post<TaskStatus>('/rcra/manifest/create', data)
-      .then((response) => {
-        console.log(response);
-        return response;
-      })
-      .then((r) => {
-        dispatch(
-          addNotification(
-            // @ts-ignore
-            {
-              uniqueId: r.data.taskId,
-              createdDate: new Date().toISOString(),
-              inProgress: true,
-            }
-            //   uniqueId: string;
-            // createdDate: string;
-            // read: boolean;
-            // message: string;
-            // status: 'Warning' | 'Error' | 'Info' | 'Success';
-            // timeout: number;
-            // inProgress?: boolean;
-          )
-        );
-      })
-      .catch((r) => console.error(r));
+    // htApi
+    //   .post<TaskStatus>('/rcra/manifest/create', data)
+    //   .then((response) => {
+    //     console.log(response);
+    //     return response;
+    //   })
+    //   .then((r) => {
+    //     dispatch(
+    //       addNotification(
+    //         // @ts-ignore
+    //         {
+    //           uniqueId: r.data.taskId,
+    //           createdDate: new Date().toISOString(),
+    //           inProgress: true,
+    //         }
+    //       )
+    //     );
+    //   })
+    //   .catch((r) => console.error(r));
   };
 
   // Generator state and methods
