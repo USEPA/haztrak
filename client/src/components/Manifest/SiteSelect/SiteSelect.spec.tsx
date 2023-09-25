@@ -11,7 +11,7 @@ function TestComponent() {
   const [selected, setSelected] = useState();
   const { control } = useForm();
   // @ts-ignore
-  return <SiteSelect selectedSite={selected} setSelectedSite={setSelected} control={control} />;
+  return <SiteSelect value={selected} handleChange={setSelected} control={control} />;
 }
 
 describe('SiteSelect', () => {

@@ -32,8 +32,10 @@ export function NewManifest() {
   const handleSiteChange = (site: any) => {
     setManifestingSite(site);
     setManifestingSiteType(site.siteType);
+    if (site.siteType === 'Generator') {
+      setSelectedSiteType(site.siteType);
+    }
   };
-  console.log(selectedSiteType + ' ' + manifestingSite);
 
   if (!selectedSiteType || !manifestingSite) {
     // If the site that needs to start a manifest, or its role on the manifest
@@ -43,11 +45,7 @@ export function NewManifest() {
         <HtCard.Body>
           <Form>
             <p>Which site are you starting a manifest as?</p>
-            <SiteSelect
-              control={control}
-              selectedSite={manifestingSite}
-              setSelectedSite={handleSiteChange}
-            />
+            <SiteSelect control={control} value={manifestingSite} handleChange={handleSiteChange} />
             <SiteTypeSelect
               control={control}
               siteType={manifestingSiteType}

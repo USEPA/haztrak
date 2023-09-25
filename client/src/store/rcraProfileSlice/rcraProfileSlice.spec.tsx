@@ -4,10 +4,11 @@
 import '@testing-library/jest-dom';
 import { screen } from '@testing-library/react';
 import React from 'react';
-import { useAppSelector } from 'store/hooks';
+import { useAppSelector } from 'store';
 import { renderWithProviders } from 'test-utils';
 import { createMockSite } from 'test-utils/fixtures';
 import { createMockPermission } from 'test-utils/fixtures/mockHandler';
+import { describe, expect, test } from 'vitest';
 import rcraProfileReducer, {
   getProfile,
   RcraProfileSite,
@@ -15,7 +16,6 @@ import rcraProfileReducer, {
   siteByEpaIdSelector,
   userRcraSitesSelector,
 } from './rcraProfile.slice';
-import { test, describe, expect } from 'vitest';
 
 const initialState: RcraProfileState = {
   user: undefined,
