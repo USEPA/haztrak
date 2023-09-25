@@ -3,8 +3,8 @@ import { AxiosError, AxiosRequestConfig } from 'axios';
 import { htApi } from 'services';
 
 /**
- * Used by the RTK Query api to hook into our existing htApi
- * for existing interceptor for user authentication
+ * Used by the RTK Query createApi, so we can hook into our htApi service
+ * for user authentication between the client and server.
  * @param baseUrl
  */
 export const htApiBaseQuery =
