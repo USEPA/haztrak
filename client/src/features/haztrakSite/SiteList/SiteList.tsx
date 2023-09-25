@@ -1,8 +1,8 @@
-import { HtCard, HtDropdown, HtModal } from 'components/Ht';
+import { HaztrakSite, HtSiteTable } from 'components/HaztrakSite';
+import { HtCard, HtModal } from 'components/Ht';
 import { useHtAPI } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { HaztrakSite, HtSiteTable } from 'components/HaztrakSite';
 
 /**
  * Returns a table displaying the Haztrak sites a user has access to.
@@ -23,15 +23,7 @@ export function SiteList() {
   return (
     <>
       <HtCard>
-        <HtCard.Header title="My Sites">
-          <HtDropdown
-            keyName="mySitesDropdown"
-            links={[
-              { name: 'hello', path: '#/hello' },
-              { name: 'blah', path: '#/blah' },
-            ]}
-          />
-        </HtCard.Header>
+        <HtCard.Header title="My Sites" />
         <HtCard.Body>
           {/* if loading, show HtCard spinner component*/}
           {loading && !error ? (

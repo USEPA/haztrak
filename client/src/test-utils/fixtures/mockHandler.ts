@@ -1,8 +1,8 @@
 import { HaztrakSite } from 'components/HaztrakSite';
 import { Handler } from 'components/Manifest';
-import { RcraSite } from 'components/RcraSite';
 import { Transporter } from 'components/Manifest/Transporter';
-import { RcraSitePermissions, RcraProfileSite } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { RcraSite } from 'components/RcraSite';
+import { RcraSitePermissions } from 'store/rcraProfileSlice/rcraProfile.slice';
 
 /**
  * A mock handler object for tests
@@ -77,7 +77,7 @@ export function createMockMTNHandler(overWrites?: Partial<Handler>): Handler {
 
 export function createMockSite(overWrites?: Partial<HaztrakSite>): HaztrakSite {
   return {
-    handler: createMockHandler(),
+    handler: createMockHandler(overWrites?.handler),
     name: 'mySiteName',
     ...overWrites,
   };

@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { htApiBaseQuery } from 'store/baseQuery';
 import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { htApiBaseQuery } from 'store/baseQuery';
 
 /**
  * A RTK Query Api for fetching codes.
@@ -18,6 +18,7 @@ export const wasteCodeApi = createApi({
     getStateWasteCodes: build.query<Array<Code>, string>({
       query: (state) => ({ url: `waste/state/${state}`, method: 'get' }),
     }),
+    //  ToDo: getDOTIdNumbers endpoint
   }),
 });
 

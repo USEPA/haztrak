@@ -3,7 +3,6 @@ from django_celery_results.models import TaskResult
 from rest_framework.exceptions import ValidationError
 
 from apps.core.serializers import TaskStatusSerializer
-from apps.core.tasks import example_task
 
 
 class TaskService:
@@ -51,14 +50,3 @@ class TaskService:
             return task_serializer.data
         except TaskResult.DoesNotExist:
             raise KeyError(f"error retrieving task ID: {task_id}")
-
-    @staticmethod
-    def launch_example_task():
-        """
-        Launches an example long-running celery task
-        """
-        try:
-            task = example_task.delay()
-            return task.id
-        except KeyError:
-            return None

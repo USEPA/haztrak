@@ -8,14 +8,14 @@ import { userRcraSitesSelector } from 'store/rcraProfileSlice/rcraProfile.slice'
 
 interface SiteSelectProps<T> {
   control: Control;
-  selectedSite: T | undefined;
-  setSelectedSite: (option: T | undefined) => void;
+  value: T | undefined;
+  handleChange: (option: T | undefined) => void;
 }
 
 export function SiteSelect({
   control,
-  selectedSite,
-  setSelectedSite,
+  value,
+  handleChange,
 }: SiteSelectProps<RcraSite | undefined | null>) {
   const userRcraSites = useAppSelector(userRcraSitesSelector);
   const siteOptions = userRcraSites?.map((site) => site.site.handler);
@@ -28,14 +28,15 @@ export function SiteSelect({
         data-testid="siteSelect"
         render={({ field }) => (
           <Select
+            aria-label="Site Select"
             id="site"
             {...field} // object {name, onChange(), onBLur(), value, ref}
             openMenuOnFocus={false}
-            onChange={setSelectedSite}
+            onChange={handleChange}
             components={{ IndicatorSeparator: () => null }}
             options={siteOptions}
             noOptionsMessage={() => 'No Sites found'}
-            value={selectedSite}
+            value={value}
             getOptionLabel={(option) => `${option.epaSiteId} -- ${option.name}`}
             getOptionValue={(option) => option.epaSiteId}
             isSearchable
