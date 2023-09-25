@@ -20,15 +20,22 @@ import { siteByEpaIdSelector } from 'store/rcraProfileSlice/rcraProfile.slice';
  */
 export function NewManifest() {
   useTitle('New Manifest');
-  const { siteId } = useParams();
   const { control } = useForm();
+  const { siteId } = useParams();
   const rcraSite = useAppSelector(siteByEpaIdSelector(siteId));
-  const [manifestingSite, setManifestingSite] = useState<RcraSite | undefined | null>(rcraSite);
+  const [manifestingSite, setManifestingSite] = useState<RcraSite | undefined>(rcraSite);
+  const [selectedSiteType, setSelectedSiteType] = useState<RcraSiteType | undefined>(undefined);
   const [manifestingSiteType, setManifestingSiteType] = useState<RcraSiteType | undefined>(
-    manifestingSite?.siteType === 'Generator' ? manifestingSite.siteType : undefined
+    rcraSite?.siteType
   );
 
-  if (!manifestingSiteType || !manifestingSite) {
+  const handleSiteChange = (site: any) => {
+    setManifestingSite(site);
+    setManifestingSiteType(site.siteType);
+  };
+  console.log(selectedSiteType + ' ' + manifestingSite);
+
+  if (!selectedSiteType || !manifestingSite) {
     // If the site that needs to start a manifest, or its role on the manifest
     // can't be determined, ask the user.
     return (
@@ -39,13 +46,14 @@ export function NewManifest() {
             <SiteSelect
               control={control}
               selectedSite={manifestingSite}
-              setSelectedSite={setManifestingSite}
+              setSelectedSite={handleSiteChange}
             />
             <SiteTypeSelect
               control={control}
               siteType={manifestingSiteType}
-              setSiteType={setManifestingSiteType}
-              siteId={siteId}
+              value={selectedSiteType}
+              handleChange={setSelectedSiteType}
+              disabled={!manifestingSite}
             />
           </Form>
         </HtCard.Body>
@@ -54,11 +62,11 @@ export function NewManifest() {
   }
   // pass the site as the selected handler type as an initial value to the new Manifest
   const newManifestData: Partial<Manifest> =
-    manifestingSiteType === 'Generator'
+    selectedSiteType === 'Generator'
       ? { generator: manifestingSite }
-      : manifestingSiteType === 'Transporter'
+      : selectedSiteType === 'Transporter'
       ? { transporters: [{ ...manifestingSite, order: 1 }] }
-      : manifestingSiteType === 'Tsdf'
+      : selectedSiteType === 'Tsdf'
       ? { designatedFacility: manifestingSite }
       : {};
 

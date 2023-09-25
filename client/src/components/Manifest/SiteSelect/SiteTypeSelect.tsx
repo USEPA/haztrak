@@ -6,12 +6,31 @@ import { Control, Controller } from 'react-hook-form';
 
 interface SiteTypeSelectProps {
   siteType: RcraSiteType | undefined;
-  setSiteType: (siteType: RcraSiteType) => void;
+  value: RcraSiteType | undefined;
+  handleChange: (siteType: RcraSiteType) => void;
   control: Control;
-  siteId?: string;
+  disabled?: boolean;
 }
 
-export function SiteTypeSelect({ siteType, setSiteType, control, siteId }: SiteTypeSelectProps) {
+// The order of this matters. Index of Generator < Transporter < TSDF
+const siteTypeOptions = [
+  { value: 'Generator', label: 'Generator' },
+  { value: 'Transporter', label: 'Transporter' },
+  { value: 'Tsdf', label: 'TSDF' },
+];
+
+export function SiteTypeSelect({
+  siteType,
+  handleChange,
+  control,
+  disabled,
+  value,
+}: SiteTypeSelectProps) {
+  let siteTypeLimitedOptions = siteTypeOptions;
+  if (siteType) {
+    const siteTypeIndex = siteTypeOptions.findIndex((option) => option.value === siteType);
+    siteTypeLimitedOptions = siteTypeOptions.slice(0, siteTypeIndex + 1);
+  }
   return (
     <>
       <Controller
@@ -21,19 +40,22 @@ export function SiteTypeSelect({ siteType, setSiteType, control, siteId }: SiteT
           <div className="mt-2">
             <HtForm.Label htmlFor="siteType">Site Role</HtForm.Label>
             <Form.Select
+              disabled={disabled}
               id="siteType"
-              value={siteType}
+              value={value}
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-                setSiteType(event.target.value as RcraSiteType)
+                handleChange(event.target.value as RcraSiteType)
               }
               defaultValue={''}
             >
               <option value={''} disabled>
                 - -
               </option>
-              <option value={'Generator'}>Generator</option>
-              <option value={'Transporter'}>Transporter</option>
-              <option value={'Tsdf'}>TSDF</option>
+              {siteTypeLimitedOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </Form.Select>
           </div>
         )}
