@@ -5,8 +5,8 @@ import { Form } from 'react-bootstrap';
 import { Control, Controller } from 'react-hook-form';
 
 interface SiteTypeSelectProps {
-  siteType: RcraSiteType | undefined;
-  value: RcraSiteType | undefined;
+  siteType?: RcraSiteType;
+  value?: RcraSiteType;
   handleChange: (siteType: RcraSiteType) => void;
   control: Control;
   disabled?: boolean;
