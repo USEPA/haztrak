@@ -40,8 +40,9 @@ export function SiteTypeSelect({
           <div className="mt-2">
             <HtForm.Label htmlFor="siteType">Site Role</HtForm.Label>
             <Form.Select
-              disabled={disabled}
               id="siteType"
+              aria-label="Site Role"
+              disabled={disabled}
               value={value}
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
                 handleChange(event.target.value as RcraSiteType)

@@ -28,6 +28,7 @@ export function SiteSelect({
         data-testid="siteSelect"
         render={({ field }) => (
           <Select
+            aria-label="Site Select"
             id="site"
             {...field} // object {name, onChange(), onBLur(), value, ref}
             openMenuOnFocus={false}
