@@ -1,13 +1,13 @@
+import { faTimes, faTools } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Manifest } from 'components/Manifest';
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { UseFieldArrayReturn } from 'react-hook-form';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faTools } from '@fortawesome/free-solid-svg-icons';
-import { Manifest } from 'components/Manifest';
 
 interface WasteRowActionProps {
   index: number;
-  wasteArrayMethods: UseFieldArrayReturn<Manifest, 'wastes'>;
+  wasteForm: UseFieldArrayReturn<Manifest, 'wastes'>;
   toggleWLModal: () => void;
   setEditWasteLine: (index: number) => void;
 }
@@ -18,7 +18,7 @@ interface WasteRowActionProps {
  */
 function WasteRowActions({
   index,
-  wasteArrayMethods,
+  wasteForm,
   setEditWasteLine,
   toggleWLModal,
 }: WasteRowActionProps) {
@@ -28,7 +28,7 @@ function WasteRowActions({
         title={`remove-waste-${index}-button`}
         variant="danger"
         onClick={() => {
-          wasteArrayMethods.remove(index);
+          wasteForm.remove(index);
         }}
       >
         <FontAwesomeIcon icon={faTimes} />

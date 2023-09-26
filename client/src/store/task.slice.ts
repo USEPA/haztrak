@@ -7,6 +7,13 @@ export interface TaskStatus {
   taskName: string;
   createdDate?: string;
   doneDate?: string;
+  result?: any;
+}
+
+export interface TaskError {
+  data: {
+    error: string;
+  };
 }
 
 /**

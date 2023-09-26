@@ -1,6 +1,6 @@
 import { HaztrakSite, HtSiteTable } from 'components/HaztrakSite';
 import { HtCard, HtModal } from 'components/Ht';
-import { useHtAPI } from 'hooks';
+import { useHtApi } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
  * @constructor
  */
 export function SiteList() {
-  const [siteData, loading, error] = useHtAPI<Array<HaztrakSite>>('site/');
+  const [siteData, loading, error] = useHtApi<Array<HaztrakSite>>('site/');
   const [showErrorModal, setShowErrorModal] = useState(false);
 
   useEffect(() => {

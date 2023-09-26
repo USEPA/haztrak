@@ -1,5 +1,5 @@
-import { useTitle } from './useTitle';
+import { useHtApi } from './useHtAPI';
 import { usePagination } from './usePagination';
-import { useHtAPI } from './useHtAPI';
+import { useTitle } from './useTitle';
 
-export { usePagination, useTitle, useHtAPI };
+export { usePagination, useTitle, useHtApi };

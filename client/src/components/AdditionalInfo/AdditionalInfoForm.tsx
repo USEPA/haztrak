@@ -1,11 +1,11 @@
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { HtForm } from 'components/Ht';
+import { Manifest } from 'components/Manifest';
+import { WasteLine } from 'components/Manifest/WasteLine';
 import React from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Manifest } from 'components/Manifest';
-import { WasteLine } from 'components/Manifest/WasteLine';
 
 interface AdditionalFormProps {
   readOnly?: boolean;
@@ -100,7 +100,7 @@ export function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
                   ) : (
                     <></>
                   )}
-                  {/* Users can remove a Reference/rows via this button */}
+                  {/* remove Reference/rows */}
                   <Button
                     id={`additionalInfoRemoveButton${index}`}
                     data-testid="additionalInfoRemoveButton"

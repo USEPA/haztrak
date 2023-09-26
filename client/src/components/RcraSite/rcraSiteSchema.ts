@@ -3,16 +3,29 @@ import { z } from 'zod';
 export const rcraPhoneSchema = z.object({
   // ToDo validate length and phone format/content separately
   number: z.string().min(12, '10 digit phone number required'),
-  extension: z.string().max(6).optional(),
+  extension: z
+    .string()
+    .max(6)
+    .nullish()
+    .transform((val) => val ?? undefined),
 });
 
 export const rcraContactSchema = z.object({
   firstName: z.string().optional(),
-  middleInitial: z.string().optional(),
+  middleInitial: z
+    .string()
+    .nullish()
+    .transform((val) => val ?? undefined),
   lastName: z.string().optional(),
   phone: rcraPhoneSchema.optional(),
-  email: z.string().optional(),
-  companyName: z.string().optional(),
+  email: z
+    .string()
+    .nullish()
+    .transform((val) => val ?? undefined),
+  companyName: z
+    .string()
+    .nullish()
+    .transform((val) => val ?? undefined),
 });
 
 /**

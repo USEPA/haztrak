@@ -10,6 +10,19 @@ $card-cap-spacer-x: 0;
 $info: #009999;
 
 // Haztrak custom styles
+.overlay-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Ensure it's above other content */
+}
+
 .badge-top-right {
   min-width: 1.5rem !important;
   top: -0.75rem !important;

@@ -11,7 +11,7 @@ interface Props {
   handleClose: () => void;
   show: boolean | undefined;
   currentWastes: Array<WasteLine>;
-  wasteArrayMethods: UseFieldArrayReturn<Manifest, 'wastes'>;
+  wasteForm: UseFieldArrayReturn<Manifest, 'wastes'>;
 }
 
 /**
@@ -19,7 +19,7 @@ interface Props {
  * pleasant to look at modal.
  * @constructor
  */
-export function EditWasteModal({ show, handleClose, currentWastes, wasteArrayMethods }: Props) {
+export function EditWasteModal({ show, handleClose, currentWastes, wasteForm }: Props) {
   const { editWasteLineIndex, setEditWasteLineIndex } =
     useContext<ManifestContextType>(ManifestContext);
   let waste: WasteLine | undefined = undefined;
@@ -58,7 +58,7 @@ export function EditWasteModal({ show, handleClose, currentWastes, wasteArrayMet
       </HtModal.Header>
       <HtModal.Body>
         <WasteLineForm
-          wasteArrayMethods={wasteArrayMethods}
+          wasteForm={wasteForm}
           lineNumber={lineNumber}
           waste={waste}
           handleClose={handleCloseAndReset}

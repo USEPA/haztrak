@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { htApi } from 'services';
 
 /**
- * On success, returns the body of the GET request as well as loading and errors
+ * Hook for retrieving data from the haztrak http server
  *
  * @description
  * Easy abstraction for GET request from the haztrak http server. Currently,
@@ -10,12 +10,12 @@ import { htApi } from 'services';
  * more thought.
  *
  * @param url {string}
- * @return [data, loading, error]
+ * @return array {[data, loading, error]}
  *
  * @example
  * const [data, loading , error ] = useHtApi<MyType>(`/api/resource/path/${id}`)
  */
-export function useHtAPI<T>(url: string) {
+export function useHtApi<T>(url: string) {
   const [data, setData] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | undefined>(undefined);

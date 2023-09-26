@@ -1,14 +1,14 @@
 import { HtSpinner } from 'components/Ht';
 import { ManifestForm } from 'components/Manifest';
-import { useTitle, useHtAPI } from 'hooks';
+import { Manifest } from 'components/Manifest/manifestSchema';
+import { useHtApi, useTitle } from 'hooks';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Manifest } from 'components/Manifest/manifestSchema';
 
 export function ManifestDetails() {
   const { mtn, action, siteId } = useParams();
   useTitle(`${mtn}`);
-  const [manifestData, loading, error] = useHtAPI<Manifest>(`manifest/${mtn}`);
+  const [manifestData, loading, error] = useHtApi<Manifest>(`manifest/${mtn}`);
 
   let readOnly = true;
   if (action === 'edit') {

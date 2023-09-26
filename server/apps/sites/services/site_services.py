@@ -116,16 +116,18 @@ class RcraSiteService:
         """
         Search RCRAInfo for a site by name or EPA ID
         """
-        data = cache.get(f'{search_parameters["epaSiteId"]}-{search_parameters["siteType"]}')
-        if not data:
-            data: Dict = self.rcrainfo.search_sites(**search_parameters).json()
-            print("data", data)
-            cache.set(
-                f'{search_parameters["epaSiteId"]}-{search_parameters["siteType"]}',
-                data,
-                60 * 60 * 24,
-            )
-        return data
+        try:
+            data = cache.get(f'{search_parameters["epaSiteId"]}-{search_parameters["siteType"]}')
+            if not data:
+                data: Dict = self.rcrainfo.search_sites(**search_parameters).json()
+                cache.set(
+                    f'{search_parameters["epaSiteId"]}-{search_parameters["siteType"]}',
+                    data,
+                    60 * 60 * 24,
+                )
+            return data
+        except KeyError:
+            raise ValidationError("Missing required search parameters")
 
     def _deserialize_rcra_site(self, *, rcra_site_data: dict) -> RcraSiteSerializer:
         serializer = RcraSiteSerializer(data=rcra_site_data)

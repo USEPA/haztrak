@@ -1,11 +1,11 @@
+import { SyncManifestBtn } from 'components/buttons';
 import { NewManifestBtn } from 'components/buttons/NewManifestBtn';
 import { HtCard } from 'components/Ht';
+import { MtnDetails, MtnTable } from 'components/Mtn';
+import { useHtApi, useTitle } from 'hooks';
 import React, { ReactElement, useState } from 'react';
-import { Col, Container, Dropdown, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { useTitle, useHtAPI } from 'hooks';
-import { SyncManifestBtn } from 'components/buttons';
-import { MtnTable, MtnDetails } from 'components/Mtn';
 
 /**
  * Fetch and display all the manifest tracking number (MTN) known by haztrak
@@ -21,7 +21,7 @@ export function ManifestList(): ReactElement {
     getUrl = `mtn/${siteId}`;
   }
 
-  const [mtnList, loading, error] = useHtAPI<Array<MtnDetails>>(getUrl);
+  const [mtnList, loading, error] = useHtApi<Array<MtnDetails>>(getUrl);
 
   if (error) {
     console.error(error.message);

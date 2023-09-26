@@ -9,10 +9,10 @@ import { UseFieldArrayReturn } from 'react-hook-form';
 interface WasteLineTableProps {
   wastes: Array<WasteLine>;
   toggleWLModal: () => void;
-  wasteArrayMethods: UseFieldArrayReturn<Manifest, 'wastes'>;
+  wasteForm: UseFieldArrayReturn<Manifest, 'wastes'>;
 }
 
-export function WasteLineTable({ wastes, toggleWLModal, wasteArrayMethods }: WasteLineTableProps) {
+export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTableProps) {
   const { editWasteLineIndex, setEditWasteLineIndex } =
     useContext<ManifestContextType>(ManifestContext);
   if (!wastes || wastes.length < 1) {
@@ -65,7 +65,7 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteArrayMethods }: Was
               <td className="text-center">
                 <WasteRowActions
                   index={index}
-                  wasteArrayMethods={wasteArrayMethods}
+                  wasteForm={wasteForm}
                   toggleWLModal={toggleWLModal}
                   setEditWasteLine={setEditWasteLineIndex}
                 />

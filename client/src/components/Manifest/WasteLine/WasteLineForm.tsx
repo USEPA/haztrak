@@ -15,7 +15,7 @@ interface WasteLineFormProps {
   handleClose: () => void;
   waste?: WasteLine;
   lineNumber: number;
-  wasteArrayMethods: UseFieldArrayReturn<Manifest, 'wastes'>;
+  wasteForm: UseFieldArrayReturn<Manifest, 'wastes'>;
 }
 
 /**
@@ -23,12 +23,7 @@ interface WasteLineFormProps {
  * the uniform hazardous waste manifest.
  * @constructor
  */
-export function WasteLineForm({
-  handleClose,
-  wasteArrayMethods,
-  waste,
-  lineNumber,
-}: WasteLineFormProps) {
+export function WasteLineForm({ handleClose, wasteForm, waste, lineNumber }: WasteLineFormProps) {
   const [dotHazardous, setDotHazardous] = React.useState<boolean>(
     waste?.dotHazardous === undefined ? true : waste.dotHazardous
   );
@@ -64,9 +59,9 @@ export function WasteLineForm({
    */
   const onSubmit = (wasteLine: WasteLine) => {
     if (editWasteLineIndex) {
-      wasteArrayMethods.update(editWasteLineIndex, wasteLine); // append the new waste line to the manifest
+      wasteForm.update(editWasteLineIndex, wasteLine); // append the new waste line to the manifest
     } else {
-      wasteArrayMethods.append(wasteLine); // append the new waste line to the manifest
+      wasteForm.append(wasteLine); // append the new waste line to the manifest
     }
     handleClose();
   };

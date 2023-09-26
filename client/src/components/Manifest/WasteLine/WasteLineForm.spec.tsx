@@ -9,7 +9,7 @@ describe('WasteLineForm', () => {
   test('renders', () => {
     renderWithProviders(
       <WasteLineForm
-        wasteArrayMethods={{} as any}
+        wasteForm={{} as any}
         lineNumber={0}
         handleClose={() => console.log('close action handled')}
       />,
@@ -22,7 +22,7 @@ describe('WasteLineForm', () => {
     // Arrange
     renderWithProviders(
       <WasteLineForm
-        wasteArrayMethods={{} as any}
+        wasteForm={{} as any}
         lineNumber={0}
         handleClose={() => console.log('close action handled')}
       />,
@@ -37,7 +37,7 @@ describe('WasteLineForm', () => {
     // Arrange
     renderWithProviders(
       <WasteLineForm
-        wasteArrayMethods={{} as any}
+        wasteForm={{} as any}
         lineNumber={0}
         handleClose={() => console.log('close action handled')}
       />,
@@ -55,7 +55,7 @@ describe('WasteLineForm', () => {
     // Arrange
     renderWithProviders(
       <WasteLineForm
-        wasteArrayMethods={{} as any}
+        wasteForm={{} as any}
         lineNumber={0}
         handleClose={() => console.log('close action handled')}
       />,
@@ -79,7 +79,7 @@ describe('WasteLineForm', () => {
     // Arrange
     renderWithProviders(
       <WasteLineForm
-        wasteArrayMethods={{} as any}
+        wasteForm={{} as any}
         lineNumber={0}
         handleClose={() => console.log('close action handled')}
       />,
@@ -97,7 +97,7 @@ describe('WasteLineForm', () => {
     // Arrange
     renderWithProviders(
       <WasteLineForm
-        wasteArrayMethods={{} as any}
+        wasteForm={{} as any}
         lineNumber={0}
         handleClose={() => console.log('close action handled')}
       />,
