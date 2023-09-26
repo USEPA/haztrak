@@ -6,12 +6,11 @@ from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, status
 from rest_framework.decorators import api_view
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import APIException, ValidationError
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.core.services import RcrainfoService
 from apps.sites.models import RcraSite, RcraSiteType, Site
 from apps.sites.serializers import RcraSiteSerializer, SiteSerializer
 from apps.sites.services import RcraSiteService
@@ -111,6 +110,10 @@ class RcraSiteView(RetrieveAPIView):
 
 
 class RcraSiteSearchView(ListAPIView):
+    """
+    Search for locally saved hazardous waste sites ("Generators", "Transporters", "Tsdf's")
+    """
+
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
 
@@ -148,17 +151,16 @@ handler_types = {
 
 @api_view(["POST"])
 def rcrainfo_site_search_view(request: Request):
-    rcrainfo = RcrainfoService(
-        api_username="testuser1",
-        api_key="wer63uZ8q8ZbmcllkCc2",
-        api_id="9eb85033-05e4-45e1-9cbf-024140c3b047",
-    )
-    site_service = RcraSiteService(username=request.user.username, rcrainfo=rcrainfo)
-    data = site_service.search_rcra_site(
-        epaSiteId=request.data["siteId"], siteType=handler_types[request.data["siteType"]]
-    )
-    print("request", data)
-    # queryset = RcraSite.objects.all().filter(epa_id__icontains=request.data["siteId"])
-    # serializer = RcraSiteSerializer(queryset, many=True)
-    # time.sleep(5)
-    return Response(status=status.HTTP_200_OK, data=data["sites"])
+    """
+    Search and return a list of sites from RCRAInfo.
+    """
+    try:
+        site_service = RcraSiteService(username=request.user.username)
+        data = site_service.search_rcra_site(
+            epaSiteId=request.data["siteId"], siteType=handler_types[request.data["siteType"]]
+        )
+        return Response(status=status.HTTP_200_OK, data=data["sites"])
+    except KeyError:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    except ValidationError:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

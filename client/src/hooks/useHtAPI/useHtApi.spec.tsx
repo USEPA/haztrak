@@ -1,12 +1,11 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
-import { vi } from 'vitest';
-import { useHtAPI } from './useHtAPI';
+import { useHtApi } from 'hooks/useHtAPI/useHtApi';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { render, renderWithProviders, screen } from 'test-utils';
-import { beforeAll, afterEach, afterAll, test, describe, expect } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 interface exampleData {
   foo: string;
@@ -18,7 +17,7 @@ interface exampleProps {
 }
 
 function TestComponent({ url }: exampleProps) {
-  const [data, loading, error] = useHtAPI<exampleData>(url);
+  const [data, loading, error] = useHtApi<exampleData>(url);
   if (error) {
     return (
       <>

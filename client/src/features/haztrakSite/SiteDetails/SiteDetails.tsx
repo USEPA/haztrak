@@ -1,11 +1,11 @@
-import { RcraSiteDetails } from 'components/RcraSite';
-import { HtCard } from 'components/Ht';
-import { useHtAPI } from 'hooks';
-import React, { ReactElement } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { SyncManifestBtn } from 'components/buttons';
-import { Container, Button } from 'react-bootstrap';
 import { HaztrakSite } from 'components/HaztrakSite';
+import { HtCard } from 'components/Ht';
+import { RcraSiteDetails } from 'components/RcraSite';
+import { useHtApi } from 'hooks';
+import React, { ReactElement } from 'react';
+import { Button, Container } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
 
 /**
  * GET and Display details of the Haztrak site including RCRA site details.
@@ -17,7 +17,7 @@ import { HaztrakSite } from 'components/HaztrakSite';
  */
 export function SiteDetails(): ReactElement {
   let { siteId } = useParams();
-  const [siteData, loading, error] = useHtAPI<HaztrakSite>(`site/${siteId}`);
+  const [siteData, loading, error] = useHtApi<HaztrakSite>(`site/${siteId}`);
   const navigate = useNavigate();
 
   if (error) throw error;

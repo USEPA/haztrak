@@ -2,9 +2,10 @@ import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
 import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/Ht';
+import { UpdateRcra } from 'components/Manifest/rcraLoading/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -53,8 +54,11 @@ export const ManifestContext = createContext<ManifestContextType>({
 });
 
 /**
- * Returns form for the uniform hazardous waste manifest. It also acts
- * as the current method of viewing manifest when the form is read only.
+ * Used to collect and display electronic hazardous waste manifests.
+ * @param readOnly - If true, the form will be read only and the user will not be able to edit the form.
+ * @param manifestData<Partial> - If provided, the form will be pre-populated with the data provided.
+ * @param manifestingSiteID - The ID of the site that is creating the manifest.
+ * @param mtn - The manifest tracking number of the manifest being edited, or 'Draft' if creating a new manifest.
  * @constructor
  */
 export function ManifestForm({
@@ -64,6 +68,8 @@ export function ManifestForm({
   mtn,
 }: ManifestFormProps) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   // Use default values, override with manifestData if provided
   let values: Manifest = defaultValues;
   if (manifestData) {
@@ -72,25 +78,21 @@ export function ManifestForm({
       ...manifestData,
     };
   }
-  const dispatch = useAppDispatch();
-  // React-Hook-Form methods and state
-  const manifestMethods = useForm<Manifest>({
+
+  // State related to inter-system communications with EPA's RCRAInfo system
+  const [updatingRcrainfo, setUpdatingRcrainfo] = useState<boolean>(false);
+  const toggleShowUpdatingRcra = () => setUpdatingRcrainfo(!updatingRcrainfo);
+  const [taskId, setTaskId] = useState<string | undefined>(undefined);
+
+  // React-Hook-Form component state and methods
+  const manifestForm = useForm<Manifest>({
     values: values,
     resolver: zodResolver(manifestSchema),
   });
-
-  // destructuring errors for readability
   const {
     formState: { errors },
-  } = manifestMethods;
+  } = manifestForm;
 
-  // We use the manifestStatus state to determine whether many fields are editable
-  const [manifestStatus, setManifestStatus] = useState<ManifestStatus | undefined>(
-    manifestData?.status
-  );
-  useEffect(() => manifestMethods.setFocus('status'), []);
-
-  // Function to handle form submission
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log('Manifest Submitted', data);
     htApi
@@ -109,74 +111,71 @@ export function ManifestForm({
             }
           )
         );
+        setTaskId(r.data.taskId);
+        toggleShowUpdatingRcra();
       })
       .catch((r) => console.error(r));
   };
 
-  // Generator state and methods
-  const generator: Handler | undefined = manifestMethods.getValues('generator');
+  // Generator component state and methods
+  const generator: Handler | undefined = manifestForm.getValues('generator');
   const [showGeneratorSearch, setShowGeneratorSearch] = useState<boolean>(false);
   const [showGeneratorForm, setShowGeneratorForm] = useState<boolean>(false);
   const toggleShowAddGenerator = () => setShowGeneratorSearch(!showGeneratorSearch);
   const toggleShowGeneratorForm = () => setShowGeneratorForm(!showGeneratorForm);
-  // The generator's geographic state used to retrieve the state waste codes
   const [generatorStateCode, setGeneratorStateCode] = useState<string | undefined>(
     manifestData?.generator?.siteAddress.state.code
   );
 
-  // Transporter state and methods
+  // Transporter component state and methods
   const [showAddTransporterForm, setShowAddTransporterForm] = useState<boolean>(false);
   const toggleTranSearchShow = () => setShowAddTransporterForm(!showAddTransporterForm);
-  const transporters: Array<Transporter> = manifestMethods.getValues('transporters');
-  const tranArrayMethods = useFieldArray<Manifest, 'transporters'>({
-    control: manifestMethods.control,
+  const transporters: Array<Transporter> = manifestForm.getValues('transporters');
+  const transporterForm = useFieldArray<Manifest, 'transporters'>({
+    control: manifestForm.control,
     name: 'transporters',
   });
 
-  // State and methods for the manifest's designatedFacility field (TSDF)
+  // DesignatedFacility (TSDF) component state and methods
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
-  const tsdf: Handler | undefined = manifestMethods.getValues('designatedFacility');
-  // The TSDF's geographic state used to retrieve the state waste codes
+  const tsdf: Handler | undefined = manifestForm.getValues('designatedFacility');
   const [tsdfStateCode, setTsdfStateCode] = useState<string | undefined>(
     manifestData?.designatedFacility?.siteAddress.state.code
   );
 
-  // Quicker Sign state and methods
+  // Quicker Sign component state and methods
   const [showSignForm, setShowSignForm] = useState<boolean>(false);
   const [quickerSignHandler, setQuickerSignHandler] = useState<QuickerSignData>({
     handler: undefined,
     siteType: 'Generator', // ToDo initialize to undefined
   });
   const toggleQuickerSignShow = () => setShowSignForm(!showSignForm);
-  // function used to control the QuickerSign form (modal) and pass the necessary context
   const setupSign = (signContext: QuickerSignData) => {
     setQuickerSignHandler(signContext); // set state to appropriate Handler
     toggleQuickerSignShow(); // Toggle the Quicker Sign modal
   };
 
-  // State and methods for the manifest's waste lines
+  // Waste Line component state and methods
   const [showWasteLineForm, setShowWasteLineForm] = useState<boolean>(false);
   const toggleWlFormShow = () => setShowWasteLineForm(!showWasteLineForm);
   const [editWasteLine, setEditWasteLine] = useState<number | undefined>(undefined);
-  const allWastes: Array<WasteLine> = manifestMethods.getValues('wastes');
-  const wasteArrayMethods = useFieldArray<Manifest, 'wastes'>({
-    control: manifestMethods.control,
+  const allWastes: Array<WasteLine> = manifestForm.getValues('wastes');
+  const wasteForm = useFieldArray<Manifest, 'wastes'>({
+    control: manifestForm.control,
     name: 'wastes',
   });
 
-  // Indicates whether the manifest is in a status that can be signed by any of the handlers
+  const [manifestStatus, setManifestStatus] = useState<ManifestStatus | undefined>(
+    manifestData?.status
+  );
+
   const signAble =
     manifestStatus === 'Scheduled' ||
     manifestStatus === 'InTransit' ||
     manifestStatus === 'ReadyForSignature';
 
   const isDraft = manifestData?.manifestTrackingNumber === undefined;
-
-  // Keep this here for development purposes
-  // console.log(manifestData);
-  if (errors) console.log('errors', errors);
-  // console.log('tsdfStateCode', tsdfStateCode);
 
   return (
     <>
@@ -191,8 +190,8 @@ export function ManifestForm({
           setEditWasteLineIndex: setEditWasteLine,
         }}
       >
-        <FormProvider {...manifestMethods}>
-          <HtForm onSubmit={manifestMethods.handleSubmit(onSubmit)}>
+        <FormProvider {...manifestForm}>
+          <HtForm onSubmit={manifestForm.handleSubmit(onSubmit)}>
             <div className="d-flex justify-content-between">
               <h2 className="fw-bold">{`${
                 manifestData?.manifestTrackingNumber || 'Draft'
@@ -215,7 +214,7 @@ export function ManifestForm({
                             ? 'Draft Manifest'
                             : manifestData?.manifestTrackingNumber
                         }
-                        {...manifestMethods.register('manifestTrackingNumber')}
+                        {...manifestForm.register('manifestTrackingNumber')}
                         className={errors.manifestTrackingNumber && 'is-invalid'}
                       />
                       <div className="invalid-feedback">
@@ -237,7 +236,7 @@ export function ManifestForm({
                         id="status"
                         disabled={readOnly || !isDraft}
                         aria-label="manifestStatus"
-                        {...manifestMethods.register('status')}
+                        {...manifestForm.register('status')}
                         onChange={(event) =>
                           setManifestStatus(event.target.value as ManifestStatus | undefined)
                         }
@@ -275,7 +274,7 @@ export function ManifestForm({
                         id="submissionType"
                         disabled={readOnly || !isDraft}
                         aria-label="submissionType"
-                        {...manifestMethods.register('submissionType')}
+                        {...manifestForm.register('submissionType')}
                       >
                         <option value="FullElectronic">Electronic</option>
                         <option value="Hybrid">Hybrid</option>
@@ -303,7 +302,7 @@ export function ManifestForm({
                         disabled
                         type="date"
                         value={manifestData?.createdDate?.slice(0, 10)}
-                        {...manifestMethods.register('createdDate')}
+                        {...manifestForm.register('createdDate')}
                         className={errors.createdDate && 'is-invalid'}
                       />
                       <div className="invalid-feedback">{errors.createdDate?.message}</div>
@@ -321,7 +320,7 @@ export function ManifestForm({
                         disabled
                         type="date"
                         value={manifestData?.updatedDate?.slice(0, 10)}
-                        {...manifestMethods.register('updatedDate')}
+                        {...manifestForm.register('updatedDate')}
                         className={errors.updatedDate && 'is-invalid'}
                       />
                       <div className="invalid-feedback">{errors.updatedDate?.message}</div>
@@ -339,7 +338,7 @@ export function ManifestForm({
                         plaintext
                         type="date"
                         value={manifestData?.shippedDate?.slice(0, 10)}
-                        {...manifestMethods.register('shippedDate')}
+                        {...manifestForm.register('shippedDate')}
                         className={errors.shippedDate && 'is-invalid'}
                       />
                       <div className="invalid-feedback">
@@ -355,7 +354,7 @@ export function ManifestForm({
                       id="import"
                       disabled={readOnly}
                       label="Imported Waste"
-                      {...manifestMethods.register('import')}
+                      {...manifestForm.register('import')}
                       className={errors.import && 'is-invalid'}
                     />
                     <div className="invalid-feedback">{errors.import?.message}</div>
@@ -364,7 +363,7 @@ export function ManifestForm({
                       id="rejection"
                       disabled={readOnly}
                       label="Rejected Waste"
-                      {...manifestMethods.register('rejection')}
+                      {...manifestForm.register('rejection')}
                       className={errors.rejection && 'is-invalid'}
                     />
                     <div className="invalid-feedback">{errors.rejection?.message}</div>
@@ -376,7 +375,7 @@ export function ManifestForm({
                         id="potentialShipDate"
                         disabled={readOnly}
                         type="date"
-                        {...manifestMethods.register('potentialShipDate')}
+                        {...manifestForm.register('potentialShipDate')}
                         className={errors.potentialShipDate && 'is-invalid'}
                       />
                       <div className="invalid-feedback">{errors.potentialShipDate?.message}</div>
@@ -464,7 +463,7 @@ export function ManifestForm({
                 {/* List transporters */}
                 <TransporterTable
                   transporters={transporters}
-                  arrayFieldMethods={tranArrayMethods}
+                  arrayFieldMethods={transporterForm}
                   readOnly={readOnly}
                   setupSign={setupSign}
                 />
@@ -480,9 +479,9 @@ export function ManifestForm({
                 <ErrorMessage
                   errors={errors}
                   name={'transporters'}
-                  render={(error) => (
+                  render={({ message }) => (
                     <Alert variant="danger" className="text-center m-3">
-                      We're sorry, there's a problem with the transporters.
+                      {message}
                     </Alert>
                   )}
                 />
@@ -495,7 +494,7 @@ export function ManifestForm({
                 <WasteLineTable
                   wastes={allWastes}
                   toggleWLModal={toggleWlFormShow}
-                  wasteArrayMethods={wasteArrayMethods}
+                  wasteForm={wasteForm}
                 />
                 {readOnly ? (
                   <></>
@@ -571,7 +570,7 @@ export function ManifestForm({
                 variant="danger"
                 disabled={readOnly}
                 onClick={() => {
-                  manifestMethods.reset();
+                  manifestForm.reset();
                   if (!mtn) {
                     navigate(-1);
                   } else {
@@ -590,6 +589,8 @@ export function ManifestForm({
               </Button>
             </div>
           </HtForm>
+          {/*If taking action that involves updating a manifest in RCRAInfo*/}
+          {taskId && updatingRcrainfo ? <UpdateRcra taskId={taskId} /> : <></>}
           <AddHandler
             handleClose={toggleShowAddGenerator}
             show={showGeneratorSearch}
@@ -599,7 +600,7 @@ export function ManifestForm({
             handleClose={toggleTranSearchShow}
             show={showAddTransporterForm}
             currentTransporters={transporters}
-            appendTransporter={tranArrayMethods.append}
+            appendTransporter={transporterForm.append}
             handlerType="transporter"
           />
           <AddHandler
@@ -615,7 +616,7 @@ export function ManifestForm({
             siteType={quickerSignHandler.siteType}
           />
           <EditWasteModal
-            wasteArrayMethods={wasteArrayMethods}
+            wasteForm={wasteForm}
             currentWastes={allWastes}
             handleClose={toggleWlFormShow}
             show={showWasteLineForm}
