@@ -495,6 +495,7 @@ export function ManifestForm({
                   wastes={allWastes}
                   toggleWLModal={toggleWlFormShow}
                   wasteForm={wasteForm}
+                  readonly={readOnly}
                 />
                 {readOnly ? (
                   <></>

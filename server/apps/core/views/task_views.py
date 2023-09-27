@@ -1,7 +1,6 @@
 from django_celery_results.models import TaskResult
 from rest_framework import permissions, serializers, status
 from rest_framework.exceptions import ValidationError
-from rest_framework.generics import RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -25,19 +24,20 @@ class CeleryTaskResultSerializer(serializers.ModelSerializer):
         fields = ["taskId", "taskName", "status", "createdDate", "doneDate"]
 
 
-class LaunchExampleTaskView(RetrieveAPIView):
+class LaunchExampleTaskView(APIView):
     """
     Launches an example long-running background task
     """
 
+    response = Response
     permission_classes = [permissions.AllowAny]
 
-    def retrieve(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         try:
             task_id = TaskService.launch_example_task()
-            return Response(data={"task": task_id}, status=status.HTTP_200_OK)
+            return self.response(data={"task": task_id}, status=status.HTTP_200_OK)
         except KeyError:
-            return Response(
+            return self.response(
                 data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -48,19 +48,18 @@ class TaskStatusView(APIView):
     Uses django-celery-results pacakge which stores the task results in our DB
     """
 
-    queryset = None
+    queryset = TaskResult.objects.all()
     response = Response
-    permission_classes = [permissions.AllowAny]
 
     def get(self, request: Request, task_id):
         try:
             data = TaskService.get_task_status(task_id)
             return self.response(data=data, status=status.HTTP_200_OK)
-        except KeyError:
-            return self.response(
-                data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
-            )
+        except KeyError as exc:
+            return self.response(data={"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
         except ValidationError as exc:
             return self.response(
                 data={"error": exc.detail}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+        except TaskResult.DoesNotExist as exc:
+            return self.response(data={"error": str(exc)}, status=status.HTTP_404_NOT_FOUND)

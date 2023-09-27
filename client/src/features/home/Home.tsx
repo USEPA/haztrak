@@ -1,12 +1,13 @@
 import { faRecycle, faSignature, faTruck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NewManifestBtn } from 'components/buttons/NewManifestBtn';
-import { HtCard } from 'components/Ht';
+import { HtButton, HtCard } from 'components/Ht';
 import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store';
+import { launchExampleTask } from 'store/notificationSlice/notification.slice';
 import { getProfile } from 'store/rcraProfileSlice';
 import { selectUserName } from 'store/userSlice/user.slice';
 
@@ -96,6 +97,14 @@ export function Home(): ReactElement {
           </Row>
         </HtCard.Body>
       </HtCard>
+      <HtButton
+        align="start"
+        onClick={() => {
+          dispatch(launchExampleTask());
+        }}
+      >
+        Click me
+      </HtButton>
     </Container>
   );
 }

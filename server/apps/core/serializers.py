@@ -118,7 +118,7 @@ class TaskResultSerializer(serializers.ModelSerializer):
 
 class TaskStatusSerializer(serializers.Serializer):
     """
-    Serializer for status of long-running celery tasks
+    Serializer for status or results of long-running celery tasks
     """
 
     taskId = serializers.CharField(
