@@ -10,9 +10,15 @@ interface WasteLineTableProps {
   wastes: Array<WasteLine>;
   toggleWLModal: () => void;
   wasteForm: UseFieldArrayReturn<Manifest, 'wastes'>;
+  readonly?: boolean;
 }
 
-export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTableProps) {
+export function WasteLineTable({
+  wastes,
+  toggleWLModal,
+  wasteForm,
+  readonly,
+}: WasteLineTableProps) {
   const { editWasteLineIndex, setEditWasteLineIndex } =
     useContext<ManifestContextType>(ManifestContext);
   if (!wastes || wastes.length < 1) {
@@ -27,7 +33,7 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTa
           <th>Containers</th>
           <th>Type</th>
           <th>Codes</th>
-          <th>Edit</th>
+          {readonly ?? <th>Edit</th>}
         </tr>
       </thead>
       <tbody>
@@ -62,14 +68,16 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTa
                   {wasteLine.hazardousWaste?.federalWasteCodes?.map((item) => item.code).join(', ')}
                 </small>
               </td>
-              <td className="text-center">
-                <WasteRowActions
-                  index={index}
-                  wasteForm={wasteForm}
-                  toggleWLModal={toggleWLModal}
-                  setEditWasteLine={setEditWasteLineIndex}
-                />
-              </td>
+              {readonly ?? (
+                <td className="text-center">
+                  <WasteRowActions
+                    index={index}
+                    wasteForm={wasteForm}
+                    toggleWLModal={toggleWLModal}
+                    setEditWasteLine={setEditWasteLineIndex}
+                  />
+                </td>
+              )}
             </tr>
           );
         })}

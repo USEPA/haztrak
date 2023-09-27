@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 /**
  * Schema of a user's alerts stored in the Redux store
@@ -24,6 +25,26 @@ export interface HtNotification {
 const initialState: NotificationState = {
   notifications: [],
 };
+
+/**
+ * Retrieves a user's RcraProfile from the server.
+ */
+export const launchExampleTask = createAsyncThunk<HtNotification>(
+  'notification/getExampleTask',
+  async () => {
+    const response = await axios.get(`${import.meta.env.VITE_HT_API_URL}/api/task/example`);
+    const newNotification: HtNotification = {
+      inProgress: false,
+      message: `Background task launched. Task ID: ${response.data.task}`,
+      status: 'Info',
+      createdDate: new Date().toISOString(),
+      read: false,
+      timeout: 5000,
+      uniqueId: response.data.task,
+    };
+    return newNotification;
+  }
+);
 
 const notificationSlice = createSlice({
   name: 'notification',
@@ -51,6 +72,20 @@ const notificationSlice = createSlice({
       }
       return state;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(launchExampleTask.pending, (state) => {
+        return {
+          ...state,
+        };
+      })
+      .addCase(launchExampleTask.fulfilled, (state, action) => {
+        state.notifications.push(action.payload);
+      })
+      .addCase(launchExampleTask.rejected, (state) => {
+        return state;
+      });
   },
 });
 
