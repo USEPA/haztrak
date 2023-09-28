@@ -2,6 +2,7 @@ import datetime
 import logging
 
 from celery.exceptions import TaskError
+from celery.result import AsyncResult
 from django.db.models import Q
 from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
@@ -9,6 +10,7 @@ from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from apps.core.services import TaskService
 from apps.sites.models import Site
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer, MtnSerializer
@@ -69,7 +71,6 @@ class MtnList(ListAPIView):
         else:
             sites = [i.rcra_site.epa_id for i in Site.objects.filter(rcra_site__epa_id=epa_id)]
 
-        logger.info(sites)
         return Manifest.objects.filter(
             Q(generator__rcra_site__epa_id__in=sites) | Q(tsdf__rcra_site__epa_id__in=sites)
         )
@@ -141,9 +142,11 @@ class CreateRcraManifestView(GenericAPIView):
                 f"valid manifest data submitted for creation in RCRAInfo: "
                 f"{datetime.datetime.utcnow()}"
             )
-            task = create_rcra_manifest.delay(
+            task: AsyncResult = create_rcra_manifest.delay(
                 manifest=manifest_serializer.data, username=str(request.user)
             )
+            task_status = TaskService(task_id=task.id, task_name=task.name, status="STARTED")
+            task_status.update_task_status(status="PENDING")
             return self.response(data={"taskId": task.id}, status=status.HTTP_201_CREATED)
         else:
             logger.error("manifest_serializer errors: ", manifest_serializer.errors)

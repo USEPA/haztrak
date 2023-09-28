@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, force_authenticate
 
+from apps.core.services.task_service import TaskService
 from apps.core.views import TaskStatusView
 
 
@@ -70,3 +71,19 @@ class TestTaskStatusView:
         # Assert
         assert response.status_code == status.HTTP_200_OK
         assert response.data["taskId"] == self.mock_task_id
+
+
+class TestTaskService:
+    mock_task_id = "mock_task_id"
+    mock_task_name = "mock_task_name"
+
+    def test_returns_cached_status(self, cache_factory):
+        # Arrange
+        cache_factory("test_returns_404")
+        haztrak_task = TaskService(task_id=self.mock_task_id, task_name=self.mock_task_name)
+        haztrak_task.update_task_status(status="STARTED")
+        # Act
+        cache_data = cache.get(self.mock_task_id)
+        # Assert
+        assert cache_data["taskName"] == self.mock_task_name
+        assert cache_data["status"] == "STARTED"

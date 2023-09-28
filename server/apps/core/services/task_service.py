@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 from django.core.cache import CacheKeyWarning, cache
 from django_celery_results.models import TaskResult
@@ -16,8 +17,11 @@ class TaskService:
     Service class for interacting with the Task model layer and celery tasks.
     """
 
-    def __init__(self):
-        pass
+    def __init__(self, task_id, task_name, status="PENDING", result=None):
+        self.task_id = task_id
+        self.task_name = task_name
+        self.status = status
+        self.result: dict | None = result
 
     @classmethod
     def get_task_status(cls, task_id) -> ReturnDict:
@@ -72,3 +76,29 @@ class TaskService:
             return task.id
         except KeyError:
             return None
+
+    def update_task_status(self, status: str, results: Optional = None) -> object | None:
+        """
+        Updates the status of a long-running celery task in our key-value store
+        returns an error or None
+        """
+        if results:
+            self.result = results
+        try:
+            task_serializer = TaskStatusSerializer(
+                data={
+                    "taskId": self.task_id,
+                    "status": status,
+                    "taskName": self.task_name,
+                    "result": self.result,
+                }
+            )
+            if task_serializer.is_valid():
+                logger.debug(f"task_serializer.data: {task_serializer.data}")
+                cache.set(self.task_id, task_serializer.data)
+                return task_serializer.data
+            logger.error(f"Could not serialize task status: {task_serializer.errors}")
+            return None
+        except CacheKeyWarning as e:
+            logger.error(e)
+            return e

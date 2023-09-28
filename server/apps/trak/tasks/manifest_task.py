@@ -18,16 +18,21 @@ def pull_manifest(self: Task, *, mtn: List[str], username: str) -> dict:
     This task initiates a call to the ManifestService to pull a manifest by MTN
     """
 
+    from apps.core.services import TaskService
     from apps.trak.services import ManifestService
 
     logger.debug(f"start task {self.name}, manifest {mtn}")
+    task_status = TaskService(task_id=self.request.id, task_name=self.name, status="STARTED")
     try:
         manifest_service = ManifestService(username=username)
         results = manifest_service.pull_manifests(tracking_numbers=mtn)
+        task_status.update_task_status(status="SUCCESS", results=results)
         return results
     except (ConnectionError, TimeoutError):
+        task_status.update_task_status(status="FAILURE")
         raise Reject()
     except Exception as exc:
+        task_status.update_task_status(status="FAILURE")
         self.update_state(state=states.FAILURE, meta=f"unknown error: {exc}")
         raise Ignore()
 
@@ -87,7 +92,6 @@ def sync_site_manifests(self, *, site_id: str, username: str):
         raise Ignore()
 
 
-# create_rcra_manifest
 @shared_task(name="create rcra manifests", bind=True)
 def create_rcra_manifest(self, *, manifest: dict, username: str):
     """
@@ -95,18 +99,21 @@ def create_rcra_manifest(self, *, manifest: dict, username: str):
     it accepts a Python dict of the manifest data to be submitted as JSON, and the username of the
     user who is creating the manifest
     """
+    from apps.core.services import TaskService
     from apps.trak.services import ManifestService
 
     logger.info(f"start task: {self.name}")
+    task_status = TaskService(task_id=self.request.id, task_name=self.name, status="STARTED")
     try:
-        logger.debug(f"creating manifest: {manifest}")
         manifest_service = ManifestService(username=username)
         resp: RcrainfoResponse = manifest_service.create_rcra_manifest(manifest=manifest)
         if resp.ok:
-            logger.info(f"successfully created manifest: {manifest}")
+            task_status.update_task_status(status="SUCCESS", results=resp.json())
             return resp.json()
         logger.error(f"failed to create manifest ({manifest}): {resp.json()}")
+        task_status.update_task_status(status="FAILURE", results=resp.json())
         return resp.json()
     except Exception as exc:
         logger.error("error: ", exc)
+        task_status.update_task_status(status="FAILURE", results=str(exc))
         return {"error": f"Internal Error: {exc}"}

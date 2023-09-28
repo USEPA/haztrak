@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 
 # Globals
-HAZTRAK_VERSION = "0.4.0"
+HAZTRAK_VERSION = "0.7.0"
 
 # Environment variable mappings
 HOST_ENV = "HT_HOST"
