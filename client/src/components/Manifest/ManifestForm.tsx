@@ -2,7 +2,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
 import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/Ht';
-import { UpdateRcra } from 'components/Manifest/rcraLoading/UpdateRcra';
+import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
 import React, { createContext, useState } from 'react';

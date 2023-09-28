@@ -15,12 +15,13 @@ export function UpdateRcra({ taskId }: UpdateRcraProps) {
     pollingInterval: 3000,
   });
 
-  if (data?.result) {
-    const resp = JSON.parse(data?.result);
+  if (data?.status === 'SUCCESS') {
+    const resp = data?.result;
     return <Navigate to={`/manifest/${resp.manifestTrackingNumber}/view`} />;
   }
 
-  if (error) {
+  // @ts-ignore
+  if (error && error.status !== 404) {
     return (
       <ToastContainer position="top-end" style={{ zIndex: 1 }} className={'p-3'}>
         <Toast bg="danger" onClose={() => setShowToast(false)} show={showToast}>
@@ -35,12 +36,10 @@ export function UpdateRcra({ taskId }: UpdateRcraProps) {
       </ToastContainer>
     );
   }
-  // if (isLoading || !data || !results) {
-  if (isLoading) {
-    return (
-      <div className="overlay-spinner">
-        <HtSpinner className="text-light" size="5x" />
-      </div>
-    );
-  }
+
+  return (
+    <div className="overlay-spinner">
+      <HtSpinner className="text-light" size="5x" />
+    </div>
+  );
 }

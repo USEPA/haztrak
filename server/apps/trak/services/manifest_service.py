@@ -160,7 +160,7 @@ class ManifestService:
         :param manifest: Dict
         :return:
         """
-        logger.info(f"create rcra manifest with arguments: {manifest}")
+        logger.debug(f"start create rcra manifest with arguments {manifest}")
         create_resp: RcrainfoResponse = self.rcrainfo.save_manifest(manifest)
         try:
             if create_resp.ok:
@@ -181,9 +181,7 @@ class ManifestService:
         results = {"success": [], "error": []}
         site_filter = Manifest.objects.get_handler_query(signature.site_id, signature.site_type)
         existing_mtn = Manifest.objects.existing_mtn(site_filter, mtn=signature.mtn)
-        # get our list of valid MTN
         results["success"] = [manifest.mtn for manifest in existing_mtn]
-        # append any MTN, passed as an argument, not found in the DB to the error results
         results["error"].extend(list(set(signature.mtn).difference(set(results["success"]))))
         logger.warning(f"MTN not found or site not listed as site type {results['error']}")
         return results
