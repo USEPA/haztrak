@@ -26,7 +26,7 @@ export const siteApi = createApi({
     }),
     searchRcraSites: build.query<Array<RcraSite>, RcrainfoSiteSearch>({
       query: (data: RcrainfoSiteSearch) => ({
-        url: '/rcra-site/search',
+        url: '/search',
         method: 'get',
         params: { epaId: data.siteId, siteType: data.siteType },
       }),

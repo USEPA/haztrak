@@ -1,8 +1,8 @@
 from .site_views import (
-    RcraSiteSearchView,
     RcraSiteView,
     SiteDetailView,
     SiteListView,
     SiteMtnListView,
+    SiteSearchView,
     rcrainfo_site_search_view,
 )
