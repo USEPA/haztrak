@@ -1,15 +1,11 @@
 from celery.exceptions import CeleryError
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from apps.core.models import HaztrakUser, RcraProfile
 from apps.core.serializers import HaztrakUserSerializer, RcraProfileSerializer
-from apps.sites.models import RcraSitePermission
-from apps.sites.serializers import (
-    RcraSitePermissionSerializer,
-)
 
 
 class HaztrakUserView(RetrieveUpdateAPIView):
@@ -57,16 +53,3 @@ class RcraProfileSyncView(GenericAPIView):
             return self.response(
                 data={"error": str(exc)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
-
-class RcraSitePermissionView(RetrieveAPIView):
-    """
-    For Viewing the RcraSite Permissions for the given user
-    """
-
-    queryset = RcraSitePermission.objects.all()
-    serializer_class = RcraSitePermissionSerializer
-
-    def get_queryset(self):
-        user = self.request.user
-        return RcraSitePermission.objects.filter(profile__user=user)
