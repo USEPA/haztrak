@@ -10,7 +10,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vite
 const USERNAME = 'testuser1';
 
 const myAPIHandlers = [
-  rest.get(`${API_BASE_URL}/api/profile/${USERNAME}`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/user/${USERNAME}/rcra/profile`, (req, res, ctx) => {
     return res(
       // Respond with a 200 status code
       ctx.status(200),

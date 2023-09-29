@@ -96,7 +96,7 @@ export const getProfile = createAsyncThunk<RcraProfileState>(
   async (arg, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     const username = state.user.user?.username;
-    const response = await htApi.get(`/profile/${username}`);
+    const response = await htApi.get(`/user/${username}/rcra/profile`);
     const { rcraSites, ...rest } = response.data as RcraProfileResponse;
     // Convert the array of RcraSite permissions we get from our backend
     // to an object which each key corresponding to the RcraSite's ID number

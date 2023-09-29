@@ -4,16 +4,16 @@ from .views import (
     HaztrakUserView,
     LaunchExampleTaskView,
     Login,
+    RcraProfileSyncView,
     RcraProfileView,
     RcraSitePermissionView,
-    SyncProfileView,
     TaskStatusView,
 )
 
 urlpatterns = [
     # Rcra Profile
-    path("profile/<str:user>/sync", SyncProfileView.as_view()),
-    path("profile/<str:user>", RcraProfileView.as_view()),
+    path("user/<str:username>/rcra/profile/sync", RcraProfileSyncView.as_view()),
+    path("user/<str:username>/rcra/profile/", RcraProfileView.as_view()),
     path("site/permission/<int:pk>", RcraSitePermissionView.as_view()),
     path("user/", HaztrakUserView.as_view()),
     path("user/login/", Login.as_view()),

@@ -80,7 +80,7 @@ CORS_ORIGIN_WHITELIST = [os.getenv(CORS_DOMAIN_ENV, "http://localhost:3000")]
 
 # URLs
 ROOT_URLCONF = "haztrak.urls"
-APPEND_SLASH = True
+APPEND_SLASH = False
 
 TEMPLATES = [
     {

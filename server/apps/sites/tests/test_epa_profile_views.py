@@ -11,7 +11,7 @@ class TestRcraProfileView:
     Tests the for the endpoints related to the user's RcraProfile
     """
 
-    URL = "/api/profile"
+    URL = "/api/user"
     id_field = "rcraAPIID"
     key_field = "rcraAPIKey"
     username_field = "rcraUsername"
@@ -28,7 +28,7 @@ class TestRcraProfileView:
     def rcra_profile_request(self, user_and_client):
         factory = APIRequestFactory()
         request = factory.put(
-            f"{self.URL}/{self.user.username}",
+            f"{self.URL}/{self.user.username}/rcra/profile",
             {
                 self.id_field: self.new_api_id,
                 self.username_field: self.new_username,
@@ -43,7 +43,7 @@ class TestRcraProfileView:
         # Arrange
         rcra_profile_factory(user=self.user)
         # Act
-        response: Response = self.client.get(f"{self.URL}/{self.user.username}")
+        response: Response = self.client.get(f"{self.URL}/{self.user.username}/rcra/profile/")
         # Assert
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK
@@ -54,7 +54,7 @@ class TestRcraProfileView:
         rcra_profile_factory(user=self.user)
         request = rcra_profile_request
         # Act
-        response = RcraProfileView.as_view()(request, user=self.user.username)
+        response = RcraProfileView.as_view()(request, username=self.user.username)
         assert response.status_code == status.HTTP_200_OK
         assert response.data[self.id_field] == self.new_api_id
         assert response.data[self.username_field] == self.new_username
@@ -64,6 +64,6 @@ class TestRcraProfileView:
         rcra_profile_factory(user=self.user)
         request = rcra_profile_request
         # Act
-        response = RcraProfileView.as_view()(request, user=self.user.username)
+        response = RcraProfileView.as_view()(request, username=self.user.username)
         # Assert
         assert self.key_field not in response.data
