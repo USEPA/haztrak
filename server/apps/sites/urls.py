@@ -11,7 +11,7 @@ from apps.sites.views import (
 
 urlpatterns = [
     # Site
-    path("site/", SiteListView.as_view()),
+    path("site", SiteListView.as_view()),
     path("site/<str:epa_id>", SiteDetailView.as_view()),
     path("site/<str:epa_id>/manifest", SiteMtnListView.as_view()),
     path("site/rcra-site/search", RcraSiteSearchView.as_view()),

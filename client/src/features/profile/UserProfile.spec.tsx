@@ -18,7 +18,7 @@ const DEFAULT_USER: HaztrakUser = {
 };
 
 const server = setupServer(
-  rest.put(`${API_BASE_URL}/api/user/`, (req, res, ctx) => {
+  rest.put(`${API_BASE_URL}/api/user`, (req, res, ctx) => {
     const user: HaztrakUser = { ...DEFAULT_USER };
     // @ts-ignore
     return res(ctx.status(200), ctx.json({ ...user, ...req.body }));

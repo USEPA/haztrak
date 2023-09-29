@@ -32,7 +32,7 @@ class TestSiteListView:
         )
         self.other_site = site_factory(rcra_site=rcra_site_factory(epa_id="VA12345678"))
 
-    base_url = "/api/site/"
+    base_url = "/api/site"
 
     def test_responds_with_site_in_json_format(self):
         response = self.client.get(f"{self.base_url}")

@@ -43,7 +43,7 @@ class TestRcraProfileView:
         # Arrange
         rcra_profile_factory(user=self.user)
         # Act
-        response: Response = self.client.get(f"{self.URL}/{self.user.username}/rcra/profile/")
+        response: Response = self.client.get(f"{self.URL}/{self.user.username}/rcra/profile")
         # Assert
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK
