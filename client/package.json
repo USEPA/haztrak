@@ -45,7 +45,7 @@
     "@vitejs/plugin-react": "^4.0.4",
     "c8": "^8.0.1",
     "esbuild": "0.19.2",
-    "eslint": "^8.48.0",
+    "eslint": "^8.50.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-typescript": "^3.0.0",
     "eslint-import-resolver-typescript": "^3.6.0",
