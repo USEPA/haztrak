@@ -1,3 +1,3 @@
-import { Notifications } from './Notifications';
+import { Notifications as Component } from './Notifications';
 
-export { Notifications };
+export { Component };

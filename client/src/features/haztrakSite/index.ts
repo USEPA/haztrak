@@ -1,3 +1,3 @@
-import { Sites } from './Sites';
+import { Sites as Component } from './Sites';
 
-export { Sites };
+export { Component };

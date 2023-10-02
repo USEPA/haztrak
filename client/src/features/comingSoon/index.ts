@@ -1,3 +1,3 @@
-import { UnderConstruction } from 'features/comingSoon/UnderConstruction';
+import { UnderConstruction as Component } from 'features/comingSoon/UnderConstruction';
 
-export { UnderConstruction };
+export { Component };
