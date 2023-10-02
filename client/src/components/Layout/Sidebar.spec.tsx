@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { Sidebar } from 'components/Nav';
+import { Sidebar } from 'components/Layout';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { afterEach, describe, expect, test } from 'vitest';

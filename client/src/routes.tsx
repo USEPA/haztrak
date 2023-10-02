@@ -1,4 +1,5 @@
-import { Root } from 'components/Nav/Root';
+import { Root } from 'components/Layout/Root';
+import { Login } from 'features/login';
 import { ManifestDetails } from 'features/manifest/ManifestDetails';
 import { ManifestList } from 'features/manifest/ManifestList';
 import { NewManifest } from 'features/manifest/NewManifest';
@@ -84,5 +85,8 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/login',
+    element: <Login />,
+  },
 ]);
-//   <Route path="/login" element={<Login />} />
