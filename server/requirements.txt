@@ -7,11 +7,11 @@ django-celery-beat==2.5.0
 djangorestframework==3.14.0
 gunicorn==21.2.0
 emanifest==4.0.0
-psycopg[binary]==3.1.10
+psycopg[binary]==3.1.12
 pytz==2023.3
 sqlparse==0.4.4
 tzdata==2023.3
 whitenoise==6.5.0
 celery==5.3.4
-redis==5.0.0
-drf-spectacular==0.26.4
+redis==5.0.1
+drf-spectacular==0.26.5
