@@ -1,3 +1,3 @@
-import { About } from './About';
+import { About as Component } from './About';
 
-export { About };
+export { Component };

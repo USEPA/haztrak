@@ -1,4 +1,4 @@
-import { SiteList } from 'features/haztrakSite/SiteList';
+import { SiteList } from './SiteList';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
