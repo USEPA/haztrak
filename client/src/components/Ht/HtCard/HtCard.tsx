@@ -1,9 +1,9 @@
 import { ErrorBoundary } from 'components/ErrorBoundary';
 import { HtSpinner } from 'components/Ht';
 import React, { ReactElement } from 'react';
-import { Card, CardProps } from 'react-bootstrap';
+import { Card, CardHeaderProps, CardProps } from 'react-bootstrap';
 
-interface HeaderProps extends CardProps {
+interface HeaderProps extends CardHeaderProps {
   title?: string;
   size?: string;
 }

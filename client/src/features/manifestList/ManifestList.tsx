@@ -29,7 +29,7 @@ export function ManifestList(): ReactElement {
   }
 
   return (
-    <>
+    <Container className="py-2">
       <Container className="py-2">
         <Row className="d-flex justify-content-between">
           <Col className="d-flex justify-content-start">
@@ -57,6 +57,6 @@ export function ManifestList(): ReactElement {
           </HtCard>
         </Col>
       </Container>
-    </>
+    </Container>
   );
 }

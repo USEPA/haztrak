@@ -1,8 +1,8 @@
+import underConstruction from '/static/under-construction.png';
 import { HtCard } from 'components/Ht';
+import { useTitle } from 'hooks';
 import React from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
-import { useTitle } from 'hooks';
-import underConstruction from '/under-construction.png';
 import { Link } from 'react-router-dom';
 
 /**

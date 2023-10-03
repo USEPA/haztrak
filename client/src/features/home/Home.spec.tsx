@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { Home } from 'features/home';
+import { Home } from './Home';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';

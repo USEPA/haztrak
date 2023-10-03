@@ -44,9 +44,9 @@ export function Login(): ReactElement {
   }
 
   return (
-    <Container className="d-flex justify-content-center m-5">
-      <Col className="m-5">
-        <Row className="d-flex justify-content-center">
+    <Container className="py-3 d-flex justify-content-center">
+      <Col xs={10} md={8} lg={6}>
+        <Row>
           <img
             src={logo}
             alt="haztrak logo, hazardous waste tracking made easy."

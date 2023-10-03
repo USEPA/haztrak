@@ -3,13 +3,33 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
+// @ts-ignore
+import { dependencies } from './package.json';
+
+function renderChunks(deps: Record<string, string>) {
+  const chunks = {};
+  Object.keys(deps).forEach((key) => {
+    if (['react', 'react-router-dom', 'react-dom'].includes(key)) return;
+    // @ts-ignore
+    chunks[key] = [key];
+  });
+  return chunks;
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
     sourcemap: true,
     outDir: 'build',
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 500,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-router-dom', 'react-dom'],
+          ...renderChunks(dependencies),
+        },
+      },
+    },
   },
   plugins: [react(), viteTsconfigPaths(), eslint()],
   server: {

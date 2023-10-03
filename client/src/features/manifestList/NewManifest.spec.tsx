@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import { NewManifest } from 'features/manifest/NewManifest';
+import { NewManifest } from 'features/newManifest/NewManifest';
 import React from 'react';
 import { renderWithProviders, screen } from 'test-utils';
 import { createMockPermission, createMockSite } from 'test-utils/fixtures/mockHandler';

@@ -18,9 +18,7 @@ if (import.meta.env.VITE_HT_ENV && import.meta.env.VITE_HT_ENV.toUpperCase() ===
 root.render(
   <React.StrictMode>
     <Provider store={rootStore}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <App />
     </Provider>
   </React.StrictMode>
 );
