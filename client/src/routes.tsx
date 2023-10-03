@@ -1,8 +1,5 @@
 import { Root } from 'components/Layout/Root';
 import { Login } from 'features/login';
-import { ManifestDetails } from 'features/manifestDetails/ManifestDetails';
-import { ManifestList } from 'features/manifestList/ManifestList';
-import { NewManifest } from 'features/newManifest/NewManifest';
 import { createBrowserRouter } from 'react-router-dom';
 
 export const router = createBrowserRouter([
