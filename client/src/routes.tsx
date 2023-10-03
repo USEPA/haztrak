@@ -1,8 +1,8 @@
 import { Root } from 'components/Layout/Root';
 import { Login } from 'features/login';
-import { ManifestDetails } from 'features/manifest/ManifestDetails';
-import { ManifestList } from 'features/manifest/ManifestList';
-import { NewManifest } from 'features/manifest/NewManifest';
+import { ManifestDetails } from 'features/manifestDetails/ManifestDetails';
+import { ManifestList } from 'features/manifestList/ManifestList';
+import { NewManifest } from 'features/newManifest/NewManifest';
 import { createBrowserRouter } from 'react-router-dom';
 
 export const router = createBrowserRouter([
@@ -40,15 +40,15 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: '',
-                element: <ManifestList />,
+                lazy: () => import('./features/manifestList'),
               },
               {
                 path: 'new',
-                element: <NewManifest />,
+                lazy: () => import('./features/newManifest'),
               },
               {
                 path: ':mtn/:action',
-                element: <ManifestDetails />,
+                lazy: () => import('./features/manifestDetails'),
               },
             ],
           },
@@ -59,15 +59,15 @@ export const router = createBrowserRouter([
         children: [
           {
             path: '',
-            element: <ManifestList />,
+            lazy: () => import('./features/manifestList'),
           },
           {
             path: 'new',
-            element: <NewManifest />,
+            lazy: () => import('./features/newManifest'),
           },
           {
             path: ':mtn/:action',
-            element: <ManifestDetails />,
+            lazy: () => import('./features/manifestDetails'),
           },
         ],
       },
