@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import Optional
 
 from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse
@@ -54,7 +55,7 @@ class RcrainfoService(RcrainfoClient):
             return super().retrieve_key(self.profile.rcra_api_key)
         return super().retrieve_key()
 
-    def get_user_profile(self, username: str = None):
+    def get_user_profile(self, username: Optional[str] = None):
         """
         Retrieve a user's site permissions from RCRAInfo, It expects the
         haztrak user to have their unique RCRAInfo user and API credentials in their
@@ -90,13 +91,13 @@ class RcrainfoService(RcrainfoClient):
     def search_mtn(
         self,
         reg: bool = False,
-        site_id: str = None,
-        start_date: str = None,
-        end_date: str = None,
-        status: str = None,
+        site_id: Optional[str] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        status: Optional[str] = None,
         date_type: str = "UpdatedDate",
-        state_code: str = None,
-        site_type: str = None,
+        state_code: Optional[str] = None,
+        site_type: Optional[str] = None,
     ) -> RcrainfoResponse:
         # map our python friendly keyword arguments to RCRAInfo expected fields
         search_params = {

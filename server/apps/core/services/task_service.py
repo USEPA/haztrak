@@ -6,8 +6,8 @@ from django_celery_results.models import TaskResult
 from rest_framework.exceptions import ValidationError
 from rest_framework.utils.serializer_helpers import ReturnDict
 
-from apps.core.serializers import TaskStatusSerializer
-from apps.core.tasks import example_task
+from apps.core.serializers import TaskStatusSerializer  # type: ignore
+from apps.core.tasks import example_task  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -17,11 +17,13 @@ class TaskService:
     Service class for interacting with the Task model layer and celery tasks.
     """
 
-    def __init__(self, task_id, task_name, status="PENDING", result=None):
+    def __init__(
+        self, task_id: str, task_name: str, status: str = "PENDING", result: Optional[dict] = None
+    ):
         self.task_id = task_id
         self.task_name = task_name
         self.status = status
-        self.result: dict | None = result
+        self.result = result
 
     @classmethod
     def get_task_status(cls, task_id) -> ReturnDict:
@@ -35,7 +37,7 @@ class TaskService:
             return cls.get_task_results(task_id)
 
     @staticmethod
-    def get_task_results(task_id):
+    def get_task_results(task_id: str) -> ReturnDict:
         """
         Gets the results of a long-running celery task stored in the database
         """
@@ -51,7 +53,7 @@ class TaskService:
         raise ValidationError(task_serializer.errors)
 
     @staticmethod
-    def _get_cached_status(task_id) -> dict | None:
+    def _get_cached_status(task_id: str) -> dict | None:
         """
         Gets the status of a long-running celery task from our key-value store
         if not found or error, returns None
@@ -67,7 +69,7 @@ class TaskService:
             return None
 
     @staticmethod
-    def launch_example_task():
+    def launch_example_task() -> str | None:
         """
         Launches an example long-running celery task
         """
@@ -77,7 +79,7 @@ class TaskService:
         except KeyError:
             return None
 
-    def update_task_status(self, status: str, results: Optional = None) -> object | None:
+    def update_task_status(self, status: str, results: Optional[dict] = None) -> object | None:
         """
         Updates the status of a long-running celery task in our key-value store
         returns an error or None

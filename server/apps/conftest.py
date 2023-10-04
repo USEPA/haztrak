@@ -11,17 +11,15 @@ import responses
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
-from apps.core.models import HaztrakUser, RcraProfile
-from apps.sites.models import (
+from apps.core.models import HaztrakUser, RcraProfile  # type: ignore
+from apps.sites.models import (  # type: ignore
     Address,
     Contact,
     RcraPhone,
     RcraSite,
     Site,
 )
-from apps.trak.models import (
-    ManifestPhone,
-)
+from apps.trak.models import ManifestPhone  # type: ignore
 
 
 @pytest.fixture
@@ -52,7 +50,7 @@ def user_factory(db):
     """Abstract factory for Django's User model"""
 
     def create_user(
-        username: Optional[str] = f"{''.join(random.choices(string.ascii_letters, k=9))}",
+        username: str = f"{''.join(random.choices(string.ascii_letters, k=9))}",
         first_name: Optional[str] = "John",
         last_name: Optional[str] = "Doe",
         email: Optional[str] = "testuser1@haztrak.net",
