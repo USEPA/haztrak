@@ -15,6 +15,8 @@ logger = logging.getLogger(__name__)
 
 
 class PullManifestsResult(TypedDict):
+    """Type definition for the results returned from pulling manifests from RCRAInfo"""
+
     success: List[str]
     error: List[str]
 

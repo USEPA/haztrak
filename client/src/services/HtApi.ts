@@ -26,7 +26,6 @@ htApi.interceptors.request.use(
       config.headers['Authorization'] = `Token ${token}`;
     }
     return config;
-    // ToDo: if token does not exist
   },
   (error) => {
     return Promise.reject(error);
