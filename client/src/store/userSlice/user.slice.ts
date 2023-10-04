@@ -33,7 +33,7 @@ const initialState: UserState = {
 export const login = createAsyncThunk(
   'user/login',
   async ({ username, password }: { username: string; password: string }) => {
-    const response = await axios.post(`${import.meta.env.VITE_HT_API_URL}/api/user/login/`, {
+    const response = await axios.post(`${import.meta.env.VITE_HT_API_URL}/api/user/login`, {
       username,
       password,
     });
@@ -46,7 +46,7 @@ export const login = createAsyncThunk(
 );
 
 export const getHaztrakUser = createAsyncThunk('user/getHaztrakUser', async (arg, thunkAPI) => {
-  const response = await htApi.get(`${import.meta.env.VITE_HT_API_URL}/api/user`);
+  const response = await htApi.get('/user');
   if (response.status >= 200 && response.status < 300) {
     return response.data as HaztrakUser;
   } else {

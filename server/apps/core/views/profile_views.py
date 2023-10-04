@@ -1,16 +1,11 @@
 from celery.exceptions import CeleryError
-from django.contrib.auth.models import User
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from apps.core.models import HaztrakUser, RcraProfile
 from apps.core.serializers import HaztrakUserSerializer, RcraProfileSerializer
-from apps.sites.models import RcraSitePermission
-from apps.sites.serializers import (
-    RcraSitePermissionSerializer,
-)
 
 
 class HaztrakUserView(RetrieveUpdateAPIView):
@@ -20,7 +15,6 @@ class HaztrakUserView(RetrieveUpdateAPIView):
     serializer_class = HaztrakUserSerializer
 
     def get_object(self):
-        # return HaztrakUser.objects.get(username="testuser1")
         return self.request.user
 
 
@@ -35,36 +29,27 @@ class RcraProfileView(RetrieveUpdateAPIView):
     serializer_class = RcraProfileSerializer
     response = Response
     lookup_field = "user__username"
-    lookup_url_kwarg = "user"
+    lookup_url_kwarg = "username"
 
 
-class SyncProfileView(GenericAPIView):
+class RcraProfileSyncView(GenericAPIView):
     """
     This endpoint launches a task to sync the logged-in user's RCRAInfo profile
     with their haztrak (Rcra)profile.
     """
 
-    queryset = None
+    queryset = RcraProfile.objects.all()
     response = Response
 
-    def get(self, request: Request, user: str = None) -> Response:
+    def get(self, request: Request) -> Response:
         """Sync Profile GET method rcra_site"""
         try:
             profile = RcraProfile.objects.get(user=request.user)
             task = profile.sync()
             return self.response({"task": task.id})
-        except (User.DoesNotExist, CeleryError) as exc:
-            return self.response(data=exc, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-class RcraSitePermissionView(RetrieveAPIView):
-    """
-    For Viewing the RcraSite Permissions for the given user
-    """
-
-    queryset = RcraSitePermission.objects.all()
-    serializer_class = RcraSitePermissionSerializer
-
-    def get_queryset(self):
-        user = self.request.user
-        return RcraSitePermission.objects.filter(profile__user=user)
+        except RcraProfile.DoesNotExist as exc:
+            return self.response(data={"error": str(exc)}, status=status.HTTP_404_NOT_FOUND)
+        except CeleryError as exc:
+            return self.response(
+                data={"error": str(exc)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
  * @constructor
  */
 export function SiteList() {
-  const [siteData, loading, error] = useHtApi<Array<HaztrakSite>>('site/');
+  const [siteData, loading, error] = useHtApi<Array<HaztrakSite>>('site');
   const [showErrorModal, setShowErrorModal] = useState(false);
 
   useEffect(() => {

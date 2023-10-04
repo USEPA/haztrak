@@ -1,14 +1,15 @@
 import logging
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from django.core.cache import cache
 from django.db import transaction
 from rest_framework.exceptions import ValidationError
 
-from apps.core.services import RcrainfoService
-from apps.sites.models import RcraSite, Site
-from apps.sites.serializers import RcraSiteSerializer
-from apps.trak.services import ManifestService
+from apps.core.services import RcrainfoService  # type: ignore
+from apps.sites.models import RcraSite, Site  # type: ignore
+from apps.sites.serializers import RcraSiteSerializer  # type: ignore
+from apps.trak.services import ManifestService  # type: ignore
+from apps.trak.services.manifest_service import PullManifestsResult  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -18,13 +19,19 @@ class SiteService:
     SiteService encapsulates the Haztrak site subdomain business logic and use cases.
     """
 
-    def __init__(self, *, username: str, site_id: str = None, rcrainfo: RcrainfoService = None):
+    def __init__(
+        self,
+        *,
+        username: str,
+        site_id: Optional[str] = None,
+        rcrainfo: Optional[RcrainfoService] = None,
+    ):
         self.username = username
         self.rcrainfo = rcrainfo or RcrainfoService(api_username=username)
         if site_id:
             self.site = Site.objects.get(rcra_site__epa_id=site_id)
 
-    def sync_rcra_manifest(self, *, site_id: str = None) -> Dict[str, List[str]]:
+    def sync_rcra_manifest(self, *, site_id: Optional[str] = None) -> PullManifestsResult:
         """
         Retrieve a site's manifest from Rcrainfo and save to the database.
 
@@ -43,7 +50,7 @@ class SiteService:
             # limit the number of manifest to sync at a time
             tracking_numbers = tracking_numbers[:30]
             logger.info(f"Pulling {tracking_numbers} from RCRAInfo")
-            results: Dict[str, List[str]] = manifest_service.pull_manifests(
+            results: PullManifestsResult = manifest_service.pull_manifests(
                 tracking_numbers=tracking_numbers
             )
             # ToDo: uncomment this after we have manifest development fixtures
@@ -56,7 +63,9 @@ class SiteService:
             raise Exception
 
     @transaction.atomic
-    def create_or_update_site(self, *, rcra_site: RcraSite, site_name: str = None) -> Site:
+    def create_or_update_site(
+        self, *, rcra_site: RcraSite, site_name: Optional[str] = None
+    ) -> Site:
         """
         Retrieve a site from the database or create.
 
@@ -79,10 +88,9 @@ class RcraSiteService:
     directly relate to use cases.
     """
 
-    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None):
+    def __init__(self, *, username: str, rcrainfo: Optional[RcrainfoService] = None):
         self.username = username
         self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
-        self.logger = logging.getLogger(__name__)
 
     def __repr__(self):
         return (
@@ -106,20 +114,20 @@ class RcraSiteService:
         This may be trying to do too much
         """
         if RcraSite.objects.filter(epa_id=site_id).exists():
-            self.logger.debug(f"using existing rcra_site {site_id}")
+            logger.debug(f"using existing rcra_site {site_id}")
             return RcraSite.objects.get(epa_id=site_id)
         new_rcra_site = self.pull_rcra_site(site_id=site_id)
-        self.logger.debug(f"pulled new rcra_site {new_rcra_site}")
+        logger.debug(f"pulled new rcra_site {new_rcra_site}")
         return new_rcra_site
 
-    def search_rcra_site(self, **search_parameters):
+    def search_rcra_site(self, **search_parameters) -> dict:
         """
         Search RCRAInfo for a site by name or EPA ID
         """
         try:
             data = cache.get(f'{search_parameters["epaSiteId"]}-{search_parameters["siteType"]}')
             if not data:
-                data: Dict = self.rcrainfo.search_sites(**search_parameters).json()
+                data = self.rcrainfo.search_sites(**search_parameters).json()
                 cache.set(
                     f'{search_parameters["epaSiteId"]}-{search_parameters["siteType"]}',
                     data,
@@ -133,7 +141,7 @@ class RcraSiteService:
         serializer = RcraSiteSerializer(data=rcra_site_data)
         if serializer.is_valid():
             return serializer
-        self.logger.error(serializer.errors)
+        logger.error(serializer.errors)
         raise ValidationError(serializer.errors)
 
     @transaction.atomic

@@ -48,7 +48,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
     setProfileLoading(!profileLoading);
     setEditable(!editable);
     htApi
-      .put(`/profile/${profile.user}`, data)
+      .put(`/user/${profile.user}/rcra/profile`, data)
       .then((r) => {
         dispatch(updateProfile(r.data));
       })

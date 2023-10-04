@@ -1,11 +1,14 @@
 import logging
 import os
+from typing import Optional
 
 from django.db import IntegrityError
-from emanifest import RcrainfoClient, RcrainfoResponse
+from emanifest import RcrainfoClient, RcrainfoResponse  # type: ignore
 
-from apps.core.models import RcraProfile
-from apps.trak.models import WasteCode
+from apps.core.models import RcraProfile  # type: ignore
+from apps.trak.models import WasteCode  # type: ignore
+
+logger = logging.getLogger(__name__)
 
 
 class RcrainfoService(RcrainfoClient):
@@ -16,9 +19,8 @@ class RcrainfoService(RcrainfoClient):
 
     datetime_format = "%Y-%m-%dT%H:%M:%S.%f%z"
 
-    def __init__(self, *, api_username: str, rcrainfo_env: str = None, **kwargs):
+    def __init__(self, *, api_username: str, rcrainfo_env: Optional[str] = None, **kwargs):
         self.api_user = api_username
-        self.logger = logging.getLogger(__name__)
         if RcraProfile.objects.filter(user__username=self.api_user).exists():
             self.profile = RcraProfile.objects.get(user__username=self.api_user)
         else:
@@ -54,7 +56,7 @@ class RcrainfoService(RcrainfoClient):
             return super().retrieve_key(self.profile.rcra_api_key)
         return super().retrieve_key()
 
-    def get_user_profile(self, username: str = None):
+    def get_user_profile(self, username: Optional[str] = None):
         """
         Retrieve a user's site permissions from RCRAInfo, It expects the
         haztrak user to have their unique RCRAInfo user and API credentials in their
@@ -90,13 +92,13 @@ class RcrainfoService(RcrainfoClient):
     def search_mtn(
         self,
         reg: bool = False,
-        site_id: str = None,
-        start_date: str = None,
-        end_date: str = None,
-        status: str = None,
+        site_id: Optional[str] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        status: Optional[str] = None,
         date_type: str = "UpdatedDate",
-        state_code: str = None,
-        site_type: str = None,
+        state_code: Optional[str] = None,
+        site_type: Optional[str] = None,
     ) -> RcrainfoResponse:
         # map our python friendly keyword arguments to RCRAInfo expected fields
         search_params = {
@@ -110,7 +112,7 @@ class RcrainfoService(RcrainfoClient):
         }
         # Remove arguments that are None
         filtered_params = {k: v for k, v in search_params.items() if v is not None}
-        self.logger.debug(f"rcrainfo manifest search parameters {filtered_params}")
+        logger.debug(f"rcrainfo manifest search parameters {filtered_params}")
         return super().search_mtn(**filtered_params)
 
     def __bool__(self):

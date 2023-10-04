@@ -80,7 +80,7 @@ CORS_ORIGIN_WHITELIST = [os.getenv(CORS_DOMAIN_ENV, "http://localhost:3000")]
 
 # URLs
 ROOT_URLCONF = "haztrak.urls"
-APPEND_SLASH = True
+APPEND_SLASH = False
 
 TEMPLATES = [
     {
@@ -165,6 +165,10 @@ SPECTACULAR_SETTINGS = {
     "management software can integrate with EPA's RCRAInfo",
     "VERSION": HAZTRAK_VERSION,
     "SERVE_INCLUDE_SCHEMA": False,
+    "EXTERNAL_DOCS": {
+        "description": "Haztrak Documentation",
+        "url": "https://usepa.github.io/haztrak/",
+    },
     "SWAGGER_UI_SETTINGS": {
         "deepLinking": True,
         "persistAuthorization": True,

@@ -12,7 +12,7 @@ from apps.trak.views import (
     SyncSiteManifestView,
 )
 
-manifest_router = routers.SimpleRouter()
+manifest_router = routers.SimpleRouter(trailing_slash=False)
 manifest_router.register(r"manifest", ManifestView)
 
 urlpatterns = [

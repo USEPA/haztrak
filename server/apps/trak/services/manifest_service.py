@@ -1,17 +1,24 @@
 import logging
 from datetime import datetime, timedelta, timezone
-from typing import Dict, List
+from typing import List, Optional, TypedDict
 
 from django.db import transaction
-from emanifest import RcrainfoResponse
-from requests import RequestException
+from emanifest import RcrainfoResponse  # type: ignore
+from requests import RequestException  # type: ignore
 
-from apps.core.services import RcrainfoService
-from apps.trak.models import Manifest, QuickerSign
-from apps.trak.serializers import ManifestSerializer, QuickerSignSerializer
-from apps.trak.tasks import pull_manifest
+from apps.core.services import RcrainfoService  # type: ignore
+from apps.trak.models import Manifest, QuickerSign  # type: ignore
+from apps.trak.serializers import ManifestSerializer, QuickerSignSerializer  # type: ignore
+from apps.trak.tasks import pull_manifest  # type: ignore
 
 logger = logging.getLogger(__name__)
+
+
+class PullManifestsResult(TypedDict):
+    """Type definition for the results returned from pulling manifests from RCRAInfo"""
+
+    success: List[str]
+    error: List[str]
 
 
 class ManifestService:
@@ -20,7 +27,7 @@ class ManifestService:
     business logic and exposes methods corresponding to use cases.
     """
 
-    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None):
+    def __init__(self, *, username: str, rcrainfo: Optional[RcrainfoService] = None):
         self.username = username
         self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
 
@@ -53,13 +60,13 @@ class ManifestService:
     def search_rcra_mtn(
         self,
         *,
-        site_id: str = None,
-        start_date: datetime = None,
-        end_date: datetime = None,
-        status: str = None,
+        site_id: Optional[str] = None,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+        status: Optional[str] = None,
         date_type: str = "UpdatedDate",
-        state_code: str = None,
-        site_type: str = None,
+        state_code: Optional[str] = None,
+        site_type: Optional[str] = None,
     ) -> List[str]:
         """
         Search RCRAInfo for manifests, an abstraction of RcrainfoService's search_mtn
@@ -75,11 +82,11 @@ class ManifestService:
         """
         date_format = "%Y-%m-%dT%H:%M:%SZ"
         if end_date:
-            end_date = end_date.replace(tzinfo=timezone.utc).strftime(date_format)
+            end_date_str = end_date.replace(tzinfo=timezone.utc).strftime(date_format)
         else:
-            end_date = datetime.utcnow().replace(tzinfo=timezone.utc).strftime(date_format)
+            end_date_str = datetime.utcnow().replace(tzinfo=timezone.utc).strftime(date_format)
         if start_date:
-            start_date = start_date.replace(tzinfo=timezone.utc).strftime(date_format)
+            start_date_str = start_date.replace(tzinfo=timezone.utc).strftime(date_format)
         else:
             # If no start date is specified, retrieve for last ~3 years
             start_date = datetime.utcnow().replace(tzinfo=timezone.utc) - timedelta(
@@ -88,14 +95,14 @@ class ManifestService:
                 * 30  # 30 days/1month
                 * 36  # 36 months/3years = 3/years
             )
-            start_date = start_date.strftime(date_format)
+            start_date_str = start_date.strftime(date_format)
 
         response = self.rcrainfo.search_mtn(
-            site_id=site_id,
+            site_id=site_id,  # type: ignore
             site_type=site_type,
             state_code=state_code,
-            start_date=start_date,
-            end_date=end_date,
+            start_date=start_date_str,
+            end_date=end_date_str,
             status=status,
             date_type=date_type,
         )
@@ -104,7 +111,7 @@ class ManifestService:
             return response.json()
         return []
 
-    def pull_manifests(self, tracking_numbers: List[str]) -> Dict[str, List[str]]:
+    def pull_manifests(self, tracking_numbers: List[str]) -> PullManifestsResult:
         """
         Pull a list of manifest from RCRAInfo
 
@@ -112,7 +119,7 @@ class ManifestService:
             results (Dict): with 2 members, 'success' and 'error' each is a list of MTN
             that corresponds to what manifest where successfully pulled or not.
         """
-        results = {"success": [], "error": []}
+        results: PullManifestsResult = {"success": [], "error": []}
         logger.info(f"pulling manifests {tracking_numbers}")
         for mtn in tracking_numbers:
             try:
@@ -125,7 +132,7 @@ class ManifestService:
         logger.info(f"pull manifests results: {results}")
         return results
 
-    def sign_manifest(self, signature: QuickerSign) -> dict[str, list[str]]:
+    def sign_manifest(self, signature: QuickerSign) -> PullManifestsResult:
         """
         Electronically sign manifests in RCRAInfo through the RESTful API. Returns the results by
         manifest tracking number (MTN) in a Dict.
@@ -177,8 +184,8 @@ class ManifestService:
             raise ValueError("malformed payload")
 
     @staticmethod
-    def _filter_mtn(signature: QuickerSign) -> dict[str, list[str]]:
-        results = {"success": [], "error": []}
+    def _filter_mtn(signature: QuickerSign) -> PullManifestsResult:
+        results: PullManifestsResult = {"success": [], "error": []}
         site_filter = Manifest.objects.get_handler_query(signature.site_id, signature.site_type)
         existing_mtn = Manifest.objects.existing_mtn(site_filter, mtn=signature.mtn)
         results["success"] = [manifest.mtn for manifest in existing_mtn]

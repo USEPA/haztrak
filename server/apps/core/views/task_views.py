@@ -5,7 +5,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.core.services.task_service import TaskService
+from apps.core.services.task_service import TaskService  # type: ignore
 
 
 class CeleryTaskResultSerializer(serializers.ModelSerializer):
@@ -29,15 +29,14 @@ class LaunchExampleTaskView(APIView):
     Launches an example long-running background task
     """
 
-    response = Response
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, *args, **kwargs):
         try:
             task_id = TaskService.launch_example_task()
-            return self.response(data={"task": task_id}, status=status.HTTP_200_OK)
+            return Response(data={"task": task_id}, status=status.HTTP_200_OK)
         except KeyError:
-            return self.response(
+            return Response(
                 data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -49,17 +48,16 @@ class TaskStatusView(APIView):
     """
 
     queryset = TaskResult.objects.all()
-    response = Response
 
     def get(self, request: Request, task_id):
         try:
             data = TaskService.get_task_status(task_id)
-            return self.response(data=data, status=status.HTTP_200_OK)
+            return Response(data=data, status=status.HTTP_200_OK)
         except KeyError as exc:
-            return self.response(data={"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
         except ValidationError as exc:
-            return self.response(
+            return Response(
                 data={"error": exc.detail}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         except TaskResult.DoesNotExist as exc:
-            return self.response(data={"error": str(exc)}, status=status.HTTP_404_NOT_FOUND)
+            return Response(data={"error": str(exc)}, status=status.HTTP_404_NOT_FOUND)

@@ -109,7 +109,7 @@ class RcraSiteView(RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class RcraSiteSearchView(ListAPIView):
+class SiteSearchView(ListAPIView):
     """
     Search for locally saved hazardous waste sites ("Generators", "Transporters", "Tsdf's")
     """

@@ -35,7 +35,7 @@ export function UserProfile({ user }: UserProfileProps) {
   const onSubmit = (data: any) => {
     setEditable(!editable);
     htApi
-      .put('/user/', data)
+      .put('/user', data)
       .then((r) => {
         dispatch(updateUserProfile(r.data));
       })

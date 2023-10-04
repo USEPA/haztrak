@@ -138,15 +138,13 @@ class CreateRcraManifestView(GenericAPIView):
         """The Body of the POST request should contain the complete and valid manifest object"""
         manifest_serializer = self.serializer_class(data=request.data)
         if manifest_serializer.is_valid():
-            logger.info(
-                f"valid manifest data submitted for creation in RCRAInfo: "
-                f"{datetime.datetime.utcnow()}"
+            logger.debug(
+                f"manifest data submitted for creation in RCRAInfo: {manifest_serializer.data}"
             )
             task: AsyncResult = create_rcra_manifest.delay(
                 manifest=manifest_serializer.data, username=str(request.user)
             )
-            task_status = TaskService(task_id=task.id, task_name=task.name, status="STARTED")
-            task_status.update_task_status(status="PENDING")
+            TaskService(task_id=task.id, task_name=task.name).update_task_status("PENDING")
             return self.response(data={"taskId": task.id}, status=status.HTTP_201_CREATED)
         else:
             logger.error("manifest_serializer errors: ", manifest_serializer.errors)

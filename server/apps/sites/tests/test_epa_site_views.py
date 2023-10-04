@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
 from apps.sites.models import RcraSiteType
-from apps.sites.views import RcraSiteSearchView
+from apps.sites.views import SiteSearchView
 
 
 class TestEpaSiteView:
@@ -37,7 +37,7 @@ class TestEpaSiteSearchView:
     Tests for the RcraSite Search endpoint
     """
 
-    URL = "/api/site/rcra-site/search"
+    URL = "/api/site/search"
 
     @pytest.fixture(autouse=True)
     def generator(self, rcra_site_factory):
@@ -60,7 +60,7 @@ class TestEpaSiteSearchView:
         )
         force_authenticate(request, user)
         # Act
-        response = RcraSiteSearchView.as_view()(request)
+        response = SiteSearchView.as_view()(request)
         # Assert
         assert len(response.data) > 0
         for handler_data in response.data:
@@ -85,7 +85,7 @@ class TestEpaSiteSearchView:
         )
         force_authenticate(request, user)
         # Act
-        response = RcraSiteSearchView.as_view()(request)
+        response = SiteSearchView.as_view()(request)
         # Assert
         for handler_data in response.data:
             # ToDo: serialize based on display name
