@@ -1,13 +1,16 @@
 import logging
+from typing import Optional
 
 from django.db import transaction
 
-from apps.core.services import RcrainfoService
-from apps.sites.models import RcraSitePermission, Site
-from apps.sites.serializers import RcraPermissionSerializer
+from apps.core.services import RcrainfoService  # type: ignore
+from apps.sites.models import RcraSitePermission, Site  # type: ignore
+from apps.sites.serializers import RcraPermissionSerializer  # type: ignore
 
-from ...core.models import RcraProfile
-from .site_services import RcraSiteService, SiteService
+from ...core.models import RcraProfile  # type: ignore
+from .site_services import RcraSiteService, SiteService  # type: ignore
+
+logger = logging.getLogger(__name__)
 
 
 # ToDo, may be better to have a service level module exception.
@@ -25,11 +28,10 @@ class RcraProfileService:
     of a and exposes method corresponding to use cases.
     """
 
-    def __init__(self, *, username: str, rcrainfo: RcrainfoService = None):
+    def __init__(self, *, username: str, rcrainfo: Optional[RcrainfoService] = None):
         self.username = username
         self.profile, created = RcraProfile.objects.get_or_create(user__username=self.username)
         self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
-        self.logger = logging.getLogger(__name__)
 
     @property
     def can_access_rcrainfo(self) -> bool:
@@ -45,7 +47,7 @@ class RcraProfileService:
             f"<{self.__class__.__name__}(username='{self.username}', rcrainfo='{self.rcrainfo}')>"
         )
 
-    def pull_rcra_profile(self, *, username: str = None):
+    def pull_rcra_profile(self, *, username: Optional[str] = None):
         """
         This high level function makes several requests to RCRAInfo to pull...
         1. A user's rcrainfo site permissions, it creates a RcraSitePermission for each
@@ -85,7 +87,8 @@ class RcraProfileService:
     ) -> RcraSitePermission:
         permission_serializer = RcraPermissionSerializer(data=epa_permission)
         if permission_serializer.is_valid():
-            return RcraSitePermission.objects.update_or_create(
+            obj, created = RcraSitePermission.objects.update_or_create(
                 **permission_serializer.validated_data, site=site, profile=self.profile
             )
+            return obj
         raise Exception("Error Attempting to create RcraSitePermission")

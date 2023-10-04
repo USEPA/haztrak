@@ -3,10 +3,12 @@ import os
 from typing import Optional
 
 from django.db import IntegrityError
-from emanifest import RcrainfoClient, RcrainfoResponse
+from emanifest import RcrainfoClient, RcrainfoResponse  # type: ignore
 
-from apps.core.models import RcraProfile
-from apps.trak.models import WasteCode
+from apps.core.models import RcraProfile  # type: ignore
+from apps.trak.models import WasteCode  # type: ignore
+
+logger = logging.getLogger(__name__)
 
 
 class RcrainfoService(RcrainfoClient):
@@ -17,9 +19,8 @@ class RcrainfoService(RcrainfoClient):
 
     datetime_format = "%Y-%m-%dT%H:%M:%S.%f%z"
 
-    def __init__(self, *, api_username: str, rcrainfo_env: str = None, **kwargs):
+    def __init__(self, *, api_username: str, rcrainfo_env: Optional[str] = None, **kwargs):
         self.api_user = api_username
-        self.logger = logging.getLogger(__name__)
         if RcraProfile.objects.filter(user__username=self.api_user).exists():
             self.profile = RcraProfile.objects.get(user__username=self.api_user)
         else:
@@ -111,7 +112,7 @@ class RcrainfoService(RcrainfoClient):
         }
         # Remove arguments that are None
         filtered_params = {k: v for k, v in search_params.items() if v is not None}
-        self.logger.debug(f"rcrainfo manifest search parameters {filtered_params}")
+        logger.debug(f"rcrainfo manifest search parameters {filtered_params}")
         return super().search_mtn(**filtered_params)
 
     def __bool__(self):
