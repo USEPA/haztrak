@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { htApi } from 'services';
 
 /**
  * Schema of a user's alerts stored in the Redux store
@@ -32,7 +32,7 @@ const initialState: NotificationState = {
 export const launchExampleTask = createAsyncThunk<HtNotification>(
   'notification/getExampleTask',
   async () => {
-    const response = await axios.get(`${import.meta.env.VITE_HT_API_URL}/api/task/example`);
+    const response = await htApi.get('/task/example');
     const newNotification: HtNotification = {
       inProgress: false,
       message: `Background task launched. Task ID: ${response.data.task}`,
