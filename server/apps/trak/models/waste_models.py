@@ -264,3 +264,63 @@ class WasteCode(RcraCodeBaseModel):
         blank=True,
         choices=STATE_CHOICES,
     )
+
+
+class DotOptionType(models.TextChoices):
+    ID = ("ID", _("Id"))  # DOT ID number
+    GROUP = ("GROUP", _("Group"))  # DOT packing group
+    NAME = ("NAME", _("Name"))  # DOT Proper shipping name
+    CLASS = ("CLASS", _("Class"))  # DOT Hazard class
+
+
+class IdNumbers(models.Manager):
+    """DOT Option model manager for dealing with DOT ID numbers"""
+
+    def get_queryset(self):
+        return super().get_queryset().filter(value_type=DotOptionType.ID)
+
+
+class PackingGroups(models.Manager):
+    """DOT Option model manager for dealing with DOT ID numbers"""
+
+    def get_queryset(self):
+        return super().get_queryset().filter(value_type=DotOptionType.GROUP)
+
+
+class ShippingNames(models.Manager):
+    """DOT Option model manager for dealing with DOT ID numbers"""
+
+    def get_queryset(self):
+        return super().get_queryset().filter(value_type=DotOptionType.NAME)
+
+
+class HazardClass(models.Manager):
+    """DOT Option model manager for dealing with DOT ID numbers"""
+
+    def get_queryset(self):
+        return super().get_queryset().filter(value_type=DotOptionType.CLASS)
+
+
+class DotOption(models.Model):
+    """data used to construct Department of Transportation (DOT) shipping descriptions"""
+
+    objects = models.Manager()
+    id_numbers = IdNumbers()
+    packing_groups = PackingGroups()
+    shipping_names = ShippingNames()
+    hazard_classes = HazardClass()
+
+    class Meta:
+        ordering = ["value_type", "value"]
+
+    value = models.CharField(
+        max_length=255,
+        null=False,
+    )
+    value_type = models.CharField(
+        max_length=5,
+        choices=DotOptionType.choices,
+    )
+
+    def __str__(self):
+        return f"{self.value_type}: {self.value}"
