@@ -1,21 +1,19 @@
 import logging
 
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.db.models import QuerySet
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from drf_spectacular.utils import extend_schema
-from rest_framework import permissions, status
-from rest_framework.decorators import api_view
-from rest_framework.exceptions import APIException, ValidationError
-from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
+from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework import permissions, serializers, status
+from rest_framework.exceptions import ValidationError
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from apps.sites.models import RcraSite, RcraSiteType, Site
-from apps.sites.serializers import RcraSiteSerializer, SiteSerializer
-from apps.sites.services import RcraSiteService
-from apps.trak.models import Manifest
-from apps.trak.serializers import MtnSerializer
+from apps.sites.models import RcraSite, RcraSiteType, Site  # type: ignore
+from apps.sites.serializers import RcraSiteSerializer, SiteSerializer  # type: ignore
+from apps.sites.services import RcraSiteService  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -52,50 +50,6 @@ class SiteDetailView(RetrieveAPIView):
         return queryset
 
 
-class SiteMtnListView(GenericAPIView):
-    """
-    Returns a site's manifest tracking numbers (MTN). Rhe MTN are broken down into three lists;
-    generator, transporter, designated.Each array contains a list of objects with MTN and select
-    details such as status
-    """
-
-    response = Response
-    serializer_class = MtnSerializer
-
-    def get(self, request: Request, epa_id: str = None) -> Response:
-        """GET method rcra_site"""
-        try:
-            profile_sites = [
-                str(i) for i in Site.objects.filter(rcrasitepermission__profile__user=request.user)
-            ]
-            if epa_id not in profile_sites:
-                raise PermissionDenied
-            tsdf_manifests = Manifest.objects.filter(tsdf__rcra_site__epa_id=epa_id).values(
-                "mtn", "status"
-            )
-            gen_manifests = Manifest.objects.filter(generator__rcra_site__epa_id=epa_id).values(
-                "mtn", "status"
-            )
-            tran_manifests = Manifest.objects.filter(
-                transporters__rcra_site__epa_id__contains=epa_id
-            ).values("mtn", "status")
-            return self.response(
-                status=status.HTTP_200_OK,
-                data={
-                    "tsdf": tsdf_manifests,
-                    "generator": gen_manifests,
-                    "transporter": tran_manifests,
-                },
-            )
-        except (APIException, AttributeError) as error:
-            logger.warning(error)
-            return self.response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except ObjectDoesNotExist:
-            return self.response(
-                status=status.HTTP_404_NOT_FOUND, data={"Error": f"{epa_id} not found"}
-            )
-
-
 @extend_schema(
     description="Retrieve details on a rcra_site stored in the Haztrak database",
 )
@@ -109,6 +63,17 @@ class RcraSiteView(RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
+@extend_schema(
+    responses=RcraSiteSerializer(many=True),
+    request=inline_serializer(
+        "handler_search",
+        fields={
+            "epaId": serializers.CharField(),
+            "siteName": serializers.CharField(),
+            "siteType": serializers.CharField(),
+        },
+    ),
+)
 class SiteSearchView(ListAPIView):
     """
     Search for locally saved hazardous waste sites ("Generators", "Transporters", "Tsdf's")
@@ -117,11 +82,11 @@ class SiteSearchView(ListAPIView):
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
 
-    def get_queryset(self):
+    def get_queryset(self: ListAPIView) -> QuerySet[RcraSite]:
         queryset = RcraSite.objects.all()
-        epa_id_param = self.request.query_params.get("epaId")
-        name_param = self.request.query_params.get("siteName")
-        site_type_param: str = self.request.query_params.get("siteType")
+        epa_id_param: str | None = self.request.query_params.get("epaId")
+        name_param: str | None = self.request.query_params.get("siteName")
+        site_type_param: str | None = self.request.query_params.get("siteType")
         if epa_id_param is not None:
             queryset = queryset.filter(epa_id__icontains=epa_id_param)
         if name_param is not None:
@@ -149,18 +114,26 @@ handler_types = {
 }
 
 
-@api_view(["POST"])
-def rcrainfo_site_search_view(request: Request):
+@extend_schema(
+    responses=RcraSiteSerializer(many=True),
+    request=inline_serializer(
+        "handler_search",
+        fields={"siteId": serializers.CharField(), "siteType": serializers.CharField()},
+    ),
+)
+class HandlerSearchView(APIView):
     """
-    Search and return a list of sites from RCRAInfo.
+    Search and return a list of Hazardous waste handlers from RCRAInfo.
     """
-    try:
-        site_service = RcraSiteService(username=request.user.username)
-        data = site_service.search_rcra_site(
-            epaSiteId=request.data["siteId"], siteType=handler_types[request.data["siteType"]]
-        )
-        return Response(status=status.HTTP_200_OK, data=data["sites"])
-    except KeyError:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-    except ValidationError:
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def post(self, request: Request) -> Response:
+        try:
+            site_service = RcraSiteService(username=request.user.username)
+            data = site_service.search_rcra_site(
+                epaSiteId=request.data["siteId"], siteType=handler_types[request.data["siteType"]]
+            )
+            return Response(status=status.HTTP_200_OK, data=data["sites"])
+        except KeyError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        except ValidationError:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

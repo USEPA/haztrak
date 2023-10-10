@@ -1,7 +1,6 @@
 import pytest
 from celery.result import AsyncResult
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, force_authenticate
 
 from apps.trak.views import ManifestView, SignManifestView
@@ -10,7 +9,7 @@ from apps.trak.views import ManifestView, SignManifestView
 class TestManifestCRUD:
     """Tests the for the Manifest ModelViewSet"""
 
-    base_url = "/api/manifest"
+    base_url = "/api/rcra/manifest"
 
     @pytest.fixture
     def factory(self):
@@ -33,21 +32,10 @@ class TestManifestCRUD:
         request = factory.get(f"{self.base_url}/{manifest.mtn}")
         force_authenticate(request, user)
         # Act
-        response: Response = ManifestView.as_view({"get": "retrieve"})(request, mtn=manifest.mtn)
+        response = ManifestView.as_view()(request, mtn=manifest.mtn)
         # Assert
         assert response.status_code == status.HTTP_200_OK
         assert response.data["manifestTrackingNumber"] == manifest.mtn
-
-    def test_manifest_from_epa_create_when_posted(self, factory, manifest_json, user):
-        request = factory.post(f"{self.base_url}", manifest_json, format="json")
-        force_authenticate(request, user)
-
-        response: Response = ManifestView.as_view({"post": "create"})(request)
-
-        assert response.status_code == status.HTTP_201_CREATED
-        assert response.data["manifestTrackingNumber"] == manifest_json.get(
-            "manifestTrackingNumber"
-        )
 
 
 class TestSignManifestVIew:
@@ -79,5 +67,5 @@ class TestSignManifestVIew:
             format="json",
         )
         force_authenticate(request, self.user)
-        response: Response = SignManifestView.as_view()(request)
+        response = SignManifestView.as_view()(request)
         assert response.data["task"] == self.mock_task_id

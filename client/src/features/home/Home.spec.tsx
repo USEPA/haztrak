@@ -1,16 +1,16 @@
 import '@testing-library/jest-dom';
-import { Home } from './Home';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { API_BASE_URL, handlers } from 'test-utils/mock/handlers';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
+import { Home } from './Home';
 
 const USERNAME = 'testuser1';
 
 const myAPIHandlers = [
-  rest.get(`${API_BASE_URL}/api/user/${USERNAME}/rcra/profile`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/rcra/profile/${USERNAME}`, (req, res, ctx) => {
     return res(
       // Respond with a 200 status code
       ctx.status(200),

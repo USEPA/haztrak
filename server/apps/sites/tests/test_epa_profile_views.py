@@ -1,9 +1,8 @@
 import pytest
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.core.views import RcraProfileView
+from apps.core.views import RcraProfileView  # type: ignore
 
 
 class TestRcraProfileView:
@@ -11,7 +10,7 @@ class TestRcraProfileView:
     Tests the for the endpoints related to the user's RcraProfile
     """
 
-    URL = "/api/user"
+    URL = "/api/"
     id_field = "rcraAPIID"
     key_field = "rcraAPIKey"
     username_field = "rcraUsername"
@@ -28,7 +27,7 @@ class TestRcraProfileView:
     def rcra_profile_request(self, user_and_client):
         factory = APIRequestFactory()
         request = factory.put(
-            f"{self.URL}/{self.user.username}/rcra/profile",
+            f"{self.URL}rcra/profile{self.user.username}",
             {
                 self.id_field: self.new_api_id,
                 self.username_field: self.new_username,
@@ -43,7 +42,7 @@ class TestRcraProfileView:
         # Arrange
         rcra_profile_factory(user=self.user)
         # Act
-        response: Response = self.client.get(f"{self.URL}/{self.user.username}/rcra/profile")
+        response = self.client.get(f"{self.URL}rcra/profile/{self.user.username}")
         # Assert
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK

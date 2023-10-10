@@ -59,7 +59,7 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
       };
     }
     htApi
-      .post('/manifest/sign', signature)
+      .post('rcra/manifest/sign', signature)
       .then((response: AxiosResponse) => {
         dispatch(
           addNotification({

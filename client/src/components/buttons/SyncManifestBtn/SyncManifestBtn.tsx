@@ -1,8 +1,8 @@
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { RcraApiUserBtn } from 'components/buttons';
 import React, { useState } from 'react';
 import { htApi } from 'services';
-import { RcraApiUserBtn } from 'components/buttons';
 import { addNotification, useAppDispatch } from 'store';
 
 interface SyncManifestProps {
@@ -18,8 +18,7 @@ interface SyncManifestProps {
 export function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
   const [syncingMtn, setSyncingMtn] = useState(false);
   const dispatch = useAppDispatch();
-  let active: boolean = siteId ? true : false;
-  active = !disabled;
+  const active = !disabled;
 
   return (
     <RcraApiUserBtn
@@ -29,7 +28,7 @@ export function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
       onClick={() => {
         setSyncingMtn(!syncingMtn);
         htApi
-          .post('/manifest/sync', { siteId: `${siteId}` })
+          .post('rcra/manifest/sync', { siteId: `${siteId}` })
           .then((response) => {
             dispatch(
               addNotification({

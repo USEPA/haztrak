@@ -165,6 +165,7 @@ SPECTACULAR_SETTINGS = {
     "management software can integrate with EPA's RCRAInfo",
     "VERSION": HAZTRAK_VERSION,
     "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": r"/api\/(?:rcra)?",
     "EXTERNAL_DOCS": {
         "description": "Haztrak Documentation",
         "url": "https://usepa.github.io/haztrak/",

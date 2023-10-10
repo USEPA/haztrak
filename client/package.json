@@ -33,7 +33,7 @@
     "react-router-dom": "^6.16.0",
     "react-select": "^5.7.7",
     "sass": "^1.68.0",
-    "zod": "^3.22.2"
+    "zod": "^3.22.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.3",

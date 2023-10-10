@@ -3,12 +3,11 @@ from typing import Optional
 import pytest
 from django.contrib.auth.models import User
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.core.models import RcraProfile
-from apps.sites.models import RcraSite, RcraSitePermission, Site
-from apps.sites.views import SiteDetailView, SiteMtnListView
+from apps.core.models import RcraProfile  # type: ignore
+from apps.sites.models import RcraSite, RcraSitePermission, Site  # type: ignore
+from apps.sites.views import SiteDetailView  # type: ignore
 
 
 class TestSiteListView:
@@ -96,7 +95,7 @@ class TestSiteDetailsApi:
 
         return create_site_and_related
 
-    def test_returns_site_by_id(self, user_factory, local_site_factory):
+    def test_returns_site_by_id(self, user_factory, local_site_factory) -> None:
         # Arrange
         user = user_factory(username="username1")
         site = local_site_factory(user=user)
@@ -132,28 +131,3 @@ class TestSiteDetailsApi:
         # Assert
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK
-
-
-class TestSiteManifest:
-    """
-    Tests for the endpoint to retrieve a Site's manifests
-    """
-
-    # ToDo fix these false positive tests
-
-    url = "/api/site"
-
-    @pytest.fixture(autouse=True)
-    def _user(self, user_factory):
-        self.user = user_factory()
-
-    @pytest.fixture(autouse=True)
-    def _generator(self, rcra_site_factory):
-        self.generator = rcra_site_factory()
-
-    def test_returns_200(self):
-        factory = APIRequestFactory()
-        request = factory.get(f"{self.url}/{self.generator.epa_id}/manifest")
-        force_authenticate(request, self.user)
-        response: Response = SiteMtnListView.as_view()(request, self.generator.epa_id)
-        print(response.data)
