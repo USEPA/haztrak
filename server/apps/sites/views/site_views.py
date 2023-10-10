@@ -1,21 +1,18 @@
 import logging
 
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, status
 from rest_framework.decorators import api_view
-from rest_framework.exceptions import APIException, ValidationError
-from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
+from rest_framework.exceptions import ValidationError
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.sites.models import RcraSite, RcraSiteType, Site
-from apps.sites.serializers import RcraSiteSerializer, SiteSerializer
-from apps.sites.services import RcraSiteService
-from apps.trak.models import Manifest
-from apps.trak.serializers import MtnSerializer
+from apps.sites.models import RcraSite, RcraSiteType, Site  # type: ignore
+from apps.sites.serializers import RcraSiteSerializer, SiteSerializer  # type: ignore
+from apps.sites.services import RcraSiteService  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -50,50 +47,6 @@ class SiteDetailView(RetrieveAPIView):
             rcra_site__epa_id=epa_id, rcrasitepermission__profile__user=self.request.user
         )
         return queryset
-
-
-class SiteMtnListView(GenericAPIView):
-    """
-    Returns a site's manifest tracking numbers (MTN). Rhe MTN are broken down into three lists;
-    generator, transporter, designated.Each array contains a list of objects with MTN and select
-    details such as status
-    """
-
-    response = Response
-    serializer_class = MtnSerializer
-
-    def get(self, request: Request, epa_id: str = None) -> Response:
-        """GET method rcra_site"""
-        try:
-            profile_sites = [
-                str(i) for i in Site.objects.filter(rcrasitepermission__profile__user=request.user)
-            ]
-            if epa_id not in profile_sites:
-                raise PermissionDenied
-            tsdf_manifests = Manifest.objects.filter(tsdf__rcra_site__epa_id=epa_id).values(
-                "mtn", "status"
-            )
-            gen_manifests = Manifest.objects.filter(generator__rcra_site__epa_id=epa_id).values(
-                "mtn", "status"
-            )
-            tran_manifests = Manifest.objects.filter(
-                transporters__rcra_site__epa_id__contains=epa_id
-            ).values("mtn", "status")
-            return self.response(
-                status=status.HTTP_200_OK,
-                data={
-                    "tsdf": tsdf_manifests,
-                    "generator": gen_manifests,
-                    "transporter": tran_manifests,
-                },
-            )
-        except (APIException, AttributeError) as error:
-            logger.warning(error)
-            return self.response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except ObjectDoesNotExist:
-            return self.response(
-                status=status.HTTP_404_NOT_FOUND, data={"Error": f"{epa_id} not found"}
-            )
 
 
 @extend_schema(

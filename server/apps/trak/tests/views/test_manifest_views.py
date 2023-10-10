@@ -1,7 +1,6 @@
 import pytest
 from celery.result import AsyncResult
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, force_authenticate
 
 from apps.trak.views import ManifestView, SignManifestView
@@ -33,7 +32,7 @@ class TestManifestCRUD:
         request = factory.get(f"{self.base_url}/{manifest.mtn}")
         force_authenticate(request, user)
         # Act
-        response: Response = ManifestView.as_view()(request, mtn=manifest.mtn)
+        response = ManifestView.as_view()(request, mtn=manifest.mtn)
         # Assert
         assert response.status_code == status.HTTP_200_OK
         assert response.data["manifestTrackingNumber"] == manifest.mtn
@@ -68,5 +67,5 @@ class TestSignManifestVIew:
             format="json",
         )
         force_authenticate(request, self.user)
-        response: Response = SignManifestView.as_view()(request)
+        response = SignManifestView.as_view()(request)
         assert response.data["task"] == self.mock_task_id
