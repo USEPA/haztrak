@@ -14,24 +14,22 @@ interface RcrainfoSiteSearch {
 export const siteApi = createApi({
   reducerPath: 'siteApi',
   baseQuery: htApiBaseQuery({
-    baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/site`,
+    baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/`,
   }),
   endpoints: (build) => ({
     searchRcrainfoSites: build.query<Array<RcraSite>, RcrainfoSiteSearch>({
       query: (data: RcrainfoSiteSearch) => ({
-        url: '/rcrainfo/search',
+        url: 'rcra/handler/search',
         method: 'post',
         data: data,
       }),
     }),
     searchRcraSites: build.query<Array<RcraSite>, RcrainfoSiteSearch>({
       query: (data: RcrainfoSiteSearch) => ({
-        url: '/search',
+        url: 'site/search',
         method: 'get',
         params: { epaId: data.siteId, siteType: data.siteType },
       }),
     }),
   }),
 });
-
-export const { useSearchRcraSitesQuery, useSearchRcrainfoSitesQuery } = siteApi;

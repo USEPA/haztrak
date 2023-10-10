@@ -4,11 +4,11 @@ import { HtForm } from 'components/Ht';
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { htApi } from 'services';
 import { addNotification, useAppDispatch } from 'store';
 import { getProfile, updateProfile } from 'store/rcraProfileSlice';
 import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
-import { htApi } from 'services';
-import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
 interface ProfileViewProps {
@@ -48,7 +48,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
     setProfileLoading(!profileLoading);
     setEditable(!editable);
     htApi
-      .put(`/user/${profile.user}/rcra/profile`, data)
+      .put(`/rcra/profile/${profile.user}`, data)
       .then((r) => {
         dispatch(updateProfile(r.data));
       })

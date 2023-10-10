@@ -1,5 +1,4 @@
-import { faFaceSmile } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import winkingRobot from '/static/robot-wink.jpg';
 import { HtCard } from 'components/Ht';
 import { NotificationRow } from 'components/Notification';
 import { useTitle } from 'hooks';
@@ -25,8 +24,8 @@ export function Notifications() {
             <HtCard.Body>
               {notifications.length === 0 ? (
                 <div className="text-center">
-                  <h3>Nothing to see here, you're all caught up!</h3>
-                  <FontAwesomeIcon className="text-info" icon={faFaceSmile} size={'6x'} />
+                  <h3>You're all caught up!</h3>
+                  <img src={winkingRobot} alt="happy robot" width={200} height={'auto'} />
                 </div>
               ) : (
                 <Table hover>
