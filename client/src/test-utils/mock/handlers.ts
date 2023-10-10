@@ -28,7 +28,7 @@ export const handlers = [
   /**
    * User RcraProfile data
    */
-  rest.get(`${API_BASE_URL}/api/user/${mockUsername}/rcra/profile`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/rcra/profile/${mockUsername}`, (req, res, ctx) => {
     return res(
       // Respond with a 200 status code
       ctx.status(200),

@@ -1,6 +1,6 @@
-from django.urls import path
+from django.urls import include, path
 
-from .views import (
+from .views import (  # type: ignore
     HaztrakUserView,
     LaunchExampleTaskView,
     Login,
@@ -11,8 +11,15 @@ from .views import (
 
 urlpatterns = [
     # Rcra Profile
-    path("user/<str:username>/rcra/profile/sync", RcraProfileSyncView.as_view()),
-    path("user/<str:username>/rcra/profile", RcraProfileView.as_view()),
+    path(
+        "rcra/",
+        include(
+            [
+                path("profile/<str:username>/sync", RcraProfileSyncView.as_view()),
+                path("profile/<str:username>", RcraProfileView.as_view()),
+            ]
+        ),
+    ),
     path("user", HaztrakUserView.as_view()),
     path("user/login", Login.as_view()),
     path("task/example", LaunchExampleTaskView.as_view()),
