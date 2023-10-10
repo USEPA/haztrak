@@ -57,13 +57,13 @@ export const handlers = [
   /**
    * mock Manifest
    */
-  rest.get(`${API_BASE_URL}/api/manifest/${mockMTN}`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/rcra/manifest/${mockMTN}`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(createMockManifest()));
   }),
   /**
    * list of manifests ('My Manifests' feature and a site's manifests)
    */
-  rest.get(`${API_BASE_URL}/api/mtn*`, (req, res, ctx) => {
+  rest.get(`${API_BASE_URL}/api/rcra/mtn*`, (req, res, ctx) => {
     const mockManifestArray = [
       createMockManifest(),
       createMockManifest({ manifestTrackingNumber: '987654321ELC', status: 'Pending' }),

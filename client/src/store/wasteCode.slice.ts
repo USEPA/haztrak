@@ -9,7 +9,7 @@ import { htApiBaseQuery } from 'store/baseQuery';
 export const wasteCodeApi = createApi({
   reducerPath: 'wasteCodeApi',
   baseQuery: htApiBaseQuery({
-    baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/code/`,
+    baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/rcra/code/`,
   }),
   endpoints: (build) => ({
     getFedWasteCodes: build.query<Array<Code>, void>({

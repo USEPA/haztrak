@@ -37,25 +37,6 @@ class ManifestView(RetrieveAPIView):
     serializer_class = ManifestSerializer
 
 
-class PullManifestView(GenericAPIView):
-    """
-    This endpoint launches a task to pull a manifest (by MTN) from RCRAInfo.
-    On success, returns the task queue ID.
-    """
-
-    queryset = None
-
-    def post(self, request: Request) -> Response:
-        try:
-            mtn = request.data["mtn"]
-            task = pull_manifest.delay(mtn=mtn, username=str(request.user))
-            return Response(data={"task": task.id}, status=status.HTTP_200_OK)
-        except KeyError:
-            return Response(
-                data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
-            )
-
-
 class MtnList(ListAPIView):
     """
     MtnList returns select details on a user's manifest,

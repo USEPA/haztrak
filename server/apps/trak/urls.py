@@ -5,7 +5,6 @@ from apps.trak.views import (  # type: ignore
     FederalWasteCodesView,
     ManifestView,
     MtnList,
-    PullManifestView,
     SignManifestView,
     StateWasteCodesView,
     SyncSiteManifestView,
@@ -13,13 +12,12 @@ from apps.trak.views import (  # type: ignore
 
 urlpatterns = [
     path(
-        "rcra/*",
+        "rcra/",
         include(
             [
                 # Manifest
                 path("manifest/<str:mtn>", ManifestView.as_view()),
                 path("manifest/create", CreateRcraManifestView.as_view()),
-                path("manifest/pull", PullManifestView.as_view()),
                 path("manifest/sign", SignManifestView.as_view()),
                 path("manifest/sync", SyncSiteManifestView.as_view()),
                 # MTN

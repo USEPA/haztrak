@@ -96,7 +96,7 @@ export function ManifestForm({
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log('Manifest Submitted', data);
     htApi
-      .post<TaskStatus>('/rcra/manifest/create', data)
+      .post<TaskStatus>('/rcra/manifest', data)
       .then((response) => {
         return response;
       })

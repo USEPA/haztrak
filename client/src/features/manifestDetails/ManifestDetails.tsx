@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 export function ManifestDetails() {
   const { mtn, action, siteId } = useParams();
   useTitle(`${mtn}`);
-  const [manifestData, loading, error] = useHtApi<Manifest>(`manifest/${mtn}`);
+  const [manifestData, loading, error] = useHtApi<Manifest>(`rcra/manifest/${mtn}`);
 
   let readOnly = true;
   if (action === 'edit') {
