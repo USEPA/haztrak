@@ -1,11 +1,11 @@
 from django.urls import include, path
 
 from apps.sites.views import (  # type: ignore
+    HandlerSearchView,
     RcraSiteView,
     SiteDetailView,
     SiteListView,
     SiteSearchView,
-    rcrainfo_site_search_view,
 )
 
 urlpatterns = [
@@ -13,7 +13,7 @@ urlpatterns = [
         "rcra/",
         include(
             [
-                path("handler/search", rcrainfo_site_search_view),
+                path("handler/search", HandlerSearchView.as_view()),
                 path("handler/<int:pk>", RcraSiteView.as_view()),
             ]
         ),
