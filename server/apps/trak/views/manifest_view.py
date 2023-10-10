@@ -3,8 +3,8 @@ import logging
 from celery.exceptions import TaskError
 from celery.result import AsyncResult
 from django.db.models import Q
-from drf_spectacular.utils import extend_schema
-from rest_framework import status
+from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework import serializers, status
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -86,15 +86,24 @@ class SignManifestView(GenericAPIView):
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=exc)
 
 
+@extend_schema(
+    request=inline_serializer(
+        "site_manifest_sync_request", fields={"siteId": serializers.CharField()}
+    ),
+    responses=inline_serializer(
+        "site_manifest_sync_response", fields={"task": serializers.CharField()}
+    ),
+)
 class SyncSiteManifestView(GenericAPIView):
     """
-    This endpoint launches a task to pull a site's manifests that are out of sync with RCRAInfo
+    Pull a site's manifests that are out of sync with RCRAInfo.
+    It returns the task id of the long-running background task which can be used to poll
+    for status.
     """
 
     queryset = None
 
     def post(self, request: Request) -> Response:
-        """POST method rcra_site"""
         try:
             site_id = request.data["siteId"]
             task = sync_site_manifests.delay(site_id=site_id, username=str(request.user))
@@ -105,9 +114,10 @@ class SyncSiteManifestView(GenericAPIView):
             )
 
 
+@extend_schema(request=ManifestSerializer)
 class CreateRcraManifestView(GenericAPIView):
     """
-    This is a proxy endpoint used to create electronic manifest(s) in RCRAInfo/e-Manifest
+    A proxy endpoint used to create electronic manifest(s) in RCRAInfo/e-Manifest
     """
 
     queryset = None
@@ -115,7 +125,6 @@ class CreateRcraManifestView(GenericAPIView):
     http_method_names = ["post"]
 
     def post(self, request: Request) -> Response:
-        """The Body of the POST request should contain the complete and valid manifest object"""
         manifest_serializer = self.serializer_class(data=request.data)
         if manifest_serializer.is_valid():
             logger.debug(

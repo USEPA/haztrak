@@ -1,5 +1,6 @@
 import logging
 
+from django.db.models import QuerySet
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, inline_serializer
@@ -62,6 +63,17 @@ class RcraSiteView(RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
+@extend_schema(
+    responses=RcraSiteSerializer(many=True),
+    request=inline_serializer(
+        "handler_search",
+        fields={
+            "epaId": serializers.CharField(),
+            "siteName": serializers.CharField(),
+            "siteType": serializers.CharField(),
+        },
+    ),
+)
 class SiteSearchView(ListAPIView):
     """
     Search for locally saved hazardous waste sites ("Generators", "Transporters", "Tsdf's")
@@ -70,11 +82,11 @@ class SiteSearchView(ListAPIView):
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
 
-    def get_queryset(self):
+    def get_queryset(self: ListAPIView) -> QuerySet[RcraSite]:
         queryset = RcraSite.objects.all()
-        epa_id_param = self.request.query_params.get("epaId")
-        name_param = self.request.query_params.get("siteName")
-        site_type_param: str = self.request.query_params.get("siteType")
+        epa_id_param: str | None = self.request.query_params.get("epaId")
+        name_param: str | None = self.request.query_params.get("siteName")
+        site_type_param: str | None = self.request.query_params.get("siteType")
         if epa_id_param is not None:
             queryset = queryset.filter(epa_id__icontains=epa_id_param)
         if name_param is not None:

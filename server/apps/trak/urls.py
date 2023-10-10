@@ -16,8 +16,8 @@ urlpatterns = [
         include(
             [
                 # Manifest
+                path("manifest", CreateRcraManifestView.as_view()),
                 path("manifest/<str:mtn>", ManifestView.as_view()),
-                path("manifest/create", CreateRcraManifestView.as_view()),
                 path("manifest/sign", SignManifestView.as_view()),
                 path("manifest/sync", SyncSiteManifestView.as_view()),
                 # MTN
