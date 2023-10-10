@@ -1,21 +1,25 @@
-import datetime
 import logging
 
 from celery.exceptions import TaskError
 from celery.result import AsyncResult
 from django.db.models import Q
 from drf_spectacular.utils import extend_schema
-from rest_framework import status, viewsets
-from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework import status
+from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.core.services import TaskService
-from apps.sites.models import Site
-from apps.trak.models import Manifest
-from apps.trak.serializers import ManifestSerializer, MtnSerializer
-from apps.trak.serializers.signature_ser import QuickerSignSerializer
-from apps.trak.tasks import create_rcra_manifest, pull_manifest, sign_manifest, sync_site_manifests
+from apps.core.services import TaskService  # type: ignore
+from apps.sites.models import Site  # type: ignore
+from apps.trak.models import Manifest  # type: ignore
+from apps.trak.serializers import ManifestSerializer, MtnSerializer  # type: ignore
+from apps.trak.serializers.signature_ser import QuickerSignSerializer  # type: ignore
+from apps.trak.tasks import (  # type: ignore
+    create_rcra_manifest,
+    pull_manifest,
+    sign_manifest,
+    sync_site_manifests,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +27,7 @@ logger = logging.getLogger(__name__)
 @extend_schema(
     responses={201: ManifestSerializer},
 )
-class ManifestView(viewsets.ModelViewSet):
+class ManifestView(RetrieveAPIView):
     """
     The Uniform hazardous waste manifest by the manifest tracking number (MTN)
     """
@@ -40,15 +44,14 @@ class PullManifestView(GenericAPIView):
     """
 
     queryset = None
-    response = Response
 
     def post(self, request: Request) -> Response:
         try:
             mtn = request.data["mtn"]
             task = pull_manifest.delay(mtn=mtn, username=str(request.user))
-            return self.response(data={"task": task.id}, status=status.HTTP_200_OK)
+            return Response(data={"task": task.id}, status=status.HTTP_200_OK)
         except KeyError:
-            return self.response(
+            return Response(
                 data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -83,7 +86,6 @@ class SignManifestView(GenericAPIView):
 
     serializer_class = QuickerSignSerializer
     queryset = None
-    response = Response
 
     def post(self, request: Request) -> Response:
         """
@@ -94,7 +96,6 @@ class SignManifestView(GenericAPIView):
             quicker_serializer = self.serializer_class(data=request.data)
             if quicker_serializer.is_valid():
                 quicker_serializer.save()
-                # Use (json serializable) keyword args when handing off to celery
                 task = sign_manifest.delay(
                     username=str(request.user), **quicker_serializer.validated_data
                 )
@@ -110,16 +111,15 @@ class SyncSiteManifestView(GenericAPIView):
     """
 
     queryset = None
-    response = Response
 
     def post(self, request: Request) -> Response:
         """POST method rcra_site"""
         try:
             site_id = request.data["siteId"]
             task = sync_site_manifests.delay(site_id=site_id, username=str(request.user))
-            return self.response(data={"task": task.id}, status=status.HTTP_200_OK)
+            return Response(data={"task": task.id}, status=status.HTTP_200_OK)
         except KeyError:
-            return self.response(
+            return Response(
                 data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -130,7 +130,6 @@ class CreateRcraManifestView(GenericAPIView):
     """
 
     queryset = None
-    response = Response
     serializer_class = ManifestSerializer
     http_method_names = ["post"]
 
@@ -145,9 +144,9 @@ class CreateRcraManifestView(GenericAPIView):
                 manifest=manifest_serializer.data, username=str(request.user)
             )
             TaskService(task_id=task.id, task_name=task.name).update_task_status("PENDING")
-            return self.response(data={"taskId": task.id}, status=status.HTTP_201_CREATED)
+            return Response(data={"taskId": task.id}, status=status.HTTP_201_CREATED)
         else:
             logger.error("manifest_serializer errors: ", manifest_serializer.errors)
-            return self.response(
+            return Response(
                 exception=manifest_serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
