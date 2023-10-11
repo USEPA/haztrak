@@ -25,9 +25,6 @@ def populate_dot_hazard_classes(apps, schema_editor):
 
     # Replace this with your logic to fetch state waste codes from RCRAInfo
     packing_groups = [
-        {"value": "I", "value_type": DotOptionType.GROUP},
-        {"value": "II", "value_type": DotOptionType.GROUP},
-        {"value": "III", "value_type": DotOptionType.GROUP},
         {"value": "3", "value_type": DotOptionType.CLASS},
         {"value": "5.1", "value_type": DotOptionType.CLASS},
         {"value": "4.1", "value_type": DotOptionType.CLASS},
