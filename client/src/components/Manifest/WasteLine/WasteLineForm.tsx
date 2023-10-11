@@ -54,14 +54,11 @@ export function WasteLineForm({ handleClose, wasteForm, waste, lineNumber }: Was
     setValue,
   } = wasteMethods;
 
-  console.log('errors', errors);
-
   /**
    * onSubmit is the callback function for the form submission.
    * @param wasteLine the data submitted from the form
    */
   const onSubmit = (wasteLine: WasteLine) => {
-    console.log('new wasteline ', wasteLine);
     if (editWasteLineIndex) {
       wasteForm.update(editWasteLineIndex, wasteLine); // append the new waste line to the manifest
     } else {
