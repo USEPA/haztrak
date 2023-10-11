@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, force_authenticate
 
 from apps.trak.models import WasteCode
-from apps.trak.models.waste_models import DotOptionType
+from apps.trak.models.waste_models import DotLookupType
 from apps.trak.views import (
     DotHazardClassView,
     DotIdNumberView,
@@ -97,7 +97,7 @@ class TestDOTLookupViews:
     def test_dot_identifiers_can_be_queried(self, factory, user, dot_option_factory):
         # Arrange
         dot_id = "mock_id"
-        dot_option_factory(value=dot_id, value_type=DotOptionType.ID)
+        dot_option_factory(value=dot_id, value_type=DotLookupType.ID)
         request = factory.get(f"{self.base_url}/id", {"q": dot_id})
         force_authenticate(request, user)
         # Act

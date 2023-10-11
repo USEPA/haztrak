@@ -15,7 +15,7 @@ from apps.trak.models import (
     Signer,
     WasteCode,
 )
-from apps.trak.models.waste_models import DotOptionType
+from apps.trak.models.waste_models import DotLookupType
 
 
 @pytest.fixture
@@ -178,7 +178,7 @@ def dot_option_factory(db):
 
     def create_dot_option(
         value: Optional[str] = "mock_id",
-        value_type: Optional[DotOptionType] = DotOptionType.ID,
+        value_type: Optional[DotLookupType] = DotLookupType.ID,
     ) -> Manifest:
         return DotLookup.objects.create(value=value, value_type=value_type)
 

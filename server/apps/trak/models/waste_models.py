@@ -266,7 +266,7 @@ class WasteCode(RcraCodeBaseModel):
     )
 
 
-class DotOptionType(models.TextChoices):
+class DotLookupType(models.TextChoices):
     ID = ("ID", _("Id"))  # DOT ID number
     GROUP = ("GROUP", _("Group"))  # DOT packing group
     NAME = ("NAME", _("Name"))  # DOT Proper shipping name
@@ -277,28 +277,28 @@ class IdNumbers(models.Manager):
     """DOT Option model manager for dealing with DOT ID numbers"""
 
     def get_queryset(self):
-        return super().get_queryset().filter(value_type=DotOptionType.ID)
+        return super().get_queryset().filter(value_type=DotLookupType.ID)
 
 
 class PackingGroups(models.Manager):
     """DOT Option model manager for dealing with DOT ID numbers"""
 
     def get_queryset(self):
-        return super().get_queryset().filter(value_type=DotOptionType.GROUP)
+        return super().get_queryset().filter(value_type=DotLookupType.GROUP)
 
 
 class ShippingNames(models.Manager):
     """DOT Option model manager for dealing with DOT ID numbers"""
 
     def get_queryset(self):
-        return super().get_queryset().filter(value_type=DotOptionType.NAME)
+        return super().get_queryset().filter(value_type=DotLookupType.NAME)
 
 
 class HazardClass(models.Manager):
     """DOT Option model manager for dealing with DOT ID numbers"""
 
     def get_queryset(self):
-        return super().get_queryset().filter(value_type=DotOptionType.CLASS)
+        return super().get_queryset().filter(value_type=DotLookupType.CLASS)
 
 
 class DotLookup(models.Model):
@@ -319,7 +319,7 @@ class DotLookup(models.Model):
     )
     value_type = models.CharField(
         max_length=5,
-        choices=DotOptionType.choices,
+        choices=DotLookupType.choices,
     )
 
     def __str__(self):
