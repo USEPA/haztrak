@@ -6,3 +6,4 @@ from .manifest_view import (  # type: ignore
     SignManifestView,
     SyncSiteManifestView,
 )
+from .waste_views import DotIdNumberView
