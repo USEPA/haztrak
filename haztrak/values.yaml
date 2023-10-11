@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/usepa/haztrak
+  repository: ghcr.io/usepa/haztrak-server
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "v0.6.0"
 
 imagePullSecrets: [ ]
 nameOverride: ""
@@ -41,7 +41,7 @@ service:
   port: 8000
 
 db:
-  host: localhost
+  host: postgres
   port: 5432
   name: haztrak_db
   user: admin
