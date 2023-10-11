@@ -39,11 +39,13 @@ export function DotIdSelect() {
             <AsyncSelect
               id={'idNumber'}
               {...field}
+              value={field.value ? { label: field.value, value: field.value } : null}
               loadOptions={getDotIdNumbers}
+              getOptionValue={(option: DotIdOption) => option.value}
               cacheOptions
               isClearable
               onChange={(option) => {
-                field.onChange(option.value);
+                field.onChange(option?.value);
               }}
               classNames={{
                 control: () =>
