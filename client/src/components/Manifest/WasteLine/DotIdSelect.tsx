@@ -2,7 +2,8 @@ import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import AsyncSelect from 'react-select/async';
-import { htApi } from 'services';
+import { useAppDispatch } from 'store';
+import { wasteCodeApi } from 'store/wasteCode.slice';
 
 interface DotIdOption {
   label: string;
@@ -10,6 +11,7 @@ interface DotIdOption {
 }
 
 export function DotIdSelect() {
+  const dispatch = useAppDispatch();
   const {
     control,
     formState: { errors },
@@ -20,13 +22,13 @@ export function DotIdSelect() {
    * @param inputValue
    */
   const getDotIdNumbers = async (inputValue: string) => {
-    const response = await htApi.get<Array<String>>('/rcra/waste/dot/id', {
-      params: { q: inputValue },
-    });
-    const DotIDOptions: readonly DotIdOption[] = response.data.map((dotIdNumber) => {
-      return { label: dotIdNumber, value: dotIdNumber } as DotIdOption;
-    });
-    return DotIDOptions;
+    const response = await dispatch(wasteCodeApi.endpoints.getDotIdNumbers.initiate(inputValue));
+    if (response.data) {
+      return response.data.map((dotIdNumber) => {
+        return { label: dotIdNumber, value: dotIdNumber } as DotIdOption;
+      }) as readonly DotIdOption[];
+    }
+    return [];
   };
 
   return (
