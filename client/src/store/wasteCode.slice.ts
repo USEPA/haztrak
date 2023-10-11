@@ -18,7 +18,9 @@ export const wasteCodeApi = createApi({
     getStateWasteCodes: build.query<Array<Code>, string>({
       query: (state) => ({ url: `code/state/${state}`, method: 'get' }),
     }),
-    //  ToDo: getDOTIdNumbers endpoint
+    getDotIdNumbers: build.query<Array<string>, string>({
+      query: (id) => ({ url: 'dot/id', method: 'get', params: { q: id } }),
+    }),
   }),
 });
 

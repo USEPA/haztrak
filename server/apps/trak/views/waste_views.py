@@ -45,7 +45,9 @@ class DotBaseView(APIView):
         """
         dot_id_numbers = [
             option.value
-            for option in self.queryset.filter(value__icontains=request.query_params.get("q", ""))
+            for option in self.queryset.filter(value__icontains=request.query_params.get("q", ""))[
+                0:100
+            ]
         ]
         return Response(data=dot_id_numbers, status=status.HTTP_200_OK)
 
