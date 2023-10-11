@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.trak.models import WasteCode, WasteLine
+from apps.trak.models import DotLookup, WasteCode, WasteLine
 
 from .base_ser import TrakBaseSerializer
 
@@ -79,3 +79,11 @@ class WasteCodeSerializer(serializers.ModelSerializer):
             "code",
             "description",
         ]
+
+
+class DotOptionSerializer(serializers.ModelSerializer):
+    """Serializer for DOT options"""
+
+    class Meta:
+        model = DotLookup
+        fields = ["value"]

@@ -3,7 +3,7 @@ import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm
 import { HtCard, HtForm } from 'components/Ht';
 import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 import { Manifest } from 'components/Manifest/manifestSchema';
-import { dotIdNumbers } from 'components/Manifest/WasteLine/dotInfo';
+import { DotIdSelect } from 'components/Manifest/WasteLine/DotIdSelect';
 import { HazardousWasteForm } from 'components/Manifest/WasteLine/HazardousWasteForm';
 import { WasteLine, wasteLineSchema } from 'components/Manifest/WasteLine/wasteLineSchema';
 import React, { useContext } from 'react';
@@ -31,6 +31,7 @@ export function WasteLineForm({ handleClose, wasteForm, waste, lineNumber }: Was
   const [epaWaste, setEpaWaste] = React.useState<boolean>(
     waste?.epaWaste === undefined ? true : waste.epaWaste
   );
+
   // @ts-ignore
   const wasteLineDefaultValues: Partial<WasteLine> = waste
     ? waste
@@ -167,7 +168,7 @@ export function WasteLineForm({ handleClose, wasteForm, waste, lineNumber }: Was
                 </Row>
               ) : (
                 <Row>
-                  <Col xs={9}>
+                  <Col xs={8}>
                     <HtForm.Group>
                       <HtForm.Label htmlFor="dotDescription">DOT Description</HtForm.Label>
                       <Form.Control
@@ -183,24 +184,8 @@ export function WasteLineForm({ handleClose, wasteForm, waste, lineNumber }: Was
                   </Col>
                   <Col>
                     <HtForm.Group>
-                      <HtForm.Label htmlFor="dotDescription">DOT ID Number</HtForm.Label>
-                      <Form.Select
-                        id="dotIdNumber"
-                        as="input"
-                        defaultValue={''}
-                        {...register(`dotInformation.idNumber.code`)}
-                        className={errors.dotInformation?.idNumber && 'is-invalid'}
-                      >
-                        <option value="">Select ID Number</option>
-                        {dotIdNumbers.map((idNumber) => (
-                          <option key={idNumber} value={idNumber}>
-                            {idNumber}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <div className="invalid-feedback">
-                        {errors.dotInformation?.idNumber?.code?.message}
-                      </div>
+                      <HtForm.Label htmlFor="idNumber">DOT ID Number</HtForm.Label>
+                      <DotIdSelect />
                     </HtForm.Group>
                   </Col>
                 </Row>

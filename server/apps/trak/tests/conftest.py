@@ -7,6 +7,7 @@ import pytest
 
 from apps.sites.models import RcraSite, RcraSiteType
 from apps.trak.models import (
+    DotLookup,
     ESignature,
     Handler,
     Manifest,
@@ -14,6 +15,7 @@ from apps.trak.models import (
     Signer,
     WasteCode,
 )
+from apps.trak.models.waste_models import DotLookupType
 
 
 @pytest.fixture
@@ -168,3 +170,16 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
         )
 
     yield create_manifest
+
+
+@pytest.fixture
+def dot_option_factory(db):
+    """Abstract factory for Haztrak DotLookup model"""
+
+    def create_dot_option(
+        value: Optional[str] = "mock_id",
+        value_type: Optional[DotLookupType] = DotLookupType.ID,
+    ) -> Manifest:
+        return DotLookup.objects.create(value=value, value_type=value_type)
+
+    yield create_dot_option

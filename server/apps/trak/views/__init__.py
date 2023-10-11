@@ -1,8 +1,14 @@
-from .lookup_views import FederalWasteCodesView, StateWasteCodesView  # type: ignore
-from .manifest_view import (  # type: ignore
+from apps.trak.views.manifest_view import (
     CreateRcraManifestView,
     ManifestView,
     MtnList,
     SignManifestView,
     SyncSiteManifestView,
+)
+from apps.trak.views.waste_views import (
+    DotHazardClassView,
+    DotIdNumberView,
+    DotShippingNameView,
+    FederalWasteCodesView,
+    StateWasteCodesView,
 )

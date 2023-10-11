@@ -1,4 +1,4 @@
-import { faTimes, faTools } from '@fortawesome/free-solid-svg-icons';
+import { faTools, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Manifest } from 'components/Manifest';
 import React from 'react';
@@ -25,21 +25,25 @@ function WasteRowActions({
   return (
     <div className="d-flex justify-content-between mx-0">
       <Button
-        title={`remove-waste-${index}-button`}
-        variant="danger"
+        title={`remove waste row ${index + 1}`}
+        variant="outline-danger"
+        style={{ border: 'none' }}
         onClick={() => {
           wasteForm.remove(index);
         }}
       >
-        <FontAwesomeIcon icon={faTimes} />
+        <FontAwesomeIcon icon={faTrash} />
       </Button>
       <Button
+        title={`edit waste row ${index + 1}`}
+        variant="outline-primary"
+        style={{ border: 'none' }}
         onClick={() => {
           setEditWasteLine(index);
           toggleWLModal();
         }}
       >
-        <FontAwesomeIcon icon={faTools} className="text-light" />
+        <FontAwesomeIcon icon={faTools} />
       </Button>
     </div>
   );

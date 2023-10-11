@@ -1,5 +1,6 @@
 from django.db import migrations
-from apps.trak.models.code_models import WasteCode
+
+from apps.trak.models.waste_models import WasteCode
 
 
 def populate_state_waste_codes(apps, schema_editor):

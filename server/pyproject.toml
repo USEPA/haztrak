@@ -35,9 +35,8 @@ exclude = '''
 [tool.ruff]
 line-length = 99
 select = ["F", "E", "W", "Q", "I001"]
-exclude = [
-    "**/migrations/*.py"
-]
+
+exclude = ["migrations"]
 ignore = ["F401"]
 
 [tool.pytest.ini_options]

@@ -9,16 +9,18 @@ import { htApiBaseQuery } from 'store/baseQuery';
 export const wasteCodeApi = createApi({
   reducerPath: 'wasteCodeApi',
   baseQuery: htApiBaseQuery({
-    baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/rcra/code/`,
+    baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/rcra/waste/`,
   }),
   endpoints: (build) => ({
     getFedWasteCodes: build.query<Array<Code>, void>({
-      query: () => ({ url: 'waste/federal', method: 'get' }),
+      query: () => ({ url: 'code/federal', method: 'get' }),
     }),
     getStateWasteCodes: build.query<Array<Code>, string>({
-      query: (state) => ({ url: `waste/state/${state}`, method: 'get' }),
+      query: (state) => ({ url: `code/state/${state}`, method: 'get' }),
     }),
-    //  ToDo: getDOTIdNumbers endpoint
+    getDotIdNumbers: build.query<Array<string>, string>({
+      query: (id) => ({ url: 'dot/id', method: 'get', params: { q: id } }),
+    }),
   }),
 });
 
