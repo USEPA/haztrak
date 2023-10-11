@@ -2,7 +2,7 @@
 
 from django.db import migrations
 
-from apps.trak.models import DotOption
+from apps.trak.models import DotLookup
 from apps.trak.models.waste_models import DotOptionType
 
 
@@ -2377,7 +2377,7 @@ def populate_dot_id_numbers(apps, schema_editor):
     ]
 
     for id_number_data in id_numbers:
-        DotOption.objects.create(**id_number_data)
+        DotLookup.objects.create(**id_number_data)
 
 
 class Migration(migrations.Migration):

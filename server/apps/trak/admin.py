@@ -6,7 +6,7 @@ from django.utils.html import format_html, urlencode
 from apps.core.admin import HiddenListView
 
 from .models import (
-    DotOption,
+    DotLookup,
     ESignature,
     Handler,
     Manifest,
@@ -87,7 +87,7 @@ class WasteLineInline(admin.TabularInline):
     min_num = 1
 
 
-@admin.register(DotOption)
+@admin.register(DotLookup)
 class DotOptionsAdmin(admin.ModelAdmin):
     list_display = ["__str__"]
     list_filter = ["value_type"]

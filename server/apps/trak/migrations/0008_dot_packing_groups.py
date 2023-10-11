@@ -2,7 +2,7 @@
 
 from django.db import migrations
 
-from apps.trak.models import DotOption
+from apps.trak.models import DotLookup
 from apps.trak.models.waste_models import DotOptionType
 
 
@@ -17,7 +17,7 @@ def populate_dot_packing_groups(apps, schema_editor):
     ]
 
     for group in packing_groups:
-        DotOption.objects.create(**group)
+        DotLookup.objects.create(**group)
 
 
 def populate_dot_hazard_classes(apps, schema_editor):
@@ -78,7 +78,7 @@ def populate_dot_hazard_classes(apps, schema_editor):
     ]
 
     for group in packing_groups:
-        DotOption.objects.create(**group)
+        DotLookup.objects.create(**group)
 
 
 class Migration(migrations.Migration):

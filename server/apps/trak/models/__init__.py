@@ -7,4 +7,4 @@ from .handler_models import Handler
 from .manifest_models import AdditionalInfo, Manifest
 from .signature_models import ESignature, PaperSignature, QuickerSign, Signer
 from .transporter_models import Transporter
-from .waste_models import DotOption, WasteCode, WasteLine
+from .waste_models import DotLookup, WasteCode, WasteLine

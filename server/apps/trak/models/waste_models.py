@@ -301,7 +301,7 @@ class HazardClass(models.Manager):
         return super().get_queryset().filter(value_type=DotOptionType.CLASS)
 
 
-class DotOption(models.Model):
+class DotLookup(models.Model):
     """data used to construct Department of Transportation (DOT) shipping descriptions"""
 
     objects = models.Manager()

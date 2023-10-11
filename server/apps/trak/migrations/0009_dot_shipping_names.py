@@ -2,7 +2,7 @@
 
 from django.db import migrations
 
-from apps.trak.models.waste_models import DotOptionType, DotOption
+from apps.trak.models.waste_models import DotOptionType, DotLookup
 
 
 def populate_dot_shipping_names(apps, schema_editor):
@@ -2973,7 +2973,7 @@ def populate_dot_shipping_names(apps, schema_editor):
     ]
 
     for name in shipping_names:
-        DotOption.objects.create(**name)
+        DotLookup.objects.create(**name)
 
 
 class Migration(migrations.Migration):

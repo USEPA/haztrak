@@ -4,7 +4,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.trak.models import DotOption, WasteCode
+from apps.trak.models import DotLookup, WasteCode
 from apps.trak.serializers import WasteCodeSerializer
 
 
@@ -36,7 +36,7 @@ class StateWasteCodesView(ListAPIView):
 
 
 class DotBaseView(APIView):
-    queryset = DotOption.objects.all()
+    queryset = DotLookup.objects.all()
 
     def get(self, request: Request) -> Response:
         """
@@ -55,7 +55,7 @@ class DotIdNumberView(DotBaseView):
     Return a list of DOT ID numbers, optionally filtered by a query parameter
     """
 
-    queryset = DotOption.id_numbers.all()
+    queryset = DotLookup.id_numbers.all()
 
 
 class DotShippingNameView(DotBaseView):
@@ -63,7 +63,7 @@ class DotShippingNameView(DotBaseView):
     Return a list of DOT Proper Shipping Names, optionally filtered by a query parameter
     """
 
-    queryset = DotOption.shipping_names.all()
+    queryset = DotLookup.shipping_names.all()
 
 
 class DotHazardClassView(DotBaseView):
@@ -71,4 +71,4 @@ class DotHazardClassView(DotBaseView):
     Return a list of DOT Hazard classes, optionally filtered by a query parameter
     """
 
-    queryset = DotOption.hazard_classes.all()
+    queryset = DotLookup.hazard_classes.all()
