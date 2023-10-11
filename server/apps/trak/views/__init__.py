@@ -1,4 +1,3 @@
-from apps.trak.views.lookup_views import FederalWasteCodesView, StateWasteCodesView
 from apps.trak.views.manifest_view import (
     CreateRcraManifestView,
     ManifestView,
@@ -6,4 +5,10 @@ from apps.trak.views.manifest_view import (
     SignManifestView,
     SyncSiteManifestView,
 )
-from apps.trak.views.waste_views import DotHazardClassView, DotIdNumberView, DotShippingNameView
+from apps.trak.views.waste_views import (
+    DotHazardClassView,
+    DotIdNumberView,
+    DotShippingNameView,
+    FederalWasteCodesView,
+    StateWasteCodesView,
+)

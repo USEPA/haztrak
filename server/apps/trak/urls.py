@@ -33,9 +33,9 @@ urlpatterns = [
                         [
                             path("code/federal", FederalWasteCodesView.as_view()),
                             path("code/state/<str:state_id>", StateWasteCodesView.as_view()),
-                            path("dot/id-number", DotIdNumberView.as_view()),
-                            path("dot/hazard-class", DotHazardClassView.as_view()),
-                            path("dot/shipping-name", DotShippingNameView.as_view()),
+                            path("dot/id", DotIdNumberView.as_view()),
+                            path("dot/class", DotHazardClassView.as_view()),
+                            path("dot/name", DotShippingNameView.as_view()),
                         ]
                     ),
                 ),
