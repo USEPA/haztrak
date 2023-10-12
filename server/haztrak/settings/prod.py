@@ -6,3 +6,4 @@ os.environ["HT_RCRAINFO_ENV"] = "PROD"
 DEBUG = False
 SECRET_KEY = os.getenv("HT_SECRET_KEY")
 ALLOWED_HOSTS = [os.getenv("HT_HOST")]
+CORS_ORIGIN_WHITELIST = [os.getenv("HT_CORS_DOMAIN", "http://*")]
