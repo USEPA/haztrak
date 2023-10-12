@@ -40,7 +40,7 @@ exclude = ["migrations"]
 ignore = ["F401"]
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "haztrak.settings"
+DJANGO_SETTINGS_MODULE = "haztrak.settings.test"
 
 
 [tool.mypy]
@@ -83,5 +83,5 @@ warn_unreachable = true
 warn_no_return = true
 
 [tool.django-stubs]
-django_settings_module = "haztrak.settings"
+django_settings_module = "haztrak.settings.test"
 strict_settings = false
