@@ -1,55 +1,34 @@
-# Default values for haztrak-charts.
+# Default values for haztrak.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  #  repository: ghcr.io/usepa/haztrak-server
-  repository: haztrak-server
-  pullPolicy: Never
-  port: 8000
+  repository: ghcr.io/usepa/haztrak-server
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 'test'
+  tag: ""
 
-django:
-  secretKey: 'django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d'
-  debug: 'True'
-  host: '*'
-  timezone: 'America/New_York'
-  corsDomains: 'http://localhost:3000'
-  rcrainfoEnv: 'preprod'
-  logLevel: 'INFO'
-
-db:
-  engine: 'django.db.backends.postgresql'
-  name: 'haztrak_db'
-  user: 'admin'
-  password: 'password1'
-  port: '5432'
-  # allows minikube deployments to connect to resources on the host machine (e.g., database)
-  # e.g., host.minikube.internal:5432 === localhost:5432
-  host: 'host.minikube.internal'
-
-imagePullSecrets: []
-nameOverride: ''
-fullnameOverride: ''
+imagePullSecrets: [ ]
+nameOverride: ""
+fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
   # Annotations to add to the service account
-  annotations: {}
+  annotations: { }
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ''
+  name: ""
 
-podAnnotations: {}
+podAnnotations: { }
 
-podSecurityContext: {}
+podSecurityContext: { }
 # fsGroup: 2000
 
-securityContext: {}
+securityContext: { }
 # capabilities:
 #   drop:
 #   - ALL
@@ -58,28 +37,42 @@ securityContext: {}
 # runAsUser: 1000
 
 service:
-  protocol: TCP
+  type: ClusterIP
   port: 8000
-  targetPort: 8000
-  type: NodePort
+
+env:
+  secretKey: "secret-key"
+  corsDomains: "localhost"
+  rcraInfoEnv: "preprod"
+  cache:
+    url: "redis://redis:6379"
+  db:
+    host: "postgres"
+    port: 5432
+    name: "haztrak_db"
+    user: "admin"
+    password: "password1"
+    engine: "django.db.backends.postgresql"
+
+
 
 ingress:
-  enabled: true
-  className: ''
-  annotations: {}
+  enabled: false
+  className: ""
+  annotations: { }
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: localhost
+    - host: vimpirate.local
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls: []
+  tls: [ ]
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources: { }
 # We usually recommend not to specify default resources and to leave this as a conscious
 # choice for the user. This also increases chances charts run on environments with little
 # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -98,8 +91,8 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-nodeSelector: {}
+nodeSelector: { }
 
-tolerations: []
+tolerations: [ ]
 
-affinity: {}
+affinity: { }

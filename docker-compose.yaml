@@ -6,12 +6,12 @@ services:
     image: haztrak-server
     build:
       context: ./server
-      target: dev
     ports:
       - '8000:8000'
     volumes:
       - ./server:/app
     environment:
+      DJANGO_SETTINGS_MODULE: 'haztrak.settings.dev'
       HT_HOST: 'localhost'
       HT_SECRET_KEY: ${HT_SECRET_KEY}
       HT_DEBUG: ${HT_DEBUG}
@@ -28,12 +28,6 @@ services:
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
       HT_DB_HOST: postgres
       HT_DB_PORT: ${HT_DB_PORT}
-    command: |
-      sh -c "
-      python manage.py makemigrations &&
-      python manage.py migrate &&
-      python manage.py loaddata dev_data.yaml &&
-      python manage.py runserver 0.0.0.0:8000"
     depends_on:
       postgres:
         condition: service_healthy

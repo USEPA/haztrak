@@ -8,38 +8,17 @@ from pathlib import Path
 HAZTRAK_VERSION = "0.7.0"
 
 # Environment variable mappings
-HOST_ENV = "HT_HOST"
-DEBUG_ENV = "HT_DEBUG"
-SECRET_ENV = "HT_SECRET_KEY"
 CACHE_URL = "HT_CACHE_URL"
 TIMEZONE_ENV = "HT_TIMEZONE"
 TEST_DB_NAME_ENV = "HT_TEST_DB_NAME"
-CORS_DOMAIN_ENV = "HT_CORS_DOMAIN"
-RCRAINFO_ENV = "HT_RCRAINFO_ENV"
 HT_LOG_LEVEL = os.getenv("HT_LOG_LEVEL", "INFO")
 HT_TRAK_LOG_LEVEL = os.getenv("HT_TRAK_LOG_LEVEL", HT_LOG_LEVEL)
 HT_CORE_LOG_LEVEL = os.getenv("HT_CORE_LOG_LEVEL", HT_LOG_LEVEL)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 AUTH_USER_MODEL = "core.HaztrakUser"
-
-if not os.getenv(RCRAINFO_ENV):
-    os.environ[RCRAINFO_ENV] = "PREPROD"
-
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.getenv(SECRET_ENV, "development_django_secret_key")
-SECRET_KEY = os.getenv(SECRET_ENV, "dango-development-key")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-debug = os.getenv(DEBUG_ENV, "FALSE").upper()
-if debug == "TRUE":
-    DEBUG = True
-else:
-    DEBUG = False
-
-ALLOWED_HOSTS = [os.getenv(HOST_ENV, "*")]
 
 WSGI_APPLICATION = "haztrak.wsgi.application"
 
@@ -64,8 +43,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -76,7 +55,6 @@ MIDDLEWARE = [
 
 # Cross Origin Resource Sharing (CORS)
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = [os.getenv(CORS_DOMAIN_ENV, "http://localhost:3000")]
 
 # URLs
 ROOT_URLCONF = "haztrak.urls"
@@ -99,21 +77,7 @@ TEMPLATES = [
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-DATABASES = {
-    "default": {
-        "ENGINE": os.environ.get("HT_DB_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("HT_DB_NAME", os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": os.environ.get("HT_DB_USER", "user"),
-        "PASSWORD": os.environ.get("HT_DB_PASSWORD", "password"),
-        "HOST": os.environ.get("HT_DB_HOST", "localhost"),
-        "PORT": os.environ.get("HT_DB_PORT", "5432"),
-        "TEST": {
-            "NAME": "test_db",
-        },
-    }
-}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-FIXTURE_DIRS = ["fixtures"]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -140,9 +104,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "apps/core/static"),
-]
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -150,13 +114,14 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    # 'DEFAULT_PERMISSION_CLASSES': [],  # uncomment to use browser to inspect the API for dev
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [], # uncomment to use browser to inspect the API for dev
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PARSER_CLASSES": [
         "rest_framework.parsers.JSONParser",
     ],
     "EXCEPTION_HANDLER": "apps.core.exceptions.haztrak_exception_handler",
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
 }
 
 SPECTACULAR_SETTINGS = {

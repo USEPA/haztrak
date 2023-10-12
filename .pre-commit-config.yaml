@@ -16,7 +16,7 @@ repos:
       - id: trailing-whitespace
       - id: check-json
       - id: check-yaml
-        exclude: ^haztrak-charts/
+        exclude: ^haztrak/
       - id: end-of-file-fixer
         exclude: |
           (?x)^(
