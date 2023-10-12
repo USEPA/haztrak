@@ -77,21 +77,7 @@ TEMPLATES = [
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-DATABASES = {
-    "default": {
-        "ENGINE": os.environ.get("HT_DB_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("HT_DB_NAME", os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": os.environ.get("HT_DB_USER", "user"),
-        "PASSWORD": os.environ.get("HT_DB_PASSWORD", "password"),
-        "HOST": os.environ.get("HT_DB_HOST", "localhost"),
-        "PORT": os.environ.get("HT_DB_PORT", "5432"),
-        "TEST": {
-            "NAME": "test_db",
-        },
-    }
-}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-FIXTURE_DIRS = ["fixtures"]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
