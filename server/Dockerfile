@@ -7,6 +7,8 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 WORKDIR $APP_DIRECTORY
 COPY requirements.txt ./
+RUN mkdir $APP_DIRECTORY/static
+RUN mkdir $APP_DIRECTORY/media
 # Setup virtual environment and install dependencies
 RUN python -m venv /opt/venv \
     && /opt/venv/bin/pip install --upgrade pip \
