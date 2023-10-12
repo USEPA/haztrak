@@ -8,7 +8,7 @@ image:
   repository: ghcr.io/usepa/haztrak-server
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.6.0"
+  tag: ""
 
 imagePullSecrets: [ ]
 nameOverride: ""
@@ -40,12 +40,19 @@ service:
   type: ClusterIP
   port: 8000
 
-db:
-  host: postgres
-  port: 5432
-  name: haztrak_db
-  user: admin
-  password: password1
+env:
+  secretKey: "secret-key"
+  corsDomains: "localhost"
+  rcraInfoEnv: "preprod"
+  cache:
+    url: "redis://redis:6379"
+  db:
+    host: "postgres"
+    port: 5432
+    name: "haztrak_db"
+    user: "admin"
+    password: "password1"
+    engine: "django.db.backends.postgresql"
 
 
 

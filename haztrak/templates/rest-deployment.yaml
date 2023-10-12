@@ -31,19 +31,31 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default (print "v" .Chart.AppVersion)}}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            - name: HT_SECRET_KEY
+              value: {{ .Values.env.secretKey }}
+            - name: HT_CORS_DOMAINS
+              value: {{ .Values.env.corsDomains }}
+            - name: HT_RCRAINFO_ENV
+              value: {{ .Values.env.rcrainfoEnv }}
+            - name: CELERY_BROKER_URL
+              value: {{ .Values.env.cache.url }}
+            - name: CELERY_RESULT_BACKEND
+              value: "django-db"
             - name: HT_DB_HOST
-              value: {{ .Values.db.host }}
+              value: {{ .Values.env.db.host }}
             - name: HT_DB_PORT
-              value: {{ .Values.db.port | quote }}
+              value: {{ .Values.env.db.port | quote }}
             - name: HT_DB_NAME
-              value: {{ .Values.db.name }}
+              value: {{ .Values.env.db.name }}
             - name: HT_DB_USER
-              value: {{ .Values.db.user }}
+              value: {{ .Values.env.db.user }}
             - name: HT_DB_PASSWORD
-              value: {{ .Values.db.password }}
+              value: {{ .Values.env.db.password }}
+            - name: HT_DB_ENGINE
+              value: {{ .Values.env.db.engine }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
