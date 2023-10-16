@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "haztrak.fullname" . }}
+  name: {{ include "rest-api.fullname" . }}
   labels:
-    {{- include "haztrak.labels" . | nindent 4 }}
+    {{- include "rest-api.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "haztrak.fullname" . }}
+    name: {{ include "rest-api.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

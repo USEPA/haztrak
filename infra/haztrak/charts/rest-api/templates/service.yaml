@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "haztrak.fullname" . }}
+  name: {{ include "rest-api.fullname" . }}
   labels:
-    {{- include "haztrak.labels" . | nindent 4 }}
+    {{- include "rest-api.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "haztrak.selectorLabels" . | nindent 4 }}
+    {{- include "rest-api.selectorLabels" . | nindent 4 }}
