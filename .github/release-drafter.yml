@@ -60,7 +60,7 @@ autolabeler:
   - label: 'infrastructure'
     files:
       - 'docker-compose.yaml'
-      - 'infra/**/*.tf'
+      - 'infra/**/*'
     title:
       - '/terraform/i'
       - '/helm/i'
