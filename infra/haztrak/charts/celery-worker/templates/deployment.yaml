@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "worker.fullname" . }}
+  name: {{ include "celery-worker.fullname" . }}
   labels:
-    {{- include "worker.labels" . | nindent 4 }}
+    {{- include "celery-worker.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "worker.selectorLabels" . | nindent 6 }}
+      {{- include "celery-worker.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "worker.selectorLabels" . | nindent 8 }}
+        {{- include "celery-worker.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-{{/*      serviceAccountName: {{ include "worker.serviceAccountName" . }}*/}}
+{{/*      serviceAccountName: {{ include "celery-worker.serviceAccountName" . }}*/}}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -37,7 +37,7 @@ spec:
           args: [ "manage.py", "celery_worker"]
           envFrom:
             - configMapRef:
-                name: {{ include "worker.fullname" . }}-configmap
+                name: {{ include "celery-worker.fullname" . }}-configmap
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
