@@ -39,7 +39,7 @@ spec:
             - name: HT_CORS_DOMAINS
               value: {{ .Values.env.corsDomains }}
             - name: HT_RCRAINFO_ENV
-              value: {{ .Values.env.rcrainfoEnv }}
+              value: {{ .Values.env.rcraInfoEnv }}
             - name: CELERY_BROKER_URL
               value: {{ .Values.env.cache.url }}
             - name: CELERY_RESULT_BACKEND
