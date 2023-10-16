@@ -18,6 +18,11 @@ global:
   env:
     rcraInfoEnv: 'preprod'
 
+celery-worker:
+  env:
+    celeryBackend: 'django-db'
+    celeryUrl: 'redis://redis:6379'
+
 image:
   repository: ghcr.io/usepa/haztrak-server
   pullPolicy: IfNotPresent

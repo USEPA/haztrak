@@ -3,3 +3,5 @@ kind: ConfigMap
 metadata:
   name: "{{ include "worker.fullname" .}}-configmap"
 data: {{ include "haztrak.db-env" . | indent 2 }}
+  CELERY_RESULT_BACKEND: "{{ .Values.env.celeryBackend }}"
+  CELERY_BROKER_URL: "{{ .Values.env.celeryUrl }}"
