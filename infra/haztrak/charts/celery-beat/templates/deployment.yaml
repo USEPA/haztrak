@@ -38,10 +38,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "celery-beat.fullname" . }}-configmap
-          ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
