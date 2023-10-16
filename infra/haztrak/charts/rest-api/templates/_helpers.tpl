@@ -48,6 +48,7 @@ Selector labels
 {{- define "rest-api.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "rest-api.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{ include "haztrak.selectorLabels" .}}
 {{- end }}
 
 {{/*

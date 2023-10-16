@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ include "rest-api.fullname" .}}-configmap"
+data:
+  HT_SECRET_KEY: "{{ .Values.env.secretKey }}"
+  HT_CORS_DOMAINS: "{{ .Values.env.corsDomains }}"
+  HT_RCRAINFO_ENV: "{{ .Values.env.rcraInfoEnv }}"
+  CELERY_BROKER_URL: "{{ .Values.env.cache.url }}"
+  CELERY_RESULT_BACKEND: "django-db"
+  HT_DB_HOST: "{{ .Values.env.db.host }}"
+  HT_DB_PORT: "{{ .Values.env.db.port }}"
+  HT_DB_NAME: "{{ .Values.env.db.name }}"
+  HT_DB_USER: "{{ .Values.env.db.user }}"
+  HT_DB_PASSWORD: "{{ .Values.env.db.password }}"
+  HT_DB_ENGINE: "{{ .Values.env.db.engine }}"
