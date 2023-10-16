@@ -1,6 +1,6 @@
 apiVersion: v2
-name: rest-api
-description: A Helm chart for deploying Haztrak HTTP Restful API to Kubernetes
+name: celery-beat
+description: A Helm chart for deploying Haztrak's Celery Beat service to Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #
