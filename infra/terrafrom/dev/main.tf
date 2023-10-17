@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "tf-state-dpgraham-cs-host-a129ed3bccf04a1abf8760"
+    bucket = "haztrak-terraform-remote-state-epa-test-123"
     prefix = "terraform/dev"
   }
   required_providers {
