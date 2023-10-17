@@ -6,6 +6,16 @@ This directory is an example set of terraform configs that allow us to provision
 
 1. [Terraform](https://www.terraform.io/downloads.html) installed
    - See [GitHub Actions](/.github/workflows) workflow file for list of supported terraform versions
-2. An account on Google Cloud (GCP) with access to a project and sufficient permissions.
+2. An account on Google Cloud (GCP) with the necessary IAM permissions for your project.
    - ToDo: list necessary Permissions
-3. A service account with sufficient permissions to create resources in the project.
+
+## Setup
+
+1. Create the project
+   - This could be bootstrapped from a separate terraform module/directory or manually created in the GCP console.
+2. Create the remote state bucket
+   - This could be bootstrapped from a separate terraform module/directory or manually created in the GCP console.
+3. Create a service account for terraform
+   - The account will need the following permissions
+     - Storage List
+4.
