@@ -18,3 +18,13 @@ variable "region" {
     error_message = "Invalid GCP region format. See 'gcloud compute regions list' for available options"
   }
 }
+
+variable "environment" {
+  type        = string
+  description = "The environment to deploy to"
+  default     = "dev"
+  validation {
+    condition     = contains(["dev", "prod", "test"], var.environment)
+    error_message = "Environment must be one of [dev, prod, test]"
+  }
+}
