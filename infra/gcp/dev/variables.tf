@@ -28,3 +28,8 @@ variable "environment" {
     error_message = "Environment must be one of [dev, prod, test]"
   }
 }
+
+variable "zone" {
+  type        = string
+  description = "the default zone to use for the terraform GCP provider"
+}

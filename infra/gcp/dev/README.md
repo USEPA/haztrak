@@ -33,7 +33,10 @@ for purposes of this demonstration, a pre-configured project and access is neces
 
 ### Terraform Initialization and Apply
 
-1. Initialize terraform
+1. Modify the location of the remote state bucket in `backend.tf` to match the id of the bucket you created in the previous step.
+2. Initialize terraform
    - `terraform init`
-2. Apply terraform
+3. Create a `terraform.tfvars` file with the following contents:
+   - `project_id = "<project_id>"`
+4. Apply terraform
    - `terraform apply`
