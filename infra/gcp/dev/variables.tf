@@ -1,9 +1,9 @@
-variable "project_id" {
+variable "project" {
   description = "The project ID to deploy to"
   type        = string
 
   validation {
-    condition     = length(var.project_id) > 0
+    condition     = length(var.project) > 0
     error_message = "You must provide a project ID"
   }
 
