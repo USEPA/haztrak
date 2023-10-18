@@ -1,6 +1,6 @@
 locals {
-  vpc_name             = var.environment == "production" ? "${var.project}-vpc-prod" : "${var.project}-vpc-dev"
-  database_subnet_name = var.environment == "production" ? "${var.project}-database-subnet-prod" : "${var.project}-database-subnet-dev"
+  vpc_name             = var.environment == "prod" ? var.vpc_name : "${var.vpc_name}-dev"
+  database_subnet_name = var.environment == "prod" ? "${var.project}-database-subnet-prod" : "${var.project}-database-subnet-dev"
 }
 
 module "vpc" {

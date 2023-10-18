@@ -1,5 +1,11 @@
 # network inputs
 
+variable "vpc_name" {
+  type        = string
+  description = "The name of the VPC"
+  default     = "haztrak"
+}
+
 variable "project" {
   description = "The GCP project to deploy to"
   type        = string
