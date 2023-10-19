@@ -14,6 +14,11 @@ from apps.trak.services.manifest_service import PullManifestsResult  # type: ign
 logger = logging.getLogger(__name__)
 
 
+class SiteServiceError(Exception):
+    def __init__(self, message: str):
+        super().__init__(message)
+
+
 class SiteService:
     """
     SiteService encapsulates the Haztrak site subdomain business logic and use cases.
@@ -47,20 +52,19 @@ class SiteService:
                 site_id=site_id, start_date=site.last_rcra_sync
             )
             # ToDo: uncomment this after we have manifest development fixtures
-            # limit the number of manifest to sync at a time
+            # limit the number of manifest to sync at a time per RCRAInfo rate limits
             tracking_numbers = tracking_numbers[:30]
             logger.info(f"Pulling {tracking_numbers} from RCRAInfo")
             results: PullManifestsResult = manifest_service.pull_manifests(
                 tracking_numbers=tracking_numbers
             )
             # ToDo: uncomment this after we have manifest development fixtures
-            # Update the Rcrainfo last sync date for future sync operations
             # site.last_rcra_sync = datetime.now().replace(tzinfo=timezone.utc)
             site.save()
             return results
         except Site.DoesNotExist:
             logger.warning(f"Site Does not exists {site_id}")
-            raise Exception
+            raise SiteServiceError(f"Site Does not exists {site_id}")
 
     @transaction.atomic
     def create_or_update_site(
