@@ -58,15 +58,14 @@ class RcrainfoService(RcrainfoClient):
             return super().retrieve_key(self.profile.rcra_api_key)
         return super().retrieve_key()
 
-    def get_user_profile(self, username: Optional[str] = None):
+    def get_user_profile(self, username: Optional[str] = None) -> RcrainfoResponse:
         """
         Retrieve a user's site permissions from RCRAInfo, It expects the
         haztrak user to have their unique RCRAInfo user and API credentials in their
         RcraProfile
         """
         profile = RcraProfile.objects.get(user__username=username or self.api_user)
-        response = self.search_users(userId=profile.rcra_username)
-        return response.json()
+        return self.search_users(userId=profile.rcra_username)
 
     def sync_federal_waste_codes(self):
         """

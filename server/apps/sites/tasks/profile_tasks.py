@@ -4,6 +4,8 @@ from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
 from requests import RequestException
 
+from apps.sites.services.profile_services import RcraProfileServiceError
+
 logger = logging.getLogger(__name__)
 
 
@@ -28,6 +30,9 @@ def sync_user_sites(self: RcraProfileTasks, username: str) -> None:
     except (ConnectionError, RequestException, TimeoutError):
         # ToDo retry if network error, see celery docs
         raise Reject()
+    except RcraProfileServiceError as exc:
+        self.update_state(state=states.FAILURE, meta={"error": f"{str(exc)}"})
+        raise Ignore()
     except Exception as exc:
-        self.update_state(state=states.FAILURE, meta=f"unknown error: {exc}")
+        self.update_state(state=states.FAILURE, meta={"unknown error": f"{str(exc)}"})
         raise Ignore()
