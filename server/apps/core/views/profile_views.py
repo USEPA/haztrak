@@ -38,7 +38,7 @@ class RcraProfileSyncView(GenericAPIView):
     with their haztrak (Rcra)profile.
     """
 
-    queryset = RcraProfile.objects.all()
+    queryset = None
     response = Response
 
     def get(self, request: Request) -> Response:

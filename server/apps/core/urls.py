@@ -15,7 +15,7 @@ urlpatterns = [
         "rcra/",
         include(
             [
-                path("profile/<str:username>/sync", RcraProfileSyncView.as_view()),
+                path("profile/sync", RcraProfileSyncView.as_view()),
                 path("profile/<str:username>", RcraProfileView.as_view()),
             ]
         ),
