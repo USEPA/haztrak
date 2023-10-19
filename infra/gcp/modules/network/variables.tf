@@ -29,7 +29,7 @@ variable "environment" {
 # Note: A VPC is a global resource, subnets are regional.
 variable "subnets" {
   description = "Any subnets of the VPC."
-  type        = list(object({
+  type = list(object({
     subnet_name                = string
     subnet_ip                  = string
     subnet_region              = string
