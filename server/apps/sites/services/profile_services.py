@@ -8,13 +8,12 @@ from apps.sites.models import RcraSitePermission, Site  # type: ignore
 from apps.sites.serializers import RcraPermissionSerializer  # type: ignore
 
 from ...core.models import RcraProfile  # type: ignore
-from .site_services import RcraSiteService, SiteService  # type: ignore
+from .site_services import RcraSiteService, SiteService, SiteServiceError  # type: ignore
 
 logger = logging.getLogger(__name__)
 
 
-# ToDo, may be better to have a service level module exception.
-class RcraServiceError(Exception):
+class RcraProfileServiceError(Exception):
     """Exception for errors specific to the RcraProfileService"""
 
     def __init__(self, message: str):
@@ -47,7 +46,7 @@ class RcraProfileService:
             f"<{self.__class__.__name__}(username='{self.username}', rcrainfo='{self.rcrainfo}')>"
         )
 
-    def pull_rcra_profile(self, *, username: Optional[str] = None):
+    def pull_rcra_profile(self, *, username: Optional[str] = None) -> None:
         """
         This high level function makes several requests to RCRAInfo to pull...
         1. A user's rcrainfo site permissions, it creates a RcraSitePermission for each
@@ -56,30 +55,43 @@ class RcraProfileService:
         3. If a Haztrak Site is not present, create one
         """
         try:
-            handler_service = RcraSiteService(username=self.username, rcrainfo=self.rcrainfo)
-            site_service = SiteService(username=self.username, rcrainfo=self.rcrainfo)
-            if username:
-                user_to_update: str = username
-            else:
-                user_to_update = self.username
-            user_profile_response = self.rcrainfo.get_user_profile(username=user_to_update)
-            permissions = self._parse_rcra_response(rcra_response=user_profile_response)
+            if username is None:
+                username = self.username
+            profile_response = self.rcrainfo.get_user_profile(username=username)
+            permissions = self._parse_rcra_response(rcra_response=profile_response.json())
+            self._update_profile_permissions(permissions)
+        except (RcraProfile.DoesNotExist, Site.DoesNotExist) as exc:
+            raise RcraProfileServiceError(exc)
+
+    def _update_profile_permissions(self, permissions: list[dict]):
+        """
+        This function creates or updates a user's RcraSitePermission for each site permission
+        :param permissions: body of response from RCRAInfo
+        :return: None
+        """
+        try:
+            handler = RcraSiteService(username=self.username, rcrainfo=self.rcrainfo)
+            haztrak_site = SiteService(username=self.username, rcrainfo=self.rcrainfo)
             for rcra_site_permission in permissions:
-                rcra_site = handler_service.get_or_pull_rcra_site(rcra_site_permission["siteId"])
-                site = site_service.create_or_update_site(rcra_site=rcra_site)
+                rcra_site = handler.get_or_pull_rcra_site(rcra_site_permission["siteId"])
+                site = haztrak_site.create_or_update_site(rcra_site=rcra_site)
                 self._create_or_update_rcra_permission(
                     epa_permission=rcra_site_permission, site=site
                 )
-
-        except (RcraProfile.DoesNotExist, Site.DoesNotExist) as exc:
-            raise Exception(exc)
+        except SiteServiceError as exc:
+            raise RcraProfileServiceError(f"Error creating or updating Haztrak Site {exc}")
+        except KeyError as exc:
+            raise RcraProfileServiceError(f"Error parsing RCRAInfo response: {str(exc)}")
 
     @staticmethod
     def _parse_rcra_response(*, rcra_response: dict) -> list:
-        permissions = []
-        for permission_json in rcra_response["users"][0]["sites"]:
-            permissions.append(permission_json)
-        return permissions
+        try:
+            permissions = []
+            for permission_json in rcra_response["users"][0]["sites"]:
+                permissions.append(permission_json)
+            return permissions
+        except KeyError as exc:
+            raise RcraProfileServiceError(f"Error parsing RCRAInfo response: {str(exc)}")
 
     @transaction.atomic
     def _create_or_update_rcra_permission(
@@ -91,4 +103,6 @@ class RcraProfileService:
                 **permission_serializer.validated_data, site=site, profile=self.profile
             )
             return obj
-        raise Exception("Error Attempting to create RcraSitePermission")
+        raise RcraProfileServiceError(
+            f"Error creating instance of RcraSitePermission {permission_serializer.errors}"
+        )

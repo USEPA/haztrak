@@ -1,4 +1,5 @@
 from celery.exceptions import CeleryError
+from celery.result import AsyncResult as CeleryTask
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
 from rest_framework.request import Request
@@ -6,6 +7,7 @@ from rest_framework.response import Response
 
 from apps.core.models import HaztrakUser, RcraProfile
 from apps.core.serializers import HaztrakUserSerializer, RcraProfileSerializer
+from apps.sites.tasks import sync_user_sites
 
 
 class HaztrakUserView(RetrieveUpdateAPIView):
@@ -38,14 +40,12 @@ class RcraProfileSyncView(GenericAPIView):
     with their haztrak (Rcra)profile.
     """
 
-    queryset = RcraProfile.objects.all()
+    queryset = None
     response = Response
 
     def get(self, request: Request) -> Response:
-        """Sync Profile GET method rcra_site"""
         try:
-            profile = RcraProfile.objects.get(user=request.user)
-            task = profile.sync()
+            task: CeleryTask = sync_user_sites.delay(str(self.request.user))
             return self.response({"task": task.id})
         except RcraProfile.DoesNotExist as exc:
             return self.response(data={"error": str(exc)}, status=status.HTTP_404_NOT_FOUND)

@@ -1,7 +1,7 @@
 import logging
-import os
-from typing import Optional
+from typing import Literal, Optional
 
+import emanifest
 from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse  # type: ignore
 
@@ -19,16 +19,25 @@ class RcrainfoService(RcrainfoClient):
 
     datetime_format = "%Y-%m-%dT%H:%M:%S.%f%z"
 
-    def __init__(self, *, api_username: str, rcrainfo_env: Optional[str] = None, **kwargs):
+    def __init__(
+        self,
+        *,
+        api_username: str,
+        rcrainfo_env: Optional[Literal["preprod"] | Literal["prod"]] = None,
+        **kwargs,
+    ):
         self.api_user = api_username
         if RcraProfile.objects.filter(user__username=self.api_user).exists():
             self.profile = RcraProfile.objects.get(user__username=self.api_user)
         else:
             self.profile = None
-        if rcrainfo_env is None:
-            rcrainfo_env = os.getenv("HT_RCRAINFO_ENV", "preprod")
-            self.rcrainfo_env = rcrainfo_env
-        super().__init__(rcrainfo_env, **kwargs)
+        if rcrainfo_env == "prod":
+            self.rcrainfo_env: Literal["preprod"] | Literal["prod"] = rcrainfo_env
+            base_url = emanifest.RCRAINFO_PROD
+        else:
+            self.rcrainfo_env = "preprod"
+            base_url = emanifest.RCRAINFO_PREPROD
+        super().__init__(base_url, **kwargs)
 
     @property
     def has_api_user(self) -> bool:
@@ -56,15 +65,14 @@ class RcrainfoService(RcrainfoClient):
             return super().retrieve_key(self.profile.rcra_api_key)
         return super().retrieve_key()
 
-    def get_user_profile(self, username: Optional[str] = None):
+    def get_user_profile(self, username: Optional[str] = None) -> RcrainfoResponse:
         """
         Retrieve a user's site permissions from RCRAInfo, It expects the
         haztrak user to have their unique RCRAInfo user and API credentials in their
         RcraProfile
         """
         profile = RcraProfile.objects.get(user__username=username or self.api_user)
-        response = self.search_users(userId=profile.rcra_username)
-        return response.json()
+        return self.search_users(userId=profile.rcra_username)
 
     def sync_federal_waste_codes(self):
         """

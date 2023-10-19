@@ -28,6 +28,12 @@ services:
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
       HT_DB_HOST: postgres
       HT_DB_PORT: ${HT_DB_PORT}
+    command: |
+      sh -c "
+      python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py loaddata dev_data.yaml &&
+      python manage.py runserver 0.0.0.0:8000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -48,6 +54,7 @@ services:
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}
       CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
       CELERY_LOG_LEVEL: ${CELERY_LOG_LEVEL}
+      HT_RCRAINFO_ENV: ${HT_RCRAINFO_ENV}
       HT_DB_ENGINE: ${HT_DB_ENGINE}
       HT_DB_NAME: ${HT_DB_NAME}
       HT_DB_USER: ${HT_DB_USER}
@@ -69,6 +76,7 @@ services:
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}
       CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
       CELERY_LOG_LEVEL: ${CELERY_LOG_LEVEL}
+      HT_RCRAINFO_ENV: ${HT_RCRAINFO_ENV}
       HT_DB_ENGINE: ${HT_DB_ENGINE}
       HT_DB_NAME: ${HT_DB_NAME}
       HT_DB_USER: ${HT_DB_USER}

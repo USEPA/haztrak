@@ -70,10 +70,10 @@ def sign_manifest(
     except (ConnectionError, TimeoutError) as exc:
         raise Reject(exc)
     except ValueError as exc:
-        self.update_state(state=states.FAILURE, meta=f"ValueError: {exc}")
+        self.update_state(state=states.FAILURE, meta={"Error": f"{repr(exc)}"})
         raise Ignore()
     except Exception as exc:
-        self.update_state(state=states.FAILURE, meta=f"unknown error: {exc}")
+        self.update_state(state=states.FAILURE, meta={"unknown error": f"{exc}"})
         raise Ignore()
 
 
@@ -88,7 +88,7 @@ def sync_site_manifests(self, *, site_id: str, username: str):
         return results
     except Exception as exc:
         logger.error(f"failed to sync {site_id} manifest")
-        self.update_state(state=states.FAILURE, meta=f"Internal Error {exc}")
+        self.update_state(state=states.FAILURE, meta={f"Error: {exc}"})
         raise Ignore()
 
 
@@ -115,5 +115,5 @@ def create_rcra_manifest(self, *, manifest: dict, username: str):
         return resp.json()
     except Exception as exc:
         logger.error("error: ", exc)
-        task_status.update_task_status(status="FAILURE", results=str(exc))
+        task_status.update_task_status(status="FAILURE", results={"result": str(exc)})
         return {"error": f"Internal Error: {exc}"}

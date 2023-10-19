@@ -183,7 +183,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
           variant="primary"
           onClick={() =>
             htApi
-              .get(`profile/${profile.user}/sync`)
+              .get(`rcra/profile/sync`)
               .then((response) => {
                 dispatch(
                   addNotification({
