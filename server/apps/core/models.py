@@ -65,13 +65,6 @@ class RcraProfile(CoreBaseModel):
     def __str__(self):
         return f"{self.user.username}"
 
-    def sync(self):
-        """Launch task to sync use profile. ToDo: remove this method"""
-        from apps.sites.tasks import sync_user_sites
-
-        task = sync_user_sites.delay(str(self.user.username))
-        return task
-
     @property
     def is_api_user(self) -> bool:
         """Returns true if the use has Rcrainfo API credentials"""
