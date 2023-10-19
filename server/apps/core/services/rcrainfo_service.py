@@ -1,7 +1,7 @@
 import logging
-import os
 from typing import Optional
 
+import emanifest
 from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse  # type: ignore
 
@@ -25,9 +25,11 @@ class RcrainfoService(RcrainfoClient):
             self.profile = RcraProfile.objects.get(user__username=self.api_user)
         else:
             self.profile = None
-        if rcrainfo_env is None:
-            rcrainfo_env = os.getenv("HT_RCRAINFO_ENV", "preprod")
-            self.rcrainfo_env = rcrainfo_env
+        if rcrainfo_env == "prod":
+            rcrainfo_env = emanifest.RCRAINFO_PROD
+        else:
+            rcrainfo_env = emanifest.RCRAINFO_PREPROD
+        self.rcrainfo_env = rcrainfo_env
         super().__init__(rcrainfo_env, **kwargs)
 
     @property

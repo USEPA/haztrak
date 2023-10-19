@@ -42,7 +42,6 @@ class RcraProfileSyncView(GenericAPIView):
     response = Response
 
     def get(self, request: Request) -> Response:
-        """Sync Profile GET method rcra_site"""
         try:
             profile = RcraProfile.objects.get(user=request.user)
             task = profile.sync()
