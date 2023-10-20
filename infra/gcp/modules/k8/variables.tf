@@ -40,8 +40,7 @@ variable "region" {
 
 variable "zones" {
   type        = list(string)
-  description = "the zones to use for the GKE deployment."
-  default     = []
+  description = "The zone to host the cluster in (required if is a zonal cluster)"
 }
 
 variable "description" {
@@ -54,11 +53,6 @@ variable "network" {
   type        = string
   description = "The VPC network to host the cluster in (required)"
 }
-
-#variable "subnetwork" {
-#  type        = string
-#  description = "The subnetwork to host the cluster in (required)"
-#}
 
 variable "subnet_cidr" {
   type        = string
