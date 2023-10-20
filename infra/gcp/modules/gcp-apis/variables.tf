@@ -17,5 +17,4 @@ variable "project" {
     error_message = "GCP project length must be greater than zero"
     condition     = length(var.project) > 0
   }
-
 }

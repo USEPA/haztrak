@@ -26,8 +26,24 @@ for purposes of this demonstration, a pre-configured project and access is neces
 4. Create a [service account for terraform](https://cloud.google.com/iam/docs/service-accounts-create)
    - `gcloud iam service-accounts create <sa_name> --display-name "Terraform Service Account"`
    - The account will need the following permissions
-     - `roles/storage.objectAdmin`
-   - `gcloud projects add-iam-policy-binding <project_id> -dev-test-123 --member="serviceAccount:<sa_name>@haztrak-epa-dev-test-123.iam.gserviceaccount.com" --role=roles/storage.objectAdmin --role=roles/serviceusage.serviceUsageAdmin`
+   ```shell
+   gcloud projects add-iam-policy-binding <project_id> -dev-test-123 \
+   --member="serviceAccount:<sa_name>@<project_id>.iam.gserviceaccount.com" \
+   --role=roles/storage.objectAdmin \
+   --role=roles/serviceusage.serviceUsageAdmin \
+   --role=roles/iam.serviceAccountAdmin \
+   --role=roles/iam.serviceAccountUser \
+   --role=roles/resourcemanager.projectIamAdmin \
+   --role=roles/compute.viewer \
+   --role=roles/compute.securityAdmin \
+   --role=roles/container.clusterAdmin \
+   --role=roles/container.developer
+   ```
+   - You can check that all the roles were successfully added to our service account with the following command:
+   ```shell
+   gcloud projects get-iam-policy $PROJECT_ID --flatten="bindings[].members" --format='table(bindings.role)' --filter="bindings.members:<service_account>"
+   ```
+   While this is a lot of permissions, and manually applying them is not ideal, it is necessary for terraform to be able to manage all the resources we need to get this project up and running.
 5. [Create a GCP bucket](https://cloud.google.com/storage/docs/creating-buckets#storage-create-bucket-cli) to hold Terraform remote state
    - `gcloud storage buckets create gc://<bucket_name> --project <project_id>`
 

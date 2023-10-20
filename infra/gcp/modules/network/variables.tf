@@ -29,7 +29,7 @@ variable "environment" {
 # Note: A VPC is a global resource, subnets are regional.
 variable "subnets" {
   description = "Any subnets of the VPC."
-  type        = list(object({
+  type = list(object({
     subnet_name                = string
     subnet_ip                  = string
     subnet_region              = string
@@ -38,4 +38,10 @@ variable "subnets" {
     description                = optional(string)
   }))
   default = []
+}
+
+variable "secondary_ranges" {
+  type        = map(list(object({ range_name = string, ip_cidr_range = string })))
+  description = "Secondary ranges that will be used in some of the subnets"
+  default     = {}
 }
