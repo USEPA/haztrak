@@ -23,16 +23,20 @@ resource "google_compute_subnetwork" "gke_subnet" {
 }
 
 module "gke" {
-  source                          = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-public-cluster"
+  source                          = "terraform-google-modules/kubernetes-engine/google"
+  description                     = var.description
   project_id                      = var.project
-  name                            = "${local.cluster_type}-cluster"
-  regional                        = true
+  name                            = local.name
+  regional                        = false
   region                          = var.region
+  zones                           = var.zones
   network                         = var.network
+  service_account                 = "create"
+  service_account_name            = "${var.project}-tf-sa"
   subnetwork                      = google_compute_subnetwork.gke_subnet.name
   ip_range_pods                   = google_compute_subnetwork.gke_subnet.secondary_ip_range[0].range_name
   ip_range_services               = google_compute_subnetwork.gke_subnet.secondary_ip_range[1].range_name
   release_channel                 = "REGULAR"
-  enable_vertical_pod_autoscaling = true
-  network_tags                    = [local.cluster_type]
+  enable_vertical_pod_autoscaling = false
+  horizontal_pod_autoscaling      = false
 }
