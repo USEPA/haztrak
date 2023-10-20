@@ -1,7 +1,7 @@
 module "gcp_apis" {
   source = "../modules/gcp-apis"
 
-  project = var.project
+  project  = var.project
   services = [
     "compute.googleapis.com",
     "container.googleapis.com"
@@ -24,4 +24,5 @@ module "k8" {
   pod_cidr     = "10.1.0.0/24"
   service_cidr = "10.2.0.0/24"
   depends_on   = [module.gcp_apis, module.vpc]
+  zones        = [var.zone]
 }

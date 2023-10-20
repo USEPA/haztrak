@@ -22,6 +22,12 @@ variable "environment" {
   }
 }
 
+variable "regional" {
+  description = "Whether to deploy a regional cluster (multiple zones) or zonal (single zone)"
+  type        = bool
+  default     = false
+}
+
 variable "region" {
   description = "The region to deploy to"
   default     = "us-east1"

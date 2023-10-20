@@ -1,5 +1,6 @@
 locals {
-  name = var.environment == "prod" ? var.name : "${var.name}-${var.environment}"
+  env_name = var.environment == "prod" ? var.name : "${var.name}-${var.environment}"
+  name     = var.regional ? local.env_name : "${local.env_name}-zonal"
 }
 
 resource "google_compute_subnetwork" "gke_subnet" {
@@ -23,6 +24,7 @@ module "gke" {
   source                     = "terraform-google-modules/kubernetes-engine/google"
   project_id                 = var.project
   name                       = local.name
+  regional                   = var.regional
   region                     = var.region
   zones                      = var.zones
   network                    = var.network
@@ -35,36 +37,36 @@ module "gke" {
   filestore_csi_driver       = false
   service_account_name       = "${var.project}-tf-sa"
 
-  node_pools = [
-    {
-      name         = "default-node-pool"
-      machine_type = "e2-micro"
-      #      node_locations     = "us-central1-b,us-central1-c"
-      min_count          = 1
-      max_count          = 10
-      local_ssd_count    = 0
-      spot               = false
-      disk_size_gb       = 10
-      disk_type          = "pd-standard"
-      image_type         = "COS_CONTAINERD"
-      enable_gcfs        = false
-      enable_gvnic       = false
-      logging_variant    = "DEFAULT"
-      auto_repair        = true
-      auto_upgrade       = true
-      preemptible        = false
-      initial_node_count = 1
-    },
-  ]
+  #  node_pools = [
+  #    {
+  #      name               = "default-node-pool"
+  #      machine_type       = "e2-micro"
+  #      #      node_locations     = "us-central1-b,us-central1-c"
+  #      min_count          = 1
+  #      max_count          = 10
+  #      local_ssd_count    = 0
+  #      spot               = false
+  #      disk_size_gb       = 10
+  #      disk_type          = "pd-standard"
+  #      image_type         = "COS_CONTAINERD"
+  #      enable_gcfs        = false
+  #      enable_gvnic       = false
+  #      logging_variant    = "DEFAULT"
+  #      auto_repair        = true
+  #      auto_upgrade       = true
+  #      preemptible        = false
+  #      initial_node_count = 1
+  #    },
+  #  ]
+  #
+  #    node_pools_oauth_scopes = {
+  #      all = [
+  #        "https://www.googleapis.com/auth/logging.write",
+  #        "https://www.googleapis.com/auth/monitoring",
+  #      ]
+  #    }
 
-  #  node_pools_oauth_scopes = {
-  #    all = [
-  #      "https://www.googleapis.com/auth/logging.write",
-  #      "https://www.googleapis.com/auth/monitoring",
-  #    ]
-  #  }
-
-  node_pools_labels = {
+  /*node_pools_labels = {
     all = {}
 
     default-node-pool = {
@@ -98,6 +100,6 @@ module "gke" {
     default-node-pool = [
       "default-node-pool",
     ]
-  }
+  }*/
   depends_on = [google_compute_subnetwork.gke_subnet]
 }
