@@ -33,3 +33,9 @@ variable "zone" {
   type        = string
   description = "the default zone to use for the terraform GCP provider"
 }
+
+variable "vpc_name" {
+  type        = string
+  description = "The name of the VPC to create"
+  default     = "haztrak-vpc"
+}

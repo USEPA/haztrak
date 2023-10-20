@@ -54,17 +54,17 @@ variable "network" {
   description = "The VPC network to host the cluster in (required)"
 }
 
-variable "subnet_cidr" {
+variable "subnet_name" {
   type        = string
-  description = "The CIDR range of the subnet to host the cluster in (required)"
+  description = "The name of the subnet to host the cluster in (required)"
 }
 
-variable "pod_cidr" {
+variable "pod_ip_range_name" {
   type        = string
-  description = "The subnet secondary IP range (CIDR notation) the pods will be assigned to."
+  description = "The name of the secondary IP range the pods will be assigned to."
 }
 
-variable "service_cidr" {
+variable "service_ip_range_name" {
   type        = string
-  description = "The subnet secondary IP range (CIDR notation) the services will be assigned to."
+  description = "The name of the secondary IP range the services will be assigned to."
 }

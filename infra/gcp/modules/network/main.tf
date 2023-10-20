@@ -3,6 +3,7 @@ locals {
   database_subnet_name = var.environment == "prod" ? "${var.project}-database-subnet-prod" : "${var.project}-database-subnet-dev"
 }
 
+
 module "vpc" {
   source                  = "terraform-google-modules/network/google"
   version                 = "~> 7.1"
@@ -11,4 +12,5 @@ module "vpc" {
   routing_mode            = "GLOBAL"
   auto_create_subnetworks = false
   subnets                 = var.subnets
+  secondary_ranges        = var.secondary_ranges
 }
