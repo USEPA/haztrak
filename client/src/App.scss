@@ -23,6 +23,10 @@ $info: #009999;
   z-index: 999; /* Ensure it's above other content */
 }
 
+.no-caret::after {
+  display: none !important;
+}
+
 .badge-top-right {
   min-width: 1.5rem !important;
   top: -0.75rem !important;
