@@ -79,7 +79,7 @@ function TransporterRowActions({
     <>
       <Dropdown>
         <Dropdown.Toggle
-          title={`transporter action ${index}`}
+          title={`transporter ${index + 1} actions`}
           className="bg-transparent border-0 text-dark no-caret justify-content-end"
         >
           <FontAwesomeIcon icon={faEllipsisVertical} className="pe-2 shadow-none" />

@@ -52,7 +52,7 @@ describe('TransporterTable', () => {
       {}
     );
     const actionDropdown = await screen.findAllByRole('button', {
-      name: /transporter action [0-9]/,
+      name: /transporter [0-9] actions/,
     });
     expect(actionDropdown).length(2);
   });
@@ -69,7 +69,7 @@ describe('TransporterTable', () => {
       {}
     );
     const actionDropdown = screen.queryAllByRole('button', {
-      name: /transporter action [0-9]/,
+      name: /transporter [0-9] actions/,
     });
     expect(actionDropdown).length(0);
   });
@@ -85,7 +85,7 @@ describe('TransporterTable', () => {
       {}
     );
     const actionDropdowns = await screen.findAllByRole('button', {
-      name: /transporter action [0-9]/,
+      name: /transporter [0-9] actions/,
     });
     for (let i = 1; i < TRAN_ARRAY.length; i++) {
       await userEvent.click(actionDropdowns[i]);
@@ -104,7 +104,7 @@ describe('TransporterTable', () => {
       {}
     );
     const actionDropdowns = await screen.findAllByRole('button', {
-      name: /transporter action [0-9]/,
+      name: /transporter [0-9] actions/,
     });
     for (let i = 0; i < TRAN_ARRAY.length; i++) {
       await userEvent.click(actionDropdowns[i]);

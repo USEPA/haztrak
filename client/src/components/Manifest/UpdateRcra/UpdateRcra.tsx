@@ -8,6 +8,13 @@ interface UpdateRcraProps {
   taskId: string;
 }
 
+/**
+ * UpdateRcra is a component that will poll the server for the status of an asynchronous task and
+ * display that status to the user. If the task is successful, the user will be redirected to the
+ * manifest view page.
+ * @param taskId
+ * @constructor
+ */
 export function UpdateRcra({ taskId }: UpdateRcraProps) {
   const [showToast, setShowToast] = React.useState(true);
 
