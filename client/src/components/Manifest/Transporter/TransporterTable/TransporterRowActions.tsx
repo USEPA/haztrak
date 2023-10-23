@@ -21,6 +21,7 @@ interface RowDropdownItems {
   icon: ReactElement;
   onClick: MouseEventHandler<HTMLElement>;
   disabled: boolean;
+  label: string;
 }
 
 /**
@@ -47,6 +48,7 @@ function TransporterRowActions({
         swapTransporter(index, index - 1);
       },
       disabled: isFirst,
+      label: `move transporter ${index} up`,
     },
     {
       text: 'Move Down',
@@ -60,6 +62,7 @@ function TransporterRowActions({
         swapTransporter(index, index + 1);
       },
       disabled: isLast,
+      label: `move transporter ${index} down`,
     },
     {
       text: 'Remove',
@@ -68,19 +71,28 @@ function TransporterRowActions({
         removeTransporter(index);
       },
       disabled: false,
+      label: `remove transporter ${index}`,
     },
   ];
 
   return (
     <>
       <Dropdown>
-        <Dropdown.Toggle className="bg-transparent border-0 text-dark no-caret justify-content-end">
+        <Dropdown.Toggle
+          title={`transporter action ${index}`}
+          className="bg-transparent border-0 text-dark no-caret justify-content-end"
+        >
           <FontAwesomeIcon icon={faEllipsisVertical} className="pe-2 shadow-none" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
           {actions.map((action, i) => {
             return (
-              <Dropdown.Item key={i} disabled={action.disabled} onClick={action.onClick}>
+              <Dropdown.Item
+                key={i}
+                disabled={action.disabled}
+                onClick={action.onClick}
+                title={action.label}
+              >
                 <Row>
                   <Col xs={2}>{action.icon}</Col>
                   <Col xs={10}>
