@@ -5,11 +5,12 @@ locals {
 }
 
 module "gcp_apis" {
-  source  = "../modules/gcp-apis"
-  project = var.project
+  source   = "../modules/gcp-apis"
+  project  = var.project
   services = [
     "compute.googleapis.com",
-    "container.googleapis.com"
+    "container.googleapis.com",
+    "sqladmin.googleapis.com"
   ]
 }
 
@@ -19,7 +20,7 @@ module "vpc" {
   project    = var.project
   region     = var.region
   depends_on = [module.gcp_apis]
-  subnets = [
+  subnets    = [
     {
       subnet_name   = local.subnet_base_name
       subnet_ip     = "10.0.0.0/16"
@@ -40,15 +41,24 @@ module "vpc" {
   }
 }
 
-module "k8" {
-  source                = "../modules/k8"
-  name                  = "haztrak-gke"
-  network               = module.vpc.network
-  project               = var.project
-  region                = var.region
-  zones                 = [var.zone]
-  subnet_name           = local.subnet_base_name
-  pod_ip_range_name     = local.k8_subnet_pod_ip_range
-  service_ip_range_name = local.k8_subnet_service_ip_range
-  depends_on            = [module.gcp_apis, module.vpc]
+#module "k8" {
+#  source                = "../modules/k8"
+#  name                  = "haztrak-gke"
+#  network               = module.vpc.network
+#  project               = var.project
+#  region                = var.region
+#  zones                 = [var.zone]
+#  subnet_name           = local.subnet_base_name
+#  pod_ip_range_name     = local.k8_subnet_pod_ip_range
+#  service_ip_range_name = local.k8_subnet_service_ip_range
+#  depends_on            = [module.gcp_apis, module.vpc]
+#}
+
+
+module "sql" {
+  source      = "../modules/sql"
+  environment = var.environment
+  project     = var.project
+  vpc         = module.vpc.network
+  depends_on  = [module.vpc, module.gcp_apis]
 }

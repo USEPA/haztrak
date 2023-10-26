@@ -27,7 +27,7 @@ for purposes of this demonstration, a pre-configured project and access is neces
    - `gcloud iam service-accounts create <sa_name> --display-name "Terraform Service Account"`
    - The account will need the following permissions
    ```shell
-   gcloud projects add-iam-policy-binding <project_id> -dev-test-123 \
+   gcloud projects add-iam-policy-binding <project_id> \
    --member="serviceAccount:<sa_name>@<project_id>.iam.gserviceaccount.com" \
    --role=roles/storage.objectAdmin \
    --role=roles/serviceusage.serviceUsageAdmin \
@@ -37,6 +37,7 @@ for purposes of this demonstration, a pre-configured project and access is neces
    --role=roles/compute.viewer \
    --role=roles/compute.securityAdmin \
    --role=roles/container.clusterAdmin \
+   --role=roles/cloudsql.admin \
    --role=roles/container.developer
    ```
    - You can check that all the roles were successfully added to our service account with the following command:
