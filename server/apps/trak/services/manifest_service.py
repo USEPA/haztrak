@@ -5,6 +5,7 @@ from typing import List, Optional, TypedDict
 from django.db import transaction
 from emanifest import RcrainfoResponse  # type: ignore
 from requests import RequestException  # type: ignore
+from rest_framework.exceptions import ValidationError
 
 from apps.core.services import RcrainfoService  # type: ignore
 from apps.trak.models import Manifest, QuickerSign  # type: ignore
@@ -12,6 +13,14 @@ from apps.trak.serializers import ManifestSerializer, QuickerSignSerializer  # t
 from apps.trak.tasks import pull_manifest  # type: ignore
 
 logger = logging.getLogger(__name__)
+
+
+class ManifestServiceError(Exception):
+    """Base class for ManifestService exceptions"""
+
+    def __init__(self, message: str = None, *args):
+        self.message = message
+        super().__init__(*args)
 
 
 class PullManifestsResult(TypedDict):
@@ -35,27 +44,6 @@ class ManifestService:
         return (
             f"<{self.__class__.__name__}(username='{self.username}', rcrainfo='{self.rcrainfo}')>"
         )
-
-    def _retrieve_manifest(self, mtn: str):
-        response = self.rcrainfo.get_manifest(mtn)
-        if response.ok:
-            logger.debug(f"manifest pulled {mtn}")
-            return response.json()
-        else:
-            logger.warning(f"error retrieving manifest {mtn}")
-            raise RequestException(response.json())
-
-    @transaction.atomic
-    def _save_manifest(self, manifest_json: dict) -> Manifest:
-        serializer = ManifestSerializer(data=manifest_json)
-        if serializer.is_valid():
-            logger.debug("manifest serializer is valid")
-            manifest = serializer.save()
-            logger.info(f"saved manifest {manifest.mtn}")
-            return manifest
-        else:
-            logger.warning(f"malformed serializer data: {serializer.errors}")
-            raise Exception(serializer.errors)
 
     def search_rcra_mtn(
         self,
@@ -124,7 +112,7 @@ class ManifestService:
         for mtn in tracking_numbers:
             try:
                 manifest_json: dict = self._retrieve_manifest(mtn)
-                manifest = self._save_manifest(manifest_json)
+                manifest = self._save_manifest_to_db(manifest_json)
                 results["success"].append(manifest.mtn)
             except Exception as exc:
                 logger.warning(f"error pulling manifest {mtn}: {exc}")
@@ -161,13 +149,23 @@ class ManifestService:
             results["error"].extend(results["success"])  # Temporary
         return results
 
-    def create_rcra_manifest(self, *, manifest: dict) -> RcrainfoResponse:
+    def create_rcra_manifest(self, *, manifest: dict) -> dict | None:
         """
         Create a manifest in RCRAInfo through the RESTful API.
         :param manifest: Dict
         :return:
         """
-        logger.debug(f"start create rcra manifest with arguments {manifest}")
+        if self.rcrainfo.has_api_user:
+            logger.warning("POSTing manifest to RCRAInfo.")
+            return self._save_manifest_to_rcrainfo(manifest)
+        else:
+            logger.warning("RCRAInfo API credentials not found, RCRAInfo manifest creation")
+            saved_manifest = self._save_manifest_to_db(manifest)
+            logger.info(f"saved manifest {saved_manifest.mtn}")
+            return ManifestSerializer(saved_manifest).data
+
+    def _save_manifest_to_rcrainfo(self, manifest: dict) -> dict:
+        logger.info(f"start save manifest to rcrainfo with arguments {manifest}")
         create_resp: RcrainfoResponse = self.rcrainfo.save_manifest(manifest)
         try:
             if create_resp.ok:
@@ -176,7 +174,8 @@ class ManifestService:
                     f"{create_resp.json()['manifestTrackingNumber']} in RCRAInfo"
                 )
                 self.pull_manifests([create_resp.json()["manifestTrackingNumber"]])
-            return create_resp
+                return create_resp.json()
+            raise ManifestServiceError(message=f"error creating manifest: {create_resp.json()}")
         except KeyError:
             logger.error(
                 f"error retrieving manifestTrackingNumber from response: {create_resp.json()}"
@@ -192,3 +191,25 @@ class ManifestService:
         results["error"].extend(list(set(signature.mtn).difference(set(results["success"]))))
         logger.warning(f"MTN not found or site not listed as site type {results['error']}")
         return results
+
+    def _retrieve_manifest(self, mtn: str):
+        response = self.rcrainfo.get_manifest(mtn)
+        if response.ok:
+            logger.debug(f"manifest pulled {mtn}")
+            return response.json()
+        else:
+            logger.warning(f"error retrieving manifest {mtn}")
+            raise RequestException(response.json())
+
+    @transaction.atomic
+    def _save_manifest_to_db(self, manifest_json: dict) -> Manifest:
+        """Save manifest to Haztrak database"""
+        serializer = ManifestSerializer(data=manifest_json)
+        if serializer.is_valid():
+            logger.debug("manifest serializer is valid")
+            manifest = serializer.save()
+            logger.info(f"saved manifest {manifest.mtn}")
+            return manifest
+        else:
+            logger.warning(f"malformed serializer data: {serializer.errors}")
+            raise ValidationError(serializer.errors)
