@@ -23,7 +23,10 @@ export function UpdateRcra({ taskId }: UpdateRcraProps) {
   });
 
   if (data?.status === 'SUCCESS') {
-    const resp = data?.result;
+    let resp = data?.result;
+    if (typeof resp === 'string') {
+      resp = JSON.parse(resp);
+    }
     return <Navigate to={`/manifest/${resp.manifestTrackingNumber}/view`} />;
   }
 

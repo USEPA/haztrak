@@ -3,7 +3,7 @@ import { ManifestContext, ManifestContextType } from 'components/Manifest/Manife
 import { Manifest, SiteType, Transporter } from 'components/Manifest/manifestSchema';
 import { RcraSite } from 'components/RcraSite';
 import React, { useContext, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 import {
   Controller,
   SubmitHandler,
@@ -40,6 +40,13 @@ export function HandlerSearchForm({
   const dispatch = useAppDispatch();
   const { setGeneratorStateCode, setTsdfStateCode } =
     useContext<ManifestContextType>(ManifestContext);
+  const [searchMessage, setSearchMessage] = useState<
+    | {
+        message: string;
+        variant: 'success' | 'danger';
+      }
+    | undefined
+  >(undefined);
 
   const [options, setOptions] = useState<RcraSite[]>([]);
   const [rcrainfoSitesLoading, setRcrainfoSitesLoading] = useState<boolean>(false);
@@ -76,6 +83,21 @@ export function HandlerSearchForm({
           siteId: value,
         })
       );
+      if (rcrainfoSites.isError) {
+        setSearchMessage({
+          message: 'Sorry, could not connect to RCRAInfo. Showing known handlers.',
+          variant: 'danger',
+        });
+        const knownRcraSites = await dispatch(
+          siteApi.endpoints?.searchRcraSites.initiate({
+            siteType: handlerType,
+            siteId: value,
+          })
+        );
+        setOptions(knownRcraSites.data as Array<RcraSite>);
+        setRcrainfoSitesLoading(false);
+        return;
+      }
       setOptions(rcrainfoSites.data as Array<RcraSite>);
       setRcrainfoSitesLoading(false);
     }
@@ -89,6 +111,11 @@ export function HandlerSearchForm({
     <>
       <HtForm onSubmit={handleSubmit(onSubmit)}>
         <HtForm.Group>
+          {searchMessage && (
+            <div className="my-2">
+              <Alert variant={searchMessage.variant}>{searchMessage.message}</Alert>
+            </div>
+          )}
           <HtForm.Label htmlFor="epaId">EPA ID Number</HtForm.Label>
           <Controller
             control={control}

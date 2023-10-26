@@ -4,7 +4,6 @@ from typing import Dict, List, Optional
 
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
-from emanifest import RcrainfoResponse
 
 from apps.sites.models import RcraSiteType
 from apps.trak.models import QuickerSign
@@ -33,7 +32,7 @@ def pull_manifest(self: Task, *, mtn: List[str], username: str) -> dict:
         raise Reject()
     except Exception as exc:
         task_status.update_task_status(status="FAILURE")
-        self.update_state(state=states.FAILURE, meta=f"unknown error: {exc}")
+        self.update_state(state=states.FAILURE, meta={"unknown error": str(exc)})
         raise Ignore()
 
 
@@ -70,7 +69,7 @@ def sign_manifest(
     except (ConnectionError, TimeoutError) as exc:
         raise Reject(exc)
     except ValueError as exc:
-        self.update_state(state=states.FAILURE, meta={"Error": f"{repr(exc)}"})
+        self.update_state(state=states.FAILURE, meta={"error": f"{repr(exc)}"})
         raise Ignore()
     except Exception as exc:
         self.update_state(state=states.FAILURE, meta={"unknown error": f"{exc}"})
@@ -88,7 +87,7 @@ def sync_site_manifests(self, *, site_id: str, username: str):
         return results
     except Exception as exc:
         logger.error(f"failed to sync {site_id} manifest")
-        self.update_state(state=states.FAILURE, meta={f"Error: {exc}"})
+        self.update_state(state=states.FAILURE, meta={f"error: {exc}"})
         raise Ignore()
 
 
@@ -100,19 +99,21 @@ def create_rcra_manifest(self, *, manifest: dict, username: str):
     user who is creating the manifest
     """
     from apps.core.services import TaskService
-    from apps.trak.services import ManifestService
+    from apps.trak.services import ManifestService, ManifestServiceError
 
     logger.info(f"start task: {self.name}")
     task_status = TaskService(task_id=self.request.id, task_name=self.name, status="STARTED")
     try:
         manifest_service = ManifestService(username=username)
-        resp: RcrainfoResponse = manifest_service.create_rcra_manifest(manifest=manifest)
-        if resp.ok:
-            task_status.update_task_status(status="SUCCESS", results=resp.json())
-            return resp.json()
-        logger.error(f"failed to create manifest ({manifest}): {resp.json()}")
-        task_status.update_task_status(status="FAILURE", results=resp.json())
-        return resp.json()
+        new_manifest = manifest_service.create_rcra_manifest(manifest=manifest)
+        if new_manifest:
+            task_status.update_task_status(status="SUCCESS", results=new_manifest)
+            return new_manifest
+        raise ManifestServiceError("error creating manifest")
+    except ManifestServiceError as exc:
+        logger.error(f"failed to create manifest ({manifest}): {exc.message}")
+        task_status.update_task_status(status="FAILURE", results=exc.message)
+        return {"error": exc.message}
     except Exception as exc:
         logger.error("error: ", exc)
         task_status.update_task_status(status="FAILURE", results={"result": str(exc)})

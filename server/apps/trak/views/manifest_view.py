@@ -127,11 +127,11 @@ class CreateRcraManifestView(GenericAPIView):
     def post(self, request: Request) -> Response:
         manifest_serializer = self.serializer_class(data=request.data)
         if manifest_serializer.is_valid():
-            logger.debug(
-                f"manifest data submitted for creation in RCRAInfo: {manifest_serializer.data}"
-            )
             task: AsyncResult = create_rcra_manifest.delay(
                 manifest=manifest_serializer.data, username=str(request.user)
+            )
+            logger.debug(
+                f"manifest data submitted for creation in RCRAInfo: {manifest_serializer.data}"
             )
             TaskService(task_id=task.id, task_name=task.name).update_task_status("PENDING")
             return Response(data={"taskId": task.id}, status=status.HTTP_201_CREATED)

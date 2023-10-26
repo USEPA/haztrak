@@ -10,6 +10,7 @@ from apps.trak.models.manifest_models import (
     CorrectionInfo,
     ImportInfo,
     PortOfEntry,
+    draft_mtn,
 )
 from apps.trak.serializers.handler_ser import HandlerSerializer
 from apps.trak.serializers.signature_ser import ESignatureSerializer
@@ -220,6 +221,12 @@ class ManifestSerializer(TrakBaseSerializer):
 
     def create(self, validated_data: Dict) -> Manifest:
         return self.Meta.model.objects.save(**validated_data)
+
+    def validate(self, data):
+        if data["mtn"] == "" and data["status"] == "NotAssigned":
+            data["mtn"] = draft_mtn()
+        print("data", data)
+        return super().validate(data)
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
     def to_representation(self, instance) -> str:
