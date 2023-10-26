@@ -113,7 +113,7 @@ def create_rcra_manifest(self, *, manifest: dict, username: str):
     except ManifestServiceError as exc:
         logger.error(f"failed to create manifest ({manifest}): {exc.message}")
         task_status.update_task_status(status="FAILURE", results=exc.message)
-        return exc
+        return {"error": exc.message}
     except Exception as exc:
         logger.error("error: ", exc)
         task_status.update_task_status(status="FAILURE", results={"result": str(exc)})

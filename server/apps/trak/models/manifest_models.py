@@ -22,12 +22,9 @@ def draft_mtn():
     A callable that returns a timestamped draft MTN in lieu of an
     official MTN from e-Manifest
     """
-    manifests = Manifest.objects.all()
-    if not manifests:
-        max_id = 1
-    else:
-        max_id = manifests.aggregate(Max("id"))
-    return f"{str(max_id).zfill(9)}DFT"
+    mtn_count: int = Manifest.objects.all().count()
+    print(mtn_count)
+    return f"{str(mtn_count).zfill(9)}DFT"
 
 
 def validate_mtn(value):

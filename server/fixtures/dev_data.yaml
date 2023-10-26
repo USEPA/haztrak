@@ -130,8 +130,6 @@
   pk: 1
   fields:
     user: 2
-    rcra_api_key: mockRcraKey
-    rcra_api_id: mockRcraInfoId
     rcra_username: dpgraham4401
     phone_number: null
     email: test.user@haztrak.net
