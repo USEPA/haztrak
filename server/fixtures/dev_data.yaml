@@ -78,6 +78,54 @@
     can_esign: true
     limited_esign: true
     registered_emanifest_user: true
+- model: sites.rcrasite
+  pk: 2
+  fields:
+    site_type: Transporter
+    epa_id: MOCKTRANS001
+    name: Mock Transporter 01
+    site_address: 1
+    mail_address: 1
+    modified: false
+    registered: false
+    contact: 1
+    emergency_phone: null
+    gis_primary: false
+    can_esign: true
+    limited_esign: true
+    registered_emanifest_user: true
+- model: sites.rcrasite
+  pk: 3
+  fields:
+    site_type: Transporter
+    epa_id: MOCKTRANS002
+    name: Mock Transporter 02
+    site_address: 1
+    mail_address: 1
+    modified: false
+    registered: false
+    contact: 1
+    emergency_phone: null
+    gis_primary: false
+    can_esign: true
+    limited_esign: true
+    registered_emanifest_user: true
+- model: sites.rcrasite
+  pk: 4
+  fields:
+    site_type: Tsdf
+    epa_id: MOCKTSDFS001
+    name: Mock haztrak TSDF 01
+    site_address: 1
+    mail_address: 1
+    modified: false
+    registered: false
+    contact: 1
+    emergency_phone: null
+    gis_primary: false
+    can_esign: true
+    limited_esign: true
+    registered_emanifest_user: true
 - model: core.rcraprofile
   pk: 1
   fields:
