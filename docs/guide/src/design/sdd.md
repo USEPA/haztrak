@@ -6,7 +6,9 @@ This document's purpose is to outline Haztrak's system architecture and design. 
 - [Purpose](#purpose-of-haztrak)
 - [Specification](#scope)
 - [Architecture](#architecture)
-  - [Front End Services](#front-end)
+  - [Front End components](#front-end)
+    - [Client](./browser-client.md)
+    - [Admin Dashboard](#a)
   - [Back End Services](#back-end)
 - [Testing](#testing)
 - [Requirements](#requirements)
@@ -30,27 +32,13 @@ As a reference implementation, Haztrak follows a service oriented design however
 This section provides a high-level overview of how responsibilities of the system
 are partitioned between system components/services.
 
-The Haztrak system can be described as a series of services.
-
-Throughout our documentation, you'll frequently see us place these services into
-two categories, 'front end', and 'back end'.
+While not a "microservice" by design, Haztrak system can be described as a series of services.
 
 ### Front End
 
 The Front End consist of two user interfaces.
 
-1. A user interface (client)
-2. An Admin Site
-
-#### Client
-
-The client is, fundamentally, responsible for rendering the user interface and
-presenting the user with Haztrak's available functionality. Haztrak comes
-pre-equipped with a client for the browser, specifically a single page application (SPA).
-
-The browser client makes extensive use of the [React library and ecosystem](https://react.dev/).
-
-For more information, see our [chapter on the browser client](./browser-client.md)
+#### [A React user interface (client)](./browser-client.md)
 
 #### Admin Site
 
