@@ -1,10 +1,8 @@
 # Development
 
-This chapter contains a practical introduction to working with Haztrak.
-Things such as setting up a local development environment, contributing, our
+This chapter contains a practical introduction to working on Haztrak,
+such as setting up a local development environment, contributing, our
 CI/CD pipeline, and configuration.
-
-For now, it also contains operational documentation on deploying as well.
 
 ## Contents
 
