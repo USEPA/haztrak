@@ -50,6 +50,17 @@ that we've specified in the [docker-compose.yaml](https://github.com/USEPA/haztr
 - The admin user has superuser privileges and can also log in to
   the [django admin portal](https://docs.djangoproject.com/en/4.1/ref/contrib/admin/).
 
+Fixtures will also load a couple of sites.
+
+1. `VATESTGEN001` - a preproduction site hazardous waste generator
+2. `MOCKTRANS001` - a mock transporter site
+3. `MOCKTRANS002` - a mock transporter site
+4. `MOCKTSDF001` - a mock TSDF site
+
+By Default, `testuser1` only has access to `VATESTGEN001`, the mock sites can be used to draft electronic manifests.
+
+![Searching for mock sites without RCRAInfo API credentials](../assets/images/search_mock_sites.png)
+
 ## RCRAInfo API credentials
 
 Haztrak's [docker-compose](/docker-compose.yaml) file will load fixtures, however this data is limited.
@@ -79,12 +90,10 @@ style guide. Most popular IDEs have a plugin to support these configs.
 
 - pre-commit
   - [pre-commit](https://pre-commit.com/) hooks are set to run a number of linting and formatting checks before commits on any branch is accepted.
-
-```shell
- pip install -r requirements_dev.txt
- pre-commit install
-```
-
+  ```shell
+   pip install -r requirements_dev.txt
+   pre-commit install
+  ```
 - .editorconfig
   - Universal IDE configs for formatting files, most IDEs will have a plugin you can
     install that will apply these configs.
@@ -99,9 +108,11 @@ style guide. Most popular IDEs have a plugin to support these configs.
 - [Black](https://black.readthedocs.io/en/stable/#)
   - Black is a Python formatter from the
     [Python Software Foundation](https://www.python.org/psf-landing/). It's very opinionated and largely unconfigurable.
+- [Ruff](https://docs.astral.sh/ruff/)
+  - ruff is a Python linter and (recently) formatter. It provides a fast and pleasant developer experience.
+- [MyPy](https://mypy-lang.org/)
+  - Haztrak is (currently in the process) incrementally adopting type hints. MyPy is a static type checker for Python.
 
 ## Local Development Without Docker
 
-If you don't have a way to build and run containers, or you're a gluten for punishment, you can make use of the Django
-management scripts and the npm scripts to set up a local
-development environment, however it's not recommended.
+While it is possible, local development without containerization (docker) is not supported.

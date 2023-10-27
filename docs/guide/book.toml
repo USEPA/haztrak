@@ -1,0 +1,17 @@
+[book]
+authors = ["David Paul Graham"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Haztrak Documention"
+description = "An open-source web application for tracking hazardous materials shipments."
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/USEPA/haztrak"
+edit-url-template = "https://github.com/usepa/haztrak/edit/main/docs/guide/{path}"
+
+[output.html.fold]
+enable = true
+level = 1

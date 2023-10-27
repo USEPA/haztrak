@@ -9,20 +9,21 @@ tell you everything you need to know before your first pull request.
 
 # How to Contribute
 
-There are a variety of ways you can contribute to Haztrak, from reporting issues
-to making code changes. Here are some of the ways you can get involved:
+We welcome all contributions! You don't need to know how to program to contribute, here are some of the ways you can get involved:
 
-### Report an Issue
+### Start a discussion or ask a question
+
+If you have a question about Haztrak, or want to start a discussion, please open an [ticket](https://github.com/USEPA/haztrak/issues).on our GitHub repository. We welcome all questions and feedback!
+
+### Report a bug
 
 You can help us improve Haztrak by reporting any bugs
-or issues you encounter. You can do this by opening an [issue on our GitHub
-repository](https://github.com/USEPA/haztrak/issues).
+or issues you encounter. You can also do this by opening an [issue at our GitHub repository](https://github.com/USEPA/haztrak/issues).
 
 ### Suggest an Enhancement
 
 If you have an idea for how we could improve Haztrak, please
-share it with us! You can open an issue on our GitHub repository to suggest an
-enhancement. Please be as detailed as possible in your suggestion.
+share it with us by opening an issue! (if you haven't noticed, we track everything through tickets on our issues page). Please be as detailed as possible in your suggestion.
 
 If you have an idea It's best to open an issue, before starting work or
 submitting a PR. we also welcome draft PRs.
@@ -33,33 +34,18 @@ If you're looking to contribute code or documentation, here's the general proces
 
 - Ask to be assigned an [Issues](https://github.com/USEPA/haztrak/issues).
 - Fork this repo to your GitHub account (click 'Fork').
-- Clone your fork to your local workstation.
-
-```shell
-git clone git@github.com/<yourgithubusername>/haztrak.git
-```
-
-- Install the [pre-commit](https://pre-commit.com/) hooks
-  - Once installed, will lint and format your changes to ensure we have a consistent style upon every commit.
-  - See [pre-commit installation docs](https://pre-commit.com/#installation)
-
-```shell
-pre-commit install
-```
-
-- See our documentation on setting up a [local development environment](./local-development.md)
-- Create a new branch, make and commit your changes
-
-```shell
-git checkout -b "my_awesome_feature"
-```
-
-- If you are adding or changing haztrak's functionality, include a new test and
-  make sure the entire test suite passes.
+- Clone your fork to your local workstation or a remote development environment.
+- Set up a local development environment
+  - See our documentation on setting up a [local development environment](./local-development.md)
+- Create a git feature branch branch,
+- Write a test that fails (commit)
   - [See our documentation on Testing Haztrak](../design/testing.md)
-- Submit a pull request to [USEPA/haztrak](https://github.com/USEPA/haztrak/pulls)
-  - Your PR should come from a new branch, not the default branch (usually 'main') and please leave "Allow edits from maintainers" checked.
-  - This way, if small edits need to be made, we can still do that.
+- Write the code to make that test pass (commit some more)
+- Run the test suite and ensure all tests pass (celebrate)
+- refactor your code (commit often)
+- clean up your commit history (squash commits)
+- push your branch to your fork and open a PR from the feature branch
+  - please leave "Allow edits from maintainers" checked.
 
 ## Pull Request Guidelines
 
