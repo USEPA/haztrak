@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./docs/haztrak_book
+        working-directory: ./docs/guide
     steps:
       - name: 'Checkout Repo'
         uses: actions/checkout@v2
@@ -39,7 +39,7 @@ jobs:
       - name: 'Upload Docs'
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./docs/haztrak_book/book
+          path: ./docs/guide/book
 
   deploy_pages:
     name: 'Deploy Documentation'
