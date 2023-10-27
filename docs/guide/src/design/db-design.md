@@ -4,7 +4,18 @@
 
 ## Overview
 
-ToDo
+Haztrak depends on a relational database to persist its user data as well as
+information synced with (pulled from) RCRAInfo. RCRAInfo/e-Manifest should
+always be treated as the source of truth, however, the database provides users
+the means to, for example, draft or update electronic manifests without submitting
+the changes to RCRAInfo immediately.
+
+The database schema is maintained in version control via a series of 'migration'
+scripts. This enables us to initiate a new database and scaffold the expected
+schema quickly and consistently for local development, testing, and backup.
+
+The Haztrak project currently utilizes [PostgreSQL](https://www.postgresql.org/),
+a widely used open-source object-relational database system known for reliability and performance.
 
 ## Django ORM
 
