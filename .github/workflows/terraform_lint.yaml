@@ -2,15 +2,18 @@ name: 'Terraform lint'
 # This workflow is responsible for running the Haztrak react client tests.
 
 on:
-  push:
-
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'infra/**/*.tf'
 jobs:
   check_terraform_fmt:
     name: 'Terraform Format'
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./infra/gcp
+        working-directory: ./infra/gcp/dev
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
@@ -38,13 +41,16 @@ jobs:
         run: sudo apt-get install terraform
 
       - name: 'Terraform Init'
+        id: init
         run: terraform init -input=false -no-color
 
       - name: 'terraform fmt'
-        run: terraform fmt -check -recursive
+        id: fmt
+        run: terraform fmt -check -recursive ..
 
       - name: 'Terraform Validate'
-        run: terraform validate
+        id: validate
+        run: terraform validate ..
 
       - name: 'Comment on PR'
         uses: actions/github-script@v6
