@@ -1,11 +1,10 @@
 # Source Design Document
 
-This document provides a high-level overview of the Haztrak's system architecture and scope. You'll find the following
-topics:
+This document's purpose is to outline Haztrak's system architecture and design. For more information on the project's specifications and requirements, see the [Software Requirements Specification](./srs.md).
 
 - [introduction](#source-design-document)
 - [Purpose](#purpose-of-haztrak)
-- [scope](#scope)
+- [Specification](#scope)
 - [Architecture](#architecture)
   - [Front End Services](#front-end)
   - [Back End Services](#back-end)
@@ -13,69 +12,20 @@ topics:
 - [Requirements](#requirements)
 - [Versioning](#versioning)
 
-We also hope this document serves as food-for-thought for anyone scoping a project
-that will need to interface with the U.S. Environmental Protection
-Agency's [RCRAInfo](https://rcrainfo.epa.gov/rcrainfoprod/action/secured/login)
-and [e-Manifest](https://www.epa.gov/e-manifest) systems.
+## Architecture Overview
 
-## Purpose of Haztrak
+As a reference implementation, Haztrak follows a service oriented design however it would not be classified as a microservice architecture. The project is partitioned into a select number of containerized components that are deployed separately but closely work together, including:
 
-Haztrak is, for lack of a better term, a proof of concept (POC) project that aims
-to illustrate how third party system can leverage the resources exposed by the
-U.S. Environmental Protection Agency's IT system, [RCRAInfo](https://rcrainfo.epa.gov).
-More specifically, how these resources can be leveraged to electronically manifest
-hazardous waste shipments to ensure proper management from cradle-to-grave instead
-of the manual and paper intensive process that has been in place since the 1980's.
-
-Please keep in mind, Haztrak is a labor of love. There's aspects of Haztrak that
-will likely never, truly, be ready for a production deployment. Our biggest constraint
-is time, and our entire budget is our what we can give in our spare time.
-
-## Scope
-
-The scope of this project is to develop a web application that demonstrates
-how hazardous waste management software can interface with the Environmental
-Protection Agency's (EPA) [e-manifest system](../e-Manifest.md) to electronically track hazardous
-waste and leverage resources exposed by the [RCRAInfo](https://rcrainfo.epa.gov/rcrainfoprod/action/secured/login)
-to properly manage hazardous waste.
-
-The web application consists of a series of services such as a [single page application (SPA)](#front-end) and [HTTP server](#back-end) that allows users to input
-information related to hazardous waste management, including information about
-the waste generators, transporters, and disposal facilities. The web application
-will then utilize the e-Manifest system's web services to electronically track
-the hazardous waste throughout its lifecycle, from cradle-to-grave.
-
-To ensure the accuracy and completeness of the data being collected, the
-application will incorporate data validation and verification techniques at
-various points of data entry. This will include data formatting, data
-type, and completeness checks. Additionally, the application will
-utilize authentication and authorization techniques to ensure that only
-authorized users can access and modify the data.
-
-The web application will be designed to be scalable.
-The project will be developed using modern web development technologies and best
-practices to ensure that the application is maintainable and provides a realistic working example.
-
-Overall, the Haztrak project will demonstrate the benefits of integrating hazardous
-waste management software with the e-Manifest system to properly manage hazardous
-waste and reduce the risk of environmental harm. The web application developed in
-this project will serve as a proof of concept that can be used to convince
-stakeholders to invest in integrating their hazardous waste management software
-with the e-Manifest system.
-
-Haztrak does not offer a comprehensive suite of hazardous waste management
-functionality but, instead, focuses on executing the electronic manifest
-workflow. As such, we expect to support the following functionality.
-
-- [x] Draft new electronic manifests.
-- [ ] Upload draft manifests to RCRAInfo to create electronic manifests.
-- [ ] Edit electronic manifests (when appropriate) and upload changes to RCRAInfo.
-- [x] Use EPA's Quicker Sign functionality to sign electronic manifests.
-- [x] Control access to resources based on user's permissions from RCRAInfo.
+1. An [HTTP server](#http-server) that provides a RESTful API for the client and admin site.
+2. A relational database for persisting user data and data synced with RCRAInfo.
+3. An in memory database (caching layer)
+4. A task queue
+5. A task scheduler
+6. A [browser client](#client)
 
 ## Architecture
 
-![Architecture](../assets/images/haztrak_on_gke_light.svg)
+![Haztrak architecture example if hosted on Google Cloud's Kubernetes Engine](../assets/images/haztrak_on_gke_light.svg)
 
 This section provides a high-level overview of how responsibilities of the system
 are partitioned between system components/services.
@@ -117,7 +67,7 @@ The back end contains the following components:
 
 1. An HTTP server
 2. A relational database
-3. An in memory database
+3. An in memory database (caching layer)
 4. A task queue
 5. A task scheduler
 

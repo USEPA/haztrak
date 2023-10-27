@@ -1,6 +1,6 @@
 # Browser Client Architecture
 
-To Do, document our front end's design :)
+The browser client is a single page application (SPA) that uses the [React library and ecosystem](https://react.dev/) to client side render the user interface. It
 
 ## Redux Store
 
