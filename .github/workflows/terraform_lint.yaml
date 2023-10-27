@@ -32,7 +32,7 @@ jobs:
           sudo tee /etc/apt/sources.list.d/hashicorp.list
 
       - name: 'update'
-        run: apt update
+        run: sudo apt update
 
       - name: 'install terraform'
-        run: apt-get install terraform
+        run: sudo apt-get install terraform
