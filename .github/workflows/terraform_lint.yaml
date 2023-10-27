@@ -15,7 +15,7 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v3
 
-      - name: 'install terraform'
+      - name: 'install terraform dependencies'
         run: |
           sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
 
@@ -31,11 +31,43 @@ jobs:
           https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
           sudo tee /etc/apt/sources.list.d/hashicorp.list
 
-      - name: 'update'
+      - name: 'update apt'
         run: sudo apt update
 
       - name: 'install terraform'
         run: sudo apt-get install terraform
 
+      - name: 'Terraform Init'
+        run: terraform init -input=false -no-color
+
       - name: 'terraform fmt'
         run: terraform fmt -check -recursive
+
+      - name: 'Terraform Validate'
+        run: terraform validate
+
+      - name: 'Comment on PR'
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            <details><summary>Validation Output</summary>
+
+            \`\`\`\n
+            ${{ steps.validate.outputs.stdout }}
+            \`\`\`
+
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
