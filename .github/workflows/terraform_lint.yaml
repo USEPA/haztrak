@@ -36,3 +36,6 @@ jobs:
 
       - name: 'install terraform'
         run: sudo apt-get install terraform
+
+      - name: 'terraform fmt'
+        run: terraform fmt -check -recursive
