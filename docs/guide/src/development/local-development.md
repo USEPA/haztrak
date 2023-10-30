@@ -34,10 +34,17 @@ cp ./configs/.env.dev .env
 docker compose up --build
 ```
 
-Don't forget the `--build` flag, or you'll be running the last built image instead of the Dockerfile's build target
-that we've specified in the [docker-compose.yaml](https://github.com/USEPA/haztrak/blob/main/docker-compose.yaml) file.
+*You may find that after some changes (e.g., to the database) you need to rebuild the containers instead of restarting them. 
+In that case, use the  `--build` flag, or you'll be running the last built image instead of the Dockerfile's build target
+that we've specified in the [docker-compose.yaml](https://github.com/USEPA/haztrak/blob/main/docker-compose.yaml) file.*
 
-## Fixtures
+After all containers are successfully running (you can inspect with `docker ps`), visit one of the following
+
+- [localhost:3000](http://localhost:3000) to visit the browser client (React.js application)
+- [localhost:8000/admin](http://localhost:8000/admin) to login to the admin interface
+- The database will be exposed on port `5432` and Redis will be exposed on port `6379` of your local machine. 
+
+## Fixtures (logging in)
 
 - On start, fixtures will be loaded to the database, including 2 users to aid local development.
 
