@@ -149,19 +149,18 @@ class ManifestService:
             results["error"].extend(results["success"])  # Temporary
         return results
 
-    def create_rcra_manifest(self, *, manifest: dict) -> dict | None:
+    def create_manifest(self, *, manifest: dict) -> dict | None:
         """
         Create a manifest in RCRAInfo through the RESTful API.
         :param manifest: Dict
         :return:
         """
-        if self.rcrainfo.has_api_user:
-            logger.warning("POSTing manifest to RCRAInfo.")
+        if self.rcrainfo.has_api_user and manifest.get("status") != "NotAssigned":
+            logger.info("POSTing manifest to RCRAInfo.")
             return self._save_manifest_to_rcrainfo(manifest)
         else:
-            logger.warning("RCRAInfo API credentials not found, RCRAInfo manifest creation")
+            logger.info("Saving manifest manifest to DB without RCRAInfo")
             saved_manifest = self._save_manifest_to_db(manifest)
-            logger.info(f"saved manifest {saved_manifest.mtn}")
             return ManifestSerializer(saved_manifest).data
 
     def _save_manifest_to_rcrainfo(self, manifest: dict) -> dict:

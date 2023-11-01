@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 from apps.trak.views import (  # type: ignore
     CreateRcraManifestView,
@@ -22,8 +22,8 @@ urlpatterns = [
                 path("manifest", CreateRcraManifestView.as_view()),
                 path("manifest/sign", SignManifestView.as_view()),
                 path("manifest/sync", SyncSiteManifestView.as_view()),
-                path("manifest/<str:mtn>", ManifestView.as_view()),
-                # MTN
+                re_path(r"manifest/(?P<mtn>[0-9]{9}[a-zA-Z]{3})", ManifestView.as_view()),
+                # MT
                 path("mtn", MtnList.as_view()),
                 path("mtn/<str:epa_id>", MtnList.as_view()),
                 # waste info

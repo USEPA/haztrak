@@ -105,7 +105,7 @@ def create_rcra_manifest(self, *, manifest: dict, username: str):
     task_status = TaskService(task_id=self.request.id, task_name=self.name, status="STARTED")
     try:
         manifest_service = ManifestService(username=username)
-        new_manifest = manifest_service.create_rcra_manifest(manifest=manifest)
+        new_manifest = manifest_service.create_manifest(manifest=manifest)
         if new_manifest:
             task_status.update_task_status(status="SUCCESS", results=new_manifest)
             return new_manifest
