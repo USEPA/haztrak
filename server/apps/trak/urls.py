@@ -20,9 +20,9 @@ urlpatterns = [
             [
                 # Manifest
                 path("manifest", CreateRcraManifestView.as_view()),
-                path("manifest/<str:mtn>", ManifestView.as_view()),
                 path("manifest/sign", SignManifestView.as_view()),
                 path("manifest/sync", SyncSiteManifestView.as_view()),
+                path("manifest/<str:mtn>", ManifestView.as_view()),
                 # MTN
                 path("mtn", MtnList.as_view()),
                 path("mtn/<str:epa_id>", MtnList.as_view()),
