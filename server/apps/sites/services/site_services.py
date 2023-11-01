@@ -108,10 +108,7 @@ class RcraSiteService:
         Retrieve a site/rcra_site from Rcrainfo and return RcraSiteSerializer
         """
         rcra_site_data: Dict = self.rcrainfo.get_site(site_id).json()
-        rcra_site_serializer: RcraSiteSerializer = self._deserialize_rcra_site(
-            rcra_site_data=rcra_site_data
-        )
-        return self._create_or_update_rcra_site(rcra_site_data=rcra_site_serializer.validated_data)
+        return self._update_or_create_rcra_site_from_json(rcra_site_data=rcra_site_data)
 
     def get_or_pull_rcra_site(self, site_id: str) -> RcraSite:
         """
@@ -142,18 +139,8 @@ class RcraSiteService:
         except KeyError:
             raise ValidationError("Missing required search parameters")
 
-    def _deserialize_rcra_site(self, *, rcra_site_data: dict) -> RcraSiteSerializer:
-        serializer = RcraSiteSerializer(data=rcra_site_data)
-        if serializer.is_valid():
-            return serializer
-        logger.error(serializer.errors)
-        raise ValidationError(serializer.errors)
-
     @transaction.atomic
-    def _create_or_update_rcra_site(self, *, rcra_site_data: dict) -> RcraSite:
-        epa_id = rcra_site_data.get("epa_id")
-        if RcraSite.objects.filter(epa_id=epa_id).exists():
-            rcra_site = RcraSite.objects.get(epa_id=epa_id)
-            return rcra_site
-        rcra_site = RcraSite.objects.save(**rcra_site_data)
-        return rcra_site
+    def _update_or_create_rcra_site_from_json(self, *, rcra_site_data: dict) -> RcraSite:
+        serializer = RcraSiteSerializer(data=rcra_site_data)
+        serializer.is_valid(raise_exception=True)
+        return serializer.save()
