@@ -91,8 +91,8 @@ def sync_site_manifests(self, *, site_id: str, username: str):
         raise Ignore()
 
 
-@shared_task(name="create rcra manifests", bind=True)
-def create_rcra_manifest(self, *, manifest: dict, username: str):
+@shared_task(name="save RCRAInfo manifests", bind=True)
+def save_rcrainfo_manifest(self, *, manifest_data: dict, username: str):
     """
     asynchronous task to use the RCRAInfo web services to create an electronic (RCRA) manifest
     it accepts a Python dict of the manifest data to be submitted as JSON, and the username of the
@@ -104,14 +104,14 @@ def create_rcra_manifest(self, *, manifest: dict, username: str):
     logger.info(f"start task: {self.name}")
     task_status = TaskService(task_id=self.request.id, task_name=self.name, status="STARTED")
     try:
-        manifest_service = ManifestService(username=username)
-        new_manifest = manifest_service.create_manifest(manifest=manifest)
+        manifest = ManifestService(username=username)
+        new_manifest = manifest.save_to_rcrainfo(manifest=manifest_data)
         if new_manifest:
             task_status.update_task_status(status="SUCCESS", results=new_manifest)
             return new_manifest
         raise ManifestServiceError("error creating manifest")
     except ManifestServiceError as exc:
-        logger.error(f"failed to create manifest ({manifest}): {exc.message}")
+        logger.error(f"failed to create manifest ({manifest_data}): {exc.message}")
         task_status.update_task_status(status="FAILURE", results=exc.message)
         return {"error": exc.message}
     except Exception as exc:

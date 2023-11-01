@@ -14,9 +14,10 @@ from apps.sites.models import Site  # type: ignore
 from apps.trak.models import Manifest  # type: ignore
 from apps.trak.serializers import ManifestSerializer, MtnSerializer  # type: ignore
 from apps.trak.serializers.signature_ser import QuickerSignSerializer  # type: ignore
+from apps.trak.services import ManifestService
 from apps.trak.tasks import (  # type: ignore
-    create_rcra_manifest,
     pull_manifest,
+    save_rcrainfo_manifest,
     sign_manifest,
     sync_site_manifests,
 )
@@ -126,17 +127,7 @@ class CreateRcraManifestView(GenericAPIView):
 
     def post(self, request: Request) -> Response:
         manifest_serializer = self.serializer_class(data=request.data)
-        if manifest_serializer.is_valid():
-            task: AsyncResult = create_rcra_manifest.delay(
-                manifest=manifest_serializer.data, username=str(request.user)
-            )
-            logger.debug(
-                f"manifest data submitted for creation in RCRAInfo: {manifest_serializer.data}"
-            )
-            TaskService(task_id=task.id, task_name=task.name).update_task_status("PENDING")
-            return Response(data={"taskId": task.id}, status=status.HTTP_201_CREATED)
-        else:
-            logger.error("manifest_serializer errors: ", manifest_serializer.errors)
-            return Response(
-                exception=manifest_serializer.errors, status=status.HTTP_400_BAD_REQUEST
-            )
+        manifest_serializer.is_valid(raise_exception=True)
+        manifest = ManifestService(username=str(request.user))
+        data = manifest.create_manifest(manifest=manifest_serializer.data)
+        return Response(data=data, status=status.HTTP_201_CREATED)

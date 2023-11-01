@@ -10,9 +10,15 @@ from rest_framework.exceptions import ValidationError
 from apps.core.services import RcrainfoService  # type: ignore
 from apps.trak.models import Manifest, QuickerSign  # type: ignore
 from apps.trak.serializers import ManifestSerializer, QuickerSignSerializer  # type: ignore
-from apps.trak.tasks import pull_manifest  # type: ignore
+from apps.trak.tasks import pull_manifest, save_rcrainfo_manifest  # type: ignore
 
 logger = logging.getLogger(__name__)
+
+
+class TaskResponse(TypedDict):
+    """Type definition for the response returned from starting a task"""
+
+    taskId: str
 
 
 class ManifestServiceError(Exception):
@@ -149,7 +155,7 @@ class ManifestService:
             results["error"].extend(results["success"])  # Temporary
         return results
 
-    def create_manifest(self, *, manifest: dict) -> dict | None:
+    def create_manifest(self, *, manifest: dict) -> dict | TaskResponse:
         """
         Create a manifest in RCRAInfo through the RESTful API.
         :param manifest: Dict
@@ -157,13 +163,15 @@ class ManifestService:
         """
         if self.rcrainfo.has_api_user and manifest.get("status") != "NotAssigned":
             logger.info("POSTing manifest to RCRAInfo.")
-            return self._save_manifest_to_rcrainfo(manifest)
+            task = save_rcrainfo_manifest.delay(manifest_data=manifest, username=self.username)
+            return {"taskId": task.id}
+            # return self._save_manifest_to_rcrainfo(manifest)
         else:
             logger.info("Saving manifest manifest to DB without RCRAInfo")
             saved_manifest = self._save_manifest_to_db(manifest)
             return ManifestSerializer(saved_manifest).data
 
-    def _save_manifest_to_rcrainfo(self, manifest: dict) -> dict:
+    def save_to_rcrainfo(self, manifest: dict) -> dict:
         logger.info(f"start save manifest to rcrainfo with arguments {manifest}")
         create_resp: RcrainfoResponse = self.rcrainfo.save_manifest(manifest)
         try:

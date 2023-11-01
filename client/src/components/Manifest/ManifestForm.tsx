@@ -96,23 +96,30 @@ export function ManifestForm({
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log('Manifest Submitted', data);
     htApi
-      .post<TaskStatus>('/rcra/manifest', data)
+      .post<TaskStatus | Manifest>('/rcra/manifest', data)
       .then((response) => {
         return response;
       })
       .then((r) => {
-        dispatch(
-          addNotification(
-            // @ts-ignore
-            {
-              uniqueId: r.data.taskId,
-              createdDate: new Date().toISOString(),
-              inProgress: true,
-            }
-          )
-        );
-        setTaskId(r.data.taskId);
-        toggleShowUpdatingRcra();
+        if ('manifestTrackingNumber' in r.data) {
+          console.log("congratulations! it's a manifest!");
+          navigate(`/manifest/${r.data.manifestTrackingNumber}/view`);
+        }
+        if ('taskId' in r.data) {
+          dispatch(
+            addNotification(
+              // @ts-ignore
+              {
+                uniqueId: r.data.taskId,
+                createdDate: new Date().toISOString(),
+                inProgress: true,
+              }
+            )
+          );
+          console.log('r', r);
+          setTaskId(r.data.taskId);
+          toggleShowUpdatingRcra();
+        }
       })
       .catch((r) => console.error(r));
   };
