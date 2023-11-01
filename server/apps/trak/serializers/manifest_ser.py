@@ -225,7 +225,6 @@ class ManifestSerializer(TrakBaseSerializer):
     def validate(self, data):
         if data["mtn"] == "" and data["status"] == "NotAssigned":
             data["mtn"] = draft_mtn()
-        print("data", data)
         return super().validate(data)
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior

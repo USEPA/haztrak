@@ -22,7 +22,7 @@ class SiteAdmin(admin.ModelAdmin):
     @admin.display(description="EPA Site")
     def related_handler(self, site: Site) -> str:
         url = (
-            reverse("admin:sites_epasite_changelist")
+            reverse("admin:sites_rcrasite_changelist")
             + "?"
             + urlencode({"epa_id": str(site.rcra_site.epa_id)})
         )

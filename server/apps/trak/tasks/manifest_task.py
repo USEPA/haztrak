@@ -83,7 +83,7 @@ def sync_site_manifests(self, *, site_id: str, username: str):
 
     try:
         site_service = SiteService(username=username)
-        results = site_service.sync_rcra_manifest(site_id=site_id)
+        results = site_service.update_manifests(site_id=site_id)
         return results
     except Exception as exc:
         logger.error(f"failed to sync {site_id} manifest")
