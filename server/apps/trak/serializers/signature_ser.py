@@ -41,9 +41,18 @@ class QuickerSignSerializer(serializers.Serializer):
     def to_internal_value(self, data: dict):
         return super().to_internal_value(data)
 
-    def to_representation(self, instance: dict):
+    def to_representation(self, instance: dict | QuickerSign):
         data = super().to_representation(instance)
-        data["printedSignatureDate"] = instance["printed_date"].isoformat(timespec="milliseconds")
+        if isinstance(instance, dict):
+            data["printedSignatureDate"] = instance["printed_date"].isoformat(
+                timespec="milliseconds"
+            )
+        elif isinstance(instance, QuickerSign):
+            data["printedSignatureDate"] = instance.printed_date.isoformat(timespec="milliseconds")
+        else:
+            data["printedSignatureDate"] = datetime.datetime.now(datetime.UTC).isoformat(
+                timespec="milliseconds"
+            )
         return data
 
     def update(self, instance, validated_data):

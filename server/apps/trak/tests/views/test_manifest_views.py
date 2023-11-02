@@ -68,4 +68,4 @@ class TestSignManifestVIew:
         )
         force_authenticate(request, self.user)
         response = SignManifestView.as_view()(request)
-        assert response.data["task"] == self.mock_task_id
+        assert response.data["taskId"] == self.mock_task_id

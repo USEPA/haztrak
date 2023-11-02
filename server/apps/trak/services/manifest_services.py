@@ -1,12 +1,11 @@
 import logging
 from datetime import datetime, timedelta, timezone
-from typing import List, Literal, Optional, TypedDict
+from typing import List, Literal, NotRequired, Optional, TypedDict
 
 from django.db import transaction
 from django.db.models import QuerySet
 from emanifest import RcrainfoResponse  # type: ignore
 from requests import RequestException  # type: ignore
-from rest_framework.exceptions import ValidationError
 
 from apps.core.services import RcrainfoService  # type: ignore
 from apps.trak.models import Manifest, QuickerSign  # type: ignore
@@ -20,6 +19,17 @@ class TaskResponse(TypedDict):
     """Type definition for the response returned from starting a task"""
 
     taskId: str
+
+
+class QuickerSignData(TypedDict):
+    """Type definition for the data required to sign a manifest"""
+
+    mtn: list[str]
+    site_id: str
+    site_type: Literal["Generator", "Tsdf", "Transporter"]
+    printed_name: str
+    printed_data: datetime
+    transporter_order: NotRequired[int]
 
 
 class ManifestServiceError(Exception):
@@ -127,23 +137,21 @@ class ManifestService:
         logger.info(f"pull manifests results: {results}")
         return results
 
-    def sign_manifests(self, *, signature_data: dict) -> TaskResponse:
+    def sign_manifests(self, *, signature: QuickerSign) -> TaskResponse:
         """
         Electronically sign manifests in RCRAInfo through the RESTful API. Returns the results by
         manifest tracking number (MTN) in a Dict.
         """
-        signature_data["mtn"] = self._filter_mtn(
-            mtn=signature_data["mtn"],
-            site_id=signature_data["site_id"],
-            site_type=signature_data["site_type"],
+        signature.mtn = self._filter_mtn(
+            mtn=signature.mtn, site_id=signature.site_id, site_type=signature.site_type
         )
-        task = sign_manifest.delay(username=self.username, **signature_data)
+        signature_serializer = QuickerSignSerializer(signature)
+        task = sign_manifest.delay(username=self.username, **signature_serializer.data)
         return {"taskId": task.id}
 
-    def quicker_sign_manifests(self, **signature_data: dict) -> PullManifestsResult:
+    def quicker_sign_manifests(self, signature: dict) -> PullManifestsResult:
         results: PullManifestsResult = {"success": [], "error": []}
-        serializer = QuickerSignSerializer(signature_data)
-        response = self.rcrainfo.sign_manifest(**serializer.data)
+        response = self.rcrainfo.sign_manifest(**signature)
         if response.ok:
             for manifest in response.json()["manifestReports"]:
                 pull_manifest.delay(
@@ -216,11 +224,8 @@ class ManifestService:
             serializer = ManifestSerializer(manifest_query.get(), data=manifest_json)
         else:
             serializer = ManifestSerializer(data=manifest_json)
-        if serializer.is_valid():
-            logger.debug("manifest serializer is valid")
-            manifest = serializer.save()
-            logger.info(f"saved manifest {manifest.mtn}")
-            return manifest
-        else:
-            logger.warning(f"malformed serializer data: {serializer.errors}")
-            raise ValidationError(serializer.errors)
+        serializer.is_valid(raise_exception=True)
+        logger.debug("manifest serializer is valid")
+        manifest = serializer.save()
+        logger.info(f"saved manifest {manifest.mtn}")
+        return manifest

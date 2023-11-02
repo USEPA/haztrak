@@ -97,10 +97,9 @@ class SignManifestView(GenericAPIView):
         """
         quicker_serializer = self.serializer_class(data=request.data)
         quicker_serializer.is_valid(raise_exception=True)
+        signature = quicker_serializer.save()
         manifest = ManifestService(username=str(request.user))
-        data: TaskResponse = manifest.sign_manifests(
-            signature_data=quicker_serializer.validated_data
-        )
+        data: TaskResponse = manifest.sign_manifests(signature=signature)
         return Response(data=data, status=status.HTTP_200_OK)
 
 
