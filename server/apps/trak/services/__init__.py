@@ -1,1 +1,1 @@
-from .manifest_service import ManifestService, ManifestServiceError
+from .manifest_services import ManifestService, ManifestServiceError

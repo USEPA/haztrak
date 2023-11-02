@@ -10,7 +10,7 @@ from apps.core.services import RcrainfoService  # type: ignore
 from apps.sites.models import RcraSite, Site  # type: ignore
 from apps.sites.serializers import RcraSiteSerializer  # type: ignore
 from apps.trak.services import ManifestService  # type: ignore
-from apps.trak.services.manifest_service import PullManifestsResult, TaskResponse  # type: ignore
+from apps.trak.services.manifest_services import PullManifestsResult, TaskResponse  # type: ignore
 from apps.trak.tasks import sync_site_manifests  # type: ignore
 
 logger = logging.getLogger(__name__)
@@ -48,11 +48,11 @@ class SiteService:
         return {"taskId": task.id}
 
     @transaction.atomic
-    def update_manifests(self, *, site_id: str) -> PullManifestsResult:
+    def sync_manifests(self, *, site_id: str) -> PullManifestsResult:
         """Pull manifests and update the last sync date for a site"""
         try:
             site = Site.objects.get(rcra_site__epa_id=site_id)
-            updated_mtn = self.get_updated_mtn(
+            updated_mtn = self._get_updated_mtn(
                 site_id=site.rcra_site.epa_id, last_sync_date=site.last_rcra_sync
             )
             updated_mtn = updated_mtn[:15]  # temporary limit to 15
@@ -66,7 +66,7 @@ class SiteService:
             logger.warning(f"Site Does not exists {site_id}")
             raise SiteServiceError(f"Site Does not exists {site_id}")
 
-    def get_updated_mtn(self, site_id: str, last_sync_date: datetime) -> list[str]:
+    def _get_updated_mtn(self, site_id: str, last_sync_date: datetime) -> list[str]:
         logger.info(f"retrieving updated MTN for site {site_id}")
         manifest = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
         return manifest.search_rcra_mtn(site_id=site_id, start_date=last_sync_date)
@@ -136,11 +136,7 @@ class RcraSiteService:
             data = cache.get(cache_key)
             if not data:
                 data: HandlerSearchResults = self.rcrainfo.search_sites(**search_parameters).json()
-                cache.set(
-                    cache_key,
-                    data,
-                    60 * 60 * 24,
-                )
+                cache.set(cache_key, data, 60 * 60 * 24)
             return data
         except CacheKeyWarning:
             raise ValidationError("Error retrieving data from cache")

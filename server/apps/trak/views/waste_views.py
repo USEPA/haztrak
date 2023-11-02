@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import status
 from rest_framework.generics import ListAPIView
 from rest_framework.request import Request
@@ -5,7 +7,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.trak.models import DotLookup, WasteCode
-from apps.trak.serializers import WasteCodeSerializer
+from apps.trak.serializers import DotOptionSerializer, WasteCodeSerializer
+from apps.trak.services.waste_services import get_dot_shipping_names
 
 
 class FederalWasteCodesView(ListAPIView):
@@ -15,6 +18,10 @@ class FederalWasteCodesView(ListAPIView):
 
     serializer_class = WasteCodeSerializer
     queryset = WasteCode.federal.all()
+
+    @method_decorator(cache_page(60 * 15 * 24))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 
 class StateWasteCodesView(ListAPIView):
@@ -27,6 +34,10 @@ class StateWasteCodesView(ListAPIView):
     lookup_url_kwarg = "state_id"
     lookup_field = "state_id"
 
+    @method_decorator(cache_page(60 * 15 * 24))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
     def get_queryset(self):
         try:
             state_id = self.kwargs["state_id"]
@@ -38,7 +49,7 @@ class StateWasteCodesView(ListAPIView):
 class DotBaseView(APIView):
     queryset = DotLookup.objects.all()
 
-    def get(self, request: Request) -> Response:
+    def get(self, request: Request, *args, **kwargs) -> Response:
         """
         Base API View for retrieving static DOT data used to build DOT shipping
         descriptions on the manifest.
@@ -59,13 +70,23 @@ class DotIdNumberView(DotBaseView):
 
     queryset = DotLookup.id_numbers.all()
 
+    @method_decorator(cache_page(60 * 15 * 24))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
-class DotShippingNameView(DotBaseView):
+
+class DotShippingNameView(APIView):
     """
     Return a list of DOT Proper Shipping Names, optionally filtered by a query parameter
     """
 
     queryset = DotLookup.shipping_names.all()
+
+    @method_decorator(cache_page(60 * 15 * 24))
+    def get(self, request, *args, **kwargs):
+        query = request.query_params.get("q", "")
+        data = get_dot_shipping_names(query)
+        return Response(data=data, status=status.HTTP_200_OK)
 
 
 class DotHazardClassView(DotBaseView):
@@ -74,3 +95,7 @@ class DotHazardClassView(DotBaseView):
     """
 
     queryset = DotLookup.hazard_classes.all()
+
+    @method_decorator(cache_page(60 * 15 * 24))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)

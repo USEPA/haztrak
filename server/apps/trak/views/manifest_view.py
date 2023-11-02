@@ -19,7 +19,7 @@ from apps.trak.models import Manifest  # type: ignore
 from apps.trak.serializers import ManifestSerializer, MtnSerializer  # type: ignore
 from apps.trak.serializers.signature_ser import QuickerSignSerializer  # type: ignore
 from apps.trak.services import ManifestService
-from apps.trak.services.manifest_service import TaskResponse
+from apps.trak.services.manifest_services import TaskResponse
 from apps.trak.tasks import (  # type: ignore
     pull_manifest,
     save_rcrainfo_manifest,
