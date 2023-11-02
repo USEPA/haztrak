@@ -4,6 +4,8 @@ from datetime import timezone
 from celery.exceptions import TaskError
 from celery.result import AsyncResult
 from django.db.models import Q
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, inline_serializer
 from rest_framework import serializers, status
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
@@ -29,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 
 @extend_schema(
-    responses={201: ManifestSerializer},
+    responses={200: ManifestSerializer},
 )
 class ManifestView(RetrieveAPIView):
     """
@@ -40,6 +42,10 @@ class ManifestView(RetrieveAPIView):
     lookup_field = "mtn"
     serializer_class = ManifestSerializer
 
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
 
 class MtnList(ListAPIView):
     """
@@ -48,6 +54,10 @@ class MtnList(ListAPIView):
 
     serializer_class = MtnSerializer
     queryset = Manifest.objects.all()
+
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         epa_id = self.kwargs.get("epa_id", None)

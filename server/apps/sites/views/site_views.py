@@ -26,6 +26,10 @@ class SiteListView(ListAPIView):
 
     serializer_class = SiteSerializer
 
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
     def get_queryset(self):
         user = self.request.user
         return Site.objects.filter(rcrasitepermission__profile__user=user)
@@ -41,6 +45,10 @@ class SiteDetailView(RetrieveAPIView):
     lookup_field = "rcra_site__epa_id"
     lookup_url_kwarg = "epa_id"
     queryset = Site.objects.all()
+
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         epa_id = self.kwargs["epa_id"]
@@ -62,6 +70,10 @@ class RcraSiteView(RetrieveAPIView):
     serializer_class = RcraSiteSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
 
 @extend_schema(
     responses=RcraSiteSerializer(many=True),
@@ -81,6 +93,10 @@ class SiteSearchView(ListAPIView):
 
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
+
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self: ListAPIView) -> QuerySet[RcraSite]:
         queryset = RcraSite.objects.all()
