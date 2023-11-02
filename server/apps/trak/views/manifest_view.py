@@ -6,7 +6,7 @@ from celery.result import AsyncResult
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from drf_spectacular.utils import extend_schema, inline_serializer
+from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
 from rest_framework import serializers, status
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.request import Request
@@ -31,7 +31,12 @@ logger = logging.getLogger(__name__)
 
 
 @extend_schema(
-    responses={200: ManifestSerializer},
+    responses={
+        200: OpenApiResponse(
+            response=ManifestSerializer,
+            description="Manifest Details",
+        )
+    },
 )
 class ManifestView(RetrieveAPIView):
     """
@@ -42,11 +47,15 @@ class ManifestView(RetrieveAPIView):
     lookup_field = "mtn"
     serializer_class = ManifestSerializer
 
-    @method_decorator(cache_page(60 * 15))
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
 
-
+@extend_schema(
+    responses={
+        200: OpenApiResponse(
+            response=MtnSerializer,
+            description="Manifest Tracking Numbers and select details",
+        )
+    },
+)
 class MtnList(ListAPIView):
     """
     MtnList returns select details on a user's manifest,
@@ -55,7 +64,6 @@ class MtnList(ListAPIView):
     serializer_class = MtnSerializer
     queryset = Manifest.objects.all()
 
-    @method_decorator(cache_page(60 * 15))
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 

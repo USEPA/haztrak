@@ -1,12 +1,13 @@
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import (
+    OpenApiExample,
     OpenApiParameter,
     OpenApiResponse,
     extend_schema,
     inline_serializer,
 )
-from rest_framework import status
+from rest_framework import serializers, status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -55,6 +56,18 @@ class StateWasteCodesView(ListAPIView):
     parameters=[
         OpenApiParameter(name="q", description="Query", type=str),
     ],
+    responses={
+        200: OpenApiResponse(
+            serializers.ListSerializer(child=serializers.CharField()),
+            description="ID Numbers",
+            examples=[
+                OpenApiExample(
+                    "ID Numbers",
+                    value="ID8000",
+                )
+            ],
+        )
+    },
 )
 class DotIdNumberView(APIView):
     """Return a list of DOT ID numbers, optionally filtered by a query parameter"""
@@ -71,7 +84,19 @@ class DotIdNumberView(APIView):
 @extend_schema(
     parameters=[
         OpenApiParameter(name="q", description="Query", type=str),
-    ]
+    ],
+    responses={
+        200: OpenApiResponse(
+            serializers.ListSerializer(child=serializers.CharField()),
+            description="Shipping Names",
+            examples=[
+                OpenApiExample(
+                    "Shipping Name",
+                    value="1,1,12-Tetrafluoroethane",
+                )
+            ],
+        )
+    },
 )
 class DotShippingNameView(APIView):
     """Return a list of DOT Proper Shipping Names, optionally filtered by a query parameter"""
@@ -88,7 +113,19 @@ class DotShippingNameView(APIView):
 @extend_schema(
     parameters=[
         OpenApiParameter(name="q", description="Query", type=str),
-    ]
+    ],
+    responses={
+        200: OpenApiResponse(
+            serializers.ListSerializer(child=serializers.CharField()),
+            description="Hazard Classes",
+            examples=[
+                OpenApiExample(
+                    "Query for 1.1A",
+                    value="1.1A",
+                )
+            ],
+        )
+    },
 )
 class DotHazardClassView(APIView):
     """Return a list of DOT Hazard classes, optionally filtered by a query parameter"""

@@ -52,7 +52,7 @@ class ManifestService:
             f"<{self.__class__.__name__}(username='{self.username}', rcrainfo='{self.rcrainfo}')>"
         )
 
-    def search_rcra_mtn(
+    def search_rcrainfo_mtn(
         self,
         *,
         site_id: Optional[str] = None,

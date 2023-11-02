@@ -56,7 +56,7 @@ class TestManifestService:
         """Test retrieves a manifest from RCRAInfo"""
         rcrainfo = RcrainfoService(api_username=self.user.username, auto_renew=False)
         manifest_service = ManifestService(username=self.user.username, rcrainfo=rcrainfo)
-        results = manifest_service.search_rcra_mtn(site_id=self.gen001.rcra_site.epa_id)
+        results = manifest_service.search_rcrainfo_mtn(site_id=self.gen001.rcra_site.epa_id)
         assert isinstance(results, list)
         assert self.json_100031134elc.get("manifestTrackingNumber") in results
 

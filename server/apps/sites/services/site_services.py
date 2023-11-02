@@ -69,7 +69,7 @@ class SiteService:
     def _get_updated_mtn(self, site_id: str, last_sync_date: datetime) -> list[str]:
         logger.info(f"retrieving updated MTN for site {site_id}")
         manifest = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
-        return manifest.search_rcra_mtn(site_id=site_id, start_date=last_sync_date)
+        return manifest.search_rcrainfo_mtn(site_id=site_id, start_date=last_sync_date)
 
     @transaction.atomic
     def create_or_update_site(
