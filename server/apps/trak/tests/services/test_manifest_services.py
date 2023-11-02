@@ -60,3 +60,24 @@ class TestManifestService:
         results = manifest_service.search_rcrainfo_mtn(site_id=self.gen001.rcra_site.epa_id)
         assert isinstance(results, list)
         assert self.json_100031134elc.get("manifestTrackingNumber") in results
+
+
+class TestSignManifest:
+    def test_filter_mtn_removed_mtn_not_associated_with_site(
+        self, manifest_factory, rcra_site_factory, manifest_handler_factory
+    ):
+        # Arrange
+        #  data user has access to
+        my_site = rcra_site_factory()
+        my_handler = manifest_handler_factory(rcra_site=my_site)
+        my_manifest = manifest_factory(generator=my_handler)
+
+        not_my_manifest = manifest_factory(mtn="123456555ELC")
+        manifest_service = ManifestService(username="testuser1")
+        filtered_manifest = manifest_service._filter_mtn(
+            mtn=[my_manifest.mtn, not_my_manifest.mtn],
+            site_id=my_handler.rcra_site.epa_id,
+            site_type=my_handler.rcra_site.site_type,
+        )
+        assert my_manifest.mtn in filtered_manifest
+        assert not_my_manifest.mtn not in filtered_manifest

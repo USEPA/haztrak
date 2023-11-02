@@ -4,7 +4,7 @@ from typing import Dict, Optional, TypedDict
 
 from django.core.cache import CacheKeyWarning, cache
 from django.db import transaction
-from rest_framework.exceptions import ErrorDetail, ValidationError
+from rest_framework.exceptions import ValidationError
 
 from apps.core.services import RcrainfoService  # type: ignore
 from apps.sites.models import RcraSite, Site  # type: ignore

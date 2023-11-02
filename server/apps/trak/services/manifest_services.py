@@ -129,7 +129,7 @@ class ManifestService:
         for mtn in tracking_numbers:
             try:
                 manifest_json: dict = self._retrieve_manifest(mtn)
-                manifest = self._save_manifest_to_db(manifest_json)
+                manifest = self._save_manifest_json_to_db(manifest_json)
                 results["success"].append(manifest.mtn)
             except Exception as exc:
                 logger.warning(f"error pulling manifest {mtn}: {exc}")
@@ -172,7 +172,7 @@ class ManifestService:
             return {"taskId": task.id}
         else:
             logger.info("Saving manifest manifest to DB without RCRAInfo")
-            saved_manifest = self._save_manifest_to_db(manifest)
+            saved_manifest = self._save_manifest_json_to_db(manifest)
             return ManifestSerializer(saved_manifest).data
 
     def save_to_rcrainfo(self, manifest: dict) -> dict:
@@ -191,7 +191,7 @@ class ManifestService:
             logger.error(
                 f"error retrieving manifestTrackingNumber from response: {create_resp.json()}"
             )
-            raise ValueError("malformed payload")
+            raise ManifestServiceError("malformed payload")
 
     @staticmethod
     def _filter_mtn(
@@ -213,7 +213,7 @@ class ManifestService:
             raise RequestException(response.json())
 
     @transaction.atomic
-    def _save_manifest_to_db(self, manifest_json: dict) -> Manifest:
+    def _save_manifest_json_to_db(self, manifest_json: dict) -> Manifest:
         """Save manifest to Haztrak database"""
         logger.info("saving manifest to DB")
         manifest_query: QuerySet = Manifest.objects.filter(
