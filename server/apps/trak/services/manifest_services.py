@@ -139,8 +139,7 @@ class ManifestService:
 
     def sign_manifests(self, *, signature: QuickerSign) -> TaskResponse:
         """
-        Electronically sign manifests in RCRAInfo through the RESTful API. Returns the results by
-        manifest tracking number (MTN) in a Dict.
+        Launch an asynchronous task to electronically sign a manifest.
         """
         signature.mtn = self._filter_mtn(
             mtn=signature.mtn, site_id=signature.site_id, site_type=signature.site_type
