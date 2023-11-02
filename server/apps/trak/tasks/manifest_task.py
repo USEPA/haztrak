@@ -20,7 +20,7 @@ def pull_manifest(self: Task, *, mtn: List[str], username: str) -> dict:
     from apps.core.services import TaskService
     from apps.trak.services import ManifestService
 
-    logger.debug(f"start task {self.name}, manifest {mtn}")
+    logger.info(f"start task {self.name}, manifest {mtn}")
     task_status = TaskService(task_id=self.request.id, task_name=self.name, status="STARTED")
     try:
         manifest_service = ManifestService(username=username)
@@ -41,36 +41,18 @@ def sign_manifest(
     self: Task,
     *,
     username: str,
-    mtn: List[str],
-    site_id: str,
-    site_type: RcraSiteType | str,
-    printed_name: str,
-    printed_date: datetime.datetime,
-    transporter_order: Optional[int] = None,
+    **signature_data: dict,
 ) -> Dict:
     """
     a task to Quicker Sign manifest, by MTN, in RCRAInfo
     """
     from apps.trak.services import ManifestService
 
-    logger.debug(f"start task {self.name}, manifest {mtn}")
     try:
         manifest_service = ManifestService(username=username)
-        signature = QuickerSign(
-            mtn=mtn,
-            site_id=site_id,
-            site_type=site_type,
-            printed_name=printed_name,
-            printed_date=printed_date,
-            transporter_order=transporter_order,
-        )
-        results = manifest_service.sign_manifest(signature)
-        return results
+        return manifest_service.quicker_sign_manifests(**signature_data)
     except (ConnectionError, TimeoutError) as exc:
-        raise Reject(exc)
-    except ValueError as exc:
-        self.update_state(state=states.FAILURE, meta={"error": f"{repr(exc)}"})
-        raise Ignore()
+        raise Reject(exc)  # To Do: add retry logic
     except Exception as exc:
         self.update_state(state=states.FAILURE, meta={"unknown error": f"{exc}"})
         raise Ignore()

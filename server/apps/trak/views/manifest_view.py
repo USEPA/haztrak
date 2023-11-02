@@ -1,4 +1,5 @@
 import logging
+from datetime import timezone
 
 from celery.exceptions import TaskError
 from celery.result import AsyncResult
@@ -16,6 +17,7 @@ from apps.trak.models import Manifest  # type: ignore
 from apps.trak.serializers import ManifestSerializer, MtnSerializer  # type: ignore
 from apps.trak.serializers.signature_ser import QuickerSignSerializer  # type: ignore
 from apps.trak.services import ManifestService
+from apps.trak.services.manifest_service import TaskResponse
 from apps.trak.tasks import (  # type: ignore
     pull_manifest,
     save_rcrainfo_manifest,
@@ -75,17 +77,13 @@ class SignManifestView(GenericAPIView):
         Accepts a Quicker Sign JSON object in the request body,
         parses the request data, and passes data to a celery async task.
         """
-        try:
-            quicker_serializer = self.serializer_class(data=request.data)
-            if quicker_serializer.is_valid():
-                quicker_serializer.save()
-                task = sign_manifest.delay(
-                    username=str(request.user), **quicker_serializer.validated_data
-                )
-                return Response(data={"task": task.id}, status=status.HTTP_200_OK)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        except TaskError as exc:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=exc)
+        quicker_serializer = self.serializer_class(data=request.data)
+        quicker_serializer.is_valid(raise_exception=True)
+        manifest = ManifestService(username=str(request.user))
+        data: TaskResponse = manifest.sign_manifests(
+            signature_data=quicker_serializer.validated_data
+        )
+        return Response(data=data, status=status.HTTP_200_OK)
 
 
 @extend_schema(

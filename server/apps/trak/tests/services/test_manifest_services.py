@@ -86,7 +86,7 @@ class TestSignManifest:
     def _patch_pull_manifest(self, mocker, quicker_sign_response_factory):
         mocker.patch("apps.trak.tasks.manifest_task.pull_manifest.delay")
         mock_rcrainfo = mocker.Mock(spec=RcrainfoService)  # mock_rcrainfo class to be injected
-        mock_rcrainfo.sign_manifest = mocker.MagicMock(
+        mock_rcrainfo.sign_manifests = mocker.MagicMock(
             return_value=mocker.Mock(
                 spec=RcrainfoResponse,
                 json=lambda: quicker_sign_response_factory(
@@ -112,7 +112,7 @@ class TestSignManifest:
             site_type=RcraSiteType.GENERATOR,
             printed_name="David Graham",
         )
-        results: Dict[str, List[str]] = manifest_service.sign_manifest(quicker_signature)
+        results: Dict[str, List[str]] = manifest_service.sign_manifests(quicker_signature)
         assert bad_mtn in results["error"]
 
     def test_calls_rcrainfo_service_sign_manifest(self):
@@ -126,5 +126,5 @@ class TestSignManifest:
             site_type=RcraSiteType.GENERATOR,
             printed_name="David Graham",
         )
-        manifest_service.sign_manifest(quicker_sign)
-        self.mock_rcrainfo.sign_manifest.assert_called()
+        manifest_service.sign_manifests(quicker_sign)
+        self.mock_rcrainfo.sign_manifests.assert_called()
