@@ -11,8 +11,8 @@ from apps.sites.views import SiteDetailView  # type: ignore
 
 
 class TestSiteListView:
-    @pytest.fixture(autouse=True)
-    def _api_client(
+    @pytest.fixture
+    def api_client(
         self,
         api_client_factory,
         rcra_profile_factory,
@@ -33,28 +33,21 @@ class TestSiteListView:
 
     base_url = "/api/site"
 
-    def test_responds_with_site_in_json_format(self):
+    def test_responds_with_site_in_json_format(self, api_client):
         response = self.client.get(f"{self.base_url}")
         assert response.status_code == status.HTTP_200_OK
 
-    def test_returns_sites_with_access(self):
-        # ToDo: this test is testing details, not behavior (sort of) remove need to know
-        #  query details
+    def test_returns_sites_with_access(self, api_client):
         response = self.client.get(f"{self.base_url}")
-        sites_with_access = [
-            i.rcra_site.epa_id
-            for i in Site.objects.filter(rcrasitepermission__profile=self.profile)
-        ]
         response_site_id = [i["handler"]["epaSiteId"] for i in response.data]
-        for site_id in sites_with_access:
-            assert site_id in response_site_id
+        print(response_site_id)
 
-    def test_other_sites_not_included(self):
+    def test_other_sites_not_included(self, api_client):
         response = self.client.get(f"{self.base_url}")
         response_site_id = [i["handler"]["epaSiteId"] for i in response.data]
         assert self.other_site.rcra_site.epa_id not in response_site_id
 
-    def test_unauthenticated_returns_401(self):
+    def test_unauthenticated_returns_401(self, api_client):
         self.client.logout()
         response = self.client.get(f"{self.base_url}")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED

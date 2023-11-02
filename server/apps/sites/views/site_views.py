@@ -26,6 +26,10 @@ class SiteListView(ListAPIView):
 
     serializer_class = SiteSerializer
 
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
     def get_queryset(self):
         user = self.request.user
         return Site.objects.filter(rcrasitepermission__profile__user=user)
@@ -41,6 +45,10 @@ class SiteDetailView(RetrieveAPIView):
     lookup_field = "rcra_site__epa_id"
     lookup_url_kwarg = "epa_id"
     queryset = Site.objects.all()
+
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         epa_id = self.kwargs["epa_id"]
@@ -62,6 +70,10 @@ class RcraSiteView(RetrieveAPIView):
     serializer_class = RcraSiteSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
 
 @extend_schema(
     responses=RcraSiteSerializer(many=True),
@@ -81,6 +93,10 @@ class SiteSearchView(ListAPIView):
 
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
+
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self: ListAPIView) -> QuerySet[RcraSite]:
         queryset = RcraSite.objects.all()
@@ -118,22 +134,40 @@ handler_types = {
     responses=RcraSiteSerializer(many=True),
     request=inline_serializer(
         "handler_search",
-        fields={"siteId": serializers.CharField(), "siteType": serializers.CharField()},
+        fields={
+            "siteId": serializers.CharField(),
+            "siteType": serializers.ChoiceField(
+                choices=[
+                    ("designatedFacility", "designatedFacility"),
+                    ("generator", "generator"),
+                    ("transporter", "transporter"),
+                    ("broker", "broker"),
+                ]
+            ),
+        },
     ),
 )
 class HandlerSearchView(APIView):
-    """
-    Search and return a list of Hazardous waste handlers from RCRAInfo.
-    """
+    """Search and return a list of Hazardous waste handlers from RCRAInfo."""
+
+    class HandlerSearchSerializer(serializers.Serializer):
+        siteId = serializers.CharField(required=True)
+        siteType = serializers.ChoiceField(
+            required=True,
+            choices=[
+                ("designatedFacility", "designatedFacility"),
+                ("generator", "generator"),
+                ("transporter", "transporter"),
+                ("broker", "broker"),
+            ],
+        )
 
     def post(self, request: Request) -> Response:
-        try:
-            site_service = RcraSiteService(username=request.user.username)
-            data = site_service.search_rcra_site(
-                epaSiteId=request.data["siteId"], siteType=handler_types[request.data["siteType"]]
-            )
-            return Response(status=status.HTTP_200_OK, data=data["sites"])
-        except KeyError:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        except ValidationError:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        serializer = self.HandlerSearchSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        sites = RcraSiteService(username=request.user.username)
+        data = sites.search_rcrainfo_handlers(
+            epaSiteId=serializer.data["siteId"],
+            siteType=handler_types[serializer.data["siteType"]],
+        )
+        return Response(status=status.HTTP_200_OK, data=data["sites"])

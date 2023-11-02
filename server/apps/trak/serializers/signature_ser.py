@@ -1,3 +1,4 @@
+import datetime
 from datetime import timezone
 from typing import Dict
 
@@ -12,24 +13,46 @@ from .base_ser import TrakBaseSerializer
 class QuickerSignSerializer(serializers.Serializer):
     """Serializer for EPA Quicker Sign objects"""
 
-    manifestTrackingNumbers = serializers.ListField(source="mtn", child=serializers.CharField())
-    printedSignatureName = serializers.CharField(source="printed_name")
+    manifestTrackingNumbers = serializers.ListField(
+        source="mtn",
+        child=serializers.CharField(),
+    )
+    printedSignatureName = serializers.CharField(
+        source="printed_name",
+    )
     printedSignatureDate = serializers.DateTimeField(
         source="printed_date",
         required=False,
         default_timezone=timezone.utc,
         format=None,
+        default=datetime.datetime.now(datetime.UTC),
     )
-    siteType = serializers.CharField(source="site_type")
-    siteId = serializers.CharField(source="site_id")
-    transporterOrder = serializers.IntegerField(source="transporter_order", required=False)
+    siteType = serializers.CharField(
+        source="site_type",
+    )
+    siteId = serializers.CharField(
+        source="site_id",
+    )
+    transporterOrder = serializers.IntegerField(
+        source="transporter_order",
+        required=False,
+    )
 
-    def to_internal_value(self, data: Dict):
+    def to_internal_value(self, data: dict):
         return super().to_internal_value(data)
 
-    def to_representation(self, instance: QuickerSign):
+    def to_representation(self, instance: dict | QuickerSign):
         data = super().to_representation(instance)
-        data["printedSignatureDate"] = instance.printed_date.isoformat(timespec="milliseconds")
+        if isinstance(instance, dict):
+            data["printedSignatureDate"] = instance["printed_date"].isoformat(
+                timespec="milliseconds"
+            )
+        elif isinstance(instance, QuickerSign):
+            data["printedSignatureDate"] = instance.printed_date.isoformat(timespec="milliseconds")
+        else:
+            data["printedSignatureDate"] = datetime.datetime.now(datetime.UTC).isoformat(
+                timespec="milliseconds"
+            )
         return data
 
     def update(self, instance, validated_data):
@@ -41,6 +64,7 @@ class QuickerSignSerializer(serializers.Serializer):
     class Meta:
         model = QuickerSign
         fields = [
+            "manifestTrackingNumbers",
             "printedSignatureName",
             "printedSignatureDate",
             "siteType",

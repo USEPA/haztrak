@@ -1,18 +1,35 @@
 import logging
 from datetime import datetime, timedelta, timezone
-from typing import List, Optional, TypedDict
+from typing import List, Literal, NotRequired, Optional, TypedDict
 
 from django.db import transaction
+from django.db.models import QuerySet
 from emanifest import RcrainfoResponse  # type: ignore
 from requests import RequestException  # type: ignore
-from rest_framework.exceptions import ValidationError
 
 from apps.core.services import RcrainfoService  # type: ignore
 from apps.trak.models import Manifest, QuickerSign  # type: ignore
 from apps.trak.serializers import ManifestSerializer, QuickerSignSerializer  # type: ignore
-from apps.trak.tasks import pull_manifest  # type: ignore
+from apps.trak.tasks import pull_manifest, save_rcrainfo_manifest, sign_manifest  # type: ignore
 
 logger = logging.getLogger(__name__)
+
+
+class TaskResponse(TypedDict):
+    """Type definition for the response returned from starting a task"""
+
+    taskId: str
+
+
+class QuickerSignData(TypedDict):
+    """Type definition for the data required to sign a manifest"""
+
+    mtn: list[str]
+    site_id: str
+    site_type: Literal["Generator", "Tsdf", "Transporter"]
+    printed_name: str
+    printed_data: datetime
+    transporter_order: NotRequired[int]
 
 
 class ManifestServiceError(Exception):
@@ -45,7 +62,7 @@ class ManifestService:
             f"<{self.__class__.__name__}(username='{self.username}', rcrainfo='{self.rcrainfo}')>"
         )
 
-    def search_rcra_mtn(
+    def search_rcrainfo_mtn(
         self,
         *,
         site_id: Optional[str] = None,
@@ -112,7 +129,7 @@ class ManifestService:
         for mtn in tracking_numbers:
             try:
                 manifest_json: dict = self._retrieve_manifest(mtn)
-                manifest = self._save_manifest_to_db(manifest_json)
+                manifest = self._save_manifest_json_to_db(manifest_json)
                 results["success"].append(manifest.mtn)
             except Exception as exc:
                 logger.warning(f"error pulling manifest {mtn}: {exc}")
@@ -120,51 +137,45 @@ class ManifestService:
         logger.info(f"pull manifests results: {results}")
         return results
 
-    def sign_manifest(self, signature: QuickerSign) -> PullManifestsResult:
+    def sign_manifests(self, *, signature: QuickerSign) -> TaskResponse:
         """
-        Electronically sign manifests in RCRAInfo through the RESTful API. Returns the results by
-        manifest tracking number (MTN) in a Dict.
+        Launch an asynchronous task to electronically sign a manifest.
         """
-        # only submit signatures for MTN found in haztrak
-        results = self._filter_mtn(signature=signature)
-        signature.mtn = results["success"]
+        signature.mtn = self._filter_mtn(
+            mtn=signature.mtn, site_id=signature.site_id, site_type=signature.site_type
+        )
+        signature_serializer = QuickerSignSerializer(signature)
+        task = sign_manifest.delay(username=self.username, **signature_serializer.data)
+        return {"taskId": task.id}
 
-        # Serialize our QuickerSign object and POST to RCRAInfo
-        signature_data = QuickerSignSerializer(signature)
-        response = self.rcrainfo.sign_manifest(**signature_data.data)
-
-        # Handle the response
+    def quicker_sign_manifests(self, signature: dict) -> PullManifestsResult:
+        results: PullManifestsResult = {"success": [], "error": []}
+        response = self.rcrainfo.sign_manifest(**signature)
         if response.ok:
-            results["success"].extend(results["success"])  # Temporary
             for manifest in response.json()["manifestReports"]:
-                # For each manifest successfully signed, pull the updated manifest
                 pull_manifest.delay(
                     mtn=[manifest["manifestTrackingNumber"]], username=self.username
                 )
         else:
-            logger.warning(
-                f"Error Quicker signing manifests, "
-                f"response: {response.status_code} {response.json()}"
-            )
-            results["error"].extend(results["success"])  # Temporary
+            logger.warning(f"Error Quicker signing {response.status_code} {response.json()}")
         return results
 
-    def create_rcra_manifest(self, *, manifest: dict) -> dict | None:
+    def create_manifest(self, *, manifest: dict) -> dict | TaskResponse:
         """
         Create a manifest in RCRAInfo through the RESTful API.
         :param manifest: Dict
         :return:
         """
-        if self.rcrainfo.has_api_user:
-            logger.warning("POSTing manifest to RCRAInfo.")
-            return self._save_manifest_to_rcrainfo(manifest)
+        if self.rcrainfo.has_api_user and manifest.get("status") != "NotAssigned":
+            logger.info("POSTing manifest to RCRAInfo.")
+            task = save_rcrainfo_manifest.delay(manifest_data=manifest, username=self.username)
+            return {"taskId": task.id}
         else:
-            logger.warning("RCRAInfo API credentials not found, RCRAInfo manifest creation")
-            saved_manifest = self._save_manifest_to_db(manifest)
-            logger.info(f"saved manifest {saved_manifest.mtn}")
+            logger.info("Saving manifest manifest to DB without RCRAInfo")
+            saved_manifest = self._save_manifest_json_to_db(manifest)
             return ManifestSerializer(saved_manifest).data
 
-    def _save_manifest_to_rcrainfo(self, manifest: dict) -> dict:
+    def save_to_rcrainfo(self, manifest: dict) -> dict:
         logger.info(f"start save manifest to rcrainfo with arguments {manifest}")
         create_resp: RcrainfoResponse = self.rcrainfo.save_manifest(manifest)
         try:
@@ -180,19 +191,19 @@ class ManifestService:
             logger.error(
                 f"error retrieving manifestTrackingNumber from response: {create_resp.json()}"
             )
-            raise ValueError("malformed payload")
+            raise ManifestServiceError("malformed payload")
 
     @staticmethod
-    def _filter_mtn(signature: QuickerSign) -> PullManifestsResult:
-        results: PullManifestsResult = {"success": [], "error": []}
-        site_filter = Manifest.objects.get_handler_query(signature.site_id, signature.site_type)
-        existing_mtn = Manifest.objects.existing_mtn(site_filter, mtn=signature.mtn)
-        results["success"] = [manifest.mtn for manifest in existing_mtn]
-        results["error"].extend(list(set(signature.mtn).difference(set(results["success"]))))
-        logger.warning(f"MTN not found or site not listed as site type {results['error']}")
-        return results
+    def _filter_mtn(
+        *, mtn: list[str], site_id: str, site_type: Literal["Generator", "Tsdf", "Transporter"]
+    ) -> list[str]:
+        site_filter = Manifest.objects.get_handler_query(site_id, site_type)
+        existing_mtn = Manifest.objects.existing_mtn(site_filter, mtn=mtn)
+        return [manifest.mtn for manifest in existing_mtn]
 
     def _retrieve_manifest(self, mtn: str):
+        """Retrieve a manifest from RCRAInfo"""
+        logger.info(f"retrieving manifest from RCRAInfo {mtn}")
         response = self.rcrainfo.get_manifest(mtn)
         if response.ok:
             logger.debug(f"manifest pulled {mtn}")
@@ -202,14 +213,18 @@ class ManifestService:
             raise RequestException(response.json())
 
     @transaction.atomic
-    def _save_manifest_to_db(self, manifest_json: dict) -> Manifest:
+    def _save_manifest_json_to_db(self, manifest_json: dict) -> Manifest:
         """Save manifest to Haztrak database"""
-        serializer = ManifestSerializer(data=manifest_json)
-        if serializer.is_valid():
-            logger.debug("manifest serializer is valid")
-            manifest = serializer.save()
-            logger.info(f"saved manifest {manifest.mtn}")
-            return manifest
+        logger.info("saving manifest to DB")
+        manifest_query: QuerySet = Manifest.objects.filter(
+            mtn=manifest_json["manifestTrackingNumber"]
+        )
+        if manifest_query.exists():
+            serializer = ManifestSerializer(manifest_query.get(), data=manifest_json)
         else:
-            logger.warning(f"malformed serializer data: {serializer.errors}")
-            raise ValidationError(serializer.errors)
+            serializer = ManifestSerializer(data=manifest_json)
+        serializer.is_valid(raise_exception=True)
+        logger.debug("manifest serializer is valid")
+        manifest = serializer.save()
+        logger.info(f"saved manifest {manifest.mtn}")
+        return manifest

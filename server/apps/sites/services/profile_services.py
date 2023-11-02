@@ -46,7 +46,7 @@ class RcraProfileService:
             f"<{self.__class__.__name__}(username='{self.username}', rcrainfo='{self.rcrainfo}')>"
         )
 
-    def pull_rcra_profile(self, *, username: Optional[str] = None) -> None:
+    def update_rcrainfo_profile(self, *, username: Optional[str] = None) -> None:
         """
         This high level function makes several requests to RCRAInfo to pull...
         1. A user's rcrainfo site permissions, it creates a RcraSitePermission for each

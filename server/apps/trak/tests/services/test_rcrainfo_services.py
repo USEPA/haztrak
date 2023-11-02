@@ -63,24 +63,23 @@ class TestQuickerSign:
     site_type = "Generator"
     sign_date = datetime.utcnow().replace(tzinfo=timezone.utc)
 
-    @pytest.fixture(autouse=True)
-    def _setup(self, user_factory, rcra_profile_factory, quicker_sign_response_factory):
+    @pytest.fixture
+    def setup(self, user_factory, rcra_profile_factory, quicker_sign_response_factory):
         self.testuser1 = user_factory()
         self.profile = rcra_profile_factory(user=self.testuser1)
         self.rcrainfo = RcrainfoService(api_username=self.testuser1.username, auto_renew=False)
-        self.quicker_sign_url = f"{self.rcrainfo.base_url}v1/emanifest/manifest/quicker-sign"
         self.response_json = quicker_sign_response_factory(
             mtn=self.mtn, site_id=self.site_id, sign_date=self.sign_date
         )
 
-    def test_maps_keywords(self, mock_responses):
+    def test_maps_keywords(self, mock_responses, setup):
         """
         Test that our sign_manifest method maps arguments to a JSON representation
         that's recognized by RCRAInfo
         """
+        quicker_sign_url = f"{self.rcrainfo.base_url}v1/emanifest/manifest/quicker-sign"
         mock_responses.post(
-            url=self.quicker_sign_url,
-            # the JSON received by the endpoint should match this
+            url=quicker_sign_url,
             match=[
                 matchers.json_params_matcher(
                     {
@@ -95,7 +94,7 @@ class TestQuickerSign:
             status=200,
         )
         quicker_signature = QuickerSign(
-            site_type=self.site_type,
+            site_type="Generator",
             mtn=self.mtn,
             site_id=self.site_id,
             printed_name=self.printed_name,

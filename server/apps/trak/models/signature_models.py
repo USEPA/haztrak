@@ -1,6 +1,6 @@
 import logging
 from datetime import datetime, timezone
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -176,7 +176,7 @@ class QuickerSign:
         self,
         mtn: List[str],
         printed_name: str,
-        site_type: str,
+        site_type: Literal["Generator", "Tsdf", "Transporter"],
         site_id: str,
         printed_date: Optional[datetime | str] = datetime.utcnow().replace(tzinfo=timezone.utc),
         transporter_order: Optional[int] = None,

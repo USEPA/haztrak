@@ -1,9 +1,12 @@
 import logging
+from datetime import timezone
 
 from celery.exceptions import TaskError
 from celery.result import AsyncResult
 from django.db.models import Q
-from drf_spectacular.utils import extend_schema, inline_serializer
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
 from rest_framework import serializers, status
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.request import Request
@@ -11,12 +14,15 @@ from rest_framework.response import Response
 
 from apps.core.services import TaskService  # type: ignore
 from apps.sites.models import Site  # type: ignore
+from apps.sites.services import SiteService
 from apps.trak.models import Manifest  # type: ignore
 from apps.trak.serializers import ManifestSerializer, MtnSerializer  # type: ignore
 from apps.trak.serializers.signature_ser import QuickerSignSerializer  # type: ignore
+from apps.trak.services import ManifestService
+from apps.trak.services.manifest_services import TaskResponse
 from apps.trak.tasks import (  # type: ignore
-    create_rcra_manifest,
     pull_manifest,
+    save_rcrainfo_manifest,
     sign_manifest,
     sync_site_manifests,
 )
@@ -25,7 +31,12 @@ logger = logging.getLogger(__name__)
 
 
 @extend_schema(
-    responses={201: ManifestSerializer},
+    responses={
+        200: OpenApiResponse(
+            response=ManifestSerializer,
+            description="Manifest Details",
+        )
+    },
 )
 class ManifestView(RetrieveAPIView):
     """
@@ -37,6 +48,14 @@ class ManifestView(RetrieveAPIView):
     serializer_class = ManifestSerializer
 
 
+@extend_schema(
+    responses={
+        200: OpenApiResponse(
+            response=MtnSerializer,
+            description="Manifest Tracking Numbers and select details",
+        )
+    },
+)
 class MtnList(ListAPIView):
     """
     MtnList returns select details on a user's manifest,
@@ -44,6 +63,9 @@ class MtnList(ListAPIView):
 
     serializer_class = MtnSerializer
     queryset = Manifest.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         epa_id = self.kwargs.get("epa_id", None)
@@ -73,17 +95,12 @@ class SignManifestView(GenericAPIView):
         Accepts a Quicker Sign JSON object in the request body,
         parses the request data, and passes data to a celery async task.
         """
-        try:
-            quicker_serializer = self.serializer_class(data=request.data)
-            if quicker_serializer.is_valid():
-                quicker_serializer.save()
-                task = sign_manifest.delay(
-                    username=str(request.user), **quicker_serializer.validated_data
-                )
-                return Response(data={"task": task.id}, status=status.HTTP_200_OK)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        except TaskError as exc:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=exc)
+        quicker_serializer = self.serializer_class(data=request.data)
+        quicker_serializer.is_valid(raise_exception=True)
+        signature = quicker_serializer.save()
+        manifest = ManifestService(username=str(request.user))
+        data: TaskResponse = manifest.sign_manifests(signature=signature)
+        return Response(data=data, status=status.HTTP_200_OK)
 
 
 @extend_schema(
@@ -101,17 +118,17 @@ class SyncSiteManifestView(GenericAPIView):
     for status.
     """
 
+    class SyncSiteManifestSerializer(serializers.Serializer):
+        siteId = serializers.CharField(source="site_id")
+
     queryset = None
 
     def post(self, request: Request) -> Response:
-        try:
-            site_id = request.data["siteId"]
-            task = sync_site_manifests.delay(site_id=site_id, username=str(request.user))
-            return Response(data={"task": task.id}, status=status.HTTP_200_OK)
-        except KeyError:
-            return Response(
-                data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
-            )
+        serializer = self.SyncSiteManifestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        site = SiteService(username=str(request.user))
+        data = site.sync_rcrainfo_manifest(**serializer.validated_data)
+        return Response(data=data, status=status.HTTP_200_OK)
 
 
 @extend_schema(request=ManifestSerializer)
@@ -126,17 +143,7 @@ class CreateRcraManifestView(GenericAPIView):
 
     def post(self, request: Request) -> Response:
         manifest_serializer = self.serializer_class(data=request.data)
-        if manifest_serializer.is_valid():
-            task: AsyncResult = create_rcra_manifest.delay(
-                manifest=manifest_serializer.data, username=str(request.user)
-            )
-            logger.debug(
-                f"manifest data submitted for creation in RCRAInfo: {manifest_serializer.data}"
-            )
-            TaskService(task_id=task.id, task_name=task.name).update_task_status("PENDING")
-            return Response(data={"taskId": task.id}, status=status.HTTP_201_CREATED)
-        else:
-            logger.error("manifest_serializer errors: ", manifest_serializer.errors)
-            return Response(
-                exception=manifest_serializer.errors, status=status.HTTP_400_BAD_REQUEST
-            )
+        manifest_serializer.is_valid(raise_exception=True)
+        manifest = ManifestService(username=str(request.user))
+        data = manifest.create_manifest(manifest=manifest_serializer.data)
+        return Response(data=data, status=status.HTTP_201_CREATED)

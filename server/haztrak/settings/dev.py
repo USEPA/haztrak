@@ -8,8 +8,8 @@ DEBUG = True
 CORS_ORIGIN_WHITELIST = [os.getenv("HT_CORS_DOMAIN", "http://localhost:3000")]
 
 REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [  # noqa: F405
-    "rest_framework.renderers.BrowsableAPIRenderer",
     "rest_framework.renderers.JSONRenderer",
+    "rest_framework.renderers.BrowsableAPIRenderer",
 ]
 
 # Database

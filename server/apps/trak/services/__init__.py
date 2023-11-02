@@ -1,1 +1,2 @@
-from .manifest_service import ManifestService, ManifestServiceError
+from .manifest_services import ManifestService, ManifestServiceError
+from .waste_services import get_dot_hazard_classes, get_dot_id_numbers, get_dot_shipping_names

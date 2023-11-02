@@ -15,20 +15,17 @@ class TestEpaSiteView:
     URL = "/api/rcra/handler"
 
     @pytest.fixture
-    def client(self, rcra_site_factory, api_client_factory):
+    def client(self, api_client_factory):
         return api_client_factory()
 
     @pytest.fixture
-    def generator(self, rcra_site_factory, api_client_factory):
+    def generator(self, rcra_site_factory):
         return rcra_site_factory()
 
     def test_endpoint_returns_json_with_rcra_site(self, client, generator):
         response: Response = client.get(f"{self.URL}/{generator.pk}")
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK
-
-    def test_returns_serialized_handler(self, client, generator):
-        response: Response = client.get(f"{self.URL}/{generator.pk}")
         assert response.data["epaSiteId"] == generator.epa_id
 
 

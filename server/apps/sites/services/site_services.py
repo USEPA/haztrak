@@ -1,7 +1,8 @@
 import logging
-from typing import Dict, List, Optional
+from datetime import UTC, datetime
+from typing import Dict, Optional, TypedDict
 
-from django.core.cache import cache
+from django.core.cache import CacheKeyWarning, cache
 from django.db import transaction
 from rest_framework.exceptions import ValidationError
 
@@ -9,9 +10,14 @@ from apps.core.services import RcrainfoService  # type: ignore
 from apps.sites.models import RcraSite, Site  # type: ignore
 from apps.sites.serializers import RcraSiteSerializer  # type: ignore
 from apps.trak.services import ManifestService  # type: ignore
-from apps.trak.services.manifest_service import PullManifestsResult  # type: ignore
+from apps.trak.services.manifest_services import PullManifestsResult, TaskResponse  # type: ignore
+from apps.trak.tasks import sync_site_manifests  # type: ignore
 
 logger = logging.getLogger(__name__)
+
+
+class HandlerSearchResults(TypedDict):
+    sites: list[RcraSite]
 
 
 class SiteServiceError(Exception):
@@ -33,38 +39,37 @@ class SiteService:
     ):
         self.username = username
         self.rcrainfo = rcrainfo or RcrainfoService(api_username=username)
-        if site_id:
-            self.site = Site.objects.get(rcra_site__epa_id=site_id)
+        self.site_id = site_id
 
-    def sync_rcra_manifest(self, *, site_id: Optional[str] = None) -> PullManifestsResult:
-        """
-        Retrieve a site's manifest from Rcrainfo and save to the database.
-
-        Keyword Args:
-            site_id (str): the epa_id to sync with RCRAInfo's manifest. Defaults self.site.
-        """
+    def sync_rcrainfo_manifest(self, *, site_id: Optional[str] = None) -> TaskResponse:
+        """Validate input and Launch a Celery task to sync a site's manifests from RCRAInfo"""
         logger.info(f"{self} sync rcra manifest, site ID {site_id}")
+        task = sync_site_manifests.delay(site_id=site_id, username=self.username)
+        return {"taskId": task.id}
+
+    @transaction.atomic
+    def sync_manifests(self, *, site_id: str) -> PullManifestsResult:
+        """Pull manifests and update the last sync date for a site"""
         try:
-            manifest_service = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
-            site = Site.objects.get(rcra_site__epa_id=site_id or self.site)
-            logger.info(f"site: {site}, manifest_service: {manifest_service}")
-            tracking_numbers: List[str] = manifest_service.search_rcra_mtn(
-                site_id=site_id, start_date=site.last_rcra_sync
+            site = Site.objects.get(rcra_site__epa_id=site_id)
+            updated_mtn = self._get_updated_mtn(
+                site_id=site.rcra_site.epa_id, last_sync_date=site.last_rcra_sync
             )
-            # ToDo: uncomment this after we have manifest development fixtures
-            # limit the number of manifest to sync at a time per RCRAInfo rate limits
-            tracking_numbers = tracking_numbers[:30]
-            logger.info(f"Pulling {tracking_numbers} from RCRAInfo")
-            results: PullManifestsResult = manifest_service.pull_manifests(
-                tracking_numbers=tracking_numbers
-            )
-            # ToDo: uncomment this after we have manifest development fixtures
-            # site.last_rcra_sync = datetime.now().replace(tzinfo=timezone.utc)
+            updated_mtn = updated_mtn[:15]  # temporary limit to 15
+            logger.info(f"Pulling {updated_mtn} from RCRAInfo")
+            manifest = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
+            results: PullManifestsResult = manifest.pull_manifests(tracking_numbers=updated_mtn)
+            site.last_rcra_sync = datetime.now(UTC)
             site.save()
             return results
         except Site.DoesNotExist:
             logger.warning(f"Site Does not exists {site_id}")
             raise SiteServiceError(f"Site Does not exists {site_id}")
+
+    def _get_updated_mtn(self, site_id: str, last_sync_date: datetime) -> list[str]:
+        logger.info(f"retrieving updated MTN for site {site_id}")
+        manifest = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
+        return manifest.search_rcrainfo_mtn(site_id=site_id, start_date=last_sync_date)
 
     @transaction.atomic
     def create_or_update_site(
@@ -102,15 +107,10 @@ class RcraSiteService:
             f"rcrainfo='{self.rcrainfo}')>"
         )
 
-    def pull_rcra_site(self, *, site_id: str) -> RcraSite:
-        """
-        Retrieve a site/rcra_site from Rcrainfo and return RcraSiteSerializer
-        """
+    def pull_rcrainfo_site(self, *, site_id: str) -> RcraSite:
+        """Retrieve a site/rcra_site from Rcrainfo and return RcraSiteSerializer"""
         rcra_site_data: Dict = self.rcrainfo.get_site(site_id).json()
-        rcra_site_serializer: RcraSiteSerializer = self._deserialize_rcra_site(
-            rcra_site_data=rcra_site_data
-        )
-        return self._create_or_update_rcra_site(rcra_site_data=rcra_site_serializer.validated_data)
+        return self._update_or_create_rcra_site_from_json(rcra_site_data=rcra_site_data)
 
     def get_or_pull_rcra_site(self, site_id: str) -> RcraSite:
         """
@@ -120,39 +120,29 @@ class RcraSiteService:
         if RcraSite.objects.filter(epa_id=site_id).exists():
             logger.debug(f"using existing rcra_site {site_id}")
             return RcraSite.objects.get(epa_id=site_id)
-        new_rcra_site = self.pull_rcra_site(site_id=site_id)
+        new_rcra_site = self.pull_rcrainfo_site(site_id=site_id)
         logger.debug(f"pulled new rcra_site {new_rcra_site}")
         return new_rcra_site
 
-    def search_rcra_site(self, **search_parameters) -> dict:
+    def search_rcrainfo_handlers(self, **search_parameters) -> HandlerSearchResults:
         """
         Search RCRAInfo for a site by name or EPA ID
         """
+        cache_key = (
+            f'handlerSearch:epaSiteId:{search_parameters["epaSiteId"]}:siteType:'
+            f'{search_parameters["siteType"]}'
+        )
         try:
-            data = cache.get(f'{search_parameters["epaSiteId"]}-{search_parameters["siteType"]}')
+            data = cache.get(cache_key)
             if not data:
-                data = self.rcrainfo.search_sites(**search_parameters).json()
-                cache.set(
-                    f'{search_parameters["epaSiteId"]}-{search_parameters["siteType"]}',
-                    data,
-                    60 * 60 * 24,
-                )
+                data: HandlerSearchResults = self.rcrainfo.search_sites(**search_parameters).json()
+                cache.set(cache_key, data, 60 * 60 * 24)
             return data
-        except KeyError:
-            raise ValidationError("Missing required search parameters")
-
-    def _deserialize_rcra_site(self, *, rcra_site_data: dict) -> RcraSiteSerializer:
-        serializer = RcraSiteSerializer(data=rcra_site_data)
-        if serializer.is_valid():
-            return serializer
-        logger.error(serializer.errors)
-        raise ValidationError(serializer.errors)
+        except CacheKeyWarning:
+            raise ValidationError("Error retrieving data from cache")
 
     @transaction.atomic
-    def _create_or_update_rcra_site(self, *, rcra_site_data: dict) -> RcraSite:
-        epa_id = rcra_site_data.get("epa_id")
-        if RcraSite.objects.filter(epa_id=epa_id).exists():
-            rcra_site = RcraSite.objects.get(epa_id=epa_id)
-            return rcra_site
-        rcra_site = RcraSite.objects.save(**rcra_site_data)
-        return rcra_site
+    def _update_or_create_rcra_site_from_json(self, *, rcra_site_data: dict) -> RcraSite:
+        serializer = RcraSiteSerializer(data=rcra_site_data)
+        serializer.is_valid(raise_exception=True)
+        return serializer.save()

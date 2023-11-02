@@ -36,6 +36,6 @@ class TestHandlerService:
             status=200,
         )
         # Act
-        rcra_site = handler_service.pull_rcra_site(site_id=self.epa_id)
+        rcra_site = handler_service.pull_rcrainfo_site(site_id=self.epa_id)
         # Assert
         assert isinstance(rcra_site, RcraSite)
