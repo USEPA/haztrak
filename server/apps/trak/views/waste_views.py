@@ -1,14 +1,19 @@
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from drf_spectacular.utils import (
+    OpenApiParameter,
+    OpenApiResponse,
+    extend_schema,
+    inline_serializer,
+)
 from rest_framework import status
 from rest_framework.generics import ListAPIView
-from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.trak.models import DotLookup, WasteCode
-from apps.trak.serializers import DotOptionSerializer, WasteCodeSerializer
-from apps.trak.services.waste_services import get_dot_shipping_names
+from apps.trak.serializers import WasteCodeSerializer
+from apps.trak.services import get_dot_hazard_classes, get_dot_id_numbers, get_dot_shipping_names
 
 
 class FederalWasteCodesView(ListAPIView):
@@ -46,39 +51,30 @@ class StateWasteCodesView(ListAPIView):
             raise ValueError("State ID is required")
 
 
-class DotBaseView(APIView):
-    queryset = DotLookup.objects.all()
-
-    def get(self, request: Request, *args, **kwargs) -> Response:
-        """
-        Base API View for retrieving static DOT data used to build DOT shipping
-        descriptions on the manifest.
-        """
-        dot_id_numbers = [
-            option.value
-            for option in self.queryset.filter(value__icontains=request.query_params.get("q", ""))[
-                0:100
-            ]
-        ]
-        return Response(data=dot_id_numbers, status=status.HTTP_200_OK)
-
-
-class DotIdNumberView(DotBaseView):
-    """
-    Return a list of DOT ID numbers, optionally filtered by a query parameter
-    """
+@extend_schema(
+    parameters=[
+        OpenApiParameter(name="q", description="Query", type=str),
+    ],
+)
+class DotIdNumberView(APIView):
+    """Return a list of DOT ID numbers, optionally filtered by a query parameter"""
 
     queryset = DotLookup.id_numbers.all()
 
     @method_decorator(cache_page(60 * 15 * 24))
     def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+        query = request.query_params.get("q", "")
+        data = get_dot_id_numbers(query)
+        return Response(data=data, status=status.HTTP_200_OK)
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter(name="q", description="Query", type=str),
+    ]
+)
 class DotShippingNameView(APIView):
-    """
-    Return a list of DOT Proper Shipping Names, optionally filtered by a query parameter
-    """
+    """Return a list of DOT Proper Shipping Names, optionally filtered by a query parameter"""
 
     queryset = DotLookup.shipping_names.all()
 
@@ -89,13 +85,18 @@ class DotShippingNameView(APIView):
         return Response(data=data, status=status.HTTP_200_OK)
 
 
-class DotHazardClassView(DotBaseView):
-    """
-    Return a list of DOT Hazard classes, optionally filtered by a query parameter
-    """
+@extend_schema(
+    parameters=[
+        OpenApiParameter(name="q", description="Query", type=str),
+    ]
+)
+class DotHazardClassView(APIView):
+    """Return a list of DOT Hazard classes, optionally filtered by a query parameter"""
 
     queryset = DotLookup.hazard_classes.all()
 
     @method_decorator(cache_page(60 * 15 * 24))
     def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+        query = request.query_params.get("q", "")
+        data = get_dot_hazard_classes(query)
+        return Response(data=data, status=status.HTTP_200_OK)
