@@ -3,7 +3,7 @@ import { RcraSite } from 'components/RcraSite';
 import { htApiBaseQuery } from 'store/baseQuery';
 
 interface RcrainfoSiteSearch {
-  siteType: string;
+  siteType: 'designatedFacility' | 'generator' | 'transporter' | 'broker';
   siteId: string;
 }
 

@@ -1,10 +1,10 @@
 import logging
 from datetime import UTC, datetime
-from typing import Dict, Optional
+from typing import Dict, Optional, TypedDict
 
-from django.core.cache import cache
+from django.core.cache import CacheKeyWarning, cache
 from django.db import transaction
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import ErrorDetail, ValidationError
 
 from apps.core.services import RcrainfoService  # type: ignore
 from apps.sites.models import RcraSite, Site  # type: ignore
@@ -14,6 +14,10 @@ from apps.trak.services.manifest_service import PullManifestsResult, TaskRespons
 from apps.trak.tasks import sync_site_manifests  # type: ignore
 
 logger = logging.getLogger(__name__)
+
+
+class HandlerSearchResults(TypedDict):
+    sites: list[RcraSite]
 
 
 class SiteServiceError(Exception):
@@ -103,10 +107,8 @@ class RcraSiteService:
             f"rcrainfo='{self.rcrainfo}')>"
         )
 
-    def pull_rcra_site(self, *, site_id: str) -> RcraSite:
-        """
-        Retrieve a site/rcra_site from Rcrainfo and return RcraSiteSerializer
-        """
+    def pull_rcrainfo_site(self, *, site_id: str) -> RcraSite:
+        """Retrieve a site/rcra_site from Rcrainfo and return RcraSiteSerializer"""
         rcra_site_data: Dict = self.rcrainfo.get_site(site_id).json()
         return self._update_or_create_rcra_site_from_json(rcra_site_data=rcra_site_data)
 
@@ -118,26 +120,30 @@ class RcraSiteService:
         if RcraSite.objects.filter(epa_id=site_id).exists():
             logger.debug(f"using existing rcra_site {site_id}")
             return RcraSite.objects.get(epa_id=site_id)
-        new_rcra_site = self.pull_rcra_site(site_id=site_id)
+        new_rcra_site = self.pull_rcrainfo_site(site_id=site_id)
         logger.debug(f"pulled new rcra_site {new_rcra_site}")
         return new_rcra_site
 
-    def search_rcra_site(self, **search_parameters) -> dict:
+    def search_rcrainfo_handlers(self, **search_parameters) -> HandlerSearchResults:
         """
         Search RCRAInfo for a site by name or EPA ID
         """
+        cache_key = (
+            f'handlerSearch:epaSiteId:{search_parameters["epaSiteId"]}:siteType:'
+            f'{search_parameters["siteType"]}'
+        )
         try:
-            data = cache.get(f'{search_parameters["epaSiteId"]}-{search_parameters["siteType"]}')
+            data = cache.get(cache_key)
             if not data:
-                data = self.rcrainfo.search_sites(**search_parameters).json()
+                data: HandlerSearchResults = self.rcrainfo.search_sites(**search_parameters).json()
                 cache.set(
-                    f'{search_parameters["epaSiteId"]}-{search_parameters["siteType"]}',
+                    cache_key,
                     data,
                     60 * 60 * 24,
                 )
             return data
-        except KeyError:
-            raise ValidationError("Missing required search parameters")
+        except CacheKeyWarning:
+            raise ValidationError("Error retrieving data from cache")
 
     @transaction.atomic
     def _update_or_create_rcra_site_from_json(self, *, rcra_site_data: dict) -> RcraSite:

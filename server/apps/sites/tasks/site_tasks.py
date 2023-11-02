@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 def get_rcra_site(self, *, site_id: str, username: str) -> str:
     try:
         site_service = RcraSiteService(username=username)
-        rcra_site = site_service.pull_rcra_site(site_id=site_id)
+        rcra_site = site_service.pull_rcrainfo_site(site_id=site_id)
         return rcra_site.epa_id
     except Exception as exc:
         self.update_state(state=states.FAILURE, meta=f"Internal Error {exc}")

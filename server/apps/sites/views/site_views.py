@@ -118,22 +118,40 @@ handler_types = {
     responses=RcraSiteSerializer(many=True),
     request=inline_serializer(
         "handler_search",
-        fields={"siteId": serializers.CharField(), "siteType": serializers.CharField()},
+        fields={
+            "siteId": serializers.CharField(),
+            "siteType": serializers.ChoiceField(
+                choices=[
+                    ("designatedFacility", "designatedFacility"),
+                    ("generator", "generator"),
+                    ("transporter", "transporter"),
+                    ("broker", "broker"),
+                ]
+            ),
+        },
     ),
 )
 class HandlerSearchView(APIView):
-    """
-    Search and return a list of Hazardous waste handlers from RCRAInfo.
-    """
+    """Search and return a list of Hazardous waste handlers from RCRAInfo."""
+
+    class HandlerSearchSerializer(serializers.Serializer):
+        siteId = serializers.CharField(required=True)
+        siteType = serializers.ChoiceField(
+            required=True,
+            choices=[
+                ("designatedFacility", "designatedFacility"),
+                ("generator", "generator"),
+                ("transporter", "transporter"),
+                ("broker", "broker"),
+            ],
+        )
 
     def post(self, request: Request) -> Response:
-        try:
-            site_service = RcraSiteService(username=request.user.username)
-            data = site_service.search_rcra_site(
-                epaSiteId=request.data["siteId"], siteType=handler_types[request.data["siteType"]]
-            )
-            return Response(status=status.HTTP_200_OK, data=data["sites"])
-        except KeyError:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        except ValidationError:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        serializer = self.HandlerSearchSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        sites = RcraSiteService(username=request.user.username)
+        data = sites.search_rcrainfo_handlers(
+            epaSiteId=serializer.data["siteId"],
+            siteType=handler_types[serializer.data["siteType"]],
+        )
+        return Response(status=status.HTTP_200_OK, data=data["sites"])
