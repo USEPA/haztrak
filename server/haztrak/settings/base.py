@@ -36,6 +36,12 @@ INSTALLED_APPS = [
     "django_extensions",
     "django_celery_results",
     "django_celery_beat",
+    "health_check",
+    "health_check.db",
+    "health_check.cache",
+    "health_check.contrib.celery",
+    "health_check.contrib.migrations",
+    "health_check.contrib.redis",
     "apps.trak",
     "apps.sites",
     "apps.core",
@@ -148,6 +154,7 @@ CACHES = {
         "LOCATION": os.getenv(CACHE_URL, "redis://redis:6379"),
     },
 }
+REDIS_URL = os.getenv(CACHE_URL, "redis://redis:6379")  # used for Health Checks
 
 # Celery
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379")
