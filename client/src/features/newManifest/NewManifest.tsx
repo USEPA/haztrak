@@ -9,7 +9,7 @@ import { Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from 'store';
-import { siteByEpaIdSelector } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { siteByEpaIdSelector } from 'store/profileSlice/profile.slice';
 
 /**
  * NewManifest component allows a user to create a new electronic manifest.

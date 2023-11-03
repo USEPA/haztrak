@@ -4,7 +4,7 @@ import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 import Select from 'react-select';
 import { useAppSelector } from 'store';
-import { userRcraSitesSelector } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { userRcraSitesSelector } from 'store/profileSlice/profile.slice';
 
 interface SiteSelectProps<T> {
   control: Control;

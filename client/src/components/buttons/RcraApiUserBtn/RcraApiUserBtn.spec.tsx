@@ -25,10 +25,12 @@ describe('RcraApiUserBtn', () => {
   test('is disabled when apiUser=false', () => {
     renderWithProviders(<RcraApiUserBtn>Click Me</RcraApiUserBtn>, {
       preloadedState: {
-        rcraProfile: {
-          user: 'username',
-          phoneNumber: '1231231234',
-          apiUser: false,
+        profile: {
+          rcrainfoProfile: {
+            user: 'username',
+            phoneNumber: '1231231234',
+            apiUser: false,
+          },
         },
       },
     });

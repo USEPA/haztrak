@@ -8,11 +8,59 @@ import { describe, expect, test } from 'vitest';
 
 describe('NewManifest', () => {
   test('renders', () => {
-    renderWithProviders(<NewManifest />, {});
+    const mySiteId = 'VATESTGEN001';
+    const mySiteName = 'My Site';
+    const mySite = createMockSite({
+      name: mySiteName,
+      // @ts-ignore
+      handler: { epaSiteId: mySiteId, siteType: 'Tsdf' },
+    });
+    renderWithProviders(<NewManifest />, {
+      preloadedState: {
+        profile: {
+          user: 'testuser1',
+          rcrainfoProfile: {
+            user: 'username',
+            phoneNumber: '1231231234',
+            apiUser: false,
+            rcraSites: {
+              VATESTGEN001: {
+                site: { ...mySite },
+                permissions: createMockPermission(),
+              },
+            },
+          },
+        },
+      },
+    });
     expect(screen.getByRole('combobox', { name: /site Role/i })).toBeInTheDocument();
   });
   test('site type is initially disabled', () => {
-    renderWithProviders(<NewManifest />, {});
+    const mySiteId = 'VATESTGEN001';
+    const mySiteName = 'My Site';
+    const mySite = createMockSite({
+      name: mySiteName,
+      // @ts-ignore
+      handler: { epaSiteId: mySiteId, siteType: 'Tsdf' },
+    });
+    renderWithProviders(<NewManifest />, {
+      preloadedState: {
+        profile: {
+          user: 'testuser1',
+          rcrainfoProfile: {
+            user: 'username',
+            phoneNumber: '1231231234',
+            apiUser: false,
+            rcraSites: {
+              VATESTGEN001: {
+                site: { ...mySite },
+                permissions: createMockPermission(),
+              },
+            },
+          },
+        },
+      },
+    });
     const siteRole = screen.getByRole('combobox', { name: /site Role/i });
     expect(siteRole).toBeDisabled();
   });
@@ -26,14 +74,17 @@ describe('NewManifest', () => {
     });
     renderWithProviders(<NewManifest />, {
       preloadedState: {
-        rcraProfile: {
-          user: 'username',
-          phoneNumber: '1231231234',
-          apiUser: false,
-          rcraSites: {
-            VATESTGEN001: {
-              site: { ...mySite },
-              permissions: createMockPermission(),
+        profile: {
+          user: 'testuser1',
+          rcrainfoProfile: {
+            user: 'username',
+            phoneNumber: '1231231234',
+            apiUser: false,
+            rcraSites: {
+              VATESTGEN001: {
+                site: { ...mySite },
+                permissions: createMockPermission(),
+              },
             },
           },
         },

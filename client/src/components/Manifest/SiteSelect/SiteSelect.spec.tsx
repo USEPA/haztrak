@@ -19,18 +19,21 @@ describe('SiteSelect', () => {
     const mySite = createMockSite();
     renderWithProviders(<TestComponent />, {
       preloadedState: {
-        rcraProfile: {
+        profile: {
           user: 'username',
-          phoneNumber: '1231231234',
-          apiUser: false,
-          rcraSites: {
-            VATESTGEN001: {
-              site: mySite,
-              permissions: createMockPermission(),
-            },
-            VATEST00001: {
-              site: mySite,
-              permissions: createMockPermission(),
+          rcrainfoProfile: {
+            user: 'username',
+            phoneNumber: '1231231234',
+            apiUser: false,
+            rcraSites: {
+              VATESTGEN001: {
+                site: mySite,
+                permissions: createMockPermission(),
+              },
+              VATEST00001: {
+                site: mySite,
+                permissions: createMockPermission(),
+              },
             },
           },
         },

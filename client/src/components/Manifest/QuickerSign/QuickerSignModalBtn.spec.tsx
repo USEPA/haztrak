@@ -50,10 +50,13 @@ describe('QuickerSignModalBtn', () => {
       {
         // Redux store state with an API user is required for this button to be active
         preloadedState: {
-          rcraProfile: {
+          profile: {
             user: 'username',
-            phoneNumber: '1231231234',
-            apiUser: true,
+            rcrainfoProfile: {
+              user: 'username',
+              phoneNumber: '1231231234',
+              apiUser: true,
+            },
           },
         },
       }
@@ -74,10 +77,13 @@ describe('QuickerSignModalBtn', () => {
       {
         // Redux store state with an API user is required for this button to be active
         preloadedState: {
-          rcraProfile: {
+          profile: {
             user: 'username',
-            phoneNumber: '1231231234',
-            apiUser: false,
+            rcrainfoProfile: {
+              user: 'username',
+              phoneNumber: '1231231234',
+              apiUser: false,
+            },
           },
         },
       }

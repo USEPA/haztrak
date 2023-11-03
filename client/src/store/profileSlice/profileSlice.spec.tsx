@@ -10,19 +10,22 @@ import { createMockSite } from 'test-utils/fixtures';
 import { createMockPermission } from 'test-utils/fixtures/mockHandler';
 import { describe, expect, test } from 'vitest';
 import rcraProfileReducer, {
-  getProfile,
+  getRcraProfile,
   RcraProfileSite,
-  RcraProfileState,
+  ProfileState,
   siteByEpaIdSelector,
   userRcraSitesSelector,
-} from './rcraProfile.slice';
+} from 'store/profileSlice/profile.slice';
 
-const initialState: RcraProfileState = {
+const initialState: ProfileState = {
   user: undefined,
-  rcraAPIID: undefined,
-  rcraUsername: undefined,
-  rcraSites: {},
-  phoneNumber: undefined,
+  rcrainfoProfile: {
+    user: undefined,
+    rcraAPIID: undefined,
+    rcraUsername: undefined,
+    rcraSites: {},
+    phoneNumber: undefined,
+  },
   loading: false,
   error: undefined,
 };
@@ -39,12 +42,15 @@ const mySite: RcraProfileSite = {
   },
 };
 
-const profilePayload: RcraProfileState = {
+const profilePayload: ProfileState = {
   user: 'testuser1',
-  rcraAPIID: 'mockRcraApiId',
-  rcraUsername: undefined,
-  rcraSites: { [mySite.site.handler.epaSiteId]: mySite },
-  phoneNumber: undefined,
+  rcrainfoProfile: {
+    user: 'testuser1',
+    rcraAPIID: 'mockRcraApiId',
+    rcraUsername: undefined,
+    rcraSites: { [mySite.site.handler.epaSiteId]: mySite },
+    phoneNumber: undefined,
+  },
 };
 
 const errorMsg = 'rejected promise error message';
@@ -52,9 +58,9 @@ const rejectedPayload = {
   error: errorMsg,
 };
 
-const pendingGetProfile = { type: getProfile.pending };
-const fulfilledGetProfile = { type: getProfile.fulfilled, payload: profilePayload };
-const rejectedGetProfile = { type: getProfile.rejected, payload: rejectedPayload };
+const pendingGetProfile = { type: getRcraProfile.pending };
+const fulfilledGetProfile = { type: getRcraProfile.fulfilled, payload: profilePayload };
+const rejectedGetProfile = { type: getRcraProfile.rejected, payload: rejectedPayload };
 const pendingProfileState = { ...initialState, loading: true };
 
 describe('rcraProfile', () => {
@@ -98,14 +104,17 @@ describe('RcraProfileSlice selectors', () => {
     const mySite = createMockSite();
     renderWithProviders(<TestComponent siteId={mySite.handler.epaSiteId} />, {
       preloadedState: {
-        rcraProfile: {
-          user: 'username',
-          phoneNumber: '1231231234',
-          apiUser: false,
-          rcraSites: {
-            VATESTGEN001: {
-              site: mySite,
-              permissions: createMockPermission(),
+        profile: {
+          user: 'testuser1',
+          rcrainfoProfile: {
+            user: 'username',
+            phoneNumber: '1231231234',
+            apiUser: false,
+            rcraSites: {
+              VATESTGEN001: {
+                site: mySite,
+                permissions: createMockPermission(),
+              },
             },
           },
         },
@@ -130,18 +139,21 @@ describe('RcraProfileSlice selectors', () => {
     };
     renderWithProviders(<TestComp />, {
       preloadedState: {
-        rcraProfile: {
-          user: 'username',
-          phoneNumber: '1231231234',
-          apiUser: false,
-          rcraSites: {
-            VATESTGEN001: {
-              site: mySite,
-              permissions: createMockPermission(),
-            },
-            VATEST00001: {
-              site: mySite,
-              permissions: createMockPermission(),
+        profile: {
+          user: 'testuser1',
+          rcrainfoProfile: {
+            user: 'username',
+            phoneNumber: '1231231234',
+            apiUser: false,
+            rcraSites: {
+              VATESTGEN001: {
+                site: mySite,
+                permissions: createMockPermission(),
+              },
+              VATEST00001: {
+                site: mySite,
+                permissions: createMockPermission(),
+              },
             },
           },
         },
