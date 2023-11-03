@@ -4,8 +4,9 @@ from django_celery_results.models import TaskResult
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.core.models import HaztrakUser, RcraProfile
+from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile
 from apps.sites.serializers import RcraSitePermissionSerializer
+from apps.sites.serializers.profile_ser import SitePermissionSerializer
 
 
 class HaztrakUserSerializer(ModelSerializer):
@@ -32,6 +33,25 @@ class HaztrakUserSerializer(ModelSerializer):
             "firstName",
             "lastName",
             "email",
+        ]
+
+
+class HaztrakProfileSerializer(ModelSerializer):
+    """Serializer for a user's profile"""
+
+    user = serializers.StringRelatedField(
+        required=False,
+    )
+    sites = SitePermissionSerializer(
+        source="site_permissions",
+        many=True,
+    )
+
+    class Meta:
+        model = HaztrakProfile
+        fields = [
+            "user",
+            "sites",
         ]
 
 

@@ -4,7 +4,7 @@ from django.utils.html import format_html, urlencode
 
 from apps.core.admin import HiddenListView
 from apps.core.models import RcraProfile
-from apps.sites.models import Address, Contact, RcraSite, RcraSitePermission, Site
+from apps.sites.models import Address, Contact, RcraSite, RcraSitePermission, Site, SitePermissions
 
 
 @admin.register(RcraSite)
@@ -12,6 +12,15 @@ class HandlerAdmin(admin.ModelAdmin):
     list_display = ["__str__", "site_type", "site_address", "mail_address"]
     list_filter = ["site_type"]
     search_fields = ["epa_id"]
+
+
+# admin.site.register(SitePermissions)
+@admin.register(SitePermissions)
+class SitePermissionAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "site", "emanifest"]
+    list_filter = ["site", "profile"]
+    search_fields = ["site"]
+    search_help_text = "Search by user or site"
 
 
 @admin.register(Site)

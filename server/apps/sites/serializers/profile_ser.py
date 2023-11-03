@@ -1,10 +1,26 @@
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
 
-from apps.sites.models import RcraSitePermission
+from apps.sites.models import RcraSitePermission, SitePermissions
 
 from .base_ser import SitesBaseSerializer
 from .site_ser import SiteSerializer
+
+
+class SitePermissionSerializer(SitesBaseSerializer):
+    class Meta:
+        model = SitePermissions
+        fields = [
+            "epaSiteId",
+            "eManifest",
+        ]
+
+    epaSiteId = serializers.StringRelatedField(
+        source="site",
+    )
+    eManifest = serializers.CharField(
+        source="emanifest",
+    )
 
 
 class RcraSitePermissionSerializer(SitesBaseSerializer):

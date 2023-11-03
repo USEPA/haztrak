@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.urls import reverse
+from django.utils.html import format_html, urlencode
 
-from .models import HaztrakUser
+from .models import HaztrakProfile, HaztrakUser
 
 
 class HiddenListView(admin.ModelAdmin):
@@ -15,7 +17,20 @@ class HiddenListView(admin.ModelAdmin):
         return False
 
 
-admin.site.register(HaztrakUser, UserAdmin)
+admin.site.register(HaztrakProfile)
+
+
+@admin.register(HaztrakUser)
+class HaztrakUserAdmin(UserAdmin):
+    list_display = ["username", "related_profile", "email", "is_staff", "is_superuser"]
+
+    @admin.display(description="Profile")
+    def related_profile(self, user: HaztrakUser) -> str:
+        url = (
+            reverse("admin:core_haztrakprofile_changelist") + "?" + urlencode({"user": str(user)})
+        )
+        return format_html("<a href='{}'>{}</a>", url, user.haztrak_profile)
+
 
 try:
     from rest_framework.authtoken.models import TokenProxy as DRFToken

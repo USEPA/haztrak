@@ -1,6 +1,7 @@
 from django.urls import include, path
 
 from .views import (  # type: ignore
+    HaztrakProfileView,
     HaztrakUserView,
     LaunchExampleTaskView,
     Login,
@@ -20,6 +21,7 @@ urlpatterns = [
             ]
         ),
     ),
+    path("profile/<str:username>", HaztrakProfileView.as_view()),
     path("user", HaztrakUserView.as_view()),
     path("user/login", Login.as_view()),
     path("task/example", LaunchExampleTaskView.as_view()),

@@ -96,7 +96,7 @@ graph_models() {
     --arrow-shape=normal \
     --exclude-models=*BaseModel \
     --disable-abstract-fields \
-    -o $base_dir/docs/haztrak_book/src/assets/erd.png"
+    -o $base_dir/docs/guide/src/assets/erd.png"
     eval "$exec_cmd"
     exit
 }
