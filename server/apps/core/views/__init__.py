@@ -1,5 +1,6 @@
 from .auth_view import Login
 from .profile_views import (
+    HaztrakProfileView,
     HaztrakUserView,
     RcraProfileSyncView,
     RcraProfileView,

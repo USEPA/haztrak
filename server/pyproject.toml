@@ -23,15 +23,6 @@ documentation = "https://usepa.github.io/haztrak/"
 homepage = "https://github.com/USEPA/haztrak"
 repository = "https://github.com/USEPA/haztrak"
 
-[tool.black]
-line-length = 99
-target-version = ['py311']
-exclude = '''
-/(
-  | migrations
-)/
-'''
-
 [tool.ruff]
 line-length = 99
 select = ["F", "E", "W", "Q", "I001"]

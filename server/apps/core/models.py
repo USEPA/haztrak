@@ -27,6 +27,20 @@ class HaztrakUser(AbstractUser):
     pass
 
 
+class HaztrakProfile(CoreBaseModel):
+    class Meta:
+        verbose_name = "Haztrak Profile"
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="haztrak_profile",
+    )
+
+    def __str__(self):
+        return f"{self.user.username}"
+
+
 class RcraProfile(CoreBaseModel):
     """
     Contains a user's RcraProfile information, such as username, and API credentials.

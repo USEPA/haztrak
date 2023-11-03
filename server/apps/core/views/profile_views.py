@@ -1,12 +1,16 @@
 from celery.exceptions import CeleryError
 from celery.result import AsyncResult as CeleryTask
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.core.models import HaztrakUser, RcraProfile
-from apps.core.serializers import HaztrakUserSerializer, RcraProfileSerializer
+from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile
+from apps.core.serializers import (
+    HaztrakProfileSerializer,
+    HaztrakUserSerializer,
+    RcraProfileSerializer,
+)
 from apps.sites.tasks import sync_user_sites
 
 
@@ -18,6 +22,16 @@ class HaztrakUserView(RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class HaztrakProfileView(RetrieveAPIView):
+    """Displays a user's HaztrakProfile"""
+
+    queryset = HaztrakProfile.objects.all()
+    serializer_class = HaztrakProfileSerializer
+    response = Response
+    lookup_field = "user__username"
+    lookup_url_kwarg = "username"
 
 
 class RcraProfileView(RetrieveUpdateAPIView):

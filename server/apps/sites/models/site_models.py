@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.sites.models import Address, Contact
 from apps.sites.models.contact_models import RcraPhone
+from haztrak import settings
 
 from .base_models import SitesBaseManager, SitesBaseModel
 
@@ -210,6 +211,35 @@ class Role(models.TextChoices):
     PPC = "PP", _("Ppc")
     EPA = "EP", _("Epa")
     STATE = "ST", _("State")
+
+
+class SitePermissions(SitesBaseModel):
+    """The Role Based access a user has to a site"""
+
+    class Meta:
+        verbose_name = "Site Permissions"
+
+    profile = models.ForeignKey(
+        "core.HaztrakProfile",
+        on_delete=models.CASCADE,
+        related_name="site_permissions",
+    )
+    site = models.ForeignKey(
+        Site,
+        on_delete=models.CASCADE,
+    )
+    emanifest = models.CharField(
+        max_length=6,
+        default="view",
+        choices=[
+            ("viewer", "view"),
+            ("editor", "edit"),
+            ("signer", "sign"),
+        ],
+    )
+
+    def __str__(self):
+        return f"{self.profile.user}"
 
 
 class RcraSitePermission(SitesBaseModel):
