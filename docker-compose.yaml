@@ -87,11 +87,12 @@ services:
     depends_on:
       - redis
       - server
+      - postgres
 
   postgres:
     restart: unless-stopped
     container_name: postgres
-    image: 'postgres:14'
+    image: 'postgres:16'
     environment:
       POSTGRES_DB: ${HT_DB_NAME}
       POSTGRES_USER: ${HT_DB_USER}
