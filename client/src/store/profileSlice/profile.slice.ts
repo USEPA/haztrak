@@ -10,36 +10,26 @@ import { RootState } from 'store';
 /**
  * The user's RCRAInfo account data stored in the Redux store
  */
-export interface RcraProfileState {
-  /**
-   * User's haztrak username
-   */
+export interface ProfileState {
   user: string | undefined;
-  /**
-   * The user's API ID for the EPA RCRAInfo/e-Manifest system
-   */
+  rcrainfoProfile?: RcrainfoProfileState;
+  loading?: boolean;
+  error?: string;
+}
+
+export interface RcrainfoProfileState {
+  user?: string;
   rcraAPIID?: string;
-  /**
-   * The user's RCRAInfo system username
-   */
   rcraUsername?: string;
-  /**
-   * The user's API key for the EPA RCRAInfo/e-Manifest system.
-   * Should never be sent to client, only received from.
-   */
   rcraAPIKey?: string;
-  /**
-   * EPA sites a user has access to in RCRAInfo stored in key-value pairs
-   * where the keys are the site's EPA ID number
-   */
+  apiUser?: boolean;
   rcraSites?: Record<string, RcraProfileSite>;
   phoneNumber?: string;
   loading?: boolean;
   error?: string;
-  apiUser?: boolean; // Indicates whether the user is authorized ti utilize the RCRAInfo API
 }
 
-export interface RcraSitePermissions {
+export interface RcrainfoSitePermissions {
   siteManagement: boolean; // Whether the user has 'Site Manager' level access in RCRAInfo.
   annualReport: string;
   biennialReport: string;
@@ -54,19 +44,15 @@ export interface RcraSitePermissions {
  */
 export interface RcraProfileSite {
   site: HaztrakSite;
-  permissions: RcraSitePermissions;
+  permissions: RcrainfoSitePermissions;
 }
 
 /**
  * initial, empty, state of a user's RcraProfile.
  */
-const initialState: RcraProfileState = {
+const initialState: ProfileState = {
   user: undefined,
-  rcraAPIID: undefined,
-  rcraUsername: undefined,
-  rcraSites: {},
-  phoneNumber: undefined,
-  apiUser: false,
+  rcrainfoProfile: undefined,
   loading: false,
   error: undefined,
 };
@@ -84,38 +70,70 @@ interface RcraProfileResponse {
   rcraSites?: Array<RcraProfileSite>;
   phoneNumber: undefined;
   apiUser: boolean;
+  sites: Array<{ site: HaztrakSite; eManifest: 'viewer' | 'editor' | 'signer' }>;
   loading: false;
   error: undefined;
+}
+
+interface HaztrakSiteAndPermissionsResponse {
+  site: HaztrakSite;
+  eManifest: 'viewer' | 'editor' | 'signer';
+}
+
+interface HaztrakProfileResponse {
+  user: string;
+  sites: Array<HaztrakSiteAndPermissionsResponse>;
 }
 
 /**
  * Retrieves a user's RcraProfile from the server.
  */
-export const getProfile = createAsyncThunk<RcraProfileState>(
-  'rcraProfile/getProfile',
+export const getHaztrakProfile = createAsyncThunk(
+  'profile/getHaztrakProfile',
+  async (arg, thunkAPI) => {
+    const response = await htApi.get('/profile');
+    const data = response.data as HaztrakProfileResponse;
+    const sites = data.sites.reduce((obj, site) => {
+      return {
+        ...obj,
+        [site.site.handler.epaSiteId]: {
+          site: site.site.handler.epaSiteId,
+          permissions: { eManifest: site.eManifest },
+        },
+      };
+    }, {});
+    return { sites };
+  }
+);
+
+/**
+ * Retrieves a user's RcraProfile from the server.
+ */
+export const getRcraProfile = createAsyncThunk<ProfileState>(
+  'profile/getRcrainfoProfile',
   async (arg, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     const username = state.user.user?.username;
     const response = await htApi.get(`/rcra/profile/${username}`);
     const { rcraSites, ...rest } = response.data as RcraProfileResponse;
-    // Convert the array of RcraSite permissions we get from our backend
-    // to an object which each key corresponding to the RcraSite's ID number
-    let profile: RcraProfileState = { ...rest };
-    profile.rcraSites = rcraSites?.reduce((obj, site) => {
+    // Convert the array to an object which each key corresponding to the RcraSite's ID number
+    let rcraProfile: ProfileState = { user: username };
+    rcraProfile.rcrainfoProfile = { ...rest };
+    rcraProfile.rcrainfoProfile.rcraSites = rcraSites?.reduce((obj, site) => {
       return {
         ...obj,
         [site.site.handler.epaSiteId]: { site: site.site, permissions: site.permissions },
       };
     }, {});
-    return profile;
+    return rcraProfile;
   }
 );
 
-const rcraProfileSlice = createSlice({
-  name: 'rcraProfile',
+const profileSlice = createSlice({
+  name: 'profile',
   initialState,
   reducers: {
-    updateProfile: (state: RcraProfileState, action: PayloadAction<RcraProfileState>) => {
+    updateProfile: (state: ProfileState, action: PayloadAction<ProfileState>) => {
       return {
         ...state,
         ...action.payload,
@@ -124,14 +142,14 @@ const rcraProfileSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getProfile.pending, (state) => {
+      .addCase(getHaztrakProfile.pending, (state) => {
         return {
           ...state,
           loading: true,
           error: undefined,
         };
       })
-      .addCase(getProfile.fulfilled, (state, action) => {
+      .addCase(getHaztrakProfile.fulfilled, (state, action) => {
         return {
           ...state,
           ...action.payload,
@@ -139,9 +157,28 @@ const rcraProfileSlice = createSlice({
           error: undefined,
         };
       })
-      .addCase(getProfile.rejected, (state, action) => {
+      .addCase(getHaztrakProfile.rejected, (state, action) => {
         state.loading = false;
-        // Todo: remove ts-ignore
+        state.error = 'error';
+        return state;
+      })
+      .addCase(getRcraProfile.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+          error: undefined,
+        };
+      })
+      .addCase(getRcraProfile.fulfilled, (state, action) => {
+        return {
+          ...state,
+          ...action.payload,
+          loading: false,
+          error: undefined,
+        };
+      })
+      .addCase(getRcraProfile.rejected, (state, action) => {
+        state.loading = false;
         // @ts-ignore
         state.error = action.payload.error;
         return state;
@@ -155,7 +192,8 @@ const rcraProfileSlice = createSlice({
  */
 export const siteByEpaIdSelector = (epaId: string | undefined) =>
   createSelector(
-    (state: { rcraProfile: RcraProfileState }) => state.rcraProfile.rcraSites,
+    // @ts-ignore
+    (state: { profile: ProfileState }) => state.profile.rcrainfoProfile.rcraSites,
     (rcraSites: Record<string, RcraProfileSite> | undefined) => {
       if (!rcraSites) return undefined;
 
@@ -171,8 +209,10 @@ export const siteByEpaIdSelector = (epaId: string | undefined) =>
     }
   );
 
-export const selectRcraSites = (state: { rcraProfile: RcraProfileState }) =>
-  state.rcraProfile.rcraSites;
+// @ts-ignore
+export const selectRcraSites = (state: { profile: ProfileState }) =>
+  // @ts-ignore
+  state.profile.rcrainfoProfile.rcraSites;
 
 /**
  * Retrieve a RcraSite that the user has access to in their RcraProfile by the site's EPA ID number
@@ -191,9 +231,9 @@ export const userRcraSitesSelector = createSelector(
  * Retrieve a user's RcraProfile from the Redux store
  */
 export const selectRcraProfile = createSelector(
-  (state: RootState) => state.rcraProfile,
-  (rcraProfile: RcraProfileState) => rcraProfile
+  (state: RootState) => state.profile,
+  (rcraProfile: ProfileState) => rcraProfile
 );
 
-export default rcraProfileSlice.reducer;
-export const { updateProfile } = rcraProfileSlice.actions;
+export default profileSlice.reducer;
+export const { updateProfile } = profileSlice.actions;

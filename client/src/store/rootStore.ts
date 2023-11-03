@@ -1,6 +1,6 @@
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
 import notificationReducers from 'store/notificationSlice';
-import rcraProfileReducers from 'store/rcraProfileSlice/index';
+import profileReducers from 'store/profileSlice/index';
 import { taskApi } from 'store/task.slice';
 import userReducers, { login } from 'store/userSlice';
 import { wasteCodeApi } from 'store/wasteCode.slice';
@@ -9,7 +9,7 @@ import { siteApi } from 'store/site.slice';
 const rootReducer = combineReducers({
   user: userReducers,
   notification: notificationReducers,
-  rcraProfile: rcraProfileReducers,
+  profile: profileReducers,
   [wasteCodeApi.reducerPath]: wasteCodeApi.reducer,
   [taskApi.reducerPath]: taskApi.reducer,
   [siteApi.reducerPath]: siteApi.reducer,

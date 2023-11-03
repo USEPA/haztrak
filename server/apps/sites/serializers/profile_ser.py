@@ -11,13 +11,11 @@ class SitePermissionSerializer(SitesBaseSerializer):
     class Meta:
         model = SitePermissions
         fields = [
-            "epaSiteId",
+            "site",
             "eManifest",
         ]
 
-    epaSiteId = serializers.StringRelatedField(
-        source="site",
-    )
+    site = SiteSerializer()
     eManifest = serializers.CharField(
         source="emanifest",
     )

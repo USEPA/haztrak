@@ -1,6 +1,6 @@
 import { Button, ButtonProps } from 'react-bootstrap';
 import { useAppSelector } from 'store';
-import { selectRcraProfile } from 'store/rcraProfileSlice';
+import { selectRcraProfile } from 'store/profileSlice';
 
 interface HtApiUserBtnProps extends ButtonProps {}
 
@@ -14,9 +14,7 @@ interface HtApiUserBtnProps extends ButtonProps {}
 export function RcraApiUserBtn(props: HtApiUserBtnProps) {
   const profile = useAppSelector(selectRcraProfile);
   let { children, ...btnProps } = props;
-  // In order for the button to be active,
-  // the disabled prop needs to be falsy AND the user needs to be an API user
-  const active = !btnProps.disabled && profile.apiUser;
+  const active = !btnProps.disabled && profile.rcrainfoProfile?.apiUser;
 
   return (
     <Button {...btnProps} disabled={!active}>

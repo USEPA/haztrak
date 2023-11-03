@@ -7,12 +7,12 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { htApi } from 'services';
 import { addNotification, useAppDispatch } from 'store';
-import { getProfile, updateProfile } from 'store/rcraProfileSlice';
-import { RcraProfileState } from 'store/rcraProfileSlice/rcraProfile.slice';
+import { getRcraProfile, updateProfile } from 'store/profileSlice';
+import { ProfileState, RcrainfoProfileState } from 'store/profileSlice/profile.slice';
 import { z } from 'zod';
 
 interface ProfileViewProps {
-  profile: RcraProfileState;
+  profile: RcrainfoProfileState;
 }
 
 // ToDo: Either rcraAPIId & rcraAPIID should both be empty or both be non-empty
@@ -42,7 +42,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
 
   /**
    * Run upon submitting the RcraProfile form.
-   * @param data {RcraProfileState}
+   * @param data {ProfileState}
    */
   const onSubmit = (data: RcraProfileForm) => {
     setProfileLoading(!profileLoading);
@@ -52,7 +52,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
       .then((r) => {
         dispatch(updateProfile(r.data));
       })
-      .then(() => dispatch(getProfile()))
+      .then(() => dispatch(getRcraProfile()))
       .then(() => setProfileLoading(!profileLoading))
       .catch((r) => console.error(r));
   };

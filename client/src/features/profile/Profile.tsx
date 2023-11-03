@@ -6,7 +6,7 @@ import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from 'store';
-import { getProfile, selectRcraProfile } from 'store/rcraProfileSlice';
+import { getRcraProfile, selectRcraProfile } from 'store/profileSlice';
 
 /**
  * Display user profile
@@ -23,7 +23,7 @@ export function Profile(): ReactElement {
   }
 
   useEffect(() => {
-    dispatch(getProfile());
+    dispatch(getRcraProfile());
   }, [profile.user]);
 
   return (
@@ -43,7 +43,8 @@ export function Profile(): ReactElement {
             <HtCard>
               <HtCard.Header title="RCRAInfo Profile" />
               <HtCard.Body>
-                <RcraProfile profile={profile} />
+                {/*ToDo extend RcraProfile component accept undefined*/}
+                {profile.rcrainfoProfile && <RcraProfile profile={profile.rcrainfoProfile} />}
               </HtCard.Body>
             </HtCard>
           </Col>

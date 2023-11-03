@@ -8,7 +8,7 @@ import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store';
 import { launchExampleTask } from 'store/notificationSlice/notification.slice';
-import { getProfile } from 'store/rcraProfileSlice';
+import { getRcraProfile } from 'store/profileSlice';
 import { selectUserName } from 'store/userSlice/user.slice';
 
 /**
@@ -22,7 +22,7 @@ export function Home(): ReactElement {
 
   useEffect(() => {
     // get user profile information when the user changes
-    dispatch(getProfile());
+    dispatch(getRcraProfile());
   }, [userName]);
 
   return (

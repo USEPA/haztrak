@@ -30,8 +30,9 @@ class HaztrakProfileView(RetrieveAPIView):
     queryset = HaztrakProfile.objects.all()
     serializer_class = HaztrakProfileSerializer
     response = Response
-    lookup_field = "user__username"
-    lookup_url_kwarg = "username"
+
+    def get_object(self):
+        return HaztrakProfile.objects.get(user=self.request.user)
 
 
 class RcraProfileView(RetrieveUpdateAPIView):
