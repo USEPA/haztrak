@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import APIException, ValidationError
 
 from apps.sites.models import RcraSitePermission, SitePermissions
 
@@ -38,8 +38,9 @@ class RcraSitePermissionSerializer(SitesBaseSerializer):
         "myRCRAid",
     ]
 
-    site = SiteSerializer(
+    epaSiteId = serializers.StringRelatedField(
         read_only=True,
+        source="site",
     )
     siteManagement = serializers.BooleanField(
         source="site_manager",
@@ -70,7 +71,7 @@ class RcraSitePermissionSerializer(SitesBaseSerializer):
     class Meta:
         model = RcraSitePermission
         fields = [
-            "site",
+            "epaSiteId",
             "siteManagement",
             "annualReport",
             "biennialReport",
@@ -81,11 +82,7 @@ class RcraSitePermissionSerializer(SitesBaseSerializer):
 
 
 class RcraPermissionField(serializers.Field):
-    """
-    Serializer for communicating with RCRAInfo, translates Haztrak's
-    storage to the way RCRAInfo describes a user's permissions for a
-    specific module for the given site. (ToDo: reword this description)
-    """
+    """Serializer for communicating with RCRAInfo, translates internal to RCRAInfo field names."""
 
     def to_representation(self, value):
         if value:
@@ -98,19 +95,23 @@ class RcraPermissionField(serializers.Field):
         return ret
 
     def to_internal_value(self, data):
-        """
-        Convert the json object {"module" : string, "level": string}
-        to Haztrak's internal representation
-        """
-        data = data["level"]
-        if data == "Active":
-            data = True
-        elif data == "InActive":
-            data = False
-        return data
+        try:
+            data = data["level"]
+            if data == "Active":
+                data = True
+            elif data == "InActive":
+                data = False
+            return data
+        except KeyError as exc:
+            raise ValidationError(f"malformed JSON: {exc}")
 
 
 class RcraPermissionSerializer(RcraSitePermissionSerializer):
+    """
+    RcraSitePermission model serializer specifically for reading a user's site permissions
+    from RCRAInfo. It's not used for serializing, only deserializing permissions from RCRAinfo
+    """
+
     rcrainfo_modules = [
         "AnnualReport",
         "BiennialReport",
@@ -119,10 +120,6 @@ class RcraPermissionSerializer(RcraSitePermissionSerializer):
         "WIETS",
         "SiteManagement",
     ]
-    """
-    RcraSitePermission model serializer specifically for reading a user's site permissions
-    from RCRAInfo. It's not used for serializing, only deserializing permissions from RCRAinfo
-    """
     siteId = serializers.StringRelatedField(
         source="site",
     )
@@ -130,7 +127,9 @@ class RcraPermissionSerializer(RcraSitePermissionSerializer):
         source="site.rcra_site.name",
         required=False,
     )
-    SiteManagement = RcraPermissionField(source="site_manager")
+    SiteManagement = RcraPermissionField(
+        source="site_manager",
+    )
     AnnualReport = RcraPermissionField(
         source="annual_report",
     )
@@ -148,11 +147,7 @@ class RcraPermissionSerializer(RcraSitePermissionSerializer):
     )
 
     def to_internal_value(self, data):
-        """
-        This method converts a user's site specific permissions provided by RcraInfo
-        into Haztrak's internal representation. Namely, converting the permission per module
-        into a key-object structure.
-        """
+        """This converts a RCRAInfo permissions into Haztrak's internal representation."""
         try:
             data.pop("siteName")
             permissions = data.pop("permissions")
@@ -161,11 +156,10 @@ class RcraPermissionSerializer(RcraSitePermissionSerializer):
                 data[rcrainfo_module] = i
             return super().to_internal_value(data)
         except KeyError as exc:
-            raise APIException(f"malformed JSON: {exc}")
+            raise ValidationError(f"malformed JSON: {exc}")
 
     class Meta:
         model = RcraSitePermission
-        # Note the Pascal case, instead of camel case for (some) Rcrainfo modules.
         fields = [
             "siteId",
             "name",

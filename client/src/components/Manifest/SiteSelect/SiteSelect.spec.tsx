@@ -3,8 +3,8 @@ import { SiteSelect } from 'components/Manifest/SiteSelect/SiteSelect';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { renderWithProviders } from 'test-utils';
-import { createMockSite } from 'test-utils/fixtures';
-import { createMockPermission } from 'test-utils/fixtures/mockHandler';
+import { createMockRcrainfoSite } from 'test-utils/fixtures';
+import { createMockRcrainfoPermissions } from 'test-utils/fixtures/mockHandler';
 import { describe, expect, test } from 'vitest';
 
 function TestComponent() {
@@ -16,7 +16,7 @@ function TestComponent() {
 
 describe('SiteSelect', () => {
   test('renders', () => {
-    const mySite = createMockSite();
+    const mySite = createMockRcrainfoSite();
     renderWithProviders(<TestComponent />, {
       preloadedState: {
         profile: {
@@ -27,12 +27,12 @@ describe('SiteSelect', () => {
             apiUser: false,
             rcraSites: {
               VATESTGEN001: {
-                site: mySite,
-                permissions: createMockPermission(),
+                epaSiteId: 'VATESTGEN001',
+                permissions: createMockRcrainfoPermissions(),
               },
               VATEST00001: {
-                site: mySite,
-                permissions: createMockPermission(),
+                epaSiteId: 'VATEST00001',
+                permissions: createMockRcrainfoPermissions(),
               },
             },
           },

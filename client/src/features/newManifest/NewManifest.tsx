@@ -40,8 +40,7 @@ export function NewManifest() {
   };
 
   if (!selectedSiteType || !manifestingSite) {
-    // If the site that needs to start a manifest, or its role on the manifest
-    // can't be determined, ask the user.
+    // If the manifesting site's role on the manifest can't be automatically determined, ask the user.
     return (
       <HtCard>
         <HtCard.Body>

@@ -1,11 +1,11 @@
 import { rest } from 'msw';
-import { createMockHandler, createMockManifest, createMockSite } from '../fixtures';
+import { createMockHandler, createMockManifest, createMockRcrainfoSite } from '../fixtures';
 
 export const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
 const mockMTN = createMockManifest().manifestTrackingNumber;
 const mockEpaId = createMockHandler().epaSiteId;
 const mockUsername = 'testuser1';
-const mockSites = [createMockSite(), createMockSite()];
+const mockSites = [createMockRcrainfoSite(), createMockRcrainfoSite()];
 
 export const handlers = [
   /**

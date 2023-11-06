@@ -83,6 +83,14 @@ export function createMockSite(overWrites?: Partial<HaztrakSite>): HaztrakSite {
   };
 }
 
+export function createMockRcrainfoSite(overWrites?: Partial<HaztrakSite>): HaztrakSite {
+  return {
+    handler: createMockHandler(overWrites?.handler),
+    name: 'mySiteName',
+    ...overWrites,
+  };
+}
+
 export function createMockTransporter(overWrites?: Partial<Transporter>): Transporter {
   return {
     ...createMockHandler(),
@@ -91,7 +99,7 @@ export function createMockTransporter(overWrites?: Partial<Transporter>): Transp
   };
 }
 
-export function createMockPermission(
+export function createMockRcrainfoPermissions(
   overWrites?: Partial<RcrainfoSitePermissions>
 ): RcrainfoSitePermissions {
   return {

@@ -6,9 +6,14 @@ import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { htApi } from 'services';
-import { addNotification, useAppDispatch } from 'store';
+import { addNotification, useAppDispatch, useAppSelector } from 'store';
 import { getRcraProfile, updateProfile } from 'store/profileSlice';
-import { ProfileState, RcrainfoProfileState } from 'store/profileSlice/profile.slice';
+import {
+  ProfileState,
+  RcrainfoProfileState,
+  selectHaztrakSites,
+} from 'store/profileSlice/profile.slice';
+import { registerConsoleShortcuts } from 'vitest/node';
 import { z } from 'zod';
 
 interface ProfileViewProps {
@@ -27,6 +32,7 @@ type RcraProfileForm = z.infer<typeof rcraProfileForm>;
 export function RcraProfile({ profile }: ProfileViewProps) {
   const [editable, setEditable] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
+  const userSites = useAppSelector(selectHaztrakSites);
   const { rcraSites, loading, ...formValues } = profile;
   const dispatch = useAppDispatch();
 
@@ -161,11 +167,14 @@ export function RcraProfile({ profile }: ProfileViewProps) {
           <tbody>
             {profile.rcraSites &&
               Object.values(profile.rcraSites).map((site) => (
-                <tr key={`permissionsRow${site.site.handler.epaSiteId}`}>
+                <tr key={`permissionsRow${site.epaSiteId}`}>
                   <td>
-                    <Link to={`/site/${site.site.handler.epaSiteId}`}>
-                      {site.site.handler.epaSiteId}
-                    </Link>
+                    {/* @ts-ignore */}
+                    {site.epaSiteId in userSites ? (
+                      <Link to={`/site/${site.epaSiteId}`}>{site.epaSiteId}</Link>
+                    ) : (
+                      site.epaSiteId
+                    )}
                   </td>
                   <td>{site.permissions.eManifest}</td>
                   <td>{site.permissions.biennialReport}</td>

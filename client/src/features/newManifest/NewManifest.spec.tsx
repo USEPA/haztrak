@@ -3,14 +3,17 @@ import userEvent from '@testing-library/user-event';
 import { NewManifest } from 'features/newManifest/NewManifest';
 import React from 'react';
 import { renderWithProviders, screen } from 'test-utils';
-import { createMockPermission, createMockSite } from 'test-utils/fixtures/mockHandler';
+import {
+  createMockRcrainfoPermissions,
+  createMockRcrainfoSite,
+} from 'test-utils/fixtures/mockHandler';
 import { describe, expect, test } from 'vitest';
 
 describe('NewManifest', () => {
   test('renders', () => {
     const mySiteId = 'VATESTGEN001';
     const mySiteName = 'My Site';
-    const mySite = createMockSite({
+    const mySite = createMockRcrainfoSite({
       name: mySiteName,
       // @ts-ignore
       handler: { epaSiteId: mySiteId, siteType: 'Tsdf' },
@@ -19,14 +22,15 @@ describe('NewManifest', () => {
       preloadedState: {
         profile: {
           user: 'testuser1',
+          sites: { VATESTGEN001: { ...mySite, permissions: { eManifest: 'viewer' } } },
           rcrainfoProfile: {
             user: 'username',
             phoneNumber: '1231231234',
             apiUser: false,
             rcraSites: {
               VATESTGEN001: {
-                site: { ...mySite },
-                permissions: createMockPermission(),
+                epaSiteId: mySiteId,
+                permissions: createMockRcrainfoPermissions(),
               },
             },
           },
@@ -38,7 +42,7 @@ describe('NewManifest', () => {
   test('site type is initially disabled', () => {
     const mySiteId = 'VATESTGEN001';
     const mySiteName = 'My Site';
-    const mySite = createMockSite({
+    const mySite = createMockRcrainfoSite({
       name: mySiteName,
       // @ts-ignore
       handler: { epaSiteId: mySiteId, siteType: 'Tsdf' },
@@ -53,8 +57,8 @@ describe('NewManifest', () => {
             apiUser: false,
             rcraSites: {
               VATESTGEN001: {
-                site: { ...mySite },
-                permissions: createMockPermission(),
+                epaSiteId: mySiteId,
+                permissions: createMockRcrainfoPermissions(),
               },
             },
           },
@@ -67,7 +71,7 @@ describe('NewManifest', () => {
   test('site type is not disabled after selecting a site', async () => {
     const mySiteId = 'VATESTGEN001';
     const mySiteName = 'My Site';
-    const mySite = createMockSite({
+    const mySite = createMockRcrainfoSite({
       name: mySiteName,
       // @ts-ignore
       handler: { epaSiteId: mySiteId, siteType: 'Tsdf' },
@@ -76,17 +80,7 @@ describe('NewManifest', () => {
       preloadedState: {
         profile: {
           user: 'testuser1',
-          rcrainfoProfile: {
-            user: 'username',
-            phoneNumber: '1231231234',
-            apiUser: false,
-            rcraSites: {
-              VATESTGEN001: {
-                site: { ...mySite },
-                permissions: createMockPermission(),
-              },
-            },
-          },
+          sites: { VATESTGEN001: { ...mySite, permissions: { eManifest: 'viewer' } } },
         },
       },
     });
