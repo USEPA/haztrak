@@ -1,7 +1,7 @@
 import {
   createMockHandler,
   createMockMTNHandler,
-  createMockSite,
+  createMockRcrainfoSite,
   createMockTransporter,
 } from './mockHandler';
 import { createMockManifest } from './mockManifest';
@@ -11,5 +11,5 @@ export {
   createMockMTNHandler,
   createMockTransporter,
   createMockManifest,
-  createMockSite,
+  createMockRcrainfoSite,
 };

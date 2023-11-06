@@ -4,6 +4,7 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import { rootStore } from 'store';
 
+/** An Axios instance with an interceptor to automatically apply authentication headers*/
 export const htApi = axios.create({
   baseURL: `${import.meta.env.VITE_HT_API_URL}/api`,
   headers: {
@@ -12,13 +13,8 @@ export const htApi = axios.create({
   },
 });
 
-/**
- * The axios intercept to apply to all requests to the Haztrak server
- */
+/**interceptor to apply auth token from redux store*/
 htApi.interceptors.request.use(
-  /**
-   * Use the redux store to get the token and set Authorization header
-   */
   (config: InternalAxiosRequestConfig) => {
     config.headers = config.headers ?? {};
     const token = rootStore.getState().user.token;

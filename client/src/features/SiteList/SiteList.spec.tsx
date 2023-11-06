@@ -3,11 +3,11 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { createMockHandler, createMockSite } from 'test-utils/fixtures/mockHandler';
+import { createMockHandler, createMockRcrainfoSite } from 'test-utils/fixtures/mockHandler';
 import { API_BASE_URL } from 'test-utils/mock/handlers';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
-const mockSites = [createMockSite(), createMockSite()];
+const mockSites = [createMockRcrainfoSite(), createMockRcrainfoSite()];
 const server = setupServer(
   rest.get(`${API_BASE_URL}/api/site`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockSites));
