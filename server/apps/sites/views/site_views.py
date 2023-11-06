@@ -5,7 +5,6 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, inline_serializer
 from rest_framework import permissions, serializers, status
-from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -26,13 +25,12 @@ class SiteListView(ListAPIView):
 
     serializer_class = SiteSerializer
 
-    @method_decorator(cache_page(60 * 15))
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         user = self.request.user
-        return Site.objects.filter(rcrasitepermission__profile__user=user)
+        return Site.objects.filter(sitepermissions__profile__user=user)
 
 
 @method_decorator(cache_page(60 * 15), name="dispatch")
@@ -53,7 +51,7 @@ class SiteDetailView(RetrieveAPIView):
     def get_queryset(self):
         epa_id = self.kwargs["epa_id"]
         queryset = Site.objects.filter(
-            rcra_site__epa_id=epa_id, rcrasitepermission__profile__user=self.request.user
+            rcra_site__epa_id=epa_id, sitepermissions__profile__user=self.request.user
         )
         return queryset
 
