@@ -64,7 +64,7 @@ class TestSiteDetailsApi:
     def local_site_factory(
         self,
         haztrak_profile_factory,
-        site_access_factory,
+        haztrak_site_permission_factory,
         rcra_site_factory,
         user_factory,
         haztrak_site_factory,
@@ -83,7 +83,7 @@ class TestSiteDetailsApi:
             if site is None:
                 site = haztrak_site_factory(rcra_site=rcra_site)
             if rcra_site_permission is None:
-                site_access_factory(site=site, profile=profile)
+                haztrak_site_permission_factory(site=site, profile=profile)
             return site
 
         return create_site_and_related

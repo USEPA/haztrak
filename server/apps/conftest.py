@@ -93,11 +93,9 @@ def haztrak_profile_factory(db, user_factory):
 
     def create_profile(
         user: Optional[User] = None,
-        admin_rcrainfo_profile: Optional[RcraProfile] = None,
     ) -> HaztrakProfile:
         return HaztrakProfile.objects.create(
             user=user or user_factory(),
-            admin_rcrainfo_profile=admin_rcrainfo_profile,
         )
 
     yield create_profile

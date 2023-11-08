@@ -12,7 +12,7 @@ from apps.sites.models import (
 
 
 @pytest.fixture
-def site_access_factory(db, haztrak_site_factory, haztrak_profile_factory):
+def haztrak_site_permission_factory(db, haztrak_site_factory, haztrak_profile_factory):
     """Abstract factory for Haztrak RcraSitePermissions model"""
 
     def create_permission(
