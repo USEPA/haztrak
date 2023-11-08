@@ -84,7 +84,7 @@ class RcraProfileSerializer(ModelSerializer):
         required=False,
     )
     apiUser = serializers.BooleanField(
-        source="is_api_user",
+        source="has_api_credentials",
         required=False,
         allow_null=False,
     )

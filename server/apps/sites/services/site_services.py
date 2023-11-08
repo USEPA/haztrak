@@ -53,13 +53,13 @@ class SiteService:
         try:
             site = Site.objects.get(rcra_site__epa_id=site_id)
             updated_mtn = self._get_updated_mtn(
-                site_id=site.rcra_site.epa_id, last_sync_date=site.last_rcra_sync
+                site_id=site.rcra_site.epa_id, last_sync_date=site.last_rcrainfo_manifest_sync
             )
             updated_mtn = updated_mtn[:15]  # temporary limit to 15
             logger.info(f"Pulling {updated_mtn} from RCRAInfo")
             manifest = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
             results: PullManifestsResult = manifest.pull_manifests(tracking_numbers=updated_mtn)
-            site.last_rcra_sync = datetime.now(UTC)
+            site.last_rcrainfo_manifest_sync = datetime.now(UTC)
             site.save()
             return results
         except Site.DoesNotExist:

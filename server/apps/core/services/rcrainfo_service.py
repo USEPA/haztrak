@@ -43,7 +43,7 @@ class RcrainfoService(RcrainfoClient):
     def has_api_user(self) -> bool:
         """returns boolean if the assigned API user has credentials"""
         try:
-            return self.profile.is_api_user
+            return self.profile.has_api_credentials
         except AttributeError:
             return False
 

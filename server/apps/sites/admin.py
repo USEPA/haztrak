@@ -25,7 +25,7 @@ class SitePermissionAdmin(admin.ModelAdmin):
 
 @admin.register(Site)
 class SiteAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "related_handler", "last_rcra_sync"]
+    list_display = ["__str__", "related_handler", "last_rcrainfo_manifest_sync"]
     list_display_links = ["__str__", "related_handler"]
 
     @admin.display(description="EPA Site")
@@ -61,7 +61,7 @@ class RcraProfileAdmin(admin.ModelAdmin):
         return format_html("<a href='{}'>{}</a>", url, user)
 
     def api_user(self, profile: RcraProfile) -> bool:
-        return profile.is_api_user
+        return profile.has_api_credentials
 
     api_user.boolean = True
     api_user.short_description = "Rcrainfo API User"
