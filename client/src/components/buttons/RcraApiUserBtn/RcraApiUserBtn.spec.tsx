@@ -26,6 +26,7 @@ describe('RcraApiUserBtn', () => {
     renderWithProviders(<RcraApiUserBtn>Click Me</RcraApiUserBtn>, {
       preloadedState: {
         profile: {
+          user: 'username',
           rcrainfoProfile: {
             user: 'username',
             phoneNumber: '1231231234',

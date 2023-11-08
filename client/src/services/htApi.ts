@@ -1,8 +1,23 @@
-/**
- * @file axios (http) instance for haztrak restful API usage
- */
-import axios, { InternalAxiosRequestConfig } from 'axios';
+/**htApi.ts - service for making requests to the Haztrak API*/
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { HaztrakSite } from 'components/HaztrakSite';
 import { rootStore } from 'store';
+import { HaztrakModulePermissions } from 'store/profileSlice/profile.slice';
+
+interface HaztrakProfileResponse {
+  user: string;
+  sites: Array<{
+    site: HaztrakSite;
+    eManifest: HaztrakModulePermissions;
+  }>;
+}
+
+export const HtApi = {
+  getUserProfile: async () => {
+    const response: AxiosResponse<HaztrakProfileResponse> = await htApi.get('/profile');
+    return response.data;
+  },
+};
 
 /** An Axios instance with an interceptor to automatically apply authentication headers*/
 export const htApi = axios.create({

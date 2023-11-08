@@ -5,6 +5,7 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HaztrakSite } from 'components/HaztrakSite';
 import { htApi } from 'services';
+import { HtApi } from 'services/htApi';
 import { RootState } from 'store';
 
 /**The user's RCRAInfo account data stored in the Redux store*/
@@ -68,32 +69,20 @@ const initialState: ProfileState = {
   error: undefined,
 };
 
-interface HaztrakProfileResponse {
-  user: string;
-  sites: Array<{
-    site: HaztrakSite;
-    eManifest: HaztrakModulePermissions;
-  }>;
-}
-
 /**Retrieves a user's profile from the server.*/
-export const getHaztrakProfile = createAsyncThunk(
-  'profile/getHaztrakProfile',
-  async (arg, thunkAPI) => {
-    const response = await htApi.get('/profile');
-    const data = response.data as HaztrakProfileResponse;
-    const sites = data.sites.reduce((obj, site) => {
-      return {
-        ...obj,
-        [site.site.handler.epaSiteId]: {
-          ...site.site,
-          permissions: { eManifest: site.eManifest },
-        },
-      };
-    }, {});
-    return { sites };
-  }
-);
+export const getHaztrakProfile = createAsyncThunk('profile/getHaztrakProfile', async () => {
+  const data = await HtApi.getUserProfile();
+  const sites = data.sites.reduce((obj, site) => {
+    return {
+      ...obj,
+      [site.site.handler.epaSiteId]: {
+        ...site.site,
+        permissions: { eManifest: site.eManifest },
+      },
+    };
+  }, {});
+  return { sites };
+});
 
 /**Retrieves a user's RcrainfoProfile, if it exists, from the server.*/
 export const getRcraProfile = createAsyncThunk<ProfileState>(
