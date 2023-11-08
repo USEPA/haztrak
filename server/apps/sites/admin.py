@@ -9,7 +9,6 @@ from apps.sites.models import (
     Contact,
     HaztrakSite,
     RcraSite,
-    RcraSitePermissions,
     SitePermissions,
 )
 
@@ -19,15 +18,6 @@ class HandlerAdmin(admin.ModelAdmin):
     list_display = ["__str__", "site_type", "site_address", "mail_address"]
     list_filter = ["site_type"]
     search_fields = ["epa_id"]
-
-
-# admin.site.register(SitePermissions)
-@admin.register(SitePermissions)
-class SitePermissionAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "site", "emanifest"]
-    list_filter = ["site", "profile"]
-    search_fields = ["site"]
-    search_help_text = "Search by user or site"
 
 
 @admin.register(HaztrakSite)
@@ -43,37 +33,6 @@ class SiteAdmin(admin.ModelAdmin):
             + urlencode({"epa_id": str(site.rcra_site.epa_id)})
         )
         return format_html("<a href='{}'>{}</a>", url, site.rcra_site.epa_id)
-
-
-class RcraSitePermissionInline(admin.TabularInline):
-    model = RcraSitePermissions
-    extra = 0
-
-    ordering = ["site"]
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-
-@admin.register(RcraProfile)
-class RcraProfileAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "related_user", "rcra_username", "api_user"]
-    search_fields = ["user__username", "rcra_username"]
-    inlines = [RcraSitePermissionInline]
-
-    def related_user(self, user):
-        url = reverse("admin:core_haztrakuser_changelist") + "?" + urlencode({"q": str(user.id)})
-        return format_html("<a href='{}'>{}</a>", url, user)
-
-    def api_user(self, profile: RcraProfile) -> bool:
-        return profile.has_api_credentials
-
-    api_user.boolean = True
-    api_user.short_description = "Rcrainfo API User"
-    related_user.short_description = "User"
 
 
 # Register models That should only be edited within the context of another form here.
