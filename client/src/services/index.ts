@@ -1,3 +1,3 @@
-import { htApi } from './HtApi';
+import { htApi } from 'services/htApi';
 
 export { htApi };
