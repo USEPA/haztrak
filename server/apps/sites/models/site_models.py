@@ -195,11 +195,23 @@ class Site(SitesBaseModel):
         to=RcraSite,
         on_delete=models.CASCADE,
     )
-    last_rcra_sync = models.DateTimeField(
-        verbose_name="last sync with RCRAInfo",
+    last_rcrainfo_manifest_sync = models.DateTimeField(
+        verbose_name="last RCRAInfo manifest sync date",
         null=True,
         blank=True,
     )
+    admin_rcrainfo_profile = models.ForeignKey(
+        "core.RcraProfile",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+
+    @property
+    def admin_has_rcrainfo_api_credentials(self) -> bool:
+        """Returns True if the admin user has RcraInfo API credentials"""
+        if self.admin_rcrainfo_profile.has_api_credentials:
+            return True
+        return False
 
     def __str__(self):
         """Used in StringRelated fields in serializer classes"""

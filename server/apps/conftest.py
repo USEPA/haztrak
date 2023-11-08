@@ -93,9 +93,11 @@ def haztrak_profile_factory(db, user_factory):
 
     def create_profile(
         user: Optional[User] = None,
-    ) -> RcraProfile:
+        admin_rcrainfo_profile: Optional[RcraProfile] = None,
+    ) -> HaztrakProfile:
         return HaztrakProfile.objects.create(
             user=user or user_factory(),
+            admin_rcrainfo_profile=admin_rcrainfo_profile,
         )
 
     yield create_profile
@@ -206,10 +208,12 @@ def site_factory(db, rcra_site_factory):
     def create_site(
         rcra_site: Optional[RcraSite] = None,
         name: Optional[str] = "my site name",
+        admin_rcrainfo_profile: Optional[RcraProfile] = None,
     ) -> Site:
         return Site.objects.create(
             rcra_site=rcra_site or rcra_site_factory(),
             name=name,
+            admin_rcrainfo_profile=admin_rcrainfo_profile,
         )
 
     yield create_site

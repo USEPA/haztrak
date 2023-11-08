@@ -20,7 +20,7 @@ from .models.contact_models import ManifestPhone
 
 class IsApiUser(admin.SimpleListFilter):
     title = "API User"
-    parameter_name = "is_api_user"
+    parameter_name = "has_api_credentials"
 
     def lookups(self, request, model_admin):
         return ("True", True), ("False", False)

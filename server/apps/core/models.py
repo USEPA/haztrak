@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.functional import cached_property
 
 from haztrak import settings
 
@@ -36,9 +37,12 @@ class HaztrakProfile(CoreBaseModel):
         on_delete=models.CASCADE,
         related_name="haztrak_profile",
     )
-
-    def __str__(self):
-        return f"{self.user.username}"
+    admin_rcrainfo_profile = models.ForeignKey(
+        "RcraProfile",
+        on_delete=models.SET_NULL,
+        null=True,
+        default=None,
+    )
 
 
 class RcraProfile(CoreBaseModel):
@@ -80,8 +84,8 @@ class RcraProfile(CoreBaseModel):
         return f"{self.user.username}"
 
     @property
-    def is_api_user(self) -> bool:
+    def has_api_credentials(self) -> bool:
         """Returns true if the use has Rcrainfo API credentials"""
-        if self.rcra_username and self.rcra_api_id and self.rcra_api_key:
+        if self.rcra_api_id and self.rcra_api_key:
             return True
         return False
