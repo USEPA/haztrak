@@ -14,9 +14,9 @@ from apps.trak.services import ManifestService
 
 class TestManifestService:
     @pytest.fixture(autouse=True)
-    def _setup(self, user_factory, site_factory, haztrak_json):
+    def _setup(self, user_factory, haztrak_site_factory, haztrak_json):
         self.user = user_factory()
-        self.gen001 = site_factory()
+        self.gen001 = haztrak_site_factory()
         self.json_100031134elc = haztrak_json.MANIFEST.value
         self.tracking_number = self.json_100031134elc.get("manifestTrackingNumber", "123456789ELC")
 

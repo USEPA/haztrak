@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
 from apps.core.models import RcraProfile  # type: ignore
-from apps.sites.models import RcraSite, RcraSitePermission, Site  # type: ignore
+from apps.sites.models import HaztrakSite, RcraSite, RcraSitePermissions  # type: ignore
 from apps.sites.views import SiteDetailView  # type: ignore
 
 
@@ -18,18 +18,18 @@ class TestSiteListView:
         rcra_profile_factory,
         rcra_permission_factory,
         user_factory,
-        site_factory,
+        haztrak_site_factory,
         rcra_site_factory,
     ):
         self.user = user_factory()
         self.client = api_client_factory(user=self.user)
         self.profile = rcra_profile_factory(user=self.user)
         self.rcra_site = rcra_site_factory()
-        self.user_site = site_factory(rcra_site=self.rcra_site)
+        self.user_site = haztrak_site_factory(rcra_site=self.rcra_site)
         self.user_site_permission = rcra_permission_factory(
-            site=self.user_site, profile=self.profile
+            site=self.rcra_site, profile=self.profile
         )
-        self.other_site = site_factory(rcra_site=rcra_site_factory(epa_id="VA12345678"))
+        self.other_site = haztrak_site_factory(rcra_site=rcra_site_factory(epa_id="VA12345678"))
 
     base_url = "/api/site"
 
@@ -67,7 +67,7 @@ class TestSiteDetailsApi:
         site_access_factory,
         rcra_site_factory,
         user_factory,
-        site_factory,
+        haztrak_site_factory,
     ):
         """Create sets up a site, corresponding rcra_site, a rcra_site_permissions for a user"""
 
@@ -75,13 +75,13 @@ class TestSiteDetailsApi:
             user: Optional[User] = user_factory(),
             rcra_site: Optional[RcraSite] = rcra_site_factory(),
             profile: Optional[RcraProfile] = None,
-            site: Optional[Site] = None,
-            rcra_site_permission: Optional[RcraSitePermission] = None,
+            site: Optional[HaztrakSite] = None,
+            rcra_site_permission: Optional[RcraSitePermissions] = None,
         ):
             if profile is None:
                 profile = haztrak_profile_factory(user=user)
             if site is None:
-                site = site_factory(rcra_site=rcra_site)
+                site = haztrak_site_factory(rcra_site=rcra_site)
             if rcra_site_permission is None:
                 site_access_factory(site=site, profile=profile)
             return site
@@ -100,11 +100,13 @@ class TestSiteDetailsApi:
         # Assert
         assert response.data["handler"]["epaSiteId"] == site.rcra_site.epa_id
 
-    def test_non_user_sites_not_returned(self, user_factory, local_site_factory, site_factory):
+    def test_non_user_sites_not_returned(
+        self, user_factory, local_site_factory, haztrak_site_factory
+    ):
         # Arrange
         user = user_factory(username="username1")
         local_site_factory(user=user)
-        other_site = site_factory()
+        other_site = haztrak_site_factory()
         factory = APIRequestFactory()
         request = factory.get(f"{self.url}/{other_site.rcra_site.epa_id}")
         force_authenticate(request, user)
@@ -113,7 +115,9 @@ class TestSiteDetailsApi:
         # Assert
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_returns_formatted_http_response(self, user_factory, local_site_factory, site_factory):
+    def test_returns_formatted_http_response(
+        self, user_factory, local_site_factory, haztrak_site_factory
+    ):
         # Arrange
         user = user_factory(username="username1")
         site = local_site_factory(user=user)

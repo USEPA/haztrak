@@ -4,7 +4,14 @@ from django.utils.html import format_html, urlencode
 
 from apps.core.admin import HiddenListView
 from apps.core.models import RcraProfile
-from apps.sites.models import Address, Contact, RcraSite, RcraSitePermission, Site, SitePermissions
+from apps.sites.models import (
+    Address,
+    Contact,
+    HaztrakSite,
+    RcraSite,
+    RcraSitePermissions,
+    SitePermissions,
+)
 
 
 @admin.register(RcraSite)
@@ -23,13 +30,13 @@ class SitePermissionAdmin(admin.ModelAdmin):
     search_help_text = "Search by user or site"
 
 
-@admin.register(Site)
+@admin.register(HaztrakSite)
 class SiteAdmin(admin.ModelAdmin):
     list_display = ["__str__", "related_handler", "last_rcrainfo_manifest_sync"]
     list_display_links = ["__str__", "related_handler"]
 
     @admin.display(description="EPA Site")
-    def related_handler(self, site: Site) -> str:
+    def related_handler(self, site: HaztrakSite) -> str:
         url = (
             reverse("admin:sites_rcrasite_changelist")
             + "?"
@@ -39,8 +46,9 @@ class SiteAdmin(admin.ModelAdmin):
 
 
 class RcraSitePermissionInline(admin.TabularInline):
-    model = RcraSitePermission
+    model = RcraSitePermissions
     extra = 0
+
     ordering = ["site"]
 
     def has_change_permission(self, request, obj=None):

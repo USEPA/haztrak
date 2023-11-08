@@ -7,7 +7,7 @@ from django.db import transaction
 from rest_framework.exceptions import ValidationError
 
 from apps.core.services import RcrainfoService  # type: ignore
-from apps.sites.models import RcraSite, Site  # type: ignore
+from apps.sites.models import HaztrakSite, RcraSite  # type: ignore
 from apps.sites.serializers import RcraSiteSerializer  # type: ignore
 from apps.trak.services import ManifestService  # type: ignore
 from apps.trak.services.manifest_services import PullManifestsResult, TaskResponse  # type: ignore
@@ -51,7 +51,7 @@ class SiteService:
     def sync_manifests(self, *, site_id: str) -> PullManifestsResult:
         """Pull manifests and update the last sync date for a site"""
         try:
-            site = Site.objects.get(rcra_site__epa_id=site_id)
+            site = HaztrakSite.objects.get(rcra_site__epa_id=site_id)
             updated_mtn = self._get_updated_mtn(
                 site_id=site.rcra_site.epa_id, last_sync_date=site.last_rcrainfo_manifest_sync
             )
@@ -62,7 +62,7 @@ class SiteService:
             site.last_rcrainfo_manifest_sync = datetime.now(UTC)
             site.save()
             return results
-        except Site.DoesNotExist:
+        except HaztrakSite.DoesNotExist:
             logger.warning(f"Site Does not exists {site_id}")
             raise SiteServiceError(f"Site Does not exists {site_id}")
 
@@ -72,9 +72,9 @@ class SiteService:
         return manifest.search_rcrainfo_mtn(site_id=site_id, start_date=last_sync_date)
 
     @transaction.atomic
-    def create_or_update_site(
+    def create_or_update_haztrak_site(
         self, *, rcra_site: RcraSite, site_name: Optional[str] = None
-    ) -> Site:
+    ) -> HaztrakSite:
         """
         Retrieve a site from the database or create.
 
@@ -83,11 +83,11 @@ class SiteService:
             site_name (str): A haztrak alias for a site
         """
         if site_name is None:
-            site_name = rcra_site.name
-        if Site.objects.filter(rcra_site__epa_id=rcra_site.epa_id).exists():
-            return Site.objects.get(rcra_site__epa_id=rcra_site.epa_id)
+            site_name = rcra_site.name or rcra_site.epa_id
+        if HaztrakSite.objects.filter(rcra_site__epa_id=rcra_site.epa_id).exists():
+            return HaztrakSite.objects.get(rcra_site__epa_id=rcra_site.epa_id)
         else:
-            return Site.objects.create(rcra_site=rcra_site, name=site_name)
+            return HaztrakSite.objects.create(rcra_site=rcra_site, name=site_name)
 
 
 class RcraSiteService:

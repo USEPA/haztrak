@@ -129,17 +129,34 @@
 - model: core.rcraprofile
   pk: 1
   fields:
-    user: 2
+    user: 1
     rcra_username: dpgraham4401
     phone_number: null
-    email: test.user@haztrak.net
-- model: sites.site
+    email: dpgraham4401@haztrak.net
+- model: core.rcraprofile
+  pk: 2
+  fields:
+    user: 2
+    rcra_username: testuser1
+    phone_number: null
+    email: testuser1@haztrak.net
+- model: core.haztrakprofile
+  pk: 1
+  fields:
+    user: 2
+- model: sites.haztraksite
   pk: 1
   fields:
     name: VA TEST GEN 2021
     rcra_site: 1
     last_rcrainfo_manifest_sync: null
-- model: sites.rcrasitepermission
+- model: sites.sitepermissions
+  pk: 1
+  fields:
+    site: 1
+    emanifest: signer
+    profile: 1
+- model: sites.rcrasitepermissions
   pk: 1
   fields:
     site: 1

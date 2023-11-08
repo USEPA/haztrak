@@ -4,7 +4,7 @@ from typing import Optional
 from django.db import transaction
 
 from apps.core.services import RcrainfoService  # type: ignore
-from apps.sites.models import RcraSitePermission, Site  # type: ignore
+from apps.sites.models import HaztrakSite, RcraSite, RcraSitePermissions  # type: ignore
 from apps.sites.serializers import RcraPermissionSerializer  # type: ignore
 
 from ...core.models import RcraProfile  # type: ignore
@@ -49,7 +49,7 @@ class RcraProfileService:
     def update_rcrainfo_profile(self, *, username: Optional[str] = None) -> None:
         """
         This high level function makes several requests to RCRAInfo to pull...
-        1. A user's rcrainfo site permissions, it creates a RcraSitePermission for each
+        1. A user's rcrainfo site permissions, it creates a RcraSitePermissions for each
         2. For each rcra site permission, it pulls the rcra_site details, and creates or updates
          a RcraSite instance for each
         3. If a Haztrak Site is not present, create one
@@ -59,24 +59,22 @@ class RcraProfileService:
                 username = self.username
             profile_response = self.rcrainfo.get_user_profile(username=username)
             permissions = self._parse_rcra_response(rcra_response=profile_response.json())
-            self._update_profile_permissions(permissions)
-        except (RcraProfile.DoesNotExist, Site.DoesNotExist) as exc:
+            self._save_rcrainfo_profile_permissions(permissions)
+        except (RcraProfile.DoesNotExist, RcraSite.DoesNotExist) as exc:
             raise RcraProfileServiceError(exc)
 
-    def _update_profile_permissions(self, permissions: list[dict]):
+    def _save_rcrainfo_profile_permissions(self, permissions: list[dict]) -> None:
         """
-        This function creates or updates a user's RcraSitePermission for each site permission
+        This function creates or updates a user's RcraSitePermissions for each site permission
         :param permissions: body of response from RCRAInfo
         :return: None
         """
         try:
             handler = RcraSiteService(username=self.username, rcrainfo=self.rcrainfo)
-            haztrak_site = SiteService(username=self.username, rcrainfo=self.rcrainfo)
             for rcra_site_permission in permissions:
                 rcra_site = handler.get_or_pull_rcra_site(rcra_site_permission["siteId"])
-                site = haztrak_site.create_or_update_site(rcra_site=rcra_site)
                 self._create_or_update_rcra_permission(
-                    epa_permission=rcra_site_permission, site=site
+                    epa_permission=rcra_site_permission, site=rcra_site
                 )
         except SiteServiceError as exc:
             raise RcraProfileServiceError(f"Error creating or updating Haztrak Site {exc}")
@@ -95,14 +93,14 @@ class RcraProfileService:
 
     @transaction.atomic
     def _create_or_update_rcra_permission(
-        self, *, epa_permission: dict, site: Site
-    ) -> RcraSitePermission:
+        self, *, epa_permission: dict, site: RcraSite
+    ) -> RcraSitePermissions:
         permission_serializer = RcraPermissionSerializer(data=epa_permission)
         if permission_serializer.is_valid():
-            obj, created = RcraSitePermission.objects.update_or_create(
+            obj, created = RcraSitePermissions.objects.update_or_create(
                 **permission_serializer.validated_data, site=site, profile=self.profile
             )
             return obj
         raise RcraProfileServiceError(
-            f"Error creating instance of RcraSitePermission {permission_serializer.errors}"
+            f"Error creating instance of RcraSitePermissions {permission_serializer.errors}"
         )

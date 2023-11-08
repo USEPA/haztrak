@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
 from apps.core.models import RcraProfile
-from apps.sites.models import Address, Contact, Site
+from apps.sites.models import Address, Contact, HaztrakSite
 
 
 @pytest.mark.django_db
@@ -60,12 +60,12 @@ class TestRcraProfileModel:
 
 
 class TestHaztrakSiteModel:
-    def test_haztrak_site_model_factory(self, site_factory):
-        haztrak_site = site_factory()
-        assert isinstance(haztrak_site, Site)
+    def test_haztrak_site_model_factory(self, haztrak_site_factory):
+        haztrak_site = haztrak_site_factory()
+        assert isinstance(haztrak_site, HaztrakSite)
 
     def test_returns_true_if_admin_has_provided_api_credentials(
-        self, site_factory, rcra_profile_factory, user_factory
+        self, haztrak_site_factory, rcra_profile_factory, user_factory
     ):
         admin = user_factory(username="admin")
         admin_rcrainfo_profile = rcra_profile_factory(
@@ -73,11 +73,11 @@ class TestHaztrakSiteModel:
             rcra_api_id="mock_id",
             rcra_api_key="mock_key",
         )
-        haztrak_profile = site_factory(admin_rcrainfo_profile=admin_rcrainfo_profile)
+        haztrak_profile = haztrak_site_factory(admin_rcrainfo_profile=admin_rcrainfo_profile)
         assert haztrak_profile.admin_has_rcrainfo_api_credentials
 
     def test_returns_false_if_admin_has_not_provided_api_credentials(
-        self, site_factory, rcra_profile_factory, user_factory
+        self, haztrak_site_factory, rcra_profile_factory, user_factory
     ):
         admin = user_factory(username="admin")
         admin_rcrainfo_profile = rcra_profile_factory(
@@ -85,5 +85,5 @@ class TestHaztrakSiteModel:
             rcra_api_id=None,
             rcra_api_key=None,
         )
-        haztrak_profile = site_factory(admin_rcrainfo_profile=admin_rcrainfo_profile)
+        haztrak_profile = haztrak_site_factory(admin_rcrainfo_profile=admin_rcrainfo_profile)
         assert not haztrak_profile.admin_has_rcrainfo_api_credentials

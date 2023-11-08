@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.exceptions import APIException, ValidationError
 
-from apps.sites.models import RcraSitePermission, SitePermissions
+from apps.sites.models import RcraSitePermissions, SitePermissions
 
 from .base_ser import SitesBaseSerializer
 from .site_ser import SiteSerializer
@@ -23,7 +23,7 @@ class SitePermissionSerializer(SitesBaseSerializer):
 
 class RcraSitePermissionSerializer(SitesBaseSerializer):
     """
-    RcraSitePermission model serializer
+    RcraSitePermissions model serializer
     We use this internally because it's easier to handle, using consistent naming,
     Haztrak has a separate serializer for user permissions from RCRAInfo.
     See RcraPermissionSerializer.
@@ -69,7 +69,7 @@ class RcraSitePermissionSerializer(SitesBaseSerializer):
         return representation
 
     class Meta:
-        model = RcraSitePermission
+        model = RcraSitePermissions
         fields = [
             "epaSiteId",
             "siteManagement",
@@ -108,7 +108,7 @@ class RcraPermissionField(serializers.Field):
 
 class RcraPermissionSerializer(RcraSitePermissionSerializer):
     """
-    RcraSitePermission model serializer specifically for reading a user's site permissions
+    RcraSitePermissions model serializer specifically for reading a user's site permissions
     from RCRAInfo. It's not used for serializing, only deserializing permissions from RCRAinfo
     """
 
@@ -159,7 +159,7 @@ class RcraPermissionSerializer(RcraSitePermissionSerializer):
             raise ValidationError(f"malformed JSON: {exc}")
 
     class Meta:
-        model = RcraSitePermission
+        model = RcraSitePermissions
         fields = [
             "siteId",
             "name",

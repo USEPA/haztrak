@@ -15,9 +15,9 @@ from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile  # type: i
 from apps.sites.models import (  # type: ignore
     Address,
     Contact,
+    HaztrakSite,
     RcraPhone,
     RcraSite,
-    Site,
 )
 from apps.trak.models import ManifestPhone  # type: ignore
 
@@ -202,15 +202,15 @@ def rcra_site_factory(db, address_factory, contact_factory):
 
 
 @pytest.fixture
-def site_factory(db, rcra_site_factory):
+def haztrak_site_factory(db, rcra_site_factory):
     """Abstract factory for Haztrak Site model"""
 
     def create_site(
         rcra_site: Optional[RcraSite] = None,
         name: Optional[str] = "my site name",
         admin_rcrainfo_profile: Optional[RcraProfile] = None,
-    ) -> Site:
-        return Site.objects.create(
+    ) -> HaztrakSite:
+        return HaztrakSite.objects.create(
             rcra_site=rcra_site or rcra_site_factory(),
             name=name,
             admin_rcrainfo_profile=admin_rcrainfo_profile,

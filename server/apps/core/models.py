@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils.functional import cached_property
 
 from haztrak import settings
 
@@ -37,12 +36,9 @@ class HaztrakProfile(CoreBaseModel):
         on_delete=models.CASCADE,
         related_name="haztrak_profile",
     )
-    admin_rcrainfo_profile = models.ForeignKey(
-        "RcraProfile",
-        on_delete=models.SET_NULL,
-        null=True,
-        default=None,
-    )
+
+    def __str__(self):
+        return f"{self.user.username}"
 
 
 class RcraProfile(CoreBaseModel):

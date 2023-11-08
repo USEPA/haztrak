@@ -11,7 +11,7 @@ from apps.core.serializers import (
     HaztrakUserSerializer,
     RcraProfileSerializer,
 )
-from apps.sites.tasks import sync_user_sites
+from apps.sites.tasks import sync_user_rcrainfo_sites
 
 
 class HaztrakUserView(RetrieveUpdateAPIView):
@@ -60,7 +60,7 @@ class RcraProfileSyncView(GenericAPIView):
 
     def get(self, request: Request) -> Response:
         try:
-            task: CeleryTask = sync_user_sites.delay(str(self.request.user))
+            task: CeleryTask = sync_user_rcrainfo_sites.delay(str(self.request.user))
             return self.response({"task": task.id})
         except RcraProfile.DoesNotExist as exc:
             return self.response(data={"error": str(exc)}, status=status.HTTP_404_NOT_FOUND)
