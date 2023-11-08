@@ -1,7 +1,6 @@
 import profileReducers, { getRcraProfile, updateProfile } from 'store/profileSlice/profile.slice';
 import {
-  selectRcraSites,
-  userRcraSitesSelector,
+  selectRcrainfoSites,
   selectRcraProfile,
   siteByEpaIdSelector,
 } from 'store/profileSlice/profile.slice';
@@ -11,7 +10,6 @@ export {
   getRcraProfile,
   updateProfile,
   selectRcraProfile,
-  userRcraSitesSelector,
-  selectRcraSites,
+  selectRcrainfoSites,
   siteByEpaIdSelector,
 };

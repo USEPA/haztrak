@@ -14,7 +14,7 @@ import rcraProfileReducer, {
   RcrainfoProfileSite,
   ProfileState,
   siteByEpaIdSelector,
-  userRcraSitesSelector,
+  selectRcrainfoSites,
 } from 'store/profileSlice/profile.slice';
 
 interface TestComponentProps {
@@ -57,7 +57,7 @@ describe('RcraProfileSlice selectors', () => {
   test('retrieve all RcraProfileSites', () => {
     const mySite = createMockRcrainfoSite();
     const TestComp = () => {
-      const myRcraSite = useAppSelector(userRcraSitesSelector);
+      const myRcraSite = useAppSelector(selectRcrainfoSites);
       return (
         <>
           <p>{myRcraSite ? Object.keys(myRcraSite).length : 'not defined'}</p>
