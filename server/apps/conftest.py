@@ -11,7 +11,7 @@ import responses
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
-from apps.core.models import HaztrakUser, RcraProfile  # type: ignore
+from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile  # type: ignore
 from apps.sites.models import (  # type: ignore
     Address,
     Contact,
@@ -81,6 +81,20 @@ def rcra_profile_factory(db, user_factory):
             rcra_api_id=rcra_api_id,
             rcra_api_key=rcra_api_key,
             rcra_username=rcra_username,
+            user=user or user_factory(),
+        )
+
+    yield create_profile
+
+
+@pytest.fixture
+def haztrak_profile_factory(db, user_factory):
+    """Abstract factory for Haztrak RcraProfile model"""
+
+    def create_profile(
+        user: Optional[User] = None,
+    ) -> RcraProfile:
+        return HaztrakProfile.objects.create(
             user=user or user_factory(),
         )
 

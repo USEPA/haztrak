@@ -63,11 +63,11 @@ class TestSiteDetailsApi:
     @pytest.fixture
     def local_site_factory(
         self,
-        rcra_profile_factory,
+        haztrak_profile_factory,
+        site_access_factory,
         rcra_site_factory,
         user_factory,
         site_factory,
-        rcra_permission_factory,
     ):
         """Create sets up a site, corresponding rcra_site, a rcra_site_permissions for a user"""
 
@@ -79,11 +79,11 @@ class TestSiteDetailsApi:
             rcra_site_permission: Optional[RcraSitePermission] = None,
         ):
             if profile is None:
-                profile = rcra_profile_factory(user=user)
+                profile = haztrak_profile_factory(user=user)
             if site is None:
                 site = site_factory(rcra_site=rcra_site)
             if rcra_site_permission is None:
-                rcra_permission_factory(site=site, profile=profile)
+                site_access_factory(site=site, profile=profile)
             return site
 
         return create_site_and_related
@@ -120,6 +120,7 @@ class TestSiteDetailsApi:
         client = APIClient()
         client.force_authenticate(user=user)
         # Act
+        print(site.rcra_site.epa_id)
         response = client.get(f"{self.url}/{site.rcra_site.epa_id}")
         # Assert
         assert response.headers["Content-Type"] == "application/json"
