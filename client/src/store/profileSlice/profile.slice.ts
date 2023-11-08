@@ -4,7 +4,6 @@
  */
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HaztrakSite } from 'components/HaztrakSite';
-import { htApi } from 'services';
 import { HtApi } from 'services/htApi';
 import { RootState } from 'store';
 
@@ -15,6 +14,12 @@ export interface ProfileState {
   sites?: Record<string, HaztrakProfileSite>;
   loading?: boolean;
   error?: string;
+}
+
+/** A site a user has access to in RCRAInfo and their module permissions */
+export interface RcrainfoProfileSite {
+  epaSiteId: string;
+  permissions: RcrainfoSitePermissions;
 }
 
 export interface HaztrakProfileSite extends HaztrakSite {
@@ -51,15 +56,6 @@ export interface RcrainfoSitePermissions {
   myRCRAid: string;
 }
 
-/**
- * The user's site permissions for an EPA site in RCRAInfo, including each the user's
- * permission for each RCRAInfo module
- */
-export interface RcrainfoProfileSite {
-  epaSiteId: string;
-  permissions: RcrainfoSitePermissions;
-}
-
 /**initial, state of a user's RcraProfile.*/
 const initialState: ProfileState = {
   user: undefined,
@@ -90,18 +86,23 @@ export const getRcraProfile = createAsyncThunk<ProfileState>(
   async (arg, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     const username = state.user.user?.username;
-    const response = await htApi.get(`/rcra/profile/${username}`);
-    const { rcraSites, ...rest } = response.data as RcrainfoProfile<Array<RcrainfoProfileSite>>;
-    // Convert the array to an object which each key corresponding to the RcraSite's ID number
-    let rcraProfile: ProfileState = { user: username };
-    rcraProfile.rcrainfoProfile = { ...rest };
-    rcraProfile.rcrainfoProfile.rcraSites = rcraSites?.reduce((obj, site) => {
-      return {
-        ...obj,
-        [site.epaSiteId]: { epaSiteId: site.epaSiteId, permissions: site.permissions },
-      };
-    }, {});
-    return rcraProfile;
+    if (!username) {
+      throw new Error('User is not logged in');
+    }
+    const data = await HtApi.getUserRcrainfoProfile(username);
+    const { rcraSites, ...rest } = data;
+    return {
+      user: username,
+      rcrainfoProfile: {
+        ...rest,
+        rcraSites: rcraSites?.reduce((obj, site) => {
+          return {
+            ...obj,
+            [site.epaSiteId]: { epaSiteId: site.epaSiteId, permissions: site.permissions },
+          };
+        }, {}),
+      },
+    };
   }
 );
 
@@ -162,13 +163,9 @@ const profileSlice = createSlice({
   },
 });
 
-/**
- * Retrieve a site that the user has access to in their Haztrak Profile by the site's EPA ID number
- * @param epaId
- */
+/** Retrieve a Haztrak site from the users Profile by the site's EPA ID number */
 export const siteByEpaIdSelector = (epaId: string | undefined) =>
   createSelector(
-    // @ts-ignore
     (state: { profile: ProfileState }) => state.profile.sites,
     (sites: Record<string, HaztrakProfileSite> | undefined) => {
       if (!sites) return undefined;
@@ -183,15 +180,9 @@ export const siteByEpaIdSelector = (epaId: string | undefined) =>
     }
   );
 
-export const selectHaztrakSites = (state: { profile: ProfileState }) => state.profile.sites;
-
-// @ts-ignore
-export const selectRcraSites = (state: { profile: ProfileState }) =>
-  // @ts-ignore
-  state.profile.rcrainfoProfile.rcraSites;
-
-export const userHaztrakSitesSelector = createSelector(
-  selectHaztrakSites,
+/** Get all sites a user has access to their Haztrak Profile*/
+export const selectHaztrakSites = createSelector(
+  (state: { profile: ProfileState }) => state.profile.sites,
   (sites: Record<string, HaztrakProfileSite> | undefined) => {
     if (!sites) return undefined;
 
@@ -199,12 +190,9 @@ export const userHaztrakSitesSelector = createSelector(
   }
 );
 
-/**
- * Retrieve a RcraSite that the user has access to in their RcraProfile by the site's EPA ID number
- * @param epaId
- */
-export const userRcraSitesSelector = createSelector(
-  selectRcraSites,
+/** select all RCRAInfo sites a user has access to from their RCRAInfo Profile if they're updated it*/
+export const selectRcrainfoSites = createSelector(
+  (state: { profile: ProfileState }) => state.profile.rcrainfoProfile?.rcraSites,
   (rcraSites: Record<string, RcrainfoProfileSite> | undefined) => {
     if (!rcraSites) return undefined;
 
@@ -212,9 +200,7 @@ export const userRcraSitesSelector = createSelector(
   }
 );
 
-/**
- * Retrieve a user's RcraProfile from the Redux store
- */
+/** Retrieve a user's RcraProfile from the Redux store. */
 export const selectRcraProfile = createSelector(
   (state: RootState) => state.profile,
   (rcraProfile: ProfileState) => rcraProfile
