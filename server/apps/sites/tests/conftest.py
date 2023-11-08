@@ -1,12 +1,32 @@
-from typing import Optional
+from typing import Optional, Union
 
 import pytest
 
-from apps.core.models import RcraProfile
+from apps.core.models import HaztrakProfile, RcraProfile
 from apps.sites.models import (
     RcraSitePermission,
     Site,
+    SitePermissions,
 )
+
+
+@pytest.fixture
+def site_access_factory(db, site_factory, haztrak_profile_factory):
+    """Abstract factory for Haztrak RcraSitePermission model"""
+
+    def create_permission(
+        site: Optional[Site] = None,
+        profile: Optional[HaztrakProfile] = None,
+        emanifest: Optional[str] = "viewer",
+    ) -> RcraSitePermission:
+        """Returns testuser1 RcraSitePermission model to site_generator"""
+        return SitePermissions.objects.create(
+            site=site or site_factory(),
+            profile=profile or haztrak_profile_factory(),
+            emanifest=emanifest,
+        )
+
+    yield create_permission
 
 
 @pytest.fixture
