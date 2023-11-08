@@ -8,7 +8,6 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.sites.models import Address, Contact
 from apps.sites.models.contact_models import RcraPhone
-from haztrak import settings
 
 from .base_models import SitesBaseManager, SitesBaseModel
 
@@ -27,9 +26,7 @@ class RcraSiteType(models.TextChoices):
 
 
 class RcraSiteManager(SitesBaseManager):
-    """
-    Inter-model related functionality for RcraSite Model
-    """
+    """Inter-model related functionality for RcraSite Model"""
 
     def __init__(self):
         self.handler_data = None
@@ -172,12 +169,11 @@ class RcraSite(SitesBaseModel):
         return f"{self.epa_id}"
 
 
-class Site(SitesBaseModel):
+class HaztrakSite(SitesBaseModel):
     """
-    Haztrak Site model used to control access to RcraSite object.
-
-    Not to be confused with what are frequently called 'sites' in RCRAInfo, for that,
-    see the RcraSite model.
+    Haztrak Site is a cornerstone model that many other models rely on.
+    It wraps around RCRAInfo sites (AKA handlers, our RcraSite object). and adds
+    additional functionality and fields.
     """
 
     class Meta:
@@ -237,7 +233,7 @@ class SitePermissions(SitesBaseModel):
         related_name="site_permissions",
     )
     site = models.ForeignKey(
-        Site,
+        HaztrakSite,
         on_delete=models.CASCADE,
     )
     emanifest = models.CharField(
@@ -254,10 +250,10 @@ class SitePermissions(SitesBaseModel):
         return f"{self.profile.user}"
 
 
-class RcraSitePermission(SitesBaseModel):
+class RcraSitePermissions(SitesBaseModel):
     """
     RCRAInfo Site Permissions per module connected to a user's RcraProfile
-    and the corresponding Site
+    and the corresponding HaztrakSite
     """
 
     CERTIFIER = "Certifier"
@@ -272,10 +268,10 @@ class RcraSitePermission(SitesBaseModel):
 
     class Meta:
         verbose_name = "RCRA Site Permission"
-        ordering = ["site__rcra_site__epa_id"]
+        ordering = ["site__epa_id"]
 
     site = models.ForeignKey(
-        Site,
+        RcraSite,
         on_delete=models.CASCADE,
     )
     profile = models.ForeignKey(
@@ -308,7 +304,7 @@ class RcraSitePermission(SitesBaseModel):
     )
 
     def __str__(self):
-        return f"{self.profile.user}: {self.site.rcra_site.epa_id}"
+        return f"{self.profile.user}: {self.site.epa_id}"
 
     def clean(self):
         if self.site_manager:

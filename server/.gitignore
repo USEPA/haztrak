@@ -1,3 +1,4 @@
 cache/
 test_db
 static/
+.mypy_cache

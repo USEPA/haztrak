@@ -1,6 +1,6 @@
 import pytest
 
-from apps.sites.models import RcraSitePermission
+from apps.sites.models import RcraSitePermissions
 from apps.sites.serializers import (
     ContactSerializer,
     RcraPermissionSerializer,
@@ -66,13 +66,13 @@ class TestEpaPermissionSerializer:
         return RcraPermissionSerializer(data=haztrak_json.EPA_PERMISSION.value)
 
     def test_deserializes_epa_permissions(
-        self, epa_permission_serializer, rcra_profile_factory, site_factory
+        self, epa_permission_serializer, rcra_profile_factory, rcra_site_factory
     ) -> None:
         if not epa_permission_serializer.is_valid():
             # if something is wrong with the serializer fixture, fail
             assert False
-        RcraSitePermission.objects.create(
+        RcraSitePermissions.objects.create(
             **epa_permission_serializer.validated_data,
-            site=site_factory(),
+            site=rcra_site_factory(),
             profile=rcra_profile_factory(),
         )

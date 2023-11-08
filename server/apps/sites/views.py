@@ -10,7 +10,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.sites.models import RcraSite, RcraSiteType, Site  # type: ignore
+from apps.sites.models import HaztrakSite, RcraSite, RcraSiteType  # type: ignore
 from apps.sites.serializers import RcraSiteSerializer, SiteSerializer  # type: ignore
 from apps.sites.services import RcraSiteService  # type: ignore
 
@@ -30,7 +30,7 @@ class SiteListView(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Site.objects.filter(sitepermissions__profile__user=user)
+        return HaztrakSite.objects.filter(sitepermissions__profile__user=user)
 
 
 @method_decorator(cache_page(60 * 15), name="dispatch")
@@ -42,7 +42,7 @@ class SiteDetailView(RetrieveAPIView):
     serializer_class = SiteSerializer
     lookup_field = "rcra_site__epa_id"
     lookup_url_kwarg = "epa_id"
-    queryset = Site.objects.all()
+    queryset = HaztrakSite.objects.all()
 
     @method_decorator(cache_page(60 * 15))
     def get(self, request, *args, **kwargs):
@@ -50,7 +50,7 @@ class SiteDetailView(RetrieveAPIView):
 
     def get_queryset(self):
         epa_id = self.kwargs["epa_id"]
-        queryset = Site.objects.filter(
+        queryset = HaztrakSite.objects.filter(
             rcra_site__epa_id=epa_id, sitepermissions__profile__user=self.request.user
         )
         return queryset

@@ -5,7 +5,6 @@ from drf_spectacular.utils import (
     OpenApiParameter,
     OpenApiResponse,
     extend_schema,
-    inline_serializer,
 )
 from rest_framework import serializers, status
 from rest_framework.generics import ListAPIView
