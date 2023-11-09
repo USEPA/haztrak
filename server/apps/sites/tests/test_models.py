@@ -74,7 +74,7 @@ class TestHaztrakSiteModel:
             rcra_api_key="mock_key",
         )
         haztrak_profile = haztrak_site_factory(admin_rcrainfo_profile=admin_rcrainfo_profile)
-        assert haztrak_profile.admin_has_rcrainfo_api_credentials
+        assert haztrak_profile.can_use_rcrainfo_services
 
     def test_returns_false_if_admin_has_not_provided_api_credentials(
         self, haztrak_site_factory, rcra_profile_factory, user_factory
@@ -86,4 +86,4 @@ class TestHaztrakSiteModel:
             rcra_api_key=None,
         )
         haztrak_profile = haztrak_site_factory(admin_rcrainfo_profile=admin_rcrainfo_profile)
-        assert not haztrak_profile.admin_has_rcrainfo_api_credentials
+        assert not haztrak_profile.can_use_rcrainfo_services

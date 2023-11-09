@@ -38,7 +38,7 @@ class HaztrakProfile(CoreBaseModel):
     )
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f"{self.user}"
 
 
 class RcraProfile(CoreBaseModel):
@@ -77,7 +77,7 @@ class RcraProfile(CoreBaseModel):
     email = models.EmailField()
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f"{self.user}"
 
     @property
     def has_api_credentials(self) -> bool:
