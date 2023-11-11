@@ -1,8 +1,9 @@
 import logging
+import uuid
 from typing import Union
 
 from django.core.exceptions import ValidationError
-from django.core.validators import MinLengthValidator, MinValueValidator
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -12,6 +13,40 @@ from apps.sites.models.contact_models import RcraPhone
 from .base_models import SitesBaseManager, SitesBaseModel
 
 logger = logging.getLogger(__name__)
+
+
+class HaztrakOrg(models.Model):
+    """Haztrak Organization"""
+
+    class Meta:
+        verbose_name = "Organization"
+        verbose_name_plural = "Organizations"
+
+    name = models.CharField(
+        max_length=200,
+        unique=True,
+    )
+    id = models.UUIDField(
+        unique=True,
+        editable=False,
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    admin = models.ForeignKey(
+        "core.HaztrakUser",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+
+    @property
+    def has_rcrainfo_api_credentials(self) -> bool:
+        """Returns True if the admin user has RcraInfo API credentials"""
+        if self.admin.rcra_profile.has_api_credentials:
+            return True
+        return False
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class RcraSiteType(models.TextChoices):
@@ -204,7 +239,7 @@ class HaztrakSite(SitesBaseModel):
     )
 
     @property
-    def can_use_rcrainfo_services(self) -> bool:
+    def admin_has_rcrainfo_api_credentials(self) -> bool:
         """Returns True if the admin user has RcraInfo API credentials"""
         if self.admin_rcrainfo_profile.has_api_credentials:
             return True
