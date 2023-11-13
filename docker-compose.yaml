@@ -65,6 +65,7 @@ services:
     depends_on:
       - redis
       - server
+      - postgres
 
   celery-beat:
     restart: unless-stopped

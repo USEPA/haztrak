@@ -2,7 +2,7 @@ import logging
 from typing import Union
 
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
+from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -184,7 +184,7 @@ class HaztrakSite(SitesBaseModel):
     name = models.CharField(
         verbose_name="site alias",
         max_length=200,
-        validators=[MinValueValidator(2, "site aliases must be longer than 2 characters")],
+        validators=[MinLengthValidator(2, "site aliases must be longer than 2 characters")],
     )
     rcra_site = models.OneToOneField(
         verbose_name="rcra_site",
@@ -200,10 +200,11 @@ class HaztrakSite(SitesBaseModel):
         "core.RcraProfile",
         on_delete=models.SET_NULL,
         null=True,
+        verbose_name="Admin",
     )
 
     @property
-    def admin_has_rcrainfo_api_credentials(self) -> bool:
+    def can_use_rcrainfo_services(self) -> bool:
         """Returns True if the admin user has RcraInfo API credentials"""
         if self.admin_rcrainfo_profile.has_api_credentials:
             return True
@@ -225,7 +226,7 @@ class SitePermissions(SitesBaseModel):
     """The Role Based access a user has to a site"""
 
     class Meta:
-        verbose_name = "Site Permissions"
+        verbose_name = "Haztrak Site Permissions"
 
     profile = models.ForeignKey(
         "core.HaztrakProfile",
@@ -267,7 +268,7 @@ class RcraSitePermissions(SitesBaseModel):
     ]
 
     class Meta:
-        verbose_name = "RCRA Site Permission"
+        verbose_name = "RCRAInfo Site Permission"
         ordering = ["site__epa_id"]
 
     site = models.ForeignKey(

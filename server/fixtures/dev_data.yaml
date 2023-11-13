@@ -130,16 +130,16 @@
   pk: 1
   fields:
     user: 1
-    rcra_username: dpgraham4401
+    rcra_username: placeholder
     phone_number: null
     email: dpgraham4401@haztrak.net
 - model: core.rcraprofile
   pk: 2
   fields:
     user: 2
-    rcra_username: testuser1
+    rcra_username: dpgraham4401
     phone_number: null
-    email: testuser1@haztrak.net
+    email: dpgraham4401@gmail.com
 - model: core.haztrakprofile
   pk: 1
   fields:
