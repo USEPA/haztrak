@@ -8,10 +8,9 @@ from django.db.models import Max, Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from apps.sites.models import RcraSiteType, RcraStates, Role
-from apps.trak.models import Handler
+from apps.trak.models import Handler, Transporter
 
 from .base_models import TrakBaseManager, TrakBaseModel
-from .transporter_models import Transporter
 from .waste_models import WasteLine
 
 logger = logging.getLogger(__name__)

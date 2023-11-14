@@ -27,16 +27,14 @@ class RcrainfoService(RcrainfoClient):
         **kwargs,
     ):
         self.api_user = api_username
-        if RcraProfile.objects.filter(user__username=self.api_user).exists():
-            self.profile = RcraProfile.objects.get(user__username=self.api_user)
+        if RcraProfile.objects.filter(haztrak_profile__user__username=self.api_user).exists():
+            self.profile = RcraProfile.objects.get(haztrak_profile__user__username=self.api_user)
         else:
             self.profile = None
-        if rcrainfo_env == "prod":
-            self.rcrainfo_env: Literal["preprod"] | Literal["prod"] = rcrainfo_env
-            base_url = emanifest.RCRAINFO_PROD
-        else:
-            self.rcrainfo_env = "preprod"
-            base_url = emanifest.RCRAINFO_PREPROD
+        self.rcrainfo_env = rcrainfo_env or "preprod"
+        base_url = (
+            emanifest.RCRAINFO_PROD if self.rcrainfo_env == "prod" else emanifest.RCRAINFO_PREPROD
+        )
         super().__init__(base_url, **kwargs)
 
     @property
@@ -65,7 +63,7 @@ class RcrainfoService(RcrainfoClient):
             return super().retrieve_key(self.profile.rcra_api_key)
         return super().retrieve_key()
 
-    def get_user_profile(self, username: Optional[str] = None) -> RcrainfoResponse:
+    def get_user_rcrainfo_profile(self, username: Optional[str] = None) -> RcrainfoResponse:
         """
         Retrieve a user's site permissions from RCRAInfo, It expects the
         haztrak user to have their unique RCRAInfo user and API credentials in their

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Literal, Optional
 
 import pytest
 
@@ -18,7 +18,7 @@ def haztrak_site_permission_factory(db, haztrak_site_factory, haztrak_profile_fa
     def create_permission(
         site: Optional[HaztrakSite] = None,
         profile: Optional[HaztrakProfile] = None,
-        emanifest: Optional[str] = "viewer",
+        emanifest: Optional[Literal["viewer", "signer", "editor"]] = "viewer",
     ) -> RcraSitePermissions:
         """Returns testuser1 RcraSitePermissions model to site_generator"""
         return SitePermissions.objects.create(

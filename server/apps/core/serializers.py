@@ -60,7 +60,9 @@ class RcraProfileSerializer(ModelSerializer):
     Model serializer for marshalling/unmarshalling a user's RcraProfile
     """
 
-    user = serializers.StringRelatedField()
+    user = serializers.StringRelatedField(
+        source="haztrak_profile",
+    )
     rcraSites = RcraSitePermissionSerializer(
         source="permissions",
         required=False,

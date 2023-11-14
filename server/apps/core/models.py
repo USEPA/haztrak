@@ -24,21 +24,35 @@ class CoreBaseModel(models.Model):
 class HaztrakUser(AbstractUser):
     """Haztrak abstract user model. It simply inherits from Django's AbstractUser model."""
 
+    class Meta:
+        verbose_name = "User"
+        verbose_name_plural = "Users"
+        ordering = ["username"]
+
     pass
 
 
 class HaztrakProfile(CoreBaseModel):
     class Meta:
         verbose_name = "Haztrak Profile"
+        ordering = ["user__username"]
+        default_related_name = "haztrak_profile"
 
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="haztrak_profile",
     )
+    rcrainfo_profile = models.OneToOneField(
+        "RcraProfile",
+        on_delete=models.SET_NULL,
+        related_name="haztrak_profile",
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
-        return f"{self.user}"
+        return f"{self.user.username}"
 
 
 class RcraProfile(CoreBaseModel):
@@ -50,10 +64,6 @@ class RcraProfile(CoreBaseModel):
     class Meta:
         ordering = ["rcra_username"]
 
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
     rcra_api_key = models.CharField(
         max_length=128,
         null=True,
@@ -77,11 +87,9 @@ class RcraProfile(CoreBaseModel):
     email = models.EmailField()
 
     def __str__(self):
-        return f"{self.user}"
+        return f"{self.haztrak_profile.user.username}"
 
     @property
     def has_api_credentials(self) -> bool:
         """Returns true if the use has Rcrainfo API credentials"""
-        if self.rcra_api_id and self.rcra_api_key:
-            return True
-        return False
+        return self.rcra_api_id is not None and self.rcra_api_key is not None

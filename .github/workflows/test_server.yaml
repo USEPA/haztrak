@@ -13,6 +13,10 @@ on:
     paths:
       - 'server/**'
       - '.github/workflows/test_server.yaml'
+  push:
+    paths:
+      - 'server/**'
+      - '.github/workflows/test_server.yaml'
   workflow_call:
   workflow_dispatch:
 

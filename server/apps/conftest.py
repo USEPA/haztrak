@@ -3,12 +3,14 @@ import os
 import random
 import string
 from enum import Enum
-from typing import Dict, Optional
+from typing import Dict, Literal, Optional, Union
 
 import pytest
 import pytest_mock
 import responses
 from django.contrib.auth.models import User
+from faker import Faker
+from faker.providers import BaseProvider
 from rest_framework.test import APIClient
 
 from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile  # type: ignore
@@ -19,13 +21,22 @@ from apps.sites.models import (  # type: ignore
     RcraPhone,
     RcraSite,
 )
+from apps.sites.models.site_models import HaztrakOrg
 from apps.trak.models import ManifestPhone  # type: ignore
+
+
+class SiteIDProvider(BaseProvider):
+    PREFIXES = ["VAT", "VAD", "TXD", "TXR", "TND", "TNR", "LAD", "LAR", "CAD", "CAR", "MAD", "MAR"]
+    NUMBERS = ["".join(random.choices(string.digits, k=9)) for _ in range(100)]
+
+    def site_id(self):
+        return f"{self.random_element(self.PREFIXES)}{self.random_element(self.NUMBERS)}"
 
 
 @pytest.fixture
 def haztrak_json():
     """Fixture with JSON data"""
-    json_dir = os.path.dirname(os.path.abspath(__file__)) + "/resources/json"
+    json_dir = os.path.dirname(os.path.abspath(__file__)) + "/../fixtures/json"
 
     def read_file(path: str) -> Dict:
         with open(path, "r") as f:
@@ -46,87 +57,87 @@ def haztrak_json():
 
 
 @pytest.fixture
-def user_factory(db):
+def user_factory(db, faker):
     """Abstract factory for Django's User model"""
 
     def create_user(
-        username: str = f"{''.join(random.choices(string.ascii_letters, k=9))}",
-        first_name: Optional[str] = "John",
-        last_name: Optional[str] = "Doe",
-        email: Optional[str] = "testuser1@haztrak.net",
-        password: Optional[str] = "password1",
+        username: Optional[str] = None,
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None,
+        email: Optional[str] = None,
+        password: Optional[str] = None,
     ) -> HaztrakUser:
         return HaztrakUser.objects.create_user(
-            username=username,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            password=password,
+            username=username or faker.user_name(),
+            first_name=first_name or faker.first_name(),
+            last_name=last_name or faker.last_name(),
+            email=email or faker.email(),
+            password=password or faker.password(),
         )
 
     yield create_user
 
 
 @pytest.fixture
-def rcra_profile_factory(db, user_factory):
+def rcra_profile_factory(db, user_factory, faker: Faker):
     """Abstract factory for Haztrak RcraProfile model"""
 
     def create_profile(
-        rcra_api_id: Optional[str] = "rcraApiId",
-        rcra_api_key: Optional[str] = "rcraApikey",
-        rcra_username: Optional[str] = "dpgraham4401",
-        user: Optional[User] = None,
+        rcra_api_id: Optional[str] = str(faker.uuid4()),
+        rcra_api_key: Optional[str] = faker.pystr(min_chars=15),
+        rcra_username: Optional[str] = faker.pystr(min_chars=12),
     ) -> RcraProfile:
         return RcraProfile.objects.create(
             rcra_api_id=rcra_api_id,
             rcra_api_key=rcra_api_key,
             rcra_username=rcra_username,
-            user=user or user_factory(),
         )
 
     yield create_profile
 
 
 @pytest.fixture
-def haztrak_profile_factory(db, user_factory):
+def haztrak_profile_factory(db, user_factory, rcra_profile_factory):
     """Abstract factory for Haztrak RcraProfile model"""
 
     def create_profile(
         user: Optional[User] = None,
+        rcrainfo_profile: Optional[RcraProfile] = None,
     ) -> HaztrakProfile:
         return HaztrakProfile.objects.create(
             user=user or user_factory(),
+            rcrainfo_profile=rcrainfo_profile or rcra_profile_factory(),
         )
 
     yield create_profile
 
 
 @pytest.fixture
-def address_factory(db):
+def address_factory(db, faker: Faker):
     """Abstract factory for Haztrak Address model"""
 
     def create_address(
-        address1: Optional[str] = "Main st.",
-        street_number: Optional[str] = "123",
+        address1: Optional[str] = None,
+        street_number: Optional[str] = None,
         country: Optional[str] = "US",
-        city: Optional[str] = "Arlington",
+        city: Optional[str] = None,
     ) -> Address:
         return Address.objects.create(
-            address1=address1,
-            street_number=street_number,
+            address1=address1 or faker.street_name(),
+            street_number=street_number or faker.building_number(),
             country=country,
-            city=city,
+            city=city or faker.city(),
         )
 
     yield create_address
 
 
 @pytest.fixture
-def site_phone_factory(db):
+def site_phone_factory(db, faker: Faker):
     """Abstract factory for Haztrak ManifestPhone model"""
 
     def create_site_phone(
-        number: Optional[str] = "123-123-1234",
+        number: Optional[str] = "202-505-5500",
         extension: Optional[str] = "1234",
     ) -> RcraPhone:
         return RcraPhone.objects.create(
@@ -138,15 +149,15 @@ def site_phone_factory(db):
 
 
 @pytest.fixture
-def epa_phone_factory(db):
+def epa_phone_factory(db, faker):
     """Abstract factory for Haztrak ManifestPhone model"""
 
     def create_epa_phone(
-        number: Optional[str] = "123-123-1234",
+        number: Optional[str] = None,
         extension: Optional[str] = "1234",
     ) -> ManifestPhone:
         return ManifestPhone.objects.create(
-            number=number,
+            number=number or faker.phone_number(),
             extension=extension,
         )
 
@@ -154,21 +165,21 @@ def epa_phone_factory(db):
 
 
 @pytest.fixture
-def contact_factory(db, site_phone_factory):
+def contact_factory(db, site_phone_factory, faker: Faker):
     """Abstract factory for Haztrak Contact model"""
 
     def create_contact(
-        first_name: Optional[str] = "test",
-        middle_initial: Optional[str] = "Q",
-        last_name: Optional[str] = "user",
-        email: Optional[str] = "testuser@haztrak.net",
+        first_name: Optional[str] = None,
+        middle_initial: Optional[str] = None,
+        last_name: Optional[str] = None,
+        email: Optional[str] = None,
         phone: Optional[RcraPhone] = None,
     ) -> Contact:
         contact = Contact.objects.create(
-            first_name=first_name,
-            middle_initial=middle_initial,
-            last_name=last_name,
-            email=email,
+            first_name=first_name or faker.first_name(),
+            middle_initial=middle_initial or faker.pystr(max_chars=1),
+            last_name=last_name or faker.last_name(),
+            email=email or faker.email(),
             phone=phone or site_phone_factory(),
         )
         return contact
@@ -182,14 +193,16 @@ def rcra_site_factory(db, address_factory, contact_factory):
 
     def create_rcra_site(
         epa_id: Optional[str] = None,
-        name: Optional[str] = "my rcra_site name",
-        site_type: Optional[str] = "Generator",
+        name: Optional[str] = None,
+        site_type: Optional[Literal["Generator", "Transporter", "Tsdf"]] = "Generator",
         site_address: Optional[Address] = None,
         mail_address: Optional[Address] = None,
     ) -> RcraSite:
+        fake = Faker()
+        fake.add_provider(SiteIDProvider)
         return RcraSite.objects.create(
-            epa_id=epa_id or f"VAD{''.join(random.choices(string.digits, k=9))}",
-            name=name,
+            epa_id=epa_id or fake.site_id(),
+            name=name or fake.name(),
             site_type=site_type,
             site_address=site_address or address_factory(),
             mail_address=mail_address or address_factory(),
@@ -200,18 +213,36 @@ def rcra_site_factory(db, address_factory, contact_factory):
 
 
 @pytest.fixture
-def haztrak_site_factory(db, rcra_site_factory):
+def haztrak_org_factory(db, rcra_profile_factory, user_factory, faker):
+    """Abstract factory for Haztrak Org model"""
+
+    def create_org(
+        org_id: Optional[str] = None,
+        name: Optional[str] = None,
+        admin: Optional[HaztrakUser] = None,
+    ) -> HaztrakOrg:
+        return HaztrakOrg.objects.create(
+            id=org_id or faker.uuid4(),
+            name=name or faker.company(),
+            admin=admin or user_factory(),
+        )
+
+    yield create_org
+
+
+@pytest.fixture
+def haztrak_site_factory(db, rcra_site_factory, haztrak_org_factory, faker):
     """Abstract factory for Haztrak Site model"""
 
     def create_site(
         rcra_site: Optional[RcraSite] = None,
-        name: Optional[str] = "my site name",
-        admin_rcrainfo_profile: Optional[RcraProfile] = None,
+        name: Optional[str] = None,
+        org: Optional[HaztrakOrg] = None,
     ) -> HaztrakSite:
         return HaztrakSite.objects.create(
             rcra_site=rcra_site or rcra_site_factory(),
-            name=name,
-            admin_rcrainfo_profile=admin_rcrainfo_profile,
+            name=name or faker.name(),
+            org=org or haztrak_org_factory(),
         )
 
     yield create_site

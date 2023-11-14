@@ -8,7 +8,8 @@ from apps.sites.models import HaztrakSite, RcraSite, RcraSitePermissions  # type
 from apps.sites.serializers import RcraPermissionSerializer  # type: ignore
 
 from ...core.models import RcraProfile  # type: ignore
-from .site_services import RcraSiteService, SiteService, SiteServiceError  # type: ignore
+from .rcra_site_services import RcraSiteService
+from .site_services import SiteService, SiteServiceError  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +58,7 @@ class RcraProfileService:
         try:
             if username is None:
                 username = self.username
-            profile_response = self.rcrainfo.get_user_profile(username=username)
+            profile_response = self.rcrainfo.get_user_rcrainfo_profile(username=username)
             permissions = self._parse_rcra_response(rcra_response=profile_response.json())
             self._save_rcrainfo_profile_permissions(permissions)
         except (RcraProfile.DoesNotExist, RcraSite.DoesNotExist) as exc:

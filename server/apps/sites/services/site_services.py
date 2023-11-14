@@ -1,10 +1,8 @@
 import logging
 from datetime import UTC, datetime
-from typing import Dict, Optional, TypedDict
+from typing import Optional, TypedDict
 
-from django.core.cache import CacheKeyWarning, cache
 from django.db import transaction
-from rest_framework.exceptions import ValidationError
 
 from apps.core.services import RcrainfoService  # type: ignore
 from apps.sites.models import HaztrakSite, RcraSite  # type: ignore
@@ -14,10 +12,6 @@ from apps.trak.services.manifest_services import PullManifestsResult, TaskRespon
 from apps.trak.tasks import sync_site_manifests  # type: ignore
 
 logger = logging.getLogger(__name__)
-
-
-class HandlerSearchResults(TypedDict):
-    sites: list[RcraSite]
 
 
 class SiteServiceError(Exception):
@@ -70,79 +64,3 @@ class SiteService:
         logger.info(f"retrieving updated MTN for site {site_id}")
         manifest = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
         return manifest.search_rcrainfo_mtn(site_id=site_id, start_date=last_sync_date)
-
-    @transaction.atomic
-    def create_or_update_haztrak_site(
-        self, *, rcra_site: RcraSite, site_name: Optional[str] = None
-    ) -> HaztrakSite:
-        """
-        Retrieve a site from the database or create.
-
-        Keyword Args:
-            rcra_site (RcraSite): An instance of the (hazardous waste) Handler model
-            site_name (str): A haztrak alias for a site
-        """
-        if site_name is None:
-            site_name = rcra_site.name or rcra_site.epa_id
-        if HaztrakSite.objects.filter(rcra_site__epa_id=rcra_site.epa_id).exists():
-            return HaztrakSite.objects.get(rcra_site__epa_id=rcra_site.epa_id)
-        else:
-            return HaztrakSite.objects.create(rcra_site=rcra_site, name=site_name)
-
-
-class RcraSiteService:
-    """
-    RcraSiteService houses the (high-level) rcra_site subdomain specific business logic.
-    RcraSiteService's public interface needs to be controlled strictly, public method
-    directly relate to use cases.
-    """
-
-    def __init__(self, *, username: str, rcrainfo: Optional[RcrainfoService] = None):
-        self.username = username
-        self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
-
-    def __repr__(self):
-        return (
-            f"<{self.__class__.__name__}(api_username='{self.username}', "
-            f"rcrainfo='{self.rcrainfo}')>"
-        )
-
-    def pull_rcrainfo_site(self, *, site_id: str) -> RcraSite:
-        """Retrieve a site/rcra_site from Rcrainfo and return RcraSiteSerializer"""
-        rcra_site_data: Dict = self.rcrainfo.get_site(site_id).json()
-        return self._update_or_create_rcra_site_from_json(rcra_site_data=rcra_site_data)
-
-    def get_or_pull_rcra_site(self, site_id: str) -> RcraSite:
-        """
-        Retrieves a rcra_site from the database or Pull it from RCRAInfo.
-        This may be trying to do too much
-        """
-        if RcraSite.objects.filter(epa_id=site_id).exists():
-            logger.debug(f"using existing rcra_site {site_id}")
-            return RcraSite.objects.get(epa_id=site_id)
-        new_rcra_site = self.pull_rcrainfo_site(site_id=site_id)
-        logger.debug(f"pulled new rcra_site {new_rcra_site}")
-        return new_rcra_site
-
-    def search_rcrainfo_handlers(self, **search_parameters) -> HandlerSearchResults:
-        """
-        Search RCRAInfo for a site by name or EPA ID
-        """
-        cache_key = (
-            f'handlerSearch:epaSiteId:{search_parameters["epaSiteId"]}:siteType:'
-            f'{search_parameters["siteType"]}'
-        )
-        try:
-            data = cache.get(cache_key)
-            if not data:
-                data: HandlerSearchResults = self.rcrainfo.search_sites(**search_parameters).json()
-                cache.set(cache_key, data, 60 * 60 * 24)
-            return data
-        except CacheKeyWarning:
-            raise ValidationError("Error retrieving data from cache")
-
-    @transaction.atomic
-    def _update_or_create_rcra_site_from_json(self, *, rcra_site_data: dict) -> RcraSite:
-        serializer = RcraSiteSerializer(data=rcra_site_data)
-        serializer.is_valid(raise_exception=True)
-        return serializer.save()

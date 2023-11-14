@@ -64,7 +64,7 @@ class HaztrakProfileAdmin(admin.ModelAdmin):
 @admin.register(RcraProfile)
 class RcraProfileAdmin(admin.ModelAdmin):
     list_display = ["__str__", "related_user", "rcra_username", "api_user"]
-    search_fields = ["user__username", "rcra_username"]
+    search_fields = ["haztrak_profile__user__username", "rcra_username"]
     inlines = [RcraSitePermissionInline]
 
     def related_user(self, user):

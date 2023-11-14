@@ -45,7 +45,7 @@ class RcraProfileView(RetrieveUpdateAPIView):
     queryset = RcraProfile.objects.all()
     serializer_class = RcraProfileSerializer
     response = Response
-    lookup_field = "user__username"
+    lookup_field = "haztrak_profile__user__username"
     lookup_url_kwarg = "username"
 
 

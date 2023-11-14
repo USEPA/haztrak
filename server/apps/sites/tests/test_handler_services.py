@@ -7,9 +7,10 @@ from apps.sites.services import RcraSiteService
 
 class TestHandlerService:
     @pytest.fixture(autouse=True)
-    def _setup(self, user_factory, rcra_profile_factory, haztrak_json):
+    def _setup(self, user_factory, rcra_profile_factory, haztrak_json, haztrak_profile_factory):
         self.user = user_factory()
-        self.profile = rcra_profile_factory(user=self.user)
+        self.rcra_profile = rcra_profile_factory()
+        self.profile = haztrak_profile_factory(user=self.user, rcrainfo_profile=self.rcra_profile)
         self.handler_json = haztrak_json.HANDLER.value
         self.epa_id = self.handler_json.get("epaSiteId", "handler001")
 

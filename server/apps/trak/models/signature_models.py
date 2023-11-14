@@ -17,15 +17,15 @@ class Signer(TrakBaseModel):
         ordering = ["first_name"]
 
     class Role(models.TextChoices):
-        INDUSTRY = "IN", _("Industry")
-        PPC = "PP", _("Ppc")
-        EPA = "EP", _("Epa")
-        STATE = "ST", _("State")
+        INDUSTRY = "Industry"
+        PPC = "PPC"
+        EPA = "EPA"
+        STATE = "State"
 
     class ContactType(models.TextChoices):
-        EMAIL = "EM", _("Email")
-        VOICE = "VO", _("Voice")
-        TEXT = "TX", _("Text")
+        EMAIL = "email"
+        VOICE = "voice"
+        TEXT = "text"
 
     rcra_user_id = models.CharField(
         max_length=100,
@@ -63,7 +63,7 @@ class Signer(TrakBaseModel):
         null=True,
     )
     contact_type = models.CharField(
-        max_length=2,
+        max_length=5,
         choices=ContactType.choices,
         blank=True,
         null=True,

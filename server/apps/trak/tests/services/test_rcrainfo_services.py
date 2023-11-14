@@ -12,9 +12,12 @@ from apps.trak.serializers import QuickerSignSerializer
 
 class TestRcrainfoService:
     @pytest.fixture(autouse=True)
-    def _setup(self, user_factory, rcra_profile_factory):
+    def _setup(self, user_factory, rcra_profile_factory, haztrak_profile_factory):
         self.testuser1 = user_factory()
-        self.profile = rcra_profile_factory(user=self.testuser1)
+        self.rcra_profile = rcra_profile_factory()
+        self.profile = haztrak_profile_factory(
+            user=self.testuser1, rcrainfo_profile=self.rcra_profile
+        )
 
     def test_class_inits(self):
         rcrainfo = RcrainfoService(api_username=self.testuser1.username, rcrainfo_env="preprod")
@@ -26,14 +29,14 @@ class TestRcrainfoService:
         rcrainfo = RcrainfoService(api_username=self.testuser1.username)
         # retrieve_id() should get their API credentials from their RcraProfile
         testuser_id = rcrainfo.retrieve_id()
-        assert testuser_id == self.profile.rcra_api_id
+        assert testuser_id == self.rcra_profile.rcra_api_id
 
     def test_gets_credentials_correctly(self, mock_responses):
         """Test our overridden retrieve_id() and retrieve_key() function as expected"""
         rcrainfo = RcrainfoService(api_username=self.testuser1.username)
         auth_url = (
-            f"{rcrainfo.base_url}v1/auth/{self.profile.rcra_api_id}/"
-            f"{self.profile.rcra_api_key}"
+            f"{rcrainfo.base_url}v1/auth/{self.rcra_profile.rcra_api_id}/"
+            f"{self.rcra_profile.rcra_api_key}"
         )
         mock_token = "thisIsAMockToken"
         mock_token_exp = datetime.utcnow().replace(tzinfo=timezone.utc) + timedelta(minutes=20)
@@ -64,9 +67,18 @@ class TestQuickerSign:
     sign_date = datetime.utcnow().replace(tzinfo=timezone.utc)
 
     @pytest.fixture
-    def setup(self, user_factory, rcra_profile_factory, quicker_sign_response_factory):
+    def setup(
+        self,
+        user_factory,
+        rcra_profile_factory,
+        haztrak_profile_factory,
+        quicker_sign_response_factory,
+    ):
         self.testuser1 = user_factory()
-        self.profile = rcra_profile_factory(user=self.testuser1)
+        self.rcra_profile = rcra_profile_factory()
+        self.profile = haztrak_profile_factory(
+            user=self.testuser1, rcrainfo_profile=self.rcra_profile
+        )
         self.rcrainfo = RcrainfoService(api_username=self.testuser1.username, auto_renew=False)
         self.response_json = quicker_sign_response_factory(
             mtn=self.mtn, site_id=self.site_id, sign_date=self.sign_date

@@ -1,9 +1,10 @@
 import random
 import string
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from typing import Dict, List, Optional
 
 import pytest
+from faker import Faker
 
 from apps.sites.models import RcraSite, RcraSiteType
 from apps.trak.models import (
@@ -35,7 +36,7 @@ def manifest_handler_factory(db, rcra_site_factory, paper_signature_factory):
 
 
 @pytest.fixture
-def quicker_sign_response_factory():
+def quicker_sign_response_factory(faker: Faker):
     """
     Factory for creating dynamic quicker sign response data
     """
@@ -44,7 +45,7 @@ def quicker_sign_response_factory():
         mtn: List[str],
         site_id: str,
         site_type: Optional[RcraSiteType] = RcraSiteType.GENERATOR,
-        printed_name: Optional[str] = "David Graham",
+        printed_name: Optional[str] = None,
         sign_date: Optional[datetime] = datetime.utcnow().replace(tzinfo=timezone.utc),
         transporter_order: Optional[int] = None,
     ) -> Dict:
@@ -55,7 +56,7 @@ def quicker_sign_response_factory():
             "operationStatus": "Completed",
             "manifestReports": [{"manifestTrackingNumber": mtn} for mtn in mtn],
             "signerReport": {
-                "printedSignatureName": printed_name,
+                "printedSignatureName": printed_name or faker.name(),
                 "printedSignatureDate": sign_date_iso,
                 "electronicSignatureDate": sign_date_iso,
                 "firstName": "David",
@@ -70,23 +71,23 @@ def quicker_sign_response_factory():
 
 
 @pytest.fixture
-def paper_signature_factory(db):
+def paper_signature_factory(db, faker: Faker):
     """Abstract factory for Paper Signature"""
 
     def create_signature(
-        printed_name: Optional[str] = "David Graham",
+        printed_name: Optional[str] = None,
         sign_date: Optional[datetime] = None,
     ) -> PaperSignature:
         return PaperSignature.objects.create(
-            printed_name=printed_name,
-            sign_date=sign_date or datetime.utcnow().replace(tzinfo=timezone.utc),
+            printed_name=printed_name or faker.name(),
+            sign_date=sign_date or datetime.now(UTC),
         )
 
     yield create_signature
 
 
 @pytest.fixture
-def e_signature_factory(db, signer_factory, manifest_handler_factory):
+def e_signature_factory(db, signer_factory, manifest_handler_factory, faker: Faker):
     """Abstract factory for Haztrak Handler model"""
 
     def create_e_signature(
@@ -96,9 +97,9 @@ def e_signature_factory(db, signer_factory, manifest_handler_factory):
         return ESignature.objects.create(
             signer=signer or signer_factory(),
             manifest_handler=manifest_handler or manifest_handler_factory(),
-            sign_date=datetime.utcnow().replace(tzinfo=timezone.utc),
-            cromerr_activity_id="".join(random.choices(string.ascii_letters, k=10)),
-            cromerr_document_id="".join(random.choices(string.ascii_letters, k=10)),
+            sign_date=datetime.now(UTC),
+            cromerr_activity_id=faker.pystr(max_chars=10),
+            cromerr_document_id=faker.pystr(max_chars=10),
             on_behalf=False,
         )
 
@@ -125,24 +126,24 @@ def waste_code_factory(db):
 
 
 @pytest.fixture
-def signer_factory(db):
+def signer_factory(db, faker: Faker):
     """Abstract factory for Haztrak Signer model"""
 
     def creat_signer(
-        first_name: Optional[str] = "test",
-        middle_initial: Optional[str] = "Q",
-        last_name: Optional[str] = "user",
+        first_name: Optional[str] = None,
+        middle_initial: Optional[str] = None,
+        last_name: Optional[str] = None,
         signer_role: Optional[str] = "EP",
-        company_name: Optional[str] = "haztrak",
-        rcra_user_id: Optional[str] = "testuser1",
+        company_name: Optional[str] = None,
+        rcra_user_id: Optional[str] = None,
     ) -> Signer:
         return Signer.objects.create(
-            first_name=first_name,
-            middle_initial=middle_initial,
-            last_name=last_name,
+            first_name=first_name or faker.first_name(),
+            middle_initial=middle_initial or faker.pystr(max_chars=1),
+            last_name=last_name or faker.last_name(),
             signer_role=signer_role,
-            company_name=company_name,
-            rcra_user_id=rcra_user_id,
+            company_name=company_name or faker.company(),
+            rcra_user_id=rcra_user_id or faker.user_name(),
         )
 
     yield creat_signer
@@ -157,29 +158,31 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
         generator: Optional[Handler] = None,
         tsdf: Optional[Handler] = None,
     ) -> Manifest:
-        if tsdf is None:
-            # ensure the TSD is a different EPA site
-            rcra_site = rcra_site_factory()
-            tsdf = manifest_handler_factory(rcra_site=rcra_site)
         return Manifest.objects.create(
             mtn=mtn,
-            created_date=datetime.now().replace(tzinfo=timezone.utc),
-            potential_ship_date=datetime.now().replace(tzinfo=timezone.utc),
-            generator=generator or manifest_handler_factory(),
-            tsdf=tsdf or manifest_handler_factory(rcra_site=rcra_site_factory(epa_id="tsd001")),
+            created_date=datetime.now(UTC),
+            potential_ship_date=datetime.now(UTC),
+            generator=generator
+            or manifest_handler_factory(
+                rcra_site=rcra_site_factory(site_type=RcraSiteType.GENERATOR)
+            ),
+            tsdf=tsdf
+            or manifest_handler_factory(rcra_site=rcra_site_factory(site_type=RcraSiteType.TSDF)),
         )
 
     yield create_manifest
 
 
 @pytest.fixture
-def dot_option_factory(db):
+def dot_option_factory(db, faker: Faker):
     """Abstract factory for Haztrak DotLookup model"""
 
     def create_dot_option(
-        value: Optional[str] = "mock_id",
+        value: Optional[str] = None,
         value_type: Optional[DotLookupType] = DotLookupType.ID,
     ) -> Manifest:
-        return DotLookup.objects.create(value=value, value_type=value_type)
+        return DotLookup.objects.create(
+            value=value or faker.pystr(max_chars=10), value_type=value_type
+        )
 
     yield create_dot_option

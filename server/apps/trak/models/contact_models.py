@@ -6,9 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class ManifestPhoneNumber(models.CharField):
-    """
-    ManifestPhoneNumber encapsulates RCRAInfo's representation of a phone
-    """
+    """RCRAInfo's representation of a phone"""
 
     def validate(self, value, model_instance):
         if not match(r"^\d{3}-\d{3}-\d{4}$", value):
@@ -19,10 +17,7 @@ class ManifestPhoneNumber(models.CharField):
 
 
 class ManifestPhone(models.Model):
-    """
-    RCRAInfo phone model, stores phones in ###-###-#### format
-    along with up to 6 digit extension.
-    """
+    """RCRAInfo representation of phone numbers on a manifest"""
 
     class Meta:
         ordering = ["number"]
