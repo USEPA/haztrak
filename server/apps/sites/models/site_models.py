@@ -38,6 +38,7 @@ class HaztrakOrg(models.Model):
         "core.HaztrakUser",
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
     )
 
     @property
