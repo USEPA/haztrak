@@ -1,3 +1,5 @@
+from datetime import UTC, datetime
+
 import pytest
 from django.db import IntegrityError
 
@@ -15,4 +17,7 @@ class TestPaperSignatureModel:
 
     def test_printed_name_is_required(self, paper_signature_factory):
         with pytest.raises(IntegrityError):
-            paper_signature_factory(printed_name=None)
+            return PaperSignature.objects.create(
+                printed_name=None,
+                sign_date=datetime.now(UTC),
+            )

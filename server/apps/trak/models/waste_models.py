@@ -18,10 +18,7 @@ class WasteLineManager(TrakBaseManager):
 
 
 class WasteLine(TrakBaseModel):
-    """
-    ToDo: Every place we have as a JSON field likely should be stored in separate table
-    Model definition for hazardous waste listed on a uniform hazardous waste manifest.
-    """
+    """Model definition for hazardous waste listed on a uniform hazardous waste manifest."""
 
     class Meta:
         ordering = ["manifest__mtn", "line_number"]
@@ -90,24 +87,6 @@ class WasteLine(TrakBaseModel):
         return f"{self.manifest} line {self.line_number}"
 
 
-class RcraCodeBaseModel(TrakBaseModel):
-    """Abstract base class for Epa Lookups and codes"""
-
-    code = models.CharField(
-        max_length=2,
-    )
-    description = models.TextField(
-        blank=True,
-        null=True,
-    )
-
-    def __str__(self):
-        return f"{self.code}"
-
-    class Meta:
-        abstract = True
-
-
 class FederalWasteCodeManager(models.Manager):
     """WasteCode model manager for dealing with Federal Waste Codes"""
 
@@ -122,7 +101,7 @@ class StateWasteCodeManager(models.Manager):
         return super().get_queryset().filter(code_type=WasteCode.CodeType.STATE)
 
 
-class WasteCode(RcraCodeBaseModel):
+class WasteCode(models.Model):
     """Manifest Federal and state waste codes"""
 
     class Meta:
@@ -254,6 +233,10 @@ class WasteCode(RcraCodeBaseModel):
         max_length=6,
         unique=True,
     )
+    description = models.TextField(
+        blank=True,
+        null=True,
+    )
     code_type = models.CharField(
         choices=CodeType.choices,
         max_length=2,
@@ -264,6 +247,9 @@ class WasteCode(RcraCodeBaseModel):
         blank=True,
         choices=STATE_CHOICES,
     )
+
+    def __str__(self):
+        return f"{self.code}"
 
 
 class DotLookupType(models.TextChoices):
@@ -312,6 +298,8 @@ class DotLookup(models.Model):
 
     class Meta:
         ordering = ["value_type", "value"]
+        verbose_name = "DOT lookup"
+        verbose_name_plural = "DOT lookups"
 
     value = models.CharField(
         max_length=255,

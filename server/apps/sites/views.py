@@ -1,6 +1,5 @@
 import logging
 
-from django.db.models import QuerySet
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, inline_serializer
@@ -13,6 +12,7 @@ from rest_framework.views import APIView
 from apps.sites.models import HaztrakSite, RcraSite, RcraSiteType  # type: ignore
 from apps.sites.serializers import RcraSiteSerializer, SiteSerializer  # type: ignore
 from apps.sites.services import RcraSiteService  # type: ignore
+from apps.sites.services.rcra_site_services import query_rcra_sites
 
 logger = logging.getLogger(__name__)
 
@@ -84,7 +84,7 @@ class RcraSiteView(RetrieveAPIView):
         },
     ),
 )
-class SiteSearchView(ListAPIView):
+class RcraSiteSearchView(APIView):
     """
     Search for locally saved hazardous waste sites ("Generators", "Transporters", "Tsdf's")
     """
@@ -92,32 +92,30 @@ class SiteSearchView(ListAPIView):
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
 
-    @method_decorator(cache_page(60 * 15))
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+    class RcraSiteSearchSerializer(serializers.Serializer):
+        epaId = serializers.CharField(required=False, source="epa_id")
+        siteName = serializers.CharField(required=False, source="name")
+        siteType = serializers.ChoiceField(
+            required=False,
+            source="site_type",
+            choices=[
+                "transporter",
+                "Transporter",
+                "Tsdf",
+                "tsdf",
+                "Generator",
+                "generator",
+            ],
+        )
 
-    def get_queryset(self: ListAPIView) -> QuerySet[RcraSite]:
-        queryset = RcraSite.objects.all()
-        epa_id_param: str | None = self.request.query_params.get("epaId")
-        name_param: str | None = self.request.query_params.get("siteName")
-        site_type_param: str | None = self.request.query_params.get("siteType")
-        if epa_id_param is not None:
-            queryset = queryset.filter(epa_id__icontains=epa_id_param)
-        if name_param is not None:
-            queryset = queryset.filter(name__icontains=name_param)
-        if site_type_param is not None:
-            match site_type_param.lower():
-                case "transporter":
-                    site_type = RcraSiteType.TRANSPORTER.label
-                case "designatedfacility":
-                    site_type = RcraSiteType.TSDF.label
-                case "generator":
-                    site_type = RcraSiteType.GENERATOR.label
-                case _:
-                    logger.warning("siteType query parameter not recognized")
-                    site_type = RcraSiteType.GENERATOR.label
-            queryset = queryset.filter(site_type=site_type)
-        return queryset
+    # @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        query_params = request.query_params
+        serializer = self.RcraSiteSearchSerializer(data=query_params)
+        serializer.is_valid(raise_exception=True)
+        rcra_sites = query_rcra_sites(**serializer.validated_data)
+        data = RcraSiteSerializer(rcra_sites, many=True).data
+        return Response(data, status=status.HTTP_200_OK)
 
 
 handler_types = {
@@ -163,6 +161,7 @@ class HandlerSearchView(APIView):
     def post(self, request: Request) -> Response:
         serializer = self.HandlerSearchSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        print("hello")
         sites = RcraSiteService(username=request.user.username)
         data = sites.search_rcrainfo_handlers(
             epaSiteId=serializer.data["siteId"],

@@ -1,4 +1,5 @@
 import logging
+from typing import Dict
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -12,9 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class HandlerManager(TrakBaseManager):
-    """
-    Inter-model related functionality for the Handler Model
-    """
+    """Inter-model related functionality for the Handler Model"""
 
     def save(self, **handler_data) -> models.QuerySet:
         e_signatures = []
@@ -52,10 +51,7 @@ class HandlerManager(TrakBaseManager):
 
 
 class Handler(TrakBaseModel):
-    """
-    Handler which contains a reference to hazardous waste
-    rcra_site and data specific to that rcra_site on the given manifest.
-    """
+    """Handler corresponds to a RCRAInfo site that is listed on a manifest."""
 
     class Meta:
         ordering = ["rcra_site"]
@@ -83,6 +79,33 @@ class Handler(TrakBaseModel):
         ).exists()
         paper_signature_exists = self.paper_signature is not None
         return paper_signature_exists or e_signature_exists
+
+    def __str__(self):
+        return f"{self.rcra_site.epa_id}"
+
+
+class TransporterManager(HandlerManager):
+    """Inter-model related functionality for Transporter Model"""
+
+    def save(self, **transporter_data: Dict):
+        """Create a Transporter from a manifest instance and rcra_site dict"""
+        return super().save(**transporter_data)
+
+
+class Transporter(Handler):
+    """Model definition for entities listed as transporters of hazardous waste on the manifest."""
+
+    class Meta:
+        ordering = ["manifest__mtn"]
+
+    objects = TransporterManager()
+
+    manifest = models.ForeignKey(
+        "Manifest",
+        related_name="transporters",
+        on_delete=models.CASCADE,
+    )
+    order = models.PositiveIntegerField()
 
     def __str__(self):
         return f"{self.rcra_site.epa_id}"

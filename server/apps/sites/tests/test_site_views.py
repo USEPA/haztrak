@@ -5,12 +5,12 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.core.models import RcraProfile  # type: ignore
+from apps.core.models import HaztrakUser, RcraProfile  # type: ignore
 from apps.sites.models import HaztrakSite, RcraSite, RcraSitePermissions  # type: ignore
 from apps.sites.views import SiteDetailView  # type: ignore
 
 
-class TestSiteListView:
+class TestHaztrakSiteListView:
     @pytest.fixture
     def api_client(
         self,
@@ -20,14 +20,16 @@ class TestSiteListView:
         user_factory,
         haztrak_site_factory,
         rcra_site_factory,
+        haztrak_profile_factory,
     ):
         self.user = user_factory()
         self.client = api_client_factory(user=self.user)
-        self.profile = rcra_profile_factory(user=self.user)
+        self.rcra_profile = rcra_profile_factory()
+        self.profile = haztrak_profile_factory(user=self.user, rcrainfo_profile=self.rcra_profile)
         self.rcra_site = rcra_site_factory()
         self.user_site = haztrak_site_factory(rcra_site=self.rcra_site)
         self.user_site_permission = rcra_permission_factory(
-            site=self.rcra_site, profile=self.profile
+            site=self.rcra_site, profile=self.rcra_profile
         )
         self.other_site = haztrak_site_factory(rcra_site=rcra_site_factory(epa_id="VA12345678"))
 
@@ -36,11 +38,6 @@ class TestSiteListView:
     def test_responds_with_site_in_json_format(self, api_client):
         response = self.client.get(f"{self.base_url}")
         assert response.status_code == status.HTTP_200_OK
-
-    def test_returns_sites_with_access(self, api_client):
-        response = self.client.get(f"{self.base_url}")
-        response_site_id = [i["handler"]["epaSiteId"] for i in response.data]
-        print(response_site_id)
 
     def test_other_sites_not_included(self, api_client):
         response = self.client.get(f"{self.base_url}")
@@ -53,62 +50,52 @@ class TestSiteListView:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
-class TestSiteDetailsApi:
+class TestHaztrakSiteDetailsApi:
     """
     Tests the site details endpoint
     """
 
     url = "/api/site"
 
-    @pytest.fixture
-    def local_site_factory(
+    def test_returns_site_by_id(
         self,
-        haztrak_profile_factory,
-        haztrak_site_permission_factory,
-        rcra_site_factory,
         user_factory,
         haztrak_site_factory,
+        haztrak_site_permission_factory,
+        haztrak_profile_factory,
     ):
-        """Create sets up a site, corresponding rcra_site, a rcra_site_permissions for a user"""
-
-        def create_site_and_related(
-            user: Optional[User] = user_factory(),
-            rcra_site: Optional[RcraSite] = rcra_site_factory(),
-            profile: Optional[RcraProfile] = None,
-            site: Optional[HaztrakSite] = None,
-            rcra_site_permission: Optional[RcraSitePermissions] = None,
-        ):
-            if profile is None:
-                profile = haztrak_profile_factory(user=user)
-            if site is None:
-                site = haztrak_site_factory(rcra_site=rcra_site)
-            if rcra_site_permission is None:
-                haztrak_site_permission_factory(site=site, profile=profile)
-            return site
-
-        return create_site_and_related
-
-    def test_returns_site_by_id(self, user_factory, local_site_factory) -> None:
         # Arrange
         user = user_factory(username="username1")
-        site = local_site_factory(user=user)
-        factory = APIRequestFactory()
-        request = factory.get(f"{self.url}/{site.rcra_site.epa_id}")
+        profile = haztrak_profile_factory(user=user)
+        site = haztrak_site_factory()
+        haztrak_site_permission_factory(profile=profile, site=site)
+        request = APIRequestFactory()
+        request = request.get(f"{self.url}/{site.rcra_site.epa_id}")
         force_authenticate(request, user)
         # Act
         response = SiteDetailView.as_view()(request, epa_id=site.rcra_site.epa_id)
         # Assert
+        assert response.status_code == status.HTTP_200_OK
         assert response.data["handler"]["epaSiteId"] == site.rcra_site.epa_id
 
     def test_non_user_sites_not_returned(
-        self, user_factory, local_site_factory, haztrak_site_factory
+        self,
+        user_factory,
+        haztrak_site_factory,
+        haztrak_profile_factory,
+        haztrak_org_factory,
+        haztrak_site_permission_factory,
     ):
         # Arrange
-        user = user_factory(username="username1")
-        local_site_factory(user=user)
-        other_site = haztrak_site_factory()
-        factory = APIRequestFactory()
-        request = factory.get(f"{self.url}/{other_site.rcra_site.epa_id}")
+        user = user_factory()
+        profile = haztrak_profile_factory(user=user)
+        org = haztrak_org_factory(admin=user)
+        site = haztrak_site_factory(org=org)
+        haztrak_site_permission_factory(profile=profile, site=site)
+        other_org = haztrak_org_factory()
+        other_site = haztrak_site_factory(org=other_org)
+        request = APIRequestFactory()
+        request = request.get(f"{self.url}/{other_site.rcra_site.epa_id}")
         force_authenticate(request, user)
         # Act
         response = SiteDetailView.as_view()(request, epa_id=other_site.rcra_site.epa_id)
@@ -116,15 +103,22 @@ class TestSiteDetailsApi:
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
     def test_returns_formatted_http_response(
-        self, user_factory, local_site_factory, haztrak_site_factory
+        self,
+        user_factory,
+        haztrak_site_factory,
+        haztrak_profile_factory,
+        haztrak_site_permission_factory,
+        haztrak_org_factory,
     ):
         # Arrange
-        user = user_factory(username="username1")
-        site = local_site_factory(user=user)
+        user = user_factory()
+        profile = haztrak_profile_factory(user=user)
+        org = haztrak_org_factory(admin=user)
+        site = haztrak_site_factory(org=org)
+        haztrak_site_permission_factory(profile=profile, site=site)
         client = APIClient()
         client.force_authenticate(user=user)
         # Act
-        print(site.rcra_site.epa_id)
         response = client.get(f"{self.url}/{site.rcra_site.epa_id}")
         # Assert
         assert response.headers["Content-Type"] == "application/json"

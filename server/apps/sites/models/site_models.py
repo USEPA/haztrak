@@ -10,6 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.sites.models import Address, Contact
 from apps.sites.models.contact_models import RcraPhone
 
+from ...core.models import RcraProfile
 from .base_models import SitesBaseManager, SitesBaseModel
 
 logger = logging.getLogger(__name__)
@@ -21,6 +22,7 @@ class HaztrakOrg(models.Model):
     class Meta:
         verbose_name = "Organization"
         verbose_name_plural = "Organizations"
+        ordering = ["name"]
 
     name = models.CharField(
         max_length=200,
@@ -39,25 +41,31 @@ class HaztrakOrg(models.Model):
     )
 
     @property
-    def has_rcrainfo_api_credentials(self) -> bool:
+    def rcrainfo_api_id_key(self) -> tuple[str, str] | None:
+        """Returns the RcraInfo API credentials for the admin user"""
+        try:
+            rcrainfo_profile = RcraProfile.objects.get(haztrak_profile__user=self.admin)
+            return rcrainfo_profile.rcra_api_id, rcrainfo_profile.rcra_api_key
+        except RcraProfile.DoesNotExist:
+            return None
+
+    @property
+    def is_rcrainfo_integrated(self) -> bool:
         """Returns True if the admin user has RcraInfo API credentials"""
-        if self.admin.rcra_profile.has_api_credentials:
-            return True
-        return False
+        if RcraProfile.objects.filter(haztrak_profile__user=self.admin).exists():
+            return RcraProfile.objects.get(haztrak_profile__user=self.admin).has_api_credentials
+        else:
+            return False
 
     def __str__(self):
         return f"{self.name}"
 
 
 class RcraSiteType(models.TextChoices):
-    """A hazardous waste rcra_site's type. Whether they are the rcra_site
-    that generates, transports, or treats the waste (Tsdf).
-    It's also possible they can be a broker although this is much less common"""
-
-    GENERATOR = "GEN", _("Generator")
-    TRANSPORTER = "TRA", _("Transporter")
-    TSDF = "TSD", _("Tsdf")
-    BROKER = "BRO", _("Broker")
+    GENERATOR = "Generator"
+    TRANSPORTER = "Transporter"
+    TSDF = "Tsdf"
+    BROKER = "Broker"
 
 
 class RcraSiteManager(SitesBaseManager):
@@ -119,11 +127,11 @@ class RcraSiteManager(SitesBaseManager):
 
 
 class RcraSite(SitesBaseModel):
-    """
-    RCRAInfo RcraSite model definition for entities on the uniform hazardous waste manifests
-    """
+    """RCRAInfo Site model (see 'Handler' which wraps this model with manifest specific data)"""
 
     class Meta:
+        verbose_name = "RCRAInfo Site"
+        verbose_name_plural = "RCRAInfo Sites"
         ordering = ["epa_id"]
 
     objects = RcraSiteManager()
@@ -132,12 +140,7 @@ class RcraSite(SitesBaseModel):
         max_length=20,
         null=True,
         blank=True,
-        choices=[
-            ("Tsdf", "Tsdf"),
-            ("Generator", "Generator"),
-            ("Transporter", "Transporter"),
-            ("Broker", "Broker"),
-        ],
+        choices=RcraSiteType.choices,
     )
     epa_id = models.CharField(
         verbose_name="EPA ID number",
@@ -176,7 +179,6 @@ class RcraSite(SitesBaseModel):
         null=True,
         blank=True,
     )
-
     gis_primary = models.BooleanField(
         verbose_name="GIS primary",
         null=True,
@@ -212,9 +214,11 @@ class HaztrakSite(SitesBaseModel):
     """
 
     class Meta:
-        ordering = ["rcra_site__epa_id"]
         verbose_name = "Haztrak Site"
         verbose_name_plural = "Haztrak Sites"
+        ordering = ["rcra_site__epa_id"]
+
+    # ToDo: use UUIDField as primary key
 
     name = models.CharField(
         verbose_name="site alias",
@@ -231,19 +235,15 @@ class HaztrakSite(SitesBaseModel):
         null=True,
         blank=True,
     )
-    admin_rcrainfo_profile = models.ForeignKey(
-        "core.RcraProfile",
-        on_delete=models.SET_NULL,
-        null=True,
-        verbose_name="Admin",
+    org = models.ForeignKey(
+        HaztrakOrg,
+        on_delete=models.CASCADE,
     )
 
     @property
     def admin_has_rcrainfo_api_credentials(self) -> bool:
         """Returns True if the admin user has RcraInfo API credentials"""
-        if self.admin_rcrainfo_profile.has_api_credentials:
-            return True
-        return False
+        return self.org.is_rcrainfo_integrated
 
     def __str__(self):
         """Used in StringRelated fields in serializer classes"""
@@ -261,7 +261,9 @@ class SitePermissions(SitesBaseModel):
     """The Role Based access a user has to a site"""
 
     class Meta:
-        verbose_name = "Haztrak Site Permissions"
+        verbose_name = "Site Permission"
+        verbose_name_plural = "Site Permissions"
+        ordering = ["profile"]
 
     profile = models.ForeignKey(
         "core.HaztrakProfile",
@@ -287,10 +289,7 @@ class SitePermissions(SitesBaseModel):
 
 
 class RcraSitePermissions(SitesBaseModel):
-    """
-    RCRAInfo Site Permissions per module connected to a user's RcraProfile
-    and the corresponding HaztrakSite
-    """
+    """Per module permissions a user has in their RCRAInfo account"""
 
     CERTIFIER = "Certifier"
     PREPARER = "Preparer"
@@ -303,7 +302,8 @@ class RcraSitePermissions(SitesBaseModel):
     ]
 
     class Meta:
-        verbose_name = "RCRAInfo Site Permission"
+        verbose_name = "RCRAInfo Permission"
+        verbose_name_plural = "RCRAInfo Permissions"
         ordering = ["site__epa_id"]
 
     site = models.ForeignKey(
@@ -340,7 +340,7 @@ class RcraSitePermissions(SitesBaseModel):
     )
 
     def __str__(self):
-        return f"{self.profile.user}: {self.site.epa_id}"
+        return f"{self.site.epa_id}"
 
     def clean(self):
         if self.site_manager:
@@ -348,5 +348,5 @@ class RcraSitePermissions(SitesBaseModel):
             for field_name in fields:
                 if getattr(self, field_name) != "Certifier":
                     raise ValidationError(
-                        f"The value for the '{field_name}' field must be set to 'Certifier'."
+                        f"If Site Manager, '{field_name}' field must be set to 'Certifier'."
                     )
