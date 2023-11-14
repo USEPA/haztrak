@@ -20,14 +20,14 @@ class TestHandlerService:
         in order for self.rcrainfo = rcrainfo or RcrainfoService(...) to work.
         """
         # Arrange
-        rcrainfo = RcrainfoService(api_username=self.user.username, auto_renew=False)
+        rcrainfo = RcrainfoService(auto_renew=False)
         # Act and Assert
         assert rcrainfo  # should return true
 
     def test_pulls_site_details_from_rcrainfo(self, mock_responses):
         """test pulling a rcra_site's information from rcrainfo"""
         # Arrange
-        rcrainfo = RcrainfoService(api_username=self.user.username, auto_renew=False)
+        rcrainfo = RcrainfoService(auto_renew=False)
         handler_service = RcraSiteService(username=self.user.username, rcrainfo=rcrainfo)
         rcrainfo_site_details_url = f"{rcrainfo.base_url}v1/site-details/{self.epa_id}"
         # mock response from Rcrainfo

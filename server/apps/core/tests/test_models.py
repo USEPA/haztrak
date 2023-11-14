@@ -24,7 +24,7 @@ class TestRcraProfileModel:
             expected = False
         rcra_profile = rcra_profile_factory(rcra_api_id=rcra_api_id, rcra_api_key=rcra_api_key)
         # Act
-        api_user = rcra_profile.has_api_credentials
+        api_user = rcra_profile.has_rcrainfo_api_id_key
         # Assert
         assert api_user is expected
 

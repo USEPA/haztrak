@@ -7,7 +7,7 @@ from django.db.models import QuerySet
 from emanifest import RcrainfoResponse  # type: ignore
 from requests import RequestException  # type: ignore
 
-from apps.core.services import RcrainfoService  # type: ignore
+from apps.core.services import RcrainfoService, get_rcrainfo_client  # type: ignore
 from apps.trak.models import Manifest, QuickerSign  # type: ignore
 from apps.trak.serializers import ManifestSerializer, QuickerSignSerializer  # type: ignore
 from apps.trak.tasks import pull_manifest, save_rcrainfo_manifest, sign_manifest  # type: ignore
@@ -55,12 +55,7 @@ class ManifestService:
 
     def __init__(self, *, username: str, rcrainfo: Optional[RcrainfoService] = None):
         self.username = username
-        self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
-
-    def __repr__(self):
-        return (
-            f"<{self.__class__.__name__}(username='{self.username}', rcrainfo='{self.rcrainfo}')>"
-        )
+        self.rcrainfo = rcrainfo or get_rcrainfo_client(username=username)
 
     def search_rcrainfo_mtn(
         self,
@@ -166,7 +161,7 @@ class ManifestService:
         :param manifest: Dict
         :return:
         """
-        if self.rcrainfo.has_api_user and manifest.get("status") != "NotAssigned":
+        if self.rcrainfo.has_rcrainfo_credentials and manifest.get("status") != "NotAssigned":
             logger.info("POSTing manifest to RCRAInfo.")
             task = save_rcrainfo_manifest.delay(manifest_data=manifest, username=self.username)
             return {"taskId": task.id}
