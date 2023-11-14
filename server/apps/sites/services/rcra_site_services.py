@@ -77,8 +77,14 @@ class RcraSiteService:
         try:
             data = cache.get(cache_key)
             if not data:
-                data: HandlerSearchResults = self.rcrainfo.search_sites(**search_parameters).json()
-                cache.set(cache_key, data, 60 * 60 * 24)
+                response = self.rcrainfo.search_sites(**search_parameters)
+                if response.ok:
+                    data = response.json()
+                    cache.set(cache_key, data, 60 * 60 * 24)
+                else:
+                    raise ValidationError(
+                        f"Error retrieving data from RCRAInfo: {response.json()}"
+                    )
             return data
         except CacheKeyWarning:
             raise ValidationError("Error retrieving data from cache")
