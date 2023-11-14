@@ -72,7 +72,7 @@ class RcraProfileAdmin(admin.ModelAdmin):
         return format_html("<a href='{}'>{}</a>", url, user)
 
     def api_user(self, profile: RcraProfile) -> bool:
-        return profile.has_api_credentials
+        return profile.has_rcrainfo_api_id_key
 
     api_user.boolean = True
     api_user.short_description = "Rcrainfo API User"

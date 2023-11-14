@@ -6,6 +6,7 @@ from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse  # type: ignore
 
 from apps.core.models import RcraProfile  # type: ignore
+from apps.sites.models.site_models import HaztrakOrg
 from apps.trak.models import WasteCode  # type: ignore
 
 logger = logging.getLogger(__name__)
@@ -22,55 +23,53 @@ class RcrainfoService(RcrainfoClient):
     def __init__(
         self,
         *,
-        api_username: str,
+        rcra_profile: Optional[RcraProfile] = None,
+        api_id: Optional[str] = None,
+        api_key: Optional[str] = None,
         rcrainfo_env: Optional[Literal["preprod"] | Literal["prod"]] = None,
         **kwargs,
     ):
-        self.api_user = api_username
-        if RcraProfile.objects.filter(haztrak_profile__user__username=self.api_user).exists():
-            self.profile = RcraProfile.objects.get(haztrak_profile__user__username=self.api_user)
-        else:
-            self.profile = None
-        self.rcrainfo_env = rcrainfo_env or "preprod"
+        self.profile: RcraProfile | None = rcra_profile
+        self.api_id: str | None = api_id
+        self.api_key: str | None = api_key
+        self.rcrainfo_env: str = rcrainfo_env or "preprod"
         base_url = (
             emanifest.RCRAINFO_PROD if self.rcrainfo_env == "prod" else emanifest.RCRAINFO_PREPROD
         )
-        super().__init__(base_url, **kwargs)
+        super().__init__(base_url, api_id=api_id, api_key=api_key, **kwargs)
 
     @property
-    def has_api_user(self) -> bool:
+    def has_rcrainfo_credentials(self) -> bool:
         """returns boolean if the assigned API user has credentials"""
         try:
-            return self.profile.has_api_credentials
+            return self.profile.has_rcrainfo_api_id_key
         except AttributeError:
-            return False
+            return self.api_id is not None and self.api_key is not None
 
     def __repr__(self):
-        return (
-            f"<{self.__class__.__name__}(api_username='{self.api_user}', "
-            f"rcrainfo_env='{self.rcrainfo_env}')>"
-        )
+        return f"<{self.__class__.__name__}" f"rcrainfo_env='{self.rcrainfo_env}')>"
 
     def retrieve_id(self, api_id=None) -> str:
         """Override RcrainfoClient method to retrieve API ID for authentication"""
-        if self.has_api_user:
-            return super().retrieve_id(self.profile.rcra_api_id)
+        if self.has_rcrainfo_credentials:
+            return super().retrieve_id(self.api_id or self.profile.rcra_api_id)
         return super().retrieve_key()
 
     def retrieve_key(self, api_key=None) -> str:
         """Override RcrainfoClient method to retrieve API key to authentication"""
-        if self.has_api_user:
-            return super().retrieve_key(self.profile.rcra_api_key)
+        if self.has_rcrainfo_credentials:
+            return super().retrieve_key(self.api_key or self.profile.rcra_api_key)
         return super().retrieve_key()
 
-    def get_user_rcrainfo_profile(self, username: Optional[str] = None) -> RcrainfoResponse:
+    def get_user_rcrainfo_profile(
+        self, rcrainfo_username: Optional[str] = None
+    ) -> RcrainfoResponse:
         """
         Retrieve a user's site permissions from RCRAInfo, It expects the
         haztrak user to have their unique RCRAInfo user and API credentials in their
         RcraProfile
         """
-        profile = RcraProfile.objects.get(user__username=username or self.api_user)
-        return self.search_users(userId=profile.rcra_username)
+        return self.search_users(userId=rcrainfo_username)
 
     def sync_federal_waste_codes(self):
         """
@@ -127,3 +126,36 @@ class RcrainfoService(RcrainfoClient):
         we use this to test a RcrainfoService instance is not None
         """
         return True
+
+
+def get_rcrainfo_client(
+    *,
+    username: Optional[str] = None,
+    api_id: Optional[str] = None,
+    api_key: Optional[str] = None,
+    rcrainfo_env: Optional[Literal["preprod"] | Literal["prod"]] = None,
+    **kwargs,
+) -> RcrainfoService:
+    """RcrainfoService Constructor for interacting with RCRAInfo web services"""
+    if api_id is not None and api_key is not None:
+        return RcrainfoService(
+            api_id=api_id,
+            api_key=api_key,
+            rcrainfo_env=rcrainfo_env,
+            **kwargs,
+        )
+    try:
+        org: HaztrakOrg = HaztrakOrg.objects.get(haztrak_profiles__user__username=username)
+        if org.is_rcrainfo_integrated:
+            api_id, api_key = org.rcrainfo_api_id_key
+        return RcrainfoService(
+            api_id=api_id,
+            api_key=api_key,
+            rcrainfo_env=rcrainfo_env,
+            **kwargs,
+        )
+    except HaztrakOrg.DoesNotExist:
+        raise ValueError(
+            "If not using an organization with RCRAInfo credentials, "
+            "you must provide api_id and api_key"
+        )

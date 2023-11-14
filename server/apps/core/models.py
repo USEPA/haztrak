@@ -50,6 +50,13 @@ class HaztrakProfile(CoreBaseModel):
         null=True,
         blank=True,
     )
+    org = models.ForeignKey(
+        "sites.HaztrakOrg",
+        on_delete=models.SET_NULL,
+        related_name="haztrak_profiles",
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return f"{self.user.username}"
@@ -90,6 +97,6 @@ class RcraProfile(CoreBaseModel):
         return f"{self.haztrak_profile.user.username}"
 
     @property
-    def has_api_credentials(self) -> bool:
+    def has_rcrainfo_api_id_key(self) -> bool:
         """Returns true if the use has Rcrainfo API credentials"""
         return self.rcra_api_id is not None and self.rcra_api_key is not None
