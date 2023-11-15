@@ -3,25 +3,28 @@ from typing import Optional
 
 from django.db import transaction
 
-from apps.core.services import RcrainfoService, get_rcrainfo_client  # type: ignore
+from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile  # type: ignore
+from apps.core.services import (  # type: ignore
+    RcrainfoService,
+    get_or_create_haztrak_profile,
+    get_rcrainfo_client,
+)
 from apps.sites.models import HaztrakSite, RcraSite, RcraSitePermissions  # type: ignore
 from apps.sites.serializers import RcraPermissionSerializer  # type: ignore
 
-from ...core.models import RcraProfile  # type: ignore
 from .rcra_site_services import RcraSiteService
 from .site_services import SiteService, SiteServiceError  # type: ignore
 
 logger = logging.getLogger(__name__)
 
 
-def get_or_create_rcra_profile(
-    *, username: str, rcrainfo_username: Optional[str] = None
-) -> tuple[RcraProfile, bool]:
+def get_or_create_rcra_profile(*, username: str) -> tuple[RcraProfile, bool]:
     """Retrieve a user's RcraProfile"""
     profile, created = RcraProfile.objects.get_or_create(haztrak_profile__user__username=username)
-    if created and rcrainfo_username is not None:
-        profile.rcra_username = rcrainfo_username
-        profile.save()
+    if created:
+        haztrak_profile, created = get_or_create_haztrak_profile(username=username)
+        haztrak_profile.rcrainfo_profile = profile
+        haztrak_profile.save()
     return profile, created
 
 
