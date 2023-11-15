@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.sites.models import HaztrakSite, RcraSite, RcraSiteType  # type: ignore
-from apps.sites.serializers import RcraSiteSerializer, SiteSerializer  # type: ignore
+from apps.sites.serializers import HaztrakSiteSerializer, RcraSiteSerializer  # type: ignore
 from apps.sites.services import RcraSiteService  # type: ignore
 from apps.sites.services.rcra_site_services import query_rcra_sites
 
@@ -23,7 +23,7 @@ class SiteListView(ListAPIView):
     user has access to.
     """
 
-    serializer_class = SiteSerializer
+    serializer_class = HaztrakSiteSerializer
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
@@ -39,7 +39,7 @@ class SiteDetailView(RetrieveAPIView):
     View to GET a Haztrak Site, which encapsulates the EPA RcraSite plus some.
     """
 
-    serializer_class = SiteSerializer
+    serializer_class = HaztrakSiteSerializer
     lookup_field = "rcra_site__epa_id"
     lookup_url_kwarg = "epa_id"
     queryset = HaztrakSite.objects.all()

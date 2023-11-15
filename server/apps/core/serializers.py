@@ -5,7 +5,7 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile
-from apps.sites.serializers import RcraSitePermissionSerializer
+from apps.sites.serializers import HaztrakOrgSerializer, RcraSitePermissionSerializer
 from apps.sites.serializers.profile_ser import SitePermissionSerializer
 
 
@@ -46,19 +46,19 @@ class HaztrakProfileSerializer(ModelSerializer):
         source="site_permissions",
         many=True,
     )
+    org = HaztrakOrgSerializer()
 
     class Meta:
         model = HaztrakProfile
         fields = [
             "user",
             "sites",
+            "org",
         ]
 
 
 class RcraProfileSerializer(ModelSerializer):
-    """
-    Model serializer for marshalling/unmarshalling a user's RcraProfile
-    """
+    """Model serializer for marshalling/unmarshalling a user's RcraProfile"""
 
     user = serializers.StringRelatedField(
         source="haztrak_profile",

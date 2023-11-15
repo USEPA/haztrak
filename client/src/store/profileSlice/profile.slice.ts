@@ -12,8 +12,15 @@ export interface ProfileState {
   user: string | undefined;
   rcrainfoProfile?: RcrainfoProfile<Record<string, RcrainfoProfileSite>>;
   sites?: Record<string, HaztrakProfileSite>;
+  org?: HaztrakProfileOrg | null;
   loading?: boolean;
   error?: string;
+}
+
+interface HaztrakProfileOrg {
+  id: string;
+  name: string;
+  rcrainfoIntegrated: boolean;
 }
 
 /** A site a user has access to in RCRAInfo and their module permissions */
@@ -77,7 +84,11 @@ export const getHaztrakProfile = createAsyncThunk('profile/getHaztrakProfile', a
       },
     };
   }, {});
-  return { sites };
+  return {
+    user: data.user,
+    org: data.org,
+    sites: sites,
+  } as ProfileState;
 });
 
 /**Retrieves a user's RcrainfoProfile, if it exists, from the server.*/
@@ -92,7 +103,6 @@ export const getRcraProfile = createAsyncThunk<ProfileState>(
     const data = await HtApi.getUserRcrainfoProfile(username);
     const { rcraSites, ...rest } = data;
     return {
-      user: username,
       rcrainfoProfile: {
         ...rest,
         rcraSites: rcraSites?.reduce((obj, site) => {
@@ -102,7 +112,7 @@ export const getRcraProfile = createAsyncThunk<ProfileState>(
           };
         }, {}),
       },
-    };
+    } as ProfileState;
   }
 );
 
