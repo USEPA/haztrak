@@ -3,7 +3,7 @@ from typing import Optional
 
 from django.db import transaction
 
-from apps.core.services import RcrainfoService  # type: ignore
+from apps.core.services import RcrainfoService, get_rcrainfo_client  # type: ignore
 from apps.sites.models import HaztrakSite, RcraSite, RcraSitePermissions  # type: ignore
 from apps.sites.serializers import RcraPermissionSerializer  # type: ignore
 
@@ -12,6 +12,17 @@ from .rcra_site_services import RcraSiteService
 from .site_services import SiteService, SiteServiceError  # type: ignore
 
 logger = logging.getLogger(__name__)
+
+
+def get_or_create_rcra_profile(
+    *, username: str, rcrainfo_username: Optional[str] = None
+) -> tuple[RcraProfile, bool]:
+    """Retrieve a user's RcraProfile"""
+    profile, created = RcraProfile.objects.get_or_create(haztrak_profile__user__username=username)
+    if created and rcrainfo_username is not None:
+        profile.rcra_username = rcrainfo_username
+        profile.save()
+    return profile, created
 
 
 class RcraProfileServiceError(Exception):
@@ -30,24 +41,11 @@ class RcraProfileService:
 
     def __init__(self, *, username: str, rcrainfo: Optional[RcrainfoService] = None):
         self.username = username
-        self.profile, created = RcraProfile.objects.get_or_create(user__username=self.username)
-        self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
+        profile, created = get_or_create_rcra_profile(username=username)
+        self.profile: RcraProfile = profile
+        self.rcrainfo = rcrainfo or get_rcrainfo_client(username=username)
 
-    @property
-    def can_access_rcrainfo(self) -> bool:
-        """
-        Whether the service has a RcrainfoService class associated with it that can access RCRAInfo
-        """
-        if self.rcrainfo is not None:
-            return True
-        return False
-
-    def __repr__(self):
-        return (
-            f"<{self.__class__.__name__}(username='{self.username}', rcrainfo='{self.rcrainfo}')>"
-        )
-
-    def update_rcrainfo_profile(self, *, username: Optional[str] = None) -> None:
+    def update_rcrainfo_profile(self, *, rcrainfo_username: Optional[str] = None) -> None:
         """
         This high level function makes several requests to RCRAInfo to pull...
         1. A user's rcrainfo site permissions, it creates a RcraSitePermissions for each
@@ -56,9 +54,11 @@ class RcraProfileService:
         3. If a Haztrak Site is not present, create one
         """
         try:
-            if username is None:
-                username = self.username
-            profile_response = self.rcrainfo.get_user_rcrainfo_profile(username=username)
+            if rcrainfo_username is None:
+                rcrainfo_username = self.profile.rcra_username
+            profile_response = self.rcrainfo.get_user_rcrainfo_profile(
+                rcrainfo_username=rcrainfo_username
+            )
             permissions = self._parse_rcra_response(rcra_response=profile_response.json())
             self._save_rcrainfo_profile_permissions(permissions)
         except (RcraProfile.DoesNotExist, RcraSite.DoesNotExist) as exc:

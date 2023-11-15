@@ -6,21 +6,16 @@ import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { htApi } from 'services';
+import { HtApi } from 'services/htApi';
 import { addNotification, useAppDispatch, useAppSelector } from 'store';
 import { getRcraProfile, updateProfile } from 'store/profileSlice';
-import {
-  ProfileState,
-  RcrainfoProfileState,
-  selectHaztrakSites,
-} from 'store/profileSlice/profile.slice';
-import { registerConsoleShortcuts } from 'vitest/node';
+import { RcrainfoProfileState, selectHaztrakSites } from 'store/profileSlice/profile.slice';
 import { z } from 'zod';
 
 interface ProfileViewProps {
   profile: RcrainfoProfileState;
 }
 
-// ToDo: Either rcraAPIId & rcraAPIID should both be empty or both be non-empty
 const rcraProfileForm = z.object({
   rcraAPIID: z.string().min(36).optional(),
   rcraAPIKey: z.string().min(20).optional(),
@@ -190,23 +185,22 @@ export function RcraProfile({ profile }: ProfileViewProps) {
         <RcraApiUserBtn
           className="mx-2"
           variant="primary"
-          onClick={() =>
-            htApi
-              .get(`rcra/profile/sync`)
-              .then((response) => {
+          onClick={() => {
+            HtApi.syncRcrainfoProfile()
+              .then((data) => {
                 dispatch(
                   addNotification({
-                    uniqueId: response.data.task,
+                    uniqueId: data.taskId,
                     createdDate: new Date().toISOString(),
-                    message: `Sync Profile task started. Task ID: ${response.data.task}`,
+                    message: `Sync Profile task started. Task ID: ${data.taskId}`,
                     status: 'Info',
                     read: false,
                     timeout: 5000,
                   })
                 );
               })
-              .catch((r) => console.error(r))
-          }
+              .catch((r) => console.error(r));
+          }}
         >
           Sync Site Permissions
         </RcraApiUserBtn>
