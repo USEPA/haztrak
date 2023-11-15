@@ -135,7 +135,7 @@
 - model: core.rcraprofile
   pk: 2
   fields:
-    rcra_username: testuser1
+    rcra_username: emanifestpyuser1
     phone_number: null
     email: testuser1@haztrak.net
 - model: sites.haztrakorg

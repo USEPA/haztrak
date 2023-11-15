@@ -5,8 +5,8 @@ from .views import (  # type: ignore
     HaztrakUserView,
     LaunchExampleTaskView,
     Login,
-    RcraProfileSyncView,
     RcraProfileView,
+    SyncRcraProfileView,
     TaskStatusView,
 )
 
@@ -16,7 +16,7 @@ urlpatterns = [
         "rcra/",
         include(
             [
-                path("profile/sync", RcraProfileSyncView.as_view()),
+                path("profile/sync", SyncRcraProfileView.as_view()),
                 path("profile/<str:username>", RcraProfileView.as_view()),
             ]
         ),

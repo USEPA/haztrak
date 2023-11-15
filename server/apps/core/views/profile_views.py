@@ -49,7 +49,7 @@ class RcraProfileView(RetrieveUpdateAPIView):
     lookup_url_kwarg = "username"
 
 
-class RcraProfileSyncView(GenericAPIView):
+class SyncRcraProfileView(GenericAPIView):
     """
     This endpoint launches a task to sync the logged-in user's RCRAInfo profile
     with their haztrak (Rcra)profile.
@@ -61,7 +61,7 @@ class RcraProfileSyncView(GenericAPIView):
     def get(self, request: Request) -> Response:
         try:
             task: CeleryTask = sync_user_rcrainfo_sites.delay(str(self.request.user))
-            return self.response({"task": task.id})
+            return self.response({"taskId": task.id})
         except RcraProfile.DoesNotExist as exc:
             return self.response(data={"error": str(exc)}, status=status.HTTP_404_NOT_FOUND)
         except CeleryError as exc:

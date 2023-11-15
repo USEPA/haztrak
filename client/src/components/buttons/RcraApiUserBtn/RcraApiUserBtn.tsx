@@ -1,20 +1,18 @@
 import { Button, ButtonProps } from 'react-bootstrap';
 import { useAppSelector } from 'store';
-import { selectRcraProfile } from 'store/profileSlice';
+import { selectHaztrakProfile } from 'store/profileSlice/profile.slice';
 
 interface HtApiUserBtnProps extends ButtonProps {}
 
 /**
- * A wrapper around button that is disabled if the user does not have
- * the appropriate permissions to launch tasks that interface with RCRAInfo/e-Manifest
- *
- * The permissions are determined in a user's RcraProfile redux store
+ * A button that is disabled if the user Organization is not set up to interface with
+ * RCRAInfo/e-Manifest or disabled prop is passed
  * @constructor
  */
 export function RcraApiUserBtn(props: HtApiUserBtnProps) {
-  const profile = useAppSelector(selectRcraProfile);
+  const profile = useAppSelector(selectHaztrakProfile);
   let { children, ...btnProps } = props;
-  const active = !btnProps.disabled && profile.rcrainfoProfile?.apiUser;
+  const active = !btnProps.disabled && profile.org?.rcrainfoIntegrated;
 
   return (
     <Button {...btnProps} disabled={!active}>

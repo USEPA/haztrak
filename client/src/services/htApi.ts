@@ -1,7 +1,7 @@
 /**htApi.ts - service for making requests to the Haztrak API*/
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { HaztrakSite } from 'components/HaztrakSite';
-import { rootStore } from 'store';
+import { addNotification, rootStore } from 'store';
 import {
   HaztrakModulePermissions,
   RcrainfoProfile,
@@ -36,6 +36,12 @@ export const HtApi = {
     const response: AxiosResponse<RcrainfoProfileResponse> = await htApi.get(
       `/rcra/profile/${username}`
     );
+    return response.data;
+  },
+  /** Launch task to pull user's site/module permissions (RCRAInfo profile) from RCRAInfo*/
+  syncRcrainfoProfile: async () => {
+    const response: AxiosResponse<{ taskId: string }> = await htApi.get(`rcra/profile/sync`);
+    console.log(response);
     return response.data;
   },
 };

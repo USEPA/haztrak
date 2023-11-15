@@ -216,5 +216,11 @@ export const selectRcraProfile = createSelector(
   (rcraProfile: ProfileState) => rcraProfile
 );
 
+/** Retrieve a user's HaztrakProfile from the Redux store. */
+export const selectHaztrakProfile = createSelector(
+  (state: RootState) => state.profile,
+  (haztrakProfile: ProfileState) => haztrakProfile
+);
+
 export default profileSlice.reducer;
 export const { updateProfile } = profileSlice.actions;
