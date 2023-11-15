@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.sites.models import HaztrakSite, RcraSite
+from apps.sites.models import HaztrakOrg, HaztrakSite, RcraSite
 from apps.sites.serializers import AddressSerializer, ContactSerializer, RcraPhoneSerializer
 
 from .base_ser import SitesBaseSerializer
@@ -88,7 +88,7 @@ class RcraSiteSerializer(SitesBaseSerializer):
         ]
 
 
-class SiteSerializer(SitesBaseSerializer):
+class HaztrakSiteSerializer(SitesBaseSerializer):
     """
     HaztrakSite model serializer for JSON marshalling/unmarshalling
     """
@@ -103,3 +103,26 @@ class SiteSerializer(SitesBaseSerializer):
     class Meta:
         model = HaztrakSite
         fields = ["name", "handler"]
+
+
+class HaztrakOrgSerializer(SitesBaseSerializer):
+    """Haztrak Organization Model Serializer"""
+
+    id = serializers.CharField(
+        required=False,
+    )
+    name = serializers.CharField(
+        required=False,
+    )
+    rcrainfoIntegrated = serializers.BooleanField(
+        source="is_rcrainfo_integrated",
+        required=False,
+    )
+
+    class Meta:
+        model = HaztrakOrg
+        fields = [
+            "name",
+            "id",
+            "rcrainfoIntegrated",
+        ]

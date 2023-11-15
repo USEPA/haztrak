@@ -51,9 +51,17 @@ class SitePermissionsInline(admin.TabularInline):
 
 @admin.register(HaztrakProfile)
 class HaztrakProfileAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "number_of_sites"]
+    list_display = ["__str__", "number_of_sites", "rcrainfo_integrated_org"]
     search_fields = ["user__username"]
     inlines = [SitePermissionsInline]
+    readonly_fields = ["rcrainfo_integrated_org"]
+
+    def rcrainfo_integrated_org(self, profile: HaztrakProfile) -> bool:
+        if profile.org:
+            return profile.rcrainfo_integrated_org
+        return False
+
+    rcrainfo_integrated_org.boolean = True
 
     @staticmethod
     def number_of_sites(profile: HaztrakProfile) -> str:

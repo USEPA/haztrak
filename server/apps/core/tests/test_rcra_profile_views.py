@@ -1,8 +1,6 @@
-import pytest
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.core.models import HaztrakUser, RcraProfile
 from apps.core.views import RcraProfileView  # type: ignore
 
 

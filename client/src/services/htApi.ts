@@ -8,12 +8,19 @@ import {
   RcrainfoProfileSite,
 } from 'store/profileSlice/profile.slice';
 
+interface HaztrakOrgResponse {
+  id: string;
+  name: string;
+  rcrainfoIntegrated: boolean;
+}
+
 interface HaztrakProfileResponse {
   user: string;
   sites: Array<{
     site: HaztrakSite;
     eManifest: HaztrakModulePermissions;
   }>;
+  org?: HaztrakOrgResponse;
 }
 
 interface RcrainfoProfileResponse extends RcrainfoProfile<Array<RcrainfoProfileSite>> {}

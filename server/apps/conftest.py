@@ -102,13 +102,13 @@ def haztrak_profile_factory(db, user_factory, rcra_profile_factory, haztrak_org_
 
     def create_profile(
         user: Optional[User] = None,
-        rcrainfo_profile: Optional[RcraProfile] = None,
-        org: Optional[HaztrakOrg] = None,
+        rcrainfo_profile: Optional[RcraProfile] = rcra_profile_factory(),
+        org: Optional[HaztrakOrg] = haztrak_org_factory(),
     ) -> HaztrakProfile:
         return HaztrakProfile.objects.create(
             user=user or user_factory(),
-            rcrainfo_profile=rcrainfo_profile or rcra_profile_factory(),
-            org=org or haztrak_org_factory(),
+            rcrainfo_profile=rcrainfo_profile,
+            org=org,
         )
 
     yield create_profile

@@ -58,6 +58,11 @@ class HaztrakProfile(CoreBaseModel):
         blank=True,
     )
 
+    @property
+    def rcrainfo_integrated_org(self) -> bool:
+        """Returns true if the user's organization is integrated with RCRAInfo"""
+        return self.org.is_rcrainfo_integrated
+
     def __str__(self):
         return f"{self.user.username}"
 

@@ -4,7 +4,7 @@ from rest_framework.exceptions import APIException, ValidationError
 from apps.sites.models import RcraSitePermissions, SitePermissions
 
 from .base_ser import SitesBaseSerializer
-from .site_ser import SiteSerializer
+from .site_ser import HaztrakSiteSerializer
 
 
 class SitePermissionSerializer(SitesBaseSerializer):
@@ -15,7 +15,7 @@ class SitePermissionSerializer(SitesBaseSerializer):
             "eManifest",
         ]
 
-    site = SiteSerializer()
+    site = HaztrakSiteSerializer()
     eManifest = serializers.CharField(
         source="emanifest",
     )
