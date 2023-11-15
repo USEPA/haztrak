@@ -4,7 +4,7 @@ from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
 from requests import RequestException
 
-from apps.sites.services.profile_services import RcraProfileServiceError
+from apps.sites.services.rcra_profile_services import RcraProfileServiceError
 
 logger = logging.getLogger(__name__)
 
