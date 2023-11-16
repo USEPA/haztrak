@@ -6,7 +6,7 @@ from rest_framework.exceptions import APIException
 from rest_framework.serializers import as_serializer_error
 from rest_framework.views import exception_handler
 
-from apps.sites.services.site_services import SiteServiceError
+from apps.sites.services.site_services import HaztrakSiteServiceError
 
 
 class InternalServer500(APIException):
@@ -36,7 +36,7 @@ def haztrak_exception_handler(exc, context):
             exc = exceptions.ParseError()
         case ValueError():
             exc = InternalServer500()
-        case SiteServiceError():
+        case HaztrakSiteServiceError():
             exc = InternalServer500()
 
     response = exception_handler(exc, context)
