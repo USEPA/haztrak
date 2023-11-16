@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RcraApiUserBtn } from 'components/buttons';
-import { HtForm } from 'components/Ht';
+import { HtForm, HtSpinner } from 'components/Ht';
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
@@ -27,7 +27,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
   const [editable, setEditable] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
   const userSites = useAppSelector(selectHaztrakSites);
-  const { rcraSites, loading, ...formValues } = profile;
+  const { rcraSites, isLoading, ...formValues } = profile;
   const dispatch = useAppDispatch();
 
   const {
@@ -55,6 +55,14 @@ export function RcraProfile({ profile }: ProfileViewProps) {
       .then(() => setProfileLoading(!profileLoading))
       .catch((r) => console.error(r));
   };
+
+  if (profile.isLoading) {
+    return (
+      <Container>
+        <HtSpinner />
+      </Container>
+    );
+  }
 
   return (
     <>

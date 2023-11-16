@@ -1,7 +1,7 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtForm } from 'components/Ht';
+import { HtForm, HtSpinner } from 'components/Ht';
 import { SitePermissions } from 'components/UserProfile/SitePermissions';
 import React, { createRef, useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
@@ -15,7 +15,7 @@ import { z } from 'zod';
 
 interface UserProfileProps {
   user: HaztrakUser;
-  profile?: ProfileState;
+  profile: ProfileState;
 }
 
 const haztrakUserForm = z.object({
@@ -47,6 +47,14 @@ export function UserProfile({ user, profile }: UserProfileProps) {
       })
       .catch((r) => console.error(r));
   };
+
+  if (user?.isLoading || profile?.loading) {
+    return (
+      <Container>
+        <HtSpinner />
+      </Container>
+    );
+  }
 
   return (
     <Container>

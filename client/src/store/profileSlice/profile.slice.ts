@@ -50,7 +50,7 @@ export interface RcrainfoProfile<T> {
   apiUser?: boolean;
   rcraSites?: T;
   phoneNumber?: string;
-  loading?: boolean;
+  isLoading?: boolean;
   error?: string;
 }
 
