@@ -1,7 +1,7 @@
 import { HtCard } from 'components/Ht';
+import { RcraProfile } from 'components/RcraProfile';
+import { UserProfile } from 'components/UserProfile';
 import { HaztrakUser, selectUser } from 'store/userSlice/user.slice';
-import { RcraProfile } from './RcraProfile';
-import { UserProfile } from './UserProfile';
 import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
@@ -37,13 +37,12 @@ export function Profile(): ReactElement {
             <HtCard>
               <HtCard.Header title="User Profile" />
               <HtCard.Body>
-                <UserProfile user={user} />
+                <UserProfile user={user} profile={profile} />
               </HtCard.Body>
             </HtCard>
             <HtCard>
               <HtCard.Header title="RCRAInfo Profile" />
               <HtCard.Body>
-                {/*ToDo extend RcraProfile component accept undefined*/}
                 {profile.rcrainfoProfile && <RcraProfile profile={profile.rcrainfoProfile} />}
               </HtCard.Body>
             </HtCard>

@@ -147,7 +147,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
         </Container>
       </HtForm>
       <Container>
-        <h4>Site Permissions</h4>
+        <h4>RCRAInfo Sites</h4>
         <Table striped bordered hover responsive>
           <thead>
             <tr>

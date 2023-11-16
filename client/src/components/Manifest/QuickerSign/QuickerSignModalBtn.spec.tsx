@@ -34,8 +34,7 @@ describe('QuickerSignModalBtn', () => {
     );
     expect(screen.getByRole('button')).toBeDisabled();
   });
-  test('is not disabled when not signed and user is API user', () => {
-    // A handler that has not signed the manifest to be rendered
+  test('is not disabled when user org is rcrainfo integrated', () => {
     const unsigned_handler = createMockMTNHandler({
       signed: false,
       paperSignatureInfo: undefined,
@@ -51,6 +50,11 @@ describe('QuickerSignModalBtn', () => {
         // Redux store state with an API user is required for this button to be active
         preloadedState: {
           profile: {
+            org: {
+              name: 'Test Org',
+              id: '123',
+              rcrainfoIntegrated: true,
+            },
             user: 'username',
             rcrainfoProfile: {
               user: 'username',

@@ -2,16 +2,20 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HtForm } from 'components/Ht';
+import { SitePermissions } from 'components/UserProfile/SitePermissions';
 import React, { createRef, useState } from 'react';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { htApi } from 'services';
 import { useAppDispatch } from 'store';
+import { ProfileState } from 'store/profileSlice/profile.slice';
 import { HaztrakUser, updateUserProfile } from 'store/userSlice/user.slice';
 import { z } from 'zod';
 
 interface UserProfileProps {
   user: HaztrakUser;
+  profile?: ProfileState;
 }
 
 const haztrakUserForm = z.object({
@@ -20,7 +24,7 @@ const haztrakUserForm = z.object({
   email: z.string().email('Not a valid email address').optional(),
 });
 
-export function UserProfile({ user }: UserProfileProps) {
+export function UserProfile({ user, profile }: UserProfileProps) {
   const [editable, setEditable] = useState(false);
   const fileRef = createRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
@@ -114,6 +118,18 @@ export function UserProfile({ user }: UserProfileProps) {
             </HtForm.Group>
           </Col>
         </Row>
+        {profile?.org && (
+          <>
+            <Row>
+              <Col>
+                <p>{profile.org.name ?? 'My Organization'}</p>
+              </Col>
+            </Row>
+            <Row>
+              <SitePermissions sites={profile.sites} />
+            </Row>
+          </>
+        )}
         <Row>
           <div className="mx-1 d-flex flex-row-reverse">
             {!editable ? (
