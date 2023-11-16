@@ -4,7 +4,7 @@ from typing import Optional, TypedDict
 
 from django.db import transaction
 
-from apps.core.services import RcrainfoService  # type: ignore
+from apps.core.services import RcrainfoService, get_rcrainfo_client  # type: ignore
 from apps.sites.models import HaztrakSite, RcraSite  # type: ignore
 from apps.sites.serializers import RcraSiteSerializer  # type: ignore
 from apps.trak.services import ManifestService  # type: ignore
@@ -14,14 +14,14 @@ from apps.trak.tasks import sync_site_manifests  # type: ignore
 logger = logging.getLogger(__name__)
 
 
-class SiteServiceError(Exception):
+class HaztrakSiteServiceError(Exception):
     def __init__(self, message: str):
         super().__init__(message)
 
 
-class SiteService:
+class HaztrakSiteService:
     """
-    SiteService encapsulates the Haztrak site subdomain business logic and use cases.
+    HaztrakSiteService encapsulates the Haztrak site subdomain business logic and use cases.
     """
 
     def __init__(
@@ -32,7 +32,7 @@ class SiteService:
         rcrainfo: Optional[RcrainfoService] = None,
     ):
         self.username = username
-        self.rcrainfo = rcrainfo or RcrainfoService(api_username=username)
+        self.rcrainfo = rcrainfo or get_rcrainfo_client(username=username)
         self.site_id = site_id
 
     def sync_rcrainfo_manifest(self, *, site_id: Optional[str] = None) -> TaskResponse:
@@ -58,7 +58,7 @@ class SiteService:
             return results
         except HaztrakSite.DoesNotExist:
             logger.warning(f"Site Does not exists {site_id}")
-            raise SiteServiceError(f"Site Does not exists {site_id}")
+            raise HaztrakSiteServiceError(f"Site Does not exists {site_id}")
 
     def _get_updated_mtn(self, site_id: str, last_sync_date: datetime) -> list[str]:
         logger.info(f"retrieving updated MTN for site {site_id}")

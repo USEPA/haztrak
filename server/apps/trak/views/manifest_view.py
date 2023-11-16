@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 from apps.core.services import TaskService  # type: ignore
 from apps.sites.models import HaztrakSite  # type: ignore
-from apps.sites.services import SiteService
+from apps.sites.services import HaztrakSiteService
 from apps.trak.models import Manifest  # type: ignore
 from apps.trak.serializers import ManifestSerializer, MtnSerializer  # type: ignore
 from apps.trak.serializers.signature_ser import QuickerSignSerializer  # type: ignore
@@ -125,7 +125,7 @@ class SyncSiteManifestView(GenericAPIView):
     def post(self, request: Request) -> Response:
         serializer = self.SyncSiteManifestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        site = SiteService(username=str(request.user))
+        site = HaztrakSiteService(username=str(request.user))
         data = site.sync_rcrainfo_manifest(**serializer.validated_data)
         return Response(data=data, status=status.HTTP_200_OK)
 

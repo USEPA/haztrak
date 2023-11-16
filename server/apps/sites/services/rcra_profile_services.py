@@ -13,7 +13,7 @@ from apps.sites.models import HaztrakSite, RcraSite, RcraSitePermissions  # type
 from apps.sites.serializers import RcraPermissionSerializer  # type: ignore
 
 from .rcra_site_services import RcraSiteService
-from .site_services import SiteService, SiteServiceError  # type: ignore
+from .site_services import HaztrakSiteService, HaztrakSiteServiceError  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -80,7 +80,7 @@ class RcraProfileService:
                 self._create_or_update_rcra_permission(
                     epa_permission=rcra_site_permission, site=rcra_site
                 )
-        except SiteServiceError as exc:
+        except HaztrakSiteServiceError as exc:
             raise RcraProfileServiceError(f"Error creating or updating Haztrak Site {exc}")
         except KeyError as exc:
             raise RcraProfileServiceError(f"Error parsing RCRAInfo response: {str(exc)}")
