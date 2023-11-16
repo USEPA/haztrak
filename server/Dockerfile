@@ -1,5 +1,5 @@
 # Builder
-FROM python:3.11.6-alpine3.18 as builder
+FROM python:3.12.0-alpine3.18 as builder
 LABEL maintainer="graham.david@epa.gov"
 ENV APP_DIRECTORY=/app/
 ENV PYTHONDONTWRITEBYTECODE 1
