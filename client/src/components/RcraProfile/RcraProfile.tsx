@@ -187,7 +187,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
           variant="primary"
           onClick={() => {
             HtApi.syncRcrainfoProfile()
-              .then((data) => {
+              .then(({ data }) => {
                 dispatch(
                   addNotification({
                     uniqueId: data.taskId,

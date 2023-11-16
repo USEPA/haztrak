@@ -1,7 +1,7 @@
 /**htApi.ts - service for making requests to the Haztrak API*/
-import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { HaztrakSite } from 'components/HaztrakSite';
-import { addNotification, rootStore } from 'store';
+import { rootStore } from 'store';
 import {
   HaztrakModulePermissions,
   RcrainfoProfile,
@@ -59,27 +59,21 @@ htApi.interceptors.response.use(
 );
 
 export const HtApi = {
-  /** Retrieve the user's Haztrak profile from the Haztrak API*/
-  getUserProfile: async () => {
-    const response: AxiosResponse<HaztrakProfileResponse> = await htApi.get('/profile');
-    return response.data;
+  /** Fetch the user's Haztrak profile from the Haztrak API*/
+  getUserProfile: async (): Promise<AxiosResponse<HaztrakProfileResponse>> => {
+    return await htApi.get('/profile');
   },
-  /** Retrieve the user's RCRAInfo profile from the Haztrak API*/
-  getUserRcrainfoProfile: async (username: string) => {
-    const response: AxiosResponse<RcrainfoProfileResponse> = await htApi.get(
-      `/rcra/profile/${username}`
-    );
-    return response.data;
+  /** Fetch the user's RCRAInfo profile from the Haztrak API*/
+  getRcrainfoProfile: async (username: string): Promise<AxiosResponse<RcrainfoProfileResponse>> => {
+    return await htApi.get(`/rcra/profile/${username}`);
   },
   /** Launch task to pull user's site/module permissions (RCRAInfo profile) from RCRAInfo*/
-  syncRcrainfoProfile: async () => {
-    const response: AxiosResponse<{ taskId: string }> = await htApi.get(`rcra/profile/sync`);
-    return response.data;
+  syncRcrainfoProfile: async (): Promise<AxiosResponse<{ taskId: string }>> => {
+    return await htApi.get(`rcra/profile/sync`);
   },
 
-  /** Retrieve Haztrak user server*/
-  getUser: async () => {
-    const response: AxiosResponse<HaztrakUser> = await htApi.get('/user');
-    return response.data;
+  /** Fetch Haztrak user from server*/
+  getUser: async (): Promise<AxiosResponse<HaztrakUser>> => {
+    return await htApi.get('/user');
   },
 };

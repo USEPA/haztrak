@@ -48,7 +48,8 @@ export const login = createAsyncThunk(
 
 export const getHaztrakUser = createAsyncThunk('user/getHaztrakUser', async (arg, thunkAPI) => {
   try {
-    return await HtApi.getUser();
+    const { data } = await HtApi.getUser();
+    return data;
   } catch (err) {
     return thunkAPI.rejectWithValue(err);
   }
