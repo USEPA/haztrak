@@ -16,4 +16,9 @@ export const manifestApi = {
   createManifest: async (data: Manifest): Promise<AxiosResponse<TaskStatus | Manifest>> => {
     return await htApi.post<TaskStatus | Manifest>('/rcra/manifest', data);
   },
+
+  /** Sync a sites manifest data with RCRAInfo */
+  syncManifest: async (siteId: string): Promise<AxiosResponse<TaskStatus>> => {
+    return htApi.post('rcra/manifest/sync', { siteId: siteId });
+  },
 };
