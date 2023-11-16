@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { htApi } from 'services';
+import { HtApi } from 'services/htApi';
 import { RootState } from 'store/rootStore';
 
 export interface HaztrakUser {
@@ -46,11 +47,10 @@ export const login = createAsyncThunk(
 );
 
 export const getHaztrakUser = createAsyncThunk('user/getHaztrakUser', async (arg, thunkAPI) => {
-  const response = await htApi.get('/user');
-  if (response.status >= 200 && response.status < 300) {
-    return response.data as HaztrakUser;
-  } else {
-    return thunkAPI.rejectWithValue(response.data);
+  try {
+    return await HtApi.getUser();
+  } catch (err) {
+    return thunkAPI.rejectWithValue(err);
   }
 });
 
