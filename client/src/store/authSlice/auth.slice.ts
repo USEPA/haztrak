@@ -1,4 +1,4 @@
-import { Action, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { UserApi } from 'services';
 import { RootState } from 'store/rootStore';
@@ -68,10 +68,6 @@ function logout(user: UserState): object {
   localStorage.removeItem('token');
   return { ...initialState, user: undefined, token: undefined } as UserState;
 }
-
-/**
- * update the HaztrakUser state with the new user information
- */
 
 const authSlice = createSlice({
   name: 'auth',

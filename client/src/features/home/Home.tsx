@@ -6,10 +6,13 @@ import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from 'store';
-import { launchExampleTask } from 'store/notificationSlice/notification.slice';
-import { getRcraProfile } from 'store/profileSlice';
-import { selectUserName } from 'store/authSlice/auth.slice';
+import {
+  getRcraProfile,
+  launchExampleTask,
+  selectUserName,
+  useAppDispatch,
+  useAppSelector,
+} from 'store';
 
 /**
  * Home page for logged-in user

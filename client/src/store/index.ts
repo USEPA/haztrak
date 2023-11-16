@@ -1,31 +1,60 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { addNotification, removeNotification } from './notificationSlice';
 import type { AppDispatch, RootState } from './rootStore';
-import { AppStore, login, rootStore, setupStore } from './rootStore';
-import { siteByEpaIdSelector } from './profileSlice';
-import {
-  useGetTaskStatusQuery,
-  useSearchRcrainfoSitesQuery,
-  useSearchRcraSitesQuery,
-  useGetDotIdNumbersQuery,
-  useGetFedWasteCodesQuery,
-  useGetStateWasteCodesQuery,
-  haztrakApi,
-} from 'store/haztrakApiSlice';
+import { AppStore, rootStore, setupStore } from './rootStore';
 
-// TypeSafe redux hooks for using the store
+// exports related to the rootStore
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-
-export { rootStore, login, setupStore, addNotification, removeNotification };
+export { rootStore, setupStore };
 export type { RootState, AppDispatch, AppStore };
+
 export {
   haztrakApi,
+  useGetDotIdNumbersQuery,
+  useGetFedWasteCodesQuery,
+  useGetStateWasteCodesQuery,
   useGetTaskStatusQuery,
   useSearchRcrainfoSitesQuery,
   useSearchRcraSitesQuery,
-  useGetStateWasteCodesQuery,
-  useGetDotIdNumbersQuery,
-  useGetFedWasteCodesQuery,
+} from 'store/haztrakApiSlice';
+
+export {
+  getHaztrakUser,
+  login,
+  selectUser,
+  selectUserName,
+  selectUserState,
+  updateUserProfile,
+} from './authSlice/auth.slice';
+
+export {
+  addNotification,
+  removeNotification,
+  selectNotifications,
+  launchExampleTask,
+} from './notificationSlice/notification.slice';
+
+export {
+  getHaztrakProfile,
+  getRcraProfile,
+  selectRcrainfoSites,
+  selectRcraProfile,
   siteByEpaIdSelector,
-};
+  updateProfile,
+  selectHaztrakSites,
+  selectHaztrakProfile,
+} from './profileSlice/profile.slice';
+
+export type { HaztrakUser } from './authSlice/auth.slice';
+export type { TaskStatus } from './haztrakApiSlice';
+export type { HtNotification } from './notificationSlice/notification.slice';
+export type {
+  ProfileState,
+  RcrainfoProfileState,
+  HaztrakProfileSite,
+  HaztrakSitePermissions,
+  RcrainfoSitePermissions,
+  HaztrakModulePermissions,
+  RcrainfoProfile,
+  RcrainfoProfileSite,
+} from './profileSlice/profile.slice';

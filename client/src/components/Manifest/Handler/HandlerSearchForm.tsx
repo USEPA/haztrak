@@ -13,7 +13,6 @@ import {
 } from 'react-hook-form';
 import Select from 'react-select';
 import { haztrakApi, useAppDispatch } from 'store';
-import { siteApi } from 'store/site.slice';
 
 interface Props {
   handleClose: () => void;

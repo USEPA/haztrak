@@ -6,9 +6,15 @@ import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { UserApi } from 'services';
-import { addNotification, useAppDispatch, useAppSelector } from 'store';
-import { getRcraProfile, updateProfile } from 'store/profileSlice';
-import { RcrainfoProfileState, selectHaztrakSites } from 'store/profileSlice/profile.slice';
+import {
+  addNotification,
+  getRcraProfile,
+  RcrainfoProfileState,
+  selectHaztrakSites,
+  updateProfile,
+  useAppDispatch,
+  useAppSelector,
+} from 'store';
 import { z } from 'zod';
 
 interface ProfileViewProps {

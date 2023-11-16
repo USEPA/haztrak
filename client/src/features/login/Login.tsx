@@ -1,14 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtCard, HtForm } from 'components/Ht';
-import React, { ReactElement, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { login, useAppDispatch, useAppSelector } from 'store';
-import { useNavigate } from 'react-router-dom';
-import { useTitle } from 'hooks';
-import { selectUserState } from 'store/authSlice';
-import { z } from 'zod';
-import { Col, Container, Form, Row } from 'react-bootstrap';
 import logo from 'assets/haztrak-logos/low-resolution/svg/haztrak-low-resolution-logo-black-on-transparent-background.svg';
+import { HtCard, HtForm } from 'components/Ht';
+import { useTitle } from 'hooks';
+import React, { ReactElement, useEffect } from 'react';
+import { Col, Container, Form, Row } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { login, selectUserState, useAppDispatch, useAppSelector } from 'store';
+import { z } from 'zod';
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Username Required').min(8),

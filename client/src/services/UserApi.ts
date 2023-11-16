@@ -1,12 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { HaztrakSite } from 'components/HaztrakSite';
 import { htApi } from 'services/htApi';
-import {
-  HaztrakModulePermissions,
-  RcrainfoProfile,
-  RcrainfoProfileSite,
-} from 'store/profileSlice/profile.slice';
-import { HaztrakUser } from 'store/authSlice';
+import { HaztrakModulePermissions, HaztrakUser, RcrainfoProfile, RcrainfoProfileSite } from 'store';
 
 interface HaztrakOrgResponse {
   id: string;

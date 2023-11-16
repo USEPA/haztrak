@@ -4,12 +4,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { HtForm, HtSpinner } from 'components/Ht';
 import { SitePermissions } from 'components/UserProfile/SitePermissions';
 import React, { createRef, useState } from 'react';
-import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { UserApi } from 'services';
-import { useAppDispatch } from 'store';
-import { ProfileState } from 'store/profileSlice/profile.slice';
-import { HaztrakUser, updateUserProfile } from 'store/authSlice/auth.slice';
+import { HaztrakUser, ProfileState, updateUserProfile, useAppDispatch } from 'store';
 import { z } from 'zod';
 
 interface UserProfileProps {

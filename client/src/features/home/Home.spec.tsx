@@ -40,7 +40,7 @@ describe('Home', () => {
   test('renders', () => {
     renderWithProviders(<Home />, {
       preloadedState: {
-        user: {
+        auth: {
           user: { username: USERNAME, isLoading: false },
           token: 'fake_token',
           loading: false,

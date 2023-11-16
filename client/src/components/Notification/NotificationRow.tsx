@@ -2,9 +2,7 @@ import { faCircleNotch, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { removeNotification, useAppDispatch } from 'store';
-import { HtNotification } from 'store/notificationSlice/notification.slice';
-import { useGetTaskStatusQuery } from 'store';
+import { HtNotification, removeNotification, useAppDispatch, useGetTaskStatusQuery } from 'store';
 
 interface NotificationRowProps {
   notification: HtNotification;

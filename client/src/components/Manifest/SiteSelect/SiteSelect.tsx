@@ -3,8 +3,7 @@ import { RcraSite } from 'components/RcraSite';
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 import Select from 'react-select';
-import { useAppSelector } from 'store';
-import { selectHaztrakSites, selectRcrainfoSites } from 'store/profileSlice/profile.slice';
+import { selectHaztrakSites, useAppSelector } from 'store';
 
 interface SiteSelectProps<T> {
   control: Control;

@@ -1,12 +1,16 @@
 import { ErrorBoundary } from 'components/ErrorBoundary';
 import React, { ReactElement, useEffect } from 'react';
-import { RouterProvider, useNavigate } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 import { router } from 'routes';
-import { useAppDispatch, useAppSelector } from 'store';
-import { getRcraProfile, selectRcraProfile } from 'store/profileSlice';
-import { getHaztrakProfile } from 'store/profileSlice/profile.slice';
-import { selectUserName } from 'store/authSlice';
-import { getHaztrakUser } from 'store/authSlice/auth.slice';
+import {
+  getHaztrakProfile,
+  getHaztrakUser,
+  getRcraProfile,
+  selectRcraProfile,
+  selectUserName,
+  useAppDispatch,
+  useAppSelector,
+} from 'store';
 import './App.scss';
 
 function App(): ReactElement {
