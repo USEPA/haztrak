@@ -8,6 +8,7 @@ import {
   RcrainfoProfileSite,
 } from 'store/profileSlice/profile.slice';
 import { HaztrakUser } from 'store/userSlice/user.slice';
+import { an } from 'vitest/dist/reporters-5f784f42';
 
 interface HaztrakOrgResponse {
   id: string;
@@ -63,10 +64,23 @@ export const HtApi = {
   getUserProfile: async (): Promise<AxiosResponse<HaztrakProfileResponse>> => {
     return await htApi.get('/profile');
   },
+
   /** Fetch the user's RCRAInfo profile from the Haztrak API*/
   getRcrainfoProfile: async (username: string): Promise<AxiosResponse<RcrainfoProfileResponse>> => {
     return await htApi.get(`/rcra/profile/${username}`);
   },
+
+  /** Update user's RCRAInfo Profile information such username, api ID & key*/
+  updateRcrainfoProfile: async ({
+    username,
+    data,
+  }: {
+    username: string;
+    data: any;
+  }): Promise<AxiosResponse<any>> => {
+    return await htApi.put(`/rcra/profile/${username}`, data);
+  },
+
   /** Launch task to pull user's site/module permissions (RCRAInfo profile) from RCRAInfo*/
   syncRcrainfoProfile: async (): Promise<AxiosResponse<{ taskId: string }>> => {
     return await htApi.get(`rcra/profile/sync`);

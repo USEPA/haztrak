@@ -43,7 +43,7 @@ export interface RcrainfoProfileState
   extends RcrainfoProfile<Record<string, RcrainfoProfileSite>> {}
 
 export interface RcrainfoProfile<T> {
-  user?: string;
+  user: string;
   rcraAPIID?: string;
   rcraUsername?: string;
   rcraAPIKey?: string;

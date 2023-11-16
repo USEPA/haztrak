@@ -48,8 +48,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
   const onSubmit = (data: RcraProfileForm) => {
     setProfileLoading(!profileLoading);
     setEditable(!editable);
-    htApi
-      .put(`/rcra/profile/${profile.user}`, data)
+    HtApi.updateRcrainfoProfile({ username: profile.user, data: data })
       .then((r) => {
         dispatch(updateProfile(r.data));
       })
