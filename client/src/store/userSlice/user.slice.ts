@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { Action, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { UserApi } from 'services';
 import { RootState } from 'store/rootStore';
@@ -45,6 +45,7 @@ export const login = createAsyncThunk(
   }
 );
 
+/** Fetch a Haztrak User's information and store in global state */
 export const getHaztrakUser = createAsyncThunk('user/getHaztrakUser', async (arg, thunkAPI) => {
   try {
     const { data } = await UserApi.getUser();
@@ -53,6 +54,19 @@ export const getHaztrakUser = createAsyncThunk('user/getHaztrakUser', async (arg
     return thunkAPI.rejectWithValue(err);
   }
 });
+
+/** Submit a request to update a Haztrak User's information */
+export const updateHaztrakUser = createAsyncThunk(
+  'user/updateHaztrakUser',
+  async (data: Partial<HaztrakUser>, thunkAPI) => {
+    try {
+      const response = await UserApi.updateUser(data);
+      return response.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
 
 /**
  * User logout Redux reducer Function
@@ -95,9 +109,6 @@ const userSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         const authResponse = action.payload;
-        // Todo: currently, we store username and jwt token in local storage so
-        //  the user stays logged in between page refreshes. This is a known vulnerability to be
-        //  fixed in the future. For now, it's a development convenience.
         localStorage.setItem('user', JSON.stringify(authResponse.user?.username));
         localStorage.setItem('token', JSON.stringify(authResponse.token));
         return {

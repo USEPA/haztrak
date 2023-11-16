@@ -31,6 +31,16 @@ export const UserApi = {
     return await htApi.get('/profile');
   },
 
+  /** Fetch Haztrak user from server*/
+  getUser: async (): Promise<AxiosResponse<HaztrakUser>> => {
+    return await htApi.get('/user');
+  },
+
+  /** Fetch Haztrak user from server*/
+  updateUser: async (data: Partial<HaztrakUser>): Promise<AxiosResponse<HaztrakUser>> => {
+    return await htApi.put('/user', data);
+  },
+
   /** Fetch the user's RCRAInfo profile from the Haztrak API*/
   getRcrainfoProfile: async (username: string): Promise<AxiosResponse<RcrainfoProfileResponse>> => {
     return await htApi.get(`/rcra/profile/${username}`);
@@ -50,10 +60,5 @@ export const UserApi = {
   /** Launch task to pull user's site/module permissions (RCRAInfo profile) from RCRAInfo*/
   syncRcrainfoProfile: async (): Promise<AxiosResponse<{ taskId: string }>> => {
     return await htApi.get(`rcra/profile/sync`);
-  },
-
-  /** Fetch Haztrak user from server*/
-  getUser: async (): Promise<AxiosResponse<HaztrakUser>> => {
-    return await htApi.get('/user');
   },
 };

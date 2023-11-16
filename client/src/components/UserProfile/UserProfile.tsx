@@ -7,7 +7,7 @@ import React, { createRef, useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { htApi } from 'services';
+import { htApi, UserApi } from 'services';
 import { useAppDispatch } from 'store';
 import { ProfileState } from 'store/profileSlice/profile.slice';
 import { HaztrakUser, updateUserProfile } from 'store/userSlice/user.slice';
@@ -24,6 +24,8 @@ const haztrakUserForm = z.object({
   email: z.string().email('Not a valid email address').optional(),
 });
 
+type HaztrakUserForm = z.infer<typeof haztrakUserForm>;
+
 export function UserProfile({ user, profile }: UserProfileProps) {
   const [editable, setEditable] = useState(false);
   const fileRef = createRef<HTMLInputElement>();
@@ -36,12 +38,12 @@ export function UserProfile({ user, profile }: UserProfileProps) {
     formState: { errors },
   } = useForm<HaztrakUser>({ values: user, resolver: zodResolver(haztrakUserForm) });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: HaztrakUserForm) => {
     setEditable(!editable);
-    htApi
-      .put('/user', data)
-      .then((r) => {
-        dispatch(updateUserProfile(r.data));
+    UserApi.updateUser(data)
+      .then((response) => {
+        // @ts-ignore
+        dispatch(updateUserProfile(response.data));
       })
       .catch((r) => console.error(r));
   };
