@@ -2,7 +2,7 @@ import { HtSpinner } from 'components/Ht';
 import React from 'react';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom';
-import { useGetTaskStatusQuery } from 'store/task.slice';
+import { useGetTaskStatusQuery } from 'store';
 
 interface UpdateRcraProps {
   taskId: string;

@@ -13,7 +13,7 @@ describe('TopNav', () => {
     const username = 'testuser1';
     renderWithProviders(<TopNav />, {
       preloadedState: {
-        user: {
+        auth: {
           user: { username: username, isLoading: false },
           token: 'fakeToken',
           loading: false,

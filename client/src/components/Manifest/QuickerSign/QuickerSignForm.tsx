@@ -1,6 +1,6 @@
 import { faFileSignature } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import { HtForm } from 'components/Ht';
 import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import { QuickerSignature } from 'components/Manifest/QuickerSign/quickerSignSchema';
@@ -9,9 +9,8 @@ import React from 'react';
 import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { htApi } from 'services';
-import { addNotification, useAppDispatch, useAppSelector } from 'store';
-import { selectUserName } from 'store/userSlice';
+import { manifestApi } from 'services/manifestApi';
+import { addNotification, selectUserName, useAppDispatch, useAppSelector } from 'store';
 
 interface QuickerSignProps {
   mtn: Array<string>;
@@ -58,14 +57,14 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
         transporterOrder: mtnHandler.order,
       };
     }
-    htApi
-      .post('rcra/manifest/sign', signature)
-      .then((response: AxiosResponse) => {
+    manifestApi
+      .createQuickSignature(signature)
+      .then((response) => {
         dispatch(
           addNotification({
-            uniqueId: response.data.task,
+            uniqueId: response.data.taskId,
             createdDate: new Date().toISOString(),
-            message: `e-Manifest electronic signature task started. Task ID: ${response.data.task}`,
+            message: `e-Manifest electronic signature task started. Task ID: ${response.data.taskId}`,
             status: 'Info',
             read: false,
             timeout: 5000,

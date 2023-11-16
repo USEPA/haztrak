@@ -1,21 +1,18 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtForm } from 'components/Ht';
+import { HtForm, HtSpinner } from 'components/Ht';
 import { SitePermissions } from 'components/UserProfile/SitePermissions';
 import React, { createRef, useState } from 'react';
-import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { htApi } from 'services';
-import { useAppDispatch } from 'store';
-import { ProfileState } from 'store/profileSlice/profile.slice';
-import { HaztrakUser, updateUserProfile } from 'store/userSlice/user.slice';
+import { UserApi } from 'services';
+import { HaztrakUser, ProfileState, updateUserProfile, useAppDispatch } from 'store';
 import { z } from 'zod';
 
 interface UserProfileProps {
   user: HaztrakUser;
-  profile?: ProfileState;
+  profile: ProfileState;
 }
 
 const haztrakUserForm = z.object({
@@ -23,6 +20,8 @@ const haztrakUserForm = z.object({
   lastName: z.string().min(5, 'Last name must be at least 5 character(s)').optional(),
   email: z.string().email('Not a valid email address').optional(),
 });
+
+type HaztrakUserForm = z.infer<typeof haztrakUserForm>;
 
 export function UserProfile({ user, profile }: UserProfileProps) {
   const [editable, setEditable] = useState(false);
@@ -36,15 +35,23 @@ export function UserProfile({ user, profile }: UserProfileProps) {
     formState: { errors },
   } = useForm<HaztrakUser>({ values: user, resolver: zodResolver(haztrakUserForm) });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: HaztrakUserForm) => {
     setEditable(!editable);
-    htApi
-      .put('/user', data)
-      .then((r) => {
-        dispatch(updateUserProfile(r.data));
+    UserApi.updateUser(data)
+      .then((response) => {
+        // @ts-ignore
+        dispatch(updateUserProfile(response.data));
       })
       .catch((r) => console.error(r));
   };
+
+  if (user?.isLoading || profile?.loading) {
+    return (
+      <Container>
+        <HtSpinner />
+      </Container>
+    );
+  }
 
   return (
     <Container>

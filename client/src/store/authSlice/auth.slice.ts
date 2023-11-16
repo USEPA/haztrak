@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { htApi } from 'services';
+import { UserApi } from 'services';
 import { RootState } from 'store/rootStore';
 
 export interface HaztrakUser {
@@ -31,7 +31,7 @@ const initialState: UserState = {
 };
 
 export const login = createAsyncThunk(
-  'user/login',
+  'auth/login',
   async ({ username, password }: { username: string; password: string }) => {
     const response = await axios.post(`${import.meta.env.VITE_HT_API_URL}/api/user/login`, {
       username,
@@ -45,12 +45,13 @@ export const login = createAsyncThunk(
   }
 );
 
-export const getHaztrakUser = createAsyncThunk('user/getHaztrakUser', async (arg, thunkAPI) => {
-  const response = await htApi.get('/user');
-  if (response.status >= 200 && response.status < 300) {
-    return response.data as HaztrakUser;
-  } else {
-    return thunkAPI.rejectWithValue(response.data);
+/** Fetch a Haztrak User's information and store in global state */
+export const getHaztrakUser = createAsyncThunk('auth/getHaztrakUser', async (arg, thunkAPI) => {
+  try {
+    const { data } = await UserApi.getUser();
+    return data;
+  } catch (err) {
+    return thunkAPI.rejectWithValue(err);
   }
 });
 
@@ -59,22 +60,17 @@ export const getHaztrakUser = createAsyncThunk('user/getHaztrakUser', async (arg
  *
  * @description on logout, we want to strip all information
  * from browser storage and redux store's state
- * ToDo send logout request to server
  * @param    {Object} user UserState
  * @return   {Object}      UserState
  */
-function logout(user: UserState) {
+function logout(user: UserState): object {
   localStorage.removeItem('user');
   localStorage.removeItem('token');
   return { ...initialState, user: undefined, token: undefined } as UserState;
 }
 
-/**
- * update the HaztrakUser state with the new user information
- */
-
-const userSlice = createSlice({
-  name: 'user',
+const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {
     logout,
@@ -96,9 +92,6 @@ const userSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         const authResponse = action.payload;
-        // Todo: currently, we store username and jwt token in local storage so
-        //  the user stays logged in between page refreshes. This is a known vulnerability to be
-        //  fixed in the future. For now, it's a development convenience.
         localStorage.setItem('user', JSON.stringify(authResponse.user?.username));
         localStorage.setItem('token', JSON.stringify(authResponse.token));
         return {
@@ -143,17 +136,17 @@ const userSlice = createSlice({
 /**
  * Get the current user's username from the Redux store
  */
-export const selectUserName = (state: RootState): string | undefined => state.user.user?.username;
+export const selectUserName = (state: RootState): string | undefined => state.auth.user?.username;
 
 /**
  * Select the current user
  */
-export const selectUser = (state: RootState): HaztrakUser | undefined => state.user.user;
+export const selectUser = (state: RootState): HaztrakUser | undefined => state.auth.user;
 
 /**
  * Select the current User State
  */
-export const selectUserState = (state: RootState): UserState => state.user;
+export const selectUserState = (state: RootState): UserState => state.auth;
 
-export default userSlice.reducer;
-export const { updateUserProfile } = userSlice.actions;
+export default authSlice.reducer;
+export const { updateUserProfile } = authSlice.actions;

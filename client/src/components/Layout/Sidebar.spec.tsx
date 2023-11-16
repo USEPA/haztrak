@@ -13,7 +13,7 @@ describe('Sidebar', () => {
     const username = 'testuser1';
     renderWithProviders(<Sidebar />, {
       preloadedState: {
-        user: {
+        auth: {
           user: { username: username, isLoading: false },
           token: 'fakeToken',
           loading: false,

@@ -2,12 +2,12 @@
  * Test for the notification Redux slice
  */
 import { cleanup } from '@testing-library/react';
+import { afterEach, describe, expect, test } from 'vitest';
 import NotificationReducer, {
   addNotification,
+  NotificationState,
   removeNotification,
-} from 'store/notificationSlice/notification.slice';
-import { afterEach, describe, expect, test } from 'vitest';
-import { NotificationState } from './notification.slice';
+} from './notification.slice';
 
 const initialState: NotificationState = {
   notifications: [],

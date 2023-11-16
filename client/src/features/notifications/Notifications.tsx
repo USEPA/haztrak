@@ -4,8 +4,7 @@ import { NotificationRow } from 'components/Notification';
 import { useTitle } from 'hooks';
 import React from 'react';
 import { Col, Container, Table } from 'react-bootstrap';
-import { useAppSelector } from 'store';
-import { HtNotification, selectNotifications } from 'store/notificationSlice/notification.slice';
+import { HtNotification, selectNotifications, useAppSelector } from 'store';
 
 /**
  * Table showing the user's current notifications

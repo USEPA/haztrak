@@ -5,10 +5,10 @@ import { UserProfile } from 'components/UserProfile/UserProfile';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { HaztrakUser } from 'store/userSlice/user.slice';
+import { HaztrakUser, ProfileState } from 'store';
 import { renderWithProviders, screen } from 'test-utils';
 import { API_BASE_URL } from 'test-utils/mock/handlers';
-import { vi, beforeAll, afterAll, afterEach, describe, test, expect } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 const DEFAULT_USER: HaztrakUser = {
   username: 'test',
@@ -41,7 +41,10 @@ describe('UserProfile', () => {
       username: 'test',
       firstName: 'David',
     };
-    renderWithProviders(<UserProfile user={user} />, {});
+    const profile: ProfileState = {
+      user: 'test',
+    };
+    renderWithProviders(<UserProfile user={user} profile={profile} />, {});
     expect(screen.getByRole('textbox', { name: 'First Name' })).toHaveValue(user.firstName);
     expect(screen.getByText(user.username)).toBeInTheDocument();
   });
@@ -51,7 +54,10 @@ describe('UserProfile', () => {
     const user: HaztrakUser = {
       ...DEFAULT_USER,
     };
-    renderWithProviders(<UserProfile user={user} />, {});
+    const profile: ProfileState = {
+      user: 'test',
+    };
+    renderWithProviders(<UserProfile user={user} profile={profile} />, {});
     const editButton = screen.getByRole('button', { name: 'Edit' });
     const emailTextBox = screen.getByRole('textbox', { name: 'Email' });
     // Act

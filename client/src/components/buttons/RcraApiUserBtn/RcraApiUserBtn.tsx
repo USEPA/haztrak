@@ -1,6 +1,5 @@
 import { Button, ButtonProps } from 'react-bootstrap';
-import { useAppSelector } from 'store';
-import { selectHaztrakProfile } from 'store/profileSlice/profile.slice';
+import { selectHaztrakProfile, useAppSelector } from 'store';
 
 interface HtApiUserBtnProps extends ButtonProps {}
 

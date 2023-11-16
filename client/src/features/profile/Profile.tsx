@@ -1,12 +1,18 @@
 import { HtCard } from 'components/Ht';
 import { RcraProfile } from 'components/RcraProfile';
 import { UserProfile } from 'components/UserProfile';
-import { HaztrakUser, selectUser } from 'store/userSlice/user.slice';
 import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from 'store';
-import { getRcraProfile, selectRcraProfile } from 'store/profileSlice';
+import {
+  getRcraProfile,
+  HaztrakUser,
+  ProfileState,
+  selectRcraProfile,
+  selectUser,
+  useAppDispatch,
+  useAppSelector,
+} from 'store';
 
 /**
  * Display user profile
@@ -14,7 +20,7 @@ import { getRcraProfile, selectRcraProfile } from 'store/profileSlice';
  */
 export function Profile(): ReactElement {
   const dispatch = useAppDispatch();
-  const profile = useAppSelector(selectRcraProfile);
+  const profile: ProfileState | undefined = useAppSelector(selectRcraProfile);
   const user: HaztrakUser | undefined = useAppSelector(selectUser);
   useTitle('Profile');
 

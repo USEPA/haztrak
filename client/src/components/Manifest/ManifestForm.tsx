@@ -9,9 +9,8 @@ import React, { createContext, useState } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { htApi } from 'services';
+import { manifestApi } from 'services/manifestApi';
 import { addNotification, useAppDispatch } from 'store';
-import { TaskStatus } from 'store/task.slice';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
 import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
@@ -95,14 +94,13 @@ export function ManifestForm({
 
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     console.log('Manifest Submitted', data);
-    htApi
-      .post<TaskStatus | Manifest>('/rcra/manifest', data)
+    manifestApi
+      .createManifest(data)
       .then((response) => {
         return response;
       })
       .then((r) => {
         if ('manifestTrackingNumber' in r.data) {
-          console.log("congratulations! it's a manifest!");
           navigate(`/manifest/${r.data.manifestTrackingNumber}/view`);
         }
         if ('taskId' in r.data) {
@@ -116,7 +114,6 @@ export function ManifestForm({
               }
             )
           );
-          console.log('r', r);
           setTaskId(r.data.taskId);
           toggleShowUpdatingRcra();
         }

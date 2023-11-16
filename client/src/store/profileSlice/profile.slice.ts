@@ -4,7 +4,7 @@
  */
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HaztrakSite } from 'components/HaztrakSite';
-import { HtApi } from 'services/htApi';
+import { UserApi } from 'services';
 import { RootState } from 'store';
 
 /**The user's RCRAInfo account data stored in the Redux store*/
@@ -43,14 +43,14 @@ export interface RcrainfoProfileState
   extends RcrainfoProfile<Record<string, RcrainfoProfileSite>> {}
 
 export interface RcrainfoProfile<T> {
-  user?: string;
+  user: string;
   rcraAPIID?: string;
   rcraUsername?: string;
   rcraAPIKey?: string;
   apiUser?: boolean;
   rcraSites?: T;
   phoneNumber?: string;
-  loading?: boolean;
+  isLoading?: boolean;
   error?: string;
 }
 
@@ -74,7 +74,7 @@ const initialState: ProfileState = {
 
 /**Retrieves a user's profile from the server.*/
 export const getHaztrakProfile = createAsyncThunk('profile/getHaztrakProfile', async () => {
-  const data = await HtApi.getUserProfile();
+  const { data } = await UserApi.getUserProfile();
   const sites = data.sites.reduce((obj, site) => {
     return {
       ...obj,
@@ -96,11 +96,11 @@ export const getRcraProfile = createAsyncThunk<ProfileState>(
   'profile/getRcrainfoProfile',
   async (arg, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
-    const username = state.user.user?.username;
+    const username = state.auth.user?.username;
     if (!username) {
       throw new Error('User is not logged in');
     }
-    const data = await HtApi.getUserRcrainfoProfile(username);
+    const { data } = await UserApi.getRcrainfoProfile(username);
     const { rcraSites, ...rest } = data;
     return {
       rcrainfoProfile: {

@@ -1,10 +1,9 @@
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Badge, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from 'store';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { selectNotifications } from 'store/notificationSlice';
+import { selectNotifications, useAppSelector } from 'store';
 
 export function NotificationBtn() {
   const notifications = useAppSelector(selectNotifications);

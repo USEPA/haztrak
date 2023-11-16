@@ -9,7 +9,7 @@ import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/fr
 import logo from 'assets/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
 
 export function TopNav() {
-  const authUser = useSelector((state: RootState) => state.user.user);
+  const authUser = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const navigation = useNavigate();
   const logout = () => {

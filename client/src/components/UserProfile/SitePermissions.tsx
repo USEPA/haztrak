@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { HaztrakProfileSite } from 'store/profileSlice/profile.slice';
+import { HaztrakProfileSite } from 'store';
 
 interface SitePermissionsProps {
   sites?: Record<string, HaztrakProfileSite>;

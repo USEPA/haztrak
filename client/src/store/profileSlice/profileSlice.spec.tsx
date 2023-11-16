@@ -9,13 +9,7 @@ import { renderWithProviders } from 'test-utils';
 import { createMockRcrainfoSite } from 'test-utils/fixtures';
 import { createMockRcrainfoPermissions } from 'test-utils/fixtures/mockHandler';
 import { describe, expect, test } from 'vitest';
-import rcraProfileReducer, {
-  getRcraProfile,
-  RcrainfoProfileSite,
-  ProfileState,
-  siteByEpaIdSelector,
-  selectRcrainfoSites,
-} from 'store/profileSlice/profile.slice';
+import { selectRcrainfoSites, siteByEpaIdSelector } from './profile.slice';
 
 interface TestComponentProps {
   siteId: string;

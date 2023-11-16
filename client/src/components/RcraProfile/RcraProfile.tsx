@@ -1,15 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RcraApiUserBtn } from 'components/buttons';
-import { HtForm } from 'components/Ht';
+import { HtForm, HtSpinner } from 'components/Ht';
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { htApi } from 'services';
-import { HtApi } from 'services/htApi';
-import { addNotification, useAppDispatch, useAppSelector } from 'store';
-import { getRcraProfile, updateProfile } from 'store/profileSlice';
-import { RcrainfoProfileState, selectHaztrakSites } from 'store/profileSlice/profile.slice';
+import { UserApi } from 'services';
+import {
+  addNotification,
+  getRcraProfile,
+  RcrainfoProfileState,
+  selectHaztrakSites,
+  updateProfile,
+  useAppDispatch,
+  useAppSelector,
+} from 'store';
 import { z } from 'zod';
 
 interface ProfileViewProps {
@@ -28,7 +33,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
   const [editable, setEditable] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
   const userSites = useAppSelector(selectHaztrakSites);
-  const { rcraSites, loading, ...formValues } = profile;
+  const { rcraSites, isLoading, ...formValues } = profile;
   const dispatch = useAppDispatch();
 
   const {
@@ -48,8 +53,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
   const onSubmit = (data: RcraProfileForm) => {
     setProfileLoading(!profileLoading);
     setEditable(!editable);
-    htApi
-      .put(`/rcra/profile/${profile.user}`, data)
+    UserApi.updateRcrainfoProfile({ username: profile.user, data: data })
       .then((r) => {
         dispatch(updateProfile(r.data));
       })
@@ -57,6 +61,14 @@ export function RcraProfile({ profile }: ProfileViewProps) {
       .then(() => setProfileLoading(!profileLoading))
       .catch((r) => console.error(r));
   };
+
+  if (profile.isLoading) {
+    return (
+      <Container>
+        <HtSpinner />
+      </Container>
+    );
+  }
 
   return (
     <>
@@ -186,8 +198,8 @@ export function RcraProfile({ profile }: ProfileViewProps) {
           className="mx-2"
           variant="primary"
           onClick={() => {
-            HtApi.syncRcrainfoProfile()
-              .then((data) => {
+            UserApi.syncRcrainfoProfile()
+              .then(({ data }) => {
                 dispatch(
                   addNotification({
                     uniqueId: data.taskId,
