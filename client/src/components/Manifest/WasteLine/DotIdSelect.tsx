@@ -2,8 +2,7 @@ import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import AsyncSelect from 'react-select/async';
-import { useAppDispatch } from 'store';
-import { wasteCodeApi } from 'store/wasteCode.slice';
+import { haztrakApi, useAppDispatch } from 'store';
 
 interface DotIdOption {
   label: string;
@@ -22,7 +21,7 @@ export function DotIdSelect() {
    * @param inputValue
    */
   const getDotIdNumbers = async (inputValue: string) => {
-    const response = await dispatch(wasteCodeApi.endpoints.getDotIdNumbers.initiate(inputValue));
+    const response = await dispatch(haztrakApi.endpoints.getDotIdNumbers.initiate(inputValue));
     if (response.data) {
       return response.data.map((dotIdNumber) => {
         return { label: dotIdNumber, value: dotIdNumber } as DotIdOption;

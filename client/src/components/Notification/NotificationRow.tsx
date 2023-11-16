@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { removeNotification, useAppDispatch } from 'store';
 import { HtNotification } from 'store/notificationSlice/notification.slice';
-import { useGetTaskStatusQuery } from 'store/task.slice';
+import { useGetTaskStatusQuery } from 'store';
 
 interface NotificationRowProps {
   notification: HtNotification;

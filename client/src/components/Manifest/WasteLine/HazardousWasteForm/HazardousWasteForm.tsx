@@ -6,7 +6,7 @@ import React, { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
-import { useGetFedWasteCodesQuery } from 'store/wasteCode.slice';
+import { useGetFedWasteCodesQuery } from 'store';
 import { ErrorMessage } from '@hookform/error-message';
 
 interface HazardousWasteFormProps {

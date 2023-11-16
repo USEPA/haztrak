@@ -12,7 +12,7 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import Select from 'react-select';
-import { useAppDispatch } from 'store';
+import { haztrakApi, useAppDispatch } from 'store';
 import { siteApi } from 'store/site.slice';
 
 interface Props {
@@ -78,7 +78,7 @@ export function HandlerSearchForm({
     if (value.length >= 5) {
       setRcrainfoSitesLoading(true);
       const rcrainfoSites = await dispatch(
-        siteApi.endpoints?.searchRcrainfoSites.initiate({
+        haztrakApi.endpoints?.searchRcrainfoSites.initiate({
           siteType: handlerType,
           siteId: value,
         })
@@ -89,7 +89,7 @@ export function HandlerSearchForm({
           variant: 'danger',
         });
         const knownRcraSites = await dispatch(
-          siteApi.endpoints?.searchRcraSites.initiate({
+          haztrakApi.endpoints?.searchRcraSites.initiate({
             siteType: handlerType,
             siteId: value,
           })

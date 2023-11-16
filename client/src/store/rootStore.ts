@@ -1,18 +1,14 @@
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
+import { haztrakApi } from 'store/htApiSlice';
 import notificationReducers from 'store/notificationSlice';
 import profileReducers from 'store/profileSlice/index';
-import { taskApi } from 'store/task.slice';
 import userReducers, { login } from 'store/userSlice';
-import { wasteCodeApi } from 'store/wasteCode.slice';
-import { siteApi } from 'store/site.slice';
 
 const rootReducer = combineReducers({
   user: userReducers,
   notification: notificationReducers,
   profile: profileReducers,
-  [wasteCodeApi.reducerPath]: wasteCodeApi.reducer,
-  [taskApi.reducerPath]: taskApi.reducer,
-  [siteApi.reducerPath]: siteApi.reducer,
+  [haztrakApi.reducerPath]: haztrakApi.reducer,
 });
 
 /**
@@ -22,12 +18,7 @@ const rootReducer = combineReducers({
 const setupStore = (preloadedState?: PreloadedState<RootState>) => {
   return configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(
-        wasteCodeApi.middleware,
-        taskApi.middleware,
-        siteApi.middleware
-      ),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(haztrakApi.middleware),
     preloadedState,
   });
 };
