@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from 'store';
-import { selectUserName } from 'store/userSlice';
+import { selectUserName } from 'store/authSlice';
 
 interface Props {
   children: any;

@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store';
 import { launchExampleTask } from 'store/notificationSlice/notification.slice';
 import { getRcraProfile } from 'store/profileSlice';
-import { selectUserName } from 'store/userSlice/user.slice';
+import { selectUserName } from 'store/authSlice/auth.slice';
 
 /**
  * Home page for logged-in user

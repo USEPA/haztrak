@@ -96,7 +96,7 @@ export const getRcraProfile = createAsyncThunk<ProfileState>(
   'profile/getRcrainfoProfile',
   async (arg, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
-    const username = state.user.user?.username;
+    const username = state.auth.user?.username;
     if (!username) {
       throw new Error('User is not logged in');
     }

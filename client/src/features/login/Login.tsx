@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { login, useAppDispatch, useAppSelector } from 'store';
 import { useNavigate } from 'react-router-dom';
 import { useTitle } from 'hooks';
-import { selectUserState } from 'store/userSlice';
+import { selectUserState } from 'store/authSlice';
 import { z } from 'zod';
 import { Col, Container, Form, Row } from 'react-bootstrap';
 import logo from 'assets/haztrak-logos/low-resolution/svg/haztrak-low-resolution-logo-black-on-transparent-background.svg';

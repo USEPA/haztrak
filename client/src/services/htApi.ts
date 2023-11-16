@@ -15,7 +15,7 @@ export const htApi = axios.create({
 htApi.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     config.headers = config.headers ?? {};
-    const token = rootStore.getState().user.token;
+    const token = rootStore.getState().auth.token;
     if (token) {
       config.headers['Authorization'] = `Token ${token}`;
     }

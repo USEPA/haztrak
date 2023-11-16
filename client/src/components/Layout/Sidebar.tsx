@@ -30,7 +30,7 @@ export function Sidebar(): ReactElement | null {
   const [helpNav, setHelpNav] = useState(false);
   const [mtnNav, setMtnNav] = useState(false);
 
-  const authUser = useSelector((state: RootState) => state.user.user);
+  const authUser = useSelector((state: RootState) => state.auth.user);
   if (!authUser) return null;
 
   return (

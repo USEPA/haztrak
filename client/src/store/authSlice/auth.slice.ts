@@ -31,7 +31,7 @@ const initialState: UserState = {
 };
 
 export const login = createAsyncThunk(
-  'user/login',
+  'auth/login',
   async ({ username, password }: { username: string; password: string }) => {
     const response = await axios.post(`${import.meta.env.VITE_HT_API_URL}/api/user/login`, {
       username,
@@ -46,7 +46,7 @@ export const login = createAsyncThunk(
 );
 
 /** Fetch a Haztrak User's information and store in global state */
-export const getHaztrakUser = createAsyncThunk('user/getHaztrakUser', async (arg, thunkAPI) => {
+export const getHaztrakUser = createAsyncThunk('auth/getHaztrakUser', async (arg, thunkAPI) => {
   try {
     const { data } = await UserApi.getUser();
     return data;
@@ -54,19 +54,6 @@ export const getHaztrakUser = createAsyncThunk('user/getHaztrakUser', async (arg
     return thunkAPI.rejectWithValue(err);
   }
 });
-
-/** Submit a request to update a Haztrak User's information */
-export const updateHaztrakUser = createAsyncThunk(
-  'user/updateHaztrakUser',
-  async (data: Partial<HaztrakUser>, thunkAPI) => {
-    try {
-      const response = await UserApi.updateUser(data);
-      return response.data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err);
-    }
-  }
-);
 
 /**
  * User logout Redux reducer Function
@@ -86,8 +73,8 @@ function logout(user: UserState): object {
  * update the HaztrakUser state with the new user information
  */
 
-const userSlice = createSlice({
-  name: 'user',
+const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {
     logout,
@@ -153,17 +140,17 @@ const userSlice = createSlice({
 /**
  * Get the current user's username from the Redux store
  */
-export const selectUserName = (state: RootState): string | undefined => state.user.user?.username;
+export const selectUserName = (state: RootState): string | undefined => state.auth.user?.username;
 
 /**
  * Select the current user
  */
-export const selectUser = (state: RootState): HaztrakUser | undefined => state.user.user;
+export const selectUser = (state: RootState): HaztrakUser | undefined => state.auth.user;
 
 /**
  * Select the current User State
  */
-export const selectUserState = (state: RootState): UserState => state.user;
+export const selectUserState = (state: RootState): UserState => state.auth;
 
-export default userSlice.reducer;
-export const { updateUserProfile } = userSlice.actions;
+export default authSlice.reducer;
+export const { updateUserProfile } = authSlice.actions;

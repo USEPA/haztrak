@@ -5,7 +5,7 @@ import { UserProfile } from 'components/UserProfile/UserProfile';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { HaztrakUser } from 'store/userSlice/user.slice';
+import { HaztrakUser } from 'store/authSlice/auth.slice';
 import { renderWithProviders, screen } from 'test-utils';
 import { API_BASE_URL } from 'test-utils/mock/handlers';
 import { vi, beforeAll, afterAll, afterEach, describe, test, expect } from 'vitest';

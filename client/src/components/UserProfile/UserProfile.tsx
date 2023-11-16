@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { UserApi } from 'services';
 import { useAppDispatch } from 'store';
 import { ProfileState } from 'store/profileSlice/profile.slice';
-import { HaztrakUser, updateUserProfile } from 'store/userSlice/user.slice';
+import { HaztrakUser, updateUserProfile } from 'store/authSlice/auth.slice';
 import { z } from 'zod';
 
 interface UserProfileProps {

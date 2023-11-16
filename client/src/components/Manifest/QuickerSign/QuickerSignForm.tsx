@@ -11,7 +11,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { manifestApi } from 'services/manifestApi';
 import { addNotification, useAppDispatch, useAppSelector } from 'store';
-import { selectUserName } from 'store/userSlice';
+import { selectUserName } from 'store/authSlice';
 
 interface QuickerSignProps {
   mtn: Array<string>;

@@ -1,6 +1,6 @@
 // test userSlice
-import userReducers, { login } from 'store/userSlice';
-import { UserState } from 'store/userSlice/user.slice';
+import userReducers, { login } from 'store/authSlice';
+import { UserState } from 'store/authSlice/auth.slice';
 import { describe, expect, test, vi } from 'vitest';
 
 vi.spyOn(Storage.prototype, 'setItem');

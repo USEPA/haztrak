@@ -6,7 +6,7 @@ import {
   RcrainfoProfile,
   RcrainfoProfileSite,
 } from 'store/profileSlice/profile.slice';
-import { HaztrakUser } from 'store/userSlice';
+import { HaztrakUser } from 'store/authSlice';
 
 interface HaztrakOrgResponse {
   id: string;

@@ -11,7 +11,7 @@ import {
   useGetFedWasteCodesQuery,
   useGetStateWasteCodesQuery,
   haztrakApi,
-} from 'store/htApiSlice';
+} from 'store/haztrakApiSlice';
 
 // TypeSafe redux hooks for using the store
 export const useAppDispatch = () => useDispatch<AppDispatch>();

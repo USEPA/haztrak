@@ -2,7 +2,7 @@ import { HtCard } from 'components/Ht';
 import { RcraProfile } from 'components/RcraProfile';
 import { UserProfile } from 'components/UserProfile';
 import { ProfileState } from 'store/profileSlice/profile.slice';
-import { HaztrakUser, selectUser } from 'store/userSlice/user.slice';
+import { HaztrakUser, selectUser } from 'store/authSlice/auth.slice';
 import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';

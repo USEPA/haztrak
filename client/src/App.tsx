@@ -5,8 +5,8 @@ import { router } from 'routes';
 import { useAppDispatch, useAppSelector } from 'store';
 import { getRcraProfile, selectRcraProfile } from 'store/profileSlice';
 import { getHaztrakProfile } from 'store/profileSlice/profile.slice';
-import { selectUserName } from 'store/userSlice';
-import { getHaztrakUser } from 'store/userSlice/user.slice';
+import { selectUserName } from 'store/authSlice';
+import { getHaztrakUser } from 'store/authSlice/auth.slice';
 import './App.scss';
 
 function App(): ReactElement {
