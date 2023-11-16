@@ -200,9 +200,9 @@ export function ManifestForm({
         <FormProvider {...manifestForm}>
           <HtForm onSubmit={manifestForm.handleSubmit(onSubmit)}>
             <div className="d-flex justify-content-between">
-              <h2 className="fw-bold">{`${
-                manifestData?.manifestTrackingNumber || 'Draft'
-              } Manifest`}</h2>
+              <h2 className="fw-bold mt-2">{`${
+                manifestData?.manifestTrackingNumber || 'Draft Manifest'
+              }`}</h2>
             </div>
             <HtCard id="general-form-card">
               <HtCard.Header title="General info" />
