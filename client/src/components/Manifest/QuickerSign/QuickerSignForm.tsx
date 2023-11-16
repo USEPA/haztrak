@@ -9,7 +9,7 @@ import React from 'react';
 import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { htApi } from 'services';
+import { manifestApi } from 'services/manifestApi';
 import { addNotification, useAppDispatch, useAppSelector } from 'store';
 import { selectUserName } from 'store/userSlice';
 
@@ -58,14 +58,14 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
         transporterOrder: mtnHandler.order,
       };
     }
-    htApi
-      .post('rcra/manifest/sign', signature)
-      .then((response: AxiosResponse) => {
+    manifestApi
+      .createQuickSignature(signature)
+      .then((response) => {
         dispatch(
           addNotification({
-            uniqueId: response.data.task,
+            uniqueId: response.data.taskId,
             createdDate: new Date().toISOString(),
-            message: `e-Manifest electronic signature task started. Task ID: ${response.data.task}`,
+            message: `e-Manifest electronic signature task started. Task ID: ${response.data.taskId}`,
             status: 'Info',
             read: false,
             timeout: 5000,

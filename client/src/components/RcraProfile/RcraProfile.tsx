@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { htApi, UserApi } from 'services';
+import { UserApi } from 'services';
 import { addNotification, useAppDispatch, useAppSelector } from 'store';
 import { getRcraProfile, updateProfile } from 'store/profileSlice';
 import { RcrainfoProfileState, selectHaztrakSites } from 'store/profileSlice/profile.slice';
