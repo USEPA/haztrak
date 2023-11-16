@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { UserProfile } from 'features/profile/UserProfile';
+import { UserProfile } from 'components/UserProfile/UserProfile';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
