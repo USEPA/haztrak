@@ -1,3 +1,4 @@
 import { htApi } from 'services/htApi';
+import { UserApi } from 'services/UserApi';
 
-export { htApi };
+export { htApi, UserApi };

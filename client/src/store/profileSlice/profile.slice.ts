@@ -4,7 +4,7 @@
  */
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HaztrakSite } from 'components/HaztrakSite';
-import { HtApi } from 'services/htApi';
+import { UserApi } from 'services';
 import { RootState } from 'store';
 
 /**The user's RCRAInfo account data stored in the Redux store*/
@@ -74,7 +74,7 @@ const initialState: ProfileState = {
 
 /**Retrieves a user's profile from the server.*/
 export const getHaztrakProfile = createAsyncThunk('profile/getHaztrakProfile', async () => {
-  const { data } = await HtApi.getUserProfile();
+  const { data } = await UserApi.getUserProfile();
   const sites = data.sites.reduce((obj, site) => {
     return {
       ...obj,
@@ -100,7 +100,7 @@ export const getRcraProfile = createAsyncThunk<ProfileState>(
     if (!username) {
       throw new Error('User is not logged in');
     }
-    const { data } = await HtApi.getRcrainfoProfile(username);
+    const { data } = await UserApi.getRcrainfoProfile(username);
     const { rcraSites, ...rest } = data;
     return {
       rcrainfoProfile: {

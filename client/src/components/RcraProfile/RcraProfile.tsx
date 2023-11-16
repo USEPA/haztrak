@@ -5,8 +5,7 @@ import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { htApi } from 'services';
-import { HtApi } from 'services/htApi';
+import { htApi, UserApi } from 'services';
 import { addNotification, useAppDispatch, useAppSelector } from 'store';
 import { getRcraProfile, updateProfile } from 'store/profileSlice';
 import { RcrainfoProfileState, selectHaztrakSites } from 'store/profileSlice/profile.slice';
@@ -48,7 +47,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
   const onSubmit = (data: RcraProfileForm) => {
     setProfileLoading(!profileLoading);
     setEditable(!editable);
-    HtApi.updateRcrainfoProfile({ username: profile.user, data: data })
+    UserApi.updateRcrainfoProfile({ username: profile.user, data: data })
       .then((r) => {
         dispatch(updateProfile(r.data));
       })
@@ -185,7 +184,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
           className="mx-2"
           variant="primary"
           onClick={() => {
-            HtApi.syncRcrainfoProfile()
+            UserApi.syncRcrainfoProfile()
               .then(({ data }) => {
                 dispatch(
                   addNotification({

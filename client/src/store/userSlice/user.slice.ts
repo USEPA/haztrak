@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { HtApi } from 'services/htApi';
+import { UserApi } from 'services';
 import { RootState } from 'store/rootStore';
 
 export interface HaztrakUser {
@@ -47,7 +47,7 @@ export const login = createAsyncThunk(
 
 export const getHaztrakUser = createAsyncThunk('user/getHaztrakUser', async (arg, thunkAPI) => {
   try {
-    const { data } = await HtApi.getUser();
+    const { data } = await UserApi.getUser();
     return data;
   } catch (err) {
     return thunkAPI.rejectWithValue(err);
