@@ -1,4 +1,5 @@
 import { ErrorBoundary } from 'components/ErrorBoundary';
+import { ToastMessages } from 'components/Notification/ToastMessages';
 import { Sidebar } from './Sidebar';
 import { TopNav } from './TopNav';
 import { PrivateRoute } from './PrivateRoute';
@@ -15,6 +16,7 @@ export function Root() {
           <Sidebar />
           <Container fluid id="layoutSidenav_content">
             <ErrorBoundary>
+              <ToastMessages />
               <Outlet />
             </ErrorBoundary>
           </Container>
