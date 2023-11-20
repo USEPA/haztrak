@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
-import { useHtApi } from 'hooks/useHtAPI/useHtApi';
+import { useHtApi } from 'hooks';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';

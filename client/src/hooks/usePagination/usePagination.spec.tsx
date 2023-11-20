@@ -18,7 +18,7 @@ const defaultCurrentPage = 1;
 const defaultPageSize = 10;
 const newTotalCount = 51;
 
-function TestPaginationHook({
+function TestPaginationComponent({
   totalCount = defaultTotalCount,
   currentPage = defaultCurrentPage,
   pageSize = defaultPageSize,
@@ -56,23 +56,27 @@ afterEach(() => {
 
 describe('usePagination', () => {
   test('defaults to returning a simple array', async () => {
-    render(<TestPaginationHook maxVisiblePages={Math.ceil(defaultTotalCount / defaultPageSize)} />);
+    render(
+      <TestPaginationComponent maxVisiblePages={Math.ceil(defaultTotalCount / defaultPageSize)} />
+    );
     const paginationRange = await screen.findAllByTestId('item');
     expect(paginationRange).toHaveLength(Math.ceil(defaultTotalCount / defaultPageSize));
   });
   test('Returns single ellipsis when on page 1', async () => {
-    render(<TestPaginationHook useEllipsis={true} />);
+    render(<TestPaginationComponent useEllipsis={true} />);
     const paginationRange = await screen.findAllByText('...');
     expect(paginationRange).toHaveLength(1);
   });
   test('Returns 2 ellipsis when current page is 3 + 2(siblingCount) from start and end', async () => {
-    render(<TestPaginationHook useEllipsis={true} currentPage={5} />);
+    render(<TestPaginationComponent useEllipsis={true} currentPage={5} />);
     const paginationRange = await screen.findAllByText('...');
     expect(paginationRange).toHaveLength(2);
   });
   test('Returns 2 siblings on each side of active', async () => {
     const siblingCount = 2;
-    render(<TestPaginationHook useEllipsis={true} currentPage={5} siblingCount={siblingCount} />);
+    render(
+      <TestPaginationComponent useEllipsis={true} currentPage={5} siblingCount={siblingCount} />
+    );
     const paginationRange = await screen.findAllByTestId('item');
     const numActivePages = 1; // The current page
     const numSiblings = siblingCount * 2; // for each side of active
@@ -83,7 +87,9 @@ describe('usePagination', () => {
     expect(paginationRange).toHaveLength(numExpectedElements);
   });
   test('updates when number of elements changes', async () => {
-    render(<TestPaginationHook maxVisiblePages={Math.ceil(defaultTotalCount / defaultPageSize)} />);
+    render(
+      <TestPaginationComponent maxVisiblePages={Math.ceil(defaultTotalCount / defaultPageSize)} />
+    );
     const paginationRange = await screen.findAllByTestId('item');
     expect(paginationRange).toHaveLength(Math.ceil(defaultTotalCount / defaultPageSize));
     fireEvent.click(screen.getByText('Click Me'));
