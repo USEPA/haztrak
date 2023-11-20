@@ -22,15 +22,15 @@ export function ProgressTracker({ task }: NotificationProps) {
   useEffect(() => {
     if (data) {
       if (status === 'SUCCESS' || status === 'FAILURE') {
-        dispatch(updateTask({ ...data, complete: true }));
+        dispatch(updateTask({ ...data, taskId: taskId, complete: true }));
       } else {
-        dispatch(updateTask({ ...data }));
+        dispatch(updateTask({ ...data, taskId: taskId }));
       }
     }
     if (error || status === 'FAILURE') {
-      dispatch(updateTask({ ...task, complete: true }));
+      dispatch(updateTask({ ...task, status: 'FAILURE', complete: true }));
     }
-  }, [status, error]);
+  }, [status, error, data]);
 
   if (shouldPoll) {
     const id = toast.loading(task.taskName, { toastId: taskId });

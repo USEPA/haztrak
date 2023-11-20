@@ -5,7 +5,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.core.services.task_service import TaskService  # type: ignore
+from apps.core.services.task_service import TaskService, get_task_status  # type: ignore
 
 
 class CeleryTaskResultSerializer(serializers.ModelSerializer):
@@ -51,7 +51,7 @@ class TaskStatusView(APIView):
 
     def get(self, request: Request, task_id):
         try:
-            data = TaskService.get_task_status(task_id)
+            data = get_task_status(task_id)
             return Response(data=data, status=status.HTTP_200_OK)
         except KeyError as exc:
             return Response(data={"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
@@ -59,5 +59,5 @@ class TaskStatusView(APIView):
             return Response(
                 data={"error": exc.detail}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-        except TaskResult.DoesNotExist as exc:
-            return Response(data={"error": str(exc)}, status=status.HTTP_404_NOT_FOUND)
+        except TaskResult.DoesNotExist:
+            return Response(data={"taskId": "unknown"}, status=status.HTTP_200_OK)

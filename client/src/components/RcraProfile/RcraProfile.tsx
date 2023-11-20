@@ -2,20 +2,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { RcraApiUserBtn } from 'components/buttons';
 import { HtForm, HtSpinner } from 'components/Ht';
+import { useUpdateAfterTask } from 'hooks/useUpdateAfterTask';
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { UserApi } from 'services';
-import {
-  getRcraProfile,
-  RcrainfoProfileState,
-  selectHaztrakSites,
-  updateProfile,
-  useAppDispatch,
-  useAppSelector,
-} from 'store';
+import { getRcraProfile, RcrainfoProfileState, updateProfile, useAppDispatch } from 'store';
+import { addAlert, addTask } from 'store/notification.slice';
 import { z } from 'zod';
 
 interface ProfileViewProps {
@@ -33,9 +27,13 @@ type RcraProfileForm = z.infer<typeof rcraProfileForm>;
 export function RcraProfile({ profile }: ProfileViewProps) {
   const [editable, setEditable] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
-  const userSites = useAppSelector(selectHaztrakSites);
+  const [taskId, setTaskId] = useState<undefined | string>();
   const { rcraSites, isLoading, ...formValues } = profile;
   const dispatch = useAppDispatch();
+  const [inProgress, error] = useUpdateAfterTask({
+    taskId: taskId,
+    reduxAction: getRcraProfile(),
+  });
 
   const {
     register,
@@ -48,7 +46,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
   });
 
   /**
-   * Run upon submitting the RcraProfile form.
+   * submitting the RcraProfile form (RCRAInfo API ID, Key, username, etc.)
    * @param data {ProfileState}
    */
   const onSubmit = (data: RcraProfileForm) => {
@@ -161,38 +159,37 @@ export function RcraProfile({ profile }: ProfileViewProps) {
       </HtForm>
       <Container>
         <h4>RCRAInfo Sites</h4>
-        <Table striped bordered hover responsive>
-          <thead>
-            <tr>
-              <th>EPA ID</th>
-              <th>e-Manifest</th>
-              <th>Biennial Report</th>
-              <th>Annual Report</th>
-              <th>WIETS</th>
-              <th>my RCRA ID</th>
-            </tr>
-          </thead>
-          <tbody>
-            {profile.rcraSites &&
-              Object.values(profile.rcraSites).map((site) => (
-                <tr key={`permissionsRow${site.epaSiteId}`}>
-                  <td>
-                    {/* @ts-ignore */}
-                    {site.epaSiteId in userSites ? (
-                      <Link to={`/site/${site.epaSiteId}`}>{site.epaSiteId}</Link>
-                    ) : (
-                      site.epaSiteId
-                    )}
-                  </td>
-                  <td>{site.permissions.eManifest}</td>
-                  <td>{site.permissions.biennialReport}</td>
-                  <td>{site.permissions.annualReport}</td>
-                  <td>{site.permissions.WIETS}</td>
-                  <td>{site.permissions.myRCRAid}</td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
+        {inProgress ? (
+          <HtSpinner />
+        ) : (
+          <Table striped bordered hover responsive>
+            <thead>
+              <tr>
+                <th>EPA ID</th>
+                <th>e-Manifest</th>
+                <th>Biennial Report</th>
+                <th>Annual Report</th>
+                <th>WIETS</th>
+                <th>my RCRA ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              {profile.rcraSites &&
+                Object.values(profile.rcraSites).map((site) => {
+                  return (
+                    <tr key={`permissionsRow${site.epaSiteId}`}>
+                      <td>{site.epaSiteId}</td>
+                      <td>{site.permissions.eManifest}</td>
+                      <td>{site.permissions.biennialReport}</td>
+                      <td>{site.permissions.annualReport}</td>
+                      <td>{site.permissions.WIETS}</td>
+                      <td>{site.permissions.myRCRAid}</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </Table>
+        )}
       </Container>
       <div className="mx-1 d-flex flex-row-reverse">
         <RcraApiUserBtn
@@ -200,10 +197,19 @@ export function RcraProfile({ profile }: ProfileViewProps) {
           variant="primary"
           onClick={() => {
             UserApi.syncRcrainfoProfile()
-              .then(() => {
-                toast.info(`Syncing you RCRAInfo Profile`);
+              .then((response) => {
+                dispatch(
+                  addTask({
+                    taskId: response.data.taskId,
+                    status: 'PENDING',
+                    taskName: 'Syncing RCRAInfo Profile',
+                  })
+                );
+                setTaskId(response.data.taskId);
               })
-              .catch((error: AxiosError) => toast.error(error.message));
+              .catch((error: AxiosError) =>
+                dispatch(addAlert({ message: error.message, type: 'error' }))
+              );
           }}
         >
           Sync Site Permissions
