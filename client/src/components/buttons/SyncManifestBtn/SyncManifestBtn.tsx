@@ -63,7 +63,7 @@ export function SyncManifestBtn({
       }}
     >
       {`Sync Manifest `}
-      <FontAwesomeIcon icon={faSync} />
+      <FontAwesomeIcon icon={faSync} spin={syncInProgress} />
     </RcraApiUserBtn>
   );
 }
