@@ -1,3 +1,5 @@
+import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { rankItem } from '@tanstack/match-sorter-utils';
 import {
   CellContext,
@@ -20,8 +22,6 @@ import React, { useState } from 'react';
 import { Button, Col, Form, Table } from 'react-bootstrap';
 import Select from 'react-select';
 import { z } from 'zod';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 
 const mtnDetailsSchema = z.object({
   manifestTrackingNumber: z.string(),
@@ -224,8 +224,6 @@ export function MtnTable({ manifests }: MtnTableProps) {
                       </Button>
                     )
                   ) : (
-                    // If column is defined a 'display' in our ColumnDef (columnHelpers)
-                    // Just display the 'Header' value as a string
                     <div className="text-center">
                       {flexRender(header.column.columnDef.header, header.getContext())}
                     </div>
@@ -239,7 +237,9 @@ export function MtnTable({ manifests }: MtnTableProps) {
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                <td className="py-1" key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
               ))}
             </tr>
           ))}
