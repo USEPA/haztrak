@@ -3,18 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NewManifestBtn } from 'components/buttons/NewManifestBtn';
 import { HtButton, HtCard } from 'components/Ht';
 import { useTitle } from 'hooks';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { htApi } from 'services';
-import {
-  getRcraProfile,
-  selectUserName,
-  useAppDispatch,
-  useAppSelector,
-  useGetTaskStatusQuery,
-} from 'store';
+import { getRcraProfile, selectUserName, useAppDispatch, useAppSelector } from 'store';
+import { addTask } from 'store/notification.slice';
 
 /**
  * Home page for logged-in user
@@ -24,8 +19,6 @@ export function Home(): ReactElement {
   useTitle(`Haztrak`, false, true);
   const dispatch = useAppDispatch();
   const userName = useAppSelector(selectUserName);
-  const [taskId, setTaskId] = useState<string | undefined>(undefined);
-  const [taskComplete, setTaskComplete] = useState<boolean>(true);
 
   useEffect(() => {
     // get user profile information when the user changes
@@ -34,33 +27,14 @@ export function Home(): ReactElement {
 
   const launchExampleTask = async () => {
     const response = await htApi.get<{ taskId: string }>('/task/example');
-    console.log(response);
-    setTaskComplete(false);
-    setTaskId(response.data.taskId);
+    dispatch(
+      addTask({
+        taskId: response.data.taskId,
+        status: 'PENDING',
+        taskName: 'Example Long Running Task',
+      })
+    );
   };
-
-  // @ts-ignore
-  const { data, isLoading, error } = useGetTaskStatusQuery(taskId, {
-    pollingInterval: 3000,
-    skip: taskId === undefined || taskComplete,
-  });
-
-  console.log(data, isLoading, error);
-  // setTaskComplete(data?.status === 'SUCCESS' || data?.status === 'FAILURE');
-
-  if (taskId) {
-    const id = toast.loading('Loading...', { toastId: taskId });
-    if (data && !taskComplete && data.status === 'SUCCESS') {
-      setTaskComplete(true);
-      toast.update(id, {
-        render: 'Success!',
-        type: 'success',
-        isLoading: false,
-        autoClose: 3000,
-        toastId: taskId,
-      });
-    }
-  }
 
   return (
     <Container className="py-2">
