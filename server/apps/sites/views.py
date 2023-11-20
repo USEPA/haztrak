@@ -11,17 +11,14 @@ from rest_framework.views import APIView
 
 from apps.sites.models import HaztrakSite, RcraSite, RcraSiteType  # type: ignore
 from apps.sites.serializers import HaztrakSiteSerializer, RcraSiteSerializer  # type: ignore
-from apps.sites.services import RcraSiteService  # type: ignore
+from apps.sites.services import RcraSiteService, get_org_sites  # type: ignore
 from apps.sites.services.rcra_site_services import query_rcra_sites
 
 logger = logging.getLogger(__name__)
 
 
-class SiteListView(ListAPIView):
-    """
-    SiteListView is a ListAPIView that returns haztrak sites that the current
-    user has access to.
-    """
+class HaztrakSiteListView(ListAPIView):
+    """that returns haztrak sites that the current user has access to."""
 
     serializer_class = HaztrakSiteSerializer
 
@@ -54,6 +51,16 @@ class SiteDetailView(RetrieveAPIView):
             rcra_site__epa_id=epa_id, sitepermissions__profile__user=self.request.user
         )
         return queryset
+
+
+class HaztrakOrgSitesListView(APIView):
+    """Retrieve a list of sites for a given HaztrakOrg"""
+
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        haztrak_sites = get_org_sites(self.kwargs["org_id"])
+        serializer = HaztrakSiteSerializer(haztrak_sites, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 @extend_schema(

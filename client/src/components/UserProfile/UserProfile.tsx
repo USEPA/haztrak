@@ -168,11 +168,15 @@ export function UserProfile({ user, profile }: UserProfileProps) {
               <hr />
               <h3 className="text-center">Organization</h3>
               <Col>
-                <b>Name</b>
+                <h6>
+                  <b>Name</b>
+                </h6>
                 <p>{profile.org.name ?? 'My Organization'}</p>
               </Col>
               <Col>
-                <b>Integrated with Rcrainfo?</b>
+                <h6>
+                  <b>Integrated with Rcrainfo?</b>
+                </h6>
                 <p>
                   {profile.org.rcrainfoIntegrated ? (
                     <span>
