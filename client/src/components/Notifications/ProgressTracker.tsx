@@ -7,7 +7,7 @@ export interface NotificationProps {
   task: LongRunningTask;
 }
 
-export function Notification({ task }: NotificationProps) {
+export function ProgressTracker({ task }: NotificationProps) {
   const dispatch = useAppDispatch();
   const shouldPoll = task.complete === undefined ? true : !task.complete;
   const [pollServer, setPollServer] = useState<boolean>(shouldPoll);

@@ -1,4 +1,4 @@
-import { Notification } from 'components/Notifications/Notification';
+import { ProgressTracker } from 'components/Notifications/ProgressTracker';
 import { useAppSelector } from 'store';
 import { LongRunningTask, selectAllTasks } from 'store/notification.slice';
 
@@ -7,7 +7,7 @@ export function Notifications() {
   return (
     <>
       {tasks.map((task) => (
-        <Notification task={task} key={task.taskId} />
+        <ProgressTracker task={task} key={task.taskId} />
       ))}
     </>
   );

@@ -6,10 +6,9 @@ import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { htApi } from 'services';
 import { getRcraProfile, selectUserName, useAppDispatch, useAppSelector } from 'store';
-import { addTask } from 'store/notification.slice';
+import { addAlert, addTask } from 'store/notification.slice';
 
 /**
  * Home page for logged-in user
@@ -119,7 +118,14 @@ export function Home(): ReactElement {
         <HtButton
           variant="danger"
           onClick={() => {
-            toast.error('OH NO!');
+            dispatch(
+              addAlert({
+                message: 'Oh No! (v2)',
+                id: 'home-page-test-id',
+                autoClose: 500,
+                type: 'warning',
+              })
+            );
           }}
         >
           Show Alert
