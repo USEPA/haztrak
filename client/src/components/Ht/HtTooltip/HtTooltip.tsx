@@ -1,8 +1,7 @@
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { TooltipProps } from 'react-bootstrap';
 import { ReactElement } from 'react';
+import { OverlayTrigger, Tooltip, TooltipProps } from 'react-bootstrap';
 
 // see react-bootstrap OverlayTrigger for additional props that could be added
 // https://react-bootstrap.github.io/components/overlays/#overlay-trigger-props
@@ -40,7 +39,7 @@ interface InfoTooltipProps {
 export function InfoIconTooltip({ message }: InfoTooltipProps) {
   return (
     <HtTooltip text={message}>
-      <FontAwesomeIcon icon={faInfoCircle} size={'1x'} className={'pb-1 text-muted'} />
+      <FontAwesomeIcon icon={faInfoCircle} size={'2xs'} className={'pb-1 text-muted'} />
     </HtTooltip>
   );
 }

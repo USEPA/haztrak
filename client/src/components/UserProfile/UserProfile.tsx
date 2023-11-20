@@ -1,9 +1,9 @@
-import { faCheck, faUser, faX } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { HtForm, HtSpinner } from 'components/Ht';
-import { SitePermissions } from 'components/UserProfile/SitePermissions';
+import { UserOrg } from 'components/UserProfile/UserOrg';
 import React, { createRef, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
@@ -162,43 +162,8 @@ export function UserProfile({ user, profile }: UserProfileProps) {
             )}
           </div>
         </Row>
-        {profile?.org && (
-          <>
-            <Row>
-              <hr />
-              <h3 className="text-center">Organization</h3>
-              <Col>
-                <h6>
-                  <b>Name</b>
-                </h6>
-                <p>{profile.org.name ?? 'My Organization'}</p>
-              </Col>
-              <Col>
-                <h6>
-                  <b>Integrated with Rcrainfo?</b>
-                </h6>
-                <p>
-                  {profile.org.rcrainfoIntegrated ? (
-                    <span>
-                      Yes <FontAwesomeIcon icon={faCheck} className="text-success" />
-                    </span>
-                  ) : (
-                    <span>
-                      No <FontAwesomeIcon icon={faX} className="text-danger" />
-                    </span>
-                  )}
-                </p>
-              </Col>
-            </Row>
-            <Row>
-              <SitePermissions sites={profile.sites} />
-              <p>
-                Contact your Haztrak admin obtain access to additional sites within your
-                organization
-              </p>
-            </Row>
-          </>
-        )}
+        {/* @ts-ignore */}
+        {profile.org && <UserOrg profile={profile} />}
       </HtForm>
     </Container>
   );
