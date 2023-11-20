@@ -105,7 +105,7 @@ export const haztrakApi = createApi({
       query: (id) => ({ url: `org/${id}/site`, method: 'get' }),
     }),
     getMTN: build.query<Array<MtnDetails>, string | undefined>({
-      query: (siteId) => ({ url: siteId ? `rcra/mtn/${siteId}` : '/rcra/mtn', method: 'get' }),
+      query: (siteId) => ({ url: siteId ? `rcra/mtn/${siteId}` : 'rcra/mtn', method: 'get' }),
     }),
   }),
 });

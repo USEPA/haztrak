@@ -6,39 +6,22 @@ import { useTitle } from 'hooks';
 import React, { ReactElement, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { useGetMTNQuery } from 'store';
+import { useAppDispatch, useGetMTNQuery } from 'store';
 
 /**
  * Fetch and display all the manifest tracking number (MTN) known by haztrak
  * @constructor
  */
 export function ManifestList(): ReactElement {
+  const dispatch = useAppDispatch();
   let { siteId } = useParams();
   useTitle(`${siteId || ''} Manifest`);
   const [pageSize, setPageSize] = useState(10);
   const [syncInProgress, setSyncInProgress] = useState(false);
 
-  let getUrl = 'rcra/mtn';
-  if (siteId) {
-    getUrl = `rcra/mtn/${siteId}`;
-  }
-
-  // const [mtnList, loading, error] = useHtApi<Array<MtnDetails>>(getUrl);
-
   const { data, isLoading, error } = useGetMTNQuery(siteId, {
-    pollingInterval: 1000,
-    skip: !syncInProgress,
+    pollingInterval: syncInProgress ? 1000 : 0,
   });
-
-  const mtnList = data;
-  const loading = isLoading;
-
-  if (error) {
-    throw error;
-  }
-
-  console.log('syncInProgress', syncInProgress);
-  console.log('data', data);
 
   return (
     <Container className="py-2">
@@ -63,10 +46,10 @@ export function ManifestList(): ReactElement {
           <HtCard>
             <HtCard.Header title={`${siteId || 'Your'} Manifests`}></HtCard.Header>
             <HtCard.Body>
-              {loading ? (
+              {isLoading ? (
                 <HtCard.Spinner />
-              ) : mtnList ? (
-                <MtnTable manifests={mtnList} pageSize={pageSize} />
+              ) : data ? (
+                <MtnTable manifests={data} pageSize={pageSize} />
               ) : (
                 <></>
               )}

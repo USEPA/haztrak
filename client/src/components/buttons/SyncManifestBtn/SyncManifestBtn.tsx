@@ -4,9 +4,8 @@ import { AxiosError } from 'axios';
 import { RcraApiUserBtn } from 'components/buttons';
 import { useProgressTracker } from 'hooks';
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import { manifestApi } from 'services/manifestApi';
-import { addTask, useAppDispatch } from 'store';
+import { addTask, updateTask, useAppDispatch } from 'store';
 
 interface SyncManifestProps {
   siteId?: string;
@@ -53,10 +52,14 @@ export function SyncManifestBtn({
               );
               setTaskId(response.data.taskId);
             })
-            // .then((response) => {
-            //   toast.info(`Syncing Manifests for ${siteId}`);
-            // })
-            .catch((error: AxiosError) => toast.error(error.message));
+            .catch((error: AxiosError) =>
+              dispatch(
+                updateTask({
+                  taskId: taskId,
+                  status: 'FAILURE',
+                })
+              )
+            );
       }}
     >
       {`Sync Manifest `}

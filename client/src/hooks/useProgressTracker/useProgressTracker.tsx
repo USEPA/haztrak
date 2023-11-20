@@ -62,7 +62,6 @@ export function useProgressTracker({
 
   //
   useEffect(() => {
-    console.log('taskComplete', taskComplete);
     if (taskComplete) {
       if (reduxAction) dispatch(reduxAction);
       setInProgress(false);
