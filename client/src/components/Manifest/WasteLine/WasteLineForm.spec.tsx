@@ -8,11 +8,7 @@ import { WasteLineForm } from './WasteLineForm';
 describe('WasteLineForm', () => {
   test('renders', () => {
     renderWithProviders(
-      <WasteLineForm
-        wasteForm={{} as any}
-        lineNumber={0}
-        handleClose={() => console.log('close action handled')}
-      />,
+      <WasteLineForm wasteForm={{} as any} lineNumber={0} handleClose={() => undefined} />,
       {}
     );
     expect(screen.getByText(/General/i)).toBeInTheDocument();
@@ -21,11 +17,7 @@ describe('WasteLineForm', () => {
   test('New waste lines set DOT haz material and EPA haz waste to true by default', () => {
     // Arrange
     renderWithProviders(
-      <WasteLineForm
-        wasteForm={{} as any}
-        lineNumber={0}
-        handleClose={() => console.log('close action handled')}
-      />,
+      <WasteLineForm wasteForm={{} as any} lineNumber={0} handleClose={() => undefined} />,
       {}
     );
     const epaWasteSwitch = screen.getByRole('checkbox', { name: /EPA Hazardous Waste?/i });
@@ -36,11 +28,7 @@ describe('WasteLineForm', () => {
   test('Setting DOT hazardous to false automatically set EPA waste to false', async () => {
     // Arrange
     renderWithProviders(
-      <WasteLineForm
-        wasteForm={{} as any}
-        lineNumber={0}
-        handleClose={() => console.log('close action handled')}
-      />,
+      <WasteLineForm wasteForm={{} as any} lineNumber={0} handleClose={() => undefined} />,
       {}
     );
     const epaWasteSwitch = await screen.findByRole('checkbox', { name: /EPA Hazardous Waste?/i });
@@ -54,11 +42,7 @@ describe('WasteLineForm', () => {
   test('Setting EPA waste to true automatically set DOT Hazardous to true', async () => {
     // Arrange
     renderWithProviders(
-      <WasteLineForm
-        wasteForm={{} as any}
-        lineNumber={0}
-        handleClose={() => console.log('close action handled')}
-      />,
+      <WasteLineForm wasteForm={{} as any} lineNumber={0} handleClose={() => undefined} />,
       {}
     );
     const epaWasteSwitch = await screen.findByRole('checkbox', { name: /EPA Hazardous Waste?/i });
@@ -78,11 +62,7 @@ describe('WasteLineForm', () => {
   test('If epaWaste is false, federal waste code select is disabled', async () => {
     // Arrange
     renderWithProviders(
-      <WasteLineForm
-        wasteForm={{} as any}
-        lineNumber={0}
-        handleClose={() => console.log('close action handled')}
-      />,
+      <WasteLineForm wasteForm={{} as any} lineNumber={0} handleClose={() => undefined} />,
       {}
     );
     const epaWasteSwitch = await screen.findByRole('checkbox', { name: /EPA Hazardous Waste?/i });
@@ -96,11 +76,7 @@ describe('WasteLineForm', () => {
   test('If epaWaste is false, federal waste codes are cleared', async () => {
     // Arrange
     renderWithProviders(
-      <WasteLineForm
-        wasteForm={{} as any}
-        lineNumber={0}
-        handleClose={() => console.log('close action handled')}
-      />,
+      <WasteLineForm wasteForm={{} as any} lineNumber={0} handleClose={() => undefined} />,
       {}
     );
     const epaWasteSwitch = await screen.findByRole('checkbox', { name: /EPA Hazardous Waste?/i });

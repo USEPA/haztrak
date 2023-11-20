@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NotificationState } from 'store/notificationSlice/notification.slice';
+import { AlertSlice } from 'store/alertSlice/alert.slice';
 
 export interface HaztrakError {
   id: string;

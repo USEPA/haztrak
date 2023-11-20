@@ -4,7 +4,7 @@ import { NotificationRow } from 'components/Notification';
 import { useTitle } from 'hooks';
 import React from 'react';
 import { Col, Container, Table } from 'react-bootstrap';
-import { HtNotification, selectNotifications, useAppSelector } from 'store';
+import { HaztrakAlert, selectAllAlerts, useAppSelector } from 'store';
 
 /**
  * Table showing the user's current notifications
@@ -12,7 +12,7 @@ import { HtNotification, selectNotifications, useAppSelector } from 'store';
  */
 export function Notifications() {
   useTitle('Notifications');
-  const notifications: Array<HtNotification> = useAppSelector(selectNotifications);
+  const notifications: Array<HaztrakAlert> = useAppSelector(selectAllAlerts);
 
   return (
     <>
@@ -38,9 +38,7 @@ export function Notifications() {
                   </thead>
                   <tbody>
                     {notifications.map((notification) => {
-                      return (
-                        <NotificationRow key={notification.uniqueId} notification={notification} />
-                      );
+                      return <NotificationRow key={notification.id} notification={notification} />;
                     })}
                   </tbody>
                 </Table>

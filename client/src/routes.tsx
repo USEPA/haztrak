@@ -76,11 +76,11 @@ export const router = createBrowserRouter([
         path: '/coming-soon',
         lazy: () => import('./features/comingSoon'),
       },
-      {
-        path: '*',
-        lazy: () => import('./features/404'),
-      },
     ],
+  },
+  {
+    path: '*',
+    lazy: () => import('./features/404'),
   },
   {
     path: '/login',

@@ -31,11 +31,11 @@ export {
 
 // Notification Slice
 export {
-  addNotification,
-  removeNotification,
-  selectNotifications,
+  addAlert,
+  removeAlert,
+  selectAllAlerts,
   launchExampleTask,
-} from './notificationSlice/notification.slice';
+} from 'store/alertSlice/alert.slice';
 
 // Profile Slice
 export {
@@ -55,7 +55,7 @@ export { addError, selectAllErrors } from './errorSlice/error.slice';
 export type { HaztrakUser } from './authSlice/auth.slice';
 export type { HaztrakError } from './errorSlice/error.slice';
 export type { TaskStatus } from './haztrakApiSlice';
-export type { HtNotification } from './notificationSlice/notification.slice';
+export type { HaztrakAlert } from 'store/alertSlice/alert.slice';
 export type {
   ProfileState,
   RcrainfoProfileState,

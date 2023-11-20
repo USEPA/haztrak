@@ -12,7 +12,7 @@ const HANDLER_ID_2 = 'siteId2';
 const HANDLER_NAME_1 = 'My Transporter';
 const HANDLER_NAME_2 = 'My Other Transporter';
 
-const mockSetupSign = (data: any) => console.log(data);
+const mockSetupSign = () => undefined;
 
 const TRAN_ARRAY: Array<Transporter> = [
   {

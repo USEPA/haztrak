@@ -10,7 +10,7 @@ import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { manifestApi } from 'services/manifestApi';
-import { addNotification, useAppDispatch } from 'store';
+import { addAlert, useAppDispatch } from 'store';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
 import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
@@ -93,7 +93,6 @@ export function ManifestForm({
   } = manifestForm;
 
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
-    console.log('Manifest Submitted', data);
     manifestApi
       .createManifest(data)
       .then((response) => {
@@ -105,10 +104,10 @@ export function ManifestForm({
         }
         if ('taskId' in r.data) {
           dispatch(
-            addNotification(
+            addAlert(
               // @ts-ignore
               {
-                uniqueId: r.data.taskId,
+                id: r.data.taskId,
                 createdDate: new Date().toISOString(),
                 inProgress: true,
               }
