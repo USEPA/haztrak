@@ -172,7 +172,7 @@ def populate_state_waste_codes(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("trak", "0002_wastecode_state_id"),  # Replace with your app's initial migration
+        ("trak", "0001_initial"),
     ]
 
     operations = [

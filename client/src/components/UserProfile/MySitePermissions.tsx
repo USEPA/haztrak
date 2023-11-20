@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
+import { Row, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { HaztrakProfileSite } from 'store';
 
@@ -7,11 +7,10 @@ interface SitePermissionsProps {
   sites?: Record<string, HaztrakProfileSite>;
 }
 
-export function SitePermissions({ sites }: SitePermissionsProps) {
+export function MySitePermissions({ sites }: SitePermissionsProps) {
   return (
-    <div>
-      <h4>Site Permissions</h4>
-      <Table striped bordered hover responsive>
+    <Row className="my-2">
+      <Table hover responsive>
         <thead>
           <tr>
             <th>EPA ID</th>
@@ -34,6 +33,6 @@ export function SitePermissions({ sites }: SitePermissionsProps) {
             ))}
         </tbody>
       </Table>
-    </div>
+    </Row>
   );
 }

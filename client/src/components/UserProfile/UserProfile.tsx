@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { HtForm, HtSpinner } from 'components/Ht';
-import { SitePermissions } from 'components/UserProfile/SitePermissions';
+import { UserOrg } from 'components/UserProfile/UserOrg';
 import React, { createRef, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
@@ -127,19 +127,7 @@ export function UserProfile({ user, profile }: UserProfileProps) {
             </HtForm.Group>
           </Col>
         </Row>
-        {profile?.org && (
-          <>
-            <Row>
-              <Col>
-                <p>{profile.org.name ?? 'My Organization'}</p>
-              </Col>
-            </Row>
-            <Row>
-              <SitePermissions sites={profile.sites} />
-            </Row>
-          </>
-        )}
-        <Row>
+        <Row className="my-1">
           <div className="mx-1 d-flex flex-row-reverse">
             {!editable ? (
               <>
@@ -174,6 +162,8 @@ export function UserProfile({ user, profile }: UserProfileProps) {
             )}
           </div>
         </Row>
+        {/* @ts-ignore */}
+        {profile.org && <UserOrg profile={profile} />}
       </HtForm>
     </Container>
   );

@@ -1,7 +1,4 @@
-from typing import Optional
-
 import pytest
-from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
@@ -123,3 +120,28 @@ class TestHaztrakSiteDetailsApi:
         # Assert
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK
+
+
+class TestHaztrakOrgSitesListView:
+    URL = "/api/org"
+
+    def test_returns_list_of_organizations_sites(
+        self,
+        user_factory,
+        haztrak_site_factory,
+        haztrak_profile_factory,
+        haztrak_site_permission_factory,
+        haztrak_org_factory,
+    ):
+        # Arrange
+        user = user_factory()
+        org = haztrak_org_factory()
+        haztrak_site_factory(org=org)
+        client = APIClient()
+        client.force_authenticate(user=user)
+        # Act
+        response = client.get(f"{self.URL}/{org.id}/site")
+        # Assert
+        assert response.headers["Content-Type"] == "application/json"
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 1

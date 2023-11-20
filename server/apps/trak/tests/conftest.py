@@ -1,7 +1,5 @@
-import random
-import string
-from datetime import UTC, datetime, timezone
-from typing import Dict, List, Optional
+from datetime import UTC, datetime
+from typing import Optional
 
 import pytest
 from faker import Faker
@@ -79,12 +77,21 @@ def waste_code_factory(db):
         code: Optional[str] = "D001",
         description: Optional[str] = "IGNITABLE WASTE",
         code_type: Optional[WasteCode.CodeType] = WasteCode.CodeType.FEDERAL,
+        state_id: Optional[str] = "VA",
     ) -> WasteCode:
-        waste_code = WasteCode.objects.create(
-            code=code,
-            description=description,
-            code_type=code_type,
-        )
+        if code_type == WasteCode.CodeType.STATE:
+            waste_code = WasteCode.objects.create(
+                code=code,
+                description=description,
+                code_type=code_type,
+                state_id=state_id,
+            )
+        else:
+            waste_code = WasteCode.objects.create(
+                code=code,
+                description=description,
+                code_type=code_type,
+            )
         return waste_code
 
     yield create_waste_code

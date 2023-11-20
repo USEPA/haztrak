@@ -2978,7 +2978,7 @@ def populate_dot_shipping_names(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("trak", "0008_dot_packing_groups"),
+        ("trak", "0005_dot_packing_groups"),
     ]
 
     operations = [

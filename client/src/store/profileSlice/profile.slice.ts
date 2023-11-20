@@ -17,7 +17,7 @@ export interface ProfileState {
   error?: string;
 }
 
-interface HaztrakProfileOrg {
+export interface HaztrakProfileOrg {
   id: string;
   name: string;
   rcrainfoIntegrated: boolean;

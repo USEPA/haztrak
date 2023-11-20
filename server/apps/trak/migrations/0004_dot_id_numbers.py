@@ -2382,7 +2382,7 @@ def populate_dot_id_numbers(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("trak", "0006_dotoption"),
+        ("trak", "0003_federal_waste_codes"),
     ]
 
     operations = [

@@ -83,7 +83,7 @@ def populate_dot_hazard_classes(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("trak", "0007_dot_id_numbers"),
+        ("trak", "0004_dot_id_numbers"),
     ]
 
     operations = [

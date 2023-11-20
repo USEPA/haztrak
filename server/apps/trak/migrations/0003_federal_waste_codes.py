@@ -751,7 +751,7 @@ def populate_federal_waste_codes(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("trak", "0003_state_waste_codes"),
+        ("trak", "0002_state_waste_codes"),
     ]
 
     operations = [

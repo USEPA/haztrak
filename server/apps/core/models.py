@@ -1,24 +1,9 @@
+import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from haztrak import settings
-
-
-class CoreBaseModel(models.Model):
-    """Base class for all apps.core models"""
-
-    class Meta:
-        abstract = True
-        ordering = ["pk"]
-
-    def __str__(self):
-        return f"{self.__class__.__name__}"
-
-    def __repr__(self):
-        field_values = ", ".join(
-            f"{field.name}={getattr(self, field.name)!r}" for field in self._meta.fields
-        )
-        return f"<{self.__class__.__name__}({field_values})>"
 
 
 class HaztrakUser(AbstractUser):
@@ -29,15 +14,26 @@ class HaztrakUser(AbstractUser):
         verbose_name_plural = "Users"
         ordering = ["username"]
 
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
+
     pass
 
 
-class HaztrakProfile(CoreBaseModel):
+class HaztrakProfile(models.Model):
     class Meta:
         verbose_name = "Haztrak Profile"
         ordering = ["user__username"]
         default_related_name = "haztrak_profile"
 
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -67,7 +63,7 @@ class HaztrakProfile(CoreBaseModel):
         return f"{self.user.username}"
 
 
-class RcraProfile(CoreBaseModel):
+class RcraProfile(models.Model):
     """
     Contains a user's RcraProfile information, such as username, and API credentials.
     Has a one-to-one relationship with the User model.
@@ -76,6 +72,11 @@ class RcraProfile(CoreBaseModel):
     class Meta:
         ordering = ["rcra_username"]
 
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
     rcra_api_key = models.CharField(
         max_length=128,
         null=True,
