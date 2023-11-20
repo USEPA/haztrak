@@ -9,12 +9,10 @@ logger = logging.getLogger(__name__)
 
 @shared_task(bind=True, name="example task")
 def example_task(self: Task):
-    # print(f"task ID: {self.request.id}")
     cache.set(
         self.request.id,
         {"status": "STARTED", "taskName": self.name, "taskId": self.request.id},
     )
-    # print(f"task status: {cache.get(self.request.id)}")
     time.sleep(15)
     cache.set(
         self.request.id,

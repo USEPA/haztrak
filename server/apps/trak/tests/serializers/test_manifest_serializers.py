@@ -33,7 +33,6 @@ class TestManifestSerializer:
 
     def test_saves_additional_info(self, manifest_10003114elc_serializer):
         manifest_10003114elc_serializer.is_valid()
-        print(manifest_10003114elc_serializer.validated_data["additional_info"])
         manifest = manifest_10003114elc_serializer.save()
         additional_info = manifest.additional_info
         assert isinstance(additional_info, AdditionalInfo)

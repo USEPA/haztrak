@@ -4,7 +4,7 @@ from typing import Dict, List
 
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Max, Q, QuerySet
+from django.db.models import Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from apps.sites.models import RcraSiteType, RcraStates, Role
@@ -22,7 +22,6 @@ def draft_mtn():
     official MTN from e-Manifest
     """
     mtn_count: int = Manifest.objects.all().count()
-    print(mtn_count)
     return f"{str(mtn_count).zfill(9)}DFT"
 
 

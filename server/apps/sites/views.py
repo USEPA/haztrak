@@ -161,7 +161,6 @@ class HandlerSearchView(APIView):
     def post(self, request: Request) -> Response:
         serializer = self.HandlerSearchSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        print("hello")
         sites = RcraSiteService(username=request.user.username)
         data = sites.search_rcrainfo_handlers(
             epaSiteId=serializer.data["siteId"],

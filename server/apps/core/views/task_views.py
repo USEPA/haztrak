@@ -5,7 +5,11 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.core.services.task_service import TaskService, get_task_status  # type: ignore
+from apps.core.services.task_service import (  # type: ignore
+    TaskService,
+    get_task_status,
+    launch_example_task,
+)
 
 
 class CeleryTaskResultSerializer(serializers.ModelSerializer):
@@ -33,7 +37,7 @@ class LaunchExampleTaskView(APIView):
 
     def get(self, request, *args, **kwargs):
         try:
-            task_id = TaskService.launch_example_task()
+            task_id = launch_example_task()
             return Response(data={"taskId": task_id}, status=status.HTTP_200_OK)
         except KeyError:
             return Response(
