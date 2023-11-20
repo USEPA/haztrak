@@ -1,9 +1,10 @@
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AxiosError } from 'axios';
 import { RcraApiUserBtn } from 'components/buttons';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import { manifestApi } from 'services/manifestApi';
-import { addAlert, useAppDispatch } from 'store';
 
 interface SyncManifestProps {
   siteId?: string;
@@ -17,7 +18,6 @@ interface SyncManifestProps {
  */
 export function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
   const [syncingMtn, setSyncingMtn] = useState(false);
-  const dispatch = useAppDispatch();
 
   return (
     <RcraApiUserBtn
@@ -30,18 +30,9 @@ export function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
           manifestApi
             .syncManifest(siteId)
             .then((response) => {
-              dispatch(
-                addAlert({
-                  id: response.data.taskId,
-                  createdDate: new Date().toISOString(),
-                  message: `Sync Manifest Task Launched. Task ID: ${response.data.taskId}`,
-                  type: 'Info',
-                  read: false,
-                  timeout: 5000,
-                })
-              );
+              toast.info(`Syncing Manifests for ${siteId}`);
             })
-            .catch((reason) => console.error(reason));
+            .catch((error: AxiosError) => toast.error(error.message));
       }}
     >
       {`Sync Manifest `}

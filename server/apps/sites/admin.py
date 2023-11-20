@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
 from apps.core.admin import HiddenListView
+from apps.core.models import HaztrakProfile
 from apps.sites.models import (
     Address,
     Contact,
@@ -45,10 +46,15 @@ class HaztrakSiteInline(admin.TabularInline):
         return False
 
 
+class HaztrakProfileInline(admin.TabularInline):
+    model = HaztrakProfile
+    extra = 0
+
+
 @admin.register(HaztrakOrg)
 class HaztrakOrgAdmin(admin.ModelAdmin):
     list_display = ["__str__", "number_of_sites"]
-    inlines = [HaztrakSiteInline]
+    inlines = [HaztrakSiteInline, HaztrakProfileInline]
     readonly_fields = ["rcrainfo_integrated"]
 
     def rcrainfo_integrated(self, obj):

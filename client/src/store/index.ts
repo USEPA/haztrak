@@ -1,5 +1,5 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState, AppStore } from './rootStore';
+import type { AppDispatch, AppStore, RootState } from './rootStore';
 import { rootStore, setupStore } from './rootStore';
 
 // Root Store
@@ -29,14 +29,6 @@ export {
   updateUserProfile,
 } from './authSlice/auth.slice';
 
-// Notification Slice
-export {
-  addAlert,
-  removeAlert,
-  selectAllAlerts,
-  launchExampleTask,
-} from 'store/alertSlice/alert.slice';
-
 // Profile Slice
 export {
   getHaztrakProfile,
@@ -55,7 +47,6 @@ export { addError, selectAllErrors } from './errorSlice/error.slice';
 export type { HaztrakUser } from './authSlice/auth.slice';
 export type { HaztrakError } from './errorSlice/error.slice';
 export type { TaskStatus } from './haztrakApiSlice';
-export type { HaztrakAlert } from 'store/alertSlice/alert.slice';
 export type {
   ProfileState,
   RcrainfoProfileState,

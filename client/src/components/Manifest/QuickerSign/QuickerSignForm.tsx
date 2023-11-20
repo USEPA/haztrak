@@ -9,8 +9,9 @@ import React from 'react';
 import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { manifestApi } from 'services/manifestApi';
-import { addAlert, selectUserName, useAppDispatch, useAppSelector } from 'store';
+import { selectUserName, useAppSelector } from 'store';
 
 interface QuickerSignProps {
   mtn: Array<string>;
@@ -30,7 +31,6 @@ interface QuickerSignProps {
  */
 export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSignProps) {
   const userName = useAppSelector(selectUserName);
-  const dispatch = useAppDispatch();
   const { register, handleSubmit, setValue } = useForm<QuickerSignature>({
     defaultValues: {
       printedSignatureName: userName,
@@ -60,26 +60,10 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
     manifestApi
       .createQuickSignature(signature)
       .then((response) => {
-        dispatch(
-          addAlert({
-            id: response.data.taskId,
-            message: `e-Manifest electronic signature task started. Task ID: ${response.data.taskId}`,
-            type: 'Info',
-            read: false,
-            timeout: 5000,
-          })
-        );
+        console.log('Create Quick Signature', response.data);
+        toast.success('Signing through e-Manifest');
       })
-      .catch((error: AxiosError) => {
-        dispatch(
-          addAlert({
-            message: `${error.message}`,
-            type: 'Error',
-            read: false,
-            timeout: 5000,
-          })
-        );
-      });
+      .catch((error: AxiosError) => toast.error(error.message));
     if (handleClose) {
       handleClose();
     }

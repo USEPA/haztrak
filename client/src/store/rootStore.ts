@@ -1,22 +1,17 @@
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
 import userReducers, { login } from './authSlice/auth.slice';
-import { haztrakApi } from './haztrakApiSlice';
-import alertReducers from 'store/alertSlice/alert.slice';
-import profileReducers from './profileSlice/profile.slice';
 import errorReducers from './errorSlice/error.slice';
+import { haztrakApi } from './haztrakApiSlice';
+import profileReducers from './profileSlice/profile.slice';
 
 const rootReducer = combineReducers({
   auth: userReducers,
-  alert: alertReducers,
   profile: profileReducers,
   error: errorReducers,
   [haztrakApi.reducerPath]: haztrakApi.reducer,
 });
 
-/**
- * A utility function to initialize the store with preloaded state.
- * Often used for testing
- */
+/**A utility function to initialize the store with preloaded state used for testing*/
 const setupStore = (preloadedState?: PreloadedState<RootState>) => {
   return configureStore({
     reducer: rootReducer,
@@ -25,13 +20,11 @@ const setupStore = (preloadedState?: PreloadedState<RootState>) => {
   });
 };
 
-// The central Redux store
+/** The root store for the application*/
 const rootStore = setupStore();
 
 export type AppDispatch = typeof rootStore.dispatch;
-/**
- * A TypeScript definition for our (Haztrak) RootState
- */
+/** A TypeScript definition for our (Haztrak) RootState*/
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 export { rootStore, login, setupStore };

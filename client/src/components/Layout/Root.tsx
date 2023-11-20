@@ -1,11 +1,10 @@
 import { ErrorBoundary } from 'components/ErrorBoundary';
-import { AlertContainer } from 'components/Notification/AlertContainer';
-import { Sidebar } from './Sidebar';
-import { TopNav } from './TopNav';
-import { PrivateRoute } from './PrivateRoute';
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import { Outlet } from 'react-router-dom';
+import { PrivateRoute } from './PrivateRoute';
+import { Sidebar } from './Sidebar';
+import { TopNav } from './TopNav';
 
 export function Root() {
   return (
@@ -14,9 +13,9 @@ export function Root() {
         <TopNav />
         <div id="layoutSidenav">
           <Sidebar />
+
           <Container fluid id="layoutSidenav_content">
             <ErrorBoundary>
-              <AlertContainer />
               <Outlet />
             </ErrorBoundary>
           </Container>

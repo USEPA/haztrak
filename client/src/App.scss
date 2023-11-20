@@ -1,6 +1,29 @@
 :root {
   --bs-card-cap-padding-y: 0;
   --haztrak-info: #33cccc;
+  --toastify-color-info: var(--haztrak-info);
+  --toastify-color-success: var(--bs-success);
+  --toastify-color-warning: var(--bs-warning);
+  --toastify-color-error: var(--bs-danger);
+  --toastify-color-transparent: rgba(255, 255, 255, 0.7);
+  --toastify-icon-color-info: var(--bs-info);
+  --toastify-icon-color-success: var(--bs-success);
+  --toastify-icon-color-warning: var(--bs-warning);
+  --toastify-icon-color-error: var(--bs-danger);
+  --toastify-color-progress-light: linear-gradient(
+    to right,
+    #4cd964,
+    #5ac8fa,
+    #007aff,
+    #34aadc,
+    #5856d6,
+    #ff2d55
+  );
+  --toastify-color-progress-dark: #bb86fc;
+  --toastify-color-progress-info: var(--bs-info);
+  --toastify-color-progress-success: var(--bs-success);
+  --toastify-color-progress-warning: var(--bs-warning);
+  --toastify-color-progress-error: var(--bs-danger);
 }
 
 // Override Bootstrap styles

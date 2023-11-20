@@ -1,6 +1,7 @@
 import { ErrorBoundary } from 'components/ErrorBoundary';
 import React, { ReactElement, useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import { router } from 'routes';
 import {
   getHaztrakProfile,
@@ -11,6 +12,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from 'store';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.scss';
 
 function App(): ReactElement {
@@ -28,6 +30,14 @@ function App(): ReactElement {
 
   return (
     <ErrorBoundary>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+      />
       <RouterProvider router={router} />
     </ErrorBoundary>
   );
