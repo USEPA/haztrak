@@ -1,7 +1,9 @@
 import { ErrorBoundary } from 'components/ErrorBoundary';
+import { Notifications } from 'components/Notifications/Notifications';
 import React, { ReactElement, useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { router } from 'routes';
 import {
   getHaztrakProfile,
@@ -12,7 +14,6 @@ import {
   useAppDispatch,
   useAppSelector,
 } from 'store';
-import 'react-toastify/dist/ReactToastify.css';
 import './App.scss';
 
 function App(): ReactElement {
@@ -37,7 +38,9 @@ function App(): ReactElement {
         newestOnTop
         closeOnClick
         pauseOnHover
+        limit={3}
       />
+      <Notifications />
       <RouterProvider router={router} />
     </ErrorBoundary>
   );
