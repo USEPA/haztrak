@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -59,6 +61,11 @@ class RcraProfile(models.Model):
     class Meta:
         ordering = ["rcra_username"]
 
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
     rcra_api_key = models.CharField(
         max_length=128,
         null=True,

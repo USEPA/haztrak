@@ -127,13 +127,13 @@
     limited_esign: true
     registered_emanifest_user: true
 - model: core.rcraprofile
-  pk: 1
+  pk: 1fd27bec-8743-4eb3-a44c-fd063ea62021
   fields:
     rcra_username: dpgraham4401
     phone_number: null
     email: dpgraham4401@haztrak.net
 - model: core.rcraprofile
-  pk: 2
+  pk: 192c73f4-24f1-4f21-8239-dee2da43c547
   fields:
     rcra_username: emanifestpyuser1
     phone_number: null
@@ -147,13 +147,13 @@
   pk: 1
   fields:
     user: 1
-    rcrainfo_profile: 1
+    rcrainfo_profile: 1fd27bec-8743-4eb3-a44c-fd063ea62021
     org: efb9e104-7f61-4365-a9af-9d7b55c854c4
 - model: core.haztrakprofile
   pk: 2
   fields:
     user: 2
-    rcrainfo_profile: 2
+    rcrainfo_profile: 192c73f4-24f1-4f21-8239-dee2da43c547
     org: efb9e104-7f61-4365-a9af-9d7b55c854c4
 - model: sites.haztraksite
   pk: 1
@@ -172,7 +172,7 @@
   pk: 1
   fields:
     site: 1
-    profile: 1
+    profile: 192c73f4-24f1-4f21-8239-dee2da43c547
     site_manager: true
     annual_report: Certifier
     biennial_report: Certifier
