@@ -1,13 +1,14 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from './rootStore';
-import { AppStore, rootStore, setupStore } from './rootStore';
+import type { AppDispatch, RootState, AppStore } from './rootStore';
+import { rootStore, setupStore } from './rootStore';
 
-// exports related to the rootStore
+// Root Store
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export { rootStore, setupStore };
 export type { RootState, AppDispatch, AppStore };
 
+// Haztrak API - RTK Query
 export {
   haztrakApi,
   useGetDotIdNumbersQuery,
@@ -18,6 +19,7 @@ export {
   useSearchRcraSitesQuery,
 } from 'store/haztrakApiSlice';
 
+// Authentication Slice
 export {
   getHaztrakUser,
   login,
@@ -27,6 +29,7 @@ export {
   updateUserProfile,
 } from './authSlice/auth.slice';
 
+// Notification Slice
 export {
   addNotification,
   removeNotification,
@@ -34,6 +37,7 @@ export {
   launchExampleTask,
 } from './notificationSlice/notification.slice';
 
+// Profile Slice
 export {
   getHaztrakProfile,
   getRcraProfile,
@@ -45,7 +49,11 @@ export {
   selectHaztrakProfile,
 } from './profileSlice/profile.slice';
 
+export { addError, selectAllErrors } from './errorSlice/error.slice';
+
+// Types
 export type { HaztrakUser } from './authSlice/auth.slice';
+export type { HaztrakError } from './errorSlice/error.slice';
 export type { TaskStatus } from './haztrakApiSlice';
 export type { HtNotification } from './notificationSlice/notification.slice';
 export type {

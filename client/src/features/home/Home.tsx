@@ -7,6 +7,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {
+  addError,
   getRcraProfile,
   launchExampleTask,
   selectUserName,
@@ -100,14 +101,23 @@ export function Home(): ReactElement {
           </Row>
         </HtCard.Body>
       </HtCard>
-      <HtButton
-        align="start"
-        onClick={() => {
-          dispatch(launchExampleTask());
-        }}
-      >
-        Click me
-      </HtButton>
+      <Row className="align-content-start">
+        <HtButton
+          onClick={() => {
+            dispatch(launchExampleTask());
+          }}
+        >
+          Click me
+        </HtButton>
+        <HtButton
+          variant="danger"
+          onClick={() => {
+            dispatch(addError({ message: 'OH NO!', id: '123', status: 500 }));
+          }}
+        >
+          Show Error
+        </HtButton>
+      </Row>
     </Container>
   );
 }

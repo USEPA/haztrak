@@ -26,7 +26,8 @@ htApi.interceptors.request.use(
   }
 );
 
-/**interceptor to add errors to redux state*/
+/** Response interceptor add error to redux state
+ */
 htApi.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error) => {
