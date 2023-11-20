@@ -1,12 +1,11 @@
+import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import logo from 'assets/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
 import React from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from 'store';
-import { NotificationBtn } from 'components/Notification';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/free-solid-svg-icons';
-import logo from 'assets/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
 
 export function TopNav() {
   const authUser = useSelector((state: RootState) => state.auth.user);
@@ -46,7 +45,6 @@ export function TopNav() {
           />
         </Link>
       </div>
-      <NotificationBtn />
       <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4 btn-hover-dark rounded-circle">
         <li className="nav-item dropdown">
           <Dropdown>

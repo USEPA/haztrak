@@ -6,7 +6,7 @@ from django.db import transaction
 from django.db.models import QuerySet
 from rest_framework.exceptions import ValidationError
 
-from apps.core.services import RcrainfoService
+from apps.core.services import RcrainfoService, get_rcrainfo_client
 from apps.sites.models import RcraSite
 from apps.sites.serializers import RcraSiteSerializer
 
@@ -41,7 +41,7 @@ class RcraSiteService:
 
     def __init__(self, *, username: str, rcrainfo: Optional[RcrainfoService] = None):
         self.username = username
-        self.rcrainfo = rcrainfo or RcrainfoService(api_username=self.username)
+        self.rcrainfo = rcrainfo or get_rcrainfo_client(username=self.username)
 
     def __repr__(self):
         return (

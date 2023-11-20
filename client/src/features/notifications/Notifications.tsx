@@ -1,10 +1,7 @@
-import winkingRobot from '/static/robot-wink.jpg';
 import { HtCard } from 'components/Ht';
-import { NotificationRow } from 'components/Notification';
 import { useTitle } from 'hooks';
 import React from 'react';
-import { Col, Container, Table } from 'react-bootstrap';
-import { HaztrakAlert, selectAllAlerts, useAppSelector } from 'store';
+import { Col, Container } from 'react-bootstrap';
 
 /**
  * Table showing the user's current notifications
@@ -12,7 +9,6 @@ import { HaztrakAlert, selectAllAlerts, useAppSelector } from 'store';
  */
 export function Notifications() {
   useTitle('Notifications');
-  const notifications: Array<HaztrakAlert> = useAppSelector(selectAllAlerts);
 
   return (
     <>
@@ -20,30 +16,7 @@ export function Notifications() {
         <Col>
           <HtCard>
             <HtCard.Header title="Notifications"></HtCard.Header>
-            <HtCard.Body>
-              {notifications.length === 0 ? (
-                <div className="text-center">
-                  <h3>You're all caught up!</h3>
-                  <img src={winkingRobot} alt="happy robot" width={200} height={'auto'} />
-                </div>
-              ) : (
-                <Table hover>
-                  <thead>
-                    <tr>
-                      <th className="col-8">Task</th>
-                      <th className="text-center">Status</th>
-                      <th className="text-center">Time Completed</th>
-                      <th className="text-center">Clear</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {notifications.map((notification) => {
-                      return <NotificationRow key={notification.id} notification={notification} />;
-                    })}
-                  </tbody>
-                </Table>
-              )}
-            </HtCard.Body>
+            <HtCard.Body></HtCard.Body>
           </HtCard>
         </Col>
       </Container>

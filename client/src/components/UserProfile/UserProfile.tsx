@@ -1,11 +1,13 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
 import { HtForm, HtSpinner } from 'components/Ht';
 import { SitePermissions } from 'components/UserProfile/SitePermissions';
 import React, { createRef, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { UserApi } from 'services';
 import { HaztrakUser, ProfileState, updateUserProfile, useAppDispatch } from 'store';
 import { z } from 'zod';
@@ -42,7 +44,7 @@ export function UserProfile({ user, profile }: UserProfileProps) {
         // @ts-ignore
         dispatch(updateUserProfile(response.data));
       })
-      .catch((r) => console.error(r));
+      .catch((error: AxiosError) => toast.error(error.message));
   };
 
   if (user?.isLoading || profile?.loading) {

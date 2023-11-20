@@ -1,5 +1,6 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
 import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
 import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/Ht';
 import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
@@ -9,8 +10,8 @@ import React, { createContext, useState } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { manifestApi } from 'services/manifestApi';
-import { addAlert, useAppDispatch } from 'store';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
 import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
@@ -67,7 +68,6 @@ export function ManifestForm({
   mtn,
 }: ManifestFormProps) {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   // Use default values, override with manifestData if provided
   let values: Manifest = defaultValues;
@@ -103,21 +103,12 @@ export function ManifestForm({
           navigate(`/manifest/${r.data.manifestTrackingNumber}/view`);
         }
         if ('taskId' in r.data) {
-          dispatch(
-            addAlert(
-              // @ts-ignore
-              {
-                id: r.data.taskId,
-                createdDate: new Date().toISOString(),
-                inProgress: true,
-              }
-            )
-          );
+          toast.success('Manifest created, updating RCRAInfo');
           setTaskId(r.data.taskId);
           toggleShowUpdatingRcra();
         }
       })
-      .catch((r) => console.error(r));
+      .catch((error: AxiosError) => toast.error(error.message));
   };
 
   // Generator component state and methods
@@ -196,9 +187,12 @@ export function ManifestForm({
         <FormProvider {...manifestForm}>
           <HtForm onSubmit={manifestForm.handleSubmit(onSubmit)}>
             <div className="d-flex justify-content-between">
-              <h2 className="fw-bold mt-2">{`${
-                manifestData?.manifestTrackingNumber || 'Draft Manifest'
-              }`}</h2>
+              <h2 className="fw-bold mt-2">
+                {`${manifestData?.manifestTrackingNumber || 'Draft Manifest'}`}
+                {manifestData?.manifestTrackingNumber?.endsWith('DFT') && (
+                  <sup className="text-info"> (draft)</sup>
+                )}
+              </h2>
             </div>
             <HtCard id="general-form-card">
               <HtCard.Header title="General info" />

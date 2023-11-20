@@ -1,13 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
 import { RcraApiUserBtn } from 'components/buttons';
 import { HtForm, HtSpinner } from 'components/Ht';
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { UserApi } from 'services';
 import {
-  addAlert,
   getRcraProfile,
   RcrainfoProfileState,
   selectHaztrakSites,
@@ -59,7 +60,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
       })
       .then(() => dispatch(getRcraProfile()))
       .then(() => setProfileLoading(!profileLoading))
-      .catch((r) => console.error(r));
+      .catch((error: AxiosError) => toast.error(error.message));
   };
 
   if (profile.isLoading) {
@@ -199,19 +200,10 @@ export function RcraProfile({ profile }: ProfileViewProps) {
           variant="primary"
           onClick={() => {
             UserApi.syncRcrainfoProfile()
-              .then(({ data }) => {
-                dispatch(
-                  addAlert({
-                    id: data.taskId,
-                    createdDate: new Date().toISOString(),
-                    message: `Sync Profile task started. Task ID: ${data.taskId}`,
-                    type: 'Info',
-                    read: false,
-                    timeout: 5000,
-                  })
-                );
+              .then(() => {
+                toast.info(`Syncing you RCRAInfo Profile`);
               })
-              .catch((r) => console.error(r));
+              .catch((error: AxiosError) => toast.error(error.message));
           }}
         >
           Sync Site Permissions
