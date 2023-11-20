@@ -1,4 +1,4 @@
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faUser, faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
@@ -127,19 +127,7 @@ export function UserProfile({ user, profile }: UserProfileProps) {
             </HtForm.Group>
           </Col>
         </Row>
-        {profile?.org && (
-          <>
-            <Row>
-              <Col>
-                <p>{profile.org.name ?? 'My Organization'}</p>
-              </Col>
-            </Row>
-            <Row>
-              <SitePermissions sites={profile.sites} />
-            </Row>
-          </>
-        )}
-        <Row>
+        <Row className="my-1">
           <div className="mx-1 d-flex flex-row-reverse">
             {!editable ? (
               <>
@@ -174,6 +162,39 @@ export function UserProfile({ user, profile }: UserProfileProps) {
             )}
           </div>
         </Row>
+        {profile?.org && (
+          <>
+            <Row>
+              <hr />
+              <h3 className="text-center">Organization</h3>
+              <Col>
+                <b>Name</b>
+                <p>{profile.org.name ?? 'My Organization'}</p>
+              </Col>
+              <Col>
+                <b>Integrated with Rcrainfo?</b>
+                <p>
+                  {profile.org.rcrainfoIntegrated ? (
+                    <span>
+                      Yes <FontAwesomeIcon icon={faCheck} className="text-success" />
+                    </span>
+                  ) : (
+                    <span>
+                      No <FontAwesomeIcon icon={faX} className="text-danger" />
+                    </span>
+                  )}
+                </p>
+              </Col>
+            </Row>
+            <Row>
+              <SitePermissions sites={profile.sites} />
+              <p>
+                Contact your Haztrak admin obtain access to additional sites within your
+                organization
+              </p>
+            </Row>
+          </>
+        )}
       </HtForm>
     </Container>
   );
