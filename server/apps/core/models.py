@@ -14,6 +14,12 @@ class HaztrakUser(AbstractUser):
         verbose_name_plural = "Users"
         ordering = ["username"]
 
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
+
     pass
 
 
@@ -23,6 +29,11 @@ class HaztrakProfile(models.Model):
         ordering = ["user__username"]
         default_related_name = "haztrak_profile"
 
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

@@ -54,8 +54,26 @@ class TestWasteCodeLookupViews:
         # Assert
         assert response.status_code == status.HTTP_200_OK
 
-    def test_state_waste_codes_returns_list_codes(self, factory, user):
+    def test_state_waste_codes_returns_list_codes(self, factory, user, waste_code_factory):
         # Arrange
+        waste_code_factory(
+            code="mock",
+            description="Ignitable",
+            code_type=WasteCode.CodeType.STATE,
+            state_id=WasteCode.VA,
+        )
+        waste_code_factory(
+            code="foo",
+            description="Something else",
+            code_type=WasteCode.CodeType.STATE,
+            state_id=WasteCode.VA,
+        )
+        waste_code_factory(
+            code="blah",
+            description="Corrosive",
+            code_type=WasteCode.CodeType.STATE,
+            state_id=WasteCode.VA,
+        )
         number_state_codes = WasteCode.state.filter(state_id=WasteCode.VA).count()
         state_id = "VA"
         request = factory.get(f"{self.base_url}/state/{state_id}")
