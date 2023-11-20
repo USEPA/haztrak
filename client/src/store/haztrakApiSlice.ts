@@ -2,6 +2,7 @@ import { BaseQueryFn, createApi } from '@reduxjs/toolkit/dist/query/react';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { HaztrakSite } from 'components/HaztrakSite';
 import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { MtnDetails } from 'components/Mtn';
 import { RcraSite } from 'components/RcraSite';
 import { htApi } from 'services';
 
@@ -101,7 +102,10 @@ export const haztrakApi = createApi({
       query: (id) => ({ url: 'rcra/waste/dot/id', method: 'get', params: { q: id } }),
     }),
     getOrgSites: build.query<Array<HaztrakSite>, string>({
-      query: (id) => ({ url: `org/${id}/site`, method: 'get', params: { q: id } }),
+      query: (id) => ({ url: `org/${id}/site`, method: 'get' }),
+    }),
+    getMTN: build.query<Array<MtnDetails>, string | undefined>({
+      query: (siteId) => ({ url: siteId ? `rcra/mtn/${siteId}` : '/rcra/mtn', method: 'get' }),
     }),
   }),
 });
@@ -114,4 +118,5 @@ export const {
   useGetStateWasteCodesQuery,
   useGetDotIdNumbersQuery,
   useGetOrgSitesQuery,
+  useGetMTNQuery,
 } = haztrakApi;
