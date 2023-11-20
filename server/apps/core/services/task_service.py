@@ -1,6 +1,7 @@
 import logging
 from typing import Optional
 
+from celery.result import AsyncResult
 from django.core.cache import CacheKeyWarning, cache
 from django_celery_results.models import TaskResult
 from rest_framework.exceptions import ValidationError
@@ -43,6 +44,15 @@ def _parse_status(task_status: dict) -> ReturnDict:
     if task_serializer.is_valid():
         return task_serializer.data
     raise ValidationError(task_serializer.errors)
+
+
+def launch_example_task() -> str | None:
+    """Launches an example long-running celery task"""
+    try:
+        task: AsyncResult = example_task.delay()
+        return task.id
+    except KeyError:
+        return None
 
 
 class TaskService:
@@ -103,11 +113,9 @@ class TaskService:
 
     @staticmethod
     def launch_example_task() -> str | None:
-        """
-        Launches an example long-running celery task
-        """
+        """Launches an example long-running celery task"""
         try:
-            task = example_task.delay()
+            task: AsyncResult = example_task.delay()
             return task.id
         except KeyError:
             return None

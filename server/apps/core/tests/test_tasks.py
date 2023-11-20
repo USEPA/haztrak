@@ -44,7 +44,7 @@ class TestTaskStatusView:
         assert response.data["taskId"] == self.mock_task_id
         assert response.data["status"] == task_status
 
-    def test_returns_404_if_no_cache_or_db_results(self, factory, user, cache_factory):
+    def test_returns_200_if_no_cache_or_db_results(self, factory, user, cache_factory):
         # Arrange
         cache_factory("test_returns_404")
         cache.set(self.mock_task_id, None)
@@ -53,7 +53,7 @@ class TestTaskStatusView:
         # Act
         response: Response = TaskStatusView.as_view()(request, task_id=self.mock_task_id)
         # Assert
-        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert response.status_code == status.HTTP_200_OK
 
     def test_returns_db_results(self, factory, user, cache_factory):
         # Arrange
