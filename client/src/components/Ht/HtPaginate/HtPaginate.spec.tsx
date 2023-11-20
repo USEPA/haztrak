@@ -16,7 +16,7 @@ describe('HtPaginate', () => {
     render(
       <>
         <HtPaginate
-          onPageChange={() => console.log('mock function')}
+          onPageChange={() => undefined}
           currentPage={defaultCurrentPage}
           totalCount={defaultTotalCount}
           pageSize={defaultPageSize}
@@ -31,7 +31,7 @@ describe('HtPaginate', () => {
     render(
       <>
         <HtPaginate
-          onPageChange={() => console.log('mock function')}
+          onPageChange={() => undefined}
           currentPage={defaultCurrentPage}
           totalCount={defaultTotalCount}
           pageSize={defaultPageSize + defaultTotalCount}
@@ -44,7 +44,7 @@ describe('HtPaginate', () => {
     render(
       <>
         <HtPaginate
-          onPageChange={() => console.log('mock function')}
+          onPageChange={() => undefined}
           currentPage={defaultCurrentPage}
           totalCount={defaultTotalCount + 100}
           pageSize={defaultPageSize}

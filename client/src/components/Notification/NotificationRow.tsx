@@ -1,11 +1,11 @@
 import { faCircleNotch, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { HtNotification, removeNotification, useAppDispatch, useGetTaskStatusQuery } from 'store';
+import { HaztrakAlert, removeAlert, useAppDispatch, useGetTaskStatusQuery } from 'store';
 
 interface NotificationRowProps {
-  notification: HtNotification;
+  notification: HaztrakAlert;
 }
 
 /**
@@ -16,11 +16,17 @@ interface NotificationRowProps {
 export function NotificationRow({ notification }: NotificationRowProps) {
   const dispatch = useAppDispatch();
   const pollingIntervalMs = 5000;
+  const [skip, setSkip] = useState(true);
 
   // Poll the back end to check on the status of background running tasks
-  const { data, isLoading } = useGetTaskStatusQuery(notification.uniqueId, {
+  const { data, isLoading, error } = useGetTaskStatusQuery(notification.id, {
     pollingInterval: pollingIntervalMs,
+    skip: skip,
   });
+
+  if (error) {
+    setSkip(true);
+  }
 
   const doneDate = new Date(data?.doneDate ? data.doneDate : '').toLocaleTimeString();
 
@@ -29,7 +35,7 @@ export function NotificationRow({ notification }: NotificationRowProps) {
       {isLoading || !data ? (
         ''
       ) : (
-        <tr key={notification.uniqueId}>
+        <tr key={notification.id}>
           <td className="col-8">{data.taskName}</td>
           <td className="text-center">
             {data.status === 'PENDING' || data.status === 'STARTED' ? (
@@ -42,7 +48,7 @@ export function NotificationRow({ notification }: NotificationRowProps) {
           <td className="text-center">
             <Button
               className="bg-transparent border-0"
-              onClick={() => dispatch(removeNotification(notification))}
+              onClick={() => dispatch(removeAlert(notification))}
             >
               <FontAwesomeIcon icon={faTrash} size="lg" className="text-danger" />
             </Button>

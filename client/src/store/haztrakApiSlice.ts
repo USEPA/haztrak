@@ -88,7 +88,7 @@ export const haztrakApi = createApi({
       }),
     }),
     getTaskStatus: build.query<TaskStatus, string>({
-      query: (taskId) => ({ url: taskId, method: 'get' }),
+      query: (taskId) => ({ url: `task/${taskId}`, method: 'get' }),
     }),
     getFedWasteCodes: build.query<Array<Code>, void>({
       query: () => ({ url: 'rcra/waste/code/federal', method: 'get' }),

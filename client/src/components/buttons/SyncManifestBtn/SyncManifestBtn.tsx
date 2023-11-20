@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RcraApiUserBtn } from 'components/buttons';
 import React, { useState } from 'react';
 import { manifestApi } from 'services/manifestApi';
-import { addNotification, useAppDispatch } from 'store';
+import { addAlert, useAppDispatch } from 'store';
 
 interface SyncManifestProps {
   siteId?: string;
@@ -31,11 +31,11 @@ export function SyncManifestBtn({ siteId, disabled }: SyncManifestProps) {
             .syncManifest(siteId)
             .then((response) => {
               dispatch(
-                addNotification({
-                  uniqueId: response.data.taskId,
+                addAlert({
+                  id: response.data.taskId,
                   createdDate: new Date().toISOString(),
                   message: `Sync Manifest Task Launched. Task ID: ${response.data.taskId}`,
-                  status: 'Info',
+                  type: 'Info',
                   read: false,
                   timeout: 5000,
                 })

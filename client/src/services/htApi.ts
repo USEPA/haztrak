@@ -1,6 +1,6 @@
 /**htApi.ts - service for making requests to the Haztrak API*/
-import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { rootStore } from 'store';
+import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { addAlert, addError, rootStore } from 'store';
 
 /** An Axios instance with an interceptor to automatically apply authentication headers*/
 export const htApi = axios.create({
@@ -26,11 +26,16 @@ htApi.interceptors.request.use(
   }
 );
 
-/** Response interceptor add error to redux state
- */
+/** Response interceptor add error to redux state. */
 htApi.interceptors.response.use(
   (response: AxiosResponse) => response,
-  (error) => {
+  (error: AxiosError) => {
+    console.log(error);
+    switch (error.response?.status) {
+      case 404:
+        const errMessage = 'Resource not found';
+    }
+    rootStore.dispatch(addAlert({ id: error.request.id, message: error.message, type: 'Error' }));
     return Promise.reject(error);
   }
 );

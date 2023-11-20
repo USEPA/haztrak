@@ -16,7 +16,7 @@ describe('QuickerSignModalBtn', () => {
       <QuickerSignModalBtn
         siteType={'Generator'}
         mtnHandler={handler}
-        handleClick={() => console.log('hello')}
+        handleClick={() => undefined}
       />
     );
     expect(screen.getByRole('button')).toBeInTheDocument();
@@ -29,7 +29,7 @@ describe('QuickerSignModalBtn', () => {
       <QuickerSignModalBtn
         siteType={'Generator'}
         mtnHandler={signed_handler}
-        handleClick={() => console.log('hello')}
+        handleClick={() => undefined}
       />
     );
     expect(screen.getByRole('button')).toBeDisabled();
@@ -44,7 +44,7 @@ describe('QuickerSignModalBtn', () => {
       <QuickerSignModalBtn
         siteType={'Generator'}
         mtnHandler={unsigned_handler}
-        handleClick={() => console.log('hello')}
+        handleClick={() => undefined}
       />,
       {
         // Redux store state with an API user is required for this button to be active
@@ -76,7 +76,7 @@ describe('QuickerSignModalBtn', () => {
       <QuickerSignModalBtn
         siteType={'Generator'}
         mtnHandler={unsigned_handler}
-        handleClick={() => console.log('hello')}
+        handleClick={() => undefined}
       />,
       {
         // Redux store state with an API user is required for this button to be active

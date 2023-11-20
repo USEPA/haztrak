@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { UserApi } from 'services';
 import {
-  addNotification,
+  addAlert,
   getRcraProfile,
   RcrainfoProfileState,
   selectHaztrakSites,
@@ -201,11 +201,11 @@ export function RcraProfile({ profile }: ProfileViewProps) {
             UserApi.syncRcrainfoProfile()
               .then(({ data }) => {
                 dispatch(
-                  addNotification({
-                    uniqueId: data.taskId,
+                  addAlert({
+                    id: data.taskId,
                     createdDate: new Date().toISOString(),
                     message: `Sync Profile task started. Task ID: ${data.taskId}`,
-                    status: 'Info',
+                    type: 'Info',
                     read: false,
                     timeout: 5000,
                   })

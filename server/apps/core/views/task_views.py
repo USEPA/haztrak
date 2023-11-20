@@ -34,7 +34,7 @@ class LaunchExampleTaskView(APIView):
     def get(self, request, *args, **kwargs):
         try:
             task_id = TaskService.launch_example_task()
-            return Response(data={"task": task_id}, status=status.HTTP_200_OK)
+            return Response(data={"taskId": task_id}, status=status.HTTP_200_OK)
         except KeyError:
             return Response(
                 data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST

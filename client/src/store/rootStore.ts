@@ -1,13 +1,13 @@
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
 import userReducers, { login } from './authSlice/auth.slice';
 import { haztrakApi } from './haztrakApiSlice';
-import notificationReducers from './notificationSlice/notification.slice';
+import alertReducers from 'store/alertSlice/alert.slice';
 import profileReducers from './profileSlice/profile.slice';
 import errorReducers from './errorSlice/error.slice';
 
 const rootReducer = combineReducers({
   auth: userReducers,
-  notification: notificationReducers,
+  alert: alertReducers,
   profile: profileReducers,
   error: errorReducers,
   [haztrakApi.reducerPath]: haztrakApi.reducer,

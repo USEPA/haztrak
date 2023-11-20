@@ -7,7 +7,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {
-  addError,
+  addAlert,
   getRcraProfile,
   launchExampleTask,
   selectUserName,
@@ -112,7 +112,7 @@ export function Home(): ReactElement {
         <HtButton
           variant="danger"
           onClick={() => {
-            dispatch(addError({ message: 'OH NO!', id: '123', status: 500 }));
+            dispatch(addAlert({ message: 'OH NO!', type: 'Error' }));
           }}
         >
           Show Error

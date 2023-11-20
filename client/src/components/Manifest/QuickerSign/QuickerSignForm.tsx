@@ -10,7 +10,7 @@ import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { manifestApi } from 'services/manifestApi';
-import { addNotification, selectUserName, useAppDispatch, useAppSelector } from 'store';
+import { addAlert, selectUserName, useAppDispatch, useAppSelector } from 'store';
 
 interface QuickerSignProps {
   mtn: Array<string>;
@@ -61,11 +61,10 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
       .createQuickSignature(signature)
       .then((response) => {
         dispatch(
-          addNotification({
-            uniqueId: response.data.taskId,
-            createdDate: new Date().toISOString(),
+          addAlert({
+            id: response.data.taskId,
             message: `e-Manifest electronic signature task started. Task ID: ${response.data.taskId}`,
-            status: 'Info',
+            type: 'Info',
             read: false,
             timeout: 5000,
           })
@@ -73,11 +72,9 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
       })
       .catch((error: AxiosError) => {
         dispatch(
-          addNotification({
-            uniqueId: Date.now().toString(),
-            createdDate: new Date().toISOString(),
+          addAlert({
             message: `${error.message}`,
-            status: 'Error',
+            type: 'Error',
             read: false,
             timeout: 5000,
           })
