@@ -1,5 +1,5 @@
+import { usePagination } from 'hooks';
 import React from 'react';
-import { usePagination } from 'hooks/usePagination';
 import { Pagination } from 'react-bootstrap';
 
 /**

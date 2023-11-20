@@ -41,12 +41,27 @@ export {
   selectHaztrakProfile,
 } from './profileSlice/profile.slice';
 
+// Notification Slice
+export {
+  addTask,
+  addAlert,
+  removeTask,
+  removeAlert,
+  updateTask,
+  selectTask,
+  selectTaskCompletion,
+  selectAllTasks,
+  selectAllAlerts,
+} from './notificationSlice/notification.slice';
+
+// Error Slice
 export { addError, selectAllErrors } from './errorSlice/error.slice';
 
 // Types
 export type { HaztrakUser } from './authSlice/auth.slice';
 export type { HaztrakError } from './errorSlice/error.slice';
 export type { TaskStatus } from './haztrakApiSlice';
+export type { LongRunningTask, HaztrakAlert } from './notificationSlice/notification.slice';
 export type {
   ProfileState,
   RcrainfoProfileState,

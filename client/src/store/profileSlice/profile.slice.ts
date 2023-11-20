@@ -101,7 +101,6 @@ export const getRcraProfile = createAsyncThunk<ProfileState>(
       throw new Error('User is not logged in');
     }
     const { data } = await UserApi.getRcrainfoProfile(username);
-    console.log('getRcrProfile', data);
     const { rcraSites, ...rest } = data;
     return {
       rcrainfoProfile: {

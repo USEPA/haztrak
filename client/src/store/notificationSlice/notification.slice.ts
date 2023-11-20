@@ -62,16 +62,18 @@ const taskSlice = createSlice({
       return state;
     },
     addAlert: (state: NotificationSlice, action: PayloadAction<Partial<HaztrakAlert>>) => {
-      const newAlert = createAlert(action.payload);
-      toast(newAlert.message, {
-        ...newAlert,
-      });
-      state.alerts.push(newAlert);
+      if (state.alerts.findIndex((alert) => alert.id === action.payload.id) === -1) {
+        const newAlert = createAlert(action.payload);
+        toast(newAlert.message, {
+          ...newAlert,
+        });
+        state.alerts.push(newAlert);
+      }
       return state;
     },
     removeAlert: (state: NotificationSlice, action: PayloadAction<{ id: string }>) => {
       toast.dismiss(action.payload.id);
-      state.tasks.filter((task) => task.taskId !== action.payload.id);
+      state.alerts = state.alerts.filter((alert) => alert.id !== action.payload.id);
       return state;
     },
   },

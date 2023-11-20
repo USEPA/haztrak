@@ -7,8 +7,14 @@ import React, { ReactElement, useEffect } from 'react';
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { htApi } from 'services';
-import { getRcraProfile, selectUserName, useAppDispatch, useAppSelector } from 'store';
-import { addAlert, addTask } from 'store/notification.slice';
+import {
+  addAlert,
+  addTask,
+  getRcraProfile,
+  selectUserName,
+  useAppDispatch,
+  useAppSelector,
+} from 'store';
 
 /**
  * Home page for logged-in user

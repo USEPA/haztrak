@@ -2,14 +2,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { RcraApiUserBtn } from 'components/buttons';
 import { HtForm, HtSpinner } from 'components/Ht';
-import { useUpdateAfterTask } from 'hooks/useUpdateAfterTask';
+import { useProgressTracker } from 'hooks';
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { UserApi } from 'services';
-import { getRcraProfile, RcrainfoProfileState, updateProfile, useAppDispatch } from 'store';
-import { addAlert, addTask } from 'store/notification.slice';
+import {
+  addAlert,
+  addTask,
+  getRcraProfile,
+  RcrainfoProfileState,
+  updateProfile,
+  useAppDispatch,
+} from 'store';
 import { z } from 'zod';
 
 interface ProfileViewProps {
@@ -30,7 +36,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
   const [taskId, setTaskId] = useState<undefined | string>();
   const { rcraSites, isLoading, ...formValues } = profile;
   const dispatch = useAppDispatch();
-  const [inProgress, error] = useUpdateAfterTask({
+  const { inProgress, error } = useProgressTracker({
     taskId: taskId,
     reduxAction: getRcraProfile(),
   });

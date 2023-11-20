@@ -1,5 +1,6 @@
-import { useHtApi } from './useHtAPI';
-import { usePagination } from './usePagination';
-import { useTitle } from './useTitle';
+import { useHtApi } from './useHtAPI/useHtApi';
+import { usePagination } from './usePagination/usePagination';
+import { useProgressTracker } from './useProgressTracker/useProgressTracker';
+import { useTitle } from './useTitle/useTitle';
 
-export { usePagination, useTitle, useHtApi };
+export { usePagination, useTitle, useHtApi, useProgressTracker };
