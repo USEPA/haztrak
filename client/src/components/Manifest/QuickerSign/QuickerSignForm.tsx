@@ -60,7 +60,6 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
     manifestApi
       .createQuickSignature(signature)
       .then((response) => {
-        console.log('Create Quick Signature', response.data);
         toast.success('Signing through e-Manifest');
       })
       .catch((error: AxiosError) => toast.error(error.message));

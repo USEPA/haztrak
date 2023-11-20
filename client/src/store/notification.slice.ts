@@ -83,6 +83,14 @@ const selectSelf = (state: RootState): NotificationSlice => state.notifications;
 /** Selects all long-running tasks from the store. */
 export const selectAllTasks = createSelector(selectSelf, (state: NotificationSlice) => state.tasks);
 
+/** Selects a specific task from the store by ID. */
+export const selectTask = (taskId: string | undefined) =>
+  createSelector([selectAllTasks], (tasks) => tasks.find((task) => task.taskId === taskId));
+
+/** Selects a specific task from the store by ID. */
+export const selectTaskCompletion = (taskId: string | undefined) =>
+  createSelector([selectTask(taskId)], (task) => task?.complete || false);
+
 /** Selects all alerts from the store. */
 export const selectAllAlerts = createSelector(
   selectSelf,
