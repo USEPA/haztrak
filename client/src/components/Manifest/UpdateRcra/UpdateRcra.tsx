@@ -1,8 +1,8 @@
 import { HtSpinner } from 'components/Ht';
-import React from 'react';
-import { Toast, ToastContainer } from 'react-bootstrap';
+import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useGetTaskStatusQuery } from 'store';
+import { useAppDispatch, useGetTaskStatusQuery } from 'store';
+import { addAlert } from 'store/notification.slice';
 
 interface UpdateRcraProps {
   taskId: string;
@@ -16,40 +16,39 @@ interface UpdateRcraProps {
  * @constructor
  */
 export function UpdateRcra({ taskId }: UpdateRcraProps) {
-  const [showToast, setShowToast] = React.useState(true);
+  const dispatch = useAppDispatch();
+  const [status, setStatus] = React.useState<'SUCCESS' | 'FAILURE' | 'PENDING' | undefined>(
+    undefined
+  );
 
   const { data, isLoading, error } = useGetTaskStatusQuery(taskId, {
     pollingInterval: 3000,
+    skip: status === 'SUCCESS' || status === 'FAILURE',
   });
 
-  if (data?.status === 'SUCCESS') {
+  useEffect(() => {
+    if (data?.status === 'SUCCESS') {
+      setStatus('SUCCESS');
+      dispatch(addAlert({ message: 'RCRAInfo updated', type: 'success' }));
+    } else if (data?.status === 'FAILURE') {
+      dispatch(addAlert({ message: 'Error updating RCRAInfo', type: 'error' }));
+      setStatus('FAILURE');
+    }
+  }, [data, error]);
+
+  if (status === 'SUCCESS') {
     let resp = data?.result;
     if (typeof resp === 'string') {
       resp = JSON.parse(resp);
     }
     return <Navigate to={`/manifest/${resp.manifestTrackingNumber}/view`} />;
-  }
-
-  // @ts-ignore
-  if (error && error.status !== 404) {
+  } else if (status === 'FAILURE') {
+    return <></>;
+  } else {
     return (
-      <ToastContainer position="top-end" style={{ zIndex: 1 }} className={'p-3'}>
-        <Toast bg="danger" onClose={() => setShowToast(false)} show={showToast}>
-          <Toast.Header>
-            <strong className="me-auto">Error</strong>
-          </Toast.Header>
-          <Toast.Body>
-            {/*@ts-ignore*/}
-            <p>{error.statusText}</p>
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
+      <div className="overlay-spinner">
+        <HtSpinner className="text-light" size="5x" />
+      </div>
     );
   }
-
-  return (
-    <div className="overlay-spinner">
-      <HtSpinner className="text-light" size="5x" />
-    </div>
-  );
 }

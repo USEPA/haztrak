@@ -95,15 +95,11 @@ export function ManifestForm({
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     manifestApi
       .createManifest(data)
-      .then((response) => {
-        return response;
-      })
       .then((r) => {
         if ('manifestTrackingNumber' in r.data) {
           navigate(`/manifest/${r.data.manifestTrackingNumber}/view`);
         }
         if ('taskId' in r.data) {
-          toast.success('Manifest created, updating RCRAInfo');
           setTaskId(r.data.taskId);
           toggleShowUpdatingRcra();
         }
