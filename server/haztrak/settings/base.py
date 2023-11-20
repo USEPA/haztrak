@@ -157,6 +157,7 @@ CACHES = {
 REDIS_URL = os.getenv(CACHE_URL, "redis://redis:6379")  # used for Health Checks
 
 # Celery
+CELERY_TASK_TRACK_STARTED = True
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://redis:6379")
 CELERY_RESULT_EXTENDED = True

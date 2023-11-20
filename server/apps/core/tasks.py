@@ -7,7 +7,7 @@ from django.core.cache import cache
 logger = logging.getLogger(__name__)
 
 
-@shared_task(bind=True, name="example task", task_track_started=True)
+@shared_task(bind=True, name="example task")
 def example_task(self: Task):
     # print(f"task ID: {self.request.id}")
     cache.set(

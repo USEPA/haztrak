@@ -43,6 +43,8 @@ services:
     image: 'redis:alpine'
     ports:
       - '6379:6379'
+    volumes:
+      - imdb:/data
 
   celery-worker:
     restart: unless-stopped
@@ -106,7 +108,7 @@ services:
       timeout: 3s
       retries: 5
     volumes:
-      - development:/var/lib/postgresql/data
+      - rdb:/var/lib/postgresql/data
 
   client:
     container_name: ht-client
@@ -123,4 +125,5 @@ services:
     command: sh -c "cd /app; npm install; npm start"
 
 volumes:
-  development:
+  rdb:
+  imdb:
