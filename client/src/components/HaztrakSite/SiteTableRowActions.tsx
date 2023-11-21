@@ -1,11 +1,11 @@
-import { faEllipsisVertical, faEye, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faEye, faFileLines } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MouseEventHandler, ReactElement } from 'react';
 import { Col, Dropdown, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-interface MtnRowActionsProps {
-  mtn: string;
+interface SiteTableRowActionsProps {
+  siteId: string;
 }
 
 interface RowDropdownItems {
@@ -16,35 +16,40 @@ interface RowDropdownItems {
   label: string;
 }
 
-export function MtnRowActions({ mtn }: MtnRowActionsProps) {
+/**
+ * TransporterRowActions uses index and length to disable and display
+ * different actions for eah row, expected to be part of a mapped table or list.
+ * @constructor
+ */
+export function SiteTableRowActions({ siteId }: SiteTableRowActionsProps) {
   const navigate = useNavigate();
 
   const actions: RowDropdownItems[] = [
     {
-      text: 'View ',
+      text: 'View Site',
       icon: <FontAwesomeIcon icon={faEye} className="text-primary" />,
       onClick: () => {
-        navigate(`./${mtn}/view`);
+        navigate(`/site/${siteId}`);
       },
       disabled: false,
-      label: 'View',
+      label: 'View Site',
     },
     {
-      text: 'Edit',
-      icon: <FontAwesomeIcon icon={faPen} className="text-primary" />,
+      text: 'View Manifests',
+      icon: <FontAwesomeIcon icon={faFileLines} className="text-primary" />,
       onClick: () => {
-        navigate(`./${mtn}/edit`);
+        navigate(`/site/${siteId}/manifest`);
       },
       disabled: false,
-      label: 'Edit',
+      label: 'View Site Manifests',
     },
   ];
 
   return (
-    <div className="d-flex justify-content-evenly">
+    <>
       <Dropdown>
         <Dropdown.Toggle
-          title={`${mtn} actions`}
+          title={`${siteId} actions`}
           className="bg-transparent border-0 text-dark no-caret justify-content-end"
         >
           <FontAwesomeIcon icon={faEllipsisVertical} className="pe-2 shadow-none" />
@@ -69,6 +74,6 @@ export function MtnRowActions({ mtn }: MtnRowActionsProps) {
           })}
         </Dropdown.Menu>
       </Dropdown>
-    </div>
+    </>
   );
 }

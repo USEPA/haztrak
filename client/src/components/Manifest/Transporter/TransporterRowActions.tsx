@@ -29,7 +29,7 @@ interface RowDropdownItems {
  * different actions for eah row, expected to be part of a mapped table or list.
  * @constructor
  */
-function TransporterRowActions({
+export function TransporterRowActions({
   index,
   removeTransporter,
   swapTransporter,
@@ -107,5 +107,3 @@ function TransporterRowActions({
     </>
   );
 }
-
-export { TransporterRowActions };

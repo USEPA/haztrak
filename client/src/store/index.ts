@@ -18,6 +18,7 @@ export {
   useSearchRcrainfoSitesQuery,
   useSearchRcraSitesQuery,
   useGetOrgSitesQuery,
+  useGetMTNQuery,
 } from 'store/haztrakApiSlice';
 
 // Authentication Slice

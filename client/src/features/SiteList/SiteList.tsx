@@ -25,15 +25,11 @@ export function SiteList() {
       <HtCard>
         <HtCard.Header title="My Sites" />
         <HtCard.Body>
-          {/* if loading, show HtCard spinner component*/}
           {loading && !error ? (
             <HtCard.Spinner message="Loading your sites..." />
-          ) : //  else check if siteData is present
-          siteData ? (
-            // if yes, display the table
+          ) : siteData ? (
             <HtSiteTable sitesData={siteData} />
-          ) : // else check if there's an error
-          error ? (
+          ) : error ? (
             <>
               <HtModal showModal={showErrorModal} handleClose={handleClose}>
                 <HtModal.Header closeButton>
