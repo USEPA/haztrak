@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
-import { RcraApiUserBtn } from 'components/buttons';
-import { HtForm, HtSpinner } from 'components/Ht';
+import { RcraApiUserBtn } from 'components/Rcrainfo';
+import { HtForm, HtSpinner } from 'components/UI';
 import { useProgressTracker } from 'hooks';
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';

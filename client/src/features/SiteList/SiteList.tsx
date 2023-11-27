@@ -1,5 +1,5 @@
 import { HaztrakSite, HtSiteTable } from 'components/HaztrakSite';
-import { HtCard, HtModal } from 'components/Ht';
+import { HtCard, HtModal } from 'components/UI';
 import { useHtApi } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';

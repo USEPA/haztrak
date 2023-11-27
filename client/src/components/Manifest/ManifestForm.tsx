@@ -1,11 +1,11 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
-import { AdditionalInfoForm } from 'components/AdditionalInfo/AdditionalInfoForm';
-import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/Ht';
+import { AdditionalInfoForm } from 'components/Manifest/AdditionalInfo';
 import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
+import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/UI';
 import React, { createContext, useState } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';

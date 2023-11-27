@@ -1,6 +1,6 @@
-import { HtSpinner } from 'components/Ht';
 import { ManifestForm } from 'components/Manifest';
 import { Manifest } from 'components/Manifest/manifestSchema';
+import { HtSpinner } from 'components/UI';
 import { useHtApi, useTitle } from 'hooks';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -15,7 +15,15 @@ export function ManifestDetails() {
     readOnly = false;
   }
 
-  if (error) throw error;
+  if (error) {
+    // TODO: add global error handling via redux
+    return (
+      <div className="text-danger">
+        <h2>Something went wrong</h2>
+        <p>{error.message}</p>
+      </div>
+    );
+  }
 
   return loading ? (
     <HtSpinner />
@@ -27,6 +35,8 @@ export function ManifestDetails() {
       mtn={mtn}
     />
   ) : (
-    <></>
+    <div className="text-danger">
+      <h2>Something went wrong</h2>
+    </div>
   );
 }

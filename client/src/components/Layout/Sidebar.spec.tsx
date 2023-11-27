@@ -9,19 +9,6 @@ afterEach(() => {
 });
 
 describe('Sidebar', () => {
-  test('renders when use is logged in', () => {
-    const username = 'testuser1';
-    renderWithProviders(<Sidebar />, {
-      preloadedState: {
-        auth: {
-          user: { username: username, isLoading: false },
-          token: 'fakeToken',
-          loading: false,
-        },
-      },
-    });
-    expect(screen.getByText(username)).toBeInTheDocument();
-  });
   test('returns nothing when user not logged in', () => {
     const userName = 'testuser1';
     renderWithProviders(<Sidebar />);

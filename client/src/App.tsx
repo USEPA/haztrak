@@ -1,4 +1,4 @@
-import { ErrorBoundary } from 'components/ErrorBoundary';
+import { ErrorBoundary } from 'components/Error';
 import { Notifications } from 'components/Notifications/Notifications';
 import React, { ReactElement, useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';

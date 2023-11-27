@@ -1,4 +1,5 @@
 import { Root } from 'components/Layout/Root';
+import { ErrorPage } from 'features/ErrorPage/ErrorPage';
 import { Login } from 'features/login';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -9,11 +10,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '',
-        lazy: () => import('./features/home'),
-      },
-      {
-        path: '/notifications',
-        lazy: () => import('./features/notifications'),
+        lazy: () => import('./features/Dashboard'),
       },
       {
         path: '/profile',
@@ -80,7 +77,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '*',
-    lazy: () => import('./features/404'),
+    element: <ErrorPage code={404} />,
   },
   {
     path: '/login',

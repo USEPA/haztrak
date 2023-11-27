@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { UserApi } from 'services';
 import { RootState } from 'store/rootStore';
@@ -74,7 +74,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout,
-    updateUserProfile(state: UserState, action: any) {
+    updateUserProfile(state: UserState, action: PayloadAction<HaztrakUser>) {
       return {
         ...state,
         user: action.payload,

@@ -1,13 +1,14 @@
 import { ManifestForm } from './ManifestForm';
 import {
-  Manifest,
   Handler,
-  siteType,
-  Signer,
+  Manifest,
   RejectionInfo,
-  transporterSchema,
+  Signer,
+  siteType,
   Transporter,
+  transporterSchema,
 } from './manifestSchema';
 
+export { NewManifestBtn } from './NewManifestBtn';
 export { ManifestForm, siteType, transporterSchema };
 export type { Manifest, Handler, Signer, RejectionInfo, Transporter };

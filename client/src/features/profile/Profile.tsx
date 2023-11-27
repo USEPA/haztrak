@@ -1,6 +1,7 @@
-import { HtCard } from 'components/Ht';
+import { UserOrg } from 'components/Org';
 import { RcraProfile } from 'components/RcraProfile';
-import { UserProfile } from 'components/UserProfile';
+import { HtCard } from 'components/UI';
+import { UserInfoForm } from 'components/User';
 import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
@@ -15,7 +16,8 @@ import {
 } from 'store';
 
 /**
- * Display user profile
+ * Display user profile, including their Haztrak information, their organization,
+ * and their RCRAInfo profile.
  * @constructor
  */
 export function Profile(): ReactElement {
@@ -43,7 +45,10 @@ export function Profile(): ReactElement {
             <HtCard>
               <HtCard.Header title="User Profile" />
               <HtCard.Body>
-                <UserProfile user={user} profile={profile} />
+                <Container>
+                  <UserInfoForm user={user} profile={profile} />
+                  {profile.org && <UserOrg profile={profile} />}
+                </Container>
               </HtCard.Body>
             </HtCard>
             <HtCard>
