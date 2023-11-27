@@ -13,7 +13,6 @@ import { useAppDispatch, useGetMTNQuery } from 'store';
  * @constructor
  */
 export function ManifestList(): ReactElement {
-  const dispatch = useAppDispatch();
   let { siteId } = useParams();
   useTitle(`${siteId || ''} Manifest`);
   const [pageSize, setPageSize] = useState(10);
