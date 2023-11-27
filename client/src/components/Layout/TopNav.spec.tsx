@@ -11,7 +11,7 @@ afterEach(() => {
 describe('TopNav', () => {
   test('renders when user is logged in', () => {
     const username = 'testuser1';
-    renderWithProviders(<TopNav />, {
+    renderWithProviders(<TopNav showSidebar={true} onSidebarToggle={() => undefined} />, {
       preloadedState: {
         auth: {
           user: { username: username, isLoading: false },
@@ -23,7 +23,7 @@ describe('TopNav', () => {
     expect(screen.getByRole('button', { name: 'toggleSidebarNavigation' })).toBeInTheDocument();
   });
   test('returns nothing when user not logged in', () => {
-    renderWithProviders(<TopNav />);
+    renderWithProviders(<TopNav showSidebar={true} onSidebarToggle={() => undefined} />);
     expect(screen.queryByText(/Haztrak/i)).not.toBeInTheDocument();
   });
 });

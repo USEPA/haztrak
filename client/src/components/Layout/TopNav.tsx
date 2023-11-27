@@ -7,7 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from 'store';
 
-export function TopNav() {
+interface TopNavProps {
+  showSidebar: boolean;
+  onSidebarToggle: (show: boolean) => void;
+}
+
+export function TopNav({ showSidebar, onSidebarToggle }: TopNavProps) {
   const authUser = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const navigation = useNavigate();
@@ -18,7 +23,8 @@ export function TopNav() {
   if (!authUser) return null;
 
   const toggleSidebar = () => {
-    document.body.classList.toggle('sb-sidenav-toggled');
+    onSidebarToggle(!showSidebar);
+    // document.body.classList.toggle('sb-sidenav-toggled');
   };
 
   // noinspection JSValidateTypes

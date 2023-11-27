@@ -1,11 +1,4 @@
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { SideBarNavItem } from './SideBarNavItem';
-import React, { ReactElement, useState } from 'react';
-import { Button, Collapse } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { RootState } from 'store';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAngleDown,
   faArrowUpRightFromSquare,
@@ -19,19 +12,45 @@ import {
   faRecycle,
   faTachometerAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { ReactElement, useState } from 'react';
+import { Button, Collapse, Offcanvas } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { RootState } from 'store';
+import { SideBarNavItem } from './SideBarNavItem';
+
+interface SidebarProps {
+  show: boolean;
+  onHide: (show: boolean) => void;
+}
 
 /**
  * Vertical sidebar for navigation that disappears when the viewport is small
  * @returns {ReactElement|null}
  * @constructor
  */
-export function Sidebar(): ReactElement | null {
+export function Sidebar({ show, onHide }: SidebarProps): ReactElement | null {
   const [siteNav, setSiteNav] = useState(false);
   const [helpNav, setHelpNav] = useState(false);
   const [mtnNav, setMtnNav] = useState(false);
 
   const authUser = useSelector((state: RootState) => state.auth.user);
   if (!authUser) return null;
+
+  if (authUser) {
+    return (
+      <Offcanvas show={show} onHide={onHide}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          Some text as placeholder. In real life you can have the elements you have chosen. Like,
+          text, images, lists, etc.
+        </Offcanvas.Body>
+      </Offcanvas>
+    );
+  }
 
   return (
     <div id="layoutSidenav_nav">

@@ -11,7 +11,7 @@ afterEach(() => {
 describe('Sidebar', () => {
   test('returns nothing when user not logged in', () => {
     const userName = 'testuser1';
-    renderWithProviders(<Sidebar />);
+    renderWithProviders(<Sidebar show={true} onHide={() => undefined} />);
     expect(screen.queryByText(userName)).not.toBeInTheDocument();
   });
 });
