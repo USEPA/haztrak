@@ -9,16 +9,14 @@ import { TopNav } from './TopNav';
 export function Root() {
   const [showSidebar, setShowSidebar] = useState(false);
   return (
-    <div className="App">
-      <PrivateRoute>
-        <TopNav showSidebar={showSidebar} onSidebarToggle={setShowSidebar} />
-        <Sidebar show={showSidebar} onHide={setShowSidebar} />
-        <Container fluid>
-          <ErrorBoundary>
-            <Outlet />
-          </ErrorBoundary>
-        </Container>
-      </PrivateRoute>
-    </div>
+    <PrivateRoute>
+      <TopNav showSidebar={showSidebar} onSidebarToggle={setShowSidebar} />
+      <Sidebar show={showSidebar} onHide={setShowSidebar} />
+      <Container fluid>
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
+      </Container>
+    </PrivateRoute>
   );
 }
