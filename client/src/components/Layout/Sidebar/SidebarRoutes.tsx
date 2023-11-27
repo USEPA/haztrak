@@ -1,3 +1,4 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import {
   faCircleQuestion,
@@ -10,59 +11,59 @@ import {
   faRecycle,
   faTachometerAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { ReactElement } from 'react';
 
 export interface Route {
   id: string;
-  icon: ReactElement;
+  icon: IconProp;
   text: string;
   url: string;
   description?: string;
+  external?: boolean;
 }
 
 export interface RoutesSection {
   name: string;
   id: string;
-  icon: ReactElement;
+  icon: IconProp;
   routes: Route[];
 }
 
 export const routes: Array<Route | RoutesSection> = [
   {
     id: 'Dashboard',
-    icon: <FontAwesomeIcon icon={faTachometerAlt} className="text-primary" size="lg" />,
+    icon: faTachometerAlt,
     text: 'Dashboard',
     url: '/',
   },
   {
     name: 'sites',
     id: 'sitesSection',
-    icon: <FontAwesomeIcon icon={faLocationArrow} size="lg" className="me-2 text-primary" />,
+    icon: faLocationArrow,
     routes: [
       {
         id: 'mySites',
-        icon: <FontAwesomeIcon icon={faLocationDot} className="me-2 text-primary" size="lg" />,
+        icon: faLocationDot,
         text: 'My Sites',
         url: '/site',
       },
       {
         id: 'rcraInfo',
-        icon: <FontAwesomeIcon icon={faRecycle} className="text-primary" size="lg" />,
+        icon: faRecycle,
         text: 'RCRAInfo',
-        url: 'https://rcrainfopreprod.epa.gov',
+        url: import.meta.env.DEV ? 'https://rcrainfopreprod.epa.gov' : 'https://rcrainfo.epa.gov',
         description: 'RCRAInfo',
+        external: true,
       },
     ],
   },
   {
     name: 'Manifests',
     id: 'manifestsSection',
-    icon: <FontAwesomeIcon icon={faFileLines} size="lg" className="text-primary me-2" />,
+    icon: faFileLines,
     routes: [
       {
         id: 'My Manifests',
-        icon: <FontAwesomeIcon icon={faFolderOpen} className="text-primary" size="lg" />,
+        icon: faFolderOpen,
         text: 'My Manifests',
         url: '/manifest',
         description: 'All hazardous waste manifest',
@@ -72,28 +73,30 @@ export const routes: Array<Route | RoutesSection> = [
   {
     name: 'Help',
     id: 'helpSection',
-    icon: <FontAwesomeIcon icon={faInfo} size="lg" className="text-primary me-2" />,
+    icon: faInfo,
     routes: [
       {
         id: 'About',
-        icon: <FontAwesomeIcon icon={faCircleQuestion} className="text-primary" size="lg" />,
+        icon: faCircleQuestion,
         text: 'About',
         url: '/about',
         description: 'About Haztrak',
       },
       {
         id: 'openApi',
-        icon: <FontAwesomeIcon icon={faNetworkWired} className="text-primary" size="lg" />,
+        icon: faNetworkWired,
         text: 'OpenAPI Docs',
         url: `${import.meta.env.VITE_HT_API_URL}/api/schema/swagger-ui`,
         description: 'API Documentation',
+        external: true,
       },
       {
         id: 'reportAnIssue',
-        icon: <FontAwesomeIcon icon={faGithub} className="text-primary" size="lg" />,
+        icon: faGithub,
         text: 'Report an Issue',
         url: 'https://github.com/USEPA/haztrak/issues',
         description: 'API Documentation',
+        external: true,
       },
     ],
   },

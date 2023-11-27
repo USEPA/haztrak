@@ -1,7 +1,8 @@
 import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logo from 'assets/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
-import React from 'react';
+import { NavContext, NavContextProps } from 'components/Layout/Root';
+import React, { useContext } from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,7 +13,8 @@ interface TopNavProps {
   onSidebarToggle: (show: boolean) => void;
 }
 
-export function TopNav({ showSidebar, onSidebarToggle }: TopNavProps) {
+export function TopNav() {
+  const { showSidebar, setShowSidebar } = useContext<NavContextProps>(NavContext);
   const authUser = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const navigation = useNavigate();
@@ -23,8 +25,7 @@ export function TopNav({ showSidebar, onSidebarToggle }: TopNavProps) {
   if (!authUser) return null;
 
   const toggleSidebar = () => {
-    onSidebarToggle(!showSidebar);
-    // document.body.classList.toggle('sb-sidenav-toggled');
+    setShowSidebar(!showSidebar);
   };
 
   // noinspection JSValidateTypes

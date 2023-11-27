@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { TopNav } from 'components/Layout';
+import { TopNav } from 'components/Layout/TopNav/TopNav';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { afterEach, describe, expect, test } from 'vitest';
@@ -11,7 +11,7 @@ afterEach(() => {
 describe('TopNav', () => {
   test('renders when user is logged in', () => {
     const username = 'testuser1';
-    renderWithProviders(<TopNav showSidebar={true} onSidebarToggle={() => undefined} />, {
+    renderWithProviders(<TopNav />, {
       preloadedState: {
         auth: {
           user: { username: username, isLoading: false },
@@ -23,7 +23,7 @@ describe('TopNav', () => {
     expect(screen.getByRole('button', { name: 'toggleSidebarNavigation' })).toBeInTheDocument();
   });
   test('returns nothing when user not logged in', () => {
-    renderWithProviders(<TopNav showSidebar={true} onSidebarToggle={() => undefined} />);
+    renderWithProviders(<TopNav />);
     expect(screen.queryByText(/Haztrak/i)).not.toBeInTheDocument();
   });
 });
