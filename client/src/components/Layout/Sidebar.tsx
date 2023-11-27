@@ -35,7 +35,7 @@ export function Sidebar(): ReactElement | null {
 
   return (
     <div id="layoutSidenav_nav">
-      <nav className="sb-sidenav accordion sb-sidenav-dark bs-primary" id="sidenavAccordion">
+      <nav className="sb-sidenav bg-dark bs-primary" id="sidenavAccordion">
         <div className="sb-sidenav-menu">
           <div className="nav">
             <div className="sb-sidenav-menu-heading">Apps</div>
@@ -144,10 +144,6 @@ export function Sidebar(): ReactElement | null {
               </div>
             </Collapse>
           </div>
-        </div>
-        <div className="sb-sidenav-footer">
-          <div className="small">Logged in as:</div>
-          {authUser.username}
         </div>
       </nav>
     </div>
