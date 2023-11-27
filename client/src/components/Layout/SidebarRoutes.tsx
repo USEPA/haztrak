@@ -23,6 +23,7 @@ export interface Route {
 
 export interface RoutesSection {
   name: string;
+  id: string;
   icon: ReactElement;
   routes: Route[];
 }
@@ -36,6 +37,7 @@ export const routes: Array<Route | RoutesSection> = [
   },
   {
     name: 'sites',
+    id: 'sitesSection',
     icon: <FontAwesomeIcon icon={faLocationArrow} size="lg" className="me-2 text-primary" />,
     routes: [
       {
@@ -55,6 +57,7 @@ export const routes: Array<Route | RoutesSection> = [
   },
   {
     name: 'Manifests',
+    id: 'manifestsSection',
     icon: <FontAwesomeIcon icon={faFileLines} size="lg" className="text-primary me-2" />,
     routes: [
       {
@@ -68,6 +71,7 @@ export const routes: Array<Route | RoutesSection> = [
   },
   {
     name: 'Help',
+    id: 'helpSection',
     icon: <FontAwesomeIcon icon={faInfo} size="lg" className="text-primary me-2" />,
     routes: [
       {

@@ -29,7 +29,7 @@ export function NavDropdown({ section }: SidebarSectionProps) {
         <div>
           {section.routes.map((route) => {
             return (
-              <div className="ms-4">
+              <div className="ms-4" key={route.id}>
                 <NavItem route={route} />
               </div>
             );

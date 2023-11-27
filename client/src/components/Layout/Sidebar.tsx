@@ -35,9 +35,9 @@ export function Sidebar({ show, onHide }: SidebarProps): ReactElement | null {
               <div className="sb-sidenav-menu-heading">Apps</div>
               {routes.map((route) => {
                 if (typeof route === 'object' && 'routes' in route) {
-                  return <NavDropdown section={route} />;
+                  return <NavDropdown key={route.id} section={route} />;
                 } else if (typeof route === 'object' && 'url' in route) {
-                  return <NavItem route={route} />;
+                  return <NavItem key={route.id} route={route} />;
                 }
               })}
             </div>
