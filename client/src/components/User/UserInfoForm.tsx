@@ -8,12 +8,12 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { UserApi } from 'services';
-import { HaztrakUser, ProfileState, updateUserProfile, useAppDispatch } from 'store';
+import { HaztrakUser, ProfileSlice, updateUserProfile, useAppDispatch } from 'store';
 import { z } from 'zod';
 
 interface UserProfileProps {
   user: HaztrakUser;
-  profile: ProfileState;
+  profile: ProfileSlice;
 }
 
 const haztrakUserForm = z.object({

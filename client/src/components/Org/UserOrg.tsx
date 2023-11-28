@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SiteAccess } from 'components/User/SiteAccess';
 import React from 'react';
 import { Col, Row, Tab, Tabs } from 'react-bootstrap';
-import { ProfileState } from 'store';
+import { ProfileSlice } from 'store';
 import { OrgSitesTable } from './OrgSitesTable';
 
 interface UserOrgProps {
-  profile: ProfileState;
+  profile: ProfileSlice;
 }
 
 export function UserOrg({ profile }: UserOrgProps) {

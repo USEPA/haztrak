@@ -8,7 +8,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import {
   getRcraProfile,
   HaztrakUser,
-  ProfileState,
+  ProfileSlice,
   selectRcraProfile,
   selectUser,
   useAppDispatch,
@@ -22,7 +22,7 @@ import {
  */
 export function Profile(): ReactElement {
   const dispatch = useAppDispatch();
-  const profile: ProfileState | undefined = useAppSelector(selectRcraProfile);
+  const profile: ProfileSlice | undefined = useAppSelector(selectRcraProfile);
   const user: HaztrakUser | undefined = useAppSelector(selectUser);
   useTitle('Profile');
 

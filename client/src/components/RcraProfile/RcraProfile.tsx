@@ -53,7 +53,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
 
   /**
    * submitting the RcraProfile form (RCRAInfo API ID, Key, username, etc.)
-   * @param data {ProfileState}
+   * @param data {ProfileSlice}
    */
   const onSubmit = (data: RcraProfileForm) => {
     setProfileLoading(!profileLoading);
