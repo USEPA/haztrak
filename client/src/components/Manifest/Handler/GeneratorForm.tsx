@@ -1,9 +1,9 @@
-import { HtForm } from 'components/Ht';
+import { Manifest } from 'components/Manifest';
 import { AddressForm } from 'components/Manifest/Address';
+import { HtForm } from 'components/UI';
 import { ReactElement, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
-import { Manifest } from 'components/Manifest';
 
 interface GeneratorFormProps {
   readOnly?: boolean;

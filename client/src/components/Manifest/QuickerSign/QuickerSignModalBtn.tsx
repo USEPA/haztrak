@@ -1,9 +1,9 @@
 import { faFeather } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
+import { RcraApiUserBtn } from 'components/Rcrainfo';
 import React from 'react';
 import { ButtonProps } from 'react-bootstrap';
-import { RcraApiUserBtn } from 'components/buttons';
 
 interface QuickerSignData {
   handler: Handler | undefined;

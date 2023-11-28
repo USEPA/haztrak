@@ -5,6 +5,7 @@ import eslint from 'vite-plugin-eslint';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 // @ts-ignore
 import { dependencies } from './package.json';
+import * as path from 'path';
 
 function renderChunks(deps: Record<string, string>) {
   const chunks = {};
@@ -18,6 +19,11 @@ function renderChunks(deps: Record<string, string>) {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
+    },
+  },
   build: {
     sourcemap: true,
     outDir: 'build',

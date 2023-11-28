@@ -1,19 +1,18 @@
-import { SyncManifestBtn } from 'components/buttons';
-import { NewManifestBtn } from 'components/buttons/NewManifestBtn';
-import { HtCard } from 'components/Ht';
+import { NewManifestBtn } from 'components/Manifest';
 import { MtnTable } from 'components/Mtn';
+import { SyncManifestBtn } from 'components/Rcrainfo';
+import { HtCard } from 'components/UI';
 import { useTitle } from 'hooks';
 import React, { ReactElement, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useGetMTNQuery } from 'store';
+import { useGetMTNQuery } from 'store';
 
 /**
  * Fetch and display all the manifest tracking number (MTN) known by haztrak
  * @constructor
  */
 export function ManifestList(): ReactElement {
-  const dispatch = useAppDispatch();
   let { siteId } = useParams();
   useTitle(`${siteId || ''} Manifest`);
   const [pageSize, setPageSize] = useState(10);
@@ -40,9 +39,7 @@ export function ManifestList(): ReactElement {
             <NewManifestBtn siteId={siteId} />
           </Col>
         </Row>
-      </Container>
-      <Container>
-        <Col>
+        <Row>
           <HtCard>
             <HtCard.Header title={`${siteId || 'Your'} Manifests`}></HtCard.Header>
             <HtCard.Body>
@@ -55,7 +52,7 @@ export function ManifestList(): ReactElement {
               )}
             </HtCard.Body>
           </HtCard>
-        </Col>
+        </Row>
       </Container>
     </Container>
   );

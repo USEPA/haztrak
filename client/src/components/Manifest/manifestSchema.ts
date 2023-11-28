@@ -1,4 +1,4 @@
-import { additionalInfoSchema } from 'components/AdditionalInfo/additionalInfoSchema';
+import { additionalInfoSchema } from 'components/Manifest/AdditionalInfo/additionalInfoSchema';
 import { rcraPhoneSchema, rcraSite } from 'components/RcraSite';
 import { z } from 'zod';
 

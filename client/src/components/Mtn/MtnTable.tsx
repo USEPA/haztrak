@@ -16,8 +16,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { HtPageBtns, HtPageControls } from 'components/Ht';
 import { MtnRowActions } from 'components/Mtn/MtnRowActions';
+import { HtPageBtns, HtPageControls } from 'components/UI';
 import React, { useState } from 'react';
 import { Button, Col, Form, Table } from 'react-bootstrap';
 import Select from 'react-select';

@@ -77,63 +77,12 @@ $info: #009999;
   max-width: none !important;
 }
 
-// need to bump notification dropdown menu up by 1 px.
-.mt-n1 {
-  margin-top: -1px !important;
-}
-
-.alert-mw {
-  max-width: 20rem !important;
-  min-width: 20rem !important;
-}
-
-.btn-circle {
-  width: 25px !important;
-  height: 25px !important;
-  min-height: 25px !important;
-  min-width: 25px !important;
-  border-radius: 50px !important;
-  border-width: 0 !important;
-  padding: 0 !important;
-}
-
-.btn-circle.btn-lg {
-  width: 50px !important;
-  height: 50px !important;
-}
-
-.btn-circle.btn-xl {
-  width: 70px !important;
-  height: 70px !important;
-}
-
 .rotate-90-cc {
   transform: rotate(-90deg);
 }
 
 .rotate-90 {
   transform: rotate(90deg);
-}
-
-.app-container {
-  min-height: 350px;
-}
-
-.ht-ellipsis::after {
-  display: none !important;
-}
-
-button.ht-ellipsis {
-  border: none;
-  box-shadow: none;
-}
-
-button.ht-ellipsis:hover {
-  color: var(--bs-gray-dark);
-}
-
-button.ht-ellipsis:active {
-  color: var(--bs-gray-dark);
 }
 
 // boilerplate
@@ -154,8 +103,6 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-// ToDo: remove as much #layoutSidenav as possible
-// Styles inherited from the initial template (sb-admin)
 #layoutSidenav {
   display: flex;
 }
@@ -218,33 +165,6 @@ body {
   .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
     display: none;
   }
-}
-
-.sb-nav-fixed .sb-topnav {
-  z-index: 1039;
-}
-
-.sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
-  width: 225px;
-  height: 100vh;
-  z-index: 1038;
-}
-
-.sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav {
-  padding-top: 56px;
-}
-
-.sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav .sb-sidenav-menu {
-  overflow-y: auto;
-}
-
-.sb-nav-fixed #layoutSidenav #layoutSidenav_content {
-  padding-left: 225px;
-  top: 56px;
-}
-
-.img-error {
-  max-width: 20rem;
 }
 
 .nav .nav-link,
@@ -326,56 +246,7 @@ body {
   flex-shrink: 0;
 }
 
-.sb-sidenav-dark {
-  background-color: #212529;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.sb-sidenav-dark .sb-sidenav-menu .sb-sidenav-menu-heading {
-  color: rgba(255, 255, 255, 0.25);
-}
-
-.sb-sidenav-dark .sb-sidenav-menu .nav-link {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.sb-sidenav-dark .sb-sidenav-menu .nav-link {
-  color: rgba(255, 255, 255, 0.25);
-}
-
-.sb-sidenav-dark .sb-sidenav-menu .nav-link .sb-sidenav-collapse-arrow {
-  color: rgba(255, 255, 255, 0.25);
-}
-
-.sb-sidenav-dark .sb-sidenav-menu .nav-link:hover {
-  color: #fff;
-}
-
-.sb-sidenav-dark .sb-sidenav-menu .nav-link.active {
-  color: #fff;
-}
-
-.sb-sidenav-dark .sb-sidenav-menu .nav-link.active {
-  color: #fff;
-}
-
-.sb-sidenav-dark .sb-sidenav-footer {
-  background-color: #343a40;
-}
-
 .sb-sidenav-menu .sb-sidenav-menu-heading {
-  color: #adb5bd;
-}
-
-.sb-sidenav-menu .nav-link {
-  color: #212529;
-}
-
-.sb-sidenav-menu .nav-link {
-  color: #adb5bd;
-}
-
-.sb-sidenav-menu .nav-link .sb-sidenav-collapse-arrow {
   color: #adb5bd;
 }
 
@@ -383,16 +254,4 @@ body {
   color: #0d6efd;
 }
 
-.sb-sidenav-menu .nav-link.active {
-  color: #0d6efd;
-}
-
-.sb-sidenav-menu .nav-link.active {
-  color: #0d6efd;
-}
-
-.sb-sidenav-footer {
-  background-color: #e9ecef;
-}
-
-@import 'bootstrap/scss/bootstrap.scss';
+@import '~bootstrap/scss/bootstrap';
