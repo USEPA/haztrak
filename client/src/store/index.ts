@@ -65,7 +65,7 @@ export type { HaztrakError } from './errorSlice/error.slice';
 export type { TaskStatus } from './haztrakApiSlice';
 export type { LongRunningTask, HaztrakAlert } from './notificationSlice/notification.slice';
 export type {
-  ProfileState,
+  ProfileSlice,
   RcrainfoProfileState,
   HaztrakProfileSite,
   HaztrakSitePermissions,

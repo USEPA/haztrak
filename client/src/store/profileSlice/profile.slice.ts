@@ -8,7 +8,7 @@ import { UserApi } from 'services';
 import { RootState } from 'store';
 
 /**The user's RCRAInfo account data stored in the Redux store*/
-export interface ProfileState {
+export interface ProfileSlice {
   user: string | undefined;
   rcrainfoProfile?: RcrainfoProfile<Record<string, RcrainfoProfileSite>>;
   sites?: Record<string, HaztrakProfileSite>;
@@ -64,7 +64,7 @@ export interface RcrainfoSitePermissions {
 }
 
 /**initial, state of a user's RcraProfile.*/
-const initialState: ProfileState = {
+const initialState: ProfileSlice = {
   user: undefined,
   rcrainfoProfile: undefined,
   sites: undefined,
@@ -88,11 +88,11 @@ export const getHaztrakProfile = createAsyncThunk('profile/getHaztrakProfile', a
     user: data.user,
     org: data.org,
     sites: sites,
-  } as ProfileState;
+  } as ProfileSlice;
 });
 
 /**Retrieves a user's RcrainfoProfile, if it exists, from the server.*/
-export const getRcraProfile = createAsyncThunk<ProfileState>(
+export const getRcraProfile = createAsyncThunk<ProfileSlice>(
   'profile/getRcrainfoProfile',
   async (arg, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
@@ -112,7 +112,7 @@ export const getRcraProfile = createAsyncThunk<ProfileState>(
           };
         }, {}),
       },
-    } as ProfileState;
+    } as ProfileSlice;
   }
 );
 
@@ -120,7 +120,7 @@ const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    updateProfile: (state: ProfileState, action: PayloadAction<ProfileState>) => {
+    updateProfile: (state: ProfileSlice, action: PayloadAction<ProfileSlice>) => {
       return {
         ...state,
         ...action.payload,
@@ -176,7 +176,7 @@ const profileSlice = createSlice({
 /** Retrieve a Haztrak site from the users Profile by the site's EPA ID number */
 export const siteByEpaIdSelector = (epaId: string | undefined) =>
   createSelector(
-    (state: { profile: ProfileState }) => state.profile.sites,
+    (state: { profile: ProfileSlice }) => state.profile.sites,
     (sites: Record<string, HaztrakProfileSite> | undefined) => {
       if (!sites) return undefined;
 
@@ -192,7 +192,7 @@ export const siteByEpaIdSelector = (epaId: string | undefined) =>
 
 /** Get all sites a user has access to their Haztrak Profile*/
 export const selectHaztrakSites = createSelector(
-  (state: { profile: ProfileState }) => state.profile.sites,
+  (state: { profile: ProfileSlice }) => state.profile.sites,
   (sites: Record<string, HaztrakProfileSite> | undefined) => {
     if (!sites) return undefined;
 
@@ -202,7 +202,7 @@ export const selectHaztrakSites = createSelector(
 
 /** select all RCRAInfo sites a user has access to from their RCRAInfo Profile if they're updated it*/
 export const selectRcrainfoSites = createSelector(
-  (state: { profile: ProfileState }) => state.profile.rcrainfoProfile?.rcraSites,
+  (state: { profile: ProfileSlice }) => state.profile.rcrainfoProfile?.rcraSites,
   (rcraSites: Record<string, RcrainfoProfileSite> | undefined) => {
     if (!rcraSites) return undefined;
 
@@ -213,13 +213,13 @@ export const selectRcrainfoSites = createSelector(
 /** Retrieve a user's RcraProfile from the Redux store. */
 export const selectRcraProfile = createSelector(
   (state: RootState) => state.profile,
-  (rcraProfile: ProfileState) => rcraProfile
+  (rcraProfile: ProfileSlice) => rcraProfile
 );
 
 /** Retrieve a user's HaztrakProfile from the Redux store. */
 export const selectHaztrakProfile = createSelector(
   (state: RootState) => state.profile,
-  (haztrakProfile: ProfileState) => haztrakProfile
+  (haztrakProfile: ProfileSlice) => haztrakProfile
 );
 
 export default profileSlice.reducer;

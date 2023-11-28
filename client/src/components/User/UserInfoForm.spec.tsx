@@ -5,7 +5,7 @@ import { UserInfoForm } from 'components/User/UserInfoForm';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { HaztrakUser, ProfileState } from 'store';
+import { HaztrakUser, ProfileSlice } from 'store';
 import { renderWithProviders, screen } from 'test-utils';
 import { API_BASE_URL } from 'test-utils/mock/handlers';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
@@ -41,7 +41,7 @@ describe('UserProfile', () => {
       username: 'test',
       firstName: 'David',
     };
-    const profile: ProfileState = {
+    const profile: ProfileSlice = {
       user: 'test',
     };
     renderWithProviders(<UserInfoForm user={user} profile={profile} />, {});
@@ -54,7 +54,7 @@ describe('UserProfile', () => {
     const user: HaztrakUser = {
       ...DEFAULT_USER,
     };
-    const profile: ProfileState = {
+    const profile: ProfileSlice = {
       user: 'test',
     };
     renderWithProviders(<UserInfoForm user={user} profile={profile} />, {});
