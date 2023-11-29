@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { QuickerSignModalBtn } from 'components/Manifest/QuickerSign/index';
+import { HandlerSignBtn } from 'components/Manifest/QuickerSign/index';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockMTNHandler } from 'test-utils/fixtures';
@@ -13,11 +13,7 @@ describe('QuickerSignModalBtn', () => {
   test('renders', () => {
     const handler = createMockMTNHandler();
     renderWithProviders(
-      <QuickerSignModalBtn
-        siteType={'Generator'}
-        mtnHandler={handler}
-        handleClick={() => undefined}
-      />
+      <HandlerSignBtn siteType={'Generator'} mtnHandler={handler} handleClick={() => undefined} />
     );
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
@@ -26,7 +22,7 @@ describe('QuickerSignModalBtn', () => {
       signed: true,
     });
     renderWithProviders(
-      <QuickerSignModalBtn
+      <HandlerSignBtn
         siteType={'Generator'}
         mtnHandler={signed_handler}
         handleClick={() => undefined}
@@ -41,7 +37,7 @@ describe('QuickerSignModalBtn', () => {
       electronicSignaturesInfo: undefined,
     });
     renderWithProviders(
-      <QuickerSignModalBtn
+      <HandlerSignBtn
         siteType={'Generator'}
         mtnHandler={unsigned_handler}
         handleClick={() => undefined}
@@ -73,7 +69,7 @@ describe('QuickerSignModalBtn', () => {
       signed: true,
     });
     renderWithProviders(
-      <QuickerSignModalBtn
+      <HandlerSignBtn
         siteType={'Generator'}
         mtnHandler={unsigned_handler}
         handleClick={() => undefined}

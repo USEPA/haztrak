@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { RcraApiUserBtn } from 'components/Rcrainfo/buttons/RcraApiUserBtn/RcraApiUserBtn';
 import { useProgressTracker } from 'hooks';
 import React, { useEffect, useState } from 'react';
-import { manifestApi } from 'services/manifestApi';
+import { manifestApi } from 'services';
 import { addTask, updateTask, useAppDispatch } from 'store';
 
 interface SyncManifestProps {

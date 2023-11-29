@@ -1,7 +1,6 @@
-import { QuickerSignForm } from './QuickerSignForm';
+import { HandlerSignBtn } from 'components/Manifest/QuickerSign/SignBtn/HandlerSignBtn';
+import { QuickerSignature, QuickerSignData, QuickerSignForm } from './QuickerSignForm';
 import { QuickerSignModal } from './QuickerSignModal';
-import { QuickerSignModalBtn } from './QuickerSignModalBtn';
-import { QuickerSignature, QuickerSignData } from './quickerSignSchema';
 
-export { QuickerSignForm, QuickerSignModal, QuickerSignModalBtn };
+export { QuickerSignForm, QuickerSignModal, HandlerSignBtn };
 export type { QuickerSignature, QuickerSignData };

@@ -1,8 +1,9 @@
 import { faFeather } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ManifestContext } from 'components/Manifest/ManifestForm';
 import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import { RcraApiUserBtn } from 'components/Rcrainfo';
-import React from 'react';
+import React, { useContext } from 'react';
 import { ButtonProps } from 'react-bootstrap';
 import { siteByEpaIdSelector, useAppSelector } from 'store';
 
@@ -23,16 +24,18 @@ interface QuickerSignModalBtnProps extends ButtonProps {
  * The button will be disabled if siteId (the EPA ID number) is not provided
  * @constructor
  */
-export function QuickerSignModalBtn({
+export function HandlerSignBtn({
   siteType,
   mtnHandler,
   handleClick,
   disabled,
   iconOnly = false,
 }: QuickerSignModalBtnProps) {
-  if (!useAppSelector(siteByEpaIdSelector(mtnHandler?.epaSiteId))) {
-    return <></>;
-  }
+  const { signingSite } = useContext(ManifestContext);
+  if (!useAppSelector(siteByEpaIdSelector(mtnHandler?.epaSiteId))) return <></>;
+
+  if (mtnHandler?.epaSiteId !== signingSite) return <></>;
+
   return (
     <RcraApiUserBtn
       onClick={() => {
@@ -40,7 +43,7 @@ export function QuickerSignModalBtn({
       }}
       disabled={disabled}
     >
-      {iconOnly ? '' : 'Quicker Sign '}
+      {iconOnly ? '' : 'Sign '}
       <FontAwesomeIcon icon={faFeather} />
     </RcraApiUserBtn>
   );

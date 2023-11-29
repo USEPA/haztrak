@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { HaztrakSite } from 'components/HaztrakSite';
-import { htApi } from 'services/htApi';
 import { HaztrakModulePermissions, HaztrakUser, RcrainfoProfile, RcrainfoProfileSite } from 'store';
+import { htApi } from './htApi';
 
 interface HaztrakOrgResponse {
   id: string;
