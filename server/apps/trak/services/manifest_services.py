@@ -223,3 +223,16 @@ class ManifestService:
         manifest = serializer.save()
         logger.info(f"saved manifest {manifest.mtn}")
         return manifest
+
+
+def update_manifest(*, mtn: str, data: dict) -> Manifest:
+    """Update a manifest in the Haztrak database"""
+    try:
+        manifest = Manifest.objects.filter(mtn=mtn).update(**data)
+        print(manifest)
+        if mtn in data:
+            return Manifest.objects.get(mtn=data["mtn"])
+        else:
+            return Manifest.objects.get(mtn=mtn)
+    except Manifest.DoesNotExist:
+        raise ManifestServiceError(f"manifest {mtn} does not exist")

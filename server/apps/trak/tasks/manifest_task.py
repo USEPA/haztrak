@@ -1,12 +1,8 @@
-import datetime
 import logging
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
-
-from apps.sites.models import RcraSiteType
-from apps.trak.models import QuickerSign
 
 logger = logging.getLogger(__name__)
 

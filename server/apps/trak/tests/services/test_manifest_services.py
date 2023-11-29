@@ -3,7 +3,7 @@ import pytest_mock
 from rest_framework import status
 
 from apps.core.services import RcrainfoService, get_rcrainfo_client
-from apps.trak.services import ManifestService
+from apps.trak.services import ManifestService, update_manifest
 
 
 class TestManifestService:
@@ -33,6 +33,15 @@ class TestManifestService:
         manifest_service = ManifestService(username=self.user.username, rcrainfo=rcrainfo)
         results = manifest_service.pull_manifests(tracking_numbers=[self.tracking_number])
         assert self.tracking_number in results["success"]
+
+
+class TestUpdateManifest:
+    def test_updates_the_manifest_tracking_number(self, manifest_factory):
+        old_mtn = "000000123DFT"
+        new_mtn = "000000123DFT"
+        manifest_factory(mtn=old_mtn)
+        new_manifest = update_manifest(mtn=old_mtn, data={"mtn": new_mtn})
+        assert new_manifest.mtn == new_mtn
 
 
 class TestSignManifest:
