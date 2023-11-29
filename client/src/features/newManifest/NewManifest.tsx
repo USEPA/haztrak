@@ -5,7 +5,7 @@ import { RcraSite } from 'components/RcraSite';
 import { HtCard } from 'components/UI';
 import { useTitle } from 'hooks';
 import React, { useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { Col, Container, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { siteByEpaIdSelector, useAppSelector } from 'store';
@@ -41,21 +41,29 @@ export function NewManifest() {
   if (!selectedSiteType || !manifestingSite) {
     // If the manifesting site's role on the manifest can't be automatically determined, ask the user.
     return (
-      <HtCard>
-        <HtCard.Body>
-          <Form>
-            <p>Which site are you starting a manifest as?</p>
-            <SiteSelect control={control} value={manifestingSite} handleChange={handleSiteChange} />
-            <SiteTypeSelect
-              control={control}
-              siteType={manifestingSiteType}
-              value={selectedSiteType}
-              handleChange={setSelectedSiteType}
-              disabled={!manifestingSite}
-            />
-          </Form>
-        </HtCard.Body>
-      </HtCard>
+      <Container fluid className="py-3 d-flex justify-content-center">
+        <Col xs={12} sm={10} md={8} lg={6}>
+          <HtCard title="Select a Site">
+            <HtCard.Body>
+              <Form>
+                <p>Which site are you starting a manifest as?</p>
+                <SiteSelect
+                  control={control}
+                  value={manifestingSite}
+                  handleChange={handleSiteChange}
+                />
+                <SiteTypeSelect
+                  control={control}
+                  siteType={manifestingSiteType}
+                  value={selectedSiteType}
+                  handleChange={setSelectedSiteType}
+                  disabled={!manifestingSite}
+                />
+              </Form>
+            </HtCard.Body>
+          </HtCard>
+        </Col>
+      </Container>
     );
   }
   // pass the site as the selected handler type as an initial value to the new Manifest

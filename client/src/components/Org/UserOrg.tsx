@@ -18,8 +18,6 @@ export function UserOrg({ profile }: UserOrgProps) {
   return (
     <>
       <Row>
-        <hr />
-        <h3 className="text-center">Organization</h3>
         <Col>
           <h6>
             <b>Name</b>

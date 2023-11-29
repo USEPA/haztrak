@@ -1,7 +1,7 @@
 import { ErrorBoundary } from 'components/Error';
 import { HtSpinner } from 'components/UI';
 import React, { ReactElement } from 'react';
-import { Card, CardHeaderProps, CardProps } from 'react-bootstrap';
+import { Card, CardHeaderProps, CardProps, Container } from 'react-bootstrap';
 
 interface HeaderProps extends CardHeaderProps {
   title?: string;
@@ -14,8 +14,6 @@ interface SpinnerProps extends CardProps {
 
 /**
  * Card with haztrak styling, yeah baby
- * @param {{children: ReactElement }} props react props
- * @constructor
  * @example
  * <HtCard>
  *   <HtCard.Header title="Card Title!">{top right dropdown button}<HtCard.Header>
@@ -23,18 +21,21 @@ interface SpinnerProps extends CardProps {
  *   <HtCard.Footer>submit button here<HtCard.Footer>
  * </HtCard>
  */
-export function HtCard(props: CardProps): ReactElement {
-  const baseAttributes = `my-3 shadow-lg bg-white rounded px-0 ${
-    props.className ? props.className : ''
+export function HtCard({ className, title, children, ...props }: CardProps): ReactElement {
+  const classAttributes = `card shadow-lg bg-white rounded px-0 border-0 ${
+    className ? className : ''
   }`;
-  const classAttributes =
-    props.border || props.className?.includes('border')
-      ? baseAttributes
-      : `border-0 ${baseAttributes}`;
   return (
-    <Card {...props} className={classAttributes}>
-      {props.children}
-    </Card>
+    <div {...props} className={classAttributes}>
+      {title ? (
+        <div className="row d-flex justify-content-start m-1 mb-0">
+          <h3 className="mb-0">{title}</h3>
+        </div>
+      ) : (
+        <></>
+      )}
+      {children}
+    </div>
   );
 }
 
@@ -84,17 +85,17 @@ HtCard.Footer = function (props: CardProps): ReactElement {
 
 /**
  * Card body with Haztrak styling
- * @param {{children: ReactElement}} props react props
- * @constructor
  * @example
  * <HtCard>
  *   <HtCard.Body>Hello World!<HtCard.Body>
  * </HtCard>
  */
-HtCard.Body = function (props: CardProps): ReactElement {
+HtCard.Body = function ({ className, children, ...props }: CardProps): ReactElement {
   return (
-    <Card.Body className={props.className ? `${props.className}` : ''}>
-      <ErrorBoundary>{props.children}</ErrorBoundary>
+    <Card.Body className={className ? `${className}` : ''} {...props}>
+      <ErrorBoundary>
+        <Container>{children}</Container>
+      </ErrorBoundary>
     </Card.Body>
   );
 };

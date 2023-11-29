@@ -40,19 +40,23 @@ export function Profile(): ReactElement {
         <Row className="d-flex justify-content-start">
           <h1 className="fw-bold">Profile</h1>
         </Row>
-        <Row className="d-flex justify-content-center">
-          <Col xs={12} md={11} lg={10} xl={8} className="justify-content-center">
-            <HtCard>
-              <HtCard.Header title="User Profile" />
+        <Row xs={1} lg={2} className="my-3 gap-2">
+          <Col>
+            <HtCard title="User Information" className="h-100 my-2">
               <HtCard.Body>
-                <Container>
-                  <UserInfoForm user={user} profile={profile} />
-                  {profile.org && <UserOrg profile={profile} />}
-                </Container>
+                <UserInfoForm user={user} profile={profile} />
               </HtCard.Body>
             </HtCard>
-            <HtCard>
-              <HtCard.Header title="RCRAInfo Profile" />
+          </Col>
+          <Col>
+            <HtCard title="My Organization" className="h-100 my-2">
+              <HtCard.Body>{profile.org && <UserOrg profile={profile} />}</HtCard.Body>
+            </HtCard>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <HtCard title="RCRAInfo Profile">
               <HtCard.Body>
                 {profile.rcrainfoProfile && <RcraProfile profile={profile.rcrainfoProfile} />}
               </HtCard.Body>

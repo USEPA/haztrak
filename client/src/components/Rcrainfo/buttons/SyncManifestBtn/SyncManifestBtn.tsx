@@ -37,7 +37,6 @@ export function SyncManifestBtn({
     <RcraApiUserBtn
       variant="primary"
       disabled={disabled || !siteId || inProgress}
-      className="mx-2"
       onClick={() => {
         if (siteId)
           manifestApi
