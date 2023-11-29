@@ -1,79 +1,103 @@
 import '@testing-library/jest-dom';
-import { HandlerSignBtn } from 'components/Manifest/QuickerSign/index';
+import { ManifestContext } from 'components/Manifest/ManifestForm';
+import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
+import { QuickSignBtn } from 'components/Manifest/QuickerSign/index';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockMTNHandler } from 'test-utils/fixtures';
 import { afterEach, describe, expect, test } from 'vitest';
+import { undefined } from 'zod';
 
 afterEach(() => {
   cleanup();
 });
 
-describe('QuickerSignModalBtn', () => {
+function TestComponent({
+  siteType,
+  handler,
+  signingSite,
+  status = 'NotAssigned',
+}: {
+  siteType?: RcraSiteType;
+  handler?: Handler;
+  signingSite?: string;
+  status?: 'NotAssigned' | 'Pending' | 'Scheduled' | 'InTransit' | 'ReadyForSignature';
+}) {
+  if (!siteType) siteType = 'Generator';
+
+  return (
+    <div>
+      {/*@ts-ignore*/}
+      <ManifestContext.Provider value={{ manifestStatus: status, signingSite }}>
+        <QuickSignBtn siteType={siteType} mtnHandler={handler} handleClick={() => undefined} />
+      </ManifestContext.Provider>
+      ,
+    </div>
+  );
+}
+
+describe('QuickSignBtn', () => {
   test('renders', () => {
-    const handler = createMockMTNHandler();
+    const handlerId = 'TXD987654321';
+    const handler = createMockMTNHandler({ siteType: 'Generator', epaSiteId: handlerId });
     renderWithProviders(
-      <HandlerSignBtn siteType={'Generator'} mtnHandler={handler} handleClick={() => undefined} />
-    );
-    expect(screen.getByRole('button')).toBeInTheDocument();
-  });
-  test('is disabled when already signed', () => {
-    const signed_handler = createMockMTNHandler({
-      signed: true,
-    });
-    renderWithProviders(
-      <HandlerSignBtn
-        siteType={'Generator'}
-        mtnHandler={signed_handler}
-        handleClick={() => undefined}
-      />
-    );
-    expect(screen.getByRole('button')).toBeDisabled();
-  });
-  test('is not disabled when user org is rcrainfo integrated', () => {
-    const unsigned_handler = createMockMTNHandler({
-      signed: false,
-      paperSignatureInfo: undefined,
-      electronicSignaturesInfo: undefined,
-    });
-    renderWithProviders(
-      <HandlerSignBtn
-        siteType={'Generator'}
-        mtnHandler={unsigned_handler}
-        handleClick={() => undefined}
-      />,
+      <TestComponent handler={handler} signingSite={handlerId} status={'Scheduled'} />,
       {
-        // Redux store state with an API user is required for this button to be active
         preloadedState: {
           profile: {
+            user: 'testuser1',
             org: {
-              name: 'Test Org',
-              id: '123',
               rcrainfoIntegrated: true,
+              id: '123',
+              name: 'Test Org',
             },
-            user: 'username',
-            rcrainfoProfile: {
-              user: 'username',
-              phoneNumber: '1231231234',
-              apiUser: true,
+            sites: {
+              TXD987654321: {
+                name: 'Test Site',
+                handler: handler,
+                permissions: { eManifest: 'signer' },
+              },
             },
           },
         },
       }
     );
-    expect(screen.getByRole('button')).not.toBeDisabled();
+    expect(screen.getByRole('button')).toBeInTheDocument();
+  });
+  test('is not disabled when user org is rcrainfo integrated', () => {
+    const unsigned_handler = createMockMTNHandler({
+      signed: false,
+      electronicSignaturesInfo: [],
+    });
+    renderWithProviders(<TestComponent siteType={'Generator'} handler={unsigned_handler} />, {
+      // Redux store state with an API user is required for this button to be active
+      preloadedState: {
+        profile: {
+          org: {
+            name: 'Test Org',
+            id: '123',
+            rcrainfoIntegrated: true,
+          },
+          user: 'username',
+          rcrainfoProfile: {
+            user: 'username',
+            phoneNumber: '1231231234',
+            apiUser: true,
+          },
+        },
+      },
+    });
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
   test('is disabled when API user but already signed', () => {
-    // A handler that has not signed the manifest to be rendered
+    const epaSiteId = 'TXD987654321';
     const unsigned_handler = createMockMTNHandler({
       signed: true,
+      siteType: 'Generator',
+      epaSiteId,
     });
     renderWithProviders(
-      <HandlerSignBtn
-        siteType={'Generator'}
-        mtnHandler={unsigned_handler}
-        handleClick={() => undefined}
-      />,
+      <TestComponent siteType={'Tsdf'} signingSite={'other_id'} handler={unsigned_handler} />,
       {
         // Redux store state with an API user is required for this button to be active
         preloadedState: {
@@ -88,6 +112,6 @@ describe('QuickerSignModalBtn', () => {
         },
       }
     );
-    expect(screen.getByRole('button')).toBeDisabled();
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 });

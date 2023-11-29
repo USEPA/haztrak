@@ -2,6 +2,7 @@ import { HaztrakSite, HtSiteTable } from 'components/HaztrakSite';
 import { HtCard, HtModal } from 'components/UI';
 import { useHtApi } from 'hooks';
 import React, { useEffect, useState } from 'react';
+import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 /**
@@ -21,9 +22,8 @@ export function SiteList() {
   };
 
   return (
-    <>
-      <HtCard>
-        <HtCard.Header title="My Sites" />
+    <Container className="my-3">
+      <HtCard title="My Sites">
         <HtCard.Body>
           {loading && !error ? (
             <HtCard.Spinner message="Loading your sites..." />
@@ -54,6 +54,6 @@ export function SiteList() {
           )}
         </HtCard.Body>
       </HtCard>
-    </>
+    </Container>
   );
 }

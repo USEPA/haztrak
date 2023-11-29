@@ -4,7 +4,7 @@ import { RcraSiteDetails } from 'components/RcraSite';
 import { HtCard } from 'components/UI';
 import { useHtApi } from 'hooks';
 import React, { ReactElement } from 'react';
-import { Button, Container } from 'react-bootstrap';
+import { Button, Container, Stack } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 
 /**
@@ -22,25 +22,27 @@ export function SiteDetails(): ReactElement {
 
   if (error) throw error;
   return (
-    <Container className="py-3">
-      <div className="mx-1 d-flex flex-row-reverse">
-        <SyncManifestBtn siteId={siteId ? siteId : ''} />
-        <Button variant="primary" onClick={() => navigate(`/site/${siteId}/manifest`)}>
-          View Manifest
-        </Button>
-      </div>
-      <HtCard>
-        <HtCard.Header title={siteId} />
-        <HtCard.Body>
-          {loading ? (
-            <HtCard.Spinner message="Loading site details..." />
-          ) : siteData ? (
-            <RcraSiteDetails handler={siteData.handler} />
-          ) : (
-            <></>
-          )}
-        </HtCard.Body>
-      </HtCard>
+    <Container>
+      <Stack className="my-3" gap={2}>
+        <div className="pe-0 d-flex flex-row-reverse">
+          <SyncManifestBtn siteId={siteId ? siteId : ''} />
+          <div className="me-2">
+            <Button variant="secondary" onClick={() => navigate(`/site/${siteId}/manifest`)}>
+              View Manifest
+            </Button>
+          </div>
+        </div>
+        <HtCard>
+          <HtCard.Header title={siteId} />
+          <HtCard.Body>
+            {loading ? (
+              <HtCard.Spinner message="Loading site details..." />
+            ) : (
+              siteData && <RcraSiteDetails handler={siteData.handler} />
+            )}
+          </HtCard.Body>
+        </HtCard>
+      </Stack>
     </Container>
   );
 }

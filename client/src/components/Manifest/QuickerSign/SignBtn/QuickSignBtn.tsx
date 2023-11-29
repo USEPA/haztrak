@@ -24,7 +24,7 @@ interface QuickerSignModalBtnProps extends ButtonProps {
  * The button will be disabled if siteId (the EPA ID number) is not provided
  * @constructor
  */
-export function HandlerSignBtn({
+export function QuickSignBtn({
   siteType,
   mtnHandler,
   handleClick,

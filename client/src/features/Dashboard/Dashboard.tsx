@@ -42,13 +42,15 @@ export function Dashboard(): ReactElement {
   };
 
   return (
-    <Container className="py-2">
-      <HtCard>
-        <Accordion>
+    <Container className="py-2 pt-3">
+      <Row className="my-3">
+        <Accordion className="px-0">
           <Accordion.Item eventKey={'0'}>
             <Accordion.Header title="Getting Started">Welcome, let's get started</Accordion.Header>
             <Accordion.Body>
               <Row>
+                <h3>Features</h3>
+                <hr />
                 <Col className="text-center">
                   <NewManifestBtn />
                   <p>
@@ -72,70 +74,78 @@ export function Dashboard(): ReactElement {
                   <p>View your site's information, check that EPA has the right information.</p>
                 </Col>
               </Row>
+              <h3>Alerts</h3>
+              <hr />
+              <Row className="align-content-start">
+                <Col className="text-center">
+                  <HtButton
+                    onClick={() => {
+                      launchExampleTask();
+                    }}
+                  >
+                    Long Running Tasks
+                  </HtButton>
+                  <p>Check out what a long running task will look like</p>
+                </Col>
+                <Col className="text-center">
+                  <HtButton
+                    variant="danger"
+                    onClick={() => {
+                      dispatch(
+                        addAlert({
+                          message: 'Oh No!',
+                          autoClose: 1000,
+                          type: 'warning',
+                        })
+                      );
+                    }}
+                  >
+                    Show Warning
+                  </HtButton>
+                  <p>Check out what an alert will look like</p>
+                </Col>
+              </Row>
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
-      </HtCard>
-      <HtCard>
-        <HtCard.Header title="Manifests" />
-        <HtCard.Body>
-          <Row>
-            <Col>
-              <h3 className="fw-bold d-flex justify-content-center">
-                <Link to={'/coming-soon'}>
-                  <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
-                    <FontAwesomeIcon icon={faTruck} size={'2xl'} className="link-light" />
-                  </Button>
-                </Link>
-              </h3>
-              <p className="d-flex justify-content-center">Manifests in transit</p>
-            </Col>
-            <Col>
-              <h3 className="fw-bold d-flex justify-content-center">
-                <Link to={'/coming-soon'}>
-                  <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
-                    <FontAwesomeIcon icon={faSignature} size={'2xl'} className="link-light" />
-                  </Button>
-                </Link>
-              </h3>
-              <p className="d-flex justify-content-center">Ready for Signature</p>
-            </Col>
-            <Col>
-              <h3 className="fw-bold d-flex justify-content-center">
-                <Link to={'/coming-soon'}>
-                  <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
-                    <FontAwesomeIcon icon={faRecycle} size={'2xl'} className="link-light" />
-                  </Button>
-                </Link>
-              </h3>
-              <p className="d-flex justify-content-center">Received</p>
-            </Col>
-          </Row>
-        </HtCard.Body>
-      </HtCard>
-      <Row className="align-content-start">
-        <HtButton
-          onClick={() => {
-            launchExampleTask();
-          }}
-        >
-          Click me
-        </HtButton>
-        <HtButton
-          variant="danger"
-          onClick={() => {
-            dispatch(
-              addAlert({
-                message: 'Oh No! (v2)',
-                id: 'home-page-test-id',
-                autoClose: 500,
-                type: 'warning',
-              })
-            );
-          }}
-        >
-          Show Alert
-        </HtButton>
+      </Row>
+      <Row className="my-3">
+        <HtCard title="Manifests">
+          <HtCard.Body>
+            <Row>
+              <Col>
+                <h3 className="fw-bold d-flex justify-content-center">
+                  <Link to={'/coming-soon'}>
+                    <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
+                      <FontAwesomeIcon icon={faTruck} size={'2xl'} className="link-light" />
+                    </Button>
+                  </Link>
+                </h3>
+                <p className="d-flex justify-content-center">Manifests in transit</p>
+              </Col>
+              <Col>
+                <h3 className="fw-bold d-flex justify-content-center">
+                  <Link to={'/coming-soon'}>
+                    <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
+                      <FontAwesomeIcon icon={faSignature} size={'2xl'} className="link-light" />
+                    </Button>
+                  </Link>
+                </h3>
+                <p className="d-flex justify-content-center">Ready for Signature</p>
+              </Col>
+              <Col>
+                <h3 className="fw-bold d-flex justify-content-center">
+                  <Link to={'/coming-soon'}>
+                    <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
+                      <FontAwesomeIcon icon={faRecycle} size={'2xl'} className="link-light" />
+                    </Button>
+                  </Link>
+                </h3>
+                <p className="d-flex justify-content-center">Received</p>
+              </Col>
+            </Row>
+          </HtCard.Body>
+        </HtCard>
       </Row>
     </Container>
   );
