@@ -4,6 +4,7 @@ import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import { RcraApiUserBtn } from 'components/Rcrainfo';
 import React from 'react';
 import { ButtonProps } from 'react-bootstrap';
+import { siteByEpaIdSelector, useAppSelector } from 'store';
 
 interface QuickerSignData {
   handler: Handler | undefined;
@@ -29,8 +30,8 @@ export function QuickerSignModalBtn({
   disabled,
   iconOnly = false,
 }: QuickerSignModalBtnProps) {
-  if (mtnHandler === undefined) {
-    return null;
+  if (!useAppSelector(siteByEpaIdSelector(mtnHandler?.epaSiteId))) {
+    return <></>;
   }
   return (
     <RcraApiUserBtn

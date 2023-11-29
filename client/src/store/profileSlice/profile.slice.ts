@@ -4,6 +4,7 @@
  */
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HaztrakSite } from 'components/HaztrakSite';
+import { RcraSite } from 'components/RcraSite';
 import { UserApi } from 'services';
 import { RootState } from 'store';
 
@@ -174,7 +175,9 @@ const profileSlice = createSlice({
 });
 
 /** Retrieve a Haztrak site from the users Profile by the site's EPA ID number */
-export const siteByEpaIdSelector = (epaId: string | undefined) =>
+export const siteByEpaIdSelector = (
+  epaId: string | undefined
+): ((state: RootState) => RcraSite | undefined) =>
   createSelector(
     (state: { profile: ProfileSlice }) => state.profile.sites,
     (sites: Record<string, HaztrakProfileSite> | undefined) => {
