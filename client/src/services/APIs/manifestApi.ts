@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios';
 import { Manifest } from 'components/Manifest';
 import { QuickerSignature } from 'components/Manifest/QuickerSign';
-import { htApi } from 'services/htApi';
 import { TaskStatus } from 'store';
+import { htApi } from './htApi';
 
 export const manifestApi = {
   /** Sign a manifest through the Haztrak Proxy endpoint */

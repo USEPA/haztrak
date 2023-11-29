@@ -3,7 +3,7 @@ import { faAngleRight, faCheck, faSignature } from '@fortawesome/free-solid-svg-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Transporter } from 'components/Manifest';
 import { Manifest } from 'components/Manifest/manifestSchema';
-import { QuickerSignData, QuickerSignModalBtn } from 'components/Manifest/QuickerSign';
+import { HandlerSignBtn, QuickerSignData } from 'components/Manifest/QuickerSign';
 import React, { useState } from 'react';
 import { Accordion, Button, Card, Col, Row, Table, useAccordionButton } from 'react-bootstrap';
 import { UseFieldArrayReturn } from 'react-hook-form';
@@ -67,7 +67,7 @@ function TransporterTable({
                 </Col>
                 <Col xs={1}>
                   {readOnly ? (
-                    <QuickerSignModalBtn
+                    <HandlerSignBtn
                       siteType={'Transporter'}
                       mtnHandler={transporter}
                       handleClick={setupSign}
