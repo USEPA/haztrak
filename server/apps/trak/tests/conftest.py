@@ -14,7 +14,7 @@ from apps.trak.models import (
     Signer,
     WasteCode,
 )
-from apps.trak.models.waste_models import DotLookupType
+from apps.trak.models.waste_models import DotLookupType, WasteLine
 
 
 @pytest.fixture
@@ -30,7 +30,7 @@ def manifest_handler_factory(db, rcra_site_factory, paper_signature_factory):
             paper_signature=paper_signature or paper_signature_factory(),
         )
 
-    yield create_manifest_handler
+    return create_manifest_handler
 
 
 @pytest.fixture
@@ -46,7 +46,7 @@ def paper_signature_factory(db, faker: Faker):
             sign_date=sign_date or datetime.now(UTC),
         )
 
-    yield create_signature
+    return create_signature
 
 
 @pytest.fixture
@@ -66,7 +66,7 @@ def e_signature_factory(db, signer_factory, manifest_handler_factory, faker: Fak
             on_behalf=False,
         )
 
-    yield create_e_signature
+    return create_e_signature
 
 
 @pytest.fixture
@@ -94,7 +94,7 @@ def waste_code_factory(db):
             )
         return waste_code
 
-    yield create_waste_code
+    return create_waste_code
 
 
 @pytest.fixture
@@ -118,7 +118,7 @@ def signer_factory(db, faker: Faker):
             rcra_user_id=rcra_user_id or faker.user_name(),
         )
 
-    yield creat_signer
+    return creat_signer
 
 
 @pytest.fixture
@@ -142,7 +142,33 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
             or manifest_handler_factory(rcra_site=rcra_site_factory(site_type=RcraSiteType.TSDF)),
         )
 
-    yield create_manifest
+    return create_manifest
+
+
+@pytest.fixture
+def waste_line_factory(db, faker: Faker):
+    """Abstract factory for Haztrak DotLookup model"""
+
+    def create_waste_line(
+        manifest: Manifest = None,
+        dot_hazardous: Optional[bool] = True,
+        quantity: Optional[dict] = None,
+        line_number: Optional[int] = 1,
+        br: Optional[bool] = False,
+        pcb: Optional[bool] = False,
+        epa_waste: Optional[bool] = True,
+    ) -> WasteLine:
+        return WasteLine.objects.create(
+            manifest=manifest,
+            dot_hazardous=dot_hazardous,
+            quantity=quantity or {"units": "G", "value": 1},  # Temporary
+            line_number=line_number,
+            br=br,
+            pcb=pcb,
+            epa_waste=epa_waste,
+        )
+
+    return create_waste_line
 
 
 @pytest.fixture
@@ -157,4 +183,4 @@ def dot_option_factory(db, faker: Faker):
             value=value or faker.pystr(max_chars=10), value_type=value_type
         )
 
-    yield create_dot_option
+    return create_dot_option

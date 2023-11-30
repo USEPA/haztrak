@@ -60,39 +60,57 @@ class ManifestManager(TrakBaseManager):
             case _:
                 raise ValueError(f"unrecognized site_type argument {site_type}")
 
-    def save(self, **manifest_data: Dict):
+    def save(self, *, mtn: str, manifest_data: Dict):
         """Create a manifest with its related models instances"""
         waste_data = []
-        trans_data = []
-        additional_info = None
-        manifest_generator = None
-        manifest_tsdf = None
+        transporter_data = []
         if "wastes" in manifest_data:
             waste_data = manifest_data.pop("wastes")
         if "transporters" in manifest_data:
-            trans_data = manifest_data.pop("transporters")
-        # Create manifest handlers (generator and TSDF) and all related models
-        if "generator" in manifest_data:
-            manifest_generator = Handler.objects.save(**manifest_data.pop("generator"))
-        if "tsdf" in manifest_data:
-            manifest_tsdf = Handler.objects.save(**manifest_data.pop("tsdf"))
-        if "additional_info" in manifest_data:
-            additional_info = AdditionalInfo.objects.create(**manifest_data.pop("additional_info"))
-        # Create model instances
-        manifest = super().save(
-            generator=manifest_generator,
-            tsdf=manifest_tsdf,
-            additional_info=additional_info,
-            **manifest_data,
-        )
-        # save one-to-many objects that needs to Manifest.id as a foreign key
+            transporter_data = manifest_data.pop("transporters")
+        try:
+            old_manifest = Manifest.objects.get(mtn=mtn)
+            manifest = self._update_from_dict(old_manifest, manifest_data)
+        except Manifest.DoesNotExist:
+            manifest = self._create_from_dict(manifest_data)
         for waste_line in waste_data:
             saved_waste_line = WasteLine.objects.save(manifest=manifest, **waste_line)
             logger.debug(f"WasteLine saved {saved_waste_line.pk}")
-        for transporter in trans_data:
+        for transporter in transporter_data:
             saved_transporter = Transporter.objects.save(manifest=manifest, **transporter)
             logger.debug(f"WasteLine saved {saved_transporter.pk}")
         return manifest
+
+    @staticmethod
+    def _create_from_dict(data: dict):
+        """Create a manifest instance with a dictionary of data"""
+        if "generator" in data:
+            generator = Handler.objects.save(**data.pop("generator"))
+        if "tsdf" in data:
+            tsdf = Handler.objects.save(**data.pop("tsdf"))
+        if "additional_info" in data:
+            additional_info = AdditionalInfo.objects.create(**data.pop("additional_info"))
+        manifest = Manifest.objects.create(
+            generator=generator,
+            tsdf=tsdf,
+            additional_info=additional_info,
+            **data,
+        )
+        return manifest
+
+    @staticmethod
+    def _update_from_dict(instance, data: dict):
+        """Update a manifest instance with a dictionary of data"""
+        if "generator" in data:
+            instance.generator = Handler.objects.save(**data.pop("generator"))
+        if "tsdf" in data:
+            instance.tsdf = Handler.objects.save(**data.pop("tsdf"))
+        if "additional_info" in data:
+            instance.additional_info = AdditionalInfo.objects.create(**data.pop("additional_info"))
+        for attr, value in data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 
 
 class Manifest(TrakBaseModel):
