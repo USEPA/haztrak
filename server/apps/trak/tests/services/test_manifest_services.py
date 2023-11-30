@@ -3,6 +3,8 @@ import pytest_mock
 from rest_framework import status
 
 from apps.core.services import RcrainfoService, get_rcrainfo_client
+from apps.trak.models import WasteLine
+from apps.trak.serializers import HandlerSerializer, WasteLineSerializer
 from apps.trak.services import ManifestService, update_manifest
 
 
@@ -42,6 +44,37 @@ class TestUpdateManifest:
         manifest_factory(mtn=old_mtn)
         new_manifest = update_manifest(mtn=old_mtn, data={"mtn": new_mtn})
         assert new_manifest.mtn == new_mtn
+
+    def test_updates_generator(
+        self, manifest_factory, manifest_handler_factory, rcra_site_factory
+    ):
+        mtn = "000000123DFT"
+        generator_epa_id = "TXD987654321"
+        manifest_factory(mtn=mtn)
+        txd987654321 = rcra_site_factory(epa_id=generator_epa_id)
+        manifest_generator = manifest_handler_factory(rcra_site=txd987654321)
+        json_data = HandlerSerializer(manifest_generator).data
+        new_serializer = HandlerSerializer(data=json_data)
+        new_serializer.is_valid(raise_exception=True)
+        new_manifest = update_manifest(mtn=mtn, data={"generator": new_serializer.validated_data})
+        assert new_manifest.generator.rcra_site.epa_id == generator_epa_id
+
+    def test_removes_old_waste_lines(
+        self, manifest_factory, manifest_handler_factory, rcra_site_factory, waste_line_factory
+    ):
+        mtn = "000000123DFT"
+        original_manifest = manifest_factory(mtn=mtn)
+        waste_line_factory(manifest=original_manifest, line_number=1)
+        new_waste_line = waste_line_factory(manifest=original_manifest, line_number=1)
+        new_waste_data = WasteLineSerializer(data=WasteLineSerializer(new_waste_line).data)
+        new_waste_data.is_valid(raise_exception=True)
+        update_manifest(
+            mtn=mtn,
+            data={"wastes": [new_waste_data.validated_data]},
+        )
+        new_waste_lines = WasteLine.objects.filter(manifest__mtn=mtn)
+        for wl in new_waste_lines:
+            print(wl)
 
 
 class TestSignManifest:

@@ -216,11 +216,11 @@ class ManifestSerializer(TrakBaseSerializer):
         allow_null=True,
     )
 
-    def update(self, instance, validated_data: Dict) -> Manifest:
-        return self.Meta.model.objects.save(**validated_data)
+    def update(self, instance: Manifest, validated_data: Dict) -> Manifest:
+        return self.Meta.model.objects.save(mtn=instance.mtn, manifest_data=validated_data)
 
     def create(self, validated_data: Dict) -> Manifest:
-        return self.Meta.model.objects.save(**validated_data)
+        return self.Meta.model.objects.save(mtn=None, manifest_data=validated_data)
 
     def validate(self, data):
         if data["mtn"] == "" and data["status"] == "NotAssigned":

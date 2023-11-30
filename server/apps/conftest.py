@@ -211,7 +211,7 @@ def rcra_site_factory(db, address_factory, contact_factory):
             contact=contact_factory(),
         )
 
-    yield create_rcra_site
+    return create_rcra_site
 
 
 @pytest.fixture
