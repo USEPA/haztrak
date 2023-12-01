@@ -3,7 +3,7 @@ import { NavDropdown } from 'components/Layout/Nav/NavDropdown';
 import { NavItem } from 'components/Layout/Nav/NavItem';
 import { NavContext, NavContextProps } from 'components/Layout/Root';
 import React, { ReactElement, useContext } from 'react';
-import { Offcanvas } from 'react-bootstrap';
+import { Nav, Offcanvas } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from 'store';
@@ -40,17 +40,15 @@ export function Sidebar(): ReactElement | null {
       </Offcanvas.Header>
       <Offcanvas.Body>
         <nav className="sb-sidenav" id="sidenavAccordion">
-          <div className="sb-sidenav-menu">
-            <div className="nav">
-              {routes.map((route) => {
-                if (typeof route === 'object' && 'routes' in route) {
-                  return <NavDropdown key={route.id} section={route} />;
-                } else if (typeof route === 'object' && 'url' in route) {
-                  return <NavItem key={route.id} route={route} />;
-                }
-              })}
-            </div>
-          </div>
+          <Nav className="flex-column">
+            {routes.map((route) => {
+              if (typeof route === 'object' && 'routes' in route) {
+                return <NavDropdown key={route.id} section={route} />;
+              } else if (typeof route === 'object' && 'url' in route) {
+                return <NavItem key={route.id} route={route} />;
+              }
+            })}
+          </Nav>
         </nav>
       </Offcanvas.Body>
     </Offcanvas>

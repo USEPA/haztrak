@@ -19,10 +19,7 @@ export function NavDropdown({ section }: SidebarSectionProps) {
         aria-controls="collapseSite"
         aria-expanded={collapsed}
       >
-        <span>
-          <FontAwesomeIcon icon={section.icon} size="xl" className="me-2 text-primary" />
-        </span>
-        <span className="text-secondary h6 mb-0">{section.name}</span>
+        <h3 className="h5 text-dark">{section.name}</h3>
         <span
           className={`sb-sidenav-collapse-arrow nav-dropdown-arrow d-inline-block ms-auto text-secondary ${
             !collapsed ? '' : 'rotate-90-cc'
