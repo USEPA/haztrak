@@ -13,8 +13,8 @@ export function Login(): ReactElement {
   useTitle('Login');
 
   return (
-    <Container className="py-3 ">
-      <Row xs={12} className="d-flex justify-content-center">
+    <Container fluid className="bg-light vh-100 align-items-center py-5 d-flex">
+      <div className="m-auto" style={{ maxWidth: 330 }}>
         <img
           src={logo}
           alt="haztrak logo, hazardous waste tracking made easy."
@@ -22,17 +22,9 @@ export function Login(): ReactElement {
           height={100}
           className="my-3"
         />
-      </Row>
-      <Row className="d-flex justify-content-center">
-        <Col xs={10} md={8} lg={6}>
-          <HtCard>
-            <HtCard.Header title="Sign In" />
-            <HtCard.Body>
-              <LoginForm />
-            </HtCard.Body>
-          </HtCard>
-        </Col>
-      </Row>
+        <h1 className="h3 mb-3 text-start">Please Sign In</h1>
+        <LoginForm />
+      </div>
     </Container>
   );
 }
