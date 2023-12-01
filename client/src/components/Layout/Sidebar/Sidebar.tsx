@@ -28,7 +28,7 @@ export function Sidebar(): ReactElement | null {
     <Offcanvas show={showSidebar} onHide={setShowSidebar}>
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>
-          <Link to="/" className="navbar-brand ps-1 mb-0">
+          <Link to="/home" className="navbar-brand ps-1 mb-0">
             <img
               src={logo}
               alt="haztrak logo, hazardous waste tracking made easy."

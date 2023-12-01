@@ -76,11 +76,15 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '*',
-    element: <ErrorPage code={404} />,
-  },
-  {
     path: '/login',
     element: <Login />,
+  },
+  {
+    path: '/register',
+    lazy: () => import('./features/LandingPage'),
+  },
+  {
+    path: '*',
+    element: <ErrorPage code={404} />,
   },
 ]);

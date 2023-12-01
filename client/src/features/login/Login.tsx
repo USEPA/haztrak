@@ -23,11 +23,10 @@ export function Login(): ReactElement {
           className="my-3"
         />
       </Row>
-      <Row>
-        <Col></Col>
+      <Row className="d-flex justify-content-center">
         <Col xs={10} md={8} lg={6}>
           <HtCard>
-            <HtCard.Header title="login" />
+            <HtCard.Header title="Sign In" />
             <HtCard.Body>
               <LoginForm />
             </HtCard.Body>
