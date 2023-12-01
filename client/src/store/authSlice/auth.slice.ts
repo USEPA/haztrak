@@ -55,25 +55,15 @@ export const getHaztrakUser = createAsyncThunk('auth/getHaztrakUser', async (arg
   }
 });
 
-/**
- * User logout Redux reducer Function
- *
- * @description on logout, we want to strip all information
- * from browser storage and redux store's state
- * @param    {Object} user UserState
- * @return   {Object}      UserState
- */
-function logout(user: UserState): object {
-  localStorage.removeItem('user');
-  localStorage.removeItem('token');
-  return { ...initialState, user: undefined, token: undefined } as UserState;
-}
-
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout,
+    logout(state: UserState): UserState {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      return { ...initialState, user: undefined, token: undefined };
+    },
     updateUserProfile(state: UserState, action: PayloadAction<HaztrakUser>) {
       return {
         ...state,
@@ -149,4 +139,4 @@ export const selectUser = (state: RootState): HaztrakUser | undefined => state.a
 export const selectUserState = (state: RootState): UserState => state.auth;
 
 export default authSlice.reducer;
-export const { updateUserProfile } = authSlice.actions;
+export const { updateUserProfile, logout } = authSlice.actions;
