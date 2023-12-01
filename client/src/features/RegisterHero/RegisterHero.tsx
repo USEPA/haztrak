@@ -5,7 +5,7 @@ import { FeatureDescription } from 'components/UI';
 import { faFileLines, faPen, faSitemap } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-export function LandingPage() {
+export function RegisterHero() {
   return (
     <Container fluid className="text-center px-4 py-5 bg-light vh-100">
       <img

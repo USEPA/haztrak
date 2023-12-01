@@ -81,7 +81,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/register',
-    lazy: () => import('./features/LandingPage'),
+    lazy: () => import('./features/RegisterHero'),
   },
   {
     path: '*',
