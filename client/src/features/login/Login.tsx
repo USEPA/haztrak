@@ -13,26 +13,27 @@ export function Login(): ReactElement {
   useTitle('Login');
 
   return (
-    <Container className="py-3 d-flex justify-content-center">
-      <Col xs={10} md={8} lg={6}>
-        <Row>
-          <img
-            src={logo}
-            alt="haztrak logo, hazardous waste tracking made easy."
-            width="auto"
-            height={100}
-            className="my-3"
-          />
-        </Row>
-        <Row>
+    <Container className="py-3 ">
+      <Row xs={12} className="d-flex justify-content-center">
+        <img
+          src={logo}
+          alt="haztrak logo, hazardous waste tracking made easy."
+          width="auto"
+          height={100}
+          className="my-3"
+        />
+      </Row>
+      <Row>
+        <Col></Col>
+        <Col xs={10} md={8} lg={6}>
           <HtCard>
             <HtCard.Header title="login" />
             <HtCard.Body>
               <LoginForm />
             </HtCard.Body>
           </HtCard>
-        </Row>
-      </Col>
+        </Col>
+      </Row>
     </Container>
   );
 }
