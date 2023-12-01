@@ -25,7 +25,7 @@ export function WasteLineTable({
     return <></>;
   }
   return (
-    <Table striped>
+    <Table striped responsive>
       <thead>
         <tr>
           <th>#</th>

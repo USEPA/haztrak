@@ -10,7 +10,7 @@ interface HtSiteTableProps {
 
 export function HtSiteTable({ sitesData }: HtSiteTableProps) {
   return (
-    <Table striped hover>
+    <Table striped hover responsive>
       <thead>
         <tr>
           <th>Site</th>
@@ -30,7 +30,7 @@ export function HtSiteTable({ sitesData }: HtSiteTableProps) {
               </td>
               <td>{site.handler.epaSiteId}</td>
               <td>{site.handler.siteType}</td>
-              <td className="d-flex justify-content-evenly">
+              <td>
                 <SiteTableRowActions siteId={site.handler.epaSiteId} />
               </td>
             </tr>

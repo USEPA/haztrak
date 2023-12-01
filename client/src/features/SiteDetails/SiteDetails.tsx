@@ -25,11 +25,11 @@ export function SiteDetails(): ReactElement {
     <Container>
       <Stack className="my-3" gap={2}>
         <div className="pe-0 d-flex flex-row-reverse">
-          <SyncManifestBtn siteId={siteId ? siteId : ''} />
+          <Button variant="outline-success" onClick={() => navigate(`/site/${siteId}/manifest`)}>
+            View Manifest
+          </Button>
           <div className="me-2">
-            <Button variant="secondary" onClick={() => navigate(`/site/${siteId}/manifest`)}>
-              View Manifest
-            </Button>
+            <SyncManifestBtn siteId={siteId ? siteId : ''} />
           </div>
         </div>
         <HtCard>

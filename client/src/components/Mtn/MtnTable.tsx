@@ -182,7 +182,7 @@ export function MtnTable({ manifests }: MtnTableProps) {
           />
         </Col>
       </div>
-      <Table>
+      <Table responsive>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
