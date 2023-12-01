@@ -24,8 +24,8 @@ export function NavItem({ route, targetBlank }: NavItemProps) {
       target={targetBlank ? '_blank' : undefined}
       onClick={toggleSidebar}
     >
-      <FontAwesomeIcon icon={route.icon} size="lg" className="me-2 text-primary" />
-      <span className="h5 mb-0">{route.text}</span>
+      <FontAwesomeIcon icon={route.icon} className="me-2 text-primary" />
+      <span className=" mb-0">{route.text}</span>
       {route.external && (
         <FontAwesomeIcon
           icon={faArrowUpRightFromSquare}

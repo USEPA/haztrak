@@ -1,5 +1,5 @@
 import logo from 'assets/haztrak-logos/haztrak-logo-zip-file/png/logo-black-crop.png';
-import { NavDropdown } from 'components/Layout/Nav/NavDropdown';
+import { NavSection } from 'components/Layout/Nav/NavSection';
 import { NavItem } from 'components/Layout/Nav/NavItem';
 import { NavContext, NavContextProps } from 'components/Layout/Root';
 import React, { ReactElement, useContext } from 'react';
@@ -9,16 +9,7 @@ import { Link } from 'react-router-dom';
 import { RootState } from 'store';
 import { routes } from './SidebarRoutes';
 
-interface SidebarProps {
-  show: boolean;
-  onHide: (show: boolean) => void;
-}
-
-/**
- * Vertical sidebar for navigation that disappears when the viewport is small
- * @returns {ReactElement|null}
- * @constructor
- */
+/** Vertical sidebar for navigation that disappears when the viewport is small*/
 export function Sidebar(): ReactElement | null {
   const authUser = useSelector((state: RootState) => state.auth.user);
   const { showSidebar, setShowSidebar } = useContext<NavContextProps>(NavContext);
@@ -28,7 +19,7 @@ export function Sidebar(): ReactElement | null {
     <Offcanvas show={showSidebar} onHide={setShowSidebar}>
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>
-          <Link to="/home" className="navbar-brand ps-1 mb-0">
+          <Link to="/" className="navbar-brand ps-1 mb-0">
             <img
               src={logo}
               alt="haztrak logo, hazardous waste tracking made easy."
@@ -43,7 +34,7 @@ export function Sidebar(): ReactElement | null {
           <Nav className="flex-column">
             {routes.map((route) => {
               if (typeof route === 'object' && 'routes' in route) {
-                return <NavDropdown key={route.id} section={route} />;
+                return <NavSection key={route.id} section={route} />;
               } else if (typeof route === 'object' && 'url' in route) {
                 return <NavItem key={route.id} route={route} />;
               }
