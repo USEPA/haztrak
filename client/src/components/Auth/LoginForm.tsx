@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HtForm } from 'components/UI';
 import React, { useEffect } from 'react';
-import { Form } from 'react-bootstrap';
+import { FloatingLabel, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { login, selectUserState, useAppDispatch, useAppSelector } from 'store';
@@ -38,25 +38,25 @@ export function LoginForm() {
   return (
     <HtForm onSubmit={handleSubmit(onSubmit)}>
       <HtForm.Group>
-        <HtForm.Label htmlFor="username">Username</HtForm.Label>
-        <Form.Control
-          id="username"
-          type="text"
-          placeholder={'wary-walrus-123'}
-          {...register('username', {})}
-          className={errors.username && 'is-invalid'}
-        />
+        <FloatingLabel controlId="username" label="Username">
+          <Form.Control
+            type="text"
+            placeholder={'Username'}
+            {...register('username', {})}
+            className={errors.username && 'is-invalid'}
+          />
+        </FloatingLabel>
         <div className="invalid-feedback">{errors.username?.message}</div>
       </HtForm.Group>
       <HtForm.Group>
-        <HtForm.Label htmlFor="password">Password</HtForm.Label>
-        <Form.Control
-          id="password"
-          type="password"
-          placeholder="MyP@ssword123"
-          {...register('password', {})}
-          className={errors.password && 'is-invalid'}
-        />
+        <FloatingLabel controlId="password" label="Password">
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            {...register('password', {})}
+            className={errors.password && 'is-invalid'}
+          />
+        </FloatingLabel>
         <div className="invalid-feedback">{errors.password?.message}</div>
       </HtForm.Group>
       <button type="submit" disabled={isSubmitting} className="btn btn-primary m-2">

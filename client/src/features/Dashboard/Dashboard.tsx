@@ -1,7 +1,7 @@
-import { faRecycle, faSignature, faTruck } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faRecycle, faSignature, faTruck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NewManifestBtn } from 'components/Manifest';
-import { HtButton, HtCard } from 'components/UI';
+import { FeatureDescription, HtButton, HtCard } from 'components/UI';
 import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';

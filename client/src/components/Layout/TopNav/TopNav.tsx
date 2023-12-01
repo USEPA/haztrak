@@ -7,6 +7,7 @@ import { Button, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from 'store';
+import { logout } from 'store/authSlice/auth.slice';
 
 interface TopNavProps {
   showSidebar: boolean;
@@ -18,8 +19,8 @@ export function TopNav() {
   const authUser = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const navigation = useNavigate();
-  const logout = () => {
-    dispatch({ type: 'user/logout' });
+  const handleLogout = () => {
+    dispatch(logout());
     navigation('/login');
   };
   if (!authUser) return null;
@@ -73,7 +74,7 @@ export function TopNav() {
                 Profile
               </Dropdown.Item>
               <hr className="dropdown-divider" />
-              <Dropdown.Item onClick={logout}>
+              <Dropdown.Item onClick={handleLogout}>
                 <FontAwesomeIcon icon={faArrowRightFromBracket} className="pe-2 text-danger" />
                 Logout
               </Dropdown.Item>

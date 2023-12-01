@@ -96,7 +96,7 @@ function TransporterTable({
               </Row>
               <Accordion.Collapse eventKey={transporter.epaSiteId}>
                 <Card.Body>
-                  <Table>
+                  <Table responsive>
                     <thead>
                       <tr>
                         <th>EPA ID</th>

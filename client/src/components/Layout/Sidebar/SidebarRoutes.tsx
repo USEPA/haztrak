@@ -3,9 +3,6 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import {
   faCircleQuestion,
   faFileLines,
-  faFolderOpen,
-  faInfo,
-  faLocationArrow,
   faLocationDot,
   faNetworkWired,
   faRecycle,
@@ -24,7 +21,7 @@ export interface Route {
 export interface RoutesSection {
   name: string;
   id: string;
-  icon: IconProp;
+  icon?: IconProp;
   routes: Route[];
 }
 
@@ -36,9 +33,8 @@ export const routes: Array<Route | RoutesSection> = [
     url: '/',
   },
   {
-    name: 'sites',
+    name: 'Site',
     id: 'sitesSection',
-    icon: faLocationArrow,
     routes: [
       {
         id: 'mySites',
@@ -57,13 +53,12 @@ export const routes: Array<Route | RoutesSection> = [
     ],
   },
   {
-    name: 'Manifests',
+    name: 'Manifest',
     id: 'manifestsSection',
-    icon: faFileLines,
     routes: [
       {
         id: 'My Manifests',
-        icon: faFolderOpen,
+        icon: faFileLines,
         text: 'My Manifests',
         url: '/manifest',
         description: 'All hazardous waste manifest',
@@ -73,7 +68,6 @@ export const routes: Array<Route | RoutesSection> = [
   {
     name: 'Help',
     id: 'helpSection',
-    icon: faInfo,
     routes: [
       {
         id: 'About',
