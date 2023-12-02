@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserInfoForm } from 'components/User/UserInfoForm';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { HaztrakUser, ProfileSlice } from 'store';
@@ -18,10 +18,9 @@ const DEFAULT_USER: HaztrakUser = {
 };
 
 const server = setupServer(
-  rest.put(`${API_BASE_URL}/api/user`, (req, res, ctx) => {
+  http.put(`${API_BASE_URL}/api/user`, (info) => {
     const user: HaztrakUser = { ...DEFAULT_USER };
-    // @ts-ignore
-    return res(ctx.status(200), ctx.json({ ...user, ...req.body }));
+    return HttpResponse.json({ ...user, ...info.request.body });
   })
 );
 

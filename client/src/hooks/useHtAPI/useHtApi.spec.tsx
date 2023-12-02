@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import { useHtApi } from 'hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { render, renderWithProviders, screen } from 'test-utils';
@@ -34,25 +34,23 @@ function TestComponent({ url }: exampleProps) {
  */
 const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
 export const testURL = [
-  rest.get(`${API_BASE_URL}/api/test/url`, (req, res, ctx) => {
-    return res(
-      ctx.delay(),
-      ctx.status(200),
-      ctx.json({
+  http.get(`${API_BASE_URL}/api/test/url`, (info) => {
+    return HttpResponse.json(
+      {
         foo: 'foo',
         bar: 'bar',
-      })
+      },
+      { status: 200 }
     );
   }),
-  rest.get(`${API_BASE_URL}/api/bad/url`, (req, res, ctx) => {
-    return res(
-      ctx.delay(),
-      ctx.status(404),
-      ctx.json({
+  http.get(`${API_BASE_URL}/api/bad/url`, (info) => {
+    return HttpResponse.json(
+      {
         error: {
           message: 'resource not found',
         },
-      })
+      },
+      { status: 404 }
     );
   }),
 ];
