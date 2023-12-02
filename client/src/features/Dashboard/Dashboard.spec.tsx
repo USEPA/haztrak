@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { Dashboard } from 'features/Dashboard/Dashboard';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
@@ -10,18 +10,17 @@ import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vite
 const USERNAME = 'testuser1';
 
 const myAPIHandlers = [
-  rest.get(`${API_BASE_URL}/api/rcra/profile/${USERNAME}`, (req, res, ctx) => {
-    return res(
-      // Respond with a 200 status code
-      ctx.status(200),
-      ctx.json({
+  http.get(`${API_BASE_URL}/api/rcra/profile/${USERNAME}`, (info) => {
+    return HttpResponse.json(
+      {
         user: USERNAME,
         rcraAPIID: 'mockRcraAPIID',
         rcraUsername: undefined,
         epaSites: [],
         phoneNumber: undefined,
         apiUser: true,
-      })
+      },
+      { status: 200 }
     );
   }),
 ];

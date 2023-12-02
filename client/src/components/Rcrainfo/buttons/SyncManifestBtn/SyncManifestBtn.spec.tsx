@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { SyncManifestBtn } from 'components/Rcrainfo/buttons/SyncManifestBtn/SyncManifestBtn';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
@@ -11,13 +11,13 @@ const testTaskID = 'testTaskId';
 
 const server = setupServer(
   ...[
-    rest.post(`${API_BASE_URL}rcra/manifest/sync`, (req, res, ctx) => {
+    http.post(`${API_BASE_URL}rcra/manifest/sync`, (info) => {
       // Mock Sync Site Manifests response
-      return res(
-        ctx.status(200),
-        ctx.json({
+      return HttpResponse.json(
+        {
           task: testTaskID,
-        })
+        },
+        { status: 200 }
       );
     }),
   ]

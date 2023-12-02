@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { createMockHandler, createMockManifest, createMockRcrainfoSite } from '../fixtures';
 
 export const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
@@ -15,47 +15,47 @@ export const handlers = [
     sessionStorage.setItem('user', mockUsername);
 
     // Mock response from haztrak API
-    return res(
-      ctx.status(200),
-      ctx.json({
+    return HttpResponse.json(
+      {
         token: 'fake_token',
         user: mockUsername,
-      })
+      },
+      { status: 200 }
     );
   }),
   /** User RcraProfile data*/
   rest.get(`${API_BASE_URL}/api/rcra/profile/${mockUsername}`, (req, res, ctx) => {
     return res(
       // Respond with a 200 status code
-      ctx.status(200),
-      ctx.json({
+      {
         user: mockUsername,
         rcraAPIID: 'mockRcraAPIID',
         rcraUsername: undefined,
         epaSites: [],
         phoneNumber: undefined,
         apiUser: true,
-      })
+      },
+      { status: 200 }
     );
   }),
   /** List user sites*/
-  rest.get(`${API_BASE_URL}/api/site`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(mockSites));
+  http.get(`${API_BASE_URL}/api/site`, (info) => {
+    return HttpResponse.json(mockSites, { status: 200 });
   }),
   /** Site Details*/
-  rest.get(`${API_BASE_URL}/api/site/${mockEpaId}`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(mockSites[0]));
+  http.get(`${API_BASE_URL}/api/site/${mockEpaId}`, (info) => {
+    return HttpResponse.json(mockSites[0], { status: 200 });
   }),
   /** mock Manifest*/
-  rest.get(`${API_BASE_URL}/api/rcra/manifest/${mockMTN}`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(createMockManifest()));
+  http.get(`${API_BASE_URL}/api/rcra/manifest/${mockMTN}`, (info) => {
+    return HttpResponse.json(createMockManifest(), { status: 200 });
   }),
   /** list of manifests ('My Manifests' feature and a site's manifests)*/
-  rest.get(`${API_BASE_URL}/api/rcra/mtn*`, (req, res, ctx) => {
+  http.get(`${API_BASE_URL}/api/rcra/mtn*`, (info) => {
     const mockManifestArray = [
       createMockManifest(),
       createMockManifest({ manifestTrackingNumber: '987654321ELC', status: 'Pending' }),
     ];
-    return res(ctx.status(200), ctx.json(mockManifestArray));
+    return HttpResponse.json(mockManifestArray, { status: 200 });
   }),
 ];

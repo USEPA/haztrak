@@ -3,11 +3,11 @@ pre-commit==3.5.0
 pytest==7.4.3
 pytest-django==4.7.0
 responses==0.24.1
-ruff==0.1.5
+ruff==0.1.6
 celery-types==0.20.0
 djangorestframework-stubs==3.14.4
 ruff-lsp==0.0.45
 django-stubs==4.2.6
 django-stubs-ext==4.2.5
-Faker==20.0.3
+Faker==20.1.0
 -r requirements.txt
