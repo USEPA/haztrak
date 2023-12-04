@@ -21,7 +21,7 @@ interface RowDropdownItems {
  * different actions for eah row, expected to be part of a mapped table or list.
  * @constructor
  */
-export function SiteTableRowActions({ siteId }: SiteTableRowActionsProps) {
+export function SiteListItemActions({ siteId }: SiteTableRowActionsProps) {
   const navigate = useNavigate();
 
   const actions: RowDropdownItems[] = [
