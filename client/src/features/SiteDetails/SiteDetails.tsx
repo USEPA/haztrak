@@ -1,11 +1,10 @@
-import { HaztrakSite } from 'components/HaztrakSite';
 import { SyncManifestBtn } from 'components/Rcrainfo';
 import { RcraSiteDetails } from 'components/RcraSite';
 import { HtCard } from 'components/UI';
-import { useHtApi } from 'hooks';
 import React, { ReactElement } from 'react';
 import { Button, Container, Stack } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useGetUserHaztrakSiteQuery } from 'store';
 
 /**
  * GET and Display details of the Haztrak site including RCRA site details.
@@ -17,7 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
  */
 export function SiteDetails(): ReactElement {
   let { siteId } = useParams();
-  const [siteData, loading, error] = useHtApi<HaztrakSite>(`site/${siteId}`);
+  const { data, isLoading, error } = useGetUserHaztrakSiteQuery(siteId ? siteId : '');
   const navigate = useNavigate();
 
   if (error) throw error;
@@ -35,10 +34,10 @@ export function SiteDetails(): ReactElement {
         <HtCard>
           <HtCard.Header title={siteId} />
           <HtCard.Body>
-            {loading ? (
+            {isLoading ? (
               <HtCard.Spinner message="Loading site details..." />
             ) : (
-              siteData && <RcraSiteDetails handler={siteData.handler} />
+              data && <RcraSiteDetails handler={data.handler} />
             )}
           </HtCard.Body>
         </HtCard>

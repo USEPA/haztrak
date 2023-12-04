@@ -104,6 +104,12 @@ export const haztrakApi = createApi({
     getOrgSites: build.query<Array<HaztrakSite>, string>({
       query: (id) => ({ url: `org/${id}/site`, method: 'get' }),
     }),
+    getUserHaztrakSites: build.query<Array<HaztrakSite>, void>({
+      query: () => ({ url: 'site', method: 'get' }),
+    }),
+    getUserHaztrakSite: build.query<HaztrakSite, string>({
+      query: (epaId) => ({ url: `site/${epaId}`, method: 'get' }),
+    }),
     getMTN: build.query<Array<MtnDetails>, string | undefined>({
       query: (siteId) => ({ url: siteId ? `rcra/mtn/${siteId}` : 'rcra/mtn', method: 'get' }),
     }),
@@ -119,4 +125,6 @@ export const {
   useGetDotIdNumbersQuery,
   useGetOrgSitesQuery,
   useGetMTNQuery,
+  useGetUserHaztrakSitesQuery,
+  useGetUserHaztrakSiteQuery,
 } = haztrakApi;

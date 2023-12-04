@@ -1,17 +1,15 @@
-import { HaztrakSite, SiteListGroup } from 'components/HaztrakSite';
-import { HtCard, HtModal } from 'components/UI';
-import { useHtApi, useTitle } from 'hooks';
+import { SiteListGroup } from 'components/HaztrakSite';
+import { HtCard } from 'components/UI';
+import { useTitle } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useGetUserHaztrakSitesQuery } from 'store';
 
-/**
- * Returns a table displaying the Haztrak sites a user has access to.
- * @constructor
- */
+/** Returns a table displaying the Haztrak sites a user has access to.*/
 export function SiteList() {
   useTitle('Sites');
-  const [siteData, loading, error] = useHtApi<Array<HaztrakSite>>('site');
+  const { data, isLoading, error } = useGetUserHaztrakSitesQuery();
   const [showErrorModal, setShowErrorModal] = useState(false);
 
   useEffect(() => {
@@ -26,24 +24,10 @@ export function SiteList() {
     <Container className="my-3">
       <HtCard title="My Sites">
         <HtCard.Body>
-          {loading && !error ? (
-            <HtCard.Spinner message="Loading your sites..." />
-          ) : siteData ? (
-            // <HtSiteTable sitesData={siteData} />
-            <SiteListGroup sites={siteData} />
-          ) : error ? (
-            <>
-              <HtModal showModal={showErrorModal} handleClose={handleClose}>
-                <HtModal.Header closeButton>
-                  <HtModal.Title style={{ color: 'red' }} title="Error retrieving site list" />
-                </HtModal.Header>
-                <HtModal.Body>
-                  <p style={{ color: 'red' }}>
-                    Something went wrong. Please try again sometime later
-                  </p>
-                </HtModal.Body>
-              </HtModal>
-            </>
+          {isLoading && !error ? (
+            <HtCard.Spinner />
+          ) : data ? (
+            <SiteListGroup sites={data} />
           ) : (
             <div className="text-muted text-center">
               <p>No sites to display</p>
