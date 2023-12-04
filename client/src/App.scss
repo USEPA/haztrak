@@ -24,13 +24,22 @@
   --toastify-color-progress-success: var(--bs-success);
   --toastify-color-progress-warning: var(--bs-warning);
   --toastify-color-progress-error: var(--bs-danger);
+  font-family: 'Open Sans', sans-serif;
 }
+
+$font-family-base: 'Open Sans', sans-serif;
 
 // Override Bootstrap styles
 $card-cap-padding-y: 0.1rem;
 $card-cap-spacer-y: 0;
 $card-cap-spacer-x: 0;
 $info: #009999;
+
+@for $i from 1 through 6 {
+  h#{$i} {
+    font-family: 'Jost', sans-serif;
+  }
+}
 
 // Haztrak custom styles
 .overlay-spinner {
