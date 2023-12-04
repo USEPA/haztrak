@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Container } from 'react-bootstrap';
 import { useTitle } from 'hooks';
+import { HtSpinner } from 'components/UI';
 
 /**
  * Static page that talks about Haztrak's licensing, maybe versioning in future

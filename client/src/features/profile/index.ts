@@ -1,3 +1,4 @@
-import { Profile as Component } from './Profile';
+import { Profile } from './Profile';
 
-export { Component };
+export { Profile as Component };
+export default Profile;

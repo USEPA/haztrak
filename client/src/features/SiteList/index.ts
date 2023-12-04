@@ -1,3 +1,4 @@
-import { SiteList as Component } from 'features/SiteList/SiteList';
+import { SiteList } from 'features/SiteList/SiteList';
 
-export { Component };
+export { SiteList as Component };
+export default SiteList;
