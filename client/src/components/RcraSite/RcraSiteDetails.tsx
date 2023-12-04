@@ -21,7 +21,7 @@ export function RcraSiteDetails({ handler }: RcraSiteDetailsProps) {
   return (
     <div className="py-2">
       <Row>
-        <Col>
+        <Col xs={10}>
           <h4>{handler.name}</h4>
         </Col>
         <Col className="d-flex justify-content-end">
