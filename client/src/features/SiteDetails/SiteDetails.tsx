@@ -31,8 +31,7 @@ export function SiteDetails(): ReactElement {
             <SyncManifestBtn siteId={siteId ? siteId : ''} />
           </div>
         </div>
-        <HtCard>
-          <HtCard.Header title={siteId} />
+        <HtCard title={siteId}>
           <HtCard.Body>
             {isLoading ? (
               <HtCard.Spinner message="Loading site details..." />

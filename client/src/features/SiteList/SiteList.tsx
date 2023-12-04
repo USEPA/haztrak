@@ -1,7 +1,7 @@
 import { SiteListGroup } from 'components/HaztrakSite';
 import { HtCard } from 'components/UI';
 import { useTitle } from 'hooks';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useGetUserHaztrakSitesQuery } from 'store';
@@ -10,15 +10,7 @@ import { useGetUserHaztrakSitesQuery } from 'store';
 export function SiteList() {
   useTitle('Sites');
   const { data, isLoading, error } = useGetUserHaztrakSitesQuery();
-  const [showErrorModal, setShowErrorModal] = useState(false);
-
-  useEffect(() => {
-    if (error) setShowErrorModal(true);
-  }, [error]);
-
-  const handleClose = () => {
-    setShowErrorModal(false);
-  };
+  // ToDO - add global error handling
 
   return (
     <Container className="my-3">
