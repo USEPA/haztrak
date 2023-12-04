@@ -48,7 +48,6 @@ describe('SiteFilterForm', () => {
     await user.click(filterField);
     await user.type(filterField, userInput);
     await user.type(filterField, '{enter}');
-    screen.debug(undefined, Infinity);
     expect(screen.getByText(new RegExp(`url parameter: ${userInput}`, 'i'))).toBeInTheDocument();
   });
 });

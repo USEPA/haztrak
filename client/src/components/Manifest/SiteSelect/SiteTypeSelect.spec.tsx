@@ -28,28 +28,24 @@ describe('SiteTypeSelect', () => {
   });
   test('site options are limited when site type is Generator', () => {
     renderWithProviders(<TestComponent siteType={'Generator'} />);
-    // screen.debug(undefined, Infinity);
     expect(screen.queryByRole('option', { name: /generator/i })).toBeDefined();
     expect(screen.queryByRole('option', { name: /Transporter/i })).toBeNull();
     expect(screen.queryByRole('option', { name: /Tsdf/i })).toBeNull();
   });
   test('site options are limited when site type is transporter', () => {
     renderWithProviders(<TestComponent siteType={'Transporter'} />);
-    // screen.debug(undefined, Infinity);
     expect(screen.queryByRole('option', { name: /generator/i })).toBeDefined();
     expect(screen.queryByRole('option', { name: /Transporter/i })).toBeDefined();
     expect(screen.queryByRole('option', { name: /Tsdf/i })).toBeNull();
   });
   test('All options are available when site Type is Tsdf', () => {
     renderWithProviders(<TestComponent siteType={'Tsdf'} />);
-    // screen.debug(undefined, Infinity);
     expect(screen.queryByRole('option', { name: /generator/i })).toBeDefined();
     expect(screen.queryByRole('option', { name: /Transporter/i })).toBeDefined();
     expect(screen.queryByRole('option', { name: /Tsdf/i })).toBeDefined();
   });
   test('All options are available when site Type is undefined', () => {
     renderWithProviders(<TestComponent />);
-    // screen.debug(undefined, Infinity);
     expect(screen.queryByRole('option', { name: /generator/i })).toBeDefined();
     expect(screen.queryByRole('option', { name: /Transporter/i })).toBeDefined();
     expect(screen.queryByRole('option', { name: /Tsdf/i })).toBeDefined();
