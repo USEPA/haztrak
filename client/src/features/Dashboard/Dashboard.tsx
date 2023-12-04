@@ -1,7 +1,5 @@
-import { faPen, faRecycle, faSignature, faTruck } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NewManifestBtn } from 'components/Manifest';
-import { FeatureDescription, HtButton, HtCard } from 'components/UI';
+import { HtButton, HtCard } from 'components/UI';
 import { useTitle } from 'hooks';
 import React, { ReactElement, useEffect } from 'react';
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
@@ -15,20 +13,16 @@ import {
   useAppDispatch,
   useAppSelector,
 } from 'store';
+import {
+  GeneratorStatusAreaChart,
+  ManifestCountBarChart,
+  ManifestStatusPieChart,
+} from 'components/Dash';
 
-/**
- * Dashboard page for logged-in user
- * @constructor
- */
+/** Dashboard page for logged-in user*/
 export function Dashboard(): ReactElement {
   useTitle(`Haztrak`, false, true);
   const dispatch = useAppDispatch();
-  const userName = useAppSelector(selectUserName);
-
-  useEffect(() => {
-    // get user profile information when the user changes
-    dispatch(getRcraProfile());
-  }, [userName]);
 
   const launchExampleTask = async () => {
     const response = await htApi.get<{ taskId: string }>('/task/example');
@@ -109,43 +103,24 @@ export function Dashboard(): ReactElement {
           </Accordion.Item>
         </Accordion>
       </Row>
-      <Row className="my-3">
-        <HtCard title="Manifests">
-          <HtCard.Body>
-            <Row>
-              <Col>
-                <h3 className="fw-bold d-flex justify-content-center">
-                  <Link to={'/coming-soon'}>
-                    <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
-                      <FontAwesomeIcon icon={faTruck} size={'2xl'} className="link-light" />
-                    </Button>
-                  </Link>
-                </h3>
-                <p className="d-flex justify-content-center">Manifests in transit</p>
-              </Col>
-              <Col>
-                <h3 className="fw-bold d-flex justify-content-center">
-                  <Link to={'/coming-soon'}>
-                    <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
-                      <FontAwesomeIcon icon={faSignature} size={'2xl'} className="link-light" />
-                    </Button>
-                  </Link>
-                </h3>
-                <p className="d-flex justify-content-center">Ready for Signature</p>
-              </Col>
-              <Col>
-                <h3 className="fw-bold d-flex justify-content-center">
-                  <Link to={'/coming-soon'}>
-                    <Button variant={'info'} size={'lg'} className="rounded-circle p-3">
-                      <FontAwesomeIcon icon={faRecycle} size={'2xl'} className="link-light" />
-                    </Button>
-                  </Link>
-                </h3>
-                <p className="d-flex justify-content-center">Received</p>
-              </Col>
-            </Row>
-          </HtCard.Body>
-        </HtCard>
+      <Row xs={1} lg={2}>
+        <Col className="my-3">
+          <HtCard title="Calculated Status" className="p-2">
+            <GeneratorStatusAreaChart />
+          </HtCard>
+        </Col>
+        <Col className="my-3">
+          <HtCard title="Manifest by Status" className="p-2">
+            <ManifestStatusPieChart />
+          </HtCard>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <HtCard title="Manifest count" className="p-2">
+            <ManifestCountBarChart />
+          </HtCard>
+        </Col>
       </Row>
     </Container>
   );
