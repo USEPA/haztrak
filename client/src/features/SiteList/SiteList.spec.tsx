@@ -7,13 +7,20 @@ import { createMockHandler, createMockRcrainfoSite } from 'test-utils/fixtures/m
 import { API_BASE_URL } from 'test-utils/mock/handlers';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
-const mockSites = [createMockRcrainfoSite(), createMockRcrainfoSite()];
+const mockHandler1 = createMockHandler({ epaSiteId: 'VAT123456789' });
+const mockHandler2 = createMockHandler({ epaSiteId: 'TXD123456789' });
+const mockSites = [
+  createMockRcrainfoSite({ name: 'site 1', handler: mockHandler1 }),
+  createMockRcrainfoSite({
+    name: 'site 2',
+    handler: mockHandler2,
+  }),
+];
 const server = setupServer(
   rest.get(`${API_BASE_URL}/api/site`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockSites));
   })
 );
-const handler = createMockHandler();
 
 // pre-/post-test hooks
 beforeAll(() => server.listen());
@@ -31,7 +38,7 @@ describe('SiteList component', () => {
   test('fetches sites a user has access to', async () => {
     // Act
     renderWithProviders(<SiteList />);
-    let numIds = await screen.findAllByRole('cell', { name: handler.epaSiteId });
+    let numIds = await screen.findAllByRole('listitem');
     // Assert
     expect(numIds.length).toEqual(mockSites.length);
   });

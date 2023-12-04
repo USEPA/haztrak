@@ -1,6 +1,6 @@
 import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import logo from 'assets/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
+import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
 import { NavContext, NavContextProps } from 'components/Layout/Root';
 import React, { useContext } from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
@@ -8,11 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from 'store';
 import { logout } from 'store/authSlice/auth.slice';
-
-interface TopNavProps {
-  showSidebar: boolean;
-  onSidebarToggle: (show: boolean) => void;
-}
 
 export function TopNav() {
   const { showSidebar, setShowSidebar } = useContext<NavContextProps>(NavContext);

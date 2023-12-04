@@ -1,4 +1,4 @@
-import logo from 'assets/haztrak-logos/haztrak-logo-zip-file/png/logo-black-crop.png';
+import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/png/logo-black-crop.png';
 import { NavSection } from 'components/Layout/Nav/NavSection';
 import { NavItem } from 'components/Layout/Nav/NavItem';
 import { NavContext, NavContextProps } from 'components/Layout/Root';
