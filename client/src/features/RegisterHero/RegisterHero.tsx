@@ -34,7 +34,7 @@ export function RegisterHero() {
           </Link>
         </Stack>
       </Col>
-      <Row className="my-5 text-start" lg={3} xs={1}>
+      <Row className="my-5 text-start pt-5" lg={3} xs={1}>
         <Col>
           <FeatureDescription title="Manifest" icon={faFileLines}>
             <p>

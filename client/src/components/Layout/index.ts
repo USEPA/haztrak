@@ -1,1 +1,1 @@
-export { Root } from './Root';
+export { Root as Component } from './Root';

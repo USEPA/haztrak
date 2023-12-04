@@ -2,32 +2,37 @@ import { Root } from 'components/Layout/Root';
 import { ErrorPage } from 'features/ErrorPage/ErrorPage';
 import { Login } from 'features/login';
 import { createBrowserRouter } from 'react-router-dom';
+import React from 'react';
+
+const Dashboard = React.lazy(() => import('features/Dashboard'));
+const Profile = React.lazy(() => import('features/profile'));
+const SiteList = React.lazy(() => import('features/SiteList'));
+const SiteDetails = React.lazy(() => import('features/SiteDetails'));
+const Help = React.lazy(() => import('features/help'));
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />,
+    lazy: () => import('./components/Layout'),
     children: [
       {
         path: '',
-        lazy: () => import('./features/Dashboard'),
+        element: <Dashboard />,
       },
       {
         path: '/profile',
-        lazy: () => import('./features/profile'),
+        element: <Profile />,
       },
       {
         path: '/site',
         children: [
           {
             path: '',
-            // element: <SiteList />,
-            lazy: () => import('./features/SiteList'),
+            element: <SiteList />,
           },
           {
             path: ':siteId',
-            // element: <SiteDetails />,
-            lazy: () => import('./features/SiteDetails'),
+            element: <SiteDetails />,
           },
           {
             path: ':siteId/manifest',
@@ -67,7 +72,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/about',
-        lazy: () => import('./features/help'),
+        element: <Help />,
       },
       {
         path: '/coming-soon',

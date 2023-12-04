@@ -1,3 +1,4 @@
-import { SiteDetails as Component } from 'features/SiteDetails/SiteDetails';
+import { SiteDetails } from 'features/SiteDetails/SiteDetails';
 
-export { Component };
+export { SiteDetails as Component };
+export default SiteDetails;
