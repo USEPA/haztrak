@@ -1,5 +1,4 @@
-import { HtSiteTable } from './SiteTable';
+export { SiteListGroup } from './SiteListGroup/SiteListGroup';
 import { HaztrakSite } from './haztrakSiteSchema';
 
-export { HtSiteTable };
 export type { HaztrakSite };

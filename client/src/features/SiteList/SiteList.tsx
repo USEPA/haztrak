@@ -1,6 +1,6 @@
-import { HaztrakSite, HtSiteTable } from 'components/HaztrakSite';
+import { HaztrakSite, SiteListGroup } from 'components/HaztrakSite';
 import { HtCard, HtModal } from 'components/UI';
-import { useHtApi } from 'hooks';
+import { useHtApi, useTitle } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
  * @constructor
  */
 export function SiteList() {
+  useTitle('Sites');
   const [siteData, loading, error] = useHtApi<Array<HaztrakSite>>('site');
   const [showErrorModal, setShowErrorModal] = useState(false);
 
@@ -28,7 +29,8 @@ export function SiteList() {
           {loading && !error ? (
             <HtCard.Spinner message="Loading your sites..." />
           ) : siteData ? (
-            <HtSiteTable sitesData={siteData} />
+            // <HtSiteTable sitesData={siteData} />
+            <SiteListGroup sites={siteData} />
           ) : error ? (
             <>
               <HtModal showModal={showErrorModal} handleClose={handleClose}>
@@ -43,12 +45,11 @@ export function SiteList() {
               </HtModal>
             </>
           ) : (
-            // lastly, if no error but siteData is empty, suggest
-            // they add a site they have access to in their profile
             <div className="text-muted text-center">
               <p>No sites to display</p>
               <p>
-                Add sites to your <Link to="/profile">Profile</Link>
+                Request access to sites within your organization from your{' '}
+                <Link to="/profile">Profile</Link>
               </p>
             </div>
           )}
