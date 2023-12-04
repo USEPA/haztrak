@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import React from 'react';
 import { cleanup, renderWithProviders } from 'test-utils';
 import { afterEach, describe, expect, test } from 'vitest';
-import { SiteListGroup } from 'components/HaztrakSite/SiteListGroup';
+import { SiteListGroup } from 'components/HaztrakSite/SiteListGroup/SiteListGroup';
 import { createMockHandler, createMockSite } from 'test-utils/fixtures/mockHandler';
 
 afterEach(() => {
