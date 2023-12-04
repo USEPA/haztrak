@@ -40,15 +40,15 @@ export function Profile(): ReactElement {
         <Row className="d-flex justify-content-start">
           <h1 className="fw-bold">Profile</h1>
         </Row>
-        <Row xs={1} lg={2} className="my-3 gap-2">
-          <Col>
+        <Row className="my-3">
+          <Col xs={12} lg={6} className="my-3">
             <HtCard title="User Information" className="h-100 my-2">
               <HtCard.Body>
                 <UserInfoForm user={user} profile={profile} />
               </HtCard.Body>
             </HtCard>
           </Col>
-          <Col>
+          <Col xs={12} lg={6} className="my-3">
             <HtCard title="My Organization" className="h-100 my-2">
               <HtCard.Body>{profile.org && <UserOrg profile={profile} />}</HtCard.Body>
             </HtCard>
