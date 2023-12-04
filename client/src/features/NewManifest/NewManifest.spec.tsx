@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import { NewManifest } from 'features/newManifest/NewManifest';
+import { NewManifest } from 'features/NewManifest/NewManifest';
 import React from 'react';
 import { renderWithProviders, screen } from 'test-utils';
 import {

@@ -1,14 +1,14 @@
 import { Root } from 'components/Layout/Root';
 import { ErrorPage } from 'features/ErrorPage/ErrorPage';
-import { Login } from 'features/login';
+import { Login } from 'features/Login';
 import { createBrowserRouter } from 'react-router-dom';
 import React from 'react';
 
 const Dashboard = React.lazy(() => import('features/Dashboard'));
-const Profile = React.lazy(() => import('features/profile'));
+const Profile = React.lazy(() => import('features/Profile'));
 const SiteList = React.lazy(() => import('features/SiteList'));
 const SiteDetails = React.lazy(() => import('features/SiteDetails'));
-const Help = React.lazy(() => import('features/help'));
+const Help = React.lazy(() => import('features/About'));
 
 export const router = createBrowserRouter([
   {
@@ -39,15 +39,15 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: '',
-                lazy: () => import('./features/manifestList'),
+                lazy: () => import('./features/ManifestList'),
               },
               {
                 path: 'new',
-                lazy: () => import('./features/newManifest'),
+                lazy: () => import('./features/NewManifest'),
               },
               {
                 path: ':mtn/:action',
-                lazy: () => import('./features/manifestDetails'),
+                lazy: () => import('./features/MmanifestDetails'),
               },
             ],
           },
@@ -58,25 +58,21 @@ export const router = createBrowserRouter([
         children: [
           {
             path: '',
-            lazy: () => import('./features/manifestList'),
+            lazy: () => import('./features/ManifestList'),
           },
           {
             path: 'new',
-            lazy: () => import('./features/newManifest'),
+            lazy: () => import('./features/NewManifest'),
           },
           {
             path: ':mtn/:action',
-            lazy: () => import('./features/manifestDetails'),
+            lazy: () => import('./features/MmanifestDetails'),
           },
         ],
       },
       {
         path: '/about',
         element: <Help />,
-      },
-      {
-        path: '/coming-soon',
-        lazy: () => import('./features/comingSoon'),
       },
     ],
   },

@@ -8,9 +8,7 @@ const mockUsername = 'testuser1';
 const mockSites = [createMockRcrainfoSite(), createMockRcrainfoSite()];
 
 export const handlers = [
-  /**
-   * Login endpoint
-   */
+  /** Login endpoint*/
   rest.post(`${API_BASE_URL}/api/user/login`, (req, res, ctx) => {
     // Persist user's authentication in the session
     sessionStorage.setItem('token', 'this_is_a_fake_token');
@@ -25,9 +23,7 @@ export const handlers = [
       })
     );
   }),
-  /**
-   * User RcraProfile data
-   */
+  /** User RcraProfile data*/
   rest.get(`${API_BASE_URL}/api/rcra/profile/${mockUsername}`, (req, res, ctx) => {
     return res(
       // Respond with a 200 status code
@@ -42,27 +38,19 @@ export const handlers = [
       })
     );
   }),
-  /**
-   * List user sites
-   */
+  /** List user sites*/
   rest.get(`${API_BASE_URL}/api/site`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockSites));
   }),
-  /**
-   * Site Details
-   */
+  /** Site Details*/
   rest.get(`${API_BASE_URL}/api/site/${mockEpaId}`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockSites[0]));
   }),
-  /**
-   * mock Manifest
-   */
+  /** mock Manifest*/
   rest.get(`${API_BASE_URL}/api/rcra/manifest/${mockMTN}`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(createMockManifest()));
   }),
-  /**
-   * list of manifests ('My Manifests' feature and a site's manifests)
-   */
+  /** list of manifests ('My Manifests' feature and a site's manifests)*/
   rest.get(`${API_BASE_URL}/api/rcra/mtn*`, (req, res, ctx) => {
     const mockManifestArray = [
       createMockManifest(),

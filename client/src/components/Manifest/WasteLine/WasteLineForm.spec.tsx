@@ -12,7 +12,6 @@ describe('WasteLineForm', () => {
       {}
     );
     expect(screen.getByText(/General/i)).toBeInTheDocument();
-    // screen.debug(undefined, Infinity);
   });
   test('New waste lines set DOT haz material and EPA haz waste to true by default', () => {
     // Arrange
