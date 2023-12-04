@@ -4,6 +4,7 @@ import { SiteListItem } from 'components/HaztrakSite/SiteListItem/SiteListItem';
 import { SiteFilterForm } from 'components/HaztrakSite/SiteFilter/SiteFilterForm';
 import React, { useState } from 'react';
 import winkingRobot from '/assets/img/robot/robot-wink.jpg';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 interface SiteListGroupProps {
   sites: Array<HaztrakSite>;
@@ -11,6 +12,7 @@ interface SiteListGroupProps {
 
 export function SiteListGroup({ sites }: SiteListGroupProps) {
   const [filteredSites, setFilteredSites] = useState(sites);
+  const [parent] = useAutoAnimate();
 
   return (
     <>
@@ -33,7 +35,7 @@ export function SiteListGroup({ sites }: SiteListGroupProps) {
           <h4 className="text-center">No sites matched that search</h4>
         </Container>
       ) : (
-        <ListGroup numbered as="ol">
+        <ListGroup numbered as="ol" ref={parent}>
           {filteredSites.map((site) => {
             return <SiteListItem key={site.handler.epaSiteId} site={site} />;
           })}
