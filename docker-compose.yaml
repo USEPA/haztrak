@@ -122,6 +122,7 @@ services:
     environment:
       VITE_HT_API_URL: ${VITE_HT_API_URL}
       VITE_HT_ENV: ${VITE_HT_ENV}
+      VITE_GITHUB_URL: ${VITE_GITHUB_URL}
     command: sh -c "cd /app; npm install; npm start"
 
 volumes:
