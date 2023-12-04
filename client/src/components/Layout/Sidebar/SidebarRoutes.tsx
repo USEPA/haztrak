@@ -88,7 +88,7 @@ export const routes: Array<Route | RoutesSection> = [
         id: 'reportAnIssue',
         icon: faGithub,
         text: 'Report an Issue',
-        url: 'https://github.com/USEPA/haztrak/issues',
+        url: `${import.meta.env.VITE_GITHUB_URL}/issues`,
         description: 'API Documentation',
         external: true,
       },

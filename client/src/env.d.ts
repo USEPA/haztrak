@@ -5,7 +5,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_HT_API_URL: string;
-  // more env variables...
+  readonly VITE_GITHUB_URL: string;
 }
 
 interface ImportMeta {
