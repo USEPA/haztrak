@@ -6,7 +6,7 @@ from rest_framework.exceptions import ValidationError
 from apps.sites.serializers import RcraSiteSerializer
 from apps.trak.models import Handler, Transporter
 
-from .signature_ser import ESignatureSerializer, PaperSignatureSerializer
+from .signature_serializer import ESignatureSerializer, PaperSignatureSerializer
 
 
 class HandlerSerializer(RcraSiteSerializer):
@@ -25,10 +25,10 @@ class HandlerSerializer(RcraSiteSerializer):
     signed = serializers.ReadOnlyField()
 
     def update(self, instance, validated_data: Dict):
-        return self.Meta.model.objects.update(instance, **validated_data)
+        return self.Meta.model.objects.save(instance, **validated_data)
 
     def create(self, validated_data: Dict):
-        return self.Meta.model.objects.save(**validated_data)
+        return self.Meta.model.objects.save(None, **validated_data)
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

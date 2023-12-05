@@ -1,5 +1,5 @@
 import logging
-from typing import Dict
+from typing import Dict, Optional
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -15,22 +15,17 @@ logger = logging.getLogger(__name__)
 class HandlerManager(TrakBaseManager):
     """Inter-model related functionality for the Handler Model"""
 
-    def save(self, **handler_data) -> models.QuerySet:
-        e_signatures = []
-        paper_signature = None
-        if "e_signatures" in handler_data:
-            e_signatures = handler_data.pop("e_signatures")
-        logger.debug(f"e_signature data {e_signatures}")
-        if "paper_signature" in handler_data:
-            paper_signature = PaperSignature.objects.create(**handler_data.pop("paper_signature"))
+    def save(self, instance: Optional["Handler"], **handler_data) -> models.QuerySet:
+        paper_signature = handler_data.pop("paper_signature", None)
+        e_signatures = handler_data.pop("e_signatures", [])
+        if paper_signature:
+            paper_signature = PaperSignature.objects.create(**paper_signature)
         try:
             if RcraSite.objects.filter(epa_id=handler_data["rcra_site"]["epa_id"]).exists():
                 rcra_site = RcraSite.objects.get(epa_id=handler_data["rcra_site"]["epa_id"])
                 handler_data.pop("rcra_site")
-                logger.debug(f"using existing RcraSite {rcra_site}")
             else:
                 rcra_site = RcraSite.objects.save(**handler_data.pop("rcra_site"))
-                logger.debug(f"RcraSite created {rcra_site}")
             manifest_handler = self.model.objects.create(
                 rcra_site=rcra_site,
                 paper_signature=paper_signature,
@@ -89,7 +84,7 @@ class TransporterManager(HandlerManager):
 
     def save(self, **transporter_data: Dict):
         """Create a Transporter from a manifest instance and rcra_site dict"""
-        return super().save(**transporter_data)
+        return super().save(None, **transporter_data)
 
 
 class Transporter(Handler):

@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Dict, List
+from typing import List, Optional
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -60,19 +60,15 @@ class ManifestManager(TrakBaseManager):
             case _:
                 raise ValueError(f"unrecognized site_type argument {site_type}")
 
-    def save(self, *, mtn: str, manifest_data: Dict):
-        """Create a manifest with its related models instances"""
-        waste_data = []
-        transporter_data = []
-        if "wastes" in manifest_data:
-            waste_data = manifest_data.pop("wastes")
-        if "transporters" in manifest_data:
-            transporter_data = manifest_data.pop("transporters")
-        try:
-            old_manifest = Manifest.objects.get(mtn=mtn)
-            manifest = self._update_from_dict(old_manifest, manifest_data)
-        except Manifest.DoesNotExist:
-            manifest = self._create_from_dict(manifest_data)
+    @classmethod
+    def save(cls, instance: Optional["Manifest"], **manifest_data: dict):
+        """Update or Create a manifest with its related models instances"""
+        waste_data = manifest_data.pop("wastes", [])
+        transporter_data = manifest_data.pop("transporters", [])
+        if instance:
+            manifest = cls.update_manifest(instance, **manifest_data)
+        else:
+            manifest = cls.create_manifest(**manifest_data)
         for waste_line in waste_data:
             saved_waste_line = WasteLine.objects.save(manifest=manifest, **waste_line)
             logger.debug(f"WasteLine saved {saved_waste_line.pk}")
@@ -82,31 +78,35 @@ class ManifestManager(TrakBaseManager):
         return manifest
 
     @staticmethod
-    def _create_from_dict(data: dict):
+    def create_manifest(**data: dict):
         """Create a manifest instance with a dictionary of data"""
-        if "generator" in data:
-            generator = Handler.objects.save(**data.pop("generator"))
-        if "tsdf" in data:
-            tsdf = Handler.objects.save(**data.pop("tsdf"))
-        if "additional_info" in data:
-            additional_info = AdditionalInfo.objects.create(**data.pop("additional_info"))
-        manifest = Manifest.objects.create(
-            generator=generator,
-            tsdf=tsdf,
-            additional_info=additional_info,
-            **data,
-        )
-        return manifest
+        try:
+            additional_info: AdditionalInfo | None = None
+            generator = Handler.objects.save(None, **data.pop("generator"))
+            tsdf = Handler.objects.save(None, **data.pop("tsdf"))
+            if "additional_info" in data:
+                additional_info = AdditionalInfo.objects.create(**data.pop("additional_info"))
+            manifest = Manifest.objects.create(
+                generator=generator,
+                tsdf=tsdf,
+                additional_info=additional_info,
+                **data,
+            )
+            return manifest
+        except KeyError as e:
+            raise ValidationError(f"Missing required key {e}")
 
     @staticmethod
-    def _update_from_dict(instance, data: dict):
+    def update_manifest(instance, **data: dict):
         """Update a manifest instance with a dictionary of data"""
         if "generator" in data:
-            instance.generator = Handler.objects.save(**data.pop("generator"))
+            instance.generator = Handler.objects.save(instance.generator, **data.pop("generator"))
         if "tsdf" in data:
-            instance.tsdf = Handler.objects.save(**data.pop("tsdf"))
+            instance.tsdf = Handler.objects.save(instance.tsdf, **data.pop("tsdf"))
         if "additional_info" in data:
-            instance.additional_info = AdditionalInfo.objects.create(**data.pop("additional_info"))
+            instance.additional_info = AdditionalInfo.objects.create(
+                instance.additional_info, **data.pop("additional_info")
+            )
         for attr, value in data.items():
             setattr(instance, attr, value)
         instance.save()

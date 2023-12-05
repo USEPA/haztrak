@@ -3,8 +3,8 @@ from rest_framework.exceptions import APIException, ValidationError
 
 from apps.sites.models import RcraSitePermissions, SitePermissions
 
-from .base_ser import SitesBaseSerializer
-from .site_ser import HaztrakSiteSerializer
+from .base_serializer import SitesBaseSerializer
+from .site_serializer import HaztrakSiteSerializer
 
 
 class SitePermissionSerializer(SitesBaseSerializer):

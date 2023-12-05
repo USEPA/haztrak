@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from apps.trak.models import DotLookup, WasteCode, WasteLine
 
-from .base_ser import TrakBaseSerializer
+from .base_serializer import TrakBaseSerializer
 
 
 class WasteLineSerializer(TrakBaseSerializer):

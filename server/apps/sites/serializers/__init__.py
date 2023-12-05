@@ -1,7 +1,7 @@
-from .address_ser import AddressSerializer
-from .contact_ser import ContactSerializer, RcraPhoneSerializer
-from .profile_ser import (
+from .address_serializer import AddressSerializer
+from .contact_serializer import ContactSerializer, RcraPhoneSerializer
+from .profile_serializer import (
     RcraPermissionSerializer,
     RcraSitePermissionSerializer,
 )
-from .site_ser import HaztrakOrgSerializer, HaztrakSiteSerializer, RcraSiteSerializer
+from .site_serializer import HaztrakOrgSerializer, HaztrakSiteSerializer, RcraSiteSerializer

@@ -12,12 +12,12 @@ from apps.trak.models.manifest_models import (
     PortOfEntry,
     draft_mtn,
 )
-from apps.trak.serializers.handler_ser import HandlerSerializer
-from apps.trak.serializers.signature_ser import ESignatureSerializer
+from apps.trak.serializers.handler_serializer import HandlerSerializer
+from apps.trak.serializers.signature_serializer import ESignatureSerializer
 
-from .base_ser import TrakBaseSerializer
-from .handler_ser import TransporterSerializer
-from .waste_line_ser import WasteLineSerializer
+from .base_serializer import TrakBaseSerializer
+from .handler_serializer import TransporterSerializer
+from .waste_serializer import WasteLineSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -217,10 +217,10 @@ class ManifestSerializer(TrakBaseSerializer):
     )
 
     def update(self, instance: Manifest, validated_data: Dict) -> Manifest:
-        return self.Meta.model.objects.save(mtn=instance.mtn, manifest_data=validated_data)
+        return self.Meta.model.objects.save(instance, **validated_data)
 
     def create(self, validated_data: Dict) -> Manifest:
-        return self.Meta.model.objects.save(mtn=None, manifest_data=validated_data)
+        return self.Meta.model.objects.save(None, **validated_data)
 
     def validate(self, data):
         if data["mtn"] == "" and data["status"] == "NotAssigned":

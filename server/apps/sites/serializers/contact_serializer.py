@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from apps.sites.models import Contact
 
-from .base_ser import SitesBaseSerializer
+from .base_serializer import SitesBaseSerializer
 
 
 class RcraPhoneSerializer(SitesBaseSerializer):

@@ -2,3 +2,4 @@ cache/
 test_db
 static/
 .mypy_cache
+test_db-journal
