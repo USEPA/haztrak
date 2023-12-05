@@ -61,7 +61,7 @@ class ManifestManager(TrakBaseManager):
                 raise ValueError(f"unrecognized site_type argument {site_type}")
 
     @classmethod
-    def save(cls, instance: Optional["Manifest"], **manifest_data: dict):
+    def save(cls, instance: Optional["Manifest"], **manifest_data: dict) -> "Manifest":
         """Update or Create a manifest with its related models instances"""
         waste_data = manifest_data.pop("wastes", [])
         transporter_data = manifest_data.pop("transporters", [])
@@ -70,11 +70,9 @@ class ManifestManager(TrakBaseManager):
         else:
             manifest = cls.create_manifest(**manifest_data)
         for waste_line in waste_data:
-            saved_waste_line = WasteLine.objects.save(manifest=manifest, **waste_line)
-            logger.debug(f"WasteLine saved {saved_waste_line.pk}")
+            WasteLine.objects.save(None, manifest=manifest, **waste_line)
         for transporter in transporter_data:
-            saved_transporter = Transporter.objects.save(manifest=manifest, **transporter)
-            logger.debug(f"WasteLine saved {saved_transporter.pk}")
+            Transporter.objects.save(manifest=manifest, **transporter)
         return manifest
 
     @staticmethod

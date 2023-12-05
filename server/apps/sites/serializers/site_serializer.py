@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.sites.models import HaztrakOrg, HaztrakSite, RcraSite
+from apps.sites.models import HaztrakOrg, HaztrakSite, RcraSite, RcraSiteType
 from apps.sites.serializers import AddressSerializer, ContactSerializer, RcraPhoneSerializer
 
 from .base_serializer import SitesBaseSerializer
@@ -14,11 +14,11 @@ class RcraSiteSerializer(SitesBaseSerializer):
     epaSiteId = serializers.CharField(
         source="epa_id",
     )
-    # ToDo: we want to serialize based on the display name
-    siteType = serializers.CharField(
+    siteType = serializers.ChoiceField(
         source="site_type",
         allow_null=True,
         required=False,
+        choices=RcraSiteType.choices,
     )
     modified = serializers.BooleanField(
         allow_null=True,

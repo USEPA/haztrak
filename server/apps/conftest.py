@@ -3,7 +3,7 @@ import os
 import random
 import string
 from enum import Enum
-from typing import Dict, Literal, Optional, Union
+from typing import Dict, Literal, Optional
 
 import pytest
 import pytest_mock
@@ -13,8 +13,8 @@ from faker import Faker
 from faker.providers import BaseProvider
 from rest_framework.test import APIClient
 
-from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile  # type: ignore
-from apps.sites.models import (  # type: ignore
+from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile
+from apps.sites.models import (
     Address,
     Contact,
     HaztrakSite,
@@ -22,7 +22,7 @@ from apps.sites.models import (  # type: ignore
     RcraSite,
 )
 from apps.sites.models.site_models import HaztrakOrg
-from apps.trak.models import ManifestPhone  # type: ignore
+from apps.trak.models import ManifestPhone
 
 
 class SiteIDProvider(BaseProvider):
@@ -212,6 +212,17 @@ def rcra_site_factory(db, address_factory, contact_factory):
         )
 
     return create_rcra_site
+
+
+@pytest.fixture
+def validated_data_factory():
+    def _create_data_dict(*, instance, serializer) -> Dict:
+        data = serializer(instance).data
+        new_serializer = serializer(data=data)
+        new_serializer.is_valid(raise_exception=True)
+        return new_serializer.validated_data
+
+    return _create_data_dict
 
 
 @pytest.fixture
