@@ -4,10 +4,10 @@ from typing import Dict
 
 from rest_framework import serializers
 
-from apps.sites.serializers.contact_ser import RcraPhoneSerializer
+from apps.sites.serializers.contact_serializer import RcraPhoneSerializer
 from apps.trak.models import ESignature, PaperSignature, QuickerSign, Signer
 
-from .base_ser import TrakBaseSerializer
+from .base_serializer import TrakBaseSerializer
 
 
 class QuickerSignSerializer(serializers.Serializer):

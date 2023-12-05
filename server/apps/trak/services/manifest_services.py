@@ -228,7 +228,8 @@ class ManifestService:
 def update_manifest(*, mtn: Optional[str], data: dict) -> Manifest:
     """Update a manifest in the Haztrak database"""
     try:
-        manifest = Manifest.objects.save(mtn=mtn, manifest_data=data)
+        old_manifest = Manifest.objects.get(mtn=mtn)
+        manifest = Manifest.objects.save(old_manifest, **data)
         return manifest
     except Manifest.DoesNotExist:
         raise ManifestServiceError(f"manifest {mtn} does not exist")

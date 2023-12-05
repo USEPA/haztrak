@@ -6,7 +6,7 @@ from rest_framework.exceptions import ValidationError
 from apps.sites.models import Address, RcraStates
 
 from ..models.contact_models import RcraCountries
-from .base_ser import SitesBaseSerializer
+from .base_serializer import SitesBaseSerializer
 
 
 @extend_schema_field(OpenApiTypes.OBJECT)
