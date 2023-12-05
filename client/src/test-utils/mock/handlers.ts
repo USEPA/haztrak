@@ -9,7 +9,7 @@ const mockSites = [createMockRcrainfoSite(), createMockRcrainfoSite()];
 
 export const handlers = [
   /** Login endpoint*/
-  rest.post(`${API_BASE_URL}/api/user/login`, (req, res, ctx) => {
+  http.post(`${API_BASE_URL}/api/user/login`, (info) => {
     // Persist user's authentication in the session
     sessionStorage.setItem('token', 'this_is_a_fake_token');
     sessionStorage.setItem('user', mockUsername);
@@ -24,9 +24,8 @@ export const handlers = [
     );
   }),
   /** User RcraProfile data*/
-  rest.get(`${API_BASE_URL}/api/rcra/profile/${mockUsername}`, (req, res, ctx) => {
-    return res(
-      // Respond with a 200 status code
+  http.get(`${API_BASE_URL}/api/rcra/profile/${mockUsername}`, (info) => {
+    return HttpResponse.json(
       {
         user: mockUsername,
         rcraAPIID: 'mockRcraAPIID',
