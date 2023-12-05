@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class HandlerManager(TrakBaseManager):
     """Inter-model related functionality for the Handler Model"""
 
-    def save(self, instance: Optional["Handler"], **handler_data) -> models.QuerySet:
+    def save(self, instance: Optional["Handler"], **handler_data) -> "Handler":
         paper_signature = handler_data.pop("paper_signature", None)
         e_signatures = handler_data.pop("e_signatures", [])
         if paper_signature:
@@ -82,7 +82,7 @@ class Handler(TrakBaseModel):
 class TransporterManager(HandlerManager):
     """Inter-model related functionality for Transporter Model"""
 
-    def save(self, **transporter_data: Dict):
+    def save(self, **transporter_data: Dict) -> "Transporter":
         """Create a Transporter from a manifest instance and rcra_site dict"""
         return super().save(None, **transporter_data)
 

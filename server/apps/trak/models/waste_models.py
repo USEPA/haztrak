@@ -1,5 +1,7 @@
 import logging
+from typing import Optional
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -9,12 +11,18 @@ logger = logging.getLogger(__name__)
 
 
 class WasteLineManager(TrakBaseManager):
-    """
-    Inter-model related functionality for Contact Model
-    """
+    """Inter-model related functionality for Contact Model"""
 
-    def save(self, **waste_data) -> models.QuerySet:
-        return super().save(**waste_data)
+    def save(self, instance: Optional["WasteLine"], **waste_data: dict) -> "WasteLine":
+        try:
+            line_number = waste_data.pop("line_number")
+            manifest = waste_data.pop("manifest")
+            wl, created = WasteLine.objects.update_or_create(
+                manifest=manifest, line_number=line_number, defaults=waste_data
+            )
+            return wl
+        except KeyError as e:
+            raise ValidationError(f"Missing required field: {e}")
 
 
 class WasteLine(TrakBaseModel):
@@ -22,6 +30,7 @@ class WasteLine(TrakBaseModel):
 
     class Meta:
         ordering = ["manifest__mtn", "line_number"]
+        unique_together = ("manifest", "line_number")
 
     objects = WasteLineManager()
 
@@ -29,6 +38,9 @@ class WasteLine(TrakBaseModel):
         "Manifest",
         related_name="wastes",
         on_delete=models.CASCADE,
+    )
+    line_number = models.PositiveIntegerField(
+        verbose_name="waste line number",
     )
     dot_hazardous = models.BooleanField(
         verbose_name="DOT hazardous",
@@ -45,9 +57,6 @@ class WasteLine(TrakBaseModel):
     hazardous_waste = models.JSONField(
         null=True,
         blank=True,
-    )
-    line_number = models.PositiveIntegerField(
-        verbose_name="waste line number",
     )
     br = models.BooleanField(
         verbose_name="BR info provided",

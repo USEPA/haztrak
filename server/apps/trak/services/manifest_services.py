@@ -225,11 +225,12 @@ class ManifestService:
         return manifest
 
 
+@transaction.atomic
 def update_manifest(*, mtn: Optional[str], data: dict) -> Manifest:
     """Update a manifest in the Haztrak database"""
     try:
-        old_manifest = Manifest.objects.get(mtn=mtn)
-        manifest = Manifest.objects.save(old_manifest, **data)
+        original_manifest = Manifest.objects.get(mtn=mtn)
+        manifest = Manifest.objects.save(original_manifest, **data)
         return manifest
     except Manifest.DoesNotExist:
         raise ManifestServiceError(f"manifest {mtn} does not exist")
