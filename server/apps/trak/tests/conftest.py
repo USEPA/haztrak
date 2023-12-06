@@ -1,8 +1,11 @@
+import random
+import string
 from datetime import UTC, datetime
 from typing import Optional
 
 import pytest
 from faker import Faker
+from faker.providers import BaseProvider
 
 from apps.sites.models import RcraSite, RcraSiteType
 from apps.trak.models import (
@@ -12,9 +15,18 @@ from apps.trak.models import (
     Manifest,
     PaperSignature,
     Signer,
+    Transporter,
     WasteCode,
 )
 from apps.trak.models.waste_models import DotLookupType, WasteLine
+
+
+class MTNProvider(BaseProvider):
+    SUFFIXES = ["ELC", "JJK", "FLE"]
+    NUMBERS = ["".join(random.choices(string.digits, k=9)) for _ in range(100)]
+
+    def mtn(self):
+        return f"{self.random_element(self.NUMBERS)}{self.random_element(self.SUFFIXES)}"
 
 
 @pytest.fixture
@@ -26,6 +38,26 @@ def manifest_handler_factory(db, rcra_site_factory, paper_signature_factory):
         paper_signature: Optional[PaperSignature] = None,
     ) -> Handler:
         return Handler.objects.create(
+            rcra_site=rcra_site or rcra_site_factory(),
+            paper_signature=paper_signature or paper_signature_factory(),
+        )
+
+    return create_manifest_handler
+
+
+@pytest.fixture
+def manifest_transporter_factory(db, rcra_site_factory, paper_signature_factory):
+    """Abstract factory for Haztrak Handler model"""
+
+    def create_manifest_handler(
+        rcra_site: Optional[RcraSite] = None,
+        paper_signature: Optional[PaperSignature] = None,
+        manifest: Manifest = None,
+        order: Optional[int] = 1,
+    ) -> Transporter:
+        return Transporter.objects.create(
+            manifest=manifest,
+            order=order,
             rcra_site=rcra_site or rcra_site_factory(),
             paper_signature=paper_signature or paper_signature_factory(),
         )
@@ -126,12 +158,14 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
     """Abstract factory for Haztrak Manifest model"""
 
     def create_manifest(
-        mtn: Optional[str] = "123456789ELC",
+        mtn: Optional[str] = None,
         generator: Optional[Handler] = None,
         tsdf: Optional[Handler] = None,
     ) -> Manifest:
+        fake = Faker()
+        fake.add_provider(MTNProvider)
         return Manifest.objects.create(
-            mtn=mtn,
+            mtn=mtn or fake.mtn(),
             created_date=datetime.now(UTC),
             potential_ship_date=datetime.now(UTC),
             generator=generator

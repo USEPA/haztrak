@@ -223,8 +223,6 @@ class HaztrakSite(SitesBaseModel):
 
     # ToDo: use UUIDField as primary key
 
-    # ToDo: use UUIDField as primary key
-
     name = models.CharField(
         verbose_name="site alias",
         max_length=200,

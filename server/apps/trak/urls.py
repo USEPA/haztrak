@@ -1,13 +1,13 @@
 from django.urls import include, path, re_path
 
 from apps.trak.views import (  # type: ignore
-    CreateRcraManifestView,
+    CreateManifestView,
     DotHazardClassView,
     DotIdNumberView,
     DotShippingNameView,
     FederalWasteCodesView,
-    ManifestView,
-    MtnList,
+    GetManifestView,
+    MtnListView,
     SignManifestView,
     StateWasteCodesView,
     SyncSiteManifestView,
@@ -19,13 +19,14 @@ urlpatterns = [
         include(
             [
                 # Manifest
-                path("manifest", CreateRcraManifestView.as_view()),
+                path("manifest", CreateManifestView.as_view()),
                 path("manifest/sign", SignManifestView.as_view()),
                 path("manifest/sync", SyncSiteManifestView.as_view()),
-                re_path(r"manifest/(?P<mtn>[0-9]{9}[a-zA-Z]{3})", ManifestView.as_view()),
+                re_path(r"manifest/(?P<mtn>[0-9]{9}[a-zA-Z]{3})", GetManifestView.as_view()),
                 # MT
-                path("mtn", MtnList.as_view()),
-                path("mtn/<str:epa_id>", MtnList.as_view()),
+                path("mtn", MtnListView.as_view()),
+                path("mtn/<str:epa_id>", MtnListView.as_view()),
+                path("mtn/<str:epa_id>/<str:site_type>", MtnListView.as_view()),
                 # waste info
                 path(
                     "waste/",

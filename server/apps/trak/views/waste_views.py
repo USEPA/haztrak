@@ -17,9 +17,7 @@ from apps.trak.services import get_dot_hazard_classes, get_dot_id_numbers, get_d
 
 
 class FederalWasteCodesView(ListAPIView):
-    """
-    Endpoint for retrieving EPA Federal waste codes
-    """
+    """Retrieve a list EPA Federal waste codes"""
 
     serializer_class = WasteCodeSerializer
     queryset = WasteCode.federal.all()
@@ -30,9 +28,7 @@ class FederalWasteCodesView(ListAPIView):
 
 
 class StateWasteCodesView(ListAPIView):
-    """
-    Endpoint for retrieving State waste codes
-    """
+    """Retrieve a list state waste codes by state ID"""
 
     serializer_class = WasteCodeSerializer
     queryset = WasteCode.state.all()

@@ -1,7 +1,7 @@
 from apps.trak.views.manifest_view import (
-    CreateRcraManifestView,
-    ManifestView,
-    MtnList,
+    CreateManifestView,
+    GetManifestView,
+    MtnListView,
     SignManifestView,
     SyncSiteManifestView,
 )

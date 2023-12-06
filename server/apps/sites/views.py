@@ -66,9 +66,9 @@ class HaztrakOrgSitesListView(APIView):
 @extend_schema(
     description="Retrieve details on a rcra_site stored in the Haztrak database",
 )
-class RcraSiteView(RetrieveAPIView):
+class GetRcraSiteView(RetrieveAPIView):
     """
-    RcraSiteView returns details on a single RcraSite known to haztrak
+    Retrieve details on a RCRAInfo Site known to haztrak
     """
 
     queryset = RcraSite.objects.all()
@@ -91,7 +91,7 @@ class RcraSiteView(RetrieveAPIView):
         },
     ),
 )
-class RcraSiteSearchView(APIView):
+class SearchRcraSiteView(APIView):
     """
     Search for locally saved hazardous waste sites ("Generators", "Transporters", "Tsdf's")
     """
@@ -115,7 +115,6 @@ class RcraSiteSearchView(APIView):
             ],
         )
 
-    # @method_decorator(cache_page(60 * 15))
     def get(self, request, *args, **kwargs):
         query_params = request.query_params
         serializer = self.RcraSiteSearchSerializer(data=query_params)
@@ -150,7 +149,7 @@ handler_types = {
         },
     ),
 )
-class HandlerSearchView(APIView):
+class SearchHandlerView(APIView):
     """Search and return a list of Hazardous waste handlers from RCRAInfo."""
 
     class HandlerSearchSerializer(serializers.Serializer):

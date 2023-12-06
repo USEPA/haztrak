@@ -1,16 +1,17 @@
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 from typing import List, Literal, NotRequired, Optional, TypedDict
 
 from django.db import transaction
-from django.db.models import QuerySet
-from emanifest import RcrainfoResponse  # type: ignore
-from requests import RequestException  # type: ignore
+from django.db.models import Q, QuerySet
+from emanifest import RcrainfoResponse
+from requests import RequestException
 
-from apps.core.services import RcrainfoService, get_rcrainfo_client  # type: ignore
-from apps.trak.models import Manifest, QuickerSign  # type: ignore
-from apps.trak.serializers import ManifestSerializer, QuickerSignSerializer  # type: ignore
-from apps.trak.tasks import pull_manifest, save_rcrainfo_manifest, sign_manifest  # type: ignore
+from apps.core.services import RcrainfoService, get_rcrainfo_client
+from apps.sites.models import HaztrakSite
+from apps.trak.models import Manifest, QuickerSign
+from apps.trak.serializers import ManifestSerializer, QuickerSignSerializer
+from apps.trak.tasks import pull_manifest, save_rcrainfo_manifest, sign_manifest
 
 logger = logging.getLogger(__name__)
 
@@ -84,12 +85,12 @@ class ManifestService:
         if end_date:
             end_date_str = end_date.replace(tzinfo=timezone.utc).strftime(date_format)
         else:
-            end_date_str = datetime.utcnow().replace(tzinfo=timezone.utc).strftime(date_format)
+            end_date_str = datetime.now(UTC).strftime(date_format)
         if start_date:
             start_date_str = start_date.replace(tzinfo=timezone.utc).strftime(date_format)
         else:
             # If no start date is specified, retrieve for last ~3 years
-            start_date = datetime.utcnow().replace(tzinfo=timezone.utc) - timedelta(
+            start_date = datetime.now(UTC) - timedelta(
                 minutes=60  # 60 seconds/1minutes
                 * 24  # 24 hours/1day
                 * 30  # 30 days/1month
@@ -98,7 +99,7 @@ class ManifestService:
             start_date_str = start_date.strftime(date_format)
 
         response = self.rcrainfo.search_mtn(
-            site_id=site_id,  # type: ignore
+            site_id=site_id,
             site_type=site_type,
             state_code=state_code,
             start_date=start_date_str,
@@ -234,3 +235,27 @@ def update_manifest(*, mtn: Optional[str], data: dict) -> Manifest:
         return manifest
     except Manifest.DoesNotExist:
         raise ManifestServiceError(f"manifest {mtn} does not exist")
+
+
+def get_manifests(
+    *,
+    username: str,
+    epa_id: Optional[str] = None,
+    site_type: Optional[Literal["Generator", "Tsdf", "Transporter"]] = None,
+) -> QuerySet[Manifest]:
+    """Get a list of manifest tracking numbers and select details for a users site"""
+    sites: QuerySet[HaztrakSite] = (
+        HaztrakSite.objects.select_related("rcra_site")
+        .filter(sitepermissions__profile__user__username=username)
+        .values("rcra_site__epa_id")
+    )
+    if epa_id:
+        sites = sites.filter(rcra_site__epa_id__iexact=epa_id)
+    if site_type:
+        return Manifest.objects.filter(Q(**{f"{site_type.lower()}__rcra_site__epa_id__in": sites}))
+    else:
+        return Manifest.objects.filter(
+            Q(generator__rcra_site__epa_id__in=sites)
+            | Q(tsdf__rcra_site__epa_id__in=sites)
+            | Q(transporters__rcra_site__epa_id__in=sites)
+        )

@@ -21,7 +21,7 @@ from apps.sites.models import (
     RcraPhone,
     RcraSite,
 )
-from apps.sites.models.site_models import HaztrakOrg
+from apps.sites.models.site_models import HaztrakOrg, SitePermissions
 from apps.trak.models import ManifestPhone
 
 
@@ -75,7 +75,7 @@ def user_factory(db, faker):
             password=password or faker.password(),
         )
 
-    yield create_user
+    return create_user
 
 
 @pytest.fixture
@@ -93,7 +93,7 @@ def rcra_profile_factory(db, user_factory, faker: Faker):
             rcra_username=rcra_username,
         )
 
-    yield create_profile
+    return create_profile
 
 
 @pytest.fixture
@@ -111,7 +111,7 @@ def haztrak_profile_factory(db, user_factory, rcra_profile_factory, haztrak_org_
             org=org,
         )
 
-    yield create_profile
+    return create_profile
 
 
 @pytest.fixture
@@ -131,7 +131,7 @@ def address_factory(db, faker: Faker):
             city=city or faker.city(),
         )
 
-    yield create_address
+    return create_address
 
 
 @pytest.fixture
@@ -147,7 +147,7 @@ def site_phone_factory(db, faker: Faker):
             extension=extension,
         )
 
-    yield create_site_phone
+    return create_site_phone
 
 
 @pytest.fixture
@@ -163,7 +163,7 @@ def epa_phone_factory(db, faker):
             extension=extension,
         )
 
-    yield create_epa_phone
+    return create_epa_phone
 
 
 @pytest.fixture
@@ -186,7 +186,7 @@ def contact_factory(db, site_phone_factory, faker: Faker):
         )
         return contact
 
-    yield create_contact
+    return create_contact
 
 
 @pytest.fixture
@@ -240,7 +240,7 @@ def haztrak_org_factory(db, rcra_profile_factory, user_factory, faker):
             admin=admin or user_factory(),
         )
 
-    yield create_org
+    return create_org
 
 
 @pytest.fixture
@@ -258,7 +258,7 @@ def haztrak_site_factory(db, rcra_site_factory, haztrak_org_factory, faker):
             org=org or haztrak_org_factory(),
         )
 
-    yield create_site
+    return create_site
 
 
 @pytest.fixture
@@ -274,7 +274,7 @@ def api_client_factory(db, user_factory):
         )
         return client
 
-    yield create_client
+    return create_client
 
 
 @pytest.fixture
@@ -295,3 +295,22 @@ def mocker(mocker: pytest_mock.MockerFixture):
     https://github.com/pytest-dev/pytest-mock
     """
     return mocker
+
+
+@pytest.fixture
+def haztrak_site_permission_factory(db, haztrak_site_factory, haztrak_profile_factory):
+    """Abstract factory for Haztrak RcraSitePermissions model"""
+
+    def create_permission(
+        site: Optional[HaztrakSite] = None,
+        profile: Optional[HaztrakProfile] = None,
+        emanifest: Optional[Literal["viewer", "signer", "editor"]] = "viewer",
+    ) -> SitePermissions:
+        """Returns testuser1 RcraSitePermissions model to site_generator"""
+        return SitePermissions.objects.create(
+            site=site or haztrak_site_factory(),
+            profile=profile or haztrak_profile_factory(),
+            emanifest=emanifest,
+        )
+
+    return create_permission
