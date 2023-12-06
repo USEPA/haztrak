@@ -39,4 +39,4 @@ def quicker_sign_response_factory(faker: Faker):
             "siteReport": {"siteId": site_id, "siteType": str(site_type.label)},
         }
 
-    yield create_quicker_sign
+    return create_quicker_sign

@@ -4,12 +4,10 @@ from typing import Optional
 
 from django.db import transaction
 
-from apps.core.services import RcrainfoService, get_rcrainfo_client  # type: ignore
-from apps.sites.models import HaztrakSite, RcraSite  # type: ignore
-from apps.sites.serializers import RcraSiteSerializer  # type: ignore
-from apps.trak.services import ManifestService  # type: ignore
-from apps.trak.services.manifest_services import PullManifestsResult, TaskResponse  # type: ignore
-from apps.trak.tasks import sync_site_manifests  # type: ignore
+from apps.core.services import RcrainfoService, get_rcrainfo_client
+from apps.sites.models import HaztrakSite
+from apps.trak.services import ManifestService, PullManifestsResult, TaskResponse
+from apps.trak.tasks import sync_site_manifests
 
 logger = logging.getLogger(__name__)
 
@@ -64,3 +62,10 @@ class HaztrakSiteService:
         logger.info(f"retrieving updated MTN for site {site_id}")
         manifest = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
         return manifest.search_rcrainfo_mtn(site_id=site_id, start_date=last_sync_date)
+
+
+# ToDo: all of our current HaztrakSite service class (1) does not need to be a class and (2) should
+#  probably be moved to the manifest service module
+# def get_user_sites(*, username: str) -> QuerySet[HaztrakSite]:
+#     """Get a user's sites"""
+#     return HaztrakSite.objects.filter(haztrak_profile__user__username=username)

@@ -1,33 +1,12 @@
-from typing import Literal, Optional
+from typing import Optional
 
 import pytest
 
-from apps.core.models import HaztrakProfile, RcraProfile
+from apps.core.models import RcraProfile
 from apps.sites.models import (
-    HaztrakSite,
     RcraSite,
     RcraSitePermissions,
-    SitePermissions,
 )
-
-
-@pytest.fixture
-def haztrak_site_permission_factory(db, haztrak_site_factory, haztrak_profile_factory):
-    """Abstract factory for Haztrak RcraSitePermissions model"""
-
-    def create_permission(
-        site: Optional[HaztrakSite] = None,
-        profile: Optional[HaztrakProfile] = None,
-        emanifest: Optional[Literal["viewer", "signer", "editor"]] = "viewer",
-    ) -> RcraSitePermissions:
-        """Returns testuser1 RcraSitePermissions model to site_generator"""
-        return SitePermissions.objects.create(
-            site=site or haztrak_site_factory(),
-            profile=profile or haztrak_profile_factory(),
-            emanifest=emanifest,
-        )
-
-    yield create_permission
 
 
 @pytest.fixture
@@ -56,4 +35,4 @@ def rcra_permission_factory(db, rcra_site_factory, rcra_profile_factory):
             my_rcra_id=my_rcra_id,
         )
 
-    yield create_permission
+    return create_permission

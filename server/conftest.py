@@ -22,4 +22,4 @@ def cache_factory(settings):
             }
         }
 
-    yield create_cache
+    return create_cache

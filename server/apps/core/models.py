@@ -20,8 +20,6 @@ class HaztrakUser(AbstractUser):
         default=uuid.uuid4,
     )
 
-    pass
-
 
 class HaztrakProfile(models.Model):
     class Meta:
