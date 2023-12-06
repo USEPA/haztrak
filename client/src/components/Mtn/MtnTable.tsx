@@ -17,11 +17,13 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { MtnRowActions } from 'components/Mtn/MtnRowActions';
+import { MtnStatusField, StatusOption } from 'components/Mtn/MtnStatusField/MtnStatusField';
 import { HtPageBtns, HtPageControls } from 'components/UI';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Button, Col, Form, Table } from 'react-bootstrap';
-import Select from 'react-select';
 import { z } from 'zod';
+import { MtnSearchField } from 'components/Mtn/MtnSearchField/MtnSearchField';
+import { useSearchParams } from 'react-router-dom';
 
 const mtnDetailsSchema = z.object({
   manifestTrackingNumber: z.string(),
@@ -51,7 +53,6 @@ interface MtnTableProps {
 
 const columnHelper = createColumnHelper<MtnDetails>();
 
-// This defines our MTN table's columns and their behavior
 const columns = [
   columnHelper.accessor('manifestTrackingNumber', {
     header: 'MTN',
@@ -104,29 +105,14 @@ const fuzzyFilter: FilterFn<MtnDetails> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
-interface StatusOption {
-  value: string;
-  label: string;
-}
-
-const statusOptions: readonly StatusOption[] = [
-  { value: 'Scheduled', label: 'Scheduled' },
-  { value: 'InTransit', label: 'In Transit' },
-  { value: 'ReadyForSignature', label: 'Ready to Sign' },
-  { value: 'Corrected', label: 'Corrected' },
-  { value: 'Signed', label: 'Signed' },
-  { value: 'NotAssigned', label: 'Draft' },
-  { value: 'UnderCorrection', label: 'Under Correction' },
-];
-
 /**
  * Returns a card with a table of manifest tracking numbers (MTN) and select details
  * @param manifest
  */
 export function MtnTable({ manifests }: MtnTableProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [searchValue, setSearchValue] = useState<StatusOption | null>(null);
-  const [globalFilter, setGlobalFilter] = useState('');
+  const [searchValue, setSearchValue] = useState(searchParams.get('mtn') ?? '');
   const table = useReactTable({
     columns,
     data: manifests,
@@ -135,10 +121,10 @@ export function MtnTable({ manifests }: MtnTableProps) {
     },
     state: {
       columnFilters,
-      globalFilter,
+      globalFilter: searchValue,
     },
     onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
+    onGlobalFilterChange: setSearchValue,
     globalFilterFn: fuzzyFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -152,34 +138,22 @@ export function MtnTable({ manifests }: MtnTableProps) {
     debugColumns: false,
   });
 
+  const onStatusChange = (newValue: StatusOption | null) => {
+    setColumnFilters([{ id: 'status', value: newValue?.value ?? '' }]);
+  };
+
+  const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
+
   return (
     <>
       <div className="d-flex flex-row justify-content-end">
         <Col xs={3}>
-          <Form.Control
-            id={'mtnGlobalSearch'}
-            value={globalFilter ?? ''}
-            onChange={(event) => setGlobalFilter(event.target.value)}
-            placeholder="Filter..."
-          />
+          <MtnSearchField value={searchValue} onChange={onSearchChange} />
         </Col>
         <Col xs={4} className="mx-2">
-          <Select
-            name="statusFilter"
-            value={searchValue}
-            onChange={(newValue) => {
-              setSearchValue(newValue);
-              setColumnFilters([{ id: 'status', value: newValue?.value ?? '' }]);
-            }}
-            options={statusOptions}
-            isClearable={true}
-            placeholder="Status"
-            classNames={{
-              control: () => 'form-select py-0 ms-2 rounded-3',
-              placeholder: () => 'p-0 m-0 ps-1',
-            }}
-            components={{ IndicatorSeparator: () => null, DropdownIndicator: () => null }}
-          />
+          <MtnStatusField onChange={onStatusChange} />
         </Col>
       </div>
       <Table responsive>

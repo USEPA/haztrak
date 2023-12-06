@@ -33,7 +33,7 @@ describe('MtnTable', () => {
       createMockMtnDetails({ manifestTrackingNumber: oneMtn }),
     ];
     renderWithProviders(<MtnTable manifests={mtnData} />);
-    const filterInput = screen.getByPlaceholderText<HTMLInputElement>('Filter...');
+    const filterInput = screen.getByPlaceholderText<HTMLInputElement>('search...');
     fireEvent.change(filterInput, { target: { value: '00000' } });
     expect(await screen.queryByText(oneMtn)).toBeNull();
     expect(await screen.queryByText(zeroMtn)).not.toBeNull();
