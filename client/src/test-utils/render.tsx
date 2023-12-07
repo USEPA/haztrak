@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { AppStore, RootState, setupStore } from 'store';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
-  preloadedState?: RootState;
+  preloadedState?: Partial<RootState>;
   store?: AppStore;
   useFormProps?: UseFormProps;
 }
@@ -31,7 +31,6 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
 export function renderWithProviders(
   ui: React.ReactElement,
   {
-    // @ts-ignore
     preloadedState = {}, // an object with partial slices of our redux state
     useFormProps = {},
     store = setupStore(preloadedState), // Automatically create a store instance if no store was passed in

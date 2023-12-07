@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
 });
 
 /**A utility function to initialize the store with preloaded state used for testing*/
-const setupStore = (preloadedState?: RootState) => {
+const setupStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(haztrakApi.middleware),
