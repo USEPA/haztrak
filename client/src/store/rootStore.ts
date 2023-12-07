@@ -4,6 +4,7 @@ import errorReducers from './errorSlice/error.slice';
 import { haztrakApi } from './haztrakApiSlice';
 import notificationReducers from './notificationSlice/notification.slice';
 import profileReducers from './profileSlice/profile.slice';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const rootReducer = combineReducers({
   auth: userReducers,
@@ -24,6 +25,8 @@ const setupStore = (preloadedState?: Partial<RootState>) => {
 
 /** The root store for the application*/
 const rootStore = setupStore();
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export type AppDispatch = typeof rootStore.dispatch;
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;

@@ -123,19 +123,13 @@ const authSlice = createSlice({
   },
 });
 
-/**
- * Get the current user's username from the Redux store
- */
+/** Get the current user's username from the Redux store*/
 export const selectUserName = (state: RootState): string | undefined => state.auth.user?.username;
 
-/**
- * Select the current user
- */
+/** Select the current user*/
 export const selectUser = (state: RootState): HaztrakUser | undefined => state.auth.user;
 
-/**
- * Select the current User State
- */
+/** Select the current User State*/
 export const selectUserState = (state: RootState): UserState => state.auth;
 
 export default authSlice.reducer;

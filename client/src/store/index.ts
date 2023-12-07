@@ -1,11 +1,7 @@
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, AppStore, RootState } from './rootStore';
-import { rootStore, setupStore } from './rootStore';
 
 // Root Store
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-export { rootStore, setupStore };
+export { rootStore, setupStore, useAppDispatch, useAppSelector } from './rootStore';
 export type { RootState, AppDispatch, AppStore };
 
 // Haztrak API - RTK Query
