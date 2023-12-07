@@ -1,4 +1,4 @@
-import { AnyAction, ThunkAction } from '@reduxjs/toolkit';
+import { UnknownAction, ThunkAction } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import {
   selectTask,
@@ -21,7 +21,7 @@ export function useProgressTracker({
   reduxAction,
 }: {
   taskId: string | undefined;
-  reduxAction?: AnyAction | ThunkAction<any, any, any, any>;
+  reduxAction?: UnknownAction | ThunkAction<any, any, any, any>;
 }) {
   const dispatch = useAppDispatch();
   const taskComplete = useAppSelector(selectTaskCompletion(taskId));

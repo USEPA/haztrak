@@ -1,4 +1,4 @@
-import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userReducers, { login } from './authSlice/auth.slice';
 import errorReducers from './errorSlice/error.slice';
 import { haztrakApi } from './haztrakApiSlice';
@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
 });
 
 /**A utility function to initialize the store with preloaded state used for testing*/
-const setupStore = (preloadedState?: PreloadedState<RootState>) => {
+const setupStore = (preloadedState?: RootState) => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(haztrakApi.middleware),
