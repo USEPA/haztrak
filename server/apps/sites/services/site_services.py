@@ -6,7 +6,7 @@ from django.db import transaction
 
 from apps.core.services import RcrainfoService, get_rcrainfo_client
 from apps.sites.models import HaztrakSite
-from apps.trak.services import ManifestService, PullManifestsResult, TaskResponse
+from apps.trak.services import EManifest, PullManifestsResult, TaskResponse
 from apps.trak.tasks import sync_site_manifests
 
 logger = logging.getLogger(__name__)
@@ -23,11 +23,11 @@ class HaztrakSiteService:
     """
 
     def __init__(
-        self,
-        *,
-        username: str,
-        site_id: Optional[str] = None,
-        rcrainfo: Optional[RcrainfoService] = None,
+            self,
+            *,
+            username: str,
+            site_id: Optional[str] = None,
+            rcrainfo: Optional[RcrainfoService] = None,
     ):
         self.username = username
         self.rcrainfo = rcrainfo or get_rcrainfo_client(username=username)
@@ -49,8 +49,8 @@ class HaztrakSiteService:
             )
             updated_mtn = updated_mtn[:15]  # temporary limit to 15
             logger.info(f"Pulling {updated_mtn} from RCRAInfo")
-            manifest = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
-            results: PullManifestsResult = manifest.pull_manifests(tracking_numbers=updated_mtn)
+            emanifest = EManifest(username=self.username, rcrainfo=self.rcrainfo)
+            results: PullManifestsResult = emanifest.pull(tracking_numbers=updated_mtn)
             site.last_rcrainfo_manifest_sync = datetime.now(UTC)
             site.save()
             return results
@@ -60,9 +60,8 @@ class HaztrakSiteService:
 
     def _get_updated_mtn(self, site_id: str, last_sync_date: datetime) -> list[str]:
         logger.info(f"retrieving updated MTN for site {site_id}")
-        manifest = ManifestService(username=self.username, rcrainfo=self.rcrainfo)
-        return manifest.search_rcrainfo_mtn(site_id=site_id, start_date=last_sync_date)
-
+        emanifest = EManifest(username=self.username, rcrainfo=self.rcrainfo)
+        return emanifest.search(site_id=site_id, start_date=last_sync_date)
 
 # ToDo: all of our current HaztrakSite service class (1) does not need to be a class and (2) should
 #  probably be moved to the manifest service module

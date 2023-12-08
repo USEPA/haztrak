@@ -4,7 +4,7 @@ from rest_framework import status
 
 from apps.core.services import RcrainfoService, get_rcrainfo_client
 from apps.trak.models import Manifest
-from apps.trak.services import ManifestService
+from apps.trak.services import EManifest
 from apps.trak.services.manifest_services import get_manifests
 
 
@@ -28,22 +28,22 @@ class TestManifestService:
         )
 
     def test_pull_manifests(
-        self, manifest_100033134elc_rcra_response, mocker: pytest_mock.MockerFixture
+            self, manifest_100033134elc_rcra_response, mocker: pytest_mock.MockerFixture
     ):
         """Test retrieves a manifest from RCRAInfo"""
         rcrainfo = RcrainfoService(auto_renew=False)
-        manifest_service = ManifestService(username=self.user.username, rcrainfo=rcrainfo)
-        results = manifest_service.pull_manifests(tracking_numbers=[self.tracking_number])
+        emanifest = EManifest(username=self.user.username, rcrainfo=rcrainfo)
+        results = emanifest.pull(tracking_numbers=[self.tracking_number])
         assert self.tracking_number in results["success"]
 
 
 class TestSignManifest:
     def test_filter_mtn_removed_mtn_not_associated_with_site(
-        self,
-        manifest_factory,
-        rcra_site_factory,
-        manifest_handler_factory,
-        haztrak_profile_factory,
+            self,
+            manifest_factory,
+            rcra_site_factory,
+            manifest_handler_factory,
+            haztrak_profile_factory,
     ):
         # Arrange
         profile = haztrak_profile_factory()
@@ -52,9 +52,9 @@ class TestSignManifest:
         my_manifest = manifest_factory(generator=my_handler)
         not_my_manifest = manifest_factory(mtn="123456555ELC")
 
-        manifest_service = ManifestService(username=profile.user.username)
+        emanifest = EManifest(username=profile.user.username)
         # Act
-        filtered_manifest = manifest_service._filter_mtn(
+        filtered_manifest = emanifest._filter_mtn(
             mtn=[my_manifest.mtn, not_my_manifest.mtn],
             site_id=my_handler.rcra_site.epa_id,
             site_type=my_handler.rcra_site.site_type,
@@ -66,15 +66,15 @@ class TestSignManifest:
 
 class TestGetManifestService:
     def test_returns_manifests_from_all_user_sites_by_default(
-        self,
-        manifest_factory,
-        haztrak_profile_factory,
-        user_factory,
-        haztrak_site_factory,
-        rcra_site_factory,
-        haztrak_site_permission_factory,
-        manifest_handler_factory,
-        manifest_transporter_factory,
+            self,
+            manifest_factory,
+            haztrak_profile_factory,
+            user_factory,
+            haztrak_site_factory,
+            rcra_site_factory,
+            haztrak_site_permission_factory,
+            manifest_handler_factory,
+            manifest_transporter_factory,
     ):
         # Arrange
         profile = haztrak_profile_factory()
@@ -104,15 +104,15 @@ class TestGetManifestService:
         assert manifests.count() == Manifest.objects.count()
 
     def test_filters_by_epa_id(
-        self,
-        manifest_factory,
-        haztrak_profile_factory,
-        user_factory,
-        haztrak_site_factory,
-        rcra_site_factory,
-        haztrak_site_permission_factory,
-        manifest_handler_factory,
-        manifest_transporter_factory,
+            self,
+            manifest_factory,
+            haztrak_profile_factory,
+            user_factory,
+            haztrak_site_factory,
+            rcra_site_factory,
+            haztrak_site_permission_factory,
+            manifest_handler_factory,
+            manifest_transporter_factory,
     ):
         # Arrange
         profile = haztrak_profile_factory()
@@ -137,15 +137,15 @@ class TestGetManifestService:
         assert tsdf_manifest.mtn not in returned_mtn
 
     def test_filters_by_site_type(
-        self,
-        manifest_factory,
-        haztrak_profile_factory,
-        user_factory,
-        haztrak_site_factory,
-        rcra_site_factory,
-        haztrak_site_permission_factory,
-        manifest_handler_factory,
-        manifest_transporter_factory,
+            self,
+            manifest_factory,
+            haztrak_profile_factory,
+            user_factory,
+            haztrak_site_factory,
+            rcra_site_factory,
+            haztrak_site_permission_factory,
+            manifest_handler_factory,
+            manifest_transporter_factory,
     ):
         # Arrange
         profile = haztrak_profile_factory()
