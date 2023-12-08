@@ -1,4 +1,3 @@
-import { PreloadedState } from '@reduxjs/toolkit';
 import { render, RenderOptions } from '@testing-library/react';
 import React, { PropsWithChildren, ReactElement } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
@@ -7,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { AppStore, RootState, setupStore } from 'store';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
-  preloadedState?: PreloadedState<RootState>;
+  preloadedState?: Partial<RootState>;
   store?: AppStore;
   useFormProps?: UseFormProps;
 }

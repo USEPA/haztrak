@@ -1,10 +1,10 @@
-import { BaseQueryFn, createApi } from '@reduxjs/toolkit/dist/query/react';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { HaztrakSite } from 'components/HaztrakSite';
 import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { MtnDetails } from 'components/Mtn';
 import { RcraSite } from 'components/RcraSite';
 import { htApi } from 'services';
+import { BaseQueryFn, createApi } from '@reduxjs/toolkit/query/react';
 
 export interface HtApiQueryArgs {
   url: string;
