@@ -18,6 +18,7 @@ import { QuickerSignData, QuickerSignModal, QuickSignBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
 import { EditWasteModal, WasteLineTable } from './WasteLine';
 import { toast } from 'react-toastify';
+import { FloatingActionBtn } from 'components/UI';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -426,7 +427,9 @@ export function ManifestForm({
                       <RcraSiteDetails handler={generator} />
                       <PhoneForm handlerType={'generator'} />
                       <div className="d-flex justify-content-end">
-                        <Button onClick={toggleShowGeneratorForm}>Edit</Button>
+                        <Button variant="outline-primary" onClick={toggleShowGeneratorForm}>
+                          Edit
+                        </Button>
                       </div>
                     </>
                   ) : showGeneratorForm ? (
@@ -596,6 +599,7 @@ export function ManifestForm({
                 </Button>
               </div>
             </Stack>
+            <FloatingActionBtn variant="success">Save</FloatingActionBtn>
           </HtForm>
           {/*If taking action that involves updating a manifest in RCRAInfo*/}
           {taskId && showSpinner ? <UpdateRcra taskId={taskId} /> : <></>}
