@@ -11,10 +11,10 @@ interface SpinnerProps {
 export function HtSpinner({ message, className, size }: SpinnerProps): ReactElement {
   return (
     <>
-      <h4 className="d-flex justify-content-center my-auto text-muted bg-transparent p-5 my-5 ">
-        <FontAwesomeIcon icon={faGear} className={`${className}`} spin size={size ?? '2xl'} />
-        <span className="sr-only">{message ? message : 'Loading...'}</span>
-      </h4>
+      {/*<h4 className="d-flex justify-content-center my-auto text-muted bg-transparent p-5 my-5 ">*/}
+      <FontAwesomeIcon icon={faGear} className={`${className}`} spin size={size ?? '2xl'} />
+      <span className="sr-only">{message ? message : 'Loading...'}</span>
+      {/*</h4>*/}
     </>
   );
 }

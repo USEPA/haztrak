@@ -1,9 +1,9 @@
 import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 import { Manifest, SiteType, Transporter } from 'components/Manifest/manifestSchema';
 import { RcraSite } from 'components/RcraSite';
-import { HtForm } from 'components/UI';
+import { HtForm, HtSpinner, HtTooltip } from 'components/UI';
 import React, { useContext, useEffect, useState } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { Badge, Button, Col, Row } from 'react-bootstrap';
 import {
   Controller,
   SubmitHandler,
@@ -18,6 +18,8 @@ import {
   useSearchRcrainfoSitesQuery,
   useSearchRcraSitesQuery,
 } from 'store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
   handleClose: () => void;
@@ -53,23 +55,16 @@ export function HandlerSearchForm({
   const {
     data: rcrainfoData,
     error: rcrainfoError,
-    isLoading: rcrainfoIsLoading,
+    isFetching: fetchingFromRcrainfo,
   } = useSearchRcrainfoSitesQuery(
     {
       siteType: handlerType,
       siteId: inputValue,
     },
-    { skip: skip && !org?.rcrainfoIntegrated }
+    { skip: skip || !org?.rcrainfoIntegrated }
   );
   const { setGeneratorStateCode, setTsdfStateCode } =
     useContext<ManifestContextType>(ManifestContext);
-  const [searchMessage, setSearchMessage] = useState<
-    | {
-        message: string;
-        variant: 'success' | 'danger';
-      }
-    | undefined
-  >(undefined);
 
   const [options, setOptions] = useState<RcraSite[]>([]);
   const [rcrainfoSitesLoading, setRcrainfoSitesLoading] = useState<boolean>(false);
@@ -111,8 +106,8 @@ export function HandlerSearchForm({
   }, [data, rcrainfoData]);
 
   useEffect(() => {
-    setRcrainfoSitesLoading(isLoading || rcrainfoIsLoading);
-  }, [isLoading, rcrainfoIsLoading]);
+    setRcrainfoSitesLoading(isLoading || fetchingFromRcrainfo);
+  }, [isLoading, fetchingFromRcrainfo]);
 
   const handleInputChange = async (value: string) => {
     setInputValue(value);
@@ -126,12 +121,39 @@ export function HandlerSearchForm({
     <>
       <HtForm onSubmit={handleSubmit(onSubmit)}>
         <HtForm.Group>
-          {searchMessage && (
-            <div className="my-2">
-              <Alert variant={searchMessage.variant}>{searchMessage.message}</Alert>
-            </div>
-          )}
-          <HtForm.Label htmlFor="epaId">EPA ID Number</HtForm.Label>
+          <Row className="d-flex justify-content-around">
+            <Col>
+              <HtForm.Label htmlFor="epaId">EPA ID Number</HtForm.Label>
+            </Col>
+            <Col className="d-flex justify-content-end">
+              <p>
+                {fetchingFromRcrainfo ? (
+                  <Badge bg="secondary">
+                    <span>Searching RCRAInfo </span>
+                    <HtSpinner size="lg" />
+                  </Badge>
+                ) : rcrainfoData ? (
+                  <Badge bg="success">
+                    <span>Sites Retrieved from RCRAInfo </span>
+                    <FontAwesomeIcon icon={faCheck} />
+                  </Badge>
+                ) : rcrainfoError ? (
+                  <Badge bg="danger">
+                    <span>Error finding RCRAInfo sites </span>
+                    <FontAwesomeIcon icon={faXmark} />
+                  </Badge>
+                ) : !org?.rcrainfoIntegrated ? (
+                  <HtTooltip text="Your organization has not set up integration with EPA's RCRAIno. Please contact your organization administrator to enable.">
+                    <Badge bg="warning">Org is not EPA integrated</Badge>
+                  </HtTooltip>
+                ) : (
+                  <Badge bg="secondary">
+                    <span>Ready to search RCRAInfo </span>
+                  </Badge>
+                )}
+              </p>
+            </Col>
+          </Row>
           <Controller
             control={control}
             name="epaId"
