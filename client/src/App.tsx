@@ -1,6 +1,8 @@
 import { ErrorBoundary } from 'components/Error';
 import { Notifications } from 'components/Notifications/Notifications';
+import { HtSpinner } from 'components/UI';
 import React, { ReactElement, Suspense, useEffect } from 'react';
+import { Container } from 'react-bootstrap';
 import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,13 +12,11 @@ import {
   getHaztrakUser,
   getRcraProfile,
   selectHaztrakProfile,
-  selectRcraProfile,
   selectUserName,
   useAppDispatch,
   useAppSelector,
 } from 'store';
 import './App.scss';
-import { HtSpinner } from 'components/UI';
 
 function App(): ReactElement {
   const userName = useAppSelector(selectUserName);
@@ -43,7 +43,13 @@ function App(): ReactElement {
         limit={3}
       />
       <Notifications />
-      <Suspense fallback={<HtSpinner />}>
+      <Suspense
+        fallback={
+          <Container fluid className="d-flex justify-content-center vh-100">
+            <HtSpinner size="6x" className="my-auto" />
+          </Container>
+        }
+      >
         <RouterProvider router={router} />
       </Suspense>
     </ErrorBoundary>

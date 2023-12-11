@@ -3,18 +3,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ManifestContext } from 'components/Manifest/ManifestForm';
 import { HtButton } from 'components/UI';
 import React, { useContext } from 'react';
+import { ButtonProps } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-export function ManifestEditBtn() {
+interface ManifestEditBtnProps extends ButtonProps {}
+
+export function ManifestEditBtn({ children, ...props }: ManifestEditBtnProps) {
   const navigate = useNavigate();
-  const { readOnly, mtn, manifestingSiteID } = useContext(ManifestContext);
+  const { readOnly, trackingNumber, viewingAsSiteId } = useContext(ManifestContext);
   if (!readOnly) return <></>;
   return (
     <HtButton
-      variant="outline-info"
+      {...props}
+      variant="info"
       type="button"
       name="edit"
-      onClick={() => navigate(`/site/${manifestingSiteID}/manifest/${mtn}/edit`)}
+      onClick={() => navigate(`/site/${viewingAsSiteId}/manifest/${trackingNumber}/edit`)}
     >
       <span>Edit </span>
       <FontAwesomeIcon icon={faPenToSquare} />

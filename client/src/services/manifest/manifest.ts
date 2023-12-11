@@ -1,8 +1,15 @@
 import { Manifest } from 'components/Manifest';
+import { SiteType } from 'components/Manifest/manifestSchema';
 
 export const manifest = {
   /** Returns EPA ID of the next site that can sign on a manifest or undefined if not applicable. */
-  getNextSigner(manifest: Partial<Manifest> | undefined): string | undefined {
+  getNextSigner(manifest: Partial<Manifest> | undefined):
+    | {
+        epaSiteId: string;
+        siteType: SiteType;
+        transporterOrder?: number;
+      }
+    | undefined {
     if (manifest === undefined || manifest === null || manifest.status === undefined) {
       return undefined;
     }
@@ -11,20 +18,28 @@ export const manifest = {
       !manifest.generator?.electronicSignaturesInfo?.[0]?.signer &&
       manifest.generator
     ) {
-      return manifest.generator.epaSiteId;
+      return { epaSiteId: manifest.generator.epaSiteId, siteType: 'generator' };
     }
     if (manifest.status === 'Scheduled' && manifest.transporters?.length === 1) {
-      return manifest.transporters[0].epaSiteId;
+      return {
+        epaSiteId: manifest.transporters[0].epaSiteId,
+        siteType: 'transporter',
+        transporterOrder: 1,
+      };
     }
     if (manifest.status === 'InTransit' && manifest.transporters) {
       for (const transporter of manifest.transporters) {
         if (!transporter.electronicSignaturesInfo?.[0].signer) {
-          return transporter.epaSiteId;
+          return {
+            epaSiteId: transporter.epaSiteId,
+            siteType: 'transporter',
+            transporterOrder: transporter.order,
+          };
         }
       }
     }
     if (manifest.status === 'ReadyForSignature' && manifest.designatedFacility) {
-      return manifest.designatedFacility.epaSiteId;
+      return { epaSiteId: manifest?.designatedFacility.epaSiteId, siteType: 'designatedFacility' };
     }
     return undefined;
   },

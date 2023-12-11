@@ -28,7 +28,7 @@ function TestComponent({
   return (
     <div>
       {/*@ts-ignore*/}
-      <ManifestContext.Provider value={{ manifestStatus: status, signingSite }}>
+      <ManifestContext.Provider value={{ status: status, nextSigningSite: signingSite }}>
         <QuickSignBtn siteType={siteType} mtnHandler={handler} handleClick={() => undefined} />
       </ManifestContext.Provider>
       ,

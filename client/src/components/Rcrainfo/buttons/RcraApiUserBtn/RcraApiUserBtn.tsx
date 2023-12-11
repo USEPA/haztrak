@@ -8,14 +8,13 @@ interface HtApiUserBtnProps extends ButtonProps {}
  * RCRAInfo/e-Manifest or disabled prop is passed
  * @constructor
  */
-export function RcraApiUserBtn(props: HtApiUserBtnProps) {
+export function RcraApiUserBtn({ children, ...props }: HtApiUserBtnProps) {
   const profile = useAppSelector(selectHaztrakProfile);
-  let { children, ...btnProps } = props;
-  const active = !btnProps.disabled && profile.org?.rcrainfoIntegrated;
+  const active = !props.disabled && profile.org?.rcrainfoIntegrated;
 
   return (
-    <Button {...btnProps} disabled={!active}>
-      {props.children}
+    <Button {...props} disabled={!active}>
+      {children}
     </Button>
   );
 }
