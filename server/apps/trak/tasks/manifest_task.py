@@ -70,7 +70,7 @@ def sync_site_manifests(self, *, site_id: str, username: str):
 
 
 @shared_task(name="save RCRAInfo manifests", bind=True)
-def save_rcrainfo_manifest(self, *, manifest_data: dict, username: str):
+def save_to_emanifest(self, *, manifest_data: dict, username: str):
     """
     asynchronous task to use the RCRAInfo web services to create an electronic (RCRA) manifest
     it accepts a Python dict of the manifest data to be submitted as JSON, and the username of the

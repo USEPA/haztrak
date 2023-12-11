@@ -187,7 +187,7 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
 
 
 @pytest.fixture
-def waste_line_factory(db, faker: Faker):
+def waste_line_factory(db):
     """Abstract factory for Haztrak DotLookup model"""
 
     def create_waste_line(

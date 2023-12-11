@@ -12,7 +12,7 @@ from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
 from apps.trak.serializers.signature_serializer import QuickerSignSerializer
 from apps.trak.services import EManifest, TaskResponse
-from apps.trak.services.manifest_services import get_manifests
+from apps.trak.services.manifest_services import create_manifest, get_manifests
 
 logger = logging.getLogger(__name__)
 
@@ -44,8 +44,10 @@ class CreateManifestView(GenericAPIView):
     def post(self, request: Request) -> Response:
         manifest_serializer = self.serializer_class(data=request.data)
         manifest_serializer.is_valid(raise_exception=True)
-        emanifest = EManifest(username=str(request.user))
-        data = emanifest.create(manifest=manifest_serializer.data)
+        manifest = create_manifest(
+            username=str(request.user), data=manifest_serializer.validated_data
+        )
+        data = ManifestSerializer(manifest).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
 

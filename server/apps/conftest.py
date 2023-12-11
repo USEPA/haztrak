@@ -314,3 +314,37 @@ def haztrak_site_permission_factory(db, haztrak_site_factory, haztrak_profile_fa
         )
 
     return create_permission
+
+
+@pytest.fixture
+def user_with_org_factory(
+    db,
+    user_factory,
+    haztrak_org_factory,
+    rcra_profile_factory,
+    haztrak_profile_factory,
+):
+    """Fixture for creating a user with an org that has set up RCRAInfo integration"""
+
+    def create_fixtures(
+        user: Optional[User] = None,
+        org: Optional[HaztrakOrg] = None,
+        admin_rcrainfo_profile: Optional[RcraProfile] = None,
+        is_rcrainfo_enabled: Optional[bool] = True,
+    ):
+        if is_rcrainfo_enabled:
+            rcra_profile_data = {
+                "rcra_api_id": "mock_api_id",
+                "rcra_api_key": "mock_api_key",
+                "rcra_username": "mock_username",
+            }
+        else:
+            rcra_profile_data = {"rcra_api_id": None, "rcra_api_key": None, "rcra_username": None}
+        user = user or user_factory()
+        admin = user_factory(username="admin")
+        admin_rcrainfo_profile or rcra_profile_factory(**rcra_profile_data)
+        org = org or haztrak_org_factory(admin=admin)
+        haztrak_profile_factory(user=user, org=org)
+        return user, org
+
+    return create_fixtures

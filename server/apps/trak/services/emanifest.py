@@ -10,7 +10,7 @@ from requests import RequestException
 from apps.core.services import RcrainfoService, get_rcrainfo_client
 from apps.trak.models import Manifest, QuickerSign
 from apps.trak.serializers import ManifestSerializer, QuickerSignSerializer
-from apps.trak.tasks import pull_manifest, save_rcrainfo_manifest, sign_manifest
+from apps.trak.tasks import pull_manifest, sign_manifest
 
 logger = logging.getLogger(__name__)
 
@@ -54,16 +54,21 @@ class EManifest:
         self.username = username
         self.rcrainfo = rcrainfo or get_rcrainfo_client(username=username)
 
+    @property
+    def is_available(self) -> bool:
+        """Check if e-Manifest is available"""
+        return self.rcrainfo.has_rcrainfo_credentials
+
     def search(
-            self,
-            *,
-            site_id: Optional[str] = None,
-            start_date: Optional[datetime] = None,
-            end_date: Optional[datetime] = None,
-            status: Optional[str] = None,
-            date_type: str = "UpdatedDate",
-            state_code: Optional[str] = None,
-            site_type: Optional[str] = None,
+        self,
+        *,
+        site_id: Optional[str] = None,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+        status: Optional[str] = None,
+        date_type: str = "UpdatedDate",
+        state_code: Optional[str] = None,
+        site_type: Optional[str] = None,
     ) -> List[str]:
         """Search for manifests from e-Manifest, an abstraction of RcrainfoService's search_mtn"""
         date_format = "%Y-%m-%dT%H:%M:%SZ"
@@ -77,9 +82,9 @@ class EManifest:
             # If no start date is specified, retrieve for last ~3 years
             start_date = datetime.now(UTC) - timedelta(
                 minutes=60  # 60 seconds/1minutes
-                        * 24  # 24 hours/1day
-                        * 30  # 30 days/1month
-                        * 36  # 36 months/3years = 3/years
+                * 24  # 24 hours/1day
+                * 30  # 30 days/1month
+                * 36  # 36 months/3years = 3/years
             )
             start_date_str = start_date.strftime(date_format)
 
@@ -133,17 +138,6 @@ class EManifest:
             logger.warning(f"Error Quicker signing {response.status_code} {response.json()}")
         return results
 
-    def create(self, *, manifest: dict) -> dict | TaskResponse:
-        """Create a manifest in RCRAInfo through the RESTful API."""
-        if self.rcrainfo.has_rcrainfo_credentials and manifest.get("status") != "NotAssigned":
-            logger.info("POSTing manifest to RCRAInfo.")
-            task = save_rcrainfo_manifest.delay(manifest_data=manifest, username=self.username)
-            return {"taskId": task.id}
-        else:
-            logger.info("Saving manifest manifest to DB without RCRAInfo")
-            saved_manifest = self._save_manifest_json_to_db(manifest)
-            return ManifestSerializer(saved_manifest).data
-
     def save(self, manifest: dict) -> dict:
         """Save manifest to e-Manifest"""
         logger.info(f"start save manifest to rcrainfo with arguments {manifest}")
@@ -165,7 +159,7 @@ class EManifest:
 
     @staticmethod
     def _filter_mtn(
-            *, mtn: list[str], site_id: str, site_type: Literal["Generator", "Tsdf", "Transporter"]
+        *, mtn: list[str], site_id: str, site_type: Literal["Generator", "Tsdf", "Transporter"]
     ) -> list[str]:
         site_filter = Manifest.objects.get_handler_query(site_id, site_type)
         existing_mtn = Manifest.objects.existing_mtn(site_filter, mtn=mtn)

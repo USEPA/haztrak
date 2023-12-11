@@ -1,18 +1,19 @@
 from apps.trak.models import Manifest
-from apps.trak.services.manifest_services import get_manifests
+from apps.trak.serializers import ManifestSerializer
+from apps.trak.services import create_manifest, get_manifests
 
 
 class TestGetManifestService:
     def test_returns_manifests_from_all_user_sites_by_default(
-            self,
-            manifest_factory,
-            haztrak_profile_factory,
-            user_factory,
-            haztrak_site_factory,
-            rcra_site_factory,
-            haztrak_site_permission_factory,
-            manifest_handler_factory,
-            manifest_transporter_factory,
+        self,
+        manifest_factory,
+        haztrak_profile_factory,
+        user_factory,
+        haztrak_site_factory,
+        rcra_site_factory,
+        haztrak_site_permission_factory,
+        manifest_handler_factory,
+        manifest_transporter_factory,
     ):
         # Arrange
         profile = haztrak_profile_factory()
@@ -42,15 +43,15 @@ class TestGetManifestService:
         assert manifests.count() == Manifest.objects.count()
 
     def test_filters_by_epa_id(
-            self,
-            manifest_factory,
-            haztrak_profile_factory,
-            user_factory,
-            haztrak_site_factory,
-            rcra_site_factory,
-            haztrak_site_permission_factory,
-            manifest_handler_factory,
-            manifest_transporter_factory,
+        self,
+        manifest_factory,
+        haztrak_profile_factory,
+        user_factory,
+        haztrak_site_factory,
+        rcra_site_factory,
+        haztrak_site_permission_factory,
+        manifest_handler_factory,
+        manifest_transporter_factory,
     ):
         # Arrange
         profile = haztrak_profile_factory()
@@ -75,15 +76,15 @@ class TestGetManifestService:
         assert tsdf_manifest.mtn not in returned_mtn
 
     def test_filters_by_site_type(
-            self,
-            manifest_factory,
-            haztrak_profile_factory,
-            user_factory,
-            haztrak_site_factory,
-            rcra_site_factory,
-            haztrak_site_permission_factory,
-            manifest_handler_factory,
-            manifest_transporter_factory,
+        self,
+        manifest_factory,
+        haztrak_profile_factory,
+        user_factory,
+        haztrak_site_factory,
+        rcra_site_factory,
+        haztrak_site_permission_factory,
+        manifest_handler_factory,
+        manifest_transporter_factory,
     ):
         # Arrange
         profile = haztrak_profile_factory()
@@ -109,3 +110,26 @@ class TestGetManifestService:
         assert gen_manifest.mtn in returned_gen_mtn
         assert tsdf_manifest.mtn not in returned_gen_mtn
         assert tsdf_manifest.mtn in returned_all_mtn
+
+
+class TestCreateManifest:
+    def test_create_manifest_saves_drafts_to_db(
+        self,
+        manifest_factory,
+        validated_data_factory,
+        user_factory,
+        user_with_org_factory,
+    ):
+        # Arrange
+        new_mtn = "987654321ELC"
+        user, org = user_with_org_factory(is_rcrainfo_enabled=True)
+        new_manifest_data = validated_data_factory(
+            instance=manifest_factory(mtn="123456789ELC", status="NotAssigned"),
+            serializer=ManifestSerializer,
+        )
+        new_manifest_data["mtn"] = new_mtn
+        # Act
+        new_manifest = create_manifest(data=new_manifest_data, username=user.username)
+        # Assert
+        assert isinstance(new_manifest, Manifest)
+        assert new_manifest.mtn == new_mtn
