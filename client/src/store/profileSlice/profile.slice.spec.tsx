@@ -6,7 +6,7 @@ import { screen } from '@testing-library/react';
 import React from 'react';
 import { useAppSelector } from 'store';
 import { renderWithProviders } from 'test-utils';
-import { createMockRcrainfoSite } from 'test-utils/fixtures';
+import { createMockSite } from 'test-utils/fixtures';
 import { createMockRcrainfoPermissions } from 'test-utils/fixtures/mockHandler';
 import { describe, expect, test } from 'vitest';
 import { selectRcrainfoSites, siteByEpaIdSelector } from './profile.slice';
@@ -26,7 +26,7 @@ function TestComponent({ siteId }: TestComponentProps) {
 
 describe('RcraProfileSlice selectors', () => {
   test('Retrieve RcraProfileSite by EPA ID', () => {
-    const mySite = createMockRcrainfoSite();
+    const mySite = createMockSite();
     renderWithProviders(<TestComponent siteId={mySite.handler.epaSiteId} />, {
       preloadedState: {
         profile: {
@@ -49,7 +49,7 @@ describe('RcraProfileSlice selectors', () => {
     expect(screen.getByText(mySite.handler.epaSiteId)).toBeInTheDocument();
   });
   test('retrieve all RcraProfileSites', () => {
-    const mySite = createMockRcrainfoSite();
+    const mySite = createMockSite();
     const TestComp = () => {
       const myRcraSite = useAppSelector(selectRcrainfoSites);
       return (

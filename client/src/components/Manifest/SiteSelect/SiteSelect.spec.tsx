@@ -3,7 +3,7 @@ import { SiteSelect } from 'components/Manifest/SiteSelect/SiteSelect';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { renderWithProviders } from 'test-utils';
-import { createMockRcrainfoSite } from 'test-utils/fixtures';
+import { createMockSite } from 'test-utils/fixtures';
 import { createMockRcrainfoPermissions } from 'test-utils/fixtures/mockHandler';
 import { describe, expect, test } from 'vitest';
 
@@ -16,7 +16,7 @@ function TestComponent() {
 
 describe('SiteSelect', () => {
   test('renders', () => {
-    const mySite = createMockRcrainfoSite();
+    const mySite = createMockSite();
     renderWithProviders(<TestComponent />, {
       preloadedState: {
         profile: {
