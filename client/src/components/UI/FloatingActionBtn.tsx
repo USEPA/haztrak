@@ -17,7 +17,7 @@ export function FloatingActionBtn({
     position === undefined || position === 'bottom-right'
       ? 'position-fixed bottom-0 end-0 m-5'
       : 'position-fixed bottom-0 start-0 m-5';
-  const defaultClasses = `p-2 rounded-5 ${extended ? 'px-4' : ''}`;
+  const defaultClasses = `p-2 rounded-5 shadow bg-gradient ${extended ? 'px-4' : ''}`;
   return (
     <div className={positionClasses}>
       <Button {...props} className={`${defaultClasses} ${className}`}>

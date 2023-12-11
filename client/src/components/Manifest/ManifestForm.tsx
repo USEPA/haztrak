@@ -1,5 +1,6 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ManifestActionBtns } from 'components/Manifest/ActionBtns/ManifestActionBtns';
 import { AdditionalInfoForm } from 'components/Manifest/AdditionalInfo';
 import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
@@ -9,6 +10,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import { Alert, Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { manifest } from 'services';
 import {
   selectHaztrakSiteEpaIds,
@@ -22,8 +24,6 @@ import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal, QuickSignBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
 import { EditWasteModal, WasteLineTable } from './WasteLine';
-import { toast } from 'react-toastify';
-import { ManifestActionBtns } from 'components/Manifest/ActionBtns/ManifestActionBtns';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -191,9 +191,7 @@ export function ManifestForm({
 
   const nextSigner = manifest.getNextSigner(manifestData);
   const userSiteIds = useAppSelector(selectHaztrakSiteEpaIds);
-  console.log('userSiteIds', userSiteIds);
-  console.log('nextSigner', nextSigner);
-
+  // Whether the user has permissions and manifest is in a state to be signed
   const signAble = userSiteIds.includes(nextSigner ?? '');
 
   const isDraft = manifestData?.manifestTrackingNumber === undefined;
@@ -606,7 +604,7 @@ export function ManifestForm({
             </Stack>
             <ManifestActionBtns
               manifestStatus={manifestStatus}
-              readonly={readOnly}
+              readOnly={readOnly}
               signAble={signAble}
             />
           </HtForm>

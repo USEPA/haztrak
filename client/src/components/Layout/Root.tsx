@@ -1,11 +1,11 @@
 import { ErrorBoundary } from 'components/Error';
+import { HtSpinner } from 'components/UI';
 import React, { createContext, Dispatch, SetStateAction, Suspense, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { Outlet } from 'react-router-dom';
 import { PrivateRoute } from './PrivateRoute';
 import { Sidebar } from './Sidebar/Sidebar';
 import { TopNav } from './TopNav/TopNav';
-import { HtSpinner } from 'components/UI';
 
 export interface NavContextProps {
   showSidebar: boolean;
@@ -29,7 +29,7 @@ export function Root() {
             <Suspense
               fallback={
                 <Container fluid className="d-flex justify-content-center vh-100">
-                  <HtSpinner size="7x" />
+                  <HtSpinner size="6x" className="my-auto" />
                 </Container>
               }
             >
