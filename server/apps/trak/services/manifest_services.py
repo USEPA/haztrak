@@ -17,6 +17,7 @@ def update_manifest(*, mtn: Optional[str], data: dict) -> Manifest:
     try:
         original_manifest = Manifest.objects.get(mtn=mtn)
         manifest = Manifest.objects.save(original_manifest, **data)
+        # ToDo: update e-Manifest
         return manifest
     except Manifest.DoesNotExist:
         raise EManifestError(f"manifest {mtn} does not exist")
@@ -44,3 +45,17 @@ def get_manifests(
             | Q(tsdf__rcra_site__epa_id__in=sites)
             | Q(transporters__rcra_site__epa_id__in=sites)
         )
+
+#
+# def create_manifest(self, *, username: str, manifest: dict) -> dict | TaskResponse:
+#     """Save a manifest to Haztrak database and/or e-Manifest/RCRAInfo"""
+#     emanifest = EManifest(username=username)
+#     # data = emanifest.create(manifest=manifest_serializer.data)
+#     if emanifest.has_rcrainfo_credentials and manifest.get("status") != "NotAssigned":
+#         logger.info("POSTing manifest to RCRAInfo.")
+#         task = save_rcrainfo_manifest.delay(manifest_data=manifest, username=self.username)
+#         return {"taskId": task.id}
+#     else:
+#         logger.info("Saving manifest manifest to DB without RCRAInfo")
+#         saved_manifest = self._save_manifest_json_to_db(manifest)
+#         return ManifestSerializer(saved_manifest).data
