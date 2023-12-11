@@ -20,7 +20,11 @@ function TestComponent({
 }: {
   siteType?: RcraSiteType;
   handler?: Handler;
-  signingSite?: string;
+  signingSite?: {
+    epaSiteId: string;
+    siteType: 'generator' | 'designatedFacility' | 'transporter';
+    transporterOrder?: number | undefined;
+  };
   status?: 'NotAssigned' | 'Pending' | 'Scheduled' | 'InTransit' | 'ReadyForSignature';
 }) {
   if (!siteType) siteType = 'Generator';
@@ -29,9 +33,8 @@ function TestComponent({
     <div>
       {/*@ts-ignore*/}
       <ManifestContext.Provider value={{ status: status, nextSigningSite: signingSite }}>
-        <QuickSignBtn siteType={siteType} mtnHandler={handler} handleClick={() => undefined} />
+        <QuickSignBtn siteType={siteType} mtnHandler={handler} onClick={() => undefined} />
       </ManifestContext.Provider>
-      ,
     </div>
   );
 }
@@ -41,7 +44,11 @@ describe('QuickSignBtn', () => {
     const handlerId = 'TXD987654321';
     const handler = createMockMTNHandler({ siteType: 'Generator', epaSiteId: handlerId });
     renderWithProviders(
-      <TestComponent handler={handler} signingSite={handlerId} status={'Scheduled'} />,
+      <TestComponent
+        handler={handler}
+        signingSite={{ epaSiteId: handlerId, siteType: 'generator' }}
+        status={'Scheduled'}
+      />,
       {
         preloadedState: {
           profile: {
@@ -97,9 +104,13 @@ describe('QuickSignBtn', () => {
       epaSiteId,
     });
     renderWithProviders(
-      <TestComponent siteType={'Tsdf'} signingSite={'other_id'} handler={unsigned_handler} />,
+      <TestComponent
+        siteType={'Tsdf'}
+        signingSite={{ epaSiteId: 'other_site', siteType: 'transporter' }}
+        handler={unsigned_handler}
+      />,
+      // Redux store state with an API user is required for this button to be active
       {
-        // Redux store state with an API user is required for this button to be active
         preloadedState: {
           profile: {
             user: 'username',

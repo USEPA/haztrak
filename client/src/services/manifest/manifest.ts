@@ -1,5 +1,5 @@
 import { Manifest } from 'components/Manifest';
-import { SiteType } from 'components/Manifest/manifestSchema';
+import { RcraSiteType, SiteType } from 'components/Manifest/manifestSchema';
 
 export const manifest = {
   /** Returns EPA ID of the next site that can sign on a manifest or undefined if not applicable. */
@@ -42,5 +42,29 @@ export const manifest = {
       return { epaSiteId: manifest?.designatedFacility.epaSiteId, siteType: 'designatedFacility' };
     }
     return undefined;
+  },
+  rcraSiteTypeToSiteType(rcraSiteType: RcraSiteType | undefined): SiteType | undefined {
+    switch (rcraSiteType) {
+      case 'Generator':
+        return 'generator';
+      case 'Tsdf':
+        return 'designatedFacility';
+      case 'Transporter':
+        return 'transporter';
+      default:
+        return undefined;
+    }
+  },
+  siteTypeToRcraSiteType(siteType: SiteType | undefined): RcraSiteType | undefined {
+    switch (siteType) {
+      case 'generator':
+        return 'Generator';
+      case 'designatedFacility':
+        return 'Tsdf';
+      case 'transporter':
+        return 'Transporter';
+      default:
+        return undefined;
+    }
   },
 };

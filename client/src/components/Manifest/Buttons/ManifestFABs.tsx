@@ -3,7 +3,8 @@ import { ManifestSaveBtn } from 'components/Manifest/Buttons/ManifestSaveBtn';
 import { ManifestContext } from 'components/Manifest/ManifestForm';
 import { QuickSignBtn } from 'components/Manifest/QuickerSign';
 import { FloatingActionBtn } from 'components/UI';
-import React, { useContext } from 'react';
+import React, { ReactElement, useContext } from 'react';
+import { manifest } from 'services';
 
 interface ManifestActionBtnsProps {
   onSignClick: () => void;
@@ -11,14 +12,12 @@ interface ManifestActionBtnsProps {
 
 export function ManifestFABs({ onSignClick }: ManifestActionBtnsProps) {
   const { nextSigningSite, readOnly, status, signAble } = useContext(ManifestContext);
-  let component: any = undefined;
+  const rcraSiteType = manifest.siteTypeToRcraSiteType(nextSigningSite?.siteType);
+  let component: ReactElement | undefined = undefined;
   if (!readOnly || status === 'NotAssigned') {
     component = <ManifestSaveBtn />;
   } else if (signAble) {
-    component = (
-      // @ts-ignore
-      <QuickSignBtn siteType={nextSigningSite?.siteType} handleClick={onSignClick} />
-    );
+    component = <QuickSignBtn siteType={rcraSiteType} onClick={onSignClick} />;
   } else if (readOnly) {
     component = <ManifestEditBtn />;
   } else {

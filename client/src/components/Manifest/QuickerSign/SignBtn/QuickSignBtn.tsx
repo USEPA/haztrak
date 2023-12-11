@@ -7,15 +7,9 @@ import React, { useContext } from 'react';
 import { ButtonProps } from 'react-bootstrap';
 import { siteByEpaIdSelector, useAppSelector } from 'store';
 
-interface QuickerSignData {
-  handler: Handler | undefined;
-  siteType: RcraSiteType;
-}
-
 interface QuickSignBtnProps extends ButtonProps {
   siteType?: RcraSiteType;
   mtnHandler?: Handler;
-  handleClick: (data: QuickerSignData) => void;
   iconOnly?: boolean;
 }
 
@@ -27,7 +21,6 @@ interface QuickSignBtnProps extends ButtonProps {
 export function QuickSignBtn({
   siteType,
   mtnHandler,
-  handleClick,
   iconOnly = false,
   ...props
 }: QuickSignBtnProps) {
@@ -40,13 +33,7 @@ export function QuickSignBtn({
   if (nextSigningSite?.siteType === undefined) return <></>;
 
   return (
-    <RcraApiUserBtn
-      onClick={() => {
-        // @ts-ignore
-        handleClick({ handler: mtnHandler, siteType: nextSigningSite?.siteType.toLowerCase() });
-      }}
-      {...props}
-    >
+    <RcraApiUserBtn {...props}>
       {iconOnly ? '' : 'Sign '}
       <FontAwesomeIcon icon={faFeather} />
     </RcraApiUserBtn>

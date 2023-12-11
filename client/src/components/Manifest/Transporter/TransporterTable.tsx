@@ -13,7 +13,7 @@ interface TransporterTableProps {
   transporters?: Array<Transporter>;
   arrayFieldMethods: UseFieldArrayReturn<Manifest, 'transporters', 'id'>;
   readOnly?: boolean;
-  setupSign: (data: QuickerSignData) => void;
+  setupSign: () => void;
 }
 
 function CustomToggle({ eventKey }: any) {
@@ -70,7 +70,7 @@ function TransporterTable({
                     <QuickSignBtn
                       siteType={'Transporter'}
                       mtnHandler={transporter}
-                      handleClick={setupSign}
+                      onClick={setupSign}
                       iconOnly={true}
                       disabled={transporter.signed}
                     />

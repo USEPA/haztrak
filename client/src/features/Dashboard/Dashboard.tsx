@@ -1,18 +1,11 @@
 import { NewManifestBtn } from 'components/Manifest';
 import { HtButton, HtCard } from 'components/UI';
 import { useTitle } from 'hooks';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { htApi } from 'services';
-import {
-  addAlert,
-  addTask,
-  getRcraProfile,
-  selectUserName,
-  useAppDispatch,
-  useAppSelector,
-} from 'store';
+import { addAlert, addTask, useAppDispatch } from 'store';
 import {
   GeneratorStatusAreaChart,
   ManifestCountBarChart,
