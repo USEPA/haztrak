@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 export function ManifestCancelBtn() {
   const form = useFormContext<Manifest>();
   const navigate = useNavigate();
-  const { readOnly, mtn, manifestingSiteID } = useContext(ManifestContext);
+  const { readOnly, trackingNumber, viewingAsSiteId } = useContext(ManifestContext);
   if (readOnly) return <></>;
   return (
     <HtButton
@@ -19,10 +19,10 @@ export function ManifestCancelBtn() {
       name="edit"
       onClick={() => {
         form.reset();
-        if (!mtn) {
+        if (!trackingNumber) {
           navigate(-1);
         } else {
-          navigate(`/site/${manifestingSiteID}/manifest/${mtn}/view`);
+          navigate(`/site/${viewingAsSiteId}/manifest/${trackingNumber}/view`);
         }
       }}
     >

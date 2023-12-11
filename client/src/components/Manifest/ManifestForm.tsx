@@ -23,7 +23,7 @@ import {
 } from 'store';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
-import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
+import { Manifest, manifestSchema, ManifestStatus, SiteType } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal, QuickSignBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
 import { EditWasteModal, WasteLineTable } from './WasteLine';
@@ -36,18 +36,32 @@ const defaultValues: Manifest = {
 };
 
 export interface ManifestContextType {
-  manifestStatus?: ManifestStatus;
+  trackingNumber?: string;
+  status?: ManifestStatus;
   generatorStateCode?: string;
   setGeneratorStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
   tsdfStateCode?: string;
   setTsdfStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
   editWasteLineIndex?: number;
   setEditWasteLineIndex: React.Dispatch<React.SetStateAction<number | undefined>>;
-  signingSite?: string | undefined;
   readOnly?: boolean;
-  mtn?: string;
-  manifestingSiteID?: string;
+  nextSigningSite?: { epaSiteId: string; siteType: SiteType; transporterOrder?: number };
+  viewingAsSiteId?: string;
 }
+
+export const ManifestContext = createContext<ManifestContextType>({
+  trackingNumber: undefined,
+  status: undefined,
+  generatorStateCode: undefined,
+  setGeneratorStateCode: () => {},
+  tsdfStateCode: undefined,
+  setTsdfStateCode: () => {},
+  editWasteLineIndex: undefined,
+  setEditWasteLineIndex: () => {},
+  readOnly: true,
+  nextSigningSite: undefined,
+  viewingAsSiteId: undefined,
+});
 
 interface ManifestFormProps {
   readOnly?: boolean;
@@ -55,18 +69,6 @@ interface ManifestFormProps {
   manifestingSiteID?: string;
   mtn?: string;
 }
-
-export const ManifestContext = createContext<ManifestContextType>({
-  manifestStatus: undefined,
-  generatorStateCode: undefined,
-  setGeneratorStateCode: () => {},
-  tsdfStateCode: undefined,
-  setTsdfStateCode: () => {},
-  editWasteLineIndex: undefined,
-  setEditWasteLineIndex: () => {},
-  signingSite: undefined,
-  readOnly: true,
-});
 
 /**
  * Used to collect and display electronic hazardous waste manifests.
@@ -199,7 +201,7 @@ export function ManifestForm({
   const nextSigner = manifest.getNextSigner(manifestData);
   const userSiteIds = useAppSelector(selectHaztrakSiteEpaIds);
   // Whether the user has permissions and manifest is in a state to be signed
-  const signAble = userSiteIds.includes(nextSigner ?? '');
+  const signAble = userSiteIds.includes(nextSigner?.epaSiteId ?? '');
 
   const isDraft = manifestData?.manifestTrackingNumber === undefined;
 
@@ -207,17 +209,17 @@ export function ManifestForm({
     <Container className="mb-5">
       <ManifestContext.Provider
         value={{
+          trackingNumber: mtn,
+          status: manifestStatus,
           generatorStateCode: generatorStateCode,
           setGeneratorStateCode: setGeneratorStateCode,
-          manifestStatus: manifestStatus,
           tsdfStateCode: tsdfStateCode,
           setTsdfStateCode: setTsdfStateCode,
           editWasteLineIndex: editWasteLine,
           setEditWasteLineIndex: setEditWasteLine,
-          signingSite: manifest.getNextSigner(manifestData),
           readOnly: readOnly,
-          mtn: mtn,
-          manifestingSiteID: manifestingSiteID,
+          nextSigningSite: manifest.getNextSigner(manifestData),
+          viewingAsSiteId: manifestingSiteID,
         }}
       >
         <FormProvider {...manifestForm}>

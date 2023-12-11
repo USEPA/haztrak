@@ -1,7 +1,7 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faFloppyDisk, faPen, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ManifestEditBtn } from 'components/Manifest/Buttons/ManifestEditBtn';
+import { ManifestSaveBtn } from 'components/Manifest/Buttons/ManifestSaveBtn';
 import { ManifestStatus } from 'components/Manifest/manifestSchema';
+import { QuickSignBtn } from 'components/Manifest/QuickerSign';
 import { FloatingActionBtn } from 'components/UI';
 import React from 'react';
 
@@ -12,39 +12,16 @@ interface ManifestActionBtnsProps {
 }
 
 export function ManifestFABs({ manifestStatus, readOnly, signAble }: ManifestActionBtnsProps) {
-  let variant: string | undefined = undefined;
-  let text: string | undefined = undefined;
-  let icon: IconProp | undefined = undefined;
-  let type: 'button' | 'submit' | 'reset' | undefined = undefined;
-  let name: string | undefined = undefined;
+  let component: any = undefined;
   if (!readOnly || manifestStatus === 'NotAssigned') {
-    variant = 'success';
-    icon = faFloppyDisk;
-    text = 'Save';
-    type = 'submit';
-    name = 'saveFAB';
+    component = <ManifestSaveBtn />;
   } else if (signAble) {
-    variant = 'primary';
-    icon = faPen;
-    text = 'Sign';
-    name = 'signFAB';
-    type = 'button';
+    component = <QuickSignBtn siteType={'Generator'} handleClick={() => console.log('click')} />;
   } else if (readOnly) {
-    variant = 'primary';
-    icon = faPenToSquare;
-    text = 'Edit';
-    name = 'editFAB';
-    type = 'button';
+    component = <ManifestEditBtn />;
   } else {
     return <></>;
   }
 
-  return (
-    <FloatingActionBtn name={name} variant={variant} type={type} position="bottom-left" extended>
-      <span className="h5 me-3">{text}</span>
-      <span className="h5">
-        <FontAwesomeIcon icon={icon} />
-      </span>
-    </FloatingActionBtn>
-  );
+  return <FloatingActionBtn position="bottom-left" component={component} extended />;
 }
