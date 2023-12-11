@@ -42,6 +42,7 @@ export {
   siteByEpaIdSelector,
   updateProfile,
   selectHaztrakSites,
+  selectHaztrakSiteEpaIds,
   selectHaztrakProfile,
 } from './profileSlice/profile.slice';
 
