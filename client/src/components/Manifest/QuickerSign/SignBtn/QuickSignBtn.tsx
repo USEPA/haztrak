@@ -13,7 +13,7 @@ interface QuickerSignData {
 }
 
 interface QuickSignBtnProps extends ButtonProps {
-  siteType: RcraSiteType;
+  siteType?: RcraSiteType;
   mtnHandler?: Handler;
   handleClick: (data: QuickerSignData) => void;
   iconOnly?: boolean;
@@ -37,10 +37,13 @@ export function QuickSignBtn({
 
   if (mtnHandler && mtnHandler?.epaSiteId !== nextSigningSite?.epaSiteId) return <></>;
 
+  if (nextSigningSite?.siteType === undefined) return <></>;
+
   return (
     <RcraApiUserBtn
       onClick={() => {
-        handleClick({ handler: mtnHandler, siteType: siteType });
+        // @ts-ignore
+        handleClick({ handler: mtnHandler, siteType: nextSigningSite?.siteType.toLowerCase() });
       }}
       {...props}
     >
