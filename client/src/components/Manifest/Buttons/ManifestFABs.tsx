@@ -1,22 +1,24 @@
 import { ManifestEditBtn } from 'components/Manifest/Buttons/ManifestEditBtn';
 import { ManifestSaveBtn } from 'components/Manifest/Buttons/ManifestSaveBtn';
-import { ManifestStatus } from 'components/Manifest/manifestSchema';
+import { ManifestContext } from 'components/Manifest/ManifestForm';
 import { QuickSignBtn } from 'components/Manifest/QuickerSign';
 import { FloatingActionBtn } from 'components/UI';
-import React from 'react';
+import React, { useContext } from 'react';
 
 interface ManifestActionBtnsProps {
-  manifestStatus?: ManifestStatus;
-  readOnly?: boolean;
-  signAble?: boolean;
+  onSignClick: () => void;
 }
 
-export function ManifestFABs({ manifestStatus, readOnly, signAble }: ManifestActionBtnsProps) {
+export function ManifestFABs({ onSignClick }: ManifestActionBtnsProps) {
+  const { nextSigningSite, readOnly, status, signAble } = useContext(ManifestContext);
   let component: any = undefined;
-  if (!readOnly || manifestStatus === 'NotAssigned') {
+  if (!readOnly || status === 'NotAssigned') {
     component = <ManifestSaveBtn />;
   } else if (signAble) {
-    component = <QuickSignBtn siteType={'Generator'} handleClick={() => console.log('click')} />;
+    component = (
+      // @ts-ignore
+      <QuickSignBtn siteType={nextSigningSite?.siteType} handleClick={onSignClick} />
+    );
   } else if (readOnly) {
     component = <ManifestEditBtn />;
   } else {

@@ -44,9 +44,10 @@ export interface ManifestContextType {
   setTsdfStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
   editWasteLineIndex?: number;
   setEditWasteLineIndex: React.Dispatch<React.SetStateAction<number | undefined>>;
-  readOnly?: boolean;
   nextSigningSite?: { epaSiteId: string; siteType: SiteType; transporterOrder?: number };
   viewingAsSiteId?: string;
+  readOnly?: boolean;
+  signAble?: boolean;
 }
 
 export const ManifestContext = createContext<ManifestContextType>({
@@ -58,9 +59,10 @@ export const ManifestContext = createContext<ManifestContextType>({
   setTsdfStateCode: () => {},
   editWasteLineIndex: undefined,
   setEditWasteLineIndex: () => {},
-  readOnly: true,
   nextSigningSite: undefined,
   viewingAsSiteId: undefined,
+  readOnly: true,
+  signAble: false,
 });
 
 interface ManifestFormProps {
@@ -179,9 +181,24 @@ export function ManifestForm({
     siteType: 'Generator',
   });
   const toggleQuickerSignShow = () => setShowSignForm(!showSignForm);
-  const setupSign = (signContext: QuickerSignData) => {
-    setQuickerSignHandler(signContext); // set state to appropriate Handler
-    toggleQuickerSignShow(); // Toggle the Quicker Sign modal
+  const setupSign = () => {
+    const siteType = nextSigner?.siteType;
+    if (siteType === undefined || nextSigner === undefined) {
+      console.error('Cannot set up quick sign. Site type is undefined');
+      return;
+    }
+    if (siteType === 'transporter') {
+      setQuickerSignHandler({
+        handler: manifestForm.getValues('transporters')[nextSigner.transporterOrder || 0],
+        siteType: 'Transporter',
+      }); // set state to appropriate Handler
+    } else {
+      setQuickerSignHandler({
+        handler: manifestForm.getValues(siteType),
+        siteType: siteType === 'designatedFacility' ? 'Tsdf' : 'Generator',
+      });
+    }
+    toggleQuickerSignShow();
   };
 
   // Waste Line component state and methods
@@ -217,9 +234,10 @@ export function ManifestForm({
           setTsdfStateCode: setTsdfStateCode,
           editWasteLineIndex: editWasteLine,
           setEditWasteLineIndex: setEditWasteLine,
-          readOnly: readOnly,
           nextSigningSite: manifest.getNextSigner(manifestData),
           viewingAsSiteId: manifestingSiteID,
+          readOnly: readOnly,
+          signAble: signAble,
         }}
       >
         <FormProvider {...manifestForm}>
@@ -600,7 +618,7 @@ export function ManifestForm({
                 <ManifestCancelBtn />
               </Stack>
             </Stack>
-            <ManifestFABs manifestStatus={manifestStatus} readOnly={readOnly} signAble={signAble} />
+            <ManifestFABs onSignClick={setupSign} />
           </HtForm>
           {/*If taking action that involves updating a manifest in RCRAInfo*/}
           {taskId && showSpinner ? <UpdateRcra taskId={taskId} /> : <></>}
