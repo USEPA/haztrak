@@ -10,17 +10,14 @@ import { Alert, Button, Col, Form, Row, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { manifest } from 'services';
-import {
-  useAppDispatch,
-  useCreateManifestMutation,
-  useSaveElectronicManifestMutation,
-} from 'store';
+import { useCreateManifestMutation, useSaveEManifestMutation } from 'store';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
 import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal, QuickSignBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
 import { EditWasteModal, WasteLineTable } from './WasteLine';
+import { toast } from 'react-toastify';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -84,11 +81,15 @@ export function ManifestForm({
   }
 
   // State related to inter-system communications with EPA's RCRAInfo system
-  const [updatingRcrainfo, setUpdatingRcrainfo] = useState<boolean>(false);
-  const toggleShowUpdatingRcra = () => setUpdatingRcrainfo(!updatingRcrainfo);
+  const [showSpinner, setShowSpinner] = useState<boolean>(false);
+  const toggleShowSpinner = () => setShowSpinner(!showSpinner);
   const [taskId, setTaskId] = useState<string | undefined>(undefined);
-  const [createManifest, createResult] = useCreateManifestMutation();
-  const [saveEmanifest, saveEmanifestResult] = useSaveElectronicManifestMutation();
+  const [createManifest, { data: createData, error: createError, isLoading: createIsLoading }] =
+    useCreateManifestMutation();
+  const [
+    saveEmanifest,
+    { data: eManifestResult, error: eManifestError, isLoading: eManifestIsLoading },
+  ] = useSaveEManifestMutation();
 
   // React-Hook-Form component state and methods
   const manifestForm = useForm<Manifest>({
@@ -100,22 +101,26 @@ export function ManifestForm({
   } = manifestForm;
 
   useEffect(() => {
-    if (createResult.data) {
-      if ('manifestTrackingNumber' in createResult.data) {
-        navigate(`/manifest/${createResult.data.manifestTrackingNumber}/view`);
+    if (createData) {
+      if ('manifestTrackingNumber' in createData) {
+        navigate(`/manifest/${createData.manifestTrackingNumber}/view`);
       }
     }
-    if (createResult.isLoading) {
-      toggleShowUpdatingRcra();
+    if (createIsLoading) {
+      setShowSpinner(true);
     }
-  }, [createResult.data, createResult.isLoading, createResult.error]);
+    if (createError) {
+      toast.error('Error creating manifest');
+      setShowSpinner(false);
+    }
+  }, [createData, createIsLoading, createError]);
 
   useEffect(() => {
-    if (saveEmanifestResult.data) {
-      setTaskId(saveEmanifestResult.data.taskId);
-      toggleShowUpdatingRcra();
+    if (eManifestResult) {
+      setTaskId(eManifestResult.taskId);
+      toggleShowSpinner();
     }
-  }, [saveEmanifestResult.data, saveEmanifestResult.isLoading, saveEmanifestResult.error]);
+  }, [eManifestResult, eManifestIsLoading, eManifestError]);
 
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     if (data.status === 'NotAssigned') {
@@ -593,7 +598,7 @@ export function ManifestForm({
             </Stack>
           </HtForm>
           {/*If taking action that involves updating a manifest in RCRAInfo*/}
-          {taskId && updatingRcrainfo ? <UpdateRcra taskId={taskId} /> : <></>}
+          {taskId && showSpinner ? <UpdateRcra taskId={taskId} /> : <></>}
           <AddHandler
             handleClose={toggleShowAddGenerator}
             show={showGeneratorSearch}

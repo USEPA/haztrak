@@ -44,7 +44,10 @@ class CreateManifestView(GenericAPIView):
     def post(self, request: Request) -> Response:
         manifest_serializer = self.serializer_class(data=request.data)
         manifest_serializer.is_valid(raise_exception=True)
-        data = create_manifest(username=str(request.user), data=manifest_serializer.validated_data)
+        manifest = create_manifest(
+            username=str(request.user), data=manifest_serializer.validated_data
+        )
+        data = self.serializer_class(manifest).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
 

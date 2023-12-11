@@ -11,7 +11,7 @@ const testTaskID = 'testTaskId';
 
 const server = setupServer(
   ...[
-    http.post(`${API_BASE_URL}rcra/manifest/sync`, (info) => {
+    http.post(`${API_BASE_URL}rcra/manifest/emanifest/sync`, (info) => {
       // Mock Sync Site Manifests response
       return HttpResponse.json(
         {

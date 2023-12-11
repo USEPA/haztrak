@@ -1,16 +1,14 @@
 import { faFileSignature } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AxiosError } from 'axios';
 import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import { Transporter } from 'components/Manifest/Transporter';
 import { HtForm } from 'components/UI';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { manifestApi } from 'services';
-import { selectUserName, useAppSelector } from 'store';
+import { selectUserName, useAppSelector, useSignElectronicManifestMutation } from 'store';
 import { z } from 'zod';
 
 const siteType = z.enum(['Transporter', 'Generator', 'Tsdf', 'Broker']);
@@ -52,6 +50,7 @@ interface QuickerSignProps {
  */
 export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSignProps) {
   const userName = useAppSelector(selectUserName);
+  const [signManifest, { data, error, isLoading }] = useSignElectronicManifestMutation();
   const { register, handleSubmit, setValue } = useForm<QuickerSignature>({
     defaultValues: {
       printedSignatureName: userName,
@@ -60,9 +59,17 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
   });
   const navigate = useNavigate();
   if (!handleClose) {
-    // If handleClose function is not passed, assume navigate back 1
     handleClose = () => navigate(-1);
   }
+
+  useEffect(() => {
+    if (data) {
+      toast.success('Signed successfully');
+    }
+    if (error) {
+      toast.error('Error while signing manifest');
+    }
+  }, [data, error, isLoading]);
 
   const onSubmit: SubmitHandler<QuickerSignature> = (data) => {
     let signature: QuickerSignature = {
@@ -78,15 +85,7 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
         transporterOrder: mtnHandler.order,
       };
     }
-    manifestApi
-      .createQuickSignature(signature)
-      .then((response) => {
-        toast.success('Signing through e-Manifest');
-      })
-      .catch((error: AxiosError) => toast.error(error.message));
-    if (handleClose) {
-      handleClose();
-    }
+    signManifest(signature);
   };
 
   return (

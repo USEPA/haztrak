@@ -6,6 +6,11 @@ import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { MtnDetails } from 'components/Mtn';
 import { RcraSite } from 'components/RcraSite';
 import { htApi } from 'services';
+import { QuickerSignature } from 'components/Manifest/QuickerSign';
+
+export interface TaskResponse {
+  taskId: string;
+}
 
 export interface HtApiQueryArgs {
   url: string;
@@ -122,27 +127,26 @@ export const haztrakApi = createApi({
         data,
       }),
     }),
-    saveElectronicManifest: build.mutation<{ taskId: string }, Manifest>({
+    saveEManifest: build.mutation<TaskResponse, Manifest>({
       query: (data) => ({
         url: 'rcra/manifest/emanifest',
         method: 'POST',
         data,
       }),
     }),
+    syncManifest: build.mutation<TaskResponse, string>({
+      query: (siteId) => ({
+        url: 'rcra/manifest/emanifest/sync',
+        method: 'POST',
+        data: { siteId: siteId },
+      }),
+    }),
+    signElectronicManifest: build.mutation<TaskResponse, QuickerSignature>({
+      query: (signature) => ({
+        url: 'rcra/manifest/emanifest/sign',
+        method: 'POST',
+        data: signature,
+      }),
+    }),
   }),
 });
-
-export const {
-  useSearchRcrainfoSitesQuery,
-  useSearchRcraSitesQuery,
-  useGetTaskStatusQuery,
-  useGetFedWasteCodesQuery,
-  useGetStateWasteCodesQuery,
-  useGetDotIdNumbersQuery,
-  useGetOrgSitesQuery,
-  useGetMTNQuery,
-  useGetUserHaztrakSitesQuery,
-  useGetUserHaztrakSiteQuery,
-  useCreateManifestMutation,
-  useSaveElectronicManifestMutation,
-} = haztrakApi;

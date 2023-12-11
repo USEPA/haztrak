@@ -41,7 +41,7 @@ class TestManifestCRUD:
 class TestSignManifestVIew:
     """Quicker Sign endpoint test suite"""
 
-    base_url = "/api/manifest/sign"
+    base_url = "/api/manifest/emanifest/sign"
     factory = APIRequestFactory()
     mtn = ["123456789ELC", "987654321ELC"]
 

@@ -2,7 +2,8 @@ import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import AsyncSelect from 'react-select/async';
-import { haztrakApi, useAppDispatch } from 'store';
+import { useAppDispatch } from 'store';
+import { haztrakApi } from 'store/haztrakApiSlice';
 
 interface DotIdOption {
   label: string;

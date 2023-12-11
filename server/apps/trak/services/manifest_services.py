@@ -26,10 +26,10 @@ def update_manifest(*, mtn: Optional[str], data: dict) -> Manifest:
 
 
 def get_manifests(
-    *,
-    username: str,
-    epa_id: Optional[str] = None,
-    site_type: Optional[Literal["Generator", "Tsdf", "Transporter"]] = None,
+        *,
+        username: str,
+        epa_id: Optional[str] = None,
+        site_type: Optional[Literal["Generator", "Tsdf", "Transporter"]] = None,
 ) -> QuerySet[Manifest]:
     """Get a list of manifest tracking numbers and select details for a users site"""
     sites: QuerySet[HaztrakSite] = (
@@ -60,7 +60,6 @@ def save_emanifest(*, data: dict, username: str) -> TaskResponse:
 
 
 @transaction.atomic
-def create_manifest(*, username: str, data: dict) -> dict:
+def create_manifest(*, username: str, data: dict) -> Manifest:
     """Save a manifest to Haztrak database and/or e-Manifest/RCRAInfo"""
-    manifest = Manifest.objects.save(None, **data)
-    return ManifestSerializer(manifest).data
+    return Manifest.objects.save(None, **data)
