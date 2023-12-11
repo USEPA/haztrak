@@ -11,11 +11,7 @@ interface ManifestActionBtnsProps {
   signAble?: boolean;
 }
 
-export function ManifestActionBtns({
-  manifestStatus,
-  readOnly,
-  signAble,
-}: ManifestActionBtnsProps) {
+export function ManifestFABs({ manifestStatus, readOnly, signAble }: ManifestActionBtnsProps) {
   let variant: string | undefined = undefined;
   let text: string | undefined = undefined;
   let icon: IconProp | undefined = undefined;

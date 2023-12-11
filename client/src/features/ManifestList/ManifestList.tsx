@@ -24,9 +24,9 @@ export function ManifestList(): ReactElement {
 
   return (
     <Container fluid className="py-2">
-      <h1 className="h2 ms-0">{siteId}</h1>
-      <Row className="px-5">
-        <Stack direction="horizontal" gap={2} className="d-flex justify-content-end mb-1 px-0 mx-0">
+      <h1 className="h2 ms-0">{siteId ?? 'Your Manifests'}</h1>
+      <Row className="px-5 py-2">
+        <Stack direction="horizontal" gap={2} className="d-flex justify-content-end px-0 mx-0">
           <SyncManifestBtn
             siteId={siteId}
             disabled={!siteId}
@@ -37,7 +37,7 @@ export function ManifestList(): ReactElement {
         </Stack>
       </Row>
       <Row className="px-5">
-        <HtCard title="Manifests">
+        <HtCard>
           <HtCard.Body>
             {isLoading ? (
               <HtSpinner />

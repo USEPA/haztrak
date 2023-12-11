@@ -1,7 +1,10 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ManifestActionBtns } from 'components/Manifest/ActionBtns/ManifestActionBtns';
 import { AdditionalInfoForm } from 'components/Manifest/AdditionalInfo';
+import { ManifestCancelBtn } from 'components/Manifest/Buttons/ManifestCancelBtn';
+import { ManifestEditBtn } from 'components/Manifest/Buttons/ManifestEditBtn';
+import { ManifestFABs } from 'components/Manifest/Buttons/ManifestFABs';
+import { ManifestSaveBtn } from 'components/Manifest/Buttons/ManifestSaveBtn';
 import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
@@ -41,6 +44,9 @@ export interface ManifestContextType {
   editWasteLineIndex?: number;
   setEditWasteLineIndex: React.Dispatch<React.SetStateAction<number | undefined>>;
   signingSite?: string | undefined;
+  readOnly?: boolean;
+  mtn?: string;
+  manifestingSiteID?: string;
 }
 
 interface ManifestFormProps {
@@ -59,6 +65,7 @@ export const ManifestContext = createContext<ManifestContextType>({
   editWasteLineIndex: undefined,
   setEditWasteLineIndex: () => {},
   signingSite: undefined,
+  readOnly: true,
 });
 
 /**
@@ -208,6 +215,9 @@ export function ManifestForm({
           editWasteLineIndex: editWasteLine,
           setEditWasteLineIndex: setEditWasteLine,
           signingSite: manifest.getNextSigner(manifestData),
+          readOnly: readOnly,
+          mtn: mtn,
+          manifestingSiteID: manifestingSiteID,
         }}
       >
         <FormProvider {...manifestForm}>
@@ -445,9 +455,10 @@ export function ManifestForm({
                     <>
                       <Row className="mb-2">
                         <HtButton
+                          horizontalAlign
                           onClick={toggleShowAddGenerator}
                           children={'Add Generator'}
-                          variant="success"
+                          variant="outline-info"
                         />
                       </Row>
                       <Row>
@@ -487,7 +498,8 @@ export function ManifestForm({
                     <HtButton
                       onClick={toggleTranSearchShow}
                       children={'Add Transporter'}
-                      variant="success"
+                      variant="outline-info"
+                      horizontalAlign
                     />
                   )}
                   <ErrorMessage
@@ -512,7 +524,12 @@ export function ManifestForm({
                   {readOnly ? (
                     <></>
                   ) : (
-                    <HtButton onClick={toggleWlFormShow} children={'Add Waste'} variant="success" />
+                    <HtButton
+                      onClick={toggleWlFormShow}
+                      children={'Add Waste'}
+                      variant="outline-info"
+                      horizontalAlign
+                    />
                   )}
                   <ErrorMessage
                     errors={errors}
@@ -552,7 +569,8 @@ export function ManifestForm({
                     <HtButton
                       onClick={toggleTsdfFormShow}
                       children={'Add TSDF'}
-                      variant="success"
+                      variant="outline-info"
+                      horizontalAlign
                     />
                   )}
                   <ErrorMessage
@@ -574,39 +592,13 @@ export function ManifestForm({
                   <AdditionalInfoForm readOnly={readOnly} />
                 </HtCard.Body>
               </HtCard>
-              <div className="mx-1 d-flex flex-row-reverse">
-                <Button className="mx-2" variant="success" type="submit" disabled={readOnly}>
-                  Save
-                </Button>
-                <Button
-                  className="mx-2"
-                  variant="danger"
-                  disabled={readOnly}
-                  onClick={() => {
-                    manifestForm.reset();
-                    if (!mtn) {
-                      navigate(-1);
-                    } else {
-                      navigate(`/site/${manifestingSiteID}/manifest/${mtn}/view`);
-                    }
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="primary"
-                  disabled={!readOnly}
-                  onClick={() => navigate(`/site/${manifestingSiteID}/manifest/${mtn}/edit`)}
-                >
-                  Edit
-                </Button>
-              </div>
+              <Stack gap={2} direction="horizontal" className="d-flex justify-content-end">
+                <ManifestSaveBtn />
+                <ManifestEditBtn />
+                <ManifestCancelBtn />
+              </Stack>
             </Stack>
-            <ManifestActionBtns
-              manifestStatus={manifestStatus}
-              readOnly={readOnly}
-              signAble={signAble}
-            />
+            <ManifestFABs manifestStatus={manifestStatus} readOnly={readOnly} signAble={signAble} />
           </HtForm>
           {/*If taking action that involves updating a manifest in RCRAInfo*/}
           {taskId && showSpinner ? <UpdateRcra taskId={taskId} /> : <></>}
