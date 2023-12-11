@@ -10,17 +10,13 @@ interface HtToolTipProps extends TooltipProps {
   children: ReactElement;
 }
 
-// renderTooltip function passed to OverlayTrigger's overlay property
-const renderTooltip = (text: string) => <Tooltip>{text}</Tooltip>;
-
 export function HtTooltip(props: HtToolTipProps): ReactElement {
-  // create copy of props intended for the OverlayTrigger
   const overlayProps = (({ text, children, ...props }: HtToolTipProps) => props)(props);
   return (
     <OverlayTrigger
       {...overlayProps}
       delay={{ show: 250, hide: 400 }}
-      overlay={renderTooltip(props.text)}
+      overlay={<Tooltip>{props.text}</Tooltip>}
     >
       {props.children}
     </OverlayTrigger>

@@ -1,15 +1,10 @@
 import { ErrorBoundary } from 'components/Error';
-import { HtSpinner } from 'components/UI';
 import React, { ReactElement } from 'react';
 import { Card, CardHeaderProps, CardProps, Container } from 'react-bootstrap';
 
 interface HeaderProps extends CardHeaderProps {
   title?: string;
   size?: string;
-}
-
-interface SpinnerProps extends CardProps {
-  message?: string;
 }
 
 /**
@@ -98,18 +93,4 @@ HtCard.Body = function ({ className, children, ...props }: CardProps): ReactElem
       </ErrorBoundary>
     </Card.Body>
   );
-};
-
-/**
- * Card spinner to use while asynchronous promise is in pending state
- * @param {{message: String}} message string to render next to spinner
- * @param {{classname: String}} string class attributes to pass
- * @constructor
- * @example
- * <HtCard.Body>
- *   <HtCard.Spinner message="loading..."/>
- * </HtCard.Body>
- */
-HtCard.Spinner = function ({ message, className }: SpinnerProps): ReactElement {
-  return <HtSpinner message={message} className={className} />;
 };

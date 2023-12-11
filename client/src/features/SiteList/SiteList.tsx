@@ -1,5 +1,5 @@
 import { SiteListGroup } from 'components/HaztrakSite';
-import { HtCard } from 'components/UI';
+import { HtCard, HtSpinner } from 'components/UI';
 import { useTitle } from 'hooks';
 import React from 'react';
 import { Container } from 'react-bootstrap';
@@ -16,7 +16,7 @@ export function SiteList() {
       <HtCard title="My Sites">
         <HtCard.Body>
           {isLoading && !error ? (
-            <HtCard.Spinner />
+            <HtSpinner />
           ) : data ? (
             <SiteListGroup sites={data} />
           ) : (

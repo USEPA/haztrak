@@ -1,11 +1,9 @@
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AxiosError } from 'axios';
 import { RcraApiUserBtn } from 'components/Rcrainfo/buttons/RcraApiUserBtn/RcraApiUserBtn';
 import { useProgressTracker } from 'hooks';
 import React, { useEffect, useState } from 'react';
-import { manifestApi } from 'services';
-import { addTask, updateTask, useAppDispatch } from 'store';
+import { addTask, updateTask, useAppDispatch, useSyncManifestMutation } from 'store';
 
 interface SyncManifestProps {
   siteId?: string;
@@ -25,6 +23,7 @@ export function SyncManifestBtn({
   setSyncInProgress,
   syncInProgress,
 }: SyncManifestProps) {
+  const [syncSiteManifest, { data, error, isLoading }] = useSyncManifestMutation();
   const dispatch = useAppDispatch();
   const [taskId, setTaskId] = useState<string | undefined>(undefined);
   const { inProgress } = useProgressTracker({ taskId: taskId });
@@ -33,32 +32,36 @@ export function SyncManifestBtn({
     if (setSyncInProgress) setSyncInProgress(inProgress);
   }, [inProgress]);
 
+  useEffect(() => {
+    if (data?.taskId) {
+      dispatch(
+        addTask({
+          taskId: data.taskId,
+          status: 'PENDING',
+          taskName: `Syncing ${siteId}'s manifests`,
+        })
+      );
+      setTaskId(data.taskId);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (error && taskId) {
+      dispatch(
+        updateTask({
+          taskId: taskId,
+          status: 'FAILURE',
+        })
+      );
+    }
+  }, [error]);
+
   return (
     <RcraApiUserBtn
       variant="primary"
       disabled={disabled || !siteId || inProgress}
       onClick={() => {
-        if (siteId)
-          manifestApi
-            .syncManifest(siteId)
-            .then((response) => {
-              dispatch(
-                addTask({
-                  taskId: response.data.taskId,
-                  status: 'PENDING',
-                  taskName: 'Syncing RCRAInfo Profile',
-                })
-              );
-              setTaskId(response.data.taskId);
-            })
-            .catch((error: AxiosError) =>
-              dispatch(
-                updateTask({
-                  taskId: taskId,
-                  status: 'FAILURE',
-                })
-              )
-            );
+        if (siteId) syncSiteManifest(siteId);
       }}
     >
       {`Sync Manifest `}

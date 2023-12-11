@@ -8,6 +8,7 @@ from apps.trak.views import (  # type: ignore
     FederalWasteCodesView,
     GetManifestView,
     MtnListView,
+    SaveElectronicManifestView,
     SignManifestView,
     StateWasteCodesView,
     SyncSiteManifestView,
@@ -20,8 +21,9 @@ urlpatterns = [
             [
                 # Manifest
                 path("manifest", CreateManifestView.as_view()),
-                path("manifest/sign", SignManifestView.as_view()),
-                path("manifest/sync", SyncSiteManifestView.as_view()),
+                path("manifest/emanifest", SaveElectronicManifestView.as_view()),
+                path("manifest/emanifest/sign", SignManifestView.as_view()),
+                path("manifest/emanifest/sync", SyncSiteManifestView.as_view()),
                 re_path(r"manifest/(?P<mtn>[0-9]{9}[a-zA-Z]{3})", GetManifestView.as_view()),
                 # MT
                 path("mtn", MtnListView.as_view()),

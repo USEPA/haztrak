@@ -3,17 +3,14 @@ import userEvent from '@testing-library/user-event';
 import { NewManifest } from 'features/NewManifest/NewManifest';
 import React from 'react';
 import { renderWithProviders, screen } from 'test-utils';
-import {
-  createMockRcrainfoPermissions,
-  createMockRcrainfoSite,
-} from 'test-utils/fixtures/mockHandler';
+import { createMockRcrainfoPermissions, createMockSite } from 'test-utils/fixtures';
 import { describe, expect, test } from 'vitest';
 
 describe('NewManifest', () => {
   test('renders', () => {
     const mySiteId = 'VATESTGEN001';
     const mySiteName = 'My Site';
-    const mySite = createMockRcrainfoSite({
+    const mySite = createMockSite({
       name: mySiteName,
       // @ts-ignore
       handler: { epaSiteId: mySiteId, siteType: 'Tsdf' },
@@ -42,7 +39,7 @@ describe('NewManifest', () => {
   test('site type is initially disabled', () => {
     const mySiteId = 'VATESTGEN001';
     const mySiteName = 'My Site';
-    const mySite = createMockRcrainfoSite({
+    const mySite = createMockSite({
       name: mySiteName,
       // @ts-ignore
       handler: { epaSiteId: mySiteId, siteType: 'Tsdf' },
@@ -71,7 +68,7 @@ describe('NewManifest', () => {
   test('site type is not disabled after selecting a site', async () => {
     const mySiteId = 'VATESTGEN001';
     const mySiteName = 'My Site';
-    const mySite = createMockRcrainfoSite({
+    const mySite = createMockSite({
       name: mySiteName,
       // @ts-ignore
       handler: { epaSiteId: mySiteId, siteType: 'Tsdf' },

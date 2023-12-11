@@ -145,7 +145,7 @@ const profileSlice = createSlice({
           error: undefined,
         };
       })
-      .addCase(getHaztrakProfile.rejected, (state, action) => {
+      .addCase(getHaztrakProfile.rejected, (state) => {
         state.loading = false;
         state.error = 'error';
         return state;
@@ -203,6 +203,15 @@ export const selectHaztrakSites = createSelector(
   }
 );
 
+/** Get all sites a user has access to their Haztrak Profile*/
+export const selectHaztrakSiteEpaIds = createSelector(
+  (state: { profile: ProfileSlice }) => state.profile.sites,
+  (sites: Record<string, HaztrakProfileSite> | undefined) => {
+    if (!sites) return [];
+    return Object.values(sites).map((site) => site.handler.epaSiteId);
+  }
+);
+
 /** select all RCRAInfo sites a user has access to from their RCRAInfo Profile if they're updated it*/
 export const selectRcrainfoSites = createSelector(
   (state: { profile: ProfileSlice }) => state.profile.rcrainfoProfile?.rcraSites,
@@ -215,14 +224,14 @@ export const selectRcrainfoSites = createSelector(
 
 /** Retrieve a user's RcraProfile from the Redux store. */
 export const selectRcraProfile = createSelector(
-  (state: RootState) => state.profile,
-  (rcraProfile: ProfileSlice) => rcraProfile
+  (state: RootState) => state,
+  (state: RootState) => state.profile.rcrainfoProfile
 );
 
 /** Retrieve a user's HaztrakProfile from the Redux store. */
 export const selectHaztrakProfile = createSelector(
-  (state: RootState) => state.profile,
-  (haztrakProfile: ProfileSlice) => haztrakProfile
+  (state: RootState) => state,
+  (state: RootState) => state.profile
 );
 
 export default profileSlice.reducer;

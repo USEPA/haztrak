@@ -1,7 +1,7 @@
 import { NewManifestBtn } from 'components/Manifest';
 import { MtnTable } from 'components/Mtn';
 import { SyncManifestBtn } from 'components/Rcrainfo';
-import { HtCard } from 'components/UI';
+import { HtCard, HtSpinner } from 'components/UI';
 import { useTitle } from 'hooks';
 import React, { ReactElement, useState } from 'react';
 import { Container, Row, Stack } from 'react-bootstrap';
@@ -40,7 +40,7 @@ export function ManifestList(): ReactElement {
         <HtCard title="Manifests">
           <HtCard.Body>
             {isLoading ? (
-              <HtCard.Spinner />
+              <HtSpinner />
             ) : data ? (
               <MtnTable manifests={data} pageSize={pageSize} />
             ) : (

@@ -119,11 +119,16 @@ export function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
           })}
         </Row>
       </Col>
-      <div>
+      <div className="d-flex justify-content-end ">
         {readOnly ? (
           <></>
         ) : (
-          <Button onClick={() => append({ description: '', label: '' })}>Add Reference</Button>
+          <Button
+            variant="outline-secondary"
+            onClick={() => append({ description: '', label: '' })}
+          >
+            Add Reference
+          </Button>
         )}
       </div>
     </>

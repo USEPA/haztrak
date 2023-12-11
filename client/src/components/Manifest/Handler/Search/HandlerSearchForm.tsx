@@ -1,9 +1,9 @@
 import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 import { Manifest, SiteType, Transporter } from 'components/Manifest/manifestSchema';
 import { RcraSite } from 'components/RcraSite';
-import { HtForm } from 'components/UI';
-import React, { useContext, useState } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { HtForm, HtSpinner, HtTooltip } from 'components/UI';
+import React, { useContext, useEffect, useState } from 'react';
+import { Badge, Button, Col, Row } from 'react-bootstrap';
 import {
   Controller,
   SubmitHandler,
@@ -12,7 +12,13 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import Select from 'react-select';
-import { haztrakApi, useAppDispatch } from 'store';
+import {
+  selectHaztrakProfile,
+  useAppSelector,
+  useSearchRcrainfoSitesQuery,
+  useSearchRcraSitesQuery,
+} from 'store';
+import { RcrainfoSiteSearchBadge } from 'components/Manifest/Handler/Search/RcrainfoSiteSearchBadge';
 
 interface Props {
   handleClose: () => void;
@@ -34,18 +40,30 @@ export function HandlerSearchForm({
 }: Props) {
   const { handleSubmit, control } = useForm<searchHandlerForm>();
   const manifestMethods = useFormContext<Manifest>();
-  const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
   const [inputValue, setInputValue] = useState<string>('');
-  const dispatch = useAppDispatch();
+  const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
+  const { org } = useAppSelector(selectHaztrakProfile);
+  const [skip, setSkip] = useState<boolean>(true);
+  const { data, error, isLoading } = useSearchRcraSitesQuery(
+    {
+      siteType: handlerType,
+      siteId: inputValue,
+    },
+    { skip }
+  );
+  const {
+    data: rcrainfoData,
+    error: rcrainfoError,
+    isFetching: fetchingFromRcrainfo,
+  } = useSearchRcrainfoSitesQuery(
+    {
+      siteType: handlerType,
+      siteId: inputValue,
+    },
+    { skip: skip || !org?.rcrainfoIntegrated }
+  );
   const { setGeneratorStateCode, setTsdfStateCode } =
     useContext<ManifestContextType>(ManifestContext);
-  const [searchMessage, setSearchMessage] = useState<
-    | {
-        message: string;
-        variant: 'success' | 'danger';
-      }
-    | undefined
-  >(undefined);
 
   const [options, setOptions] = useState<RcraSite[]>([]);
   const [rcrainfoSitesLoading, setRcrainfoSitesLoading] = useState<boolean>(false);
@@ -72,34 +90,26 @@ export function HandlerSearchForm({
     handleClose();
   };
 
+  useEffect(() => {
+    const inputTooShort = inputValue.length < 5;
+    setSkip(inputTooShort);
+  }, [inputValue]);
+
+  useEffect(() => {
+    const knownSites = data && data.length > 0 ? data : [];
+    const rcrainfoSites = rcrainfoData && rcrainfoData.length > 0 ? rcrainfoData : [];
+    const allOptions: RcraSite[] = [...knownSites, ...rcrainfoSites].filter(
+      (value, index, self) => index === self.findIndex((t) => t.epaSiteId === value.epaSiteId)
+    );
+    setOptions([...allOptions]);
+  }, [data, rcrainfoData]);
+
+  useEffect(() => {
+    setRcrainfoSitesLoading(isLoading || fetchingFromRcrainfo);
+  }, [isLoading, fetchingFromRcrainfo]);
+
   const handleInputChange = async (value: string) => {
     setInputValue(value);
-    if (value.length >= 5) {
-      setRcrainfoSitesLoading(true);
-      const rcrainfoSites = await dispatch(
-        haztrakApi.endpoints?.searchRcrainfoSites.initiate({
-          siteType: handlerType,
-          siteId: value,
-        })
-      );
-      if (rcrainfoSites.isError) {
-        setSearchMessage({
-          message: 'Sorry, could not connect to RCRAInfo. Showing known handlers.',
-          variant: 'danger',
-        });
-        const knownRcraSites = await dispatch(
-          haztrakApi.endpoints?.searchRcraSites.initiate({
-            siteType: handlerType,
-            siteId: value,
-          })
-        );
-        setOptions(knownRcraSites.data as Array<RcraSite>);
-        setRcrainfoSitesLoading(false);
-        return;
-      }
-      setOptions(rcrainfoSites.data as Array<RcraSite>);
-      setRcrainfoSitesLoading(false);
-    }
   };
 
   const handleChange = (value: RcraSite | null): void => {
@@ -110,12 +120,19 @@ export function HandlerSearchForm({
     <>
       <HtForm onSubmit={handleSubmit(onSubmit)}>
         <HtForm.Group>
-          {searchMessage && (
-            <div className="my-2">
-              <Alert variant={searchMessage.variant}>{searchMessage.message}</Alert>
-            </div>
-          )}
-          <HtForm.Label htmlFor="epaId">EPA ID Number</HtForm.Label>
+          <Row className="d-flex justify-content-around">
+            <Col>
+              <HtForm.Label htmlFor="epaId">EPA ID Number</HtForm.Label>
+            </Col>
+            <Col className="d-flex justify-content-end">
+              <RcrainfoSiteSearchBadge
+                isFetching={rcrainfoSitesLoading}
+                error={rcrainfoError}
+                data={rcrainfoData}
+                rcraInfoIntegrated={org?.rcrainfoIntegrated || false}
+              />
+            </Col>
+          </Row>
           <Controller
             control={control}
             name="epaId"

@@ -1,17 +1,23 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AxiosError } from 'axios';
+import { ManifestActionBtns } from 'components/Manifest/ActionBtns/ManifestActionBtns';
 import { AdditionalInfoForm } from 'components/Manifest/AdditionalInfo';
 import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
 import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/UI';
-import React, { createContext, useState } from 'react';
-import { Alert, Button, Col, Form, Row, Stack } from 'react-bootstrap';
+import React, { createContext, useEffect, useState } from 'react';
+import { Alert, Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { manifest, manifestApi } from 'services';
+import { manifest } from 'services';
+import {
+  selectHaztrakSiteEpaIds,
+  useAppSelector,
+  useCreateManifestMutation,
+  useSaveEManifestMutation,
+} from 'store';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
 import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
@@ -81,9 +87,15 @@ export function ManifestForm({
   }
 
   // State related to inter-system communications with EPA's RCRAInfo system
-  const [updatingRcrainfo, setUpdatingRcrainfo] = useState<boolean>(false);
-  const toggleShowUpdatingRcra = () => setUpdatingRcrainfo(!updatingRcrainfo);
+  const [showSpinner, setShowSpinner] = useState<boolean>(false);
+  const toggleShowSpinner = () => setShowSpinner(!showSpinner);
   const [taskId, setTaskId] = useState<string | undefined>(undefined);
+  const [createManifest, { data: createData, error: createError, isLoading: createIsLoading }] =
+    useCreateManifestMutation();
+  const [
+    saveEmanifest,
+    { data: eManifestResult, error: eManifestError, isLoading: eManifestIsLoading },
+  ] = useSaveEManifestMutation();
 
   // React-Hook-Form component state and methods
   const manifestForm = useForm<Manifest>({
@@ -94,19 +106,34 @@ export function ManifestForm({
     formState: { errors },
   } = manifestForm;
 
+  useEffect(() => {
+    if (createData) {
+      if ('manifestTrackingNumber' in createData) {
+        navigate(`/manifest/${createData.manifestTrackingNumber}/view`);
+      }
+    }
+    if (createIsLoading) {
+      setShowSpinner(true);
+    }
+    if (createError) {
+      toast.error('Error creating manifest');
+      setShowSpinner(false);
+    }
+  }, [createData, createIsLoading, createError]);
+
+  useEffect(() => {
+    if (eManifestResult) {
+      setTaskId(eManifestResult.taskId);
+      toggleShowSpinner();
+    }
+  }, [eManifestResult, eManifestIsLoading, eManifestError]);
+
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
-    manifestApi
-      .createManifest(data)
-      .then((r) => {
-        if ('manifestTrackingNumber' in r.data) {
-          navigate(`/manifest/${r.data.manifestTrackingNumber}/view`);
-        }
-        if ('taskId' in r.data) {
-          setTaskId(r.data.taskId);
-          toggleShowUpdatingRcra();
-        }
-      })
-      .catch((error: AxiosError) => toast.error(error.message));
+    if (data.status === 'NotAssigned') {
+      createManifest(data);
+    } else {
+      saveEmanifest(data);
+    }
   };
 
   // Generator component state and methods
@@ -162,15 +189,15 @@ export function ManifestForm({
     manifestData?.status
   );
 
-  const signAble =
-    manifestStatus === 'Scheduled' ||
-    manifestStatus === 'InTransit' ||
-    manifestStatus === 'ReadyForSignature';
+  const nextSigner = manifest.getNextSigner(manifestData);
+  const userSiteIds = useAppSelector(selectHaztrakSiteEpaIds);
+  // Whether the user has permissions and manifest is in a state to be signed
+  const signAble = userSiteIds.includes(nextSigner ?? '');
 
   const isDraft = manifestData?.manifestTrackingNumber === undefined;
 
   return (
-    <>
+    <Container className="mb-5">
       <ManifestContext.Provider
         value={{
           generatorStateCode: generatorStateCode,
@@ -383,8 +410,6 @@ export function ManifestForm({
               <HtCard id="generator-form-card" title="Generator">
                 <HtCard.Body>
                   {readOnly ? (
-                    // if readOnly is true, show the generator in a nice read only way and display
-                    // the button to sign for the generator.
                     <>
                       <RcraSiteDetails handler={generator} />
                       <h4>Emergency Contact Information</h4>
@@ -405,7 +430,9 @@ export function ManifestForm({
                       <RcraSiteDetails handler={generator} />
                       <PhoneForm handlerType={'generator'} />
                       <div className="d-flex justify-content-end">
-                        <Button onClick={toggleShowGeneratorForm}>Edit</Button>
+                        <Button variant="outline-primary" onClick={toggleShowGeneratorForm}>
+                          Edit
+                        </Button>
                       </div>
                     </>
                   ) : showGeneratorForm ? (
@@ -575,9 +602,14 @@ export function ManifestForm({
                 </Button>
               </div>
             </Stack>
+            <ManifestActionBtns
+              manifestStatus={manifestStatus}
+              readOnly={readOnly}
+              signAble={signAble}
+            />
           </HtForm>
           {/*If taking action that involves updating a manifest in RCRAInfo*/}
-          {taskId && updatingRcrainfo ? <UpdateRcra taskId={taskId} /> : <></>}
+          {taskId && showSpinner ? <UpdateRcra taskId={taskId} /> : <></>}
           <AddHandler
             handleClose={toggleShowAddGenerator}
             show={showGeneratorSearch}
@@ -610,6 +642,6 @@ export function ManifestForm({
           />
         </FormProvider>
       </ManifestContext.Provider>
-    </>
+    </Container>
   );
 }

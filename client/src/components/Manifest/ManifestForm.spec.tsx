@@ -42,26 +42,23 @@ describe('ManifestForm validation', () => {
   test('a generator is required', async () => {
     // Arrange
     renderWithProviders(<ManifestForm readOnly={false} />);
-    const saveBtn = screen.getByRole('button', { name: /Save/i });
+    const saveBtn = screen.getAllByRole('button', { name: /Save/i })[0];
     // Act
     await userEvent.click(saveBtn);
     // Assert
     expect(await screen.findByText(/Generator is required/i)).toBeInTheDocument();
   });
   test('at least one transporter is required', async () => {
-    // Arrange
     renderWithProviders(<ManifestForm readOnly={false} />);
-    const saveBtn = screen.getByRole('button', { name: /Save/i });
-    // Act
+    const saveBtn = screen.getAllByRole('button', { name: /Save/i })[0];
     await userEvent.click(saveBtn);
-    // Assert
     expect(
       await screen.findByText(/A manifest requires at least 1 transporters/i)
     ).toBeInTheDocument();
   });
   test('at least one waste line is required', async () => {
     renderWithProviders(<ManifestForm readOnly={false} />);
-    const saveBtn = screen.getByRole('button', { name: /Save/i });
+    const saveBtn = screen.getAllByRole('button', { name: /Save/i })[0];
     await userEvent.click(saveBtn);
     expect(
       await screen.findByText(/A manifest requires at least 1 waste line/i)
@@ -69,7 +66,7 @@ describe('ManifestForm validation', () => {
   });
   test('a TSDF is required', async () => {
     renderWithProviders(<ManifestForm readOnly={false} />);
-    const saveBtn = screen.getByRole('button', { name: /Save/i });
+    const saveBtn = screen.getAllByRole('button', { name: /Save/i })[0];
     await userEvent.click(saveBtn);
     expect(
       await screen.findByText(/Designated receiving facility is required/i)

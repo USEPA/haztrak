@@ -8,3 +8,4 @@ export { HtModal } from './HtModal/HtModal';
 export { HtSpinner } from './HtSpinner';
 export { HtTooltip, InfoIconTooltip } from './HtTooltip';
 export { FeatureDescription } from './FeatureDescription';
+export { FloatingActionBtn } from './FloatingActionBtn';

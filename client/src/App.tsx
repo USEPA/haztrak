@@ -9,6 +9,7 @@ import {
   getHaztrakProfile,
   getHaztrakUser,
   getRcraProfile,
+  selectHaztrakProfile,
   selectRcraProfile,
   selectUserName,
   useAppDispatch,
@@ -19,7 +20,7 @@ import { HtSpinner } from 'components/UI';
 
 function App(): ReactElement {
   const userName = useAppSelector(selectUserName);
-  const profile = useAppSelector(selectRcraProfile);
+  const profile = useAppSelector(selectHaztrakProfile);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import AsyncSelect from 'react-select/async';
-import { haztrakApi, useAppDispatch } from 'store';
+import { useLazyGetDotIdNumbersQuery } from 'store';
+import Select from 'react-select';
 
 interface DotIdOption {
   label: string;
@@ -10,25 +10,35 @@ interface DotIdOption {
 }
 
 export function DotIdSelect() {
-  const dispatch = useAppDispatch();
   const {
     control,
     formState: { errors },
   } = useFormContext<WasteLine>();
+  const [getDotIds, { data, isFetching, error: apiError }] = useLazyGetDotIdNumbersQuery();
+  const [dotIdNumbers, setDotIdNumbers] = useState<DotIdOption[]>([]);
 
-  /**
-   * retrieve a list of DOT ID numbers from the server
-   * @param inputValue
-   */
-  const getDotIdNumbers = async (inputValue: string) => {
-    const response = await dispatch(haztrakApi.endpoints.getDotIdNumbers.initiate(inputValue));
-    if (response.data) {
-      return response.data.map((dotIdNumber) => {
-        return { label: dotIdNumber, value: dotIdNumber } as DotIdOption;
-      }) as readonly DotIdOption[];
-    }
-    return [];
+  const dataToOptions = (data: string[]) => {
+    return data.map((dotIdNumber) => {
+      return { label: dotIdNumber, value: dotIdNumber } as DotIdOption;
+    }) as DotIdOption[];
   };
+
+  useEffect(() => {
+    // On mount, fetch and pre-populate DOT ID numbers with some initial options
+    getDotIds('');
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      setDotIdNumbers(dataToOptions(data));
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (apiError) {
+      console.error(apiError);
+    }
+  }, [apiError]);
 
   return (
     <>
@@ -37,14 +47,19 @@ export function DotIdSelect() {
         name={'dotInformation.idNumber.code'}
         render={({ field }) => {
           return (
-            <AsyncSelect
+            <Select
               id={'idNumber'}
               {...field}
               value={field.value ? { label: field.value, value: field.value } : null}
-              loadOptions={getDotIdNumbers}
+              options={dotIdNumbers}
               getOptionValue={(option: DotIdOption) => option.value}
-              cacheOptions
+              isLoading={isFetching}
               isClearable
+              onInputChange={(inputValue) => {
+                if (inputValue) {
+                  getDotIds(inputValue);
+                }
+              }}
               onChange={(option) => {
                 field.onChange(option?.value);
               }}

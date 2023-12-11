@@ -67,9 +67,8 @@ class RcraSiteService:
         return new_rcra_site
 
     def search_rcrainfo_handlers(self, **search_parameters) -> HandlerSearchResults:
-        """
-        Search RCRAInfo for a site by name or EPA ID
-        """
+        """Search RCRAInfo for a site by name or EPA ID"""
+        search_parameters["epaSiteId"] = search_parameters.get("epaSiteId", "").upper()
         cache_key = (
             f'handlerSearch:epaSiteId:{search_parameters["epaSiteId"]}:siteType:'
             f'{search_parameters["siteType"]}'

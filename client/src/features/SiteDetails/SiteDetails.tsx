@@ -1,6 +1,6 @@
 import { SyncManifestBtn } from 'components/Rcrainfo';
 import { RcraSiteDetails } from 'components/RcraSite';
-import { HtCard } from 'components/UI';
+import { HtCard, HtSpinner } from 'components/UI';
 import React, { ReactElement } from 'react';
 import { Button, Container, Stack } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -20,27 +20,26 @@ export function SiteDetails(): ReactElement {
   const navigate = useNavigate();
 
   if (error) throw error;
-  return (
-    <Container>
-      <Stack className="my-3" gap={2}>
-        <div className="pe-0 d-flex flex-row-reverse">
-          <Button variant="outline-success" onClick={() => navigate(`/site/${siteId}/manifest`)}>
-            View Manifest
-          </Button>
-          <div className="me-2">
-            <SyncManifestBtn siteId={siteId ? siteId : ''} />
+  if (isLoading) return <HtSpinner />;
+  if (data)
+    return (
+      <Container>
+        <Stack className="my-3" gap={2}>
+          <div className="pe-0 d-flex flex-row-reverse">
+            <Button variant="outline-success" onClick={() => navigate(`/site/${siteId}/manifest`)}>
+              View Manifest
+            </Button>
+            <div className="me-2">
+              <SyncManifestBtn siteId={siteId ? siteId : ''} />
+            </div>
           </div>
-        </div>
-        <HtCard title={siteId}>
-          <HtCard.Body>
-            {isLoading ? (
-              <HtCard.Spinner message="Loading site details..." />
-            ) : (
-              data && <RcraSiteDetails handler={data.handler} />
-            )}
-          </HtCard.Body>
-        </HtCard>
-      </Stack>
-    </Container>
-  );
+          <HtCard title={siteId}>
+            <HtCard.Body>
+              <RcraSiteDetails handler={data.handler} />
+            </HtCard.Body>
+          </HtCard>
+        </Stack>
+      </Container>
+    );
+  else return <div>Something went wrong</div>;
 }

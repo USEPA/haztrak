@@ -1,13 +1,13 @@
 import type { AppDispatch, AppStore, RootState } from './rootStore';
+// Haztrak API - RTK Query
+import { haztrakApi } from './haztrakApiSlice';
 
 // Root Store
 export { rootStore, setupStore, useAppDispatch, useAppSelector } from './rootStore';
 export type { RootState, AppDispatch, AppStore };
 
-// Haztrak API - RTK Query
-export {
-  haztrakApi,
-  useGetDotIdNumbersQuery,
+export const {
+  useLazyGetDotIdNumbersQuery,
   useGetFedWasteCodesQuery,
   useGetStateWasteCodesQuery,
   useGetTaskStatusQuery,
@@ -17,7 +17,11 @@ export {
   useGetMTNQuery,
   useGetUserHaztrakSitesQuery,
   useGetUserHaztrakSiteQuery,
-} from 'store/haztrakApiSlice';
+  useCreateManifestMutation,
+  useSaveEManifestMutation,
+  useSyncManifestMutation,
+  useSignElectronicManifestMutation,
+} = haztrakApi;
 
 // Authentication Slice
 export {
@@ -38,6 +42,7 @@ export {
   siteByEpaIdSelector,
   updateProfile,
   selectHaztrakSites,
+  selectHaztrakSiteEpaIds,
   selectHaztrakProfile,
 } from './profileSlice/profile.slice';
 
