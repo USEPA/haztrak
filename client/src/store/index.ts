@@ -7,7 +7,7 @@ export { rootStore, setupStore, useAppDispatch, useAppSelector } from './rootSto
 export type { RootState, AppDispatch, AppStore };
 
 export const {
-  useGetDotIdNumbersQuery,
+  useLazyGetDotIdNumbersQuery,
   useGetFedWasteCodesQuery,
   useGetStateWasteCodesQuery,
   useGetTaskStatusQuery,
