@@ -2,6 +2,7 @@ from apps.trak.views.manifest_view import (
     CreateManifestView,
     GetManifestView,
     MtnListView,
+    SaveElectronicManifestView,
     SignManifestView,
     SyncSiteManifestView,
 )

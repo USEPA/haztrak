@@ -17,6 +17,8 @@ export {
   useGetMTNQuery,
   useGetUserHaztrakSitesQuery,
   useGetUserHaztrakSiteQuery,
+  useCreateManifestMutation,
+  useSaveElectronicManifestMutation,
 } from 'store/haztrakApiSlice';
 
 // Authentication Slice

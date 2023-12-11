@@ -12,7 +12,7 @@ from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
 from apps.trak.serializers.signature_serializer import QuickerSignSerializer
 from apps.trak.services import EManifest, TaskResponse
-from apps.trak.services.manifest_services import create_manifest, get_manifests
+from apps.trak.services.manifest_services import create_manifest, get_manifests, save_emanifest
 
 logger = logging.getLogger(__name__)
 
@@ -44,10 +44,22 @@ class CreateManifestView(GenericAPIView):
     def post(self, request: Request) -> Response:
         manifest_serializer = self.serializer_class(data=request.data)
         manifest_serializer.is_valid(raise_exception=True)
-        manifest = create_manifest(
-            username=str(request.user), data=manifest_serializer.validated_data
-        )
-        data = ManifestSerializer(manifest).data
+        data = create_manifest(username=str(request.user), data=manifest_serializer.validated_data)
+        return Response(data=data, status=status.HTTP_201_CREATED)
+
+
+@extend_schema(request=ManifestSerializer)
+class SaveElectronicManifestView(GenericAPIView):
+    """Save a manifest to RCRAInfo."""
+
+    queryset = None
+    serializer_class = ManifestSerializer
+    http_method_names = ["post"]
+
+    def post(self, request: Request) -> Response:
+        manifest_serializer = self.serializer_class(data=request.data)
+        manifest_serializer.is_valid(raise_exception=True)
+        data = save_emanifest(username=str(request.user), data=manifest_serializer.data)
         return Response(data=data, status=status.HTTP_201_CREATED)
 
 

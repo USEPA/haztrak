@@ -1,5 +1,4 @@
 import { AxiosResponse } from 'axios';
-import { Manifest } from 'components/Manifest';
 import { QuickerSignature } from 'components/Manifest/QuickerSign';
 import { TaskStatus } from 'store';
 import { htApi } from './htApi';
@@ -10,11 +9,6 @@ export const manifestApi = {
     signature: QuickerSignature
   ): Promise<AxiosResponse<{ taskId: string }>> => {
     return await htApi.post('rcra/manifest/sign', signature);
-  },
-
-  /** Create a manifest either via a proxy endpoint to RCRAInfo or as draft */
-  createManifest: async (data: Manifest): Promise<AxiosResponse<TaskStatus | Manifest>> => {
-    return await htApi.post<TaskStatus | Manifest>('/rcra/manifest', data);
   },
 
   /** Sync a sites manifest data with RCRAInfo */

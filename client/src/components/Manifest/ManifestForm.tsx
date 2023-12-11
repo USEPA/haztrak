@@ -1,17 +1,20 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AxiosError } from 'axios';
 import { AdditionalInfoForm } from 'components/Manifest/AdditionalInfo';
 import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
 import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/UI';
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { Alert, Button, Col, Form, Row, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { manifest, manifestApi } from 'services';
+import { manifest } from 'services';
+import {
+  useAppDispatch,
+  useCreateManifestMutation,
+  useSaveElectronicManifestMutation,
+} from 'store';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
 import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
@@ -84,6 +87,8 @@ export function ManifestForm({
   const [updatingRcrainfo, setUpdatingRcrainfo] = useState<boolean>(false);
   const toggleShowUpdatingRcra = () => setUpdatingRcrainfo(!updatingRcrainfo);
   const [taskId, setTaskId] = useState<string | undefined>(undefined);
+  const [createManifest, createResult] = useCreateManifestMutation();
+  const [saveEmanifest, saveEmanifestResult] = useSaveElectronicManifestMutation();
 
   // React-Hook-Form component state and methods
   const manifestForm = useForm<Manifest>({
@@ -94,19 +99,30 @@ export function ManifestForm({
     formState: { errors },
   } = manifestForm;
 
+  useEffect(() => {
+    if (createResult.data) {
+      if ('manifestTrackingNumber' in createResult.data) {
+        navigate(`/manifest/${createResult.data.manifestTrackingNumber}/view`);
+      }
+    }
+    if (createResult.isLoading) {
+      toggleShowUpdatingRcra();
+    }
+  }, [createResult.data, createResult.isLoading, createResult.error]);
+
+  useEffect(() => {
+    if (saveEmanifestResult.data) {
+      setTaskId(saveEmanifestResult.data.taskId);
+      toggleShowUpdatingRcra();
+    }
+  }, [saveEmanifestResult.data, saveEmanifestResult.isLoading, saveEmanifestResult.error]);
+
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
-    manifestApi
-      .createManifest(data)
-      .then((r) => {
-        if ('manifestTrackingNumber' in r.data) {
-          navigate(`/manifest/${r.data.manifestTrackingNumber}/view`);
-        }
-        if ('taskId' in r.data) {
-          setTaskId(r.data.taskId);
-          toggleShowUpdatingRcra();
-        }
-      })
-      .catch((error: AxiosError) => toast.error(error.message));
+    if (data.status === 'NotAssigned') {
+      createManifest(data);
+    } else {
+      saveEmanifest(data);
+    }
   };
 
   // Generator component state and methods

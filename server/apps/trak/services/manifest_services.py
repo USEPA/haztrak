@@ -6,6 +6,7 @@ from django.db.models import Q, QuerySet
 
 from apps.sites.models import HaztrakSite
 from apps.trak.models import Manifest
+from apps.trak.serializers import ManifestSerializer
 from apps.trak.services import EManifest, EManifestError, TaskResponse
 from apps.trak.tasks import save_to_emanifest as save_to_emanifest_task
 
@@ -48,14 +49,18 @@ def get_manifests(
         )
 
 
-# ToDo: replace multiple returns types with 1 uniform type
+def save_emanifest(*, data: dict, username: str) -> TaskResponse:
+    """Save a manifest to e-Manifest/RCRAInfo"""
+    emanifest = EManifest(username=username)
+    if emanifest.is_available:
+        task = save_to_emanifest_task.delay(manifest_data=data, username=username)
+        return TaskResponse(taskId=task.id)
+    else:
+        raise EManifestError("e-Manifest is not available")
+
+
 @transaction.atomic
-def create_manifest(*, username: str, data: dict) -> Manifest | TaskResponse:
+def create_manifest(*, username: str, data: dict) -> dict:
     """Save a manifest to Haztrak database and/or e-Manifest/RCRAInfo"""
     manifest = Manifest.objects.save(None, **data)
-    emanifest = EManifest(username=username)
-    if emanifest.is_available and data.get("status", "NotAssigned") != "NotAssigned":
-        task = save_to_emanifest_task.delay(manifest_data=data, username=username)
-        return {"taskId": task.id}
-    else:
-        return manifest
+    return ManifestSerializer(manifest).data
