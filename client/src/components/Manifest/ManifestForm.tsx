@@ -6,11 +6,16 @@ import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
 import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/UI';
 import React, { createContext, useEffect, useState } from 'react';
-import { Alert, Button, Col, Form, Row, Stack } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { manifest } from 'services';
-import { useCreateManifestMutation, useSaveEManifestMutation } from 'store';
+import {
+  selectHaztrakSiteEpaIds,
+  useAppSelector,
+  useCreateManifestMutation,
+  useSaveEManifestMutation,
+} from 'store';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
 import { Manifest, manifestSchema, ManifestStatus } from './manifestSchema';
@@ -18,7 +23,7 @@ import { QuickerSignData, QuickerSignModal, QuickSignBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
 import { EditWasteModal, WasteLineTable } from './WasteLine';
 import { toast } from 'react-toastify';
-import { FloatingActionBtn } from 'components/UI';
+import { ManifestActionBtns } from 'components/Manifest/ActionBtns/ManifestActionBtns';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -184,15 +189,17 @@ export function ManifestForm({
     manifestData?.status
   );
 
-  const signAble =
-    manifestStatus === 'Scheduled' ||
-    manifestStatus === 'InTransit' ||
-    manifestStatus === 'ReadyForSignature';
+  const nextSigner = manifest.getNextSigner(manifestData);
+  const userSiteIds = useAppSelector(selectHaztrakSiteEpaIds);
+  console.log('userSiteIds', userSiteIds);
+  console.log('nextSigner', nextSigner);
+
+  const signAble = userSiteIds.includes(nextSigner ?? '');
 
   const isDraft = manifestData?.manifestTrackingNumber === undefined;
 
   return (
-    <>
+    <Container className="mb-5">
       <ManifestContext.Provider
         value={{
           generatorStateCode: generatorStateCode,
@@ -405,8 +412,6 @@ export function ManifestForm({
               <HtCard id="generator-form-card" title="Generator">
                 <HtCard.Body>
                   {readOnly ? (
-                    // if readOnly is true, show the generator in a nice read only way and display
-                    // the button to sign for the generator.
                     <>
                       <RcraSiteDetails handler={generator} />
                       <h4>Emergency Contact Information</h4>
@@ -599,7 +604,11 @@ export function ManifestForm({
                 </Button>
               </div>
             </Stack>
-            <FloatingActionBtn variant="success">Save</FloatingActionBtn>
+            <ManifestActionBtns
+              manifestStatus={manifestStatus}
+              readonly={readOnly}
+              signAble={signAble}
+            />
           </HtForm>
           {/*If taking action that involves updating a manifest in RCRAInfo*/}
           {taskId && showSpinner ? <UpdateRcra taskId={taskId} /> : <></>}
@@ -635,6 +644,6 @@ export function ManifestForm({
           />
         </FormProvider>
       </ManifestContext.Provider>
-    </>
+    </Container>
   );
 }
