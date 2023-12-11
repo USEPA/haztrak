@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { ManifestActionBtns } from 'components/Manifest/ActionBtns/ManifestActionBtns';
+import { ManifestFABs } from 'components/Manifest/Buttons/ManifestFABs';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { afterEach, describe, expect, test } from 'vitest';
@@ -17,7 +17,7 @@ describe('ManifestActionBtns', () => {
   ])('renders a save button when editing and {status: "%s", signAble: %s}', (status, signAble) => {
     renderWithProviders(
       // @ts-ignore - Status is expected to be a ManifestStatus, but we're passing a string
-      <ManifestActionBtns readOnly={false} manifestStatus={status} signAble={signAble} />
+      <ManifestFABs readOnly={false} manifestStatus={status} signAble={signAble} />
     );
     expect(screen.queryByRole('button', { name: /Save/i })).toBeInTheDocument();
   });
@@ -26,7 +26,7 @@ describe('ManifestActionBtns', () => {
     (readOnly, signAble) => {
       renderWithProviders(
         // @ts-ignore - Status is expected to be a ManifestStatus, but we're passing a string
-        <ManifestActionBtns readOnly={readOnly} manifestStatus={'Scheduled'} signAble={signAble} />
+        <ManifestFABs readOnly={readOnly} manifestStatus={'Scheduled'} signAble={signAble} />
       );
       expect(screen.queryByRole('button', { name: /Edit/i })).toBeInTheDocument();
       expect(screen.queryByRole('button', { name: /Sign/i })).not.toBeInTheDocument();
@@ -38,7 +38,7 @@ describe('ManifestActionBtns', () => {
     (readOnly, signAble) => {
       renderWithProviders(
         // @ts-ignore - Status is expected to be a ManifestStatus, but we're passing a string
-        <ManifestActionBtns readOnly={readOnly} manifestStatus={'Scheduled'} signAble={signAble} />
+        <ManifestFABs readOnly={readOnly} manifestStatus={'Scheduled'} signAble={signAble} />
       );
       expect(screen.queryByRole('button', { name: /Sign/i })).toBeInTheDocument();
     }
@@ -53,11 +53,7 @@ describe('ManifestActionBtns', () => {
     (readOnly, signAble) => {
       renderWithProviders(
         // @ts-ignore - Status is expected to be a ManifestStatus, but we're passing a string
-        <ManifestActionBtns
-          readOnly={readOnly}
-          manifestStatus={'NotAssigned'}
-          signAble={signAble}
-        />
+        <ManifestFABs readOnly={readOnly} manifestStatus={'NotAssigned'} signAble={signAble} />
       );
       expect(screen.queryByRole('button', { name: /Sign/i })).not.toBeInTheDocument();
     }
