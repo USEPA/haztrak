@@ -36,7 +36,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
   const [taskId, setTaskId] = useState<undefined | string>();
   const { rcraSites, isLoading, ...formValues } = profile;
   const dispatch = useAppDispatch();
-  const { inProgress, error } = useProgressTracker({
+  const { inProgress } = useProgressTracker({
     taskId: taskId,
     reduxAction: getRcraProfile(),
   });

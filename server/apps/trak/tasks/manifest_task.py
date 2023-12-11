@@ -34,10 +34,10 @@ def pull_manifest(self: Task, *, mtn: List[str], username: str) -> dict:
 
 @shared_task(name="sign manifests", bind=True, acks_late=True)
 def sign_manifest(
-        self: Task,
-        *,
-        username: str,
-        **signature_data: dict,
+    self: Task,
+    *,
+    username: str,
+    **signature_data: dict,
 ) -> Dict:
     """
     a task to Quicker Sign manifest, by MTN, in RCRAInfo
@@ -46,7 +46,7 @@ def sign_manifest(
 
     try:
         emanifest = EManifest(username=username)
-        return emanifest.submit_quick_signature(**signature_data)
+        return emanifest.submit_quick_signature(signature_data)
     except (ConnectionError, TimeoutError) as exc:
         raise Reject(exc)  # To Do: add retry logic
     except Exception as exc:

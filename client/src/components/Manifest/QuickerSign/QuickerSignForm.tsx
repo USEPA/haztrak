@@ -1,14 +1,21 @@
-import { faFileSignature } from '@fortawesome/free-solid-svg-icons';
+import { faFileSignature, faPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import { Transporter } from 'components/Manifest/Transporter';
 import { HtForm } from 'components/UI';
-import React, { useEffect } from 'react';
-import { Button, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
+import { useProgressTracker } from 'hooks';
+import React, { useEffect, useState } from 'react';
+import { Button, Col, Container, Form, ListGroup, Row, Stack } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { selectUserName, useAppSelector, useSignElectronicManifestMutation } from 'store';
+import {
+  addTask,
+  selectUserName,
+  updateTask,
+  useAppDispatch,
+  useAppSelector,
+  useSignElectronicManifestMutation,
+} from 'store';
 import { z } from 'zod';
 
 const siteType = z.enum(['Transporter', 'Generator', 'Tsdf', 'Broker']);
@@ -49,8 +56,11 @@ interface QuickerSignProps {
  * @constructor
  */
 export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSignProps) {
+  const dispatch = useAppDispatch();
   const userName = useAppSelector(selectUserName);
-  const [signManifest, { data, error, isLoading }] = useSignElectronicManifestMutation();
+  const [signManifest, { data, error: ApiError, isLoading }] = useSignElectronicManifestMutation();
+  const [taskId, setTaskId] = useState<string | undefined>(undefined);
+  const { inProgress, data: progressData } = useProgressTracker({ taskId: taskId });
   const { register, handleSubmit, setValue } = useForm<QuickerSignature>({
     defaultValues: {
       printedSignatureName: userName,
@@ -63,13 +73,28 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
   }
 
   useEffect(() => {
-    if (data) {
-      toast.success('Signed successfully');
+    if (data?.taskId) {
+      dispatch(
+        addTask({
+          taskId: data.taskId,
+          status: 'PENDING',
+          taskName: `Signing manifest ${mtn}`,
+        })
+      );
+      setTaskId(data.taskId);
     }
-    if (error) {
-      toast.error('Error while signing manifest');
+  }, [data]);
+
+  useEffect(() => {
+    if (ApiError && taskId) {
+      dispatch(
+        updateTask({
+          taskId: taskId,
+          status: 'FAILURE',
+        })
+      );
     }
-  }, [data, error, isLoading]);
+  }, [ApiError]);
 
   const onSubmit: SubmitHandler<QuickerSignature> = (data) => {
     let signature: QuickerSignature = {
@@ -112,6 +137,7 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
                 {...register(`printedSignatureDate`)}
               />
               <Button
+                variant="outline-secondary"
                 onClick={() => {
                   setValue('printedSignatureDate', new Date().toISOString().slice(0, -8), {
                     shouldDirty: true,
@@ -141,14 +167,15 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
               })}
             </ListGroup>
           </Row>
-          <div className="d-flex justify-content-end">
-            <Button variant="danger" onClick={handleClose} className="mx-2">
+          <Stack direction="horizontal" gap={2} className="d-flex justify-content-end">
+            <Button variant="outline-danger" onClick={handleClose}>
               Cancel
             </Button>
             <Button variant="success" type="submit">
-              Sign
+              <span>Submit Signature </span>
+              <FontAwesomeIcon icon={faPen} />
             </Button>
-          </div>
+          </Stack>
         </Container>
       </HtForm>
     </>

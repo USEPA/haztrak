@@ -183,19 +183,20 @@ export function ManifestForm({
   const toggleQuickerSignShow = () => setShowSignForm(!showSignForm);
   const setupSign = () => {
     const siteType = nextSigner?.siteType;
-    if (siteType === undefined || nextSigner === undefined) {
+    const rcraSiteType = manifest.siteTypeToRcraSiteType(nextSigner?.siteType);
+    if (rcraSiteType === undefined || nextSigner === undefined || siteType === undefined) {
       console.error('Cannot set up quick sign. Site type is undefined');
       return;
     }
     if (siteType === 'transporter') {
       setQuickerSignHandler({
         handler: manifestForm.getValues('transporters')[nextSigner.transporterOrder || 0],
-        siteType: 'Transporter',
-      }); // set state to appropriate Handler
+        siteType: rcraSiteType,
+      });
     } else {
       setQuickerSignHandler({
         handler: manifestForm.getValues(siteType),
-        siteType: siteType === 'designatedFacility' ? 'Tsdf' : 'Generator',
+        siteType: rcraSiteType,
       });
     }
     toggleQuickerSignShow();
@@ -449,7 +450,7 @@ export function ManifestForm({
                           <QuickSignBtn
                             siteType={'Generator'}
                             mtnHandler={generator}
-                            handleClick={setupSign}
+                            onClick={setupSign}
                             disabled={generator?.signed || !signAble}
                           />
                         </Col>
@@ -574,7 +575,7 @@ export function ManifestForm({
                           <QuickSignBtn
                             siteType={'Tsdf'}
                             mtnHandler={tsdf}
-                            handleClick={setupSign}
+                            onClick={setupSign}
                             disabled={tsdf.signed || !signAble}
                           />
                         </Col>

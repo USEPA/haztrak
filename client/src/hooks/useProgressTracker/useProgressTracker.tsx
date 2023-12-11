@@ -1,4 +1,4 @@
-import { UnknownAction, ThunkAction } from '@reduxjs/toolkit';
+import { ThunkAction, UnknownAction } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import {
   selectTask,
@@ -10,48 +10,77 @@ import {
   useGetTaskStatusQuery,
 } from 'store';
 
+interface UseProgressTrackerConfig {
+  taskId: string | undefined;
+  reduxAction?: UnknownAction | ThunkAction<any, any, any, any>;
+  pollingInterval?: number;
+  showMessages?: boolean;
+}
+
+interface TaskStatusResponse<T> extends Omit<TaskStatus, 'result'> {
+  result: T;
+}
+
+interface UseProgressTrackerReturn<T> {
+  data?: TaskStatusResponse<T>;
+  inProgress: boolean;
+  error?: any;
+}
+
 /**
  * useProgressTracker hook tracks the progress of a long-running task on the server
  * optionally dispatches a redux action or async thunk after the task completes
- * @param taskId
- * @param reduxAction
  */
-export function useProgressTracker({
+export function useProgressTracker<T>({
   taskId,
   reduxAction,
-}: {
-  taskId: string | undefined;
-  reduxAction?: UnknownAction | ThunkAction<any, any, any, any>;
-}) {
+  pollingInterval,
+}: UseProgressTrackerConfig): UseProgressTrackerReturn<T> {
   const dispatch = useAppDispatch();
   const taskComplete = useAppSelector(selectTaskCompletion(taskId));
   const [inProgress, setInProgress] = useState<boolean>(taskId !== undefined);
-  const [data, setData] = useState<TaskStatus | undefined>();
-  const error: boolean = useAppSelector(selectTask(taskId))?.status === 'FAILURE';
+  const [data, setData] = useState<TaskStatusResponse<T> | undefined>(undefined);
+  const [error, setError] = useState<any | undefined>(
+    useAppSelector(selectTask(taskId))?.status === 'FAILURE'
+  );
 
-  // @ts-ignore
-  const response = useGetTaskStatusQuery(taskId, {
-    pollingInterval: 3000,
+  const failTask = (queryError: any) => {
+    setInProgress(false);
+    dispatch(updateTask({ taskId: taskId, status: 'FAILURE', complete: true }));
+    setError('Task failed');
+    setError(queryError ?? 'Task failed');
+  };
+
+  const {
+    data: queryData,
+    error: queryError,
+    // @ts-ignore - if taskId is undefined, the query is skipped
+  } = useGetTaskStatusQuery(taskId, {
+    pollingInterval: pollingInterval ?? 3000,
     skip: !inProgress || taskId === undefined,
   });
 
   // If we get a response from the server, update the task status
   useEffect(() => {
-    if (response.data) {
-      setData(response.data);
-      if (response.data.status === 'SUCCESS' || response.data.status === 'FAILURE') {
+    if (queryData) {
+      if (queryData.status === 'SUCCESS') {
+        setData(queryData as TaskStatusResponse<T>);
         setInProgress(false);
-        dispatch(updateTask({ ...response.data, taskId: taskId, complete: true }));
+        dispatch(updateTask({ ...queryData, taskId: taskId, complete: true }));
+      } else if (queryData?.status === 'FAILURE') {
+        failTask(queryData);
       } else {
         setInProgress(true);
-        dispatch(updateTask({ ...response.data, taskId: taskId }));
+        dispatch(updateTask({ ...queryData, taskId: taskId }));
       }
     }
-    if (response.error || response.data?.status === 'FAILURE') {
-      setInProgress(false);
-      dispatch(updateTask({ taskId: taskId, status: 'FAILURE', complete: true }));
+  }, [queryData]);
+
+  useEffect(() => {
+    if (queryError) {
+      failTask(queryError);
     }
-  }, [response.data?.status, response.error, response.data]);
+  }, [queryError]);
 
   // If taskId defined, the task is not set to complete, mark inProgress as true
   useEffect(() => {
@@ -60,7 +89,6 @@ export function useProgressTracker({
     }
   }, [taskId]);
 
-  //
   useEffect(() => {
     if (taskComplete) {
       if (reduxAction) dispatch(reduxAction);

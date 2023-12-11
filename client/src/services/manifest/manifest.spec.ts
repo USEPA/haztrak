@@ -22,7 +22,7 @@ describe('manifest.getNextSigner', () => {
     // Act
     const result = manifest.getNextSigner(mockManifest);
     // Assert
-    expect(result).toBe(mockId);
+    expect(result?.epaSiteId).toBe(mockId);
   });
   test('returns the TSDF if ReadyForSignature', () => {
     const mockId = 'VATESTTSDF001';
@@ -36,7 +36,7 @@ describe('manifest.getNextSigner', () => {
       designatedFacility,
     });
     const result = manifest.getNextSigner(mockManifest);
-    expect(result).toBe(mockId);
+    expect(result?.epaSiteId).toBe(mockId);
   });
   test('returns the first transporter if "Scheduled" status and generator signed', () => {
     const mockId = 'VATESTTRANS1';
@@ -60,7 +60,7 @@ describe('manifest.getNextSigner', () => {
       generator,
     });
     const result = manifest.getNextSigner(mockManifest);
-    expect(result).toBe(mockId);
+    expect(result?.epaSiteId).toBe(mockId);
   });
   test.each(['NotAssigned', 'Pending', 'Corrected', 'Signed', 'UnderCorrection'])(
     `returns undefined if status is %s`,
