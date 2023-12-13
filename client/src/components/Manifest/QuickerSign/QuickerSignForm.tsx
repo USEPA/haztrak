@@ -14,7 +14,7 @@ import {
   updateTask,
   useAppDispatch,
   useAppSelector,
-  useSignElectronicManifestMutation,
+  useSignEManifestMutation,
 } from 'store';
 import { z } from 'zod';
 
@@ -58,7 +58,7 @@ interface QuickerSignProps {
 export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSignProps) {
   const dispatch = useAppDispatch();
   const userName = useAppSelector(selectUserName);
-  const [signManifest, { data, error: ApiError, isLoading }] = useSignElectronicManifestMutation();
+  const [signManifest, { data, error: ApiError }] = useSignEManifestMutation();
   const [taskId, setTaskId] = useState<string | undefined>(undefined);
   const { inProgress, data: progressData } = useProgressTracker({ taskId: taskId });
   const { register, handleSubmit, setValue } = useForm<QuickerSignature>({

@@ -22,7 +22,7 @@ import { MtnStatusField, StatusOption } from 'components/Mtn/MtnStatusField/MtnS
 import { HtPageBtns, HtPageControls } from 'components/UI';
 import React, { ChangeEvent, useState } from 'react';
 import { Button, Col, Table } from 'react-bootstrap';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
 
 const mtnDetailsSchema = z.object({
@@ -56,7 +56,11 @@ const columnHelper = createColumnHelper<MtnDetails>();
 const columns = [
   columnHelper.accessor('manifestTrackingNumber', {
     header: 'MTN',
-    cell: (info) => info.getValue(), // example
+    cell: (info) => (
+      <Link to={`./${info.getValue()}/view`} className="text-decoration-none">
+        {info.getValue()}
+      </Link>
+    ),
   }),
   columnHelper.accessor('status', {
     header: 'Status',
