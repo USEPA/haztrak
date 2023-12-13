@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RcraApiUserBtn } from 'components/Rcrainfo/buttons/RcraApiUserBtn/RcraApiUserBtn';
 import { useProgressTracker } from 'hooks';
 import React, { useEffect, useState } from 'react';
-import { addTask, updateTask, useAppDispatch, useSyncManifestMutation } from 'store';
+import { addTask, updateTask, useAppDispatch, useSyncEManifestMutation } from 'store';
 
 interface SyncManifestProps {
   siteId?: string;
@@ -23,7 +23,7 @@ export function SyncManifestBtn({
   setSyncInProgress,
   syncInProgress,
 }: SyncManifestProps) {
-  const [syncSiteManifest, { data, error, isLoading }] = useSyncManifestMutation();
+  const [syncSiteManifest, { data, error }] = useSyncEManifestMutation();
   const dispatch = useAppDispatch();
   const [taskId, setTaskId] = useState<string | undefined>(undefined);
   const { inProgress } = useProgressTracker({ taskId: taskId });

@@ -19,8 +19,8 @@ export const {
   useGetUserHaztrakSiteQuery,
   useCreateManifestMutation,
   useSaveEManifestMutation,
-  useSyncManifestMutation,
-  useSignElectronicManifestMutation,
+  useSyncEManifestMutation,
+  useSignEManifestMutation,
 } = haztrakApi;
 
 // Authentication Slice

@@ -127,6 +127,13 @@ export const haztrakApi = createApi({
         data,
       }),
     }),
+    updateManifest: build.mutation<Manifest, Manifest>({
+      query: (data) => ({
+        url: 'rcra/manifest',
+        method: 'PATCH',
+        data,
+      }),
+    }),
     saveEManifest: build.mutation<TaskResponse, Manifest>({
       query: (data) => ({
         url: 'rcra/manifest/emanifest',
@@ -134,14 +141,14 @@ export const haztrakApi = createApi({
         data,
       }),
     }),
-    syncManifest: build.mutation<TaskResponse, string>({
+    syncEManifest: build.mutation<TaskResponse, string>({
       query: (siteId) => ({
         url: 'rcra/manifest/emanifest/sync',
         method: 'POST',
         data: { siteId: siteId },
       }),
     }),
-    signElectronicManifest: build.mutation<TaskResponse, QuickerSignature>({
+    signEManifest: build.mutation<TaskResponse, QuickerSignature>({
       query: (signature) => ({
         url: 'rcra/manifest/emanifest/sign',
         method: 'POST',

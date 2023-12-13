@@ -141,7 +141,11 @@ export function ManifestForm({
 
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     if (data.status === 'NotAssigned') {
-      createManifest(data);
+      if (data.manifestTrackingNumber?.endsWith('DFT')) {
+        console.log('updating draft manifest');
+      } else {
+        createManifest(data);
+      }
     } else {
       saveEmanifest(data);
     }
