@@ -6,6 +6,7 @@ from django.db import models
 
 from apps.sites.models import RcraSite
 
+from . import ManifestPhone
 from .base_models import TrakBaseManager, TrakBaseModel
 from .signature_models import ESignature, PaperSignature
 
@@ -18,14 +19,19 @@ class HandlerManager(TrakBaseManager):
     def save(self, instance: Optional["Handler"], **handler_data) -> "Handler":
         paper_signature = handler_data.pop("paper_signature", None)
         e_signatures = handler_data.pop("e_signatures", [])
-        if paper_signature:
+        print("handler data", handler_data)
+        if paper_signature is not None:
             paper_signature = PaperSignature.objects.create(**paper_signature)
+        if handler_data.get("emergency_phone", None) is not None:
+            handler_data["emergency_phone"] = ManifestPhone.objects.create(
+                **handler_data.pop("emergency_phone")
+            )
         try:
             if RcraSite.objects.filter(epa_id=handler_data["rcra_site"]["epa_id"]).exists():
                 rcra_site = RcraSite.objects.get(epa_id=handler_data["rcra_site"]["epa_id"])
                 handler_data.pop("rcra_site")
             else:
-                rcra_site = RcraSite.objects.save(**handler_data.pop("rcra_site"))
+                rcra_site = RcraSite.objects.save(None, **handler_data.pop("rcra_site"))
             manifest_handler = self.model.objects.create(
                 rcra_site=rcra_site,
                 paper_signature=paper_signature,
@@ -39,9 +45,9 @@ class HandlerManager(TrakBaseManager):
                 logger.debug(f"ESignature created {e_sig}")
             return manifest_handler
         except KeyError as exc:
-            logger.warning(f"KeyError while creating Manifest rcra_site {exc}")
+            raise ValidationError(f"KeyError while creating rcra_site {exc}")
         except ValidationError as exc:
-            logger.warning(f"ValidationError while creating Manifest rcra_site {exc}")
+            logger.warning(f"ValidationError while creating rcra_site {exc}")
             raise exc
 
 
@@ -57,6 +63,13 @@ class Handler(TrakBaseModel):
         "sites.RcraSite",
         on_delete=models.CASCADE,
         help_text="Hazardous waste rcra_site associated with the manifest",
+    )
+    emergency_phone = models.ForeignKey(
+        "trak.ManifestPhone",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        help_text="Emergency phone number for the hazardous waste rcra_site",
     )
     paper_signature = models.OneToOneField(
         "PaperSignature",
@@ -82,9 +95,34 @@ class Handler(TrakBaseModel):
 class TransporterManager(HandlerManager):
     """Inter-model related functionality for Transporter Model"""
 
-    def save(self, **transporter_data: Dict) -> "Transporter":
+    def save(self, instance: Optional["Transporter"], **data: Dict) -> "Transporter":
         """Create a Transporter from a manifest instance and rcra_site dict"""
-        return super().save(None, **transporter_data)
+        e_signatures = data.pop("e_signatures", [])
+        if data.get("paper_signature", None) is not None:
+            data["paper_signature"] = PaperSignature.objects.create(**data.pop("paper_signature"))
+        try:
+            if RcraSite.objects.filter(epa_id=data["rcra_site"]["epa_id"]).exists():
+                rcra_site = RcraSite.objects.get(epa_id=data["rcra_site"]["epa_id"])
+                data.pop("rcra_site")
+            else:
+                rcra_site = RcraSite.objects.save(None, **data.pop("rcra_site"))
+            transporter, created = self.model.objects.update_or_create(
+                manifest=data.pop("manifest"),
+                order=data.pop("order"),
+                rcra_site__epa_id=rcra_site.epa_id,
+                rcra_site=rcra_site,
+                defaults=data,
+            )
+            logger.debug(f"Handler created {transporter}")
+            for e_signature_data in e_signatures:
+                e_sig = ESignature.objects.save(manifest_handler=transporter, **e_signature_data)
+                logger.debug(f"ESignature created {e_sig}")
+            return transporter
+        except KeyError as exc:
+            logger.warning(f"KeyError while creating rcra_site {exc}")
+        except ValidationError as exc:
+            logger.warning(f"ValidationError while creating rcra_site {exc}")
+            raise exc
 
 
 class Transporter(Handler):

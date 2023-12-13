@@ -1,6 +1,6 @@
 import logging
 import uuid
-from typing import Union
+from typing import Optional, Union
 
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
@@ -78,7 +78,7 @@ class RcraSiteManager(SitesBaseManager):
         self.handler_data = None
         super().__init__()
 
-    def save(self, **handler_data):
+    def save(self, instance: Optional["RcraSite"], **handler_data) -> "RcraSite":
         """
         Create an RcraSite and its related fields
 
@@ -97,13 +97,15 @@ class RcraSiteManager(SitesBaseManager):
             emergency_phone = self.get_emergency_phone()
             site_address = self.get_address("site_address")
             mail_address = self.get_address("mail_address")
-            return super().save(
+            rcra_site, created = self.model.objects.update_or_create(
+                epa_id=self.handler_data.pop("epa_id"),
                 site_address=site_address,
                 mail_address=mail_address,
                 emergency_phone=emergency_phone,
                 contact=new_contact,
-                **self.handler_data,
+                defaults=self.handler_data,
             )
+            return rcra_site
         except KeyError as exc:
             logger.warning(f"error while creating {self.model.__class__.__name__}{exc}")
 

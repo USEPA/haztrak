@@ -64,10 +64,10 @@ class RcraSiteSerializer(SitesBaseSerializer):
     )
 
     def update(self, instance, validated_data):
-        return self.Meta.model.objects.save(**validated_data)
+        return self.Meta.model.objects.save(instance, **validated_data)
 
     def create(self, validated_data):
-        return self.Meta.model.objects.save(**validated_data)
+        return self.Meta.model.objects.save(None, **validated_data)
 
     class Meta:
         model = RcraSite

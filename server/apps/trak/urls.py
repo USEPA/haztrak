@@ -1,12 +1,12 @@
 from django.urls import include, path, re_path
+from rest_framework.routers import DefaultRouter, SimpleRouter
 
 from apps.trak.views import (  # type: ignore
-    CreateManifestView,
     DotHazardClassView,
     DotIdNumberView,
     DotShippingNameView,
     FederalWasteCodesView,
-    GetManifestView,
+    ManifestViewSet,
     MtnListView,
     SaveElectronicManifestView,
     SignManifestView,
@@ -14,17 +14,19 @@ from apps.trak.views import (  # type: ignore
     SyncSiteManifestView,
 )
 
+manifest_router = SimpleRouter(trailing_slash=False)
+manifest_router.register("manifest", ManifestViewSet, basename="manifest")
+
 urlpatterns = [
     path(
         "rcra/",
         include(
             [
                 # Manifest
-                path("manifest", CreateManifestView.as_view()),
+                path("", include(manifest_router.urls)),
                 path("manifest/emanifest", SaveElectronicManifestView.as_view()),
                 path("manifest/emanifest/sign", SignManifestView.as_view()),
                 path("manifest/emanifest/sync", SyncSiteManifestView.as_view()),
-                re_path(r"manifest/(?P<mtn>[0-9]{9}[a-zA-Z]{3})", GetManifestView.as_view()),
                 # MT
                 path("mtn", MtnListView.as_view()),
                 path("mtn/<str:epa_id>", MtnListView.as_view()),

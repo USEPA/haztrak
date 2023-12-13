@@ -20,6 +20,7 @@ import {
   useAppSelector,
   useCreateManifestMutation,
   useSaveEManifestMutation,
+  useUpdateManifestMutation,
 } from 'store';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
@@ -107,6 +108,8 @@ export function ManifestForm({
     saveEmanifest,
     { data: eManifestResult, error: eManifestError, isLoading: eManifestIsLoading },
   ] = useSaveEManifestMutation();
+  const [updateManifest, { data: updateResults, error: updateError, isLoading: updateIsLoading }] =
+    useUpdateManifestMutation();
 
   // React-Hook-Form component state and methods
   const manifestForm = useForm<Manifest>({
@@ -114,8 +117,11 @@ export function ManifestForm({
     resolver: zodResolver(manifestSchema),
   });
   const {
+    watch,
     formState: { errors },
   } = manifestForm;
+
+  console.log(watch('designatedFacility'));
 
   useEffect(() => {
     if (createData) {
@@ -133,6 +139,22 @@ export function ManifestForm({
   }, [createData, createIsLoading, createError]);
 
   useEffect(() => {
+    if (updateResults) {
+      if ('manifestTrackingNumber' in updateResults) {
+        navigate(`/manifest/${updateResults.manifestTrackingNumber}/view`);
+      }
+    }
+    if (updateIsLoading) {
+      setShowSpinner(true);
+    }
+    if (updateError) {
+      console.error(updateError);
+      toast.error('Error Updating manifest');
+      setShowSpinner(false);
+    }
+  }, [updateResults, updateError, updateIsLoading]);
+
+  useEffect(() => {
     if (eManifestResult) {
       setTaskId(eManifestResult.taskId);
       toggleShowSpinner();
@@ -142,7 +164,7 @@ export function ManifestForm({
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
     if (data.status === 'NotAssigned') {
       if (data.manifestTrackingNumber?.endsWith('DFT')) {
-        console.log('updating draft manifest');
+        updateManifest({ mtn: data.manifestTrackingNumber, manifest: data });
       } else {
         createManifest(data);
       }
@@ -572,7 +594,6 @@ export function ManifestForm({
                   {tsdf ? (
                     <>
                       <RcraSiteDetails handler={tsdf} />
-                      <PhoneForm handlerType={'designatedFacility'} />
                       <div className="d-flex justify-content-between">
                         {/* Button to bring up the Quicker Sign modal*/}
                         <Col className="text-end">

@@ -127,11 +127,11 @@ export const haztrakApi = createApi({
         data,
       }),
     }),
-    updateManifest: build.mutation<Manifest, Manifest>({
-      query: (data) => ({
-        url: 'rcra/manifest',
-        method: 'PATCH',
-        data,
+    updateManifest: build.mutation<Manifest, { mtn: string; manifest: Manifest }>({
+      query: ({ mtn, manifest }) => ({
+        url: `rcra/manifest/${mtn}`,
+        method: 'PUT',
+        data: manifest,
       }),
     }),
     saveEManifest: build.mutation<TaskResponse, Manifest>({

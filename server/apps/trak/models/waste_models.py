@@ -15,8 +15,8 @@ class WasteLineManager(TrakBaseManager):
 
     def save(self, instance: Optional["WasteLine"], **waste_data: dict) -> "WasteLine":
         try:
-            line_number = waste_data.pop("line_number")
-            manifest = waste_data.pop("manifest")
+            line_number = waste_data.pop("line_number", None)
+            manifest = waste_data.pop("manifest", None)
             wl, created = WasteLine.objects.update_or_create(
                 manifest=manifest, line_number=line_number, defaults=waste_data
             )
