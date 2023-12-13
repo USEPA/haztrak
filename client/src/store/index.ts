@@ -21,6 +21,7 @@ export const {
   useSaveEManifestMutation,
   useSyncEManifestMutation,
   useSignEManifestMutation,
+  useUpdateManifestMutation,
 } = haztrakApi;
 
 // Authentication Slice

@@ -4,9 +4,25 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from apps.sites.serializers import RcraSiteSerializer
-from apps.trak.models import Handler, Transporter
+from apps.trak.models import Handler, ManifestPhone, Transporter
 
 from .signature_serializer import ESignatureSerializer, PaperSignatureSerializer
+
+
+class ManifestPhoneSerializer(serializers.ModelSerializer):
+    """Serializer for phone numbers on manifest"""
+
+    number = serializers.CharField(
+        required=True,
+    )
+    extension = serializers.CharField(
+        required=False,
+        allow_blank=True,
+    )
+
+    class Meta:
+        model = ManifestPhone
+        fields = ["number", "extension"]
 
 
 class HandlerSerializer(RcraSiteSerializer):
@@ -20,6 +36,10 @@ class HandlerSerializer(RcraSiteSerializer):
     )
     paperSignatureInfo = PaperSignatureSerializer(
         source="paper_signature",
+        required=False,
+    )
+    emergencyPhone = ManifestPhoneSerializer(
+        source="emergency_phone",
         required=False,
     )
     signed = serializers.ReadOnlyField()
@@ -41,6 +61,8 @@ class HandlerSerializer(RcraSiteSerializer):
         instance = {}
         if "electronicSignaturesInfo" in data:
             instance["electronicSignaturesInfo"] = data.pop("electronicSignaturesInfo")
+        if "emergencyPhone" in data:
+            instance["emergencyPhone"] = data.pop("emergencyPhone")
         if "paperSignatureInfo" in data:
             instance["paperSignatureInfo"] = data.pop("paperSignatureInfo")
         instance["rcra_site"] = data
@@ -54,6 +76,7 @@ class HandlerSerializer(RcraSiteSerializer):
             "rcra_site",
             "electronicSignaturesInfo",
             "paperSignatureInfo",
+            "emergencyPhone",
             "signed",
         ]
 

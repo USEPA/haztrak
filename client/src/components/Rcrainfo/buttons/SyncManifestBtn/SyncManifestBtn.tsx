@@ -58,7 +58,7 @@ export function SyncManifestBtn({
 
   return (
     <RcraApiUserBtn
-      variant="primary"
+      variant="secondary"
       disabled={disabled || !siteId || inProgress}
       onClick={() => {
         if (siteId) syncSiteManifest(siteId);

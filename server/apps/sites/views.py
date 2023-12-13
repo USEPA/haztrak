@@ -92,9 +92,7 @@ class GetRcraSiteView(RetrieveAPIView):
     ),
 )
 class SearchRcraSiteView(APIView):
-    """
-    Search for locally saved hazardous waste sites ("Generators", "Transporters", "Tsdf's")
-    """
+    """Search for locally saved hazardous waste sites ("Generators", "Transporters", "Tsdf's")"""
 
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
@@ -110,6 +108,7 @@ class SearchRcraSiteView(APIView):
                 "Transporter",
                 "Tsdf",
                 "tsdf",
+                "designatedFacility",
                 "Generator",
                 "generator",
             ],

@@ -24,18 +24,18 @@ logger = logging.getLogger(__name__)
 
 class AdditionalInfoSerializer(serializers.ModelSerializer):
     originalManifestTrackingNumbers = serializers.JSONField(
-        allow_null=False,
+        allow_null=True,
         required=False,
         source="original_mtn",
     )
     newManifestDestination = serializers.CharField(
-        allow_null=False,
+        allow_null=True,
         required=False,
         allow_blank=True,
         source="new_destination",
     )
     consentNumber = serializers.CharField(
-        allow_null=False,
+        allow_null=True,
         required=False,
         allow_blank=True,
         source="consent_number",

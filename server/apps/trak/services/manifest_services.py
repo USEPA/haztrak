@@ -14,22 +14,20 @@ logger = logging.getLogger(__name__)
 
 
 @transaction.atomic
-def update_manifest(*, mtn: Optional[str], data: dict) -> Manifest:
+def update_manifest(*, username: str, mtn: str, data: dict) -> Manifest:
     """Update a manifest in the Haztrak database"""
     try:
         original_manifest = Manifest.objects.get(mtn=mtn)
-        manifest = Manifest.objects.save(original_manifest, **data)
-        # ToDo: update e-Manifest
-        return manifest
+        return Manifest.objects.save(original_manifest, **data)
     except Manifest.DoesNotExist:
         raise EManifestError(f"manifest {mtn} does not exist")
 
 
 def get_manifests(
-        *,
-        username: str,
-        epa_id: Optional[str] = None,
-        site_type: Optional[Literal["Generator", "Tsdf", "Transporter"]] = None,
+    *,
+    username: str,
+    epa_id: Optional[str] = None,
+    site_type: Optional[Literal["Generator", "Tsdf", "Transporter"]] = None,
 ) -> QuerySet[Manifest]:
     """Get a list of manifest tracking numbers and select details for a users site"""
     sites: QuerySet[HaztrakSite] = (

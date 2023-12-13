@@ -71,8 +71,9 @@ class ManifestManager(TrakBaseManager):
             manifest = cls.create_manifest(**manifest_data)
         for waste_line in waste_data:
             WasteLine.objects.save(None, manifest=manifest, **waste_line)
+        Transporter.objects.filter(manifest=manifest).delete()
         for transporter in transporter_data:
-            Transporter.objects.save(manifest=manifest, **transporter)
+            Transporter.objects.save(None, manifest=manifest, **transporter)
         return manifest
 
     @staticmethod
@@ -102,9 +103,7 @@ class ManifestManager(TrakBaseManager):
         if "tsdf" in data:
             instance.tsdf = Handler.objects.save(instance.tsdf, **data.pop("tsdf"))
         if "additional_info" in data:
-            instance.additional_info = AdditionalInfo.objects.create(
-                instance.additional_info, **data.pop("additional_info")
-            )
+            instance.additional_info = AdditionalInfo.objects.create(**data.pop("additional_info"))
         for attr, value in data.items():
             setattr(instance, attr, value)
         instance.save()

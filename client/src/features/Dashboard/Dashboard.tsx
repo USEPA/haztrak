@@ -10,7 +10,7 @@ import {
   GeneratorStatusAreaChart,
   ManifestCountBarChart,
   ManifestStatusPieChart,
-} from 'components/Dash';
+} from 'components/Charts';
 
 /** Dashboard page for logged-in user*/
 export function Dashboard(): ReactElement {

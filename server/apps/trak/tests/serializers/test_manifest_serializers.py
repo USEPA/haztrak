@@ -25,7 +25,7 @@ class TestManifestSerializer:
         transporter = saved_manifest.transporters.all()
         assert len(transporter), number_transporters
 
-    def test_serializer_saves_first_wasteline(self, manifest_10003114elc_serializer):
+    def test_serializer_saves_first_waste_line(self, manifest_10003114elc_serializer):
         manifest_10003114elc_serializer.is_valid()
         saved_manifest = manifest_10003114elc_serializer.save()
         waste_line = WasteLine.objects.filter(manifest=saved_manifest).first()

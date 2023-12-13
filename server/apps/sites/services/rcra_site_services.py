@@ -21,6 +21,8 @@ logger = logging.getLogger(__name__)
 def query_rcra_sites(
     *, epa_id: Optional[str] = None, name: Optional[str] = None, site_type: Optional[str] = None
 ) -> QuerySet[RcraSite]:
+    if site_type == "designatedFacility":
+        site_type = "Tsdf"
     """Query RcraSites from our Database"""
     queryset: QuerySet[RcraSite] = RcraSite.objects.all()
     if epa_id is not None:

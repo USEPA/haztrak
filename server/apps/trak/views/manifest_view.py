@@ -1,7 +1,7 @@
 import logging
 
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
-from rest_framework import serializers, status
+from rest_framework import mixins, serializers, status, viewsets
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -12,43 +12,56 @@ from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
 from apps.trak.serializers.signature_serializer import QuickerSignSerializer
 from apps.trak.services import EManifest, TaskResponse
-from apps.trak.services.manifest_services import create_manifest, get_manifests, save_emanifest
+from apps.trak.services.manifest_services import (
+    create_manifest,
+    get_manifests,
+    save_emanifest,
+    update_manifest,
+)
 
 logger = logging.getLogger(__name__)
 
 
-@extend_schema(
-    responses={
-        200: OpenApiResponse(
-            response=ManifestSerializer,
-            description="Manifest Details",
-        )
-    },
-)
-class GetManifestView(RetrieveAPIView):
-    """Retrieve a Uniform hazardous waste manifest by the manifest tracking number (MTN)"""
+class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
+    """Local CRUD operations for HazTrak manifests"""
 
-    queryset = Manifest.objects.all()
     lookup_field = "mtn"
+    queryset = Manifest.objects.all()
     serializer_class = ManifestSerializer
+    lookup_regex = "[0-9]{9}[a-zA-Z]{3}"
 
-
-@extend_schema(request=ManifestSerializer)
-class CreateManifestView(GenericAPIView):
-    """Create a uniform hazardous waste manifest."""
-
-    queryset = None
-    serializer_class = ManifestSerializer
-    http_method_names = ["post"]
-
-    def post(self, request: Request) -> Response:
+    @extend_schema(request=ManifestSerializer)
+    def create(self, request: Request) -> Response:
+        """Create a HazTrak hazardous waste manifest."""
         manifest_serializer = self.serializer_class(data=request.data)
         manifest_serializer.is_valid(raise_exception=True)
         manifest = create_manifest(
             username=str(request.user), data=manifest_serializer.validated_data
         )
-        data = self.serializer_class(manifest).data
+        data = ManifestSerializer(manifest).data
         return Response(data=data, status=status.HTTP_201_CREATED)
+
+    def update(self, request: Request, mtn: str) -> Response:
+        """Update a HazTrak hazardous waste manifest."""
+        manifest_serializer = self.serializer_class(data=request.data)
+        manifest_serializer.is_valid(raise_exception=True)
+        manifest = update_manifest(
+            username=str(request.user), mtn=mtn, data=manifest_serializer.validated_data
+        )
+        data = ManifestSerializer(manifest).data
+        return Response(data=data, status=status.HTTP_200_OK)
+
+    @extend_schema(
+        responses={
+            200: OpenApiResponse(
+                response=ManifestSerializer,
+                description="Manifest Details",
+            )
+        },
+    )
+    def retrieve(self, request, *args, **kwargs):
+        """Retrieve a HazTrak hazardous waste manifest."""
+        return super().retrieve(request, *args, **kwargs)
 
 
 @extend_schema(request=ManifestSerializer)
