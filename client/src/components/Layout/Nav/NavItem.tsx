@@ -4,6 +4,7 @@ import { NavContext, NavContextProps } from 'components/Layout/Root';
 import { Route } from 'components/Layout/Sidebar/SidebarRoutes';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { NavLink } from 'react-bootstrap';
 
 interface NavItemProps {
   route: Route;
@@ -18,13 +19,14 @@ export function NavItem({ route, targetBlank }: NavItemProps) {
   };
 
   return (
-    <Link
+    <NavLink
       className="text-decoration-none text-dark py-2 d-flex align-items-center "
+      as={Link}
       to={route.url}
       target={targetBlank ? '_blank' : undefined}
       onClick={toggleSidebar}
     >
-      <FontAwesomeIcon icon={route.icon} className="me-2 text-primary" />
+      <FontAwesomeIcon icon={route.icon} className="me-2 text-primary ms-2" size="lg" />
       <span className=" mb-0">{route.text}</span>
       {route.external && (
         <FontAwesomeIcon
@@ -33,6 +35,6 @@ export function NavItem({ route, targetBlank }: NavItemProps) {
           size="xs"
         />
       )}
-    </Link>
+    </NavLink>
   );
 }

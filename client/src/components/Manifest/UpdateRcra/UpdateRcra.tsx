@@ -46,7 +46,7 @@ export function UpdateRcra({ taskId }: UpdateRcraProps) {
   } else {
     return (
       <div className="overlay-spinner">
-        <HtSpinner className="text-light" size="5x" />
+        <HtSpinner center className="text-light" />
       </div>
     );
   }

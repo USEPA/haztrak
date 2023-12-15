@@ -11,13 +11,13 @@ export function SiteList() {
   useTitle('Sites');
   const { data, isLoading, error } = useGetUserHaztrakSitesQuery(); // ToDO global error handling
 
+  if (isLoading) return <HtSpinner center size="6x" />;
+
   return (
     <Container className="my-3">
       <HtCard title="My Sites">
         <HtCard.Body>
-          {isLoading && !error ? (
-            <HtSpinner />
-          ) : data ? (
+          {data ? (
             <SiteListGroup sites={data} />
           ) : (
             <div className="text-muted text-center">

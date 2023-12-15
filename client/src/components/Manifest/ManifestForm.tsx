@@ -117,11 +117,8 @@ export function ManifestForm({
     resolver: zodResolver(manifestSchema),
   });
   const {
-    watch,
     formState: { errors },
   } = manifestForm;
-
-  console.log(watch('designatedFacility'));
 
   useEffect(() => {
     if (createData) {
@@ -270,12 +267,12 @@ export function ManifestForm({
         <FormProvider {...manifestForm}>
           <HtForm onSubmit={manifestForm.handleSubmit(onSubmit)}>
             <div className="d-flex justify-content-between">
-              <h2 className="fw-bold mt-2">
+              <h1 className="fw-bold mt-2 h2">
                 {`${manifestData?.manifestTrackingNumber || 'Draft Manifest'}`}
                 {manifestData?.manifestTrackingNumber?.endsWith('DFT') && (
                   <sup className="text-info"> (draft)</sup>
                 )}
-              </h2>
+              </h1>
             </div>
             <Stack direction="vertical" gap={3} className="px-0 px-sm-3 px-md-5">
               <HtCard id="general-form-card" title="General Info">
@@ -505,7 +502,7 @@ export function ManifestForm({
                           horizontalAlign
                           onClick={toggleShowAddGenerator}
                           children={'Add Generator'}
-                          variant="outline-info"
+                          variant="outline-primary"
                         />
                       </Row>
                       <Row>
@@ -545,7 +542,7 @@ export function ManifestForm({
                     <HtButton
                       onClick={toggleTranSearchShow}
                       children={'Add Transporter'}
-                      variant="outline-info"
+                      variant="outline-primary"
                       horizontalAlign
                     />
                   )}
@@ -574,7 +571,7 @@ export function ManifestForm({
                     <HtButton
                       onClick={toggleWlFormShow}
                       children={'Add Waste'}
-                      variant="outline-info"
+                      variant="outline-primary"
                       horizontalAlign
                     />
                   )}
@@ -615,7 +612,7 @@ export function ManifestForm({
                     <HtButton
                       onClick={toggleTsdfFormShow}
                       children={'Add TSDF'}
-                      variant="outline-info"
+                      variant="outline-primary"
                       horizontalAlign
                     />
                   )}

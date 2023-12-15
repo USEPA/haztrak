@@ -2,7 +2,7 @@ import logging
 
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
 from rest_framework import mixins, serializers, status, viewsets
-from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -22,10 +22,11 @@ from apps.trak.services.manifest_services import (
 logger = logging.getLogger(__name__)
 
 
-class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
+class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.CreateModelMixin):
     """Local CRUD operations for HazTrak manifests"""
 
     lookup_field = "mtn"
+    allowed_methods = ["GET", "POST", "PUT"]
     queryset = Manifest.objects.all()
     serializer_class = ManifestSerializer
     lookup_regex = "[0-9]{9}[a-zA-Z]{3}"

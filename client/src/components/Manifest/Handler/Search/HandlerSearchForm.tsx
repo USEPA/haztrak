@@ -1,9 +1,9 @@
 import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 import { Manifest, SiteType, Transporter } from 'components/Manifest/manifestSchema';
 import { RcraSite } from 'components/RcraSite';
-import { HtForm, HtSpinner, HtTooltip } from 'components/UI';
+import { HtForm } from 'components/UI';
 import React, { useContext, useEffect, useState } from 'react';
-import { Badge, Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import {
   Controller,
   SubmitHandler,
@@ -104,10 +104,6 @@ export function HandlerSearchForm({
     setOptions([...allOptions]);
   }, [data, rcrainfoData]);
 
-  useEffect(() => {
-    setRcrainfoSitesLoading(isLoading || fetchingFromRcrainfo);
-  }, [isLoading, fetchingFromRcrainfo]);
-
   const handleInputChange = async (value: string) => {
     setInputValue(value);
   };
@@ -126,7 +122,7 @@ export function HandlerSearchForm({
             </Col>
             <Col className="d-flex justify-content-end">
               <RcrainfoSiteSearchBadge
-                isFetching={rcrainfoSitesLoading}
+                isFetching={fetchingFromRcrainfo}
                 error={rcrainfoError}
                 data={rcrainfoData}
                 rcraInfoIntegrated={org?.rcrainfoIntegrated || false}

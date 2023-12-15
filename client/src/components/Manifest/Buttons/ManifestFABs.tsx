@@ -14,7 +14,7 @@ export function ManifestFABs({ onSignClick }: ManifestActionBtnsProps) {
   const { nextSigningSite, readOnly, status, signAble } = useContext(ManifestContext);
   const rcraSiteType = manifest.siteTypeToRcraSiteType(nextSigningSite?.siteType);
   let component: ReactElement | undefined = undefined;
-  if (!readOnly || status === 'NotAssigned') {
+  if (!readOnly) {
     component = <ManifestSaveBtn />;
   } else if (signAble) {
     component = <QuickSignBtn siteType={rcraSiteType} onClick={onSignClick} />;

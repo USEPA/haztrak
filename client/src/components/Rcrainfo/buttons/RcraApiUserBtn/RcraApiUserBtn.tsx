@@ -13,8 +13,10 @@ export function RcraApiUserBtn({ children, ...props }: HtApiUserBtnProps) {
   const active = !props.disabled && profile.org?.rcrainfoIntegrated;
 
   return (
-    <Button {...props} disabled={!active}>
-      {children}
-    </Button>
+    <>
+      <Button {...props} disabled={!active}>
+        {children}
+      </Button>
+    </>
   );
 }

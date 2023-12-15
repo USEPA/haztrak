@@ -22,7 +22,7 @@ from .waste_serializer import WasteLineSerializer
 logger = logging.getLogger(__name__)
 
 
-class AdditionalInfoSerializer(serializers.ModelSerializer):
+class AdditionalInfoSerializer(TrakBaseSerializer):
     originalManifestTrackingNumbers = serializers.JSONField(
         allow_null=True,
         required=False,

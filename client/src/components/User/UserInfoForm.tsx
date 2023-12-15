@@ -45,13 +45,7 @@ export function UserInfoForm({ user, profile }: UserProfileProps) {
       .catch((error: AxiosError) => toast.error(error.message));
   };
 
-  if (user?.isLoading || profile?.loading) {
-    return (
-      <Container>
-        <HtSpinner />
-      </Container>
-    );
-  }
+  if (user?.isLoading || profile?.loading) return <HtSpinner center />;
 
   return (
     <HtForm onSubmit={handleSubmit(onSubmit)}>
@@ -59,6 +53,7 @@ export function UserInfoForm({ user, profile }: UserProfileProps) {
         <input
           type="file"
           accept="image/png,image/jpeg"
+          aria-label="Profile Picture"
           ref={fileRef}
           style={{ display: 'none' }}
         />

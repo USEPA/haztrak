@@ -40,7 +40,7 @@ export function ManifestList(): ReactElement {
         <HtCard>
           <HtCard.Body>
             {isLoading ? (
-              <HtSpinner />
+              <HtSpinner center />
             ) : data ? (
               <MtnTable manifests={data} pageSize={pageSize} />
             ) : (
