@@ -10,30 +10,10 @@ interface SidebarSectionProps {
 }
 
 export function NavSection({ section }: SidebarSectionProps) {
-  const [collapsed, setCollapsed] = useState(true);
   return (
     <>
-      {/*<Button*/}
-      {/*  className="border-0 shadow-none bg-transparent d-flex py-2 ps-0 position-relative align-items-center"*/}
-      {/*  onClick={() => setCollapsed(!collapsed)}*/}
-      {/*  aria-controls="collapseSite"*/}
-      {/*  aria-expanded={collapsed}*/}
-      {/*>*/}
-      {/*  <h3 className="h5 text-dark">{section.name}</h3>*/}
-      {/*  <span*/}
-      {/*    className={`sb-sidenav-collapse-arrow nav-dropdown-arrow d-inline-block ms-auto text-secondary ${*/}
-      {/*      !collapsed ? '' : 'rotate-90-cc'*/}
-      {/*    } `}*/}
-      {/*  >*/}
-      {/*    <FontAwesomeIcon icon={faAngleDown} size="lg" />*/}
-      {/*  </span>*/}
-      {/*</Button>*/}
-      {/*<Collapse in={!collapsed}>*/}
-      {/*  <div className="ms-3">*/}
-      <p className="mt-2 mb-1">
-        {section.name}
-        <hr className="my-0" />
-      </p>
+      <hr className="my-0" />
+      <p className="text-secondary mt-1 mb-1">{section.name}</p>
       {section.routes.map((route) => {
         return (
           <div key={route.id}>
@@ -41,8 +21,6 @@ export function NavSection({ section }: SidebarSectionProps) {
           </div>
         );
       })}
-      {/*  </div>*/}
-      {/*</Collapse>*/}
     </>
   );
 }

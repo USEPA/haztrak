@@ -67,13 +67,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
       .catch((error: AxiosError) => toast.error(error.message));
   };
 
-  if (profile.isLoading) {
-    return (
-      <Container>
-        <HtSpinner />
-      </Container>
-    );
-  }
+  if (profile.isLoading) return <HtSpinner center />;
 
   return (
     <>
@@ -166,7 +160,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
       <Container>
         <h4>RCRAInfo Sites</h4>
         {inProgress ? (
-          <HtSpinner />
+          <HtSpinner center />
         ) : (
           <Table striped bordered hover responsive>
             <thead>

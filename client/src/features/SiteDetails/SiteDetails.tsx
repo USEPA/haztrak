@@ -20,7 +20,7 @@ export function SiteDetails(): ReactElement {
   const navigate = useNavigate();
 
   if (error) throw error;
-  if (isLoading) return <HtSpinner />;
+  if (isLoading) return <HtSpinner center />;
   if (data)
     return (
       <Container>

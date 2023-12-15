@@ -24,7 +24,7 @@ export function HtCard({ className, title, children, ...props }: CardProps): Rea
     <div {...props} className={classAttributes}>
       {title ? (
         <div className="row d-flex justify-content-start m-1 mb-0">
-          <h3 className="mb-0">{title}</h3>
+          <h2 className="mb-0 h3">{title}</h2>
         </div>
       ) : (
         <></>

@@ -26,7 +26,7 @@ export function ManifestDetails() {
   }
 
   return loading ? (
-    <HtSpinner />
+    <HtSpinner center />
   ) : manifestData ? (
     <ManifestForm
       manifestData={manifestData}

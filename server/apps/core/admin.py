@@ -25,7 +25,7 @@ class HaztrakUserAdmin(UserAdmin):
     @admin.display(description="Profile")
     def related_profile(self, user: HaztrakUser) -> str:
         url = (
-            reverse("admin:core_haztrakprofile_changelist") + "?" + urlencode({"user": str(user)})
+                reverse("admin:core_haztrakprofile_changelist") + "?" + urlencode({"user": str(user)})  # noqa E501
         )
         return format_html("<a href='{}'>{}</a>", url, user.haztrak_profile)
 
@@ -54,6 +54,7 @@ class HaztrakProfileAdmin(admin.ModelAdmin):
     list_display = ["__str__", "number_of_sites", "rcrainfo_integrated_org"]
     search_fields = ["user__username"]
     inlines = [SitePermissionsInline]
+    raw_id_fields = ["user", "rcrainfo_profile"]
     readonly_fields = ["rcrainfo_integrated_org"]
 
     def rcrainfo_integrated_org(self, profile: HaztrakProfile) -> bool:
@@ -74,6 +75,10 @@ class RcraProfileAdmin(admin.ModelAdmin):
     list_display = ["__str__", "related_user", "rcra_username", "api_user"]
     search_fields = ["haztrak_profile__user__username", "rcra_username"]
     inlines = [RcraSitePermissionInline]
+
+    def get_model_perms(self, request):
+        """Hide from the Side Navigation"""
+        return {}
 
     def related_user(self, user):
         url = reverse("admin:core_haztrakuser_changelist") + "?" + urlencode({"q": str(user.id)})

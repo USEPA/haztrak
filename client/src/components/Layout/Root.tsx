@@ -26,13 +26,7 @@ export function Root() {
         <Sidebar />
         <Container fluid>
           <ErrorBoundary>
-            <Suspense
-              fallback={
-                <Container fluid className="d-flex justify-content-center vh-100">
-                  <HtSpinner size="6x" className="my-auto" />
-                </Container>
-              }
-            >
+            <Suspense fallback={<HtSpinner center className="my-auto" />}>
               <Outlet />
             </Suspense>
           </ErrorBoundary>

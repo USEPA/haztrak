@@ -18,10 +18,12 @@ export function RcrainfoSiteSearchBadge({
   rcraInfoIntegrated,
 }: RcrainfoInfoStatusProps) {
   let bg = 'secondary';
+  let text = 'white';
   let message = 'Ready to search RCRAInfo';
   if (!rcraInfoIntegrated) {
     message = 'RCRAInfo not integrated';
     bg = 'warning';
+    text = 'dark';
   }
   if (error) {
     message = 'Error searching RCRAInfo';
@@ -36,7 +38,7 @@ export function RcrainfoSiteSearchBadge({
 
   return (
     <div className="my-2">
-      <Badge bg={bg} pill>
+      <Badge className="p-2" bg={bg} text={text} pill>
         <span>{message}</span>
         {isFetching ? (
           <HtSpinner size="lg" />

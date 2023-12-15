@@ -45,7 +45,7 @@ function App(): ReactElement {
       <Notifications />
       <Suspense
         fallback={
-          <Container fluid className="d-flex justify-content-center vh-100">
+          <Container fluid className="d-flex justify-content-center align-items-center vh-100">
             <HtSpinner size="6x" className="my-auto" />
           </Container>
         }
