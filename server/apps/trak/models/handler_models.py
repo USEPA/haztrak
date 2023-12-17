@@ -4,7 +4,7 @@ from typing import Dict, Optional
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from apps.sites.models import RcraSite
+from apps.site.models import RcraSite
 
 from . import ManifestPhone
 from .base_models import TrakBaseManager, TrakBaseModel
@@ -60,7 +60,7 @@ class Handler(TrakBaseModel):
     objects = HandlerManager()
 
     rcra_site = models.ForeignKey(
-        "sites.RcraSite",
+        "site.RcraSite",
         on_delete=models.CASCADE,
         help_text="Hazardous waste rcra_site associated with the manifest",
     )

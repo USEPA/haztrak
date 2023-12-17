@@ -1,9 +1,10 @@
 # Builder
-FROM python:3.12.0-alpine3.18 as builder
+FROM python:3.12.1-alpine3.18 as builder
 LABEL maintainer="graham.david@epa.gov"
 ENV APP_DIRECTORY=/app/
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+RUN apk add libffi-dev gcc libc-dev
 WORKDIR $APP_DIRECTORY
 COPY requirements.txt ./
 RUN mkdir $APP_DIRECTORY/static

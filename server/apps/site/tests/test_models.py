@@ -2,8 +2,8 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
-from apps.sites.models import Address, Contact, HaztrakSite
-from apps.sites.models.site_models import HaztrakOrg
+from apps.site.models import Address, Contact, HaztrakSite
+from apps.site.models.site_models import HaztrakOrg
 
 
 @pytest.mark.django_db

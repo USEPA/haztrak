@@ -3,7 +3,7 @@ from typing import Dict
 
 from rest_framework import serializers
 
-from apps.sites.models import RcraStates, Role
+from apps.site.models import RcraStates, Role
 from apps.trak.models import Manifest
 from apps.trak.models.manifest_models import (
     AdditionalInfo,

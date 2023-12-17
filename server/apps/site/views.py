@@ -9,10 +9,10 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.sites.models import HaztrakSite, RcraSite, RcraSiteType  # type: ignore
-from apps.sites.serializers import HaztrakSiteSerializer, RcraSiteSerializer  # type: ignore
-from apps.sites.services import RcraSiteService, get_org_sites  # type: ignore
-from apps.sites.services.rcra_site_services import query_rcra_sites
+from apps.site.models import HaztrakSite, RcraSite, RcraSiteType  # type: ignore
+from apps.site.serializers import HaztrakSiteSerializer, RcraSiteSerializer  # type: ignore
+from apps.site.services import RcraSiteService, get_org_sites  # type: ignore
+from apps.site.services.rcra_site_services import query_rcra_sites
 
 logger = logging.getLogger(__name__)
 

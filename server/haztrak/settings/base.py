@@ -22,28 +22,34 @@ AUTH_USER_MODEL = "core.HaztrakUser"
 
 WSGI_APPLICATION = "haztrak.wsgi.application"
 
+SITE_ID = 1
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
+    "django.contrib.sites",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
-    "drf_spectacular",
+    "allauth",
+    "allauth.account",
+    "dj_rest_auth",
     "corsheaders",
     "django_extensions",
-    "django_celery_results",
-    "django_celery_beat",
     "health_check",
     "health_check.db",
     "health_check.cache",
     "health_check.contrib.celery",
     "health_check.contrib.migrations",
     "health_check.contrib.redis",
+    "django_celery_results",
+    "django_celery_beat",
+    "drf_spectacular",
     "apps.trak",
-    "apps.sites",
+    "apps.site",
     "apps.core",
 ]
 
@@ -54,8 +60,9 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -100,6 +107,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
+]
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 # Internationalization
@@ -198,7 +209,7 @@ LOGGING = {
             "handlers": ["console"],
             "propagate": False,
         },
-        "apps.sites": {
+        "apps.site": {
             "level": HT_TRAK_LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,

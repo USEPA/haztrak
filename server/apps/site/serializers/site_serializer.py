@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from apps.sites.models import HaztrakOrg, HaztrakSite, RcraSite, RcraSiteType
-from apps.sites.serializers import AddressSerializer, ContactSerializer, RcraPhoneSerializer
+from apps.site.models import HaztrakOrg, HaztrakSite, RcraSite, RcraSiteType
+from apps.site.serializers import AddressSerializer, ContactSerializer, RcraPhoneSerializer
 
 from .base_serializer import SitesBaseSerializer
 

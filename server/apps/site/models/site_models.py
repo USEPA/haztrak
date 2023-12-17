@@ -7,8 +7,8 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.sites.models import Address, Contact
-from apps.sites.models.contact_models import RcraPhone
+from apps.site.models import Address, Contact
+from apps.site.models.contact_models import RcraPhone
 
 from ...core.models import RcraProfile
 from .base_models import SitesBaseManager, SitesBaseModel

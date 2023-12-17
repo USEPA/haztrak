@@ -7,8 +7,8 @@ from django.db.models import QuerySet
 from rest_framework.exceptions import ValidationError
 
 from apps.core.services import RcrainfoService, get_rcrainfo_client
-from apps.sites.models import RcraSite
-from apps.sites.serializers import RcraSiteSerializer
+from apps.site.models import RcraSite
+from apps.site.serializers import RcraSiteSerializer
 
 
 class HandlerSearchResults(TypedDict):

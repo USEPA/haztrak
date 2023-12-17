@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 import pytest
 from faker import Faker
 
-from apps.sites.models import RcraSiteType
+from apps.site.models import RcraSiteType
 
 
 @pytest.fixture

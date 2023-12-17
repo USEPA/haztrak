@@ -4,7 +4,7 @@ from typing import Literal, Optional
 from django.db import transaction
 from django.db.models import Q, QuerySet
 
-from apps.sites.models import HaztrakSite
+from apps.site.models import HaztrakSite
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
 from apps.trak.services import EManifest, EManifestError, TaskResponse

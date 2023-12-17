@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.sites.models import Contact
+from apps.site.models import Contact
 
 from .base_serializer import SitesBaseSerializer
 

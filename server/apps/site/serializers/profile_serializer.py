@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.exceptions import APIException, ValidationError
 
-from apps.sites.models import RcraSitePermissions, SitePermissions
+from apps.site.models import RcraSitePermissions, SitePermissions
 
 from .base_serializer import SitesBaseSerializer
 from .site_serializer import HaztrakSiteSerializer

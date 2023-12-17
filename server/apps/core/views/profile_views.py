@@ -11,7 +11,7 @@ from apps.core.serializers import (
     HaztrakUserSerializer,
     RcraProfileSerializer,
 )
-from apps.sites.tasks import sync_user_rcrainfo_sites
+from apps.site.tasks import sync_user_rcrainfo_sites
 
 
 class HaztrakUserView(RetrieveUpdateAPIView):

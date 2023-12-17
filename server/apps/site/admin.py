@@ -4,13 +4,13 @@ from django.utils.html import format_html, urlencode
 
 from apps.core.admin import HiddenListView
 from apps.core.models import HaztrakProfile
-from apps.sites.models import (
+from apps.site.models import (
     Address,
     Contact,
     HaztrakSite,
     RcraSite,
 )
-from apps.sites.models.site_models import HaztrakOrg
+from apps.site.models.site_models import HaztrakOrg
 
 
 @admin.register(RcraSite)
