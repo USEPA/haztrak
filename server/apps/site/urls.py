@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from apps.sites.views import (  # type: ignore
+from apps.site.views import (  # type: ignore
     GetRcraSiteView,
     HaztrakOrgSitesListView,
     HaztrakSiteListView,

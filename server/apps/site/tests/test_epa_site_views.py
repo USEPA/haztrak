@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.sites.models import RcraSiteType  # type: ignore
-from apps.sites.views import SearchRcraSiteView  # type: ignore
+from apps.site.models import RcraSiteType  # type: ignore
+from apps.site.views import SearchRcraSiteView  # type: ignore
 
 
 class TestEpaSiteView:

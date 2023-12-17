@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the 'include()' function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from dj_rest_auth.views import LoginView, LogoutView, UserDetailsView
 from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
@@ -29,7 +30,7 @@ urlpatterns = [
             [
                 path("", include("apps.core.urls")),
                 path("", include("apps.trak.urls")),
-                path("", include("apps.sites.urls")),
+                path("", include("apps.site.urls")),
                 path("schema/", SpectacularAPIView.as_view(), name="schema"),
                 path(
                     "schema/swagger-ui",
@@ -37,6 +38,16 @@ urlpatterns = [
                     name="swagger-ui",
                 ),
                 path(r"health/", include("health_check.urls")),
+                path(
+                    "auth/",
+                    include(
+                        [
+                            path("login", LoginView.as_view(), name="rest_login"),
+                            path("logout", LogoutView.as_view(), name="rest_logout"),
+                            path("user", UserDetailsView.as_view(), name="rest_user_details"),
+                        ]
+                    ),
+                ),
             ]
         ),
     ),

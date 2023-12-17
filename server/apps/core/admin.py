@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
-from ..sites.models import RcraSitePermissions, SitePermissions
+from ..site.models import RcraSitePermissions, SitePermissions
 from .models import HaztrakProfile, HaztrakUser, RcraProfile
 
 
@@ -25,7 +25,7 @@ class HaztrakUserAdmin(UserAdmin):
     @admin.display(description="Profile")
     def related_profile(self, user: HaztrakUser) -> str:
         url = (
-                reverse("admin:core_haztrakprofile_changelist") + "?" + urlencode({"user": str(user)})  # noqa E501
+            reverse("admin:core_haztrakprofile_changelist") + "?" + urlencode({"user": str(user)})  # noqa E501
         )
         return format_html("<a href='{}'>{}</a>", url, user.haztrak_profile)
 

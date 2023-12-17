@@ -7,7 +7,7 @@ import pytest
 from faker import Faker
 from faker.providers import BaseProvider
 
-from apps.sites.models import RcraSite, RcraSiteType
+from apps.site.models import RcraSite, RcraSiteType
 from apps.trak.models import (
     DotLookup,
     ESignature,
@@ -38,8 +38,8 @@ def manifest_handler_factory(db, rcra_site_factory, paper_signature_factory):
     """Abstract factory for Haztrak Handler model"""
 
     def create_manifest_handler(
-            rcra_site: Optional[RcraSite] = None,
-            paper_signature: Optional[PaperSignature] = None,
+        rcra_site: Optional[RcraSite] = None,
+        paper_signature: Optional[PaperSignature] = None,
     ) -> Handler:
         return Handler.objects.create(
             rcra_site=rcra_site or rcra_site_factory(),
@@ -54,10 +54,10 @@ def manifest_transporter_factory(db, rcra_site_factory, paper_signature_factory)
     """Abstract factory for Haztrak Handler model"""
 
     def create_manifest_handler(
-            rcra_site: Optional[RcraSite] = None,
-            paper_signature: Optional[PaperSignature] = None,
-            manifest: Manifest = None,
-            order: Optional[int] = 1,
+        rcra_site: Optional[RcraSite] = None,
+        paper_signature: Optional[PaperSignature] = None,
+        manifest: Manifest = None,
+        order: Optional[int] = 1,
     ) -> Transporter:
         return Transporter.objects.create(
             manifest=manifest,
@@ -74,8 +74,8 @@ def paper_signature_factory(db, faker: Faker):
     """Abstract factory for Paper Signature"""
 
     def create_signature(
-            printed_name: Optional[str] = None,
-            sign_date: Optional[datetime] = None,
+        printed_name: Optional[str] = None,
+        sign_date: Optional[datetime] = None,
     ) -> PaperSignature:
         return PaperSignature.objects.create(
             printed_name=printed_name or faker.name(),
@@ -90,8 +90,8 @@ def e_signature_factory(db, signer_factory, manifest_handler_factory, faker: Fak
     """Abstract factory for Haztrak Handler model"""
 
     def create_e_signature(
-            signer: Optional[Signer] = None,
-            manifest_handler: Optional[Handler] = None,
+        signer: Optional[Signer] = None,
+        manifest_handler: Optional[Handler] = None,
     ) -> ESignature:
         return ESignature.objects.create(
             signer=signer or signer_factory(),
@@ -110,10 +110,10 @@ def waste_code_factory(db):
     """Abstract factory for waste codes"""
 
     def create_waste_code(
-            code: Optional[str] = "D001",
-            description: Optional[str] = "IGNITABLE WASTE",
-            code_type: Optional[WasteCode.CodeType] = WasteCode.CodeType.FEDERAL,
-            state_id: Optional[str] = "VA",
+        code: Optional[str] = "D001",
+        description: Optional[str] = "IGNITABLE WASTE",
+        code_type: Optional[WasteCode.CodeType] = WasteCode.CodeType.FEDERAL,
+        state_id: Optional[str] = "VA",
     ) -> WasteCode:
         if code_type == WasteCode.CodeType.STATE:
             waste_code = WasteCode.objects.create(
@@ -138,12 +138,12 @@ def signer_factory(db, faker: Faker):
     """Abstract factory for Haztrak Signer model"""
 
     def creat_signer(
-            first_name: Optional[str] = None,
-            middle_initial: Optional[str] = None,
-            last_name: Optional[str] = None,
-            signer_role: Optional[str] = "EP",
-            company_name: Optional[str] = None,
-            rcra_user_id: Optional[str] = None,
+        first_name: Optional[str] = None,
+        middle_initial: Optional[str] = None,
+        last_name: Optional[str] = None,
+        signer_role: Optional[str] = "EP",
+        company_name: Optional[str] = None,
+        rcra_user_id: Optional[str] = None,
     ) -> Signer:
         return Signer.objects.create(
             first_name=first_name or faker.first_name(),
@@ -162,10 +162,10 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
     """Abstract factory for Haztrak Manifest model"""
 
     def create_manifest(
-            mtn: Optional[str] = None,
-            generator: Optional[Handler] = None,
-            tsdf: Optional[Handler] = None,
-            status: Optional[str] = None,
+        mtn: Optional[str] = None,
+        generator: Optional[Handler] = None,
+        tsdf: Optional[Handler] = None,
+        status: Optional[str] = None,
     ) -> Manifest:
         fake = Faker()
         fake.add_provider(ManifestProvider)
@@ -175,12 +175,11 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
             created_date=datetime.now(UTC),
             potential_ship_date=datetime.now(UTC),
             generator=generator
-                      or manifest_handler_factory(
+            or manifest_handler_factory(
                 rcra_site=rcra_site_factory(site_type=RcraSiteType.GENERATOR)
             ),
             tsdf=tsdf
-                 or manifest_handler_factory(
-                rcra_site=rcra_site_factory(site_type=RcraSiteType.TSDF)),
+            or manifest_handler_factory(rcra_site=rcra_site_factory(site_type=RcraSiteType.TSDF)),
         )
 
     return create_manifest
@@ -191,13 +190,13 @@ def waste_line_factory(db):
     """Abstract factory for Haztrak DotLookup model"""
 
     def create_waste_line(
-            manifest: Manifest = None,
-            dot_hazardous: Optional[bool] = True,
-            quantity: Optional[dict] = None,
-            line_number: Optional[int] = 1,
-            br: Optional[bool] = False,
-            pcb: Optional[bool] = False,
-            epa_waste: Optional[bool] = True,
+        manifest: Manifest = None,
+        dot_hazardous: Optional[bool] = True,
+        quantity: Optional[dict] = None,
+        line_number: Optional[int] = 1,
+        br: Optional[bool] = False,
+        pcb: Optional[bool] = False,
+        epa_waste: Optional[bool] = True,
     ) -> WasteLine:
         return WasteLine.objects.create(
             manifest=manifest,
@@ -217,8 +216,8 @@ def dot_option_factory(db, faker: Faker):
     """Abstract factory for Haztrak DotLookup model"""
 
     def create_dot_option(
-            value: Optional[str] = None,
-            value_type: Optional[DotLookupType] = DotLookupType.ID,
+        value: Optional[str] = None,
+        value_type: Optional[DotLookupType] = DotLookupType.ID,
     ) -> Manifest:
         return DotLookup.objects.create(
             value=value or faker.pystr(max_chars=10), value_type=value_type

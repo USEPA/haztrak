@@ -14,14 +14,14 @@ from faker.providers import BaseProvider
 from rest_framework.test import APIClient
 
 from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile
-from apps.sites.models import (
+from apps.site.models import (
     Address,
     Contact,
     HaztrakSite,
     RcraPhone,
     RcraSite,
 )
-from apps.sites.models.site_models import HaztrakOrg, SitePermissions
+from apps.site.models.site_models import HaztrakOrg, SitePermissions
 from apps.trak.models import ManifestPhone
 
 

@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
 from apps.core.models import HaztrakUser, RcraProfile  # type: ignore
-from apps.sites.models import HaztrakSite, RcraSite, RcraSitePermissions  # type: ignore
-from apps.sites.views import SiteDetailView  # type: ignore
+from apps.site.models import HaztrakSite, RcraSite, RcraSitePermissions  # type: ignore
+from apps.site.views import SiteDetailView  # type: ignore
 
 
 class TestHaztrakSiteListView:

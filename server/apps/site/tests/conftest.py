@@ -3,7 +3,7 @@ from typing import Optional
 import pytest
 
 from apps.core.models import RcraProfile
-from apps.sites.models import (
+from apps.site.models import (
     RcraSite,
     RcraSitePermissions,
 )

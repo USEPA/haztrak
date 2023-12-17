@@ -7,7 +7,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.sites.services import HaztrakSiteService
+from apps.site.services import HaztrakSiteService
 from apps.trak.models import Manifest
 from apps.trak.serializers import ManifestSerializer
 from apps.trak.serializers.signature_serializer import QuickerSignSerializer

@@ -9,8 +9,8 @@ from apps.core.services import (  # type: ignore
     get_or_create_haztrak_profile,
     get_rcrainfo_client,
 )
-from apps.sites.models import HaztrakSite, RcraSite, RcraSitePermissions  # type: ignore
-from apps.sites.serializers import RcraPermissionSerializer  # type: ignore
+from apps.site.models import HaztrakSite, RcraSite, RcraSitePermissions  # type: ignore
+from apps.site.serializers import RcraPermissionSerializer  # type: ignore
 
 from .rcra_site_services import RcraSiteService
 from .site_services import HaztrakSiteService, HaztrakSiteServiceError  # type: ignore

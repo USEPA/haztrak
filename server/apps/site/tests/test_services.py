@@ -1,8 +1,8 @@
 import uuid
 
 from apps.core.models import HaztrakProfile, RcraProfile
-from apps.sites.services.org_services import get_org, get_org_rcrainfo_api_credentials
-from apps.sites.services.rcra_profile_services import get_or_create_rcra_profile
+from apps.site.services.org_services import get_org, get_org_rcrainfo_api_credentials
+from apps.site.services.rcra_profile_services import get_or_create_rcra_profile
 
 
 class TestOrgServices:

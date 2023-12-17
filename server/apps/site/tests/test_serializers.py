@@ -1,7 +1,7 @@
 import pytest
 
-from apps.sites.models import RcraSitePermissions
-from apps.sites.serializers import (
+from apps.site.models import RcraSitePermissions
+from apps.site.serializers import (
     ContactSerializer,
     HaztrakOrgSerializer,
     RcraPermissionSerializer,

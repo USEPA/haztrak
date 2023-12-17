@@ -45,7 +45,7 @@ class HaztrakProfile(models.Model):
         blank=True,
     )
     org = models.ForeignKey(
-        "sites.HaztrakOrg",
+        "site.HaztrakOrg",
         on_delete=models.SET_NULL,
         related_name="haztrak_profiles",
         null=True,

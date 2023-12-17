@@ -6,7 +6,7 @@ from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse  # type: ignore
 
 from apps.core.models import RcraProfile  # type: ignore
-from apps.sites.models.site_models import HaztrakOrg
+from apps.site.models.site_models import HaztrakOrg
 from apps.trak.models import WasteCode  # type: ignore
 
 logger = logging.getLogger(__name__)
