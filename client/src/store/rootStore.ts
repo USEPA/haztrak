@@ -1,10 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import userReducers from './authSlice/auth.slice';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import userReducers, { authApi } from 'store/userSlice/user.slice';
 import errorReducers from './errorSlice/error.slice';
 import { haztrakApi } from './haztrakApiSlice';
 import notificationReducers from './notificationSlice/notification.slice';
 import profileReducers from './profileSlice/profile.slice';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const rootReducer = combineReducers({
   auth: userReducers,
@@ -12,13 +12,15 @@ const rootReducer = combineReducers({
   error: errorReducers,
   notifications: notificationReducers,
   [haztrakApi.reducerPath]: haztrakApi.reducer,
+  [authApi.reducerPath]: authApi.reducer,
 });
 
 /**A utility function to initialize the store with preloaded state used for testing*/
 const setupStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(haztrakApi.middleware),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(haztrakApi.middleware, authApi.middleware),
     preloadedState,
   });
 };

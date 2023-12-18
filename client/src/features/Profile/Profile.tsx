@@ -5,7 +5,7 @@ import { UserInfoForm } from 'components/User';
 import { useTitle } from 'hooks';
 import React, { ReactElement } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { selectHaztrakProfile, useAppSelector, useGetUserQuery } from 'store';
+import { useGetProfileQuery, useGetRcrainfoProfileQuery, useGetUserQuery } from 'store';
 
 /**
  * Display user profile, including their Haztrak information, their organization,
@@ -13,14 +13,14 @@ import { selectHaztrakProfile, useAppSelector, useGetUserQuery } from 'store';
  * @constructor
  */
 export function Profile(): ReactElement {
-  const profile = useAppSelector(selectHaztrakProfile);
-  const { data: user, isLoading } = useGetUserQuery();
+  const { data: profile, isLoading: profileLoading } = useGetProfileQuery();
+  const { data: user, isLoading: userLoading } = useGetUserQuery();
+  const { data: rcrainfoProfile } = useGetRcrainfoProfileQuery('testuser1');
+  const isLoading = profileLoading || userLoading;
   useTitle('Profile');
 
-  if (isLoading) {
+  if (isLoading ?? !user ?? !profile) {
     return <HtSpinner center />;
-  } else if (!user) {
-    return <div>Unable to load user profile.</div>;
   }
 
   return (
@@ -47,7 +47,7 @@ export function Profile(): ReactElement {
           <Col>
             <HtCard title="RCRAInfo Profile">
               <HtCard.Body>
-                {profile.rcrainfoProfile && <RcraProfile profile={profile.rcrainfoProfile} />}
+                {rcrainfoProfile && <RcraProfile profile={rcrainfoProfile} />}
               </HtCard.Body>
             </HtCard>
           </Col>

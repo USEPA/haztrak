@@ -24,7 +24,7 @@ export const handlers = [
     );
   }),
   /** User RcraProfile data*/
-  http.get(`${API_BASE_URL}/api/rcra/profile/${mockUsername}`, (info) => {
+  http.get(`${API_BASE_URL}/api/user/rcrainfo-profile/${mockUsername}`, (info) => {
     return HttpResponse.json(
       {
         user: mockUsername,
