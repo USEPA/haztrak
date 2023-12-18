@@ -1,7 +1,6 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import emanifest
-import pytest
 from responses import matchers
 from rest_framework import status
 
@@ -72,7 +71,7 @@ class TestQuickerSign:
     printed_name = "David Graham"
     site_id = "VATESTGEN001"
     site_type = "Generator"
-    sign_date = datetime.utcnow().replace(tzinfo=timezone.utc)
+    sign_date = datetime.now(UTC)
 
     def test_maps_keywords(
         self,

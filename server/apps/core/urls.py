@@ -4,8 +4,8 @@ from django.urls import include, path
 from .views import (  # type: ignore
     HaztrakProfileView,
     LaunchExampleTaskView,
-    RcraProfileView,
-    SyncRcraProfileView,
+    RcrainfoProfileView,
+    SyncRcrainfoProfileView,
     TaskStatusView,
 )
 
@@ -20,8 +20,8 @@ urlpatterns = [
                 path("/login", LoginView.as_view(), name="rest_login"),
                 path("/logout", LogoutView.as_view(), name="rest_logout"),
                 path("/profile", HaztrakProfileView.as_view()),
-                path("/rcrainfo-profile/sync", SyncRcraProfileView.as_view()),
-                path("/rcrainfo-profile/<str:username>", RcraProfileView.as_view()),
+                path("/rcrainfo-profile/sync", SyncRcrainfoProfileView.as_view()),
+                path("/rcrainfo-profile/<str:username>", RcrainfoProfileView.as_view()),
             ]
         ),
     ),

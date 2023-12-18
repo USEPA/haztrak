@@ -1,6 +1,6 @@
 from .profile_views import (
     HaztrakProfileView,
-    RcraProfileView,
-    SyncRcraProfileView,
+    RcrainfoProfileView,
+    SyncRcrainfoProfileView,
 )
 from .task_views import LaunchExampleTaskView, TaskStatusView

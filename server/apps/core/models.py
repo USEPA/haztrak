@@ -38,7 +38,7 @@ class HaztrakProfile(models.Model):
         related_name="haztrak_profile",
     )
     rcrainfo_profile = models.OneToOneField(
-        "RcraProfile",
+        "core.RcrainfoProfile",
         on_delete=models.SET_NULL,
         related_name="haztrak_profile",
         null=True,
@@ -61,9 +61,9 @@ class HaztrakProfile(models.Model):
         return f"{self.user.username}"
 
 
-class RcraProfile(models.Model):
+class RcrainfoProfile(models.Model):
     """
-    Contains a user's RcraProfile information, such as username, and API credentials.
+    Contains a user's RcrainfoProfile information, such as username, and API credentials.
     Has a one-to-one relationship with the User model.
     """
 

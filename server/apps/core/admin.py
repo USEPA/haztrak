@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
 from ..site.models import RcraSitePermissions, SitePermissions
-from .models import HaztrakProfile, HaztrakUser, RcraProfile
+from .models import HaztrakProfile, HaztrakUser, RcrainfoProfile
 
 
 class HiddenListView(admin.ModelAdmin):
@@ -70,7 +70,7 @@ class HaztrakProfileAdmin(admin.ModelAdmin):
         return str(profile.site_permissions.all().count())
 
 
-@admin.register(RcraProfile)
+@admin.register(RcrainfoProfile)
 class RcraProfileAdmin(admin.ModelAdmin):
     list_display = ["__str__", "related_user", "rcra_username", "api_user"]
     search_fields = ["haztrak_profile__user__username", "rcra_username"]
@@ -84,7 +84,7 @@ class RcraProfileAdmin(admin.ModelAdmin):
         url = reverse("admin:core_haztrakuser_changelist") + "?" + urlencode({"q": str(user.id)})
         return format_html("<a href='{}'>{}</a>", url, user)
 
-    def api_user(self, profile: RcraProfile) -> bool:
+    def api_user(self, profile: RcrainfoProfile) -> bool:
         return profile.has_rcrainfo_api_id_key
 
     api_user.boolean = True

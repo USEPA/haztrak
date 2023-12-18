@@ -2,7 +2,7 @@ from typing import Optional
 
 import pytest
 
-from apps.core.models import RcraProfile
+from apps.core.models import RcrainfoProfile
 from apps.site.models import (
     RcraSite,
     RcraSitePermissions,
@@ -15,7 +15,7 @@ def rcra_permission_factory(db, rcra_site_factory, rcra_profile_factory):
 
     def create_permission(
         site: Optional[RcraSite] = None,
-        profile: Optional[RcraProfile] = None,
+        profile: Optional[RcrainfoProfile] = None,
         site_manager: Optional[bool] = True,
         annual_report: Optional[str] = "Certifier",
         biennial_report: Optional[str] = "Certifier",

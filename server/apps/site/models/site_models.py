@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.site.models import Address, Contact
 from apps.site.models.contact_models import RcraPhone
 
-from ...core.models import RcraProfile
+from ...core.models import RcrainfoProfile
 from .base_models import SitesBaseManager, SitesBaseModel
 
 logger = logging.getLogger(__name__)
@@ -45,16 +45,16 @@ class HaztrakOrg(models.Model):
     def rcrainfo_api_id_key(self) -> tuple[str, str] | None:
         """Returns the RcraInfo API credentials for the admin user"""
         try:
-            rcrainfo_profile = RcraProfile.objects.get(haztrak_profile__user=self.admin)
+            rcrainfo_profile = RcrainfoProfile.objects.get(haztrak_profile__user=self.admin)
             return rcrainfo_profile.rcra_api_id, rcrainfo_profile.rcra_api_key
-        except RcraProfile.DoesNotExist:
+        except RcrainfoProfile.DoesNotExist:
             return None
 
     @property
     def is_rcrainfo_integrated(self) -> bool:
         """Returns True if the admin user has RcraInfo API credentials"""
-        if RcraProfile.objects.filter(haztrak_profile__user=self.admin).exists():
-            return RcraProfile.objects.get(
+        if RcrainfoProfile.objects.filter(haztrak_profile__user=self.admin).exists():
+            return RcrainfoProfile.objects.get(
                 haztrak_profile__user=self.admin
             ).has_rcrainfo_api_id_key
         else:
@@ -316,7 +316,7 @@ class RcraSitePermissions(SitesBaseModel):
         on_delete=models.CASCADE,
     )
     profile = models.ForeignKey(
-        "core.RcraProfile",
+        "core.RcrainfoProfile",
         on_delete=models.PROTECT,
         related_name="permissions",
     )

@@ -1,6 +1,6 @@
 import uuid
 
-from apps.core.models import HaztrakProfile, RcraProfile
+from apps.core.models import HaztrakProfile, RcrainfoProfile
 from apps.site.services.org_services import get_org, get_org_rcrainfo_api_credentials
 from apps.site.services.rcra_profile_services import get_or_create_rcra_profile
 
@@ -46,7 +46,7 @@ class TestRcraProfileServices:
         username = "my_username"
         user_factory(username=username)
         retrieved_rcra_profile, created = get_or_create_rcra_profile(username=username)
-        assert isinstance(retrieved_rcra_profile, RcraProfile)
+        assert isinstance(retrieved_rcra_profile, RcrainfoProfile)
         assert created is True
 
     def test_creates_creates_a_haztrak_profile_if_not_present(self, user_factory):

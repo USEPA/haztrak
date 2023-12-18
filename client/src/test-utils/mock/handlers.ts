@@ -23,7 +23,7 @@ export const handlers = [
       { status: 200 }
     );
   }),
-  /** User RcraProfile data*/
+  /** User RcrainfoProfile data*/
   http.get(`${API_BASE_URL}/api/user/rcrainfo-profile/${mockUsername}`, (info) => {
     return HttpResponse.json(
       {
