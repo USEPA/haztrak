@@ -221,3 +221,5 @@ LOGGING = {
         },
     },
 }
+
+REST_AUTH = {"USER_DETAILS_SERIALIZER": "apps.core.serializers.HaztrakUserSerializer"}

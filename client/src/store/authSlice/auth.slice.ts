@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from 'store/rootStore';
 import { haztrakApi } from 'store/haztrakApiSlice';
+import { RootState } from 'store/rootStore';
 
 export interface HaztrakUser {
   username: string;
@@ -82,7 +82,7 @@ export const authApi = haztrakApi.injectEndpoints({
     // Note: build.query<ReturnType, ArgType>
     login: build.mutation<LoginResponse, LoginRequest>({
       query: (data) => ({
-        url: 'auth/login',
+        url: 'user/login',
         method: 'POST',
         data: data,
       }),

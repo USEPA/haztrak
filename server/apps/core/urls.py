@@ -1,10 +1,9 @@
+from dj_rest_auth.views import LoginView, LogoutView, UserDetailsView
 from django.urls import include, path
 
 from .views import (  # type: ignore
     HaztrakProfileView,
-    HaztrakUserView,
     LaunchExampleTaskView,
-    Login,
     RcraProfileView,
     SyncRcraProfileView,
     TaskStatusView,
@@ -21,9 +20,17 @@ urlpatterns = [
             ]
         ),
     ),
-    path("profile", HaztrakProfileView.as_view()),
-    path("user", HaztrakUserView.as_view()),
-    path("user/login", Login.as_view()),
     path("task/example", LaunchExampleTaskView.as_view()),
     path("task/<str:task_id>", TaskStatusView.as_view()),
+    path("profile", HaztrakProfileView.as_view()),
+    path(
+        "user",
+        include(
+            [
+                path("", UserDetailsView.as_view(), name="rest_user_details"),
+                path("/login", LoginView.as_view(), name="rest_login"),
+                path("/logout", LogoutView.as_view(), name="rest_logout"),
+            ]
+        ),
+    ),
 ]

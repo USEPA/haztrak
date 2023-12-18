@@ -1,18 +1,11 @@
 import { UserOrg } from 'components/Org';
 import { RcraProfile } from 'components/RcraProfile';
-import { HtCard } from 'components/UI';
+import { HtCard, HtSpinner } from 'components/UI';
 import { UserInfoForm } from 'components/User';
 import { useTitle } from 'hooks';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import {
-  getRcraProfile,
-  HaztrakUser,
-  selectHaztrakProfile,
-  selectUser,
-  useAppDispatch,
-  useAppSelector,
-} from 'store';
+import { selectHaztrakProfile, useAppSelector, useGetUserQuery } from 'store';
 
 /**
  * Display user profile, including their Haztrak information, their organization,
@@ -20,18 +13,15 @@ import {
  * @constructor
  */
 export function Profile(): ReactElement {
-  const dispatch = useAppDispatch();
   const profile = useAppSelector(selectHaztrakProfile);
-  const user: HaztrakUser | undefined = useAppSelector(selectUser);
+  const { data: user, isLoading } = useGetUserQuery();
   useTitle('Profile');
 
-  if (!user) {
-    return <div>loading...</div>;
+  if (isLoading) {
+    return <HtSpinner center />;
+  } else if (!user) {
+    return <div>Unable to load user profile.</div>;
   }
-
-  useEffect(() => {
-    dispatch(getRcraProfile());
-  }, [profile.user]);
 
   return (
     <>
