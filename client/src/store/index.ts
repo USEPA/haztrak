@@ -1,6 +1,6 @@
-import { authApi } from 'store/userSlice/user.slice';
 // Haztrak API - RTK Query
-import { haztrakApi } from './haztrakApiSlice';
+import { haztrakApi } from 'store/htApi.slice';
+import { userApi } from 'store/userSlice/user.slice';
 import type { AppDispatch, AppStore, RootState } from './rootStore';
 
 // Root Store
@@ -23,6 +23,7 @@ export const {
   useSyncEManifestMutation,
   useSignEManifestMutation,
   useUpdateManifestMutation,
+  useGetManifestQuery,
 } = haztrakApi;
 
 export const {
@@ -33,26 +34,17 @@ export const {
   useUpdateUserMutation,
   useUpdateRcrainfoProfileMutation,
   useSyncRcrainfoProfileMutation,
-} = authApi;
+} = userApi;
 
 // Authentication Slice
 export {
   selectUser,
   selectUserName,
-  updateUserProfile,
   setCredentials,
-} from 'store/userSlice/user.slice';
-
-// Profile Slice
-export {
-  selectRcrainfoSites,
-  selectRcraProfile,
-  siteByEpaIdSelector,
-  updateProfile,
-  selectHaztrakSites,
-  selectHaztrakSiteEpaIds,
-  selectHaztrakProfile,
-} from './profileSlice/profile.slice';
+  selectAuthenticated,
+  removeCredentials,
+} from 'store/authSlice/auth.slice';
+export type { HaztrakUser } from 'store/authSlice/auth.slice';
 
 // Notification Slice
 export {
@@ -71,9 +63,8 @@ export {
 export { addError, selectAllErrors } from './errorSlice/error.slice';
 
 // Types
-export type { HaztrakUser } from 'store/userSlice/user.slice';
 export type { HaztrakError } from './errorSlice/error.slice';
-export type { TaskStatus } from './haztrakApiSlice';
+export type { TaskStatus } from 'store/htApi.slice';
 export type { LongRunningTask, HaztrakAlert } from './notificationSlice/notification.slice';
 export type {
   ProfileSlice,
@@ -82,6 +73,7 @@ export type {
   HaztrakSitePermissions,
   RcrainfoSitePermissions,
   HaztrakModulePermissions,
+  HaztrakProfileOrg,
   RcrainfoProfile,
   RcrainfoProfileSite,
-} from './profileSlice/profile.slice';
+} from './userSlice/user.slice';

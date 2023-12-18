@@ -1,5 +1,5 @@
-import { ManifestEditBtn } from 'components/Manifest/Buttons/ManifestEditBtn';
-import { ManifestSaveBtn } from 'components/Manifest/Buttons/ManifestSaveBtn';
+import { ManifestEditBtn } from 'components/Manifest/Actions/ManifestEditBtn';
+import { ManifestSaveBtn } from 'components/Manifest/Actions/ManifestSaveBtn';
 import { ManifestContext } from 'components/Manifest/ManifestForm';
 import { QuickSignBtn } from 'components/Manifest/QuickerSign';
 import { FloatingActionBtn } from 'components/UI';

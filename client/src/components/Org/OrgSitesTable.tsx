@@ -1,8 +1,7 @@
 import { HaztrakSite } from 'components/HaztrakSite';
 import React from 'react';
 import { Row, Table } from 'react-bootstrap';
-import { useGetOrgSitesQuery } from 'store';
-import { HaztrakProfileOrg } from 'store/profileSlice/profile.slice';
+import { HaztrakProfileOrg, useGetOrgSitesQuery } from 'store';
 
 interface OrgSitesProps {
   org: HaztrakProfileOrg;

@@ -1,3 +1,4 @@
+import { RcrainfoSiteSearchBadge } from 'components/Manifest/Handler/Search/RcrainfoSiteSearchBadge';
 import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 import { Manifest, SiteType, Transporter } from 'components/Manifest/manifestSchema';
 import { RcraSite } from 'components/RcraSite';
@@ -12,13 +13,7 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import Select from 'react-select';
-import {
-  selectHaztrakProfile,
-  useAppSelector,
-  useSearchRcrainfoSitesQuery,
-  useSearchRcraSitesQuery,
-} from 'store';
-import { RcrainfoSiteSearchBadge } from 'components/Manifest/Handler/Search/RcrainfoSiteSearchBadge';
+import { useGetProfileQuery, useSearchRcrainfoSitesQuery, useSearchRcraSitesQuery } from 'store';
 
 interface Props {
   handleClose: () => void;
@@ -42,9 +37,13 @@ export function HandlerSearchForm({
   const manifestMethods = useFormContext<Manifest>();
   const [inputValue, setInputValue] = useState<string>('');
   const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
-  const { org } = useAppSelector(selectHaztrakProfile);
+  const { org } = useGetProfileQuery(undefined, {
+    selectFromResult: ({ data }) => {
+      return { org: data?.org };
+    },
+  });
   const [skip, setSkip] = useState<boolean>(true);
-  const { data, error, isLoading } = useSearchRcraSitesQuery(
+  const { data } = useSearchRcraSitesQuery(
     {
       siteType: handlerType,
       siteId: inputValue,

@@ -1,24 +1,25 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createSelector } from '@reduxjs/toolkit';
+import { ManifestCancelBtn } from 'components/Manifest/Actions/ManifestCancelBtn';
+import { ManifestEditBtn } from 'components/Manifest/Actions/ManifestEditBtn';
+import { ManifestFABs } from 'components/Manifest/Actions/ManifestFABs';
+import { ManifestSaveBtn } from 'components/Manifest/Actions/ManifestSaveBtn';
 import { AdditionalInfoForm } from 'components/Manifest/AdditionalInfo';
-import { ManifestCancelBtn } from 'components/Manifest/Buttons/ManifestCancelBtn';
-import { ManifestEditBtn } from 'components/Manifest/Buttons/ManifestEditBtn';
-import { ManifestFABs } from 'components/Manifest/Buttons/ManifestFABs';
-import { ManifestSaveBtn } from 'components/Manifest/Buttons/ManifestSaveBtn';
 import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
 import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/UI';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { manifest } from 'services';
 import {
-  selectHaztrakSiteEpaIds,
-  useAppSelector,
+  ProfileSlice,
   useCreateManifestMutation,
+  useGetProfileQuery,
   useSaveEManifestMutation,
   useUpdateManifestMutation,
 } from 'store';
@@ -239,8 +240,25 @@ export function ManifestForm({
     manifestData?.status
   );
 
+  const selectUserSiteIds = useMemo(
+    () =>
+      createSelector(
+        (res) => res.data,
+        (data: ProfileSlice) =>
+          !data ?? !data.sites
+            ? []
+            : Object.values(data.sites).map((site) => site.handler.epaSiteId)
+      ),
+    []
+  );
+
   const nextSigner = manifest.getNextSigner(manifestData);
-  const userSiteIds = useAppSelector(selectHaztrakSiteEpaIds);
+  const { userSiteIds } = useGetProfileQuery(undefined, {
+    selectFromResult: (result) => ({
+      ...result,
+      userSiteIds: selectUserSiteIds(result),
+    }),
+  });
   // Whether the user has permissions and manifest is in a state to be signed
   const signAble = userSiteIds.includes(nextSigner?.epaSiteId ?? '');
 

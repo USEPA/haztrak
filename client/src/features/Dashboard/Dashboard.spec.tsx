@@ -1,33 +1,26 @@
 import '@testing-library/jest-dom';
 import { Dashboard } from 'features/Dashboard/Dashboard';
-import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import React from 'react';
+import React, { createElement } from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { API_BASE_URL, handlers } from 'test-utils/mock/handlers';
+import { userApiMocks } from 'test-utils/mock';
+import { htApiMocks } from 'test-utils/mock/htApiMocks';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 const USERNAME = 'testuser1';
 
-const myAPIHandlers = [
-  http.get(`${API_BASE_URL}/api/user/rcrainfo-profile/${USERNAME}`, (info) => {
-    return HttpResponse.json(
-      {
-        user: USERNAME,
-        rcraAPIID: 'mockRcraAPIID',
-        rcraUsername: undefined,
-        epaSites: [],
-        phoneNumber: undefined,
-        apiUser: true,
-      },
-      { status: 200 }
-    );
-  }),
-];
+const server = setupServer(...htApiMocks, ...userApiMocks);
 
-const server = setupServer(...handlers, ...myAPIHandlers);
-
-beforeAll(() => server.listen()); // setup mock http server
+beforeAll(() => {
+  vi.mock('recharts', async (importOriginal) => {
+    const originalModule = (await importOriginal()) as Record<string, unknown>;
+    return {
+      ...originalModule,
+      ResponsiveContainer: () => createElement('div'),
+    };
+  });
+  server.listen();
+}); // setup mock http server
 afterEach(() => {
   server.resetHandlers();
   cleanup();
