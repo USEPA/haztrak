@@ -5,7 +5,7 @@ import emanifest
 from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse  # type: ignore
 
-from apps.core.models import RcraProfile  # type: ignore
+from apps.core.models import RcrainfoProfile  # type: ignore
 from apps.site.models.site_models import HaztrakOrg
 from apps.trak.models import WasteCode  # type: ignore
 
@@ -23,13 +23,13 @@ class RcrainfoService(RcrainfoClient):
     def __init__(
         self,
         *,
-        rcra_profile: Optional[RcraProfile] = None,
+        rcra_profile: Optional[RcrainfoProfile] = None,
         api_id: Optional[str] = None,
         api_key: Optional[str] = None,
         rcrainfo_env: Optional[Literal["preprod"] | Literal["prod"]] = None,
         **kwargs,
     ):
-        self.profile: RcraProfile | None = rcra_profile
+        self.profile: RcrainfoProfile | None = rcra_profile
         self.api_id: str | None = api_id
         self.api_key: str | None = api_key
         self.rcrainfo_env: str = rcrainfo_env or "preprod"
@@ -67,7 +67,7 @@ class RcrainfoService(RcrainfoClient):
         """
         Retrieve a user's site permissions from RCRAInfo, It expects the
         haztrak user to have their unique RCRAInfo user and API credentials in their
-        RcraProfile
+        RcrainfoProfile
         """
         return self.search_users(userId=rcrainfo_username)
 

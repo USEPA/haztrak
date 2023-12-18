@@ -1,16 +1,16 @@
 import pytest
 
-from apps.core.models import HaztrakProfile, RcraProfile
+from apps.core.models import HaztrakProfile, RcrainfoProfile
 
 
 @pytest.mark.django_db
-class TestRcraProfileModel:
-    """Test related to the RcraProfile model and its API"""
+class TestRcrainfoProfileModel:
+    """Test related to the RcrainfoProfile model and its API"""
 
     def test_rcra_profile_factory(self, rcra_profile_factory):
         """simply check the model saves given our factory's defaults"""
         rcra_profile = rcra_profile_factory()
-        assert isinstance(rcra_profile, RcraProfile)
+        assert isinstance(rcra_profile, RcrainfoProfile)
 
     @pytest.mark.parametrize("rcra_api_id", ["id", None])
     @pytest.mark.parametrize("rcra_api_key", ["key", None])

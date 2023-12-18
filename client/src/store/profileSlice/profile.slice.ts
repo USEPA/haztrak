@@ -1,11 +1,10 @@
 /**
- * A user's RcraProfile slice encapsulates our logic related what actions and data a user
+ * A user's RcrainfoProfile slice encapsulates our logic related what actions and data a user
  * has access to for each EPA site ID.
  */
-import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HaztrakSite } from 'components/HaztrakSite';
 import { RcraSite } from 'components/RcraSite';
-import { UserApi } from 'services';
 import { RootState } from 'store';
 
 /**The user's RCRAInfo account data stored in the Redux store*/
@@ -64,7 +63,7 @@ export interface RcrainfoSitePermissions {
   myRCRAid: string;
 }
 
-/**initial, state of a user's RcraProfile.*/
+/**initial, state of a user's RcrainfoProfile.*/
 const initialState: ProfileSlice = {
   user: undefined,
   rcrainfoProfile: undefined,
@@ -72,31 +71,6 @@ const initialState: ProfileSlice = {
   loading: false,
   error: undefined,
 };
-
-/**Retrieves a user's RcrainfoProfile, if it exists, from the server.*/
-export const getRcraProfile = createAsyncThunk<ProfileSlice>(
-  'profile/getRcrainfoProfile',
-  async (arg, thunkAPI) => {
-    const state = thunkAPI.getState() as RootState;
-    const username = state.auth.user?.username;
-    if (!username) {
-      throw new Error('User is not logged in');
-    }
-    const { data } = await UserApi.getRcrainfoProfile(username);
-    const { rcraSites, ...rest } = data;
-    return {
-      rcrainfoProfile: {
-        ...rest,
-        rcraSites: rcraSites?.reduce((obj, site) => {
-          return {
-            ...obj,
-            [site.epaSiteId]: { epaSiteId: site.epaSiteId, permissions: site.permissions },
-          };
-        }, {}),
-      },
-    } as ProfileSlice;
-  }
-);
 
 const profileSlice = createSlice({
   name: 'profile',
@@ -108,30 +82,6 @@ const profileSlice = createSlice({
         ...action.payload,
       };
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getRcraProfile.pending, (state) => {
-        return {
-          ...state,
-          loading: true,
-          error: undefined,
-        };
-      })
-      .addCase(getRcraProfile.fulfilled, (state, action) => {
-        return {
-          ...state,
-          ...action.payload,
-          loading: false,
-          error: undefined,
-        };
-      })
-      .addCase(getRcraProfile.rejected, (state, action) => {
-        state.loading = false;
-        // @ts-ignore
-        state.error = action.payload.error;
-        return state;
-      });
   },
 });
 
@@ -183,7 +133,7 @@ export const selectRcrainfoSites = createSelector(
   }
 );
 
-/** Retrieve a user's RcraProfile from the Redux store. */
+/** Retrieve a user's RcrainfoProfile from the Redux store. */
 export const selectRcraProfile = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.profile.rcrainfoProfile

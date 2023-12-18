@@ -13,7 +13,7 @@ from faker import Faker
 from faker.providers import BaseProvider
 from rest_framework.test import APIClient
 
-from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile
+from apps.core.models import HaztrakProfile, HaztrakUser, RcrainfoProfile
 from apps.site.models import (
     Address,
     Contact,
@@ -80,14 +80,14 @@ def user_factory(db, faker):
 
 @pytest.fixture
 def rcra_profile_factory(db, user_factory, faker: Faker):
-    """Abstract factory for Haztrak RcraProfile model"""
+    """Abstract factory for Haztrak RcrainfoProfile model"""
 
     def create_profile(
         rcra_api_id: Optional[str] = str(faker.uuid4()),
         rcra_api_key: Optional[str] = faker.pystr(min_chars=15),
         rcra_username: Optional[str] = faker.pystr(min_chars=12),
-    ) -> RcraProfile:
-        return RcraProfile.objects.create(
+    ) -> RcrainfoProfile:
+        return RcrainfoProfile.objects.create(
             rcra_api_id=rcra_api_id,
             rcra_api_key=rcra_api_key,
             rcra_username=rcra_username,
@@ -98,11 +98,11 @@ def rcra_profile_factory(db, user_factory, faker: Faker):
 
 @pytest.fixture
 def haztrak_profile_factory(db, user_factory, rcra_profile_factory, haztrak_org_factory):
-    """Abstract factory for Haztrak RcraProfile model"""
+    """Abstract factory for Haztrak RcrainfoProfile model"""
 
     def create_profile(
         user: Optional[User] = None,
-        rcrainfo_profile: Optional[RcraProfile] = rcra_profile_factory(),
+        rcrainfo_profile: Optional[RcrainfoProfile] = rcra_profile_factory(),
         org: Optional[HaztrakOrg] = haztrak_org_factory(),
     ) -> HaztrakProfile:
         return HaztrakProfile.objects.create(
@@ -329,7 +329,7 @@ def user_with_org_factory(
     def create_fixtures(
         user: Optional[User] = None,
         org: Optional[HaztrakOrg] = None,
-        admin_rcrainfo_profile: Optional[RcraProfile] = None,
+        admin_rcrainfo_profile: Optional[RcrainfoProfile] = None,
         is_rcrainfo_enabled: Optional[bool] = True,
     ):
         if is_rcrainfo_enabled:

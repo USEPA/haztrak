@@ -5,10 +5,10 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpd
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.core.models import HaztrakProfile, RcraProfile
+from apps.core.models import HaztrakProfile, RcrainfoProfile
 from apps.core.serializers import (
     HaztrakProfileSerializer,
-    RcraProfileSerializer,
+    RcrainfoProfileSerializer,
 )
 from apps.site.tasks import sync_user_rcrainfo_sites
 
@@ -24,21 +24,21 @@ class HaztrakProfileView(RetrieveAPIView):
         return HaztrakProfile.objects.get(user=self.request.user)
 
 
-class RcraProfileView(RetrieveUpdateAPIView):
+class RcrainfoProfileView(RetrieveUpdateAPIView):
     """
-    Responsible for Create/Update operations related to the user RcraProfile,
+    Responsible for Create/Update operations related to the user RcrainfoProfile,
     which maintains a user's RCRAInfo profile data. This info is necessary for
     actions that interface with RCRAInfo.
     """
 
-    queryset = RcraProfile.objects.all()
-    serializer_class = RcraProfileSerializer
+    queryset = RcrainfoProfile.objects.all()
+    serializer_class = RcrainfoProfileSerializer
     response = Response
     lookup_field = "haztrak_profile__user__username"
     lookup_url_kwarg = "username"
 
 
-class SyncRcraProfileView(GenericAPIView):
+class SyncRcrainfoProfileView(GenericAPIView):
     """
     This endpoint launches a task to sync the logged-in user's RCRAInfo profile
     with their haztrak (Rcra)profile.
@@ -47,11 +47,11 @@ class SyncRcraProfileView(GenericAPIView):
     queryset = None
     response = Response
 
-    def get(self, request: Request) -> Response:
+    def post(self, request: Request) -> Response:
         try:
             task: CeleryTask = sync_user_rcrainfo_sites.delay(str(self.request.user))
             return self.response({"taskId": task.id})
-        except RcraProfile.DoesNotExist as exc:
+        except RcrainfoProfile.DoesNotExist as exc:
             return self.response(data={"error": str(exc)}, status=status.HTTP_404_NOT_FOUND)
         except CeleryError as exc:
             return self.response(

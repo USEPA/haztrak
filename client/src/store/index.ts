@@ -31,6 +31,8 @@ export const {
   useGetProfileQuery,
   useGetRcrainfoProfileQuery,
   useUpdateUserMutation,
+  useUpdateRcrainfoProfileMutation,
+  useSyncRcrainfoProfileMutation,
 } = authApi;
 
 // Authentication Slice
@@ -43,7 +45,6 @@ export {
 
 // Profile Slice
 export {
-  getRcraProfile,
   selectRcrainfoSites,
   selectRcraProfile,
   siteByEpaIdSelector,

@@ -1,4 +1,4 @@
-"""business logic related to a user's Haztrak profile (note: not their RcraProfile)"""
+"""business logic related to a user's Haztrak profile (note: not their RcrainfoProfile)"""
 from django.db import transaction
 
 from apps.core.models import HaztrakProfile, HaztrakUser

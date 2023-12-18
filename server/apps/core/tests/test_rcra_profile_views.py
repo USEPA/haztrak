@@ -1,15 +1,15 @@
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.core.views import RcraProfileView  # type: ignore
+from apps.core.views import RcrainfoProfileView  # type: ignore
 
 
-class TestRcraProfileView:
+class TestRcrainfoProfileView:
     """
-    Tests the for the endpoints related to the user's RcraProfile
+    Tests the for the endpoints related to the user's RcrainfoProfile
     """
 
-    URL = "/api/"
+    URL = "/api/user/"
     id_field = "rcraAPIID"
     key_field = "rcraAPIKey"
     username_field = "rcraUsername"
@@ -26,7 +26,7 @@ class TestRcraProfileView:
         rcra_profile = rcra_profile_factory()
         haztrak_profile_factory(user=user, rcrainfo_profile=rcra_profile)
         # Act
-        response = client.get(f"{self.URL}rcra/profile/{user.username}")
+        response = client.get(f"{self.URL}rcrainfo-profile/{user.username}")
         # Assert
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK
@@ -40,7 +40,7 @@ class TestRcraProfileView:
         haztrak_profile_factory(user=user, rcrainfo_profile=rcra_profile)
         factory = APIRequestFactory()
         request = factory.put(
-            f"{self.URL}rcra/profile/{user.username}",
+            f"{self.URL}rcrainfo-profile/{user.username}",
             {
                 self.id_field: rcra_profile.rcra_api_id,
                 self.username_field: user.username,
@@ -50,7 +50,7 @@ class TestRcraProfileView:
         )
         force_authenticate(request, user)
         # Act
-        response = RcraProfileView.as_view()(request, username=user.username)
+        response = RcrainfoProfileView.as_view()(request, username=user.username)
         assert response.data[self.id_field] == rcra_profile.rcra_api_id
         assert response.data[self.username_field] == user.username
 
@@ -63,7 +63,7 @@ class TestRcraProfileView:
         profile = haztrak_profile_factory(user=user, rcrainfo_profile=rcra_profile)
         factory = APIRequestFactory()
         request = factory.put(
-            f"{self.URL}rcra/profile/{user.username}",
+            f"{self.URL}rcrainfo-profile/{user.username}",
             {
                 self.id_field: rcra_profile.rcra_api_id,
                 self.username_field: user.username,
@@ -73,7 +73,7 @@ class TestRcraProfileView:
         )
         force_authenticate(request, user)
         # Act
-        response = RcraProfileView.as_view()(request, username=profile.user.username)
+        response = RcrainfoProfileView.as_view()(request, username=profile.user.username)
         # Assert
         assert self.key_field not in response.data
         assert self.id_field in response.data

@@ -1,21 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AxiosError } from 'axios';
-import { RcraApiUserBtn } from 'components/Rcrainfo';
+import { SyncRcrainfoProfileBtn } from 'components/RcraProfile/SyncRcrainfoProfileBtn';
 import { HtForm, HtSpinner } from 'components/UI';
 import { useProgressTracker } from 'hooks';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import { UserApi } from 'services';
-import {
-  addAlert,
-  addTask,
-  getRcraProfile,
-  RcrainfoProfileState,
-  updateProfile,
-  useAppDispatch,
-} from 'store';
+import { RcrainfoProfileState, useAppDispatch, useUpdateRcrainfoProfileMutation } from 'store';
+import { authApi } from 'store/userSlice/user.slice';
 import { z } from 'zod';
 
 interface ProfileViewProps {
@@ -23,23 +14,27 @@ interface ProfileViewProps {
 }
 
 const rcraProfileForm = z.object({
-  rcraAPIID: z.string().min(36).optional(),
-  rcraAPIKey: z.string().min(20).optional(),
+  rcraAPIID: z.string().min(36).optional().or(z.string().nullable()),
+  rcraAPIKey: z.string().min(20).optional().or(z.string().nullable()),
   rcraUsername: z.string().min(8).optional(),
 });
 
 type RcraProfileForm = z.infer<typeof rcraProfileForm>;
 
 export function RcraProfile({ profile }: ProfileViewProps) {
+  const dispatch = useAppDispatch();
   const [editable, setEditable] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
   const [taskId, setTaskId] = useState<undefined | string>();
+  const [updateRcrainfoProfile] = useUpdateRcrainfoProfileMutation();
   const { rcraSites, isLoading, ...formValues } = profile;
-  const dispatch = useAppDispatch();
   const { inProgress } = useProgressTracker({
     taskId: taskId,
-    reduxAction: getRcraProfile(),
   });
+
+  useEffect(() => {
+    dispatch(authApi.util?.invalidateTags(['rcrainfoProfile']));
+  }, [inProgress]);
 
   const {
     register,
@@ -51,20 +46,11 @@ export function RcraProfile({ profile }: ProfileViewProps) {
     resolver: zodResolver(rcraProfileForm),
   });
 
-  /**
-   * submitting the RcraProfile form (RCRAInfo API ID, Key, username, etc.)
-   * @param data {ProfileSlice}
-   */
+  /** submitting the RcrainfoProfile form (RCRAInfo API ID, Key, username, etc.)*/
   const onSubmit = (data: RcraProfileForm) => {
     setProfileLoading(!profileLoading);
     setEditable(!editable);
-    UserApi.updateRcrainfoProfile({ username: profile.user, data: data })
-      .then((r) => {
-        dispatch(updateProfile(r.data));
-      })
-      .then(() => dispatch(getRcraProfile()))
-      .then(() => setProfileLoading(!profileLoading))
-      .catch((error: AxiosError) => toast.error(error.message));
+    updateRcrainfoProfile({ username: profile.user, data: data });
   };
 
   if (profile.isLoading) return <HtSpinner center />;
@@ -126,10 +112,9 @@ export function RcraProfile({ profile }: ProfileViewProps) {
                 <>
                   <Button
                     className="mx-2"
-                    variant="success"
+                    variant="outline-info"
                     type="button"
-                    onClick={(event) => {
-                      event.preventDefault();
+                    onClick={() => {
                       setEditable(!editable);
                     }}
                   >
@@ -191,29 +176,8 @@ export function RcraProfile({ profile }: ProfileViewProps) {
           </Table>
         )}
       </Container>
-      <div className="mx-1 d-flex flex-row-reverse">
-        <RcraApiUserBtn
-          className="mx-2"
-          variant="primary"
-          onClick={() => {
-            UserApi.syncRcrainfoProfile()
-              .then((response) => {
-                dispatch(
-                  addTask({
-                    taskId: response.data.taskId,
-                    status: 'PENDING',
-                    taskName: 'Syncing RCRAInfo Profile',
-                  })
-                );
-                setTaskId(response.data.taskId);
-              })
-              .catch((error: AxiosError) =>
-                dispatch(addAlert({ message: error.message, type: 'error' }))
-              );
-          }}
-        >
-          Sync Site Permissions
-        </RcraApiUserBtn>
+      <div className="m-1 d-flex flex-row-reverse">
+        <SyncRcrainfoProfileBtn taskId={taskId} setTaskId={setTaskId} />
       </div>
     </>
   );

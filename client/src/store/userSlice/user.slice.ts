@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { HaztrakSite } from 'components/HaztrakSite';
-import { htApiBaseQuery } from 'store/haztrakApiSlice';
+import { htApiBaseQuery, TaskResponse } from 'store/haztrakApiSlice';
 import {
   HaztrakModulePermissions,
   ProfileSlice,
@@ -168,6 +168,21 @@ export const authApi = createApi({
           }, {}),
         };
       },
+    }),
+    updateRcrainfoProfile: build.mutation<any, { username: string; data: any }>({
+      query: (data) => ({
+        url: `/rcrainfo-profile/${data.username}`,
+        method: 'PUT',
+        data: data.data,
+      }),
+      invalidatesTags: ['rcrainfoProfile'],
+    }),
+    syncRcrainfoProfile: build.mutation<TaskResponse, void>({
+      query: () => ({
+        url: `/rcrainfo-profile/sync`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['rcrainfoProfile'],
     }),
   }),
 });

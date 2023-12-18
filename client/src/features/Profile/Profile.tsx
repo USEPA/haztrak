@@ -39,7 +39,7 @@ export function Profile(): ReactElement {
           </Col>
           <Col xs={12} lg={6} className="my-3">
             <HtCard title="My Organization" className="h-100 my-2">
-              <HtCard.Body>{profile.org && <UserOrg profile={profile} />}</HtCard.Body>
+              <HtCard.Body>{profile && <UserOrg profile={profile} />}</HtCard.Body>
             </HtCard>
           </Col>
         </Row>

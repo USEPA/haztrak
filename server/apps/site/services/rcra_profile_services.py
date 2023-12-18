@@ -3,7 +3,7 @@ from typing import Optional
 
 from django.db import transaction
 
-from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile  # type: ignore
+from apps.core.models import HaztrakProfile, HaztrakUser, RcrainfoProfile  # type: ignore
 from apps.core.services import (  # type: ignore
     RcrainfoService,
     get_or_create_haztrak_profile,
@@ -18,9 +18,11 @@ from .site_services import HaztrakSiteService, HaztrakSiteServiceError  # type: 
 logger = logging.getLogger(__name__)
 
 
-def get_or_create_rcra_profile(*, username: str) -> tuple[RcraProfile, bool]:
-    """Retrieve a user's RcraProfile"""
-    profile, created = RcraProfile.objects.get_or_create(haztrak_profile__user__username=username)
+def get_or_create_rcra_profile(*, username: str) -> tuple[RcrainfoProfile, bool]:
+    """Retrieve a user's RcrainfoProfile"""
+    profile, created = RcrainfoProfile.objects.get_or_create(
+        haztrak_profile__user__username=username
+    )
     if created:
         haztrak_profile, created = get_or_create_haztrak_profile(username=username)
         haztrak_profile.rcrainfo_profile = profile
@@ -38,14 +40,14 @@ class RcraProfileServiceError(Exception):
 
 class RcraProfileService:
     """
-    RcraProfileService encapsulates the RcraProfile subdomain business logic
+    RcraProfileService encapsulates the RcrainfoProfile subdomain business logic
     of a and exposes method corresponding to use cases.
     """
 
     def __init__(self, *, username: str, rcrainfo: Optional[RcrainfoService] = None):
         self.username = username
         profile, created = get_or_create_rcra_profile(username=username)
-        self.profile: RcraProfile = profile
+        self.profile: RcrainfoProfile = profile
         self.rcrainfo = rcrainfo or get_rcrainfo_client(username=username)
 
     def update_rcrainfo_profile(self, *, rcrainfo_username: Optional[str] = None) -> None:
@@ -64,7 +66,7 @@ class RcraProfileService:
             )
             permissions = self._parse_rcra_response(rcra_response=profile_response.json())
             self._save_rcrainfo_profile_permissions(permissions)
-        except (RcraProfile.DoesNotExist, RcraSite.DoesNotExist) as exc:
+        except (RcrainfoProfile.DoesNotExist, RcraSite.DoesNotExist) as exc:
             raise RcraProfileServiceError(exc)
 
     def _save_rcrainfo_profile_permissions(self, permissions: list[dict]) -> None:

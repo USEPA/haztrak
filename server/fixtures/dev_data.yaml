@@ -245,19 +245,19 @@
     can_esign: true
     limited_esign: true
     registered_emanifest_user: true
-- model: core.rcraprofile
+- model: core.rcrainfoprofile
   pk: d74f904a-7843-4a60-862c-3b94b6051359
   fields:
     rcra_username: dpgraham4401
     phone_number: null
     email: orgadmin@generator.com
-- model: core.rcraprofile
+- model: core.rcrainfoprofile
   pk: 1fd27bec-8743-4eb3-a44c-fd063ea62021
   fields:
     rcra_username: ''
     phone_number: null
     email: superadmin@gmail.com
-- model: core.rcraprofile
+- model: core.rcrainfoprofile
   pk: 192c73f4-24f1-4f21-8239-dee2da43c547
   fields:
     rcra_username: emanifestpyuser1

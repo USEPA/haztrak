@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from 'react-bootstrap';
-import { selectHaztrakProfile, useAppSelector } from 'store';
+import { useGetProfileQuery } from 'store';
 
 interface HtApiUserBtnProps extends ButtonProps {}
 
@@ -9,8 +9,10 @@ interface HtApiUserBtnProps extends ButtonProps {}
  * @constructor
  */
 export function RcraApiUserBtn({ children, ...props }: HtApiUserBtnProps) {
-  const profile = useAppSelector(selectHaztrakProfile);
-  const active = !props.disabled && profile.org?.rcrainfoIntegrated;
+  const { rcrainfoIntegrated } = useGetProfileQuery(undefined, {
+    selectFromResult: ({ data }) => ({ rcrainfoIntegrated: data?.org?.rcrainfoIntegrated }),
+  });
+  const active = !props.disabled && rcrainfoIntegrated;
 
   return (
     <>
