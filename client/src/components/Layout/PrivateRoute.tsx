@@ -1,22 +1,17 @@
 import React, { ReactElement } from 'react';
 import { Navigate } from 'react-router-dom';
-import { selectUserName, useAppSelector } from 'store';
+import { useAppSelector } from 'store';
+import { selectAuthenticated } from 'store/authSlice/auth.slice';
 
 interface Props {
   children: any;
 }
 
-/**
- * Wraps around Route component to redirect to og in if not authenticated user
- * @param { children } Route to wrap around
- * @constructor
- */
+/** Redirect to the login if user is not authenticated*/
 export function PrivateRoute({ children }: Props): ReactElement {
-  const authUser = useAppSelector(selectUserName);
+  const authUser = useAppSelector(selectAuthenticated);
   if (!authUser) {
-    // not logged in so redirect to login page with the return url
     return <Navigate to="/login" />;
   }
-  // authorized so return child components
   return children;
 }

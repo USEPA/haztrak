@@ -1,7 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { UserApi } from 'services';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'store/rootStore';
+import { haztrakApi } from 'store/haztrakApiSlice';
 
 export interface HaztrakUser {
   username: string;
@@ -15,111 +14,47 @@ export interface HaztrakUser {
 /**
  * The Redux stored information on the current haztrak user
  */
-export interface UserState {
+export interface AuthSlice {
   user?: HaztrakUser;
   token?: string;
   loading?: boolean;
   error?: string;
 }
 
-const initialState: UserState = {
-  // Retrieve the user's username and token from local storage. For convenience
+const initialState: AuthSlice = {
   user: { username: JSON.parse(localStorage.getItem('user') || 'null') || null, isLoading: false },
   token: JSON.parse(localStorage.getItem('token') || 'null') || null,
   loading: false,
   error: undefined,
 };
 
-export const login = createAsyncThunk(
-  'auth/login',
-  async ({ username, password }: { username: string; password: string }) => {
-    const response = await axios.post(`${import.meta.env.VITE_HT_API_URL}/api/user/login`, {
-      username,
-      password,
-    });
-    // return response.data as UserState;
-    return {
-      user: { username: response.data.user },
-      token: response.data.token,
-    } as UserState;
-  }
-);
-
-/** Fetch a Haztrak User's information and store in global state */
-export const getHaztrakUser = createAsyncThunk('auth/getHaztrakUser', async (arg, thunkAPI) => {
-  try {
-    const { data } = await UserApi.getUser();
-    return data;
-  } catch (err) {
-    return thunkAPI.rejectWithValue(err);
-  }
-});
-
 const authSlice = createSlice({
   name: 'auth',
   initialState,
+  selectors: {
+    selectAuthenticated: (state: AuthSlice): boolean => !!state.token,
+    selectUser: (state: AuthSlice): HaztrakUser | undefined => state.user,
+    selectUserName: (state: AuthSlice): string | undefined => state.user?.username,
+  },
   reducers: {
-    logout(state: UserState): UserState {
-      localStorage.removeItem('user');
+    setCredentials(state: AuthSlice, action: PayloadAction<{ token: string }>) {
+      const token = action.payload.token;
+      localStorage.setItem('token', JSON.stringify(token));
+      return {
+        ...state,
+        token,
+      } as AuthSlice;
+    },
+    logout(state: AuthSlice): AuthSlice {
       localStorage.removeItem('token');
       return { ...initialState, user: undefined, token: undefined };
     },
-    updateUserProfile(state: UserState, action: PayloadAction<HaztrakUser>) {
+    updateUserProfile(state: AuthSlice, action: PayloadAction<HaztrakUser>) {
       return {
         ...state,
         user: action.payload,
       };
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(login.pending, (state) => {
-        return {
-          ...state,
-          error: undefined,
-          loading: true,
-        };
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        const authResponse = action.payload;
-        localStorage.setItem('user', JSON.stringify(authResponse.user?.username));
-        localStorage.setItem('token', JSON.stringify(authResponse.token));
-        return {
-          loading: false,
-          error: undefined,
-          ...authResponse,
-        };
-      })
-      .addCase(login.rejected, (state, action) => {
-        return {
-          ...state,
-          // @ts-ignore
-          error: action.payload.error,
-          loading: false,
-        };
-      })
-      .addCase(getHaztrakUser.pending, (state) => {
-        return {
-          ...state,
-          error: undefined,
-          loading: true,
-        };
-      })
-      .addCase(getHaztrakUser.rejected, (state, action) => {
-        return {
-          ...state,
-          error: `Error: ${action.payload}`,
-          loading: true,
-        };
-      })
-      .addCase(getHaztrakUser.fulfilled, (state, action) => {
-        return {
-          ...state,
-          user: action.payload,
-          error: undefined,
-          loading: true,
-        };
-      });
   },
 });
 
@@ -129,8 +64,34 @@ export const selectUserName = (state: RootState): string | undefined => state.au
 /** Select the current user*/
 export const selectUser = (state: RootState): HaztrakUser | undefined => state.auth.user;
 
-/** Select the current User State*/
-export const selectUserState = (state: RootState): UserState => state.auth;
-
 export default authSlice.reducer;
-export const { updateUserProfile, logout } = authSlice.actions;
+export const { updateUserProfile, logout, setCredentials } = authSlice.actions;
+export const { selectAuthenticated } = authSlice.selectors;
+
+interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+interface LoginResponse {
+  key: string;
+}
+
+export const authApi = haztrakApi.injectEndpoints({
+  endpoints: (build) => ({
+    // Note: build.query<ReturnType, ArgType>
+    login: build.mutation<LoginResponse, LoginRequest>({
+      query: (data) => ({
+        url: 'auth/login',
+        method: 'POST',
+        data: data,
+      }),
+    }),
+    getUser: build.query<HaztrakUser, void>({
+      query: () => ({
+        url: 'user',
+        method: 'GET',
+      }),
+    }),
+  }),
+});

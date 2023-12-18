@@ -10,19 +10,26 @@ interface HtSpinnerProps extends Omit<FontAwesomeIconProps, 'icon'> {
 }
 
 export function HtSpinner({ className, size, center, ...props }: HtSpinnerProps): ReactElement {
-  const defaultCLasses = 'text-muted bg-transparent';
-  return (
+  const defaultCLasses = 'bg-transparent text-muted';
+
+  const spinner = (
+    <FontAwesomeIcon
+      icon={faGear}
+      className={`${defaultCLasses} ${className}`}
+      spin
+      size={size ?? '6x'}
+      {...props}
+    />
+  );
+
+  const centerWrapper = (children: ReactElement) => (
     <Container
-      fluid
+      fluid={center}
       className={center ? 'd-flex justify-content-center align-items-center m-5' : ''}
     >
-      <FontAwesomeIcon
-        icon={faGear}
-        className={`${defaultCLasses} ${className}`}
-        spin
-        size={size ?? '6x'}
-        {...props}
-      />
+      {children}
     </Container>
   );
+
+  return center ? centerWrapper(spinner) : spinner;
 }

@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtForm } from 'components/UI';
-import React, { useEffect } from 'react';
+import { HtForm, HtSpinner } from 'components/UI';
+import React, { useEffect, useState } from 'react';
 import { FloatingLabel, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { login, selectUserState, useAppDispatch, useAppSelector } from 'store';
+import { setCredentials, useAppDispatch, useAppSelector, useLoginMutation } from 'store';
 import { z } from 'zod';
+import { selectAuthenticated } from 'store/authSlice/auth.slice';
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Username Required').min(8),
@@ -15,7 +16,9 @@ const loginSchema = z.object({
 type LoginSchema = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
-  const userState = useAppSelector(selectUserState);
+  const isAuthenticated = useAppSelector(selectAuthenticated);
+  const [login, { error, isLoading }] = useLoginMutation();
+  const [loginError, setLoginError] = useState<string | undefined>(undefined);
   const navigation = useNavigate();
   const dispatch = useAppDispatch();
   const {
@@ -25,15 +28,29 @@ export function LoginForm() {
   } = useForm<LoginSchema>({ resolver: zodResolver(loginSchema) });
 
   useEffect(() => {
-    // redirect to home if already logged in
-    if (userState.user?.username) {
+    if (isAuthenticated) {
       navigation('/');
     }
-  }, [userState.user?.username]);
+  }, [isAuthenticated]);
 
-  function onSubmit({ username, password }: LoginSchema) {
-    return dispatch(login({ username, password }));
+  async function onSubmit({ username, password }: LoginSchema) {
+    try {
+      const response = await login({ username, password }).unwrap();
+      if (response) {
+        dispatch(setCredentials({ token: response.key }));
+      } else {
+        setLoginError('something went wrong');
+      }
+    } catch (error) {
+      setLoginError('unable to log in with the provided credentials');
+    }
   }
+
+  useEffect(() => {
+    if (error) {
+      setLoginError('Error logging in');
+    }
+  }, [error]);
 
   return (
     <HtForm onSubmit={handleSubmit(onSubmit)}>
@@ -60,12 +77,10 @@ export function LoginForm() {
         <div className="invalid-feedback">{errors.password?.message}</div>
       </HtForm.Group>
       <button type="submit" disabled={isSubmitting} className="btn btn-primary m-2">
-        {isSubmitting && <span className="spinner-border spinner-border-sm mr-1" />}
-        Login
+        <span>Login </span>
+        {isLoading && <HtSpinner size="lg" className="text-reset" />}
       </button>
-      {userState.error && (
-        <div className="alert alert-danger mt-3 mb-0">{String(userState.error)}</div>
-      )}
+      {loginError && <div className="alert alert-danger mt-3 mb-0">{loginError}</div>}
     </HtForm>
   );
 }
