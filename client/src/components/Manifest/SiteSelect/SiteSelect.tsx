@@ -1,9 +1,10 @@
+import { createSelector } from '@reduxjs/toolkit';
 import { RcraSite } from 'components/RcraSite';
 import { HtForm } from 'components/UI';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import Select from 'react-select';
-import { selectHaztrakSites, useAppSelector } from 'store';
+import { ProfileSlice, useGetProfileQuery } from 'store';
 
 interface SiteSelectProps<T> {
   control: Control;
@@ -16,8 +17,21 @@ export function SiteSelect({
   value,
   handleChange,
 }: SiteSelectProps<RcraSite | undefined | null>) {
-  const userSites = useAppSelector(selectHaztrakSites);
-  const siteOptions = userSites?.map((site) => site.handler);
+  const selectUserSites = useMemo(() => {
+    return createSelector(
+      (res) => res?.data,
+      (data: ProfileSlice) =>
+        !data || !data.sites ? [] : Object.values(data.sites).map((site) => site.handler)
+    );
+  }, []);
+
+  const { siteOptions } = useGetProfileQuery(undefined, {
+    selectFromResult: (result) => ({
+      ...result,
+      siteOptions: selectUserSites(result),
+    }),
+  });
+
   return (
     <>
       <HtForm.Label htmlFor="site">Site</HtForm.Label>

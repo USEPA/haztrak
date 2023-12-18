@@ -9,3 +9,4 @@ export {
   createMockRcrainfoPermissions,
 } from './mockHandler';
 export { createMockManifest } from './mockManifest';
+export { createMockHaztrakUser } from './mockUser';

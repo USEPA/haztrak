@@ -4,23 +4,23 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { API_BASE_URL } from 'test-utils/mock/handlers';
+import { userApiMocks } from 'test-utils/mock';
+import { API_BASE_URL } from 'test-utils/mock/htApiMocks';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 const testTaskID = 'testTaskId';
 
-const server = setupServer(
-  ...[
-    http.post(`${API_BASE_URL}rcra/manifest/emanifest/sync`, () => {
-      // Mock Sync Site Manifests response
-      return HttpResponse.json(
-        {
-          task: testTaskID,
-        },
-        { status: 200 }
-      );
-    }),
-  ]
+const server = setupServer(...userApiMocks);
+server.use(
+  http.post(`${API_BASE_URL}rcra/manifest/emanifest/sync`, () => {
+    // Mock Sync Site Manifests response
+    return HttpResponse.json(
+      {
+        task: testTaskID,
+      },
+      { status: 200 }
+    );
+  })
 );
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' })); // setup mock http server

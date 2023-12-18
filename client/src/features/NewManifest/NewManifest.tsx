@@ -1,14 +1,15 @@
+import { createSelector } from '@reduxjs/toolkit';
 import { Manifest, ManifestForm } from 'components/Manifest';
 import { RcraSiteType } from 'components/Manifest/manifestSchema';
 import { SiteSelect, SiteTypeSelect } from 'components/Manifest/SiteSelect';
 import { RcraSite } from 'components/RcraSite';
-import { HtCard } from 'components/UI';
+import { HtCard, HtSpinner } from 'components/UI';
 import { useTitle } from 'hooks';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Col, Container, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { siteByEpaIdSelector, useAppSelector } from 'store';
+import { useGetProfileQuery } from 'store';
 
 /**
  * NewManifest component allows a user to create a new electronic manifest.
@@ -21,7 +22,23 @@ export function NewManifest() {
   useTitle('New Manifest');
   const { control } = useForm();
   const { siteId } = useParams();
-  const rcraSite = useAppSelector(siteByEpaIdSelector(siteId));
+
+  const selectBySiteId = useMemo(() => {
+    return createSelector(
+      (res) => res.data,
+      (res, siteId) => siteId,
+      (data, siteId) => {
+        return data?.sites[siteId]?.handler ?? undefined;
+      }
+    );
+  }, []);
+
+  const { rcraSite, isLoading } = useGetProfileQuery(undefined, {
+    selectFromResult: (result) => ({
+      ...result,
+      rcraSite: selectBySiteId(result, siteId),
+    }),
+  });
   const [manifestingSite, setManifestingSite] = useState<RcraSite | undefined>(rcraSite);
   const [selectedSiteType, setSelectedSiteType] = useState<RcraSiteType | undefined>(
     rcraSite?.siteType === 'Generator' ? rcraSite.siteType : undefined
@@ -29,6 +46,8 @@ export function NewManifest() {
   const [manifestingSiteType, setManifestingSiteType] = useState<RcraSiteType | undefined>(
     rcraSite?.siteType
   );
+
+  if (isLoading && siteId) return <HtSpinner center />;
 
   const handleSiteChange = (site: any) => {
     setManifestingSite(site);

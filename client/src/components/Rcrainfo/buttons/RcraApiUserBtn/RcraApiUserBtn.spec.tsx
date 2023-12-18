@@ -23,18 +23,7 @@ describe('RcraApiUserBtn', () => {
     expect(screen.getByRole('button')).toBeDisabled();
   });
   test('is disabled when apiUser=false', () => {
-    renderWithProviders(<RcraApiUserBtn>Click Me</RcraApiUserBtn>, {
-      preloadedState: {
-        profile: {
-          user: 'username',
-          rcrainfoProfile: {
-            user: 'username',
-            phoneNumber: '1231231234',
-            apiUser: false,
-          },
-        },
-      },
-    });
+    renderWithProviders(<RcraApiUserBtn>Click Me</RcraApiUserBtn>);
     expect(screen.getByRole('button')).toBeDisabled();
   });
 });

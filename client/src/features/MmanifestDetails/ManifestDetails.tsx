@@ -1,14 +1,14 @@
 import { ManifestForm } from 'components/Manifest';
-import { Manifest } from 'components/Manifest/manifestSchema';
 import { HtSpinner } from 'components/UI';
-import { useHtApi, useTitle } from 'hooks';
+import { useTitle } from 'hooks';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useGetManifestQuery } from 'store';
 
 export function ManifestDetails() {
   const { mtn, action, siteId } = useParams();
   useTitle(`${mtn}`);
-  const [manifestData, loading, error] = useHtApi<Manifest>(`rcra/manifest/${mtn}`);
+  const { data, error, isLoading } = useGetManifestQuery(mtn!, { skip: !mtn });
 
   let readOnly = true;
   if (action === 'edit') {
@@ -16,7 +16,6 @@ export function ManifestDetails() {
   }
 
   if (error) {
-    // TODO: add global error handling via redux
     return (
       <div className="text-danger">
         <h2>Something went wrong</h2>
@@ -25,15 +24,10 @@ export function ManifestDetails() {
     );
   }
 
-  return loading ? (
+  return isLoading ? (
     <HtSpinner center />
-  ) : manifestData ? (
-    <ManifestForm
-      manifestData={manifestData}
-      readOnly={readOnly}
-      manifestingSiteID={siteId}
-      mtn={mtn}
-    />
+  ) : data ? (
+    <ManifestForm manifestData={data} readOnly={readOnly} manifestingSiteID={siteId} mtn={mtn} />
   ) : (
     <div className="text-danger">
       <h2>Something went wrong</h2>

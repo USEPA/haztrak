@@ -4,8 +4,13 @@ import React, { useEffect, useState } from 'react';
 import { FloatingLabel, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { setCredentials, useAppDispatch, useAppSelector, useLoginMutation } from 'store';
-import { selectAuthenticated } from 'store/userSlice/user.slice';
+import {
+  selectAuthenticated,
+  setCredentials,
+  useAppDispatch,
+  useAppSelector,
+  useLoginMutation,
+} from 'store';
 import { z } from 'zod';
 
 const loginSchema = z.object({

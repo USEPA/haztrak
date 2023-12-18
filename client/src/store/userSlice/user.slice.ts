@@ -1,81 +1,69 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createApi } from '@reduxjs/toolkit/query/react';
 import { HaztrakSite } from 'components/HaztrakSite';
-import { htApiBaseQuery, TaskResponse } from 'store/haztrakApiSlice';
-import {
-  HaztrakModulePermissions,
-  ProfileSlice,
-  RcrainfoProfile,
-  RcrainfoProfileSite,
-  RcrainfoProfileState,
-} from 'store/profileSlice/profile.slice';
+import { HaztrakUser } from 'store/authSlice/auth.slice';
+import { haztrakApi, TaskResponse } from 'store/htApi.slice';
 
-export interface HaztrakUser {
-  username: string;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-  isLoading?: boolean;
-  error?: string;
-}
-
-/**
- * The Redux stored information on the current haztrak user
- */
-export interface UserSlice {
-  user?: HaztrakUser;
-  token?: string;
+/**The user's RCRAInfo account data stored in the Redux store*/
+export interface ProfileSlice {
+  user: string | undefined;
+  rcrainfoProfile?: RcrainfoProfile<Record<string, RcrainfoProfileSite>>;
+  sites?: Record<string, HaztrakProfileSite>;
+  org?: HaztrakProfileOrg | null;
   loading?: boolean;
   error?: string;
 }
 
-const initialState: UserSlice = {
-  user: { username: JSON.parse(localStorage.getItem('user') || 'null') || null, isLoading: false },
-  token: JSON.parse(localStorage.getItem('token') || 'null') || null,
-  loading: false,
-  error: undefined,
-};
+export interface HaztrakProfileOrg {
+  id: string;
+  name: string;
+  rcrainfoIntegrated: boolean;
+}
 
-const authSlice = createSlice({
-  name: 'auth',
-  initialState,
-  selectors: {
-    selectAuthenticated: (state: UserSlice): boolean => !!state.token,
-    selectUser: (state: UserSlice): HaztrakUser | undefined => state.user,
-    selectUserName: (state: UserSlice): string | undefined => state.user?.username,
-  },
-  reducers: {
-    setCredentials(state: UserSlice, action: PayloadAction<{ token: string }>) {
-      const token = action.payload.token;
-      localStorage.setItem('token', JSON.stringify(token));
-      return {
-        ...state,
-        token,
-      } as UserSlice;
-    },
-    logout(state: UserSlice): UserSlice {
-      localStorage.removeItem('token');
-      return { ...initialState, user: undefined, token: undefined };
-    },
-    updateUserProfile(state: UserSlice, action: PayloadAction<HaztrakUser>) {
-      return {
-        ...state,
-        user: action.payload,
-      };
-    },
-  },
-});
+/** A site a user has access to in RCRAInfo and their module permissions */
+export interface RcrainfoProfileSite {
+  epaSiteId: string;
+  permissions: RcrainfoSitePermissions;
+}
 
-export default authSlice.reducer;
-export const { updateUserProfile, logout, setCredentials } = authSlice.actions;
-export const { selectAuthenticated, selectUser, selectUserName } = authSlice.selectors;
+export interface HaztrakProfileSite extends HaztrakSite {
+  permissions: HaztrakSitePermissions;
+}
 
-interface LoginRequest {
+export type HaztrakModulePermissions = 'viewer' | 'editor' | 'signer';
+
+export interface HaztrakSitePermissions {
+  eManifest: HaztrakModulePermissions;
+}
+
+export interface RcrainfoProfileState
+  extends RcrainfoProfile<Record<string, RcrainfoProfileSite>> {}
+
+export interface RcrainfoProfile<T> {
+  user: string;
+  rcraAPIID?: string;
+  rcraUsername?: string;
+  rcraAPIKey?: string;
+  apiUser?: boolean;
+  rcraSites?: T;
+  phoneNumber?: string;
+  isLoading?: boolean;
+  error?: string;
+}
+
+export interface RcrainfoSitePermissions {
+  siteManagement: boolean;
+  annualReport: string;
+  biennialReport: string;
+  eManifest: string;
+  WIETS: string;
+  myRCRAid: string;
+}
+
+export interface LoginRequest {
   username: string;
   password: string;
 }
 
-interface LoginResponse {
+export interface LoginResponse {
   key: string;
 }
 
@@ -85,7 +73,7 @@ interface HaztrakOrgResponse {
   rcrainfoIntegrated: boolean;
 }
 
-interface HaztrakProfileResponse {
+export interface HaztrakProfileResponse {
   user: string;
   sites: Array<{
     site: HaztrakSite;
@@ -96,17 +84,12 @@ interface HaztrakProfileResponse {
 
 interface RcrainfoProfileResponse extends RcrainfoProfile<Array<RcrainfoProfileSite>> {}
 
-export const authApi = createApi({
-  tagTypes: ['user', 'auth', 'profile', 'rcrainfoProfile'],
-  reducerPath: 'authApi',
-  baseQuery: htApiBaseQuery({
-    baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/user`,
-  }),
+export const userApi = haztrakApi.injectEndpoints({
   endpoints: (build) => ({
     // Note: build.query<ReturnType, ArgType>
     login: build.mutation<LoginResponse, LoginRequest>({
       query: (data) => ({
-        url: '/login',
+        url: 'login',
         method: 'POST',
         data: data,
       }),
@@ -114,14 +97,14 @@ export const authApi = createApi({
     }),
     getUser: build.query<HaztrakUser, void>({
       query: () => ({
-        url: '',
+        url: 'user',
         method: 'GET',
       }),
       providesTags: ['user'],
     }),
     updateUser: build.mutation<HaztrakUser, HaztrakUser>({
       query: (data) => ({
-        url: '',
+        url: 'user',
         method: 'PUT',
         data: data,
       }),
@@ -129,7 +112,7 @@ export const authApi = createApi({
     }),
     getProfile: build.query<ProfileSlice, void>({
       query: () => ({
-        url: '/profile',
+        url: 'user/profile',
         method: 'GET',
       }),
       providesTags: ['profile'],
@@ -152,7 +135,7 @@ export const authApi = createApi({
     }),
     getRcrainfoProfile: build.query<RcrainfoProfileState, string>({
       query: (username) => ({
-        url: `/rcrainfo-profile/${username}`,
+        url: `user/rcrainfo-profile/${username}`,
         method: 'GET',
       }),
       providesTags: ['rcrainfoProfile'],
@@ -171,7 +154,7 @@ export const authApi = createApi({
     }),
     updateRcrainfoProfile: build.mutation<any, { username: string; data: any }>({
       query: (data) => ({
-        url: `/rcrainfo-profile/${data.username}`,
+        url: `user/rcrainfo-profile/${data.username}`,
         method: 'PUT',
         data: data.data,
       }),
@@ -179,7 +162,7 @@ export const authApi = createApi({
     }),
     syncRcrainfoProfile: build.mutation<TaskResponse, void>({
       query: () => ({
-        url: `/rcrainfo-profile/sync`,
+        url: `user/rcrainfo-profile/sync`,
         method: 'POST',
       }),
       invalidatesTags: ['rcrainfoProfile'],

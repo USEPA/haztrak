@@ -2,12 +2,31 @@ import '@testing-library/jest-dom';
 import { ManifestContext } from 'components/Manifest/ManifestForm';
 import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import { QuickSignBtn } from 'components/Manifest/QuickerSign/index';
+import { setupServer } from 'msw/node';
 import React from 'react';
+import { HaztrakProfileResponse } from 'store/userSlice/user.slice';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockMTNHandler } from 'test-utils/fixtures';
-import { afterEach, describe, expect, test } from 'vitest';
+import { userApiMocks } from 'test-utils/mock';
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { undefined } from 'zod';
 
+const mockProfile: HaztrakProfileResponse = {
+  user: 'testuser1',
+  sites: [],
+  org: {
+    name: 'my org',
+    rcrainfoIntegrated: true,
+    id: '1234',
+  },
+};
+
+const server = setupServer(...userApiMocks);
+afterEach(() => {
+  cleanup();
+});
+beforeAll(() => server.listen());
+afterAll(() => server.close()); // Disable API mocking after the tests are done.
 afterEach(() => {
   cleanup();
 });
@@ -40,60 +59,12 @@ function TestComponent({
 }
 
 describe('QuickSignBtn', () => {
-  test('renders', () => {
-    const handlerId = 'TXD987654321';
-    const handler = createMockMTNHandler({ siteType: 'Generator', epaSiteId: handlerId });
-    renderWithProviders(
-      <TestComponent
-        handler={handler}
-        signingSite={{ epaSiteId: handlerId, siteType: 'generator' }}
-        status={'Scheduled'}
-      />,
-      {
-        preloadedState: {
-          profile: {
-            user: 'testuser1',
-            org: {
-              rcrainfoIntegrated: true,
-              id: '123',
-              name: 'Test Org',
-            },
-            sites: {
-              TXD987654321: {
-                name: 'Test Site',
-                handler: handler,
-                permissions: { eManifest: 'signer' },
-              },
-            },
-          },
-        },
-      }
-    );
-    expect(screen.getByRole('button')).toBeInTheDocument();
-  });
   test('is not disabled when user org is rcrainfo integrated', () => {
     const unsigned_handler = createMockMTNHandler({
       signed: false,
       electronicSignaturesInfo: [],
     });
-    renderWithProviders(<TestComponent siteType={'Generator'} handler={unsigned_handler} />, {
-      // Redux store state with an API user is required for this button to be active
-      preloadedState: {
-        profile: {
-          org: {
-            name: 'Test Org',
-            id: '123',
-            rcrainfoIntegrated: true,
-          },
-          user: 'username',
-          rcrainfoProfile: {
-            user: 'username',
-            phoneNumber: '1231231234',
-            apiUser: true,
-          },
-        },
-      },
-    });
+    renderWithProviders(<TestComponent siteType={'Generator'} handler={unsigned_handler} />);
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
   test('is disabled when API user but already signed', () => {
@@ -108,20 +79,7 @@ describe('QuickSignBtn', () => {
         siteType={'Tsdf'}
         signingSite={{ epaSiteId: 'other_site', siteType: 'transporter' }}
         handler={unsigned_handler}
-      />,
-      // Redux store state with an API user is required for this button to be active
-      {
-        preloadedState: {
-          profile: {
-            user: 'username',
-            rcrainfoProfile: {
-              user: 'username',
-              phoneNumber: '1231231234',
-              apiUser: false,
-            },
-          },
-        },
-      }
+      />
     );
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });

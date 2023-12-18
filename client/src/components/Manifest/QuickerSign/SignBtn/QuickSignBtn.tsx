@@ -1,11 +1,12 @@
 import { faFeather } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { createSelector } from '@reduxjs/toolkit';
 import { ManifestContext } from 'components/Manifest/ManifestForm';
 import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import { RcraApiUserBtn } from 'components/Rcrainfo';
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { ButtonProps } from 'react-bootstrap';
-import { siteByEpaIdSelector, useAppSelector } from 'store';
+import { ProfileSlice, useGetProfileQuery } from 'store';
 
 interface QuickSignBtnProps extends ButtonProps {
   siteType?: RcraSiteType;
@@ -25,8 +26,24 @@ export function QuickSignBtn({
   ...props
 }: QuickSignBtnProps) {
   const { nextSigningSite } = useContext(ManifestContext);
-  // if next site to sign is not one of the user's sites, don't show the button
-  if (!useAppSelector(siteByEpaIdSelector(nextSigningSite?.epaSiteId))) return <></>;
+
+  const selectBySiteId = useMemo(() => {
+    return createSelector(
+      (res) => res.data,
+      (res, siteId) => siteId,
+      (data: ProfileSlice, siteId) => {
+        return data && data.sites ? data.sites[siteId] : undefined;
+      }
+    );
+  }, []);
+
+  const { userSite } = useGetProfileQuery(undefined, {
+    selectFromResult: (res) => ({
+      ...res,
+      userSite: selectBySiteId(res, nextSigningSite?.epaSiteId),
+    }),
+  });
+  if (!userSite) return <></>;
 
   if (mtnHandler && mtnHandler?.epaSiteId !== nextSigningSite?.epaSiteId) return <></>;
 

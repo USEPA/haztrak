@@ -19,10 +19,8 @@ export interface HtApiQueryArgs {
   params?: AxiosRequestConfig['params'];
 }
 
-export interface HtApiError {
-  status?: number;
+export interface HtApiError extends AxiosError {
   data?: AxiosResponse['data'];
-  code?: string;
   statusText?: string;
 }
 
@@ -50,10 +48,10 @@ export const htApiBaseQuery =
       return { data: response.data };
     } catch (axiosError) {
       let err = axiosError as AxiosError;
+      console.log(err);
       return {
         error: {
-          code: err.code,
-          status: err.response?.status,
+          ...err,
           statusText: err.response?.statusText,
           data: err.response?.data || err.message,
         } as HtApiError,
@@ -76,7 +74,7 @@ interface RcrainfoSiteSearch {
 }
 
 export const haztrakApi = createApi({
-  tagTypes: ['user'],
+  tagTypes: ['user', 'auth', 'profile', 'rcrainfoProfile', 'site', 'code', 'manifest'],
   reducerPath: 'haztrakApi',
   baseQuery: htApiBaseQuery({
     baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/`,
@@ -102,24 +100,35 @@ export const haztrakApi = createApi({
     }),
     getFedWasteCodes: build.query<Array<Code>, void>({
       query: () => ({ url: 'rcra/waste/code/federal', method: 'get' }),
+      providesTags: ['code'],
     }),
     getStateWasteCodes: build.query<Array<Code>, string>({
       query: (state) => ({ url: `rcra/waste/code/state/${state}`, method: 'get' }),
+      providesTags: ['code'],
     }),
     getDotIdNumbers: build.query<Array<string>, string>({
       query: (id) => ({ url: 'rcra/waste/dot/id', method: 'get', params: { q: id } }),
+      providesTags: ['code'],
     }),
     getOrgSites: build.query<Array<HaztrakSite>, string>({
       query: (id) => ({ url: `org/${id}/site`, method: 'get' }),
+      providesTags: ['site'],
     }),
     getUserHaztrakSites: build.query<Array<HaztrakSite>, void>({
       query: () => ({ url: 'site', method: 'get' }),
+      providesTags: ['site'],
     }),
     getUserHaztrakSite: build.query<HaztrakSite, string>({
       query: (epaId) => ({ url: `site/${epaId}`, method: 'get' }),
+      providesTags: ['site'],
     }),
     getMTN: build.query<Array<MtnDetails>, string | undefined>({
       query: (siteId) => ({ url: siteId ? `rcra/mtn/${siteId}` : 'rcra/mtn', method: 'get' }),
+      providesTags: ['manifest'],
+    }),
+    getManifest: build.query<Manifest, string>({
+      query: (mtn) => ({ url: `rcra/manifest/${mtn}`, method: 'get' }),
+      providesTags: ['manifest'],
     }),
     createManifest: build.mutation<Manifest, Manifest>({
       query: (data) => ({
@@ -127,6 +136,7 @@ export const haztrakApi = createApi({
         method: 'POST',
         data,
       }),
+      invalidatesTags: ['manifest'],
     }),
     updateManifest: build.mutation<Manifest, { mtn: string; manifest: Manifest }>({
       query: ({ mtn, manifest }) => ({
@@ -134,6 +144,7 @@ export const haztrakApi = createApi({
         method: 'PUT',
         data: manifest,
       }),
+      invalidatesTags: ['manifest'],
     }),
     saveEManifest: build.mutation<TaskResponse, Manifest>({
       query: (data) => ({
@@ -141,6 +152,7 @@ export const haztrakApi = createApi({
         method: 'POST',
         data,
       }),
+      invalidatesTags: ['manifest'],
     }),
     syncEManifest: build.mutation<TaskResponse, string>({
       query: (siteId) => ({
@@ -148,6 +160,7 @@ export const haztrakApi = createApi({
         method: 'POST',
         data: { siteId: siteId },
       }),
+      invalidatesTags: ['manifest'],
     }),
     signEManifest: build.mutation<TaskResponse, QuickerSignature>({
       query: (signature) => ({
@@ -155,6 +168,7 @@ export const haztrakApi = createApi({
         method: 'POST',
         data: signature,
       }),
+      invalidatesTags: ['manifest'],
     }),
   }),
 });

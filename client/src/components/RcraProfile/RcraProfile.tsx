@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { RcrainfoProfileState, useAppDispatch, useUpdateRcrainfoProfileMutation } from 'store';
-import { authApi } from 'store/userSlice/user.slice';
+import { userApi } from 'store/userSlice/user.slice';
 import { z } from 'zod';
 
 interface ProfileViewProps {
@@ -33,7 +33,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
   });
 
   useEffect(() => {
-    dispatch(authApi.util?.invalidateTags(['rcrainfoProfile']));
+    dispatch(userApi.util?.invalidateTags(['rcrainfoProfile']));
   }, [inProgress]);
 
   const {

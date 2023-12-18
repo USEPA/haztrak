@@ -1,36 +1,51 @@
+import userEvent from '@testing-library/user-event';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
 import React from 'react';
 import '@testing-library/jest-dom';
-import { HandlerSearchForm } from './HandlerSearchForm';
+import { HaztrakProfileResponse } from 'store/userSlice/user.slice';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { createMockRcrainfoSite } from 'test-utils/fixtures';
-import { setupServer } from 'msw/node';
-import { http, HttpResponse } from 'msw';
-import { API_BASE_URL } from 'test-utils/mock/handlers';
-import userEvent from '@testing-library/user-event';
+import { userApiMocks } from 'test-utils/mock';
+import { API_BASE_URL } from 'test-utils/mock/htApiMocks';
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
+import { HandlerSearchForm } from './HandlerSearchForm';
 
 const mockRcraSite1Id = 'VATEST111111111';
 const mockRcraSite2Id = 'VATEST222222222';
 const mockRcrainfoSite1Id = 'VATEST333333333';
 const mockRcrainfoSite2Id = 'VATEST444444444';
 
+const mockProfile: HaztrakProfileResponse = {
+  user: 'testuser1',
+  sites: [],
+  org: {
+    name: 'my org',
+    rcrainfoIntegrated: true,
+    id: '1234',
+  },
+};
+
 const mockRcrainfoSite1 = createMockRcrainfoSite({ epaSiteId: mockRcrainfoSite1Id });
 const mockRcrainfoSite2 = createMockRcrainfoSite({ epaSiteId: mockRcrainfoSite2Id });
 const mockRcraSite1 = createMockRcrainfoSite({ epaSiteId: mockRcraSite1Id });
 const mockRcraSite2 = createMockRcrainfoSite({ epaSiteId: mockRcraSite2Id });
-export const testURL = [
-  http.get(`${API_BASE_URL}/api/site/search`, (info) => {
+export const mockHandlerSearches = [
+  http.get(`${API_BASE_URL}/api/site/search`, () => {
     return HttpResponse.json([mockRcraSite1, mockRcraSite2], { status: 200 });
   }),
-  http.get(`${API_BASE_URL}/api/rcra/handler/search`, (info) => {
+  http.get(`${API_BASE_URL}/api/rcra/handler/search`, () => {
     return HttpResponse.json([mockRcrainfoSite1, mockRcrainfoSite2], { status: 200 });
   }),
-  http.post(`${API_BASE_URL}/api/rcra/handler/search`, (info) => {
+  http.get(`${API_BASE_URL}/api/user/profile`, () => {
+    return HttpResponse.json({ ...mockProfile }, { status: 200 });
+  }),
+  http.post(`${API_BASE_URL}/api/rcra/handler/search`, () => {
     return HttpResponse.json([mockRcrainfoSite1, mockRcrainfoSite2], { status: 200 });
   }),
 ];
 
-const server = setupServer(...testURL);
+const server = setupServer(...userApiMocks, ...mockHandlerSearches);
 afterEach(() => {
   cleanup();
 });
@@ -46,19 +61,7 @@ describe('HandlerSearchForm', () => {
   });
   test('retrieves rcra sites from haztrak and RCRAInfo', async () => {
     renderWithProviders(
-      <HandlerSearchForm handleClose={() => undefined} handlerType="generator" />,
-      {
-        preloadedState: {
-          profile: {
-            user: 'testuser1',
-            org: {
-              name: 'my org',
-              rcrainfoIntegrated: true,
-              id: '1234',
-            },
-          },
-        },
-      }
+      <HandlerSearchForm handleClose={() => undefined} handlerType="generator" />
     );
     const epaId = screen.getByRole('combobox');
     await userEvent.type(epaId, 'VATEST');
@@ -68,20 +71,19 @@ describe('HandlerSearchForm', () => {
     expect(await screen.findByText(new RegExp(mockRcrainfoSite2Id, 'i'))).toBeInTheDocument();
   });
   test('retrieves rcra sites from haztrak if org not rcrainfo integrated', async () => {
-    renderWithProviders(
-      <HandlerSearchForm handleClose={() => undefined} handlerType="generator" />,
-      {
-        preloadedState: {
-          profile: {
-            user: 'testuser1',
-            org: {
-              name: 'my org',
-              rcrainfoIntegrated: false,
-              id: '1234',
-            },
+    server.use(
+      http.get(`${API_BASE_URL}/api/user/profile`, () => {
+        return HttpResponse.json(
+          {
+            ...mockProfile,
+            org: { rcrainfoIntegrated: false },
           },
-        },
-      }
+          { status: 200 }
+        );
+      })
+    );
+    renderWithProviders(
+      <HandlerSearchForm handleClose={() => undefined} handlerType="generator" />
     );
     const epaId = screen.getByRole('combobox');
     await userEvent.type(epaId, 'VATEST');
