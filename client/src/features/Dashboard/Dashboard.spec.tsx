@@ -10,7 +10,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vite
 const USERNAME = 'testuser1';
 
 const myAPIHandlers = [
-  http.get(`${API_BASE_URL}/api/rcra/profile/${USERNAME}`, (info) => {
+  http.get(`${API_BASE_URL}/api/user/rcrainfo-profile/${USERNAME}`, (info) => {
     return HttpResponse.json(
       {
         user: USERNAME,

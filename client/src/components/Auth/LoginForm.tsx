@@ -5,8 +5,8 @@ import { FloatingLabel, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { setCredentials, useAppDispatch, useAppSelector, useLoginMutation } from 'store';
+import { selectAuthenticated } from 'store/userSlice/user.slice';
 import { z } from 'zod';
-import { selectAuthenticated } from 'store/authSlice/auth.slice';
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Username Required').min(8),

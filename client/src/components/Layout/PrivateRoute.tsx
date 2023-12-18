@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from 'store';
-import { selectAuthenticated } from 'store/authSlice/auth.slice';
+import { selectAuthenticated } from 'store/userSlice/user.slice';
 
 interface Props {
   children: any;

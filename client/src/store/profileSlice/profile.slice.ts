@@ -73,25 +73,6 @@ const initialState: ProfileSlice = {
   error: undefined,
 };
 
-/**Retrieves a user's profile from the server.*/
-export const getHaztrakProfile = createAsyncThunk('profile/getHaztrakProfile', async () => {
-  const { data } = await UserApi.getUserProfile();
-  const sites = data.sites.reduce((obj, site) => {
-    return {
-      ...obj,
-      [site.site.handler.epaSiteId]: {
-        ...site.site,
-        permissions: { eManifest: site.eManifest },
-      },
-    };
-  }, {});
-  return {
-    user: data.user,
-    org: data.org,
-    sites: sites,
-  } as ProfileSlice;
-});
-
 /**Retrieves a user's RcrainfoProfile, if it exists, from the server.*/
 export const getRcraProfile = createAsyncThunk<ProfileSlice>(
   'profile/getRcrainfoProfile',
@@ -130,26 +111,6 @@ const profileSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getHaztrakProfile.pending, (state) => {
-        return {
-          ...state,
-          loading: true,
-          error: undefined,
-        };
-      })
-      .addCase(getHaztrakProfile.fulfilled, (state, action) => {
-        return {
-          ...state,
-          ...action.payload,
-          loading: false,
-          error: undefined,
-        };
-      })
-      .addCase(getHaztrakProfile.rejected, (state) => {
-        state.loading = false;
-        state.error = 'error';
-        return state;
-      })
       .addCase(getRcraProfile.pending, (state) => {
         return {
           ...state,

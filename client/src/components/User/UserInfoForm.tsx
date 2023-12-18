@@ -1,19 +1,16 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AxiosError } from 'axios';
 import { HtForm, HtSpinner } from 'components/UI';
 import React, { createRef, useState } from 'react';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import { UserApi } from 'services';
-import { HaztrakUser, ProfileSlice, updateUserProfile, useAppDispatch } from 'store';
+import { HaztrakUser, ProfileSlice, useUpdateUserMutation } from 'store';
 import { z } from 'zod';
 
 interface UserProfileProps {
   user: HaztrakUser;
-  profile: ProfileSlice;
+  profile?: ProfileSlice;
 }
 
 const haztrakUserForm = z.object({
@@ -26,8 +23,8 @@ type HaztrakUserForm = z.infer<typeof haztrakUserForm>;
 
 export function UserInfoForm({ user, profile }: UserProfileProps) {
   const [editable, setEditable] = useState(false);
+  const [updateUser] = useUpdateUserMutation();
   const fileRef = createRef<HTMLInputElement>();
-  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -38,11 +35,7 @@ export function UserInfoForm({ user, profile }: UserProfileProps) {
 
   const onSubmit = (data: HaztrakUserForm) => {
     setEditable(!editable);
-    UserApi.updateUser(data)
-      .then((response) => {
-        dispatch(updateUserProfile(response.data));
-      })
-      .catch((error: AxiosError) => toast.error(error.message));
+    updateUser({ ...user, ...data });
   };
 
   if (user?.isLoading || profile?.loading) return <HtSpinner center />;

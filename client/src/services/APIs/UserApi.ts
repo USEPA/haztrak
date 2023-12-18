@@ -23,7 +23,7 @@ interface RcrainfoProfileResponse extends RcrainfoProfile<Array<RcrainfoProfileS
 export const UserApi = {
   /** Fetch the user's Haztrak profile from the Haztrak API*/
   getUserProfile: async (): Promise<AxiosResponse<HaztrakProfileResponse>> => {
-    return await htApi.get('/profile');
+    return await htApi.get('/user/profile');
   },
 
   /** Fetch Haztrak user from server*/
@@ -38,7 +38,7 @@ export const UserApi = {
 
   /** Fetch the user's RCRAInfo profile from the Haztrak API*/
   getRcrainfoProfile: async (username: string): Promise<AxiosResponse<RcrainfoProfileResponse>> => {
-    return await htApi.get(`/rcra/profile/${username}`);
+    return await htApi.get(`/user/rcrainfo-profile/${username}`);
   },
 
   /** Update user's RCRAInfo Profile information such username, api ID & key*/
@@ -49,11 +49,11 @@ export const UserApi = {
     username: string;
     data: any;
   }): Promise<AxiosResponse<any>> => {
-    return await htApi.put(`/rcra/profile/${username}`, data);
+    return await htApi.put(`/user/rcrainfo-profile/${username}`, data);
   },
 
   /** Launch task to pull user's site/module permissions (RCRAInfo profile) from RCRAInfo*/
   syncRcrainfoProfile: async (): Promise<AxiosResponse<{ taskId: string }>> => {
-    return await htApi.get(`rcra/profile/sync`);
+    return await htApi.get(`user/rcrainfo-profile/sync`);
   },
 };
