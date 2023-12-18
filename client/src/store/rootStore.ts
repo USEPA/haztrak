@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import userReducers, { login } from './authSlice/auth.slice';
+import userReducers from './authSlice/auth.slice';
 import errorReducers from './errorSlice/error.slice';
 import { haztrakApi } from './haztrakApiSlice';
 import notificationReducers from './notificationSlice/notification.slice';
@@ -30,4 +30,4 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export type AppDispatch = typeof rootStore.dispatch;
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
-export { rootStore, login, setupStore };
+export { rootStore, setupStore };

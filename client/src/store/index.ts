@@ -1,6 +1,7 @@
 import type { AppDispatch, AppStore, RootState } from './rootStore';
 // Haztrak API - RTK Query
 import { haztrakApi } from './haztrakApiSlice';
+import { authApi } from 'store/authSlice/auth.slice';
 
 // Root Store
 export { rootStore, setupStore, useAppDispatch, useAppSelector } from './rootStore';
@@ -24,14 +25,14 @@ export const {
   useUpdateManifestMutation,
 } = haztrakApi;
 
+export const { useLoginMutation, useGetUserQuery } = authApi;
+
 // Authentication Slice
 export {
-  getHaztrakUser,
-  login,
   selectUser,
   selectUserName,
-  selectUserState,
   updateUserProfile,
+  setCredentials,
 } from './authSlice/auth.slice';
 
 // Profile Slice
