@@ -5,23 +5,12 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpd
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.core.models import HaztrakProfile, HaztrakUser, RcraProfile
+from apps.core.models import HaztrakProfile, RcraProfile
 from apps.core.serializers import (
     HaztrakProfileSerializer,
-    HaztrakUserSerializer,
     RcraProfileSerializer,
 )
 from apps.site.tasks import sync_user_rcrainfo_sites
-
-
-class HaztrakUserView(RetrieveUpdateAPIView):
-    """Retrieve the current user's base information"""
-
-    queryset = HaztrakUser.objects.all()
-    serializer_class = HaztrakUserSerializer
-
-    def get_object(self):
-        return self.request.user
 
 
 class HaztrakProfileView(RetrieveAPIView):
