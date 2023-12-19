@@ -1,11 +1,11 @@
 /// <reference types="vitest" />
 import react from '@vitejs/plugin-react';
+import * as path from 'path';
 import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 // @ts-ignore
 import { dependencies } from './package.json';
-import * as path from 'path';
 
 function renderChunks(deps: Record<string, string>) {
   const chunks = {};
@@ -44,6 +44,9 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    coverage: {
+      provider: 'istanbul', // or 'v8'
+    },
     globals: true,
     setupFiles: ['src/setupTests.ts'],
   },
