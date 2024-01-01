@@ -7,7 +7,7 @@ ruff==0.1.6
 celery-types==0.20.0
 djangorestframework-stubs==3.14.4
 ruff-lsp==0.0.45
-django-stubs==4.2.6
+django-stubs==4.2.7
 django-stubs-ext==4.2.5
 Faker==20.1.0
 -r requirements.txt
