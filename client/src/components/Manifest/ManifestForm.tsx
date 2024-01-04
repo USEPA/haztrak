@@ -293,7 +293,7 @@ export function ManifestForm({
                 )}
               </h1>
             </div>
-            <Stack direction="vertical" gap={3} className="px-0 px-sm-3 px-md-5">
+            <Stack direction="vertical" gap={3} className="px-0 px-md-5">
               <HtCard id="general-form-card" title="General Info">
                 <HtCard.Body>
                   <GeneralInfoForm
