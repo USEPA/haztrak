@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { ManifestStatusField } from 'components/Manifest/GeneralInfo/ManifestStatusField';
+import { ManifestStatusSelect } from 'components/Manifest/GeneralInfo/ManifestStatusSelect';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
@@ -26,7 +26,7 @@ const TestComponent = ({ isDraft, readOnly }: TestComponentProps) => {
   const readOnlyVal = readOnly !== undefined ? readOnly : false;
   return (
     <>
-      <ManifestStatusField isDraft={isDraftVal} readOnly={readOnlyVal} />
+      <ManifestStatusSelect isDraft={isDraftVal} readOnly={readOnlyVal} />
     </>
   );
 };

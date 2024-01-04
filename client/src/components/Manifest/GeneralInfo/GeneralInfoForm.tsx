@@ -1,10 +1,10 @@
-import { ManifestStatusField } from 'components/Manifest/GeneralInfo/ManifestStatusField';
+import { ManifestStatusSelect } from 'components/Manifest/GeneralInfo/ManifestStatusSelect';
 import { Manifest, SubmissionType } from 'components/Manifest/manifestSchema';
 import { HtForm, InfoIconTooltip } from 'components/UI';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
-import Select from 'react-select';
+import { ManifestTypeSelect } from 'components/Manifest/GeneralInfo/ManifestTypeSelect';
 
 interface GeneralInfoFormProps {
   manifestData?: Partial<Manifest>;
@@ -45,32 +45,10 @@ export function GeneralInfoForm({ manifestData, readOnly, isDraft }: GeneralInfo
           </HtForm.Group>
         </Col>
         <Col>
-          <ManifestStatusField readOnly={readOnly} isDraft={isDraft} />
+          <ManifestStatusSelect readOnly={readOnly} isDraft={isDraft} />
         </Col>
         <Col>
-          <HtForm.Group>
-            <HtForm.Label htmlFor="submissionType" className="mb-0">
-              Type
-            </HtForm.Label>
-            <Select
-              id="submissionType"
-              isDisabled={readOnly || !isDraft}
-              aria-label="submissionType"
-              {...manifestForm.register('submissionType')}
-              options={submissionTypeOptions}
-              getOptionValue={(option) => option.value}
-              defaultValue={submissionTypeOptions[0]}
-              onChange={(option) => {
-                if (option) manifestForm.setValue('submissionType', option.value);
-              }}
-              filterOption={(option) => {
-                return (
-                  option.label.toLowerCase().includes('electronic') ||
-                  option.label.toLowerCase().includes('hybrid')
-                );
-              }}
-            />
-          </HtForm.Group>
+          <ManifestTypeSelect readOnly={readOnly} isDraft={isDraft} />
         </Col>
       </Row>
       <Row>
