@@ -5,11 +5,13 @@ import Select from 'react-select';
 import { useFormContext } from 'react-hook-form';
 
 const submissionTypeOptions: Array<{ value: SubmissionType; label: string }> = [
-  { value: 'FullElectronic', label: 'Electronic' },
   { value: 'Hybrid', label: 'Hybrid' },
+  { value: 'FullElectronic', label: 'Electronic' },
   { value: 'DataImage5Copy', label: 'Data + Image' },
   { value: 'Image', label: 'Image Only' },
 ];
+
+const DEFAULT_SUBMISSION_TYPE = submissionTypeOptions[0];
 
 /** uniform hazardous waste manifest type field. */
 export function ManifestTypeSelect({
@@ -20,6 +22,7 @@ export function ManifestTypeSelect({
   isDraft?: boolean;
 }) {
   const manifestForm = useFormContext<Manifest>();
+  const generatorCanESign = manifestForm.getValues('generator.canEsign');
   return (
     <HtForm.Group>
       <HtForm.Label htmlFor="submissionType" className="mb-0">
@@ -32,16 +35,19 @@ export function ManifestTypeSelect({
         {...manifestForm.register('submissionType')}
         options={submissionTypeOptions}
         getOptionValue={(option) => option.value}
-        defaultValue={submissionTypeOptions[0]}
+        defaultValue={DEFAULT_SUBMISSION_TYPE}
+        classNames={{
+          control: () => 'form-select py-0 rounded-3',
+        }}
+        components={{ IndicatorSeparator: () => null, DropdownIndicator: () => null }}
         onChange={(option) => {
           if (option) manifestForm.setValue('submissionType', option.value);
         }}
-        filterOption={(option) => {
-          return (
-            option.label.toLowerCase().includes('electronic') ||
-            option.label.toLowerCase().includes('hybrid')
-          );
-        }}
+        filterOption={(option) =>
+          option.label.toLowerCase().includes('electronic') ||
+          option.label.toLowerCase().includes('hybrid')
+        }
+        isOptionDisabled={(option) => option.value === 'FullElectronic' && !generatorCanESign}
       />
     </HtForm.Group>
   );
