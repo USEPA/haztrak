@@ -6,18 +6,20 @@ import { ManifestEditBtn } from 'components/Manifest/Actions/ManifestEditBtn';
 import { ManifestFABs } from 'components/Manifest/Actions/ManifestFABs';
 import { ManifestSaveBtn } from 'components/Manifest/Actions/ManifestSaveBtn';
 import { AdditionalInfoForm } from 'components/Manifest/AdditionalInfo';
+import { GeneralInfoForm } from 'components/Manifest/GeneralInfo/GeneralInfoForm';
 import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
-import { HtButton, HtCard, HtForm, InfoIconTooltip } from 'components/UI';
+import { HtButton, HtCard, HtForm } from 'components/UI';
 import React, { createContext, useEffect, useMemo, useState } from 'react';
-import { Alert, Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { manifest } from 'services';
 import {
   ProfileSlice,
+  useAppDispatch,
   useCreateManifestMutation,
   useGetProfileQuery,
   useSaveEManifestMutation,
@@ -25,10 +27,11 @@ import {
 } from 'store';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
-import { Manifest, manifestSchema, ManifestStatus, SiteType } from './manifestSchema';
+import { Manifest, manifestSchema, SiteType } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal, QuickSignBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
 import { EditWasteModal, WasteLineTable } from './WasteLine';
+import { useManifestStatus } from 'hooks/manifest';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -39,7 +42,6 @@ const defaultValues: Manifest = {
 
 export interface ManifestContextType {
   trackingNumber?: string;
-  status?: ManifestStatus;
   generatorStateCode?: string;
   setGeneratorStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
   tsdfStateCode?: string;
@@ -54,7 +56,6 @@ export interface ManifestContextType {
 
 export const ManifestContext = createContext<ManifestContextType>({
   trackingNumber: undefined,
-  status: undefined,
   generatorStateCode: undefined,
   setGeneratorStateCode: () => {},
   tsdfStateCode: undefined,
@@ -89,6 +90,7 @@ export function ManifestForm({
   mtn,
 }: ManifestFormProps) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   // Use default values, override with manifestData if provided
   let values: Manifest = defaultValues;
@@ -98,6 +100,7 @@ export function ManifestForm({
       ...manifestData,
     };
   }
+  useManifestStatus(values.status);
 
   // State related to inter-system communications with EPA's RCRAInfo system
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
@@ -236,10 +239,6 @@ export function ManifestForm({
     name: 'wastes',
   });
 
-  const [manifestStatus, setManifestStatus] = useState<ManifestStatus | undefined>(
-    manifestData?.status
-  );
-
   const selectUserSiteIds = useMemo(
     () =>
       createSelector(
@@ -269,7 +268,6 @@ export function ManifestForm({
       <ManifestContext.Provider
         value={{
           trackingNumber: mtn,
-          status: manifestStatus,
           generatorStateCode: generatorStateCode,
           setGeneratorStateCode: setGeneratorStateCode,
           tsdfStateCode: tsdfStateCode,
@@ -292,191 +290,14 @@ export function ManifestForm({
                 )}
               </h1>
             </div>
-            <Stack direction="vertical" gap={3} className="px-0 px-sm-3 px-md-5">
+            <Stack direction="vertical" gap={3} className="px-0 px-md-5">
               <HtCard id="general-form-card" title="General Info">
                 <HtCard.Body>
-                  <Row>
-                    <Col>
-                      <HtForm.Group>
-                        <HtForm.Label htmlFor="manifestTrackingNumber">MTN</HtForm.Label>
-                        <Form.Control
-                          id="manifestTrackingNumber"
-                          plaintext
-                          readOnly
-                          type="text"
-                          placeholder={
-                            !manifestData?.manifestTrackingNumber
-                              ? 'Draft Manifest'
-                              : manifestData?.manifestTrackingNumber
-                          }
-                          {...manifestForm.register('manifestTrackingNumber')}
-                          className={errors.manifestTrackingNumber && 'is-invalid'}
-                        />
-                        <div className="invalid-feedback">
-                          {errors.manifestTrackingNumber?.message}
-                        </div>
-                      </HtForm.Group>
-                    </Col>
-                    <Col>
-                      <HtForm.Group>
-                        <HtForm.Label htmlFor="status" className="mb-0">
-                          {'Status '}
-                          {!isDraft && (
-                            <InfoIconTooltip
-                              message={'Once set to scheduled, this field is managed by EPA'}
-                            />
-                          )}
-                        </HtForm.Label>
-                        <HtForm.Select
-                          id="status"
-                          disabled={readOnly || !isDraft}
-                          aria-label="manifestStatus"
-                          {...manifestForm.register('status')}
-                          onChange={(event) =>
-                            setManifestStatus(event.target.value as ManifestStatus | undefined)
-                          }
-                        >
-                          <option value="NotAssigned">Draft</option>
-                          <option value="Pending">Pending</option>
-                          <option value="Scheduled">Scheduled</option>
-                          <option hidden value="InTransit">
-                            In Transit
-                          </option>
-                          <option hidden value="ReadyForSignature">
-                            Ready for TSDF Signature
-                          </option>
-                          <option hidden value="Signed">
-                            Signed
-                          </option>
-                          <option hidden value="Corrected">
-                            Corrected
-                          </option>
-                          <option hidden value="UnderCorrection">
-                            Under Correction
-                          </option>
-                          <option hidden value="MtnValidationFailed">
-                            MTN Validation Failed
-                          </option>
-                        </HtForm.Select>
-                      </HtForm.Group>
-                    </Col>
-                    <Col>
-                      <HtForm.Group>
-                        <HtForm.Label htmlFor="submissionType" className="mb-0">
-                          Type
-                        </HtForm.Label>
-                        <HtForm.Select
-                          id="submissionType"
-                          disabled={readOnly || !isDraft}
-                          aria-label="submissionType"
-                          {...manifestForm.register('submissionType')}
-                        >
-                          <option value="FullElectronic">Electronic</option>
-                          <option value="Hybrid">Hybrid</option>
-                          <option hidden value="DataImage5Copy">
-                            Data + Image
-                          </option>
-                          <option hidden value="Image">
-                            Image Only
-                          </option>
-                        </HtForm.Select>
-                      </HtForm.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <HtForm.Group>
-                        <HtForm.Label htmlFor="createdDate">
-                          {'Created Date '}
-                          <InfoIconTooltip message={'This field is managed by EPA'} />
-                        </HtForm.Label>
-                        <Form.Control
-                          id="createdDate"
-                          aria-label={'created date'}
-                          plaintext
-                          disabled
-                          type="date"
-                          value={manifestData?.createdDate?.slice(0, 10)}
-                          {...manifestForm.register('createdDate')}
-                          className={errors.createdDate && 'is-invalid'}
-                        />
-                        <div className="invalid-feedback">{errors.createdDate?.message}</div>
-                      </HtForm.Group>
-                    </Col>
-                    <Col>
-                      <HtForm.Group>
-                        <HtForm.Label htmlFor="updatedDate">
-                          {'Last Update Date '}
-                          <InfoIconTooltip message={'This field is managed by EPA'} />
-                        </HtForm.Label>
-                        <Form.Control
-                          id="updatedDate"
-                          plaintext
-                          disabled
-                          type="date"
-                          value={manifestData?.updatedDate?.slice(0, 10)}
-                          {...manifestForm.register('updatedDate')}
-                          className={errors.updatedDate && 'is-invalid'}
-                        />
-                        <div className="invalid-feedback">{errors.updatedDate?.message}</div>
-                      </HtForm.Group>
-                    </Col>
-                    <Col>
-                      <HtForm.Group>
-                        <HtForm.Label htmlFor="shippedDate">
-                          {'Shipped Date '}
-                          <InfoIconTooltip message={'This field is managed by EPA'} />
-                        </HtForm.Label>
-                        <Form.Control
-                          id="shippedDate"
-                          disabled
-                          plaintext
-                          type="date"
-                          value={manifestData?.shippedDate?.slice(0, 10)}
-                          {...manifestForm.register('shippedDate')}
-                          className={errors.shippedDate && 'is-invalid'}
-                        />
-                        <div className="invalid-feedback">
-                          {errors.shippedDate?.message?.toString()}
-                        </div>
-                      </HtForm.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <HtForm.Check
-                        type="checkbox"
-                        id="import"
-                        disabled={readOnly}
-                        label="Imported Waste"
-                        {...manifestForm.register('import')}
-                        className={errors.import && 'is-invalid'}
-                      />
-                      <div className="invalid-feedback">{errors.import?.message}</div>
-                      <HtForm.Check
-                        type="checkbox"
-                        id="rejection"
-                        disabled={readOnly}
-                        label="Rejected Waste"
-                        {...manifestForm.register('rejection')}
-                        className={errors.rejection && 'is-invalid'}
-                      />
-                      <div className="invalid-feedback">{errors.rejection?.message}</div>
-                    </Col>
-                    <Col>
-                      <HtForm.Group>
-                        <HtForm.Label htmlFor="potentialShipDate">Potential Ship Date</HtForm.Label>
-                        <Form.Control
-                          id="potentialShipDate"
-                          disabled={readOnly}
-                          type="date"
-                          {...manifestForm.register('potentialShipDate')}
-                          className={errors.potentialShipDate && 'is-invalid'}
-                        />
-                        <div className="invalid-feedback">{errors.potentialShipDate?.message}</div>
-                      </HtForm.Group>
-                    </Col>
-                  </Row>
+                  <GeneralInfoForm
+                    readOnly={readOnly}
+                    manifestData={manifestData}
+                    isDraft={isDraft}
+                  />
                 </HtCard.Body>
               </HtCard>
               <HtCard id="generator-form-card" title="Generator">
@@ -515,21 +336,21 @@ export function ManifestForm({
                     </>
                   ) : (
                     <>
-                      <Row className="mb-2">
+                      <Stack gap={2}>
                         <HtButton
                           horizontalAlign
                           onClick={toggleShowAddGenerator}
                           children={'Add Generator'}
                           variant="outline-primary"
                         />
-                      </Row>
-                      <Row>
                         <HtButton
+                          horizontalAlign
                           onClick={toggleShowGeneratorForm}
-                          children={'Manually enter The Generator'}
-                          variant="primary"
-                        />
-                      </Row>
+                          variant="outline-secondary"
+                        >
+                          Enter Generator Information
+                        </HtButton>
+                      </Stack>
                     </>
                   )}
                   <ErrorMessage

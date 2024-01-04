@@ -5,7 +5,7 @@ import { SiteSelect, SiteTypeSelect } from 'components/Manifest/SiteSelect';
 import { RcraSite } from 'components/RcraSite';
 import { HtCard, HtSpinner } from 'components/UI';
 import { useTitle } from 'hooks';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Col, Container, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
@@ -23,6 +23,14 @@ export function NewManifest() {
   const { control } = useForm();
   const { siteId } = useParams();
 
+  const updateSiteSelection = (site: RcraSite) => {
+    setManifestingSite(site);
+    setManifestingSiteType(site.siteType);
+    if (site.siteType === 'Generator') {
+      setSelectedSiteType(site.siteType);
+    }
+  };
+
   const selectBySiteId = useMemo(() => {
     return createSelector(
       (res) => res.data,
@@ -39,6 +47,13 @@ export function NewManifest() {
       rcraSite: selectBySiteId(result, siteId),
     }),
   });
+
+  useEffect(() => {
+    if (rcraSite) {
+      updateSiteSelection(rcraSite);
+    }
+  }, [rcraSite]);
+
   const [manifestingSite, setManifestingSite] = useState<RcraSite | undefined>(rcraSite);
   const [selectedSiteType, setSelectedSiteType] = useState<RcraSiteType | undefined>(
     rcraSite?.siteType === 'Generator' ? rcraSite.siteType : undefined
@@ -50,11 +65,7 @@ export function NewManifest() {
   if (isLoading && siteId) return <HtSpinner center />;
 
   const handleSiteChange = (site: any) => {
-    setManifestingSite(site);
-    setManifestingSiteType(site.siteType);
-    if (site.siteType === 'Generator') {
-      setSelectedSiteType(site.siteType);
-    }
+    updateSiteSelection(site);
   };
 
   if (!selectedSiteType || !manifestingSite) {

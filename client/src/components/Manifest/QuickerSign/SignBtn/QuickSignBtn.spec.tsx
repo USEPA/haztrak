@@ -22,14 +22,9 @@ const mockProfile: HaztrakProfileResponse = {
 };
 
 const server = setupServer(...userApiMocks);
-afterEach(() => {
-  cleanup();
-});
+afterEach(() => cleanup());
 beforeAll(() => server.listen());
 afterAll(() => server.close()); // Disable API mocking after the tests are done.
-afterEach(() => {
-  cleanup();
-});
 
 function TestComponent({
   siteType,

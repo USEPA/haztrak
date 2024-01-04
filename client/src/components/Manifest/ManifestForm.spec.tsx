@@ -4,11 +4,14 @@ import userEvent from '@testing-library/user-event';
 import { ManifestForm } from 'components/Manifest';
 import React from 'react';
 import { cleanup, renderWithProviders } from 'test-utils';
-import { afterEach, describe, expect, test } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
+import { setupServer } from 'msw/node';
+import { userApiMocks, wasteApiMocks } from 'test-utils/mock';
 
-afterEach(() => {
-  cleanup();
-});
+const server = setupServer(...userApiMocks, ...wasteApiMocks);
+afterEach(() => cleanup());
+beforeAll(() => server.listen());
+afterAll(() => server.close());
 
 describe('ManifestForm', () => {
   test('renders a Draft manifest', () => {

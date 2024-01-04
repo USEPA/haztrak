@@ -1,4 +1,3 @@
-import { SyncManifestBtn } from 'components/Rcrainfo';
 import { RcraSiteDetails } from 'components/RcraSite';
 import { HtCard, HtSpinner } from 'components/UI';
 import React, { ReactElement } from 'react';
@@ -26,12 +25,9 @@ export function SiteDetails(): ReactElement {
       <Container>
         <Stack className="my-3" gap={2}>
           <div className="pe-0 d-flex flex-row-reverse">
-            <Button variant="outline-success" onClick={() => navigate(`/site/${siteId}/manifest`)}>
+            <Button variant="primary" onClick={() => navigate(`/site/${siteId}/manifest`)}>
               View Manifest
             </Button>
-            <div className="me-2">
-              <SyncManifestBtn siteId={siteId ? siteId : ''} />
-            </div>
           </div>
           <HtCard title={siteId}>
             <HtCard.Body>

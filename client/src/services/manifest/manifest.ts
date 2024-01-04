@@ -1,5 +1,6 @@
 import { Manifest } from 'components/Manifest';
-import { RcraSiteType, SiteType } from 'components/Manifest/manifestSchema';
+import { ManifestStatus, RcraSiteType, SiteType } from 'components/Manifest/manifestSchema';
+import { ProfileSlice } from 'store';
 
 export const manifest = {
   /** Returns EPA ID of the next site that can sign on a manifest or undefined if not applicable. */
@@ -43,18 +44,6 @@ export const manifest = {
     }
     return undefined;
   },
-  rcraSiteTypeToSiteType(rcraSiteType: RcraSiteType | undefined): SiteType | undefined {
-    switch (rcraSiteType) {
-      case 'Generator':
-        return 'generator';
-      case 'Tsdf':
-        return 'designatedFacility';
-      case 'Transporter':
-        return 'transporter';
-      default:
-        return undefined;
-    }
-  },
   siteTypeToRcraSiteType(siteType: SiteType | undefined): RcraSiteType | undefined {
     switch (siteType) {
       case 'generator':
@@ -66,5 +55,22 @@ export const manifest = {
       default:
         return undefined;
     }
+  },
+  getStatusOptions({ manifest, profile }: { manifest: Manifest; profile: ProfileSlice }) {
+    let options: ManifestStatus[] = [];
+    const currentStatus = manifest.status;
+    if (
+      currentStatus === 'NotAssigned' ||
+      currentStatus === 'Pending' ||
+      currentStatus === 'Scheduled'
+    ) {
+      options.push('NotAssigned', 'Pending');
+    }
+    if (manifest.designatedFacility && profile.sites) {
+      if (manifest.designatedFacility.epaSiteId in profile.sites) {
+        options.push('Scheduled');
+      }
+    }
+    return options;
   },
 };

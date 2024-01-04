@@ -11,7 +11,7 @@ interface ManifestActionBtnsProps {
 }
 
 export function ManifestFABs({ onSignClick }: ManifestActionBtnsProps) {
-  const { nextSigningSite, readOnly, status, signAble } = useContext(ManifestContext);
+  const { nextSigningSite, readOnly, signAble } = useContext(ManifestContext);
   const rcraSiteType = manifest.siteTypeToRcraSiteType(nextSigningSite?.siteType);
   let component: ReactElement | undefined = undefined;
   if (!readOnly) {

@@ -1,9 +1,18 @@
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { renderWithProviders, screen } from 'test-utils';
-import { describe, expect, test } from 'vitest';
+import { cleanup, renderWithProviders, screen } from 'test-utils';
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { WasteLineForm } from './WasteLineForm';
+import { setupServer } from 'msw/node';
+import { userApiMocks, wasteApiMocks } from 'test-utils/mock';
+
+const server = setupServer(...userApiMocks, ...wasteApiMocks);
+afterEach(() => {
+  cleanup();
+});
+beforeAll(() => server.listen());
+afterAll(() => server.close());
 
 describe('WasteLineForm', () => {
   test('renders', () => {
