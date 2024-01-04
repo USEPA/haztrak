@@ -42,6 +42,10 @@ export function ManifestStatusField({ readOnly, isDraft }: ManifestStatusFieldPr
         profile: profile,
       })
     : [];
+  // console.log('availableStatuses', availableStatuses);
+  // console.log('profile', profile);
+  // console.log('statusOptions', statusOptions);
+  // console.log('manifest values', manifestForm.getValues());
 
   return (
     <HtForm.Group>
@@ -66,7 +70,14 @@ export function ManifestStatusField({ readOnly, isDraft }: ManifestStatusFieldPr
           if (option) setStatus(option.value);
         }}
         options={statusOptions}
-        filterOption={(option) => availableStatuses.includes(option.value as ManifestStatus)}
+        filterOption={(option) =>
+          // Hide options that are managed by EPA
+          availableStatuses.includes(option.value as ManifestStatus) || option.value === 'Scheduled'
+        }
+        isOptionDisabled={(option) =>
+          // Disable the 'Scheduled' option if it's not available
+          option.value === 'Scheduled' && !availableStatuses.includes('Scheduled')
+        }
         components={{ IndicatorSeparator: () => null, DropdownIndicator: () => null }}
       />
     </HtForm.Group>
