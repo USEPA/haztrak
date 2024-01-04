@@ -10,14 +10,10 @@ afterEach(() => {
 
 describe('Manifest General Info Form', () => {
   test('renders', () => {
-    renderWithProviders(
-      <GeneralInfoForm isDraft={true} setManifestStatus={() => undefined} readOnly={false} />
-    );
+    renderWithProviders(<GeneralInfoForm isDraft={true} readOnly={false} />);
   });
   test('is editable if not readOnly', () => {
-    renderWithProviders(
-      <GeneralInfoForm isDraft={true} setManifestStatus={() => undefined} readOnly={false} />
-    );
+    renderWithProviders(<GeneralInfoForm isDraft={true} readOnly={false} />);
     expect(screen.getByLabelText(/Potential Ship Date/i)).toBeEnabled();
   });
 });

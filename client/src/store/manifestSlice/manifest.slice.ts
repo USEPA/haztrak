@@ -3,9 +3,11 @@ import { ManifestStatus } from 'components/Manifest/manifestSchema';
 
 export interface ManifestSlice {
   status?: ManifestStatus;
+  readOnly: boolean;
 }
 
 const initialState: ManifestSlice = {
+  readOnly: true,
   status: 'NotAssigned',
 };
 
@@ -14,6 +16,7 @@ export const manifestSlice = createSlice({
   initialState,
   selectors: {
     selectManifestStatus: (state) => state.status,
+    selectManifestReadOnly: (state) => state.readOnly,
   },
   reducers: {
     setStatus: (state, action: PayloadAction<ManifestStatus>) => {
@@ -27,4 +30,4 @@ export const manifestSlice = createSlice({
 
 export default manifestSlice.reducer;
 export const { setStatus } = manifestSlice.actions;
-export const { selectManifestStatus } = manifestSlice.selectors;
+export const { selectManifestStatus, selectManifestReadOnly } = manifestSlice.selectors;
