@@ -2,9 +2,11 @@ import { manifest } from 'services/manifest/manifest';
 import {
   createMockManifest,
   createMockMTNHandler,
+  createMockSite,
   createMockTransporter,
 } from 'test-utils/fixtures';
 import { describe, expect, test } from 'vitest';
+import { ProfileSlice } from 'store';
 
 describe('manifest.getNextSigner', () => {
   test('returns the the generator if scheduled and no generator signature present', () => {
@@ -73,4 +75,39 @@ describe('manifest.getNextSigner', () => {
       expect(result).toBe(undefined);
     }
   );
+  test('getStatusOptions returns pending and NotAssigned', () => {
+    const mockManifest = createMockManifest({
+      status: 'NotAssigned',
+    });
+    const mockHaztrakSite = createMockSite();
+    const profile: ProfileSlice = {
+      user: 'testuser1',
+      sites: {
+        [mockHaztrakSite.handler.epaSiteId]: {
+          ...mockHaztrakSite,
+          permissions: { eManifest: 'signer' },
+        },
+      },
+    };
+    const options = manifest.getStatusOptions({ manifest: mockManifest, profile });
+    expect(options).toEqual(['NotAssigned', 'Pending']);
+  });
+  test('getStatusOptions includes Scheduled if user has access to the TSDF', () => {
+    const mockHaztrakSite = createMockSite();
+    const profile: ProfileSlice = {
+      user: 'testuser1',
+      sites: {
+        [mockHaztrakSite.handler.epaSiteId]: {
+          ...mockHaztrakSite,
+          permissions: { eManifest: 'signer' },
+        },
+      },
+    };
+    const mockManifest = createMockManifest({
+      status: 'NotAssigned',
+      designatedFacility: mockHaztrakSite.handler,
+    });
+    const options = manifest.getStatusOptions({ manifest: mockManifest, profile });
+    expect(options).toEqual(['NotAssigned', 'Pending', 'Scheduled']);
+  });
 });

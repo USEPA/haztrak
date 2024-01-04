@@ -4,11 +4,13 @@ import authReducers from 'store/authSlice/auth.slice';
 import { haztrakApi } from 'store/htApi.slice';
 import errorReducers from './errorSlice/error.slice';
 import notificationReducers from './notificationSlice/notification.slice';
+import manifestReducers from './manifestSlice/manifest.slice';
 
 const rootReducer = combineReducers({
   auth: authReducers,
   error: errorReducers,
   notifications: notificationReducers,
+  manifest: manifestReducers,
   [haztrakApi.reducerPath]: haztrakApi.reducer,
 });
 

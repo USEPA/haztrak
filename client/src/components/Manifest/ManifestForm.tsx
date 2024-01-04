@@ -12,13 +12,14 @@ import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
 import { HtButton, HtCard, HtForm } from 'components/UI';
 import React, { createContext, useEffect, useMemo, useState } from 'react';
-import { Alert, Button, Col, Container, Row, Stack } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { manifest } from 'services';
 import {
   ProfileSlice,
+  useAppDispatch,
   useCreateManifestMutation,
   useGetProfileQuery,
   useSaveEManifestMutation,
@@ -26,10 +27,11 @@ import {
 } from 'store';
 import { ContactForm, PhoneForm } from './Contact';
 import { AddHandler, GeneratorForm, Handler } from './Handler';
-import { Manifest, manifestSchema, ManifestStatus, SiteType } from './manifestSchema';
+import { Manifest, manifestSchema, SiteType } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal, QuickSignBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
 import { EditWasteModal, WasteLineTable } from './WasteLine';
+import { setStatus } from 'store/manifestSlice/manifest.slice';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -40,7 +42,6 @@ const defaultValues: Manifest = {
 
 export interface ManifestContextType {
   trackingNumber?: string;
-  status?: ManifestStatus;
   generatorStateCode?: string;
   setGeneratorStateCode: React.Dispatch<React.SetStateAction<string | undefined>>;
   tsdfStateCode?: string;
@@ -55,7 +56,6 @@ export interface ManifestContextType {
 
 export const ManifestContext = createContext<ManifestContextType>({
   trackingNumber: undefined,
-  status: undefined,
   generatorStateCode: undefined,
   setGeneratorStateCode: () => {},
   tsdfStateCode: undefined,
@@ -90,6 +90,7 @@ export function ManifestForm({
   mtn,
 }: ManifestFormProps) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   // Use default values, override with manifestData if provided
   let values: Manifest = defaultValues;
@@ -99,6 +100,11 @@ export function ManifestForm({
       ...manifestData,
     };
   }
+
+  // Redux manifest slice
+  useEffect(() => {
+    dispatch(setStatus(values.status));
+  }, [dispatch, values]);
 
   // State related to inter-system communications with EPA's RCRAInfo system
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
@@ -237,10 +243,6 @@ export function ManifestForm({
     name: 'wastes',
   });
 
-  const [manifestStatus, setManifestStatus] = useState<ManifestStatus | undefined>(
-    manifestData?.status
-  );
-
   const selectUserSiteIds = useMemo(
     () =>
       createSelector(
@@ -270,7 +272,6 @@ export function ManifestForm({
       <ManifestContext.Provider
         value={{
           trackingNumber: mtn,
-          status: manifestStatus,
           generatorStateCode: generatorStateCode,
           setGeneratorStateCode: setGeneratorStateCode,
           tsdfStateCode: tsdfStateCode,
@@ -299,7 +300,6 @@ export function ManifestForm({
                   <GeneralInfoForm
                     readOnly={readOnly}
                     manifestData={manifestData}
-                    setManifestStatus={setManifestStatus}
                     isDraft={isDraft}
                   />
                 </HtCard.Body>
@@ -340,21 +340,21 @@ export function ManifestForm({
                     </>
                   ) : (
                     <>
-                      <Row className="mb-2">
+                      <Stack gap={2}>
                         <HtButton
                           horizontalAlign
                           onClick={toggleShowAddGenerator}
                           children={'Add Generator'}
                           variant="outline-primary"
                         />
-                      </Row>
-                      <Row>
                         <HtButton
+                          horizontalAlign
                           onClick={toggleShowGeneratorForm}
-                          children={'Manually enter The Generator'}
-                          variant="primary"
-                        />
-                      </Row>
+                          variant="outline-secondary"
+                        >
+                          Enter Generator Information
+                        </HtButton>
+                      </Stack>
                     </>
                   )}
                   <ErrorMessage

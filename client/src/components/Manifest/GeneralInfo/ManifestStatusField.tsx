@@ -2,19 +2,17 @@ import { Manifest, ManifestStatus } from 'components/Manifest/manifestSchema';
 import { HtForm, InfoIconTooltip } from 'components/UI';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useAppDispatch } from 'store';
+import { setStatus } from 'store/manifestSlice/manifest.slice';
 
 interface ManifestStatusFieldProps {
   readOnly?: boolean;
   isDraft?: boolean;
-  setManifestStatus: (status: ManifestStatus | undefined) => void;
 }
 
-export function ManifestStatusField({
-  readOnly,
-  isDraft,
-  setManifestStatus,
-}: ManifestStatusFieldProps) {
+export function ManifestStatusField({ readOnly, isDraft }: ManifestStatusFieldProps) {
   const manifestForm = useFormContext<Manifest>();
+  const dispatch = useAppDispatch();
   return (
     <HtForm.Group>
       <HtForm.Label htmlFor="status" className="mb-0">
@@ -29,7 +27,9 @@ export function ManifestStatusField({
         aria-label="manifestStatus"
         {...manifestForm.register('status')}
         defaultValue={'NotAssigned'}
-        onChange={(event) => setManifestStatus(event.target.value as ManifestStatus | undefined)}
+        onChange={(event) => {
+          dispatch(setStatus(event.target.value as ManifestStatus));
+        }}
       >
         <option value="NotAssigned">Draft</option>
         <option value="Pending">Pending</option>

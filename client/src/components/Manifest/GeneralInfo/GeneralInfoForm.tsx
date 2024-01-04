@@ -9,15 +9,9 @@ interface GeneralInfoFormProps {
   manifestData?: Partial<Manifest>;
   readOnly?: boolean;
   isDraft?: boolean;
-  setManifestStatus: (status: ManifestStatus | undefined) => void;
 }
 
-export function GeneralInfoForm({
-  manifestData,
-  readOnly,
-  isDraft,
-  setManifestStatus,
-}: GeneralInfoFormProps) {
+export function GeneralInfoForm({ manifestData, readOnly, isDraft }: GeneralInfoFormProps) {
   const manifestForm = useFormContext<Manifest>();
   const { errors } = manifestForm.formState;
   return (
@@ -43,11 +37,7 @@ export function GeneralInfoForm({
           </HtForm.Group>
         </Col>
         <Col>
-          <ManifestStatusField
-            setManifestStatus={setManifestStatus}
-            readOnly={readOnly}
-            isDraft={isDraft}
-          />
+          <ManifestStatusField readOnly={readOnly} isDraft={isDraft} />
         </Col>
         <Col>
           <HtForm.Group>
