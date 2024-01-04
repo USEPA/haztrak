@@ -59,7 +59,11 @@ export const manifest = {
   getStatusOptions({ manifest, profile }: { manifest: Manifest; profile: ProfileSlice }) {
     let options: ManifestStatus[] = [];
     const currentStatus = manifest.status;
-    if (currentStatus === 'NotAssigned') {
+    if (
+      currentStatus === 'NotAssigned' ||
+      currentStatus === 'Pending' ||
+      currentStatus === 'Scheduled'
+    ) {
       options.push('NotAssigned', 'Pending');
     }
     if (manifest.designatedFacility && profile.sites) {

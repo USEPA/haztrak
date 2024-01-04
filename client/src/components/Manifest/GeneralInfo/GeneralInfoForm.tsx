@@ -1,15 +1,23 @@
 import { ManifestStatusField } from 'components/Manifest/GeneralInfo/ManifestStatusField';
-import { Manifest, ManifestStatus } from 'components/Manifest/manifestSchema';
+import { Manifest, SubmissionType } from 'components/Manifest/manifestSchema';
 import { HtForm, InfoIconTooltip } from 'components/UI';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
+import Select from 'react-select';
 
 interface GeneralInfoFormProps {
   manifestData?: Partial<Manifest>;
   readOnly?: boolean;
   isDraft?: boolean;
 }
+
+const submissionTypeOptions: Array<{ value: SubmissionType; label: string }> = [
+  { value: 'FullElectronic', label: 'Electronic' },
+  { value: 'Hybrid', label: 'Hybrid' },
+  { value: 'DataImage5Copy', label: 'Data + Image' },
+  { value: 'Image', label: 'Image Only' },
+];
 
 export function GeneralInfoForm({ manifestData, readOnly, isDraft }: GeneralInfoFormProps) {
   const manifestForm = useFormContext<Manifest>();
@@ -44,21 +52,24 @@ export function GeneralInfoForm({ manifestData, readOnly, isDraft }: GeneralInfo
             <HtForm.Label htmlFor="submissionType" className="mb-0">
               Type
             </HtForm.Label>
-            <HtForm.Select
+            <Select
               id="submissionType"
-              disabled={readOnly || !isDraft}
+              isDisabled={readOnly || !isDraft}
               aria-label="submissionType"
               {...manifestForm.register('submissionType')}
-            >
-              <option value="FullElectronic">Electronic</option>
-              <option value="Hybrid">Hybrid</option>
-              <option hidden value="DataImage5Copy">
-                Data + Image
-              </option>
-              <option hidden value="Image">
-                Image Only
-              </option>
-            </HtForm.Select>
+              options={submissionTypeOptions}
+              getOptionValue={(option) => option.value}
+              defaultValue={submissionTypeOptions[0]}
+              onChange={(option) => {
+                if (option) manifestForm.setValue('submissionType', option.value);
+              }}
+              filterOption={(option) => {
+                return (
+                  option.label.toLowerCase().includes('electronic') ||
+                  option.label.toLowerCase().includes('hybrid')
+                );
+              }}
+            />
           </HtForm.Group>
         </Col>
       </Row>

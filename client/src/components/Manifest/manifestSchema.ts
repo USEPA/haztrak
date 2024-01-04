@@ -69,6 +69,11 @@ export type ManifestStatus = z.infer<typeof manifestStatusEnum>;
 /**  The Manifest Transporter type extends the Handler schema*/
 export type Transporter = z.infer<typeof transporterSchema>;
 
+const submissionTypeEnum = z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image']);
+
+/** The type of submission for a manifest*/
+export type SubmissionType = z.infer<typeof submissionTypeEnum>;
+
 /** A signer of a hazardous waste manifest*/
 export type Signer = z.infer<typeof signerSchema>;
 /** RCRAInfo electronic signature definition*/
@@ -81,7 +86,8 @@ export const manifestSchema = z
     /** The last date-time manifest was updated in the e-Manifest system, managed by EPA's systems.*/
     updatedDate: z.string().optional(),
     /** The date-time the waste shipment departed the generator. Managed by EPA's systems*/
-    shippedDate: z.string().optional(),
+    shippedDate: submissionTypeEnum.optional(),
+    submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image']),
     import: z.boolean().optional(),
     rejection: z.boolean().optional(),
     potentialShipDate: z
@@ -101,7 +107,6 @@ export const manifestSchema = z
     transporters: z.array(transporterSchema),
     wastes: z.array(z.any()),
     designatedFacility: handlerSchema.optional(),
-    submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image']),
     additionalInfo: additionalInfoSchema.optional(),
   })
   .refine(

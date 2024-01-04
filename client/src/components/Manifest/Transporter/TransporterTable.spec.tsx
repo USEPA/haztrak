@@ -2,10 +2,12 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { Transporter } from 'components/Manifest';
 import React from 'react';
-import { renderWithProviders, screen } from 'test-utils';
+import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockTransporter } from 'test-utils/fixtures';
-import { describe, expect, test } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { TransporterTable } from './index';
+import { setupServer } from 'msw/node';
+import { userApiMocks } from 'test-utils/mock';
 
 const HANDLER_ID_1 = 'siteId1';
 const HANDLER_ID_2 = 'siteId2';
@@ -22,6 +24,10 @@ const TRAN_ARRAY: Array<Transporter> = [
     ...createMockTransporter({ epaSiteId: HANDLER_ID_2, name: HANDLER_NAME_2, order: 2 }),
   },
 ];
+const server = setupServer(...userApiMocks);
+afterEach(() => cleanup());
+beforeAll(() => server.listen());
+afterAll(() => server.close());
 
 describe('TransporterTable', () => {
   test('renders an array of transporter', () => {

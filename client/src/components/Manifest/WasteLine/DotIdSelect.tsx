@@ -48,7 +48,7 @@ export function DotIdSelect() {
         render={({ field }) => {
           return (
             <Select
-              id={'idNumber'}
+              id="idNumber"
               {...field}
               value={field.value ? { label: field.value, value: field.value } : null}
               options={dotIdNumbers}
