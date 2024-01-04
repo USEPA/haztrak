@@ -30,7 +30,7 @@ interface ManifestStatusFieldProps {
 }
 
 /** uniform hazardous waste manifest status field. */
-export function ManifestStatusField({ readOnly, isDraft }: ManifestStatusFieldProps) {
+export function ManifestStatusSelect({ readOnly, isDraft }: ManifestStatusFieldProps) {
   const [status, setStatus] = useManifestStatus();
   const selectedStatus = statusOptions.filter((value) => value.value === status);
   const manifestForm = useFormContext<Manifest>();
@@ -42,10 +42,6 @@ export function ManifestStatusField({ readOnly, isDraft }: ManifestStatusFieldPr
         profile: profile,
       })
     : [];
-  // console.log('availableStatuses', availableStatuses);
-  // console.log('profile', profile);
-  // console.log('statusOptions', statusOptions);
-  // console.log('manifest values', manifestForm.getValues());
 
   return (
     <HtForm.Group>
