@@ -32,8 +32,8 @@ export function renderWithProviders(
   ui: React.ReactElement,
   {
     preloadedState = {}, // an object with partial slices of our redux state
-    useFormProps = {},
     store = setupStore(preloadedState), // Automatically create a store instance if no store was passed in
+    useFormProps = {}, // react-hook-form useForm function options
     ...renderOptions // react-testing library function options
   }: ExtendedRenderOptions = {} // default to empty object
 ) {

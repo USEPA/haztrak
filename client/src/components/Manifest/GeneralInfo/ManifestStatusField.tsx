@@ -3,13 +3,17 @@ import { HtForm, InfoIconTooltip } from 'components/UI';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-interface ManifestStatusProps {
+interface ManifestStatusFieldProps {
   readOnly?: boolean;
   isDraft?: boolean;
   setManifestStatus: (status: ManifestStatus | undefined) => void;
 }
 
-export function ManifestStatusField({ readOnly, isDraft, setManifestStatus }: ManifestStatusProps) {
+export function ManifestStatusField({
+  readOnly,
+  isDraft,
+  setManifestStatus,
+}: ManifestStatusFieldProps) {
   const manifestForm = useFormContext<Manifest>();
   return (
     <HtForm.Group>
@@ -24,6 +28,7 @@ export function ManifestStatusField({ readOnly, isDraft, setManifestStatus }: Ma
         disabled={readOnly || !isDraft}
         aria-label="manifestStatus"
         {...manifestForm.register('status')}
+        defaultValue={'NotAssigned'}
         onChange={(event) => setManifestStatus(event.target.value as ManifestStatus | undefined)}
       >
         <option value="NotAssigned">Draft</option>

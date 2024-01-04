@@ -3,10 +3,33 @@ import { ManifestStatusField } from 'components/Manifest/GeneralInfo/ManifestSta
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { afterEach, describe, expect, test } from 'vitest';
+import { Manifest } from 'components/Manifest/manifestSchema';
+import { useFormContext } from 'react-hook-form';
 
 afterEach(() => {
   cleanup();
 });
+
+interface TestComponentProps {
+  isDraft?: boolean;
+  setManifestStatus?: (status: string | undefined) => void;
+  readOnly?: boolean;
+}
+
+const TestComponent = ({ isDraft, setManifestStatus, readOnly }: TestComponentProps) => {
+  const setStatusFn = setManifestStatus ? setManifestStatus : () => undefined;
+  const isDraftVal = isDraft !== undefined ? isDraft : true;
+  const readOnlyVal = readOnly !== undefined ? readOnly : false;
+  return (
+    <>
+      <ManifestStatusField
+        isDraft={isDraftVal}
+        setManifestStatus={setStatusFn}
+        readOnly={readOnlyVal}
+      />
+    </>
+  );
+};
 
 describe('Manifest Status Field', () => {
   test('renders', () => {
@@ -26,22 +49,10 @@ describe('Manifest Status Field', () => {
     );
     expect(screen.getByLabelText(/Status/i)).not.toBeDisabled();
   });
-  test('new manifest options are pending and draft if no designated facility access', () => {
-    renderWithProviders(
-      <ManifestStatusField isDraft={true} setManifestStatus={() => undefined} readOnly={false} />
-    );
-    // expect(screen.getByLabelText(/Status/i)).not.toBeDisabled();
-    const options = screen.getAllByRole('option');
-    // screen.debug(undefined, Infinity);
-
-    options.forEach((option) => {
-      console.log(option);
-      expect(option).toBeVisible();
-      // if (option.textContent === 'draft' || option.textContent === 'pending') {
-      //   expect(option).toBeVisible()
-      // } else {
-      //   expect(option).not.toBeVisible();
-      // }
-    });
+  test('new manifest are draft by default', async () => {
+    renderWithProviders(<TestComponent />);
+    const combobox = screen.getByRole('combobox');
+    expect(combobox).toHaveValue('NotAssigned');
+    expect(combobox).toBeEnabled();
   });
 });
