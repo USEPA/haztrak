@@ -2,10 +2,10 @@ import { Manifest, ManifestStatus } from 'components/Manifest/manifestSchema';
 import { HtForm, InfoIconTooltip } from 'components/UI';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useAppDispatch, useAppSelector, useGetProfileQuery } from 'store';
-import { selectManifestStatus, setStatus } from 'store/manifestSlice/manifest.slice';
+import { useGetProfileQuery } from 'store';
 import { manifest } from 'services';
 import Select, { SingleValue } from 'react-select';
+import { useManifestStatus } from 'hooks/manifest';
 
 interface StatusOption {
   value: ManifestStatus;
@@ -31,18 +31,18 @@ interface ManifestStatusFieldProps {
 
 /** uniform hazardous waste manifest status field. */
 export function ManifestStatusField({ readOnly, isDraft }: ManifestStatusFieldProps) {
-  const dispatch = useAppDispatch();
-  const status = statusOptions.filter(
-    (value) => value.value === useAppSelector(selectManifestStatus)
-  );
+  const [status, setStatus] = useManifestStatus();
+  const selectedStatus = statusOptions.filter((value) => value.value === status);
   const manifestForm = useFormContext<Manifest>();
   const { data: profile, isLoading: profileLoading } = useGetProfileQuery();
 
-  const availableStatuses = manifest.getStatusOptions({
-    manifest: manifestForm.getValues(),
-    // @ts-ignore
-    profile: profile,
-  });
+  const availableStatuses: Array<ManifestStatus> = profile
+    ? manifest.getStatusOptions({
+        manifest: manifestForm.getValues(),
+        profile: profile,
+      })
+    : [];
+
   return (
     <HtForm.Group>
       <HtForm.Label htmlFor="status" className="mb-0">
@@ -57,13 +57,13 @@ export function ManifestStatusField({ readOnly, isDraft }: ManifestStatusFieldPr
         data-testid="manifestStatus"
         aria-label="manifestStatus"
         {...manifestForm.register('status')}
-        value={status}
+        value={selectedStatus}
         isLoading={profileLoading || !profile}
         classNames={{
           control: () => 'form-select py-0 rounded-3',
         }}
         onChange={(option: SingleValue<StatusOption>) => {
-          if (option) dispatch(setStatus(option.value));
+          if (option) setStatus(option.value);
         }}
         options={statusOptions}
         filterOption={(option) => availableStatuses.includes(option.value as ManifestStatus)}

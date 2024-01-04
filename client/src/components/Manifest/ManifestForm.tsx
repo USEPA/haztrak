@@ -31,7 +31,7 @@ import { Manifest, manifestSchema, SiteType } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal, QuickSignBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
 import { EditWasteModal, WasteLineTable } from './WasteLine';
-import { setStatus } from 'store/manifestSlice/manifest.slice';
+import { useManifestStatus } from 'hooks/manifest';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -100,11 +100,7 @@ export function ManifestForm({
       ...manifestData,
     };
   }
-
-  // Redux manifest slice
-  useEffect(() => {
-    dispatch(setStatus(values.status));
-  }, [dispatch, values]);
+  useManifestStatus(values.status);
 
   // State related to inter-system communications with EPA's RCRAInfo system
   const [showSpinner, setShowSpinner] = useState<boolean>(false);

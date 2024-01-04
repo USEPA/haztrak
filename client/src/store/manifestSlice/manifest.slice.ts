@@ -8,7 +8,7 @@ export interface ManifestSlice {
 
 const initialState: ManifestSlice = {
   readOnly: true,
-  status: 'NotAssigned',
+  status: undefined,
 };
 
 export const manifestSlice = createSlice({
@@ -19,7 +19,7 @@ export const manifestSlice = createSlice({
     selectManifestReadOnly: (state) => state.readOnly,
   },
   reducers: {
-    setStatus: (state, action: PayloadAction<ManifestStatus>) => {
+    setManifestStatus: (state, action: PayloadAction<ManifestStatus | undefined>) => {
       return {
         ...state,
         status: action.payload,
@@ -29,5 +29,5 @@ export const manifestSlice = createSlice({
 });
 
 export default manifestSlice.reducer;
-export const { setStatus } = manifestSlice.actions;
+export const { setManifestStatus } = manifestSlice.actions;
 export const { selectManifestStatus, selectManifestReadOnly } = manifestSlice.selectors;

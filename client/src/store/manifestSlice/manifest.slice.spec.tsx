@@ -3,7 +3,7 @@ import { afterEach, describe, expect, test } from 'vitest';
 import reducer, {
   ManifestSlice,
   selectManifestReadOnly,
-  setStatus,
+  setManifestStatus,
 } from 'store/manifestSlice/manifest.slice';
 import { useAppSelector } from 'store';
 import { renderWithProviders, screen } from 'test-utils';
@@ -22,7 +22,7 @@ const TestComponent = () => {
 
 describe('Manifest slice', () => {
   test('sets the manifest status', () => {
-    const state: ManifestSlice = reducer(undefined, setStatus('NotAssigned'));
+    const state: ManifestSlice = reducer(undefined, setManifestStatus('NotAssigned'));
     expect(state.status).toBe('NotAssigned');
   });
   test('manifest slice is read only be default', () => {
