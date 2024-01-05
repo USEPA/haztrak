@@ -7,6 +7,7 @@ import { ManifestFABs } from 'components/Manifest/Actions/ManifestFABs';
 import { ManifestSaveBtn } from 'components/Manifest/Actions/ManifestSaveBtn';
 import { AdditionalInfoForm } from 'components/Manifest/AdditionalInfo';
 import { GeneralInfoForm } from 'components/Manifest/GeneralInfo/GeneralInfoForm';
+import { TsdfSection } from 'components/Manifest/Handler/TsdfSection';
 import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
@@ -427,52 +428,12 @@ export function ManifestForm({
               </HtCard>
               <HtCard id="tsdf-form-card" title="Designated Facility">
                 <HtCard.Body className="pb-4">
-                  {tsdf ? (
-                    <>
-                      <RcraSiteDetails handler={tsdf} />
-                      <div className="d-flex justify-content-between">
-                        {/* Button to bring up the Quicker Sign modal*/}
-                        <Col className="text-end">
-                          <QuickSignBtn
-                            siteType={'Tsdf'}
-                            mtnHandler={tsdf}
-                            onClick={setupSign}
-                            disabled={tsdf.signed || !signAble}
-                          />
-                        </Col>
-                      </div>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  {readOnly || tsdf ? (
-                    <HtButton
-                      onClick={() => {
-                        manifestForm.setValue('designatedFacility', undefined);
-                      }}
-                      children={'Remove TSDF'}
-                      variant="outline-danger"
-                      horizontalAlign
-                    />
-                  ) : (
-                    <HtButton
-                      onClick={toggleTsdfFormShow}
-                      children={'Add TSDF'}
-                      variant="outline-primary"
-                      horizontalAlign
-                    />
-                  )}
-                  <ErrorMessage
-                    errors={errors}
-                    name={'designatedFacility'}
-                    render={({ message }) => {
-                      if (!message) return null;
-                      return (
-                        <Alert variant="danger" className="text-center m-3">
-                          {message}
-                        </Alert>
-                      );
-                    }}
+                  <TsdfSection
+                    tsdf={tsdf}
+                    readOnly={readOnly}
+                    setupSign={setupSign}
+                    signAble={signAble}
+                    toggleTsdfFormShow={toggleTsdfFormShow}
                   />
                 </HtCard.Body>
               </HtCard>
