@@ -11,6 +11,7 @@ import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
 import { HtButton, HtCard, HtForm } from 'components/UI';
+import { useManifestStatus } from 'hooks/manifest';
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Container, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
@@ -19,7 +20,6 @@ import { toast } from 'react-toastify';
 import { manifest } from 'services';
 import {
   ProfileSlice,
-  useAppDispatch,
   useCreateManifestMutation,
   useGetProfileQuery,
   useSaveEManifestMutation,
@@ -31,7 +31,6 @@ import { Manifest, manifestSchema, SiteType } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal, QuickSignBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
 import { EditWasteModal, WasteLineTable } from './WasteLine';
-import { useManifestStatus } from 'hooks/manifest';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -90,7 +89,6 @@ export function ManifestForm({
   mtn,
 }: ManifestFormProps) {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   // Use default values, override with manifestData if provided
   let values: Manifest = defaultValues;
@@ -262,6 +260,8 @@ export function ManifestForm({
   const signAble = userSiteIds.includes(nextSigner?.epaSiteId ?? '');
 
   const isDraft = manifestData?.manifestTrackingNumber === undefined;
+
+  console.log(manifestForm.watch('designatedFacility'));
 
   return (
     <Container className="mb-5">
@@ -446,7 +446,14 @@ export function ManifestForm({
                     <></>
                   )}
                   {readOnly || tsdf ? (
-                    <></>
+                    <HtButton
+                      onClick={() => {
+                        manifestForm.setValue('designatedFacility', undefined);
+                      }}
+                      children={'Remove TSDF'}
+                      variant="outline-danger"
+                      horizontalAlign
+                    />
                   ) : (
                     <HtButton
                       onClick={toggleTsdfFormShow}
