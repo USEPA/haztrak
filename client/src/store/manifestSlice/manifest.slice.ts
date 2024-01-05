@@ -17,17 +17,19 @@ export const manifestSlice = createSlice({
   selectors: {
     selectManifestStatus: (state) => state.status,
     selectManifestReadOnly: (state) => state.readOnly,
+    selectManifestEditable: (state) => !state.readOnly,
   },
   reducers: {
     setManifestStatus: (state, action: PayloadAction<ManifestStatus | undefined>) => {
-      return {
-        ...state,
-        status: action.payload,
-      };
+      state.status = action.payload;
+    },
+    setManifestReadOnly: (state, action: PayloadAction<boolean>) => {
+      state.readOnly = action.payload;
     },
   },
 });
 
 export default manifestSlice.reducer;
-export const { setManifestStatus } = manifestSlice.actions;
-export const { selectManifestStatus, selectManifestReadOnly } = manifestSlice.selectors;
+export const { setManifestStatus, setManifestReadOnly } = manifestSlice.actions;
+export const { selectManifestStatus, selectManifestReadOnly, selectManifestEditable } =
+  manifestSlice.selectors;

@@ -2,6 +2,7 @@ import { Manifest } from 'components/Manifest';
 import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { WasteRowActions } from 'components/Manifest/WasteLine/WasteLineTable/WasteRowActions';
+import { useReadOnly } from 'hooks/manifest';
 import React, { useContext } from 'react';
 import { Table } from 'react-bootstrap';
 import { UseFieldArrayReturn } from 'react-hook-form';
@@ -10,17 +11,11 @@ interface WasteLineTableProps {
   wastes: Array<WasteLine>;
   toggleWLModal: () => void;
   wasteForm: UseFieldArrayReturn<Manifest, 'wastes'>;
-  readonly?: boolean;
 }
 
-export function WasteLineTable({
-  wastes,
-  toggleWLModal,
-  wasteForm,
-  readonly,
-}: WasteLineTableProps) {
-  const { editWasteLineIndex, setEditWasteLineIndex } =
-    useContext<ManifestContextType>(ManifestContext);
+export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTableProps) {
+  const { setEditWasteLineIndex } = useContext<ManifestContextType>(ManifestContext);
+  const [readonly] = useReadOnly();
   if (!wastes || wastes.length < 1) {
     return <></>;
   }

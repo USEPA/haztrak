@@ -3,29 +3,24 @@ import { Handler, Manifest } from 'components/Manifest/manifestSchema';
 import { QuickSignBtn } from 'components/Manifest/QuickerSign';
 import { RcraSiteDetails } from 'components/RcraSite';
 import { HtButton } from 'components/UI';
+import { useReadOnly } from 'hooks/manifest';
 import React from 'react';
 import { Alert, Col } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 
 interface TsdfSectionProps {
   tsdf?: Handler;
-  readOnly?: boolean;
   setupSign: () => void;
   signAble: boolean;
   toggleTsdfFormShow: () => void;
 }
 
-export function TsdfSection({
-  tsdf,
-  readOnly,
-  signAble,
-  setupSign,
-  toggleTsdfFormShow,
-}: TsdfSectionProps) {
+export function TsdfSection({ tsdf, signAble, setupSign, toggleTsdfFormShow }: TsdfSectionProps) {
   const {
     formState: { errors },
     ...manifestForm
   } = useFormContext<Manifest>();
+  const [readOnly] = useReadOnly();
   return (
     <>
       {tsdf ? (

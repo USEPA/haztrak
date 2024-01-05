@@ -1,16 +1,17 @@
 import { Manifest } from 'components/Manifest';
 import { PhoneForm } from 'components/Manifest/Contact/PhoneForm';
 import { HtForm } from 'components/UI';
+import { useReadOnly } from 'hooks/manifest';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 
 interface ContactFormProps {
   handlerType: 'generator' | 'designatedFacility';
-  readOnly?: boolean;
 }
 
-export function ContactForm({ handlerType, readOnly }: ContactFormProps) {
+export function ContactForm({ handlerType }: ContactFormProps) {
+  const [readOnly] = useReadOnly();
   const namePrefix = `${handlerType}.contact`;
   const { register } = useFormContext<Manifest>();
 

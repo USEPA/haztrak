@@ -13,6 +13,7 @@ import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
 import { HtButton, HtCard, HtForm } from 'components/UI';
 import { useManifestStatus } from 'hooks/manifest';
+import { useReadOnly } from 'hooks/manifest/useReadOnly/useReadOnly';
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Container, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
@@ -50,7 +51,6 @@ export interface ManifestContextType {
   setEditWasteLineIndex: React.Dispatch<React.SetStateAction<number | undefined>>;
   nextSigningSite?: { epaSiteId: string; siteType: SiteType; transporterOrder?: number };
   viewingAsSiteId?: string;
-  readOnly?: boolean;
   signAble?: boolean;
 }
 
@@ -64,8 +64,6 @@ export const ManifestContext = createContext<ManifestContextType>({
   setEditWasteLineIndex: () => {},
   nextSigningSite: undefined,
   viewingAsSiteId: undefined,
-  readOnly: true,
-  signAble: false,
 });
 
 interface ManifestFormProps {
@@ -84,7 +82,7 @@ interface ManifestFormProps {
  * @constructor
  */
 export function ManifestForm({
-  readOnly,
+  readOnly: propReadOnly,
   manifestData,
   manifestingSiteID,
   mtn,
@@ -100,6 +98,7 @@ export function ManifestForm({
     };
   }
   useManifestStatus(values.status);
+  const [readOnly] = useReadOnly(propReadOnly !== undefined ? propReadOnly : false);
 
   // State related to inter-system communications with EPA's RCRAInfo system
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
@@ -262,8 +261,6 @@ export function ManifestForm({
 
   const isDraft = manifestData?.manifestTrackingNumber === undefined;
 
-  console.log(manifestForm.watch('designatedFacility'));
-
   return (
     <Container className="mb-5">
       <ManifestContext.Provider
@@ -277,7 +274,6 @@ export function ManifestForm({
           setEditWasteLineIndex: setEditWasteLine,
           nextSigningSite: manifest.getNextSigner(manifestData),
           viewingAsSiteId: manifestingSiteID,
-          readOnly: readOnly,
           signAble: signAble,
         }}
       >
@@ -294,11 +290,7 @@ export function ManifestForm({
             <Stack direction="vertical" gap={3} className="px-0 px-md-5">
               <HtCard id="general-form-card" title="General Info">
                 <HtCard.Body>
-                  <GeneralInfoForm
-                    readOnly={readOnly}
-                    manifestData={manifestData}
-                    isDraft={isDraft}
-                  />
+                  <GeneralInfoForm manifestData={manifestData} isDraft={isDraft} />
                 </HtCard.Body>
               </HtCard>
               <HtCard id="generator-form-card" title="Generator">
@@ -307,7 +299,7 @@ export function ManifestForm({
                     <>
                       <RcraSiteDetails handler={generator} />
                       <h4>Emergency Contact Information</h4>
-                      <ContactForm handlerType="generator" readOnly={readOnly} />
+                      <ContactForm handlerType="generator" />
                       <div className="d-flex justify-content-between">
                         <Col className="text-end">
                           <QuickSignBtn
@@ -331,9 +323,9 @@ export function ManifestForm({
                     </>
                   ) : showGeneratorForm ? (
                     <>
-                      <GeneratorForm readOnly={readOnly} />
+                      <GeneratorForm />
                       <h4>Emergency Contact Information</h4>
-                      <ContactForm handlerType="generator" readOnly={readOnly} />
+                      <ContactForm handlerType="generator" />
                     </>
                   ) : (
                     <>
@@ -373,7 +365,6 @@ export function ManifestForm({
                   <TransporterTable
                     transporters={transporters}
                     arrayFieldMethods={transporterForm}
-                    readOnly={readOnly}
                     setupSign={setupSign}
                   />
                   {readOnly ? (
@@ -403,7 +394,6 @@ export function ManifestForm({
                     wastes={allWastes}
                     toggleWLModal={toggleWlFormShow}
                     wasteForm={wasteForm}
-                    readonly={readOnly}
                   />
                   {readOnly ? (
                     <></>
@@ -430,7 +420,6 @@ export function ManifestForm({
                 <HtCard.Body className="pb-4">
                   <TsdfSection
                     tsdf={tsdf}
-                    readOnly={readOnly}
                     setupSign={setupSign}
                     signAble={signAble}
                     toggleTsdfFormShow={toggleTsdfFormShow}
@@ -439,7 +428,7 @@ export function ManifestForm({
               </HtCard>
               <HtCard id="manifest-additional-info-card" title="Additional info">
                 <HtCard.Body className="px-3">
-                  <AdditionalInfoForm readOnly={readOnly} />
+                  <AdditionalInfoForm />
                 </HtCard.Body>
               </HtCard>
               <Stack gap={2} direction="horizontal" className="d-flex justify-content-end">

@@ -1,10 +1,11 @@
 import { ManifestStatusSelect } from 'components/Manifest/GeneralInfo/ManifestStatusSelect';
+import { ManifestTypeSelect } from 'components/Manifest/GeneralInfo/ManifestTypeSelect';
 import { Manifest, SubmissionType } from 'components/Manifest/manifestSchema';
 import { HtForm, InfoIconTooltip } from 'components/UI';
+import { useReadOnly } from 'hooks/manifest';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
-import { ManifestTypeSelect } from 'components/Manifest/GeneralInfo/ManifestTypeSelect';
 
 interface GeneralInfoFormProps {
   manifestData?: Partial<Manifest>;
@@ -19,7 +20,8 @@ const submissionTypeOptions: Array<{ value: SubmissionType; label: string }> = [
   { value: 'Image', label: 'Image Only' },
 ];
 
-export function GeneralInfoForm({ manifestData, readOnly, isDraft }: GeneralInfoFormProps) {
+export function GeneralInfoForm({ manifestData, isDraft }: GeneralInfoFormProps) {
+  const [readOnly] = useReadOnly();
   const manifestForm = useFormContext<Manifest>();
   const { errors } = manifestForm.formState;
   return (

@@ -1,22 +1,18 @@
 import { Manifest } from 'components/Manifest';
 import { AddressForm } from 'components/Manifest/Address';
 import { HtForm } from 'components/UI';
+import { useReadOnly } from 'hooks/manifest';
 import { ReactElement, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
-
-interface GeneratorFormProps {
-  readOnly?: boolean;
-}
 
 /**
  * A form for the generator section of a manifest.
  * Currently, we only support using for the generator since it's the only handler type that
  * can be manually entered for an electronic/hybrid manifest.
- * @param readOnly
  * @constructor
  */
-export function GeneratorForm({ readOnly }: GeneratorFormProps): ReactElement {
+export function GeneratorForm(): ReactElement {
   const [mailCheck, setMailCheck] = useState(false);
   const {
     register,
@@ -25,8 +21,8 @@ export function GeneratorForm({ readOnly }: GeneratorFormProps): ReactElement {
     watch,
     formState: { errors },
   } = useFormContext<Manifest>();
+  const [readOnly] = useReadOnly();
 
-  // If
   useEffect(() => {
     const siteAddress = getValues(`generator.siteAddress`);
     if (!mailCheck) {
