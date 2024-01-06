@@ -3,19 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Manifest } from 'components/Manifest';
 import { WasteLine } from 'components/Manifest/WasteLine';
 import { HtForm } from 'components/UI';
+import { useReadOnly } from 'hooks/manifest';
 import React from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
-interface AdditionalFormProps {
-  readOnly?: boolean;
-}
-
-// ToDo: this is POC source, clean up work appreciated
-//  see this example from react-hook-form
-//  https://codesandbox.io/s/6j1760jkjk
-export function AdditionalInfoForm({ readOnly }: AdditionalFormProps) {
+export function AdditionalInfoForm() {
   const { register, control } = useFormContext<Manifest | WasteLine>();
+  const [readOnly] = useReadOnly();
   const { fields, append, remove } = useFieldArray<Manifest | WasteLine, 'additionalInfo.comments'>(
     {
       control,

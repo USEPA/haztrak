@@ -10,10 +10,7 @@ export function ManifestDetails() {
   useTitle(`${mtn}`);
   const { data, error, isLoading } = useGetManifestQuery(mtn!, { skip: !mtn });
 
-  let readOnly = true;
-  if (action === 'edit') {
-    readOnly = false;
-  }
+  const readOnly = action !== 'edit';
 
   if (error) {
     return (

@@ -3,7 +3,8 @@ import { faAngleRight, faCheck, faSignature } from '@fortawesome/free-solid-svg-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Transporter } from 'components/Manifest';
 import { Manifest } from 'components/Manifest/manifestSchema';
-import { QuickerSignData, QuickSignBtn } from 'components/Manifest/QuickerSign';
+import { QuickSignBtn } from 'components/Manifest/QuickerSign';
+import { useReadOnly } from 'hooks/manifest';
 import React, { useState } from 'react';
 import { Accordion, Button, Card, Col, Row, Table, useAccordionButton } from 'react-bootstrap';
 import { UseFieldArrayReturn } from 'react-hook-form';
@@ -12,7 +13,6 @@ import { TransporterRowActions } from './TransporterRowActions';
 interface TransporterTableProps {
   transporters?: Array<Transporter>;
   arrayFieldMethods: UseFieldArrayReturn<Manifest, 'transporters', 'id'>;
-  readOnly?: boolean;
   setupSign: () => void;
 }
 
@@ -34,13 +34,9 @@ function CustomToggle({ eventKey }: any) {
   );
 }
 
-function TransporterTable({
-  transporters,
-  arrayFieldMethods,
-  readOnly,
-  setupSign,
-}: TransporterTableProps) {
+function TransporterTable({ transporters, arrayFieldMethods, setupSign }: TransporterTableProps) {
   const [parent] = useAutoAnimate();
+  const [readOnly] = useReadOnly();
 
   if (!transporters || transporters.length < 1) {
     return <></>;

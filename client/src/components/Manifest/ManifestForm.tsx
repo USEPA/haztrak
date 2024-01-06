@@ -1,27 +1,27 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createSelector } from '@reduxjs/toolkit';
 import { ManifestCancelBtn } from 'components/Manifest/Actions/ManifestCancelBtn';
 import { ManifestEditBtn } from 'components/Manifest/Actions/ManifestEditBtn';
 import { ManifestFABs } from 'components/Manifest/Actions/ManifestFABs';
 import { ManifestSaveBtn } from 'components/Manifest/Actions/ManifestSaveBtn';
 import { AdditionalInfoForm } from 'components/Manifest/AdditionalInfo';
 import { GeneralInfoForm } from 'components/Manifest/GeneralInfo/GeneralInfoForm';
+import { TsdfSection } from 'components/Manifest/Handler/TsdfSection';
 import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { RcraSiteDetails } from 'components/RcraSite';
 import { HtButton, HtCard, HtForm } from 'components/UI';
-import React, { createContext, useEffect, useMemo, useState } from 'react';
+import { useManifestStatus } from 'hooks/manifest';
+import { useReadOnly } from 'hooks/manifest/useReadOnly/useReadOnly';
+import { useUserSiteIds } from 'hooks/useUserSiteIds/useUserSiteIds';
+import React, { createContext, useEffect, useState } from 'react';
 import { Alert, Button, Col, Container, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { manifest } from 'services';
 import {
-  ProfileSlice,
-  useAppDispatch,
   useCreateManifestMutation,
-  useGetProfileQuery,
   useSaveEManifestMutation,
   useUpdateManifestMutation,
 } from 'store';
@@ -31,7 +31,6 @@ import { Manifest, manifestSchema, SiteType } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal, QuickSignBtn } from './QuickerSign';
 import { Transporter, TransporterTable } from './Transporter';
 import { EditWasteModal, WasteLineTable } from './WasteLine';
-import { useManifestStatus } from 'hooks/manifest';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -50,7 +49,6 @@ export interface ManifestContextType {
   setEditWasteLineIndex: React.Dispatch<React.SetStateAction<number | undefined>>;
   nextSigningSite?: { epaSiteId: string; siteType: SiteType; transporterOrder?: number };
   viewingAsSiteId?: string;
-  readOnly?: boolean;
   signAble?: boolean;
 }
 
@@ -64,8 +62,6 @@ export const ManifestContext = createContext<ManifestContextType>({
   setEditWasteLineIndex: () => {},
   nextSigningSite: undefined,
   viewingAsSiteId: undefined,
-  readOnly: true,
-  signAble: false,
 });
 
 interface ManifestFormProps {
@@ -84,13 +80,12 @@ interface ManifestFormProps {
  * @constructor
  */
 export function ManifestForm({
-  readOnly,
+  readOnly: propReadOnly,
   manifestData,
   manifestingSiteID,
   mtn,
 }: ManifestFormProps) {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   // Use default values, override with manifestData if provided
   let values: Manifest = defaultValues;
@@ -101,6 +96,7 @@ export function ManifestForm({
     };
   }
   useManifestStatus(values.status);
+  const [readOnly] = useReadOnly(propReadOnly);
 
   // State related to inter-system communications with EPA's RCRAInfo system
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
@@ -196,7 +192,7 @@ export function ManifestForm({
   // DesignatedFacility (TSDF) component state and methods
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
-  const tsdf: Handler | undefined = manifestForm.getValues('designatedFacility');
+  const tsdf: Handler | undefined = manifestForm.watch('designatedFacility');
   const [tsdfStateCode, setTsdfStateCode] = useState<string | undefined>(
     manifestData?.designatedFacility?.siteAddress.state.code
   );
@@ -239,28 +235,9 @@ export function ManifestForm({
     name: 'wastes',
   });
 
-  const selectUserSiteIds = useMemo(
-    () =>
-      createSelector(
-        (res) => res.data,
-        (data: ProfileSlice) =>
-          !data ?? !data.sites
-            ? []
-            : Object.values(data.sites).map((site) => site.handler.epaSiteId)
-      ),
-    []
-  );
-
+  const { userSiteIds } = useUserSiteIds();
   const nextSigner = manifest.getNextSigner(manifestData);
-  const { userSiteIds } = useGetProfileQuery(undefined, {
-    selectFromResult: (result) => ({
-      ...result,
-      userSiteIds: selectUserSiteIds(result),
-    }),
-  });
-  // Whether the user has permissions and manifest is in a state to be signed
-  const signAble = userSiteIds.includes(nextSigner?.epaSiteId ?? '');
-
+  const signAble = userSiteIds.some((site) => site.epaSiteId === nextSigner?.epaSiteId ?? '');
   const isDraft = manifestData?.manifestTrackingNumber === undefined;
 
   return (
@@ -276,7 +253,6 @@ export function ManifestForm({
           setEditWasteLineIndex: setEditWasteLine,
           nextSigningSite: manifest.getNextSigner(manifestData),
           viewingAsSiteId: manifestingSiteID,
-          readOnly: readOnly,
           signAble: signAble,
         }}
       >
@@ -293,11 +269,7 @@ export function ManifestForm({
             <Stack direction="vertical" gap={3} className="px-0 px-md-5">
               <HtCard id="general-form-card" title="General Info">
                 <HtCard.Body>
-                  <GeneralInfoForm
-                    readOnly={readOnly}
-                    manifestData={manifestData}
-                    isDraft={isDraft}
-                  />
+                  <GeneralInfoForm manifestData={manifestData} isDraft={isDraft} />
                 </HtCard.Body>
               </HtCard>
               <HtCard id="generator-form-card" title="Generator">
@@ -306,7 +278,7 @@ export function ManifestForm({
                     <>
                       <RcraSiteDetails handler={generator} />
                       <h4>Emergency Contact Information</h4>
-                      <ContactForm handlerType="generator" readOnly={readOnly} />
+                      <ContactForm handlerType="generator" />
                       <div className="d-flex justify-content-between">
                         <Col className="text-end">
                           <QuickSignBtn
@@ -330,9 +302,9 @@ export function ManifestForm({
                     </>
                   ) : showGeneratorForm ? (
                     <>
-                      <GeneratorForm readOnly={readOnly} />
+                      <GeneratorForm />
                       <h4>Emergency Contact Information</h4>
-                      <ContactForm handlerType="generator" readOnly={readOnly} />
+                      <ContactForm handlerType="generator" />
                     </>
                   ) : (
                     <>
@@ -372,7 +344,6 @@ export function ManifestForm({
                   <TransporterTable
                     transporters={transporters}
                     arrayFieldMethods={transporterForm}
-                    readOnly={readOnly}
                     setupSign={setupSign}
                   />
                   {readOnly ? (
@@ -402,7 +373,6 @@ export function ManifestForm({
                     wastes={allWastes}
                     toggleWLModal={toggleWlFormShow}
                     wasteForm={wasteForm}
-                    readonly={readOnly}
                   />
                   {readOnly ? (
                     <></>
@@ -427,51 +397,17 @@ export function ManifestForm({
               </HtCard>
               <HtCard id="tsdf-form-card" title="Designated Facility">
                 <HtCard.Body className="pb-4">
-                  {tsdf ? (
-                    <>
-                      <RcraSiteDetails handler={tsdf} />
-                      <div className="d-flex justify-content-between">
-                        {/* Button to bring up the Quicker Sign modal*/}
-                        <Col className="text-end">
-                          <QuickSignBtn
-                            siteType={'Tsdf'}
-                            mtnHandler={tsdf}
-                            onClick={setupSign}
-                            disabled={tsdf.signed || !signAble}
-                          />
-                        </Col>
-                      </div>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  {readOnly || tsdf ? (
-                    <></>
-                  ) : (
-                    <HtButton
-                      onClick={toggleTsdfFormShow}
-                      children={'Add TSDF'}
-                      variant="outline-primary"
-                      horizontalAlign
-                    />
-                  )}
-                  <ErrorMessage
-                    errors={errors}
-                    name={'designatedFacility'}
-                    render={({ message }) => {
-                      if (!message) return null;
-                      return (
-                        <Alert variant="danger" className="text-center m-3">
-                          {message}
-                        </Alert>
-                      );
-                    }}
+                  <TsdfSection
+                    tsdf={tsdf}
+                    setupSign={setupSign}
+                    signAble={signAble}
+                    toggleTsdfFormShow={toggleTsdfFormShow}
                   />
                 </HtCard.Body>
               </HtCard>
               <HtCard id="manifest-additional-info-card" title="Additional info">
                 <HtCard.Body className="px-3">
-                  <AdditionalInfoForm readOnly={readOnly} />
+                  <AdditionalInfoForm />
                 </HtCard.Body>
               </HtCard>
               <Stack gap={2} direction="horizontal" className="d-flex justify-content-end">
