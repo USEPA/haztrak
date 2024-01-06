@@ -1,6 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createSelector } from '@reduxjs/toolkit';
 import { ManifestCancelBtn } from 'components/Manifest/Actions/ManifestCancelBtn';
 import { ManifestEditBtn } from 'components/Manifest/Actions/ManifestEditBtn';
 import { ManifestFABs } from 'components/Manifest/Actions/ManifestFABs';
@@ -14,16 +13,15 @@ import { RcraSiteDetails } from 'components/RcraSite';
 import { HtButton, HtCard, HtForm } from 'components/UI';
 import { useManifestStatus } from 'hooks/manifest';
 import { useReadOnly } from 'hooks/manifest/useReadOnly/useReadOnly';
-import React, { createContext, useEffect, useMemo, useState } from 'react';
+import { useUserSiteIds } from 'hooks/useUserSiteIds/useUserSiteIds';
+import React, { createContext, useEffect, useState } from 'react';
 import { Alert, Button, Col, Container, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { manifest } from 'services';
 import {
-  ProfileSlice,
   useCreateManifestMutation,
-  useGetProfileQuery,
   useSaveEManifestMutation,
   useUpdateManifestMutation,
 } from 'store';
@@ -237,28 +235,9 @@ export function ManifestForm({
     name: 'wastes',
   });
 
-  const selectUserSiteIds = useMemo(
-    () =>
-      createSelector(
-        (res) => res.data,
-        (data: ProfileSlice) =>
-          !data ?? !data.sites
-            ? []
-            : Object.values(data.sites).map((site) => site.handler.epaSiteId)
-      ),
-    []
-  );
-
+  const { userSiteIds } = useUserSiteIds();
   const nextSigner = manifest.getNextSigner(manifestData);
-  const { userSiteIds } = useGetProfileQuery(undefined, {
-    selectFromResult: (result) => ({
-      ...result,
-      userSiteIds: selectUserSiteIds(result),
-    }),
-  });
-  // Whether the user has permissions and manifest is in a state to be signed
-  const signAble = userSiteIds.includes(nextSigner?.epaSiteId ?? '');
-
+  const signAble = userSiteIds.some((site) => site.epaSiteId === nextSigner?.epaSiteId ?? '');
   const isDraft = manifestData?.manifestTrackingNumber === undefined;
 
   return (
