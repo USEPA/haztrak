@@ -39,7 +39,6 @@ const UserQueryComponent = () => {
         <div>
           <button
             onClick={() => {
-              console.log('update user');
               updateUser({ ...data, username: 'updatedUserName', email: 'updatedEmail@gmail.com' });
             }}
           >

@@ -97,7 +97,6 @@ export function ManifestForm({
   }
   useManifestStatus(values.status);
   const [readOnly] = useReadOnly(propReadOnly);
-  console.log('manifest readOnly', readOnly);
 
   // State related to inter-system communications with EPA's RCRAInfo system
   const [showSpinner, setShowSpinner] = useState<boolean>(false);

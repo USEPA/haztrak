@@ -15,7 +15,9 @@ describe('AdditionalInfoForm', () => {
     expect(screen.getByLabelText(/Special Handling Instructions/i)).toBeInTheDocument();
   });
   test('initially has zero comments and Adds on click', async () => {
-    renderWithProviders(<AdditionalInfoForm />);
+    renderWithProviders(<AdditionalInfoForm />, {
+      preloadedState: { manifest: { readOnly: false } },
+    });
     expect(screen.queryAllByTitle(/Remove/i, { exact: false }).length).toBe(0);
     const numberButtonClick = 3;
     for (let i = 0; i < numberButtonClick; i++) {

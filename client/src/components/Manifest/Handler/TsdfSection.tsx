@@ -46,7 +46,6 @@ export function TsdfSection({ tsdf, signAble, setupSign, toggleTsdfFormShow }: T
       {tsdf && !readOnly && (
         <HtButton
           onClick={() => {
-            console.log('remove tsdf');
             manifestForm.setValue('designatedFacility', undefined);
           }}
           children={'Remove TSDF'}

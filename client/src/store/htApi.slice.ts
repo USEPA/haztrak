@@ -48,7 +48,7 @@ export const htApiBaseQuery =
       return { data: response.data };
     } catch (axiosError) {
       let err = axiosError as AxiosError;
-      console.log(err);
+      console.error(err);
       return {
         error: {
           ...err,
