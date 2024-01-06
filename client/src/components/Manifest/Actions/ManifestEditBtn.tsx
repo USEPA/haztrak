@@ -2,6 +2,7 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ManifestContext } from 'components/Manifest/ManifestForm';
 import { HtButton } from 'components/UI';
+import { useReadOnly } from 'hooks/manifest';
 import React, { useContext } from 'react';
 import { ButtonProps } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +11,8 @@ interface ManifestEditBtnProps extends ButtonProps {}
 
 export function ManifestEditBtn({ children, ...props }: ManifestEditBtnProps) {
   const navigate = useNavigate();
-  const { readOnly, trackingNumber, viewingAsSiteId } = useContext(ManifestContext);
+  const { trackingNumber, viewingAsSiteId } = useContext(ManifestContext);
+  const [readOnly] = useReadOnly();
   if (!readOnly) return <></>;
   return (
     <HtButton

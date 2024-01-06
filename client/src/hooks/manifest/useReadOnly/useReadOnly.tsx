@@ -16,7 +16,10 @@ export function useReadOnly(initialValue?: boolean) {
   }, [readOnly]);
 
   useEffect(() => {
-    if (initialValue) dispatch(setManifestReadOnly(initialValue));
+    if (initialValue !== undefined) {
+      dispatch(setManifestReadOnly(initialValue));
+      setReadonly(initialValue);
+    }
   }, [initialValue]);
 
   useEffect(() => {

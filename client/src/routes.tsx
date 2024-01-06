@@ -1,8 +1,7 @@
-import { Root } from 'components/Layout/Root';
 import { ErrorPage } from 'features/ErrorPage/ErrorPage';
 import { Login } from 'features/Login';
-import { createBrowserRouter } from 'react-router-dom';
 import React from 'react';
+import { createBrowserRouter } from 'react-router-dom';
 
 const Dashboard = React.lazy(() => import('features/Dashboard'));
 const Profile = React.lazy(() => import('features/Profile'));
@@ -47,7 +46,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: ':mtn/:action',
-                lazy: () => import('./features/MmanifestDetails'),
+                lazy: () => import('./features/ManifestDetails'),
               },
             ],
           },
@@ -66,7 +65,7 @@ export const router = createBrowserRouter([
           },
           {
             path: ':mtn/:action',
-            lazy: () => import('./features/MmanifestDetails'),
+            lazy: () => import('./features/ManifestDetails'),
           },
         ],
       },

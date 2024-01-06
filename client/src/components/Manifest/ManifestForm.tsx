@@ -96,7 +96,8 @@ export function ManifestForm({
     };
   }
   useManifestStatus(values.status);
-  const [readOnly] = useReadOnly(propReadOnly !== undefined ? propReadOnly : false);
+  const [readOnly] = useReadOnly(propReadOnly);
+  console.log('manifest readOnly', readOnly);
 
   // State related to inter-system communications with EPA's RCRAInfo system
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
@@ -192,7 +193,7 @@ export function ManifestForm({
   // DesignatedFacility (TSDF) component state and methods
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
-  const tsdf: Handler | undefined = manifestForm.getValues('designatedFacility');
+  const tsdf: Handler | undefined = manifestForm.watch('designatedFacility');
   const [tsdfStateCode, setTsdfStateCode] = useState<string | undefined>(
     manifestData?.designatedFacility?.siteAddress.state.code
   );

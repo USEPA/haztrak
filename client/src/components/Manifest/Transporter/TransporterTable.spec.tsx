@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { Transporter } from 'components/Manifest';
+import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockTransporter } from 'test-utils/fixtures';
+import { userApiMocks } from 'test-utils/mock';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { TransporterTable } from './index';
-import { setupServer } from 'msw/node';
-import { userApiMocks } from 'test-utils/mock';
 
 const HANDLER_ID_1 = 'siteId1';
 const HANDLER_ID_2 = 'siteId2';
@@ -55,7 +55,7 @@ describe('TransporterTable', () => {
         transporters={TRAN_ARRAY}
         readOnly={false}
       />,
-      {}
+      { preloadedState: { manifest: { readOnly: false } } }
     );
     const actionDropdown = await screen.findAllByRole('button', {
       name: /transporter [0-9] actions/,
@@ -88,7 +88,7 @@ describe('TransporterTable', () => {
         arrayFieldMethods={emptyArrayFieldMethods}
         transporters={TRAN_ARRAY}
       />,
-      {}
+      { preloadedState: { manifest: { readOnly: false } } }
     );
     const actionDropdowns = await screen.findAllByRole('button', {
       name: /transporter [0-9] actions/,
@@ -107,7 +107,7 @@ describe('TransporterTable', () => {
         arrayFieldMethods={emptyArrayFieldMethods}
         transporters={TRAN_ARRAY}
       />,
-      {}
+      { preloadedState: { manifest: { readOnly: false } } }
     );
     const actionDropdowns = await screen.findAllByRole('button', {
       name: /transporter [0-9] actions/,

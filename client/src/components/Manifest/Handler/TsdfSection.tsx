@@ -21,6 +21,7 @@ export function TsdfSection({ tsdf, signAble, setupSign, toggleTsdfFormShow }: T
     ...manifestForm
   } = useFormContext<Manifest>();
   const [readOnly] = useReadOnly();
+
   return (
     <>
       {tsdf ? (
@@ -41,16 +42,19 @@ export function TsdfSection({ tsdf, signAble, setupSign, toggleTsdfFormShow }: T
       ) : (
         <></>
       )}
-      {readOnly || tsdf ? (
+
+      {tsdf && !readOnly && (
         <HtButton
           onClick={() => {
+            console.log('remove tsdf');
             manifestForm.setValue('designatedFacility', undefined);
           }}
           children={'Remove TSDF'}
           variant="outline-danger"
           horizontalAlign
         />
-      ) : (
+      )}
+      {!tsdf && (
         <HtButton
           onClick={toggleTsdfFormShow}
           children={'Add TSDF'}
