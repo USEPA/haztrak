@@ -27,7 +27,7 @@ import {
   useSaveEManifestMutation,
   useUpdateManifestMutation,
 } from 'store';
-import { AddHandler } from './Handler';
+import { HandlerSearchModal } from './Handler';
 import { Manifest, manifestSchema, SiteType } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal } from './QuickerSign';
 import { EditWasteModal } from './WasteLine';
@@ -168,15 +168,11 @@ export function ManifestForm({
   };
 
   // Generator component state and methods
-  const [showGeneratorSearch, setShowGeneratorSearch] = useState<boolean>(false);
-  const toggleShowAddGenerator = () => setShowGeneratorSearch(!showGeneratorSearch);
   const [generatorStateCode, setGeneratorStateCode] = useState<string | undefined>(
     manifestData?.generator?.siteAddress.state.code
   );
 
   // DesignatedFacility (TSDF) component state and methods
-  const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
-  const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
   const [tsdfStateCode, setTsdfStateCode] = useState<string | undefined>(
     manifestData?.designatedFacility?.siteAddress.state.code
   );
@@ -258,11 +254,7 @@ export function ManifestForm({
               </HtCard>
               <HtCard id="generator-form-card" title="Generator">
                 <HtCard.Body>
-                  <GeneratorSection
-                    setupSign={setupSign}
-                    toggleShowAddGenerator={toggleShowAddGenerator}
-                    signAble={signAble}
-                  />
+                  <GeneratorSection setupSign={setupSign} signAble={signAble} />
                 </HtCard.Body>
               </HtCard>
               <HtCard id="transporter-form-card" title="Transporters">
@@ -277,11 +269,7 @@ export function ManifestForm({
               </HtCard>
               <HtCard id="tsdf-form-card" title="Designated Facility">
                 <HtCard.Body className="pb-4">
-                  <TsdfSection
-                    setupSign={setupSign}
-                    signAble={signAble}
-                    toggleTsdfFormShow={toggleTsdfFormShow}
-                  />
+                  <TsdfSection setupSign={setupSign} signAble={signAble} />
                 </HtCard.Body>
               </HtCard>
               <HtCard id="manifest-additional-info-card" title="Additional info">
@@ -299,16 +287,7 @@ export function ManifestForm({
           </HtForm>
           {/*If taking action that involves updating a manifest in RCRAInfo*/}
           {taskId && showSpinner ? <UpdateRcra taskId={taskId} /> : <></>}
-          <AddHandler
-            handleClose={toggleShowAddGenerator}
-            show={showGeneratorSearch}
-            handlerType="generator"
-          />
-          <AddHandler
-            handleClose={toggleTsdfFormShow}
-            show={tsdfFormShow}
-            handlerType="designatedFacility"
-          />
+          <HandlerSearchModal />
           <QuickerSignModal
             handleClose={toggleQuickerSignShow}
             show={showSignForm}

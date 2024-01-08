@@ -48,10 +48,8 @@ export const htApiBaseQuery =
       return { data: response.data };
     } catch (axiosError) {
       let err = axiosError as AxiosError;
-      console.error(err);
       return {
         error: {
-          ...err,
           statusText: err.response?.statusText,
           data: err.response?.data || err.message,
         } as HtApiError,
@@ -93,6 +91,12 @@ export const haztrakApi = createApi({
         url: 'site/search',
         method: 'get',
         params: { epaId: data.siteId, siteType: data.siteType },
+      }),
+    }),
+    getRcrainfoSite: build.query<RcraSite, string | null>({
+      query: (epaSiteId) => ({
+        url: `rcra/handler/${epaSiteId}`,
+        method: 'get',
       }),
     }),
     getTaskStatus: build.query<TaskStatus, string>({

@@ -1,10 +1,9 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { AddHandler } from 'components/Manifest/Handler';
 import { Manifest, Transporter } from 'components/Manifest/manifestSchema';
 import { TransporterTable } from 'components/Manifest/Transporter/TransporterTable';
 import { HtButton } from 'components/UI';
 import { useReadOnly } from 'hooks/manifest';
-import React, { useState } from 'react';
+import { useHandlerSearchConfig } from 'hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
 import { Alert } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
@@ -13,6 +12,7 @@ interface TransporterSectionProps {
 }
 
 export function TransporterSection({ setupSign }: TransporterSectionProps) {
+  const [, setSearchConfigs] = useHandlerSearchConfig();
   const [readOnly] = useReadOnly();
   const manifestForm = useFormContext<Manifest>();
   const { errors } = manifestForm.formState;
@@ -21,9 +21,6 @@ export function TransporterSection({ setupSign }: TransporterSectionProps) {
     name: 'transporters',
   });
   const transporters: Array<Transporter> = manifestForm.getValues('transporters');
-
-  const [showAddTransporterForm, setShowAddTransporterForm] = useState<boolean>(false);
-  const toggleTranSearchShow = () => setShowAddTransporterForm(!showAddTransporterForm);
 
   return (
     <>
@@ -36,7 +33,9 @@ export function TransporterSection({ setupSign }: TransporterSectionProps) {
         <></>
       ) : (
         <HtButton
-          onClick={toggleTranSearchShow}
+          onClick={() => {
+            setSearchConfigs({ siteType: 'transporter', open: true });
+          }}
           children={'Add Transporter'}
           variant="outline-primary"
           horizontalAlign
@@ -50,13 +49,6 @@ export function TransporterSection({ setupSign }: TransporterSectionProps) {
             {message}
           </Alert>
         )}
-      />
-      <AddHandler
-        handleClose={toggleTranSearchShow}
-        show={showAddTransporterForm}
-        currentTransporters={transporters}
-        appendTransporter={transporterForm.append}
-        handlerType="transporter"
       />
     </>
   );

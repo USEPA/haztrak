@@ -3,30 +3,65 @@ import { ContactForm, PhoneForm } from 'components/Manifest/Contact';
 import { Handler, Manifest } from 'components/Manifest/manifestSchema';
 import { QuickSignBtn } from 'components/Manifest/QuickerSign';
 import { RcraSiteDetails } from 'components/RcraSite';
-import { HtButton } from 'components/UI';
+import { HtButton, HtSpinner } from 'components/UI';
 import { useReadOnly } from 'hooks/manifest';
-import React, { useState } from 'react';
+import { useHandlerSearchConfig } from 'hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
+import React, { useEffect, useState } from 'react';
 import { Alert, Button, Col, Stack } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
+import { useGetRcrainfoSiteQuery } from 'store';
 import { GeneratorForm } from './GeneratorForm';
 
 interface GeneratorSectionProps {
   setupSign: () => void;
-  toggleShowAddGenerator: () => void;
   signAble: boolean;
 }
 
-export function GeneratorSection({
-  setupSign,
-  signAble,
-  toggleShowAddGenerator,
-}: GeneratorSectionProps) {
+export function GeneratorSection({ setupSign, signAble }: GeneratorSectionProps) {
+  const [, setSearchConfigs] = useHandlerSearchConfig();
   const [readOnly] = useReadOnly();
+  const [searchParams, setSearchParams] = useSearchParams();
   const manifestForm = useFormContext<Manifest>();
-  const errors = manifestForm.formState.errors;
-  const generator: Handler | undefined = manifestForm.getValues('generator');
+  const { errors } = manifestForm.formState;
+  const generator: Handler | undefined = manifestForm.watch('generator');
   const [showGeneratorForm, setShowGeneratorForm] = useState<boolean>(false);
   const toggleShowGeneratorForm = () => setShowGeneratorForm(!showGeneratorForm);
+  const urlGeneratorId = searchParams.get('generator');
+
+  const { data, isLoading, error } = useGetRcrainfoSiteQuery(urlGeneratorId, {
+    skip: !urlGeneratorId,
+  });
+
+  useEffect(() => {
+    if (data) {
+      manifestForm.setValue('generator', data);
+    }
+  }, [data]);
+
+  if (isLoading) {
+    return <HtSpinner size="xl" center className="m-5" />;
+  }
+
+  if (error) {
+    return (
+      <>
+        <Alert variant="danger" className="text-center m-3">
+          The requested Generator (EPA ID: {urlGeneratorId}) could not be found.
+        </Alert>
+        <HtButton
+          onClick={() => {
+            searchParams.delete('generator');
+            setSearchParams(searchParams);
+          }}
+          children={'Clear Generator'}
+          variant="outline-danger"
+          horizontalAlign
+        ></HtButton>
+      </>
+    );
+  }
+
   return (
     <>
       {readOnly ? (
@@ -66,7 +101,9 @@ export function GeneratorSection({
           <Stack gap={2}>
             <HtButton
               horizontalAlign
-              onClick={toggleShowAddGenerator}
+              onClick={() => {
+                setSearchConfigs({ siteType: 'generator', open: true });
+              }}
               children={'Add Generator'}
               variant="outline-primary"
             />

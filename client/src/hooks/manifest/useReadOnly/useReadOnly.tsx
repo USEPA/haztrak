@@ -9,10 +9,10 @@ export function useReadOnly(initialValue?: boolean) {
   const dispatch = useAppDispatch();
   const reduxReadOnly = useAppSelector(selectManifestReadOnly);
   const defaultReadOnly = initialValue !== undefined ? initialValue : reduxReadOnly;
-  const [readOnly, setReadonly] = useState<boolean>(defaultReadOnly);
+  const [readOnly, setReadonly] = useState<boolean | undefined>(defaultReadOnly);
 
   useEffect(() => {
-    dispatch(setManifestReadOnly(readOnly));
+    if (readOnly !== undefined) dispatch(setManifestReadOnly(readOnly));
   }, [readOnly]);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export function useReadOnly(initialValue?: boolean) {
   }, [initialValue]);
 
   useEffect(() => {
-    setReadonly(reduxReadOnly);
+    if (reduxReadOnly !== undefined) setReadonly(reduxReadOnly);
   }, [reduxReadOnly]);
 
   /** Set the manifest readOnly*/
