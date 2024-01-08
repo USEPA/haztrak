@@ -55,10 +55,10 @@ function TransporterTable({ transporters, arrayFieldMethods, setupSign }: Transp
           return (
             <Card key={transporter.epaSiteId} className="py-2 px-4 my-2">
               <Row className="d-flex justify-content-between">
-                <Col xs={8} className="d-flex align-items-center">
+                <Col xs={9} className="d-flex align-items-center">
                   <div>
                     <h5 className="d-inline border-3 me-3">{transporter.order} </h5>
-                    <span>{transporter.name}</span>
+                    <span className="text-nowrap overflow-scroll">{transporter.name}</span>
                   </div>
                 </Col>
                 <Col xs={1}>

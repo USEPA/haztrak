@@ -26,7 +26,7 @@ export function GeneralInfoForm({ manifestData, isDraft }: GeneralInfoFormProps)
   const { errors } = manifestForm.formState;
   return (
     <>
-      <Row>
+      <Row xs={1} sm={3}>
         <Col>
           <HtForm.Group>
             <HtForm.Label htmlFor="manifestTrackingNumber">MTN</HtForm.Label>
@@ -53,10 +53,10 @@ export function GeneralInfoForm({ manifestData, isDraft }: GeneralInfoFormProps)
           <ManifestTypeSelect readOnly={readOnly} isDraft={isDraft} />
         </Col>
       </Row>
-      <Row>
+      <Row xs={1} sm={3}>
         <Col>
           <HtForm.Group>
-            <HtForm.Label htmlFor="createdDate">
+            <HtForm.Label htmlFor="createdDate" className="text-nowrap">
               {'Created Date '}
               <InfoIconTooltip message={'This field is managed by EPA'} />
             </HtForm.Label>
@@ -75,7 +75,7 @@ export function GeneralInfoForm({ manifestData, isDraft }: GeneralInfoFormProps)
         </Col>
         <Col>
           <HtForm.Group>
-            <HtForm.Label htmlFor="updatedDate">
+            <HtForm.Label htmlFor="updatedDate" className="text-nowrap">
               {'Last Update Date '}
               <InfoIconTooltip message={'This field is managed by EPA'} />
             </HtForm.Label>
@@ -93,7 +93,7 @@ export function GeneralInfoForm({ manifestData, isDraft }: GeneralInfoFormProps)
         </Col>
         <Col>
           <HtForm.Group>
-            <HtForm.Label htmlFor="shippedDate">
+            <HtForm.Label htmlFor="shippedDate" className="text-nowrap">
               {'Shipped Date '}
               <InfoIconTooltip message={'This field is managed by EPA'} />
             </HtForm.Label>

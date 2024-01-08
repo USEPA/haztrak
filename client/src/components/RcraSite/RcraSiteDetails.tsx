@@ -19,7 +19,7 @@ export function RcraSiteDetails({ handler }: RcraSiteDetailsProps) {
     return <p>error</p>;
   }
   return (
-    <div className="py-2">
+    <div className="py-2 mb-3">
       <Row>
         <Col xs={10}>
           <h4>{handler.name}</h4>
@@ -32,9 +32,9 @@ export function RcraSiteDetails({ handler }: RcraSiteDetailsProps) {
           )}
         </Col>
       </Row>
-      <Row className="mb-0">
+      <Row className="mb-0" xs={1} sm={2}>
         <Col>
-          <p className="fw-bold">EPA ID number</p>
+          <p className="fw-bold mb-1">EPA ID number</p>
           <p>{handler.epaSiteId}</p>
         </Col>
         <Col>
@@ -58,7 +58,7 @@ export function RcraSiteDetails({ handler }: RcraSiteDetailsProps) {
           </p>
         </Col>
       </Row>
-      <Row>
+      <Row xs={1} sm={2} className="gy-3">
         <Col>
           <AddressListGroup title="Address" address={handler.siteAddress} />
         </Col>
