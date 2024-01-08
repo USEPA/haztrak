@@ -1,0 +1,1 @@
+export { GeneralInfoForm } from './GeneralInfoForm';
