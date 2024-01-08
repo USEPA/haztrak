@@ -5,10 +5,11 @@ import { SiteSelect, SiteTypeSelect } from 'components/Manifest/SiteSelect';
 import { RcraSite } from 'components/RcraSite';
 import { HtCard, HtSpinner } from 'components/UI';
 import { useTitle } from 'hooks';
+import { useReadOnly } from 'hooks/manifest';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Col, Container, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useGetProfileQuery } from 'store';
 
 /**
@@ -22,12 +23,19 @@ export function NewManifest() {
   useTitle('New Manifest');
   const { control } = useForm();
   const { siteId } = useParams();
+  useReadOnly(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const urlSiteType = searchParams.get('st');
 
   const updateSiteSelection = (site: RcraSite) => {
     setManifestingSite(site);
     setManifestingSiteType(site.siteType);
     if (site.siteType === 'Generator') {
       setSelectedSiteType(site.siteType);
+    }
+    if (urlSiteType) {
+      setSelectedSiteType(urlSiteType as RcraSiteType);
     }
   };
 

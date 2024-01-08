@@ -3,6 +3,7 @@ import { useAppSelector } from 'store';
 import reducer, {
   ManifestSlice,
   selectManifestReadOnly,
+  setHandlerSearchConfigs,
   setManifestReadOnly,
   setManifestStatus,
 } from 'store/manifestSlice/manifest.slice';
@@ -35,5 +36,16 @@ describe('Manifest slice', () => {
     expect(readOnlyState.readOnly).toBe(true);
     const editableState: ManifestSlice = reducer(undefined, setManifestReadOnly(false));
     expect(editableState.readOnly).toBe(false);
+  });
+  test('openHandlerSearch sets open to true and site type to argument', () => {
+    const state: ManifestSlice = reducer(
+      undefined,
+      setHandlerSearchConfigs({
+        siteType: 'generator',
+        open: true,
+      })
+    );
+    expect(state.handlerSearch?.open).toBe(true);
+    expect(state.handlerSearch?.siteType).toBe('generator');
   });
 });

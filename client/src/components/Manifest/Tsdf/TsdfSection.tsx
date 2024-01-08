@@ -2,25 +2,62 @@ import { ErrorMessage } from '@hookform/error-message';
 import { Handler, Manifest } from 'components/Manifest/manifestSchema';
 import { QuickSignBtn } from 'components/Manifest/QuickerSign';
 import { RcraSiteDetails } from 'components/RcraSite';
-import { HtButton } from 'components/UI';
+import { HtButton, HtSpinner } from 'components/UI';
 import { useReadOnly } from 'hooks/manifest';
-import React from 'react';
+import { useHandlerSearchConfig } from 'hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
+import React, { useEffect } from 'react';
 import { Alert, Col } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
+import { useGetRcrainfoSiteQuery } from 'store';
 
 interface TsdfSectionProps {
   setupSign: () => void;
   signAble: boolean;
-  toggleTsdfFormShow: () => void;
 }
 
-export function TsdfSection({ signAble, setupSign, toggleTsdfFormShow }: TsdfSectionProps) {
+export function TsdfSection({ signAble, setupSign }: TsdfSectionProps) {
+  const [, setSearchConfigs] = useHandlerSearchConfig();
+  const [searchParams, setSearchParams] = useSearchParams();
   const {
     formState: { errors },
     ...manifestForm
   } = useFormContext<Manifest>();
   const tsdf: Handler | undefined = manifestForm.watch('designatedFacility');
   const [readOnly] = useReadOnly();
+  const urlTsdfId = searchParams.get('tsdf');
+  const { data, isLoading, error } = useGetRcrainfoSiteQuery(urlTsdfId, {
+    skip: !urlTsdfId,
+  });
+
+  useEffect(() => {
+    if (data) {
+      manifestForm.setValue('designatedFacility', data);
+    }
+  }, [data]);
+
+  if (isLoading) {
+    return <HtSpinner size="xl" center className="m-5" />;
+  }
+
+  if (error) {
+    return (
+      <>
+        <Alert variant="danger" className="text-center m-3">
+          The requested TSDF (EPA ID: {urlTsdfId}) could not be found.
+        </Alert>
+        <HtButton
+          onClick={() => {
+            searchParams.delete('tsdf');
+            setSearchParams(searchParams);
+          }}
+          children={'Clear TSDF'}
+          variant="outline-danger"
+          horizontalAlign
+        ></HtButton>
+      </>
+    );
+  }
 
   return (
     <>
@@ -44,9 +81,14 @@ export function TsdfSection({ signAble, setupSign, toggleTsdfFormShow }: TsdfSec
       )}
 
       {tsdf && !readOnly && (
+        // Remove TSDF button
         <HtButton
           onClick={() => {
             manifestForm.setValue('designatedFacility', undefined);
+            if (urlTsdfId) {
+              searchParams.delete('tsdf');
+              setSearchParams(searchParams);
+            }
           }}
           children={'Remove TSDF'}
           variant="outline-danger"
@@ -55,7 +97,9 @@ export function TsdfSection({ signAble, setupSign, toggleTsdfFormShow }: TsdfSec
       )}
       {!tsdf && (
         <HtButton
-          onClick={toggleTsdfFormShow}
+          onClick={() => {
+            setSearchConfigs({ siteType: 'designatedFacility', open: true });
+          }}
           children={'Add TSDF'}
           variant="outline-primary"
           horizontalAlign

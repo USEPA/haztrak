@@ -1,42 +1,39 @@
 import { HandlerSearchForm } from 'components/Manifest/Handler';
-import { RcraSite } from 'components/RcraSite';
+import { Manifest, Transporter } from 'components/Manifest/manifestSchema';
 import { HtModal } from 'components/UI';
+import { useHandlerSearchConfig } from 'hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { UseFieldArrayAppend } from 'react-hook-form';
-import { Manifest, SiteType } from '../manifestSchema';
-
-interface AddHandlerProps {
-  handleClose: () => void;
-  show: boolean | undefined;
-  handlerType: SiteType;
-  currentTransporters?: Array<RcraSite>;
-  appendTransporter?: UseFieldArrayAppend<Manifest, 'transporters'>;
-}
+import { useFieldArray, useFormContext } from 'react-hook-form';
 
 /**
  * Returns a modal that wraps around the HandlerSearchForm for adding the manifest TSDF
- * @param show
- * @param handleClose
- * @param handlerType
- * @param currentTransporters
- * @param appendTransporter
  * @constructor
  */
-export function AddHandler({
-  show,
-  handleClose,
-  handlerType,
-  currentTransporters,
-  appendTransporter,
-}: AddHandlerProps) {
+export function HandlerSearchModal() {
+  const manifestForm = useFormContext<Manifest>();
+  const [configs, setConfigs] = useHandlerSearchConfig();
+
+  const transporterForm = useFieldArray<Manifest, 'transporters'>({
+    control: manifestForm.control,
+    name: 'transporters',
+  });
+  const transporters: Array<Transporter> = manifestForm.getValues('transporters');
+
+  if (!configs) return null;
+  const { siteType, open } = configs;
+
+  const handleClose = () => {
+    setConfigs(undefined);
+  };
+
   // set the title and description based on the handlerType
   let title;
   let description;
-  if (handlerType === 'designatedFacility') {
+  if (siteType === 'designatedFacility') {
     title = 'Add Designated Facility';
     description = 'The Treatment, Storage, or Disposal Facility the waste will shipped to.';
-  } else if (handlerType === 'transporter') {
+  } else if (siteType === 'transporter') {
     title = 'Add Transporter';
     description =
       'Transporters of the hazardous waste shipment. Transporters are required to be registered with EPA at https://rcrainfo.epa.gov.';
@@ -47,7 +44,7 @@ export function AddHandler({
   }
 
   return (
-    <HtModal showModal={show ? show : false} handleClose={handleClose}>
+    <HtModal showModal={open ? open : false} handleClose={handleClose}>
       <HtModal.Header closeButton>
         <Col>
           <Row>
@@ -63,9 +60,9 @@ export function AddHandler({
       <HtModal.Body>
         <HandlerSearchForm
           handleClose={handleClose}
-          handlerType={handlerType}
-          currentTransporters={currentTransporters}
-          appendTransporter={appendTransporter}
+          handlerType={siteType}
+          currentTransporters={transporters}
+          appendTransporter={transporterForm.append}
         />
       </HtModal.Body>
     </HtModal>

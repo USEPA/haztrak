@@ -15,7 +15,7 @@ urlpatterns = [
         include(
             [
                 path("handler/search", SearchHandlerView.as_view()),
-                path("handler/<int:pk>", GetRcraSiteView.as_view()),
+                path("handler/<str:epa_id>", GetRcraSiteView.as_view()),
             ]
         ),
     ),

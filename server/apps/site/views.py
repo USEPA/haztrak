@@ -67,12 +67,12 @@ class HaztrakOrgSitesListView(APIView):
     description="Retrieve details on a rcra_site stored in the Haztrak database",
 )
 class GetRcraSiteView(RetrieveAPIView):
-    """
-    Retrieve details on a RCRAInfo Site known to haztrak
-    """
+    """Retrieve details on a RCRAInfo Site known to haztrak by their EPA ID number"""
 
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
+    lookup_field = "epa_id__iexact"
+    lookup_url_kwarg = "epa_id"
     permission_classes = [permissions.IsAuthenticated]
 
     @method_decorator(cache_page(60 * 15))

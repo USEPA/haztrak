@@ -12,6 +12,7 @@ import {
   useForm,
   useFormContext,
 } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { useGetProfileQuery, useSearchRcrainfoSitesQuery, useSearchRcraSitesQuery } from 'store';
 
@@ -34,7 +35,7 @@ export function HandlerSearchForm({
   appendTransporter,
 }: Props) {
   const { handleSubmit, control } = useForm<searchHandlerForm>();
-  const manifestMethods = useFormContext<Manifest>();
+  const manifestForm = useFormContext<Manifest>();
   const [inputValue, setInputValue] = useState<string>('');
   const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
   const { org } = useGetProfileQuery(undefined, {
@@ -63,6 +64,7 @@ export function HandlerSearchForm({
   );
   const { setGeneratorStateCode, setTsdfStateCode } =
     useContext<ManifestContextType>(ManifestContext);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [options, setOptions] = useState<RcraSite[]>([]);
   const [rcrainfoSitesLoading, setRcrainfoSitesLoading] = useState<boolean>(false);
@@ -71,10 +73,14 @@ export function HandlerSearchForm({
     if (selectedHandler !== null) {
       if (handlerType === 'generator') {
         setGeneratorStateCode(selectedHandler.siteAddress.state.code);
-        manifestMethods.setValue('generator', { ...selectedHandler });
+        manifestForm.setValue('generator', { ...selectedHandler });
+        searchParams.append('generator', selectedHandler.epaSiteId);
+        setSearchParams(searchParams);
       } else if (handlerType === 'designatedFacility') {
         setTsdfStateCode(selectedHandler.siteAddress.state.code);
-        manifestMethods.setValue('designatedFacility', { ...selectedHandler });
+        manifestForm.setValue('designatedFacility', { ...selectedHandler });
+        searchParams.append('tsdf', selectedHandler.epaSiteId);
+        setSearchParams(searchParams);
       } else if (handlerType === 'transporter') {
         const numberOfTransporter = currentTransporters ? currentTransporters.length : 0;
         const newTransporter: Transporter = {

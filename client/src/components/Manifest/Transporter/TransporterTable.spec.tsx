@@ -70,9 +70,8 @@ describe('TransporterTable', () => {
         // @ts-ignore
         arrayFieldMethods={emptyArrayFieldMethods}
         transporters={TRAN_ARRAY}
-        readOnly={true}
       />,
-      {}
+      { preloadedState: { manifest: { readOnly: true } } }
     );
     const actionDropdown = screen.queryAllByRole('button', {
       name: /transporter [0-9] actions/,
