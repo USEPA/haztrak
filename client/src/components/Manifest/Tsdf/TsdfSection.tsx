@@ -9,17 +9,17 @@ import { Alert, Col } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 
 interface TsdfSectionProps {
-  tsdf?: Handler;
   setupSign: () => void;
   signAble: boolean;
   toggleTsdfFormShow: () => void;
 }
 
-export function TsdfSection({ tsdf, signAble, setupSign, toggleTsdfFormShow }: TsdfSectionProps) {
+export function TsdfSection({ signAble, setupSign, toggleTsdfFormShow }: TsdfSectionProps) {
   const {
     formState: { errors },
     ...manifestForm
   } = useFormContext<Manifest>();
+  const tsdf: Handler | undefined = manifestForm.watch('designatedFacility');
   const [readOnly] = useReadOnly();
 
   return (

@@ -101,10 +101,10 @@ export function NewManifest() {
     selectedSiteType === 'Generator'
       ? { generator: manifestingSite }
       : selectedSiteType === 'Transporter'
-      ? { transporters: [{ ...manifestingSite, order: 1 }] }
-      : selectedSiteType === 'Tsdf'
-      ? { designatedFacility: manifestingSite }
-      : {};
+        ? { transporters: [{ ...manifestingSite, order: 1 }] }
+        : selectedSiteType === 'Tsdf'
+          ? { designatedFacility: manifestingSite }
+          : {};
 
-  return <ManifestForm manifestData={newManifestData} />;
+  return <ManifestForm manifestData={newManifestData} readOnly={false} />;
 }

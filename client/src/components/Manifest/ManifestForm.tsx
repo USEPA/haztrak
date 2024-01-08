@@ -1,21 +1,23 @@
-import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ManifestCancelBtn } from 'components/Manifest/Actions/ManifestCancelBtn';
-import { ManifestEditBtn } from 'components/Manifest/Actions/ManifestEditBtn';
-import { ManifestFABs } from 'components/Manifest/Actions/ManifestFABs';
-import { ManifestSaveBtn } from 'components/Manifest/Actions/ManifestSaveBtn';
+import {
+  ManifestCancelBtn,
+  ManifestEditBtn,
+  ManifestFABs,
+  ManifestSaveBtn,
+} from 'components/Manifest/Actions';
 import { AdditionalInfoForm } from 'components/Manifest/AdditionalInfo';
-import { GeneralInfoForm } from 'components/Manifest/GeneralInfo/GeneralInfoForm';
-import { TsdfSection } from 'components/Manifest/Handler/TsdfSection';
+import { GeneralInfoForm } from 'components/Manifest/GeneralInfo';
+import { GeneratorSection } from 'components/Manifest/Generator';
+import { TransporterSection } from 'components/Manifest/Transporter/TransporterSection';
+import { TsdfSection } from 'components/Manifest/Tsdf';
 import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
-import { RcraSiteDetails } from 'components/RcraSite';
-import { HtButton, HtCard, HtForm } from 'components/UI';
-import { useManifestStatus } from 'hooks/manifest';
-import { useReadOnly } from 'hooks/manifest/useReadOnly/useReadOnly';
-import { useUserSiteIds } from 'hooks/useUserSiteIds/useUserSiteIds';
+import { WasteLineSection } from 'components/Manifest/WasteLine/WasteLineSection';
+import { HtCard, HtForm } from 'components/UI';
+import { useUserSiteIds } from 'hooks';
+import { useManifestStatus, useReadOnly } from 'hooks/manifest';
 import React, { createContext, useEffect, useState } from 'react';
-import { Alert, Button, Col, Container, Stack } from 'react-bootstrap';
+import { Container, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -25,12 +27,10 @@ import {
   useSaveEManifestMutation,
   useUpdateManifestMutation,
 } from 'store';
-import { ContactForm, PhoneForm } from './Contact';
-import { AddHandler, GeneratorForm, Handler } from './Handler';
+import { AddHandler } from './Handler';
 import { Manifest, manifestSchema, SiteType } from './manifestSchema';
-import { QuickerSignData, QuickerSignModal, QuickSignBtn } from './QuickerSign';
-import { Transporter, TransporterTable } from './Transporter';
-import { EditWasteModal, WasteLineTable } from './WasteLine';
+import { QuickerSignData, QuickerSignModal } from './QuickerSign';
+import { EditWasteModal } from './WasteLine';
 
 const defaultValues: Manifest = {
   transporters: [],
@@ -96,7 +96,7 @@ export function ManifestForm({
     };
   }
   useManifestStatus(values.status);
-  const [readOnly] = useReadOnly(propReadOnly);
+  useReadOnly(propReadOnly);
 
   // State related to inter-system communications with EPA's RCRAInfo system
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
@@ -116,9 +116,6 @@ export function ManifestForm({
     values: values,
     resolver: zodResolver(manifestSchema),
   });
-  const {
-    formState: { errors },
-  } = manifestForm;
 
   useEffect(() => {
     if (createData) {
@@ -171,28 +168,15 @@ export function ManifestForm({
   };
 
   // Generator component state and methods
-  const generator: Handler | undefined = manifestForm.getValues('generator');
   const [showGeneratorSearch, setShowGeneratorSearch] = useState<boolean>(false);
-  const [showGeneratorForm, setShowGeneratorForm] = useState<boolean>(false);
   const toggleShowAddGenerator = () => setShowGeneratorSearch(!showGeneratorSearch);
-  const toggleShowGeneratorForm = () => setShowGeneratorForm(!showGeneratorForm);
   const [generatorStateCode, setGeneratorStateCode] = useState<string | undefined>(
     manifestData?.generator?.siteAddress.state.code
   );
 
-  // Transporter component state and methods
-  const [showAddTransporterForm, setShowAddTransporterForm] = useState<boolean>(false);
-  const toggleTranSearchShow = () => setShowAddTransporterForm(!showAddTransporterForm);
-  const transporters: Array<Transporter> = manifestForm.getValues('transporters');
-  const transporterForm = useFieldArray<Manifest, 'transporters'>({
-    control: manifestForm.control,
-    name: 'transporters',
-  });
-
   // DesignatedFacility (TSDF) component state and methods
   const [tsdfFormShow, setTsdfFormShow] = useState<boolean>(false);
   const toggleTsdfFormShow = () => setTsdfFormShow(!tsdfFormShow);
-  const tsdf: Handler | undefined = manifestForm.watch('designatedFacility');
   const [tsdfStateCode, setTsdfStateCode] = useState<string | undefined>(
     manifestData?.designatedFacility?.siteAddress.state.code
   );
@@ -274,131 +258,26 @@ export function ManifestForm({
               </HtCard>
               <HtCard id="generator-form-card" title="Generator">
                 <HtCard.Body>
-                  {readOnly ? (
-                    <>
-                      <RcraSiteDetails handler={generator} />
-                      <h4>Emergency Contact Information</h4>
-                      <ContactForm handlerType="generator" />
-                      <div className="d-flex justify-content-between">
-                        <Col className="text-end">
-                          <QuickSignBtn
-                            siteType={'Generator'}
-                            mtnHandler={generator}
-                            onClick={setupSign}
-                            disabled={generator?.signed || !signAble}
-                          />
-                        </Col>
-                      </div>
-                    </>
-                  ) : generator && !showGeneratorForm ? (
-                    <>
-                      <RcraSiteDetails handler={generator} />
-                      <PhoneForm handlerType={'generator'} />
-                      <div className="d-flex justify-content-end">
-                        <Button variant="outline-primary" onClick={toggleShowGeneratorForm}>
-                          Edit
-                        </Button>
-                      </div>
-                    </>
-                  ) : showGeneratorForm ? (
-                    <>
-                      <GeneratorForm />
-                      <h4>Emergency Contact Information</h4>
-                      <ContactForm handlerType="generator" />
-                    </>
-                  ) : (
-                    <>
-                      <Stack gap={2}>
-                        <HtButton
-                          horizontalAlign
-                          onClick={toggleShowAddGenerator}
-                          children={'Add Generator'}
-                          variant="outline-primary"
-                        />
-                        <HtButton
-                          horizontalAlign
-                          onClick={toggleShowGeneratorForm}
-                          variant="outline-secondary"
-                        >
-                          Enter Generator Information
-                        </HtButton>
-                      </Stack>
-                    </>
-                  )}
-                  <ErrorMessage
-                    errors={errors}
-                    name={'generator'}
-                    render={({ message }) => {
-                      if (!message) return null;
-                      return (
-                        <Alert variant="danger" className="text-center m-3">
-                          {message}
-                        </Alert>
-                      );
-                    }}
+                  <GeneratorSection
+                    setupSign={setupSign}
+                    toggleShowAddGenerator={toggleShowAddGenerator}
+                    signAble={signAble}
                   />
                 </HtCard.Body>
               </HtCard>
               <HtCard id="transporter-form-card" title="Transporters">
                 <HtCard.Body className="pb-4">
-                  <TransporterTable
-                    transporters={transporters}
-                    arrayFieldMethods={transporterForm}
-                    setupSign={setupSign}
-                  />
-                  {readOnly ? (
-                    <></>
-                  ) : (
-                    <HtButton
-                      onClick={toggleTranSearchShow}
-                      children={'Add Transporter'}
-                      variant="outline-primary"
-                      horizontalAlign
-                    />
-                  )}
-                  <ErrorMessage
-                    errors={errors}
-                    name={'transporters'}
-                    render={({ message }) => (
-                      <Alert variant="danger" className="text-center m-3">
-                        {message}
-                      </Alert>
-                    )}
-                  />
+                  <TransporterSection setupSign={setupSign} />
                 </HtCard.Body>
               </HtCard>
               <HtCard id="waste-form-card" title="Waste">
                 <HtCard.Body className="pb-4">
-                  <WasteLineTable
-                    wastes={allWastes}
-                    toggleWLModal={toggleWlFormShow}
-                    wasteForm={wasteForm}
-                  />
-                  {readOnly ? (
-                    <></>
-                  ) : (
-                    <HtButton
-                      onClick={toggleWlFormShow}
-                      children={'Add Waste'}
-                      variant="outline-primary"
-                      horizontalAlign
-                    />
-                  )}
-                  <ErrorMessage
-                    errors={errors}
-                    name={'wastes'}
-                    render={({ message }) => (
-                      <Alert variant="danger" className="text-center m-3">
-                        {message}
-                      </Alert>
-                    )}
-                  />
+                  <WasteLineSection toggleWlFormShow={toggleWlFormShow} />
                 </HtCard.Body>
               </HtCard>
               <HtCard id="tsdf-form-card" title="Designated Facility">
                 <HtCard.Body className="pb-4">
                   <TsdfSection
-                    tsdf={tsdf}
                     setupSign={setupSign}
                     signAble={signAble}
                     toggleTsdfFormShow={toggleTsdfFormShow}
@@ -424,13 +303,6 @@ export function ManifestForm({
             handleClose={toggleShowAddGenerator}
             show={showGeneratorSearch}
             handlerType="generator"
-          />
-          <AddHandler
-            handleClose={toggleTranSearchShow}
-            show={showAddTransporterForm}
-            currentTransporters={transporters}
-            appendTransporter={transporterForm.append}
-            handlerType="transporter"
           />
           <AddHandler
             handleClose={toggleTsdfFormShow}
