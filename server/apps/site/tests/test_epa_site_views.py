@@ -8,9 +8,7 @@ from apps.site.views import SearchRcraSiteView  # type: ignore
 
 
 class TestEpaSiteView:
-    """
-    Tests the for the endpoints related to the handlers
-    """
+    """Handler endpoints test suite"""
 
     URL = "/api/rcra/handler"
 
@@ -23,7 +21,7 @@ class TestEpaSiteView:
         return rcra_site_factory()
 
     def test_endpoint_returns_json_with_rcra_site(self, client, generator):
-        response: Response = client.get(f"{self.URL}/{generator.pk}")
+        response: Response = client.get(f"{self.URL}/{generator.epa_id}")
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK
         assert response.data["epaSiteId"] == generator.epa_id

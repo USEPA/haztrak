@@ -12,16 +12,16 @@ interface ManifestEditBtnProps extends ButtonProps {}
 export function ManifestEditBtn({ children, ...props }: ManifestEditBtnProps) {
   const navigate = useNavigate();
   const { trackingNumber, viewingAsSiteId } = useContext(ManifestContext);
-  const [readOnly] = useReadOnly();
+  const [readOnly, setReadOnly] = useReadOnly();
   if (!readOnly) return <></>;
+
+  const handleClick = () => {
+    setReadOnly(false);
+    navigate(`/site/${viewingAsSiteId}/manifest/${trackingNumber}/edit`);
+  };
+
   return (
-    <HtButton
-      {...props}
-      variant="info"
-      type="button"
-      name="edit"
-      onClick={() => navigate(`/site/${viewingAsSiteId}/manifest/${trackingNumber}/edit`)}
-    >
+    <HtButton {...props} variant="info" type="button" name="edit" onClick={handleClick}>
       <span>Edit </span>
       <FontAwesomeIcon icon={faPenToSquare} />
     </HtButton>

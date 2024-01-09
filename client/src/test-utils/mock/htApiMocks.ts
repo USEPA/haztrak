@@ -15,10 +15,6 @@ export const htApiMocks = [
   http.get(`${API_BASE_URL}/api/site/${mockEpaId}`, (info) => {
     return HttpResponse.json(mockSites[0], { status: 200 });
   }),
-  /** mock Manifest*/
-  http.get(`${API_BASE_URL}/api/rcra/manifest/${mockMTN}`, (info) => {
-    return HttpResponse.json(createMockManifest(), { status: 200 });
-  }),
   /** list of manifests ('My Manifests' feature and a site's manifests)*/
   http.get(`${API_BASE_URL}/api/rcra/mtn*`, (info) => {
     const mockManifestArray = [

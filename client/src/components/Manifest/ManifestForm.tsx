@@ -15,18 +15,13 @@ import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { WasteLineSection } from 'components/Manifest/WasteLine/WasteLineSection';
 import { HtCard, HtForm } from 'components/UI';
 import { useUserSiteIds } from 'hooks';
-import { useManifestStatus, useReadOnly } from 'hooks/manifest';
+import { useManifestStatus, useReadOnly, useSaveManifest } from 'hooks/manifest';
 import React, { createContext, useEffect, useState } from 'react';
 import { Container, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { manifest } from 'services';
-import {
-  useCreateManifestMutation,
-  useSaveEManifestMutation,
-  useUpdateManifestMutation,
-} from 'store';
 import { HandlerSearchModal } from './Handler';
 import { Manifest, manifestSchema, SiteType } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal } from './QuickerSign';
@@ -36,7 +31,7 @@ const defaultValues: Manifest = {
   transporters: [],
   wastes: [],
   status: 'NotAssigned',
-  submissionType: 'FullElectronic',
+  submissionType: 'Hybrid',
 };
 
 export interface ManifestContextType {
@@ -100,16 +95,14 @@ export function ManifestForm({
 
   // State related to inter-system communications with EPA's RCRAInfo system
   const [showSpinner, setShowSpinner] = useState<boolean>(false);
-  const toggleShowSpinner = () => setShowSpinner(!showSpinner);
   const [taskId, setTaskId] = useState<string | undefined>(undefined);
-  const [createManifest, { data: createData, error: createError, isLoading: createIsLoading }] =
-    useCreateManifestMutation();
-  const [
-    saveEmanifest,
-    { data: eManifestResult, error: eManifestError, isLoading: eManifestIsLoading },
-  ] = useSaveEManifestMutation();
-  const [updateManifest, { data: updateResults, error: updateError, isLoading: updateIsLoading }] =
-    useUpdateManifestMutation();
+  const {
+    isLoading: saveManifestIsLoading,
+    saveManifest,
+    data: saveManifestResult,
+    error: saveManifestError,
+    taskId: saveEmanifestTaskId,
+  } = useSaveManifest();
 
   // React-Hook-Form component state and methods
   const manifestForm = useForm<Manifest>({
@@ -118,53 +111,31 @@ export function ManifestForm({
   });
 
   useEffect(() => {
-    if (createData) {
-      if ('manifestTrackingNumber' in createData) {
-        navigate(`/manifest/${createData.manifestTrackingNumber}/view`);
+    if (saveManifestResult) {
+      if ('manifestTrackingNumber' in saveManifestResult) {
+        navigate(
+          `/site/${manifestingSiteID}/manifest/${saveManifestResult.manifestTrackingNumber}/view`
+        );
       }
     }
-    if (createIsLoading) {
+    if (saveManifestIsLoading) {
       setShowSpinner(true);
     }
-    if (createError) {
+    if (saveManifestError) {
       toast.error('Error creating manifest');
       setShowSpinner(false);
     }
-  }, [createData, createIsLoading, createError]);
+  }, [saveManifestResult, saveManifestIsLoading, saveManifestError]);
 
   useEffect(() => {
-    if (updateResults) {
-      if ('manifestTrackingNumber' in updateResults) {
-        navigate(`/manifest/${updateResults.manifestTrackingNumber}/view`);
-      }
-    }
-    if (updateIsLoading) {
+    if (saveEmanifestTaskId) {
+      setTaskId(saveEmanifestTaskId);
       setShowSpinner(true);
     }
-    if (updateError) {
-      console.error(updateError);
-      toast.error('Error Updating manifest');
-      setShowSpinner(false);
-    }
-  }, [updateResults, updateError, updateIsLoading]);
-
-  useEffect(() => {
-    if (eManifestResult) {
-      setTaskId(eManifestResult.taskId);
-      toggleShowSpinner();
-    }
-  }, [eManifestResult, eManifestIsLoading, eManifestError]);
+  }, [saveEmanifestTaskId]);
 
   const onSubmit: SubmitHandler<Manifest> = (data: Manifest) => {
-    if (data.status === 'NotAssigned') {
-      if (data.manifestTrackingNumber?.endsWith('DFT')) {
-        updateManifest({ mtn: data.manifestTrackingNumber, manifest: data });
-      } else {
-        createManifest(data);
-      }
-    } else {
-      saveEmanifest(data);
-    }
+    saveManifest(data);
   };
 
   // Generator component state and methods
