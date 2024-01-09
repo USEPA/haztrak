@@ -1,7 +1,7 @@
 import { Manifest, ManifestStatus } from 'components/Manifest/manifestSchema';
 import { HtForm, InfoIconTooltip } from 'components/UI';
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useGetProfileQuery } from 'store';
 import { manifest } from 'services';
 import Select, { SingleValue } from 'react-select';
@@ -51,30 +51,40 @@ export function ManifestStatusSelect({ readOnly, isDraft }: ManifestStatusFieldP
           <InfoIconTooltip message={'Once set to scheduled, this field is managed by EPA'} />
         )}
       </HtForm.Label>
-      <Select
-        id="status"
-        isDisabled={readOnly || !isDraft}
-        data-testid="manifestStatus"
-        aria-label="manifestStatus"
-        {...manifestForm.register('status')}
-        value={selectedStatus}
-        isLoading={profileLoading || !profile}
-        classNames={{
-          control: () => 'form-select py-0 rounded-3',
-        }}
-        onChange={(option: SingleValue<StatusOption>) => {
-          if (option) setStatus(option.value);
-        }}
-        options={statusOptions}
-        filterOption={(option) =>
-          // Hide options that are managed by EPA
-          availableStatuses.includes(option.value as ManifestStatus) || option.value === 'Scheduled'
-        }
-        isOptionDisabled={(option) =>
-          // Disable the 'Scheduled' option if it's not available
-          option.value === 'Scheduled' && !availableStatuses.includes('Scheduled')
-        }
-        components={{ IndicatorSeparator: () => null, DropdownIndicator: () => null }}
+      <Controller
+        name="status"
+        control={manifestForm.control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            id="status"
+            aria-label="status"
+            value={selectedStatus}
+            options={statusOptions}
+            isDisabled={readOnly || !isDraft}
+            data-testid="manifestStatus"
+            isLoading={profileLoading || !profile}
+            onChange={(option: SingleValue<StatusOption>) => {
+              if (option) {
+                setStatus(option.value);
+                field.onChange(option.value);
+              }
+            }}
+            filterOption={(option) =>
+              // Hide options that are managed by EPA
+              availableStatuses.includes(option.value as ManifestStatus) ||
+              option.value === 'Scheduled'
+            }
+            isOptionDisabled={(option) =>
+              // Disable the 'Scheduled' option if it's not available
+              option.value === 'Scheduled' && !availableStatuses.includes('Scheduled')
+            }
+            classNames={{
+              control: () => 'form-select py-0 rounded-3',
+            }}
+            components={{ IndicatorSeparator: () => null, DropdownIndicator: () => null }}
+          />
+        )}
       />
     </HtForm.Group>
   );

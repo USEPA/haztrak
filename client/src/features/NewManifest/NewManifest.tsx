@@ -114,5 +114,11 @@ export function NewManifest() {
           ? { designatedFacility: manifestingSite }
           : {};
 
-  return <ManifestForm manifestData={newManifestData} readOnly={false} />;
+  return (
+    <ManifestForm
+      manifestData={newManifestData}
+      manifestingSiteID={manifestingSite.epaSiteId}
+      readOnly={false}
+    />
+  );
 }
