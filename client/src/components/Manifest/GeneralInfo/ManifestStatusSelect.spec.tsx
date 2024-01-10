@@ -1,15 +1,15 @@
 import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
 import { ManifestStatusSelect } from 'components/Manifest/GeneralInfo/ManifestStatusSelect';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
-import userEvent from '@testing-library/user-event';
-import { setupServer } from 'msw/node';
-import { userApiMocks } from 'test-utils/mock';
-import { http, HttpResponse } from 'msw';
-import { createMockProfileResponse } from 'test-utils/fixtures/mockUser';
-import { API_BASE_URL } from 'test-utils/mock/htApiMocks';
 import { createMockHandler, createMockSite } from 'test-utils/fixtures';
+import { createMockProfileResponse } from 'test-utils/fixtures/mockUser';
+import { userApiMocks } from 'test-utils/mock';
+import { API_BASE_URL } from 'test-utils/mock/htApiMocks';
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 const server = setupServer(...userApiMocks);
 afterEach(() => cleanup());
@@ -37,6 +37,7 @@ describe('Manifest Status Field', () => {
   });
   test('is not editable if read only', () => {
     renderWithProviders(<TestComponent isDraft={true} readOnly={true} />);
+
     expect(screen.getByLabelText(/Status/i)).toBeDisabled();
   });
   test('is editable if the manifest is a draft', () => {
@@ -88,6 +89,40 @@ describe('Manifest Status Field', () => {
     expect(scheduledOption).not.toBeDisabled();
   });
   test('Scheduled status is disabled if no access to TSDF', async () => {
+    // Arrange
+    const userGeneratorSite = createMockSite({
+      handler: createMockHandler({
+        siteType: 'Generator',
+        epaSiteId: 'MOCKVAGEN001',
+      }),
+    });
+    server.use(
+      http.get(`${API_BASE_URL}/api/user/profile`, () => {
+        return HttpResponse.json(
+          {
+            ...createMockProfileResponse({
+              sites: [
+                {
+                  site: userGeneratorSite,
+                  eManifest: 'signer',
+                },
+              ],
+            }),
+          },
+          { status: 200 }
+        );
+      })
+    );
+    renderWithProviders(<TestComponent isDraft={true} readOnly={false} />, {
+      preloadedState: { manifest: { readOnly: false } },
+      useFormProps: { values: { status: 'NotAssigned', generator: userGeneratorSite.handler } },
+    });
+    await userEvent.click(screen.getByLabelText(/Status/i));
+    const scheduledOption = screen.queryByRole('option', { name: /Scheduled/i });
+    expect(scheduledOption).toBeInTheDocument();
+    expect(scheduledOption).toHaveAttribute('aria-disabled', 'true');
+  });
+  test('is editable if draft status', async () => {
     // Arrange
     const userGeneratorSite = createMockSite({
       handler: createMockHandler({
