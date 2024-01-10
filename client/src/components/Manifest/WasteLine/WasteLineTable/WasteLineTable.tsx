@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Manifest } from 'components/Manifest';
 import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
 import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { WasteRowActions } from 'components/Manifest/WasteLine/WasteLineTable/WasteRowActions';
 import { useReadOnly } from 'hooks/manifest';
 import React, { useContext, useState } from 'react';
 import { Accordion, Button, Card, Col, Row, useAccordionButton } from 'react-bootstrap';
@@ -75,15 +76,15 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTa
                     </span>
                   </div>
                 </Col>
-                <Col xs={1}>
-                  {/*{readOnly || (*/}
-                  {/*  <TransporterRowActions*/}
-                  {/*    removeTransporter={arrayFieldMethods.remove}*/}
-                  {/*    swapTransporter={arrayFieldMethods.swap}*/}
-                  {/*    index={index}*/}
-                  {/*    length={transporters?.length}*/}
-                  {/*  />*/}
-                  {/*)}*/}
+                <Col className="d-flex" xs={3}>
+                  {readOnly || (
+                    <WasteRowActions
+                      wasteForm={wasteForm}
+                      setEditWasteLine={() => setEditWasteLineIndex(index)}
+                      toggleWLModal={toggleWLModal}
+                      index={index}
+                    />
+                  )}
                   <CustomToggle eventKey={waste.lineNumber.toString()}></CustomToggle>
                 </Col>
               </Row>
