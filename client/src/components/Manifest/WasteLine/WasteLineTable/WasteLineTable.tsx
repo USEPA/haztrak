@@ -83,6 +83,7 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTa
                       setEditWasteLine={() => setEditWasteLineIndex(index)}
                       toggleWLModal={toggleWLModal}
                       index={index}
+                      eventKey={waste.lineNumber.toString()}
                     />
                   )}
                 </Col>

@@ -53,15 +53,13 @@ function TransporterTable({ transporters, arrayFieldMethods, setupSign }: Transp
       <Accordion ref={parent}>
         {transporters.map((transporter, index) => {
           return (
-            <Card key={transporter.epaSiteId} className="py-2 px-4 my-2">
-              <Row className="d-flex justify-content-between">
-                <Col xs={9} className="d-flex align-items-center">
-                  <div>
-                    <h5 className="d-inline border-3 me-3">{transporter.order} </h5>
-                    <span className="text-nowrap overflow-scroll">{transporter.name}</span>
-                  </div>
+            <Card key={transporter.epaSiteId} className="py-2 ps-4 pe-2 my-2">
+              <Row className="d-flex justify-content-around">
+                <Col xs={8} className="d-flex align-items-center">
+                  <h5 className="mb-0 me-3">{transporter.order} </h5>
+                  <span className="overflow-scroll">{transporter.name}</span>
                 </Col>
-                <Col xs={1}>
+                <Col xs={2}>
                   {readOnly ? (
                     <QuickSignBtn
                       siteType={'Transporter'}
@@ -76,18 +74,18 @@ function TransporterTable({ transporters, arrayFieldMethods, setupSign }: Transp
                     <></>
                   )}
                 </Col>
-                <Col xs={1}>
-                  {readOnly || (
+                <Col xs={2} className="d-flex justify-content-end align-items-center">
+                  {readOnly ? (
+                    <CustomToggle eventKey={transporter.epaSiteId}></CustomToggle>
+                  ) : (
                     <TransporterRowActions
                       removeTransporter={arrayFieldMethods.remove}
                       swapTransporter={arrayFieldMethods.swap}
                       index={index}
                       length={transporters?.length}
+                      eventKey={transporter.epaSiteId}
                     />
                   )}
-                </Col>
-                <Col xs={1}>
-                  <CustomToggle eventKey={transporter.epaSiteId}></CustomToggle>
                 </Col>
               </Row>
               <Accordion.Collapse eventKey={transporter.epaSiteId}>

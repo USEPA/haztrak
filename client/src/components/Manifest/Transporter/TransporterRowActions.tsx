@@ -2,11 +2,13 @@ import {
   faArrowDown,
   faArrowUp,
   faEllipsisVertical,
+  faEye,
+  faEyeSlash,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { MouseEventHandler, ReactElement } from 'react';
-import { Col, Dropdown, Row } from 'react-bootstrap';
+import React, { MouseEventHandler, ReactElement, useState } from 'react';
+import { Col, Dropdown, Row, useAccordionButton } from 'react-bootstrap';
 import { UseFieldArrayRemove, UseFieldArraySwap } from 'react-hook-form';
 
 interface TranRowActionProps {
@@ -14,6 +16,7 @@ interface TranRowActionProps {
   length: number;
   removeTransporter: UseFieldArrayRemove;
   swapTransporter: UseFieldArraySwap;
+  eventKey: string;
 }
 
 interface RowDropdownItems {
@@ -34,9 +37,12 @@ export function TransporterRowActions({
   removeTransporter,
   swapTransporter,
   length,
+  eventKey,
 }: TranRowActionProps) {
   const isFirst = index === 0;
   const isLast = index + 1 === length;
+  const [open, setOpen] = useState(false);
+  const decoratedOnClick = useAccordionButton(eventKey, () => setOpen(!open));
 
   const actions: RowDropdownItems[] = [
     {
@@ -72,6 +78,15 @@ export function TransporterRowActions({
       },
       disabled: false,
       label: `remove transporter ${index}`,
+    },
+    {
+      text: open ? 'Close' : 'Details',
+      icon: <FontAwesomeIcon icon={open ? faEyeSlash : faEye} className="text-info" />,
+      onClick: (event) => {
+        decoratedOnClick(event);
+      },
+      disabled: false,
+      label: `View transporter ${index} details`,
     },
   ];
 

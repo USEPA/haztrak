@@ -1,8 +1,14 @@
-import { faEllipsisVertical, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEllipsisVertical,
+  faEye,
+  faEyeSlash,
+  faPen,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Manifest } from 'components/Manifest';
-import React, { MouseEventHandler, ReactElement } from 'react';
-import { Col, Dropdown, Row } from 'react-bootstrap';
+import React, { MouseEventHandler, ReactElement, useState } from 'react';
+import { Col, Dropdown, Row, useAccordionButton } from 'react-bootstrap';
 import { UseFieldArrayReturn } from 'react-hook-form';
 
 interface WasteRowActionProps {
@@ -10,6 +16,7 @@ interface WasteRowActionProps {
   wasteForm: UseFieldArrayReturn<Manifest, 'wastes'>;
   toggleWLModal: () => void;
   setEditWasteLine: (index: number) => void;
+  eventKey: string;
 }
 
 interface RowDropdownItems {
@@ -29,7 +36,11 @@ function WasteRowActions({
   wasteForm,
   setEditWasteLine,
   toggleWLModal,
+  eventKey,
 }: WasteRowActionProps) {
+  const [open, setOpen] = useState(false);
+  const decoratedOnClick = useAccordionButton(eventKey, () => setOpen(!open));
+
   const actions: RowDropdownItems[] = [
     {
       text: 'Remove',
@@ -49,6 +60,15 @@ function WasteRowActions({
       },
       disabled: false,
       label: `remove waste line ${index}`,
+    },
+    {
+      text: open ? 'Close' : 'Details',
+      icon: <FontAwesomeIcon icon={open ? faEyeSlash : faEye} className="text-info" />,
+      onClick: (event) => {
+        decoratedOnClick(event);
+      },
+      disabled: false,
+      label: `view waste line ${index} details`,
     },
   ];
 
