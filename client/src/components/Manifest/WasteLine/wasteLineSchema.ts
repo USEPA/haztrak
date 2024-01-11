@@ -28,6 +28,8 @@ export const quantityUOMSchema = z.object({
   description: z.string().optional(),
 });
 
+export type QuantityUOM = z.infer<typeof quantityUOMSchema>;
+
 const quantitySchema = z.object({
   containerNumber: z.number(),
   containerType: containerTypeSchema,

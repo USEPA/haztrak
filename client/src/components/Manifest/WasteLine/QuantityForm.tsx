@@ -1,12 +1,16 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { ContainerType, WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
+import {
+  ContainerType,
+  QuantityUOM,
+  WasteLine,
+} from 'components/Manifest/WasteLine/wasteLineSchema';
 import { HtForm } from 'components/UI';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 
-const unitsOfMeasurements = [
+const unitsOfMeasurements: Array<QuantityUOM> = [
   { code: 'P', description: 'Pounds' },
   { code: 'T', description: 'Tons (2000 Pounds)' },
   { code: 'K', description: 'Kilograms' },
@@ -45,8 +49,11 @@ export function QuantityForm() {
       <Row className="mb-2" xs={1} sm={2}>
         <Col sm={3}>
           <HtForm.Group className="mb-2">
-            <HtForm.Label className="mb-0">Count</HtForm.Label>
+            <HtForm.Label className="mb-0" htmlFor="count">
+              Count
+            </HtForm.Label>
             <Form.Control
+              id="count"
               type="number"
               min={1}
               {...register(`quantity.containerNumber`, { min: 0, valueAsNumber: true })}
@@ -93,8 +100,11 @@ export function QuantityForm() {
       <Row xs={1} sm={2}>
         <Col sm={3}>
           <HtForm.Group className="mb-2">
-            <HtForm.Label className="mb-0">Quantity</HtForm.Label>
+            <HtForm.Label className="mb-0" htmlFor="quantity">
+              Quantity
+            </HtForm.Label>
             <Form.Control
+              id="quantity"
               type="number"
               min={1}
               {...register(`quantity.quantity`, {
@@ -118,12 +128,8 @@ export function QuantityForm() {
                   <Select
                     id="quantityUnitOfMeasurement"
                     {...field}
-                    // ToDo: WasteLine type expects a string enum literal as its possible values.
-                    // ToDo: Fix these minor typescript errors
-                    // @ts-ignore
                     options={unitsOfMeasurements}
-                    // @ts-ignore
-                    getOptionLabel={(option) => option.description}
+                    getOptionLabel={(option) => option.description ?? option.code}
                     getOptionValue={(option) => option.code}
                     openMenuOnFocus={false}
                     classNames={{
