@@ -42,10 +42,10 @@ export function QuantityForm() {
 
   return (
     <>
-      <Row className="mb-2">
-        <Col xs={3}>
+      <Row className="mb-2" xs={1} sm={2}>
+        <Col sm={3}>
           <HtForm.Group className="mb-2">
-            <HtForm.Label className="mb-0">Number</HtForm.Label>
+            <HtForm.Label className="mb-0">Count</HtForm.Label>
             <Form.Control
               type="number"
               min={1}
@@ -55,7 +55,7 @@ export function QuantityForm() {
             <div className="invalid-feedback">{errors.quantity?.containerNumber?.message}</div>
           </HtForm.Group>
         </Col>
-        <Col>
+        <Col sm={9}>
           <HtForm.Group className="mb-2">
             <HtForm.Label className="mb-0" htmlFor="quantityContainerType">
               Container Type
@@ -90,8 +90,8 @@ export function QuantityForm() {
           </HtForm.Group>
         </Col>
       </Row>
-      <Row>
-        <Col xs={3}>
+      <Row xs={1} sm={2}>
+        <Col sm={3}>
           <HtForm.Group className="mb-2">
             <HtForm.Label className="mb-0">Quantity</HtForm.Label>
             <Form.Control
@@ -105,7 +105,7 @@ export function QuantityForm() {
             <div className="invalid-feedback">{errors.quantity?.quantity?.message}</div>
           </HtForm.Group>
         </Col>
-        <Col>
+        <Col sm={9}>
           <HtForm.Group className="mb-2">
             <HtForm.Label className="mb-0" htmlFor="quantityUnitOfMeasurement">
               Units
