@@ -21,6 +21,8 @@ export const containerTypeSchema = z.object({
   description: z.string().optional(),
 });
 
+export type ContainerType = z.infer<typeof containerTypeSchema>;
+
 export const quantityUOMSchema = z.object({
   code: z.enum(['P', 'T', 'K', 'M', 'G', 'L', 'Y', 'N']),
   description: z.string().optional(),

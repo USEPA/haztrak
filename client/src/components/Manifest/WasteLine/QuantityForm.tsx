@@ -1,5 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { ContainerType, WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { HtForm } from 'components/UI';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
@@ -17,7 +17,7 @@ const unitsOfMeasurements = [
   { code: 'N', description: 'Cubic Meters' },
 ];
 
-const containerTypes = [
+const containerTypes: Array<ContainerType> = [
   { code: 'BA', description: 'Burlap, cloth, paper, or plastic bags' },
   { code: 'DT', description: 'Dump truck' },
   { code: 'CF', description: 'Fiber or plastic boxes, cartons, cases' },
@@ -67,21 +67,17 @@ export function QuantityForm() {
                 return (
                   <Select
                     id="quantityContainerType"
+                    {...field}
+                    options={containerTypes}
+                    getOptionLabel={(option) => option.description ?? option.code}
+                    getOptionValue={(option) => option.code}
+                    openMenuOnFocus={false}
                     classNames={{
                       control: () =>
                         `form-control p-0 rounded-2 ${
                           errors.quantity?.containerType && 'border-danger'
                         }`,
                     }}
-                    {...field}
-                    // ToDo: WasteLine type expects a string enum literal as its possible values.
-                    // ToDo: Fix these minor typescript errors
-                    // @ts-ignore
-                    options={containerTypes}
-                    // @ts-ignore
-                    getOptionLabel={(option) => option.description}
-                    getOptionValue={(option) => option.code}
-                    openMenuOnFocus={false}
                   />
                 );
               }}
