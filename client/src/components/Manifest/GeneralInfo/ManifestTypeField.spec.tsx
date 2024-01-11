@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
+import { ManifestTypeSelect } from 'components/Manifest/GeneralInfo/ManifestTypeSelect';
+import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
-import { setupServer } from 'msw/node';
-import { userApiMocks } from 'test-utils/mock';
-import { ManifestTypeSelect } from 'components/Manifest/GeneralInfo/ManifestTypeSelect';
-import userEvent from '@testing-library/user-event';
 import { createMockHandler } from 'test-utils/fixtures';
+import { userApiMocks } from 'test-utils/mock';
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 const server = setupServer(...userApiMocks);
 afterEach(() => cleanup());
@@ -61,5 +61,19 @@ describe('Manifest Type Field', () => {
       'aria-disabled',
       'false'
     );
+  });
+  test('is never editable if past draft status', async () => {
+    renderWithProviders(<TestComponent isDraft={false} readOnly={false} />, {
+      useFormProps: {
+        values: {
+          status: 'Scheduled',
+          generator: createMockHandler({
+            canEsign: true,
+            siteType: 'Generator',
+          }),
+        },
+      },
+    });
+    expect(screen.getByLabelText(/Type/i)).toBeDisabled();
   });
 });
