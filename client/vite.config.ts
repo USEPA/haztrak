@@ -45,7 +45,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     coverage: {
-      provider: 'istanbul', // or 'v8'
+      provider: 'v8', // or 'istanbul'
       reporter: ['text', 'json', 'html'],
       exclude: [
         '**/node_modules/**',
@@ -53,6 +53,10 @@ export default defineConfig({
         '**/dist/**',
         '**/coverage/**',
         '**/src/setupTests.ts',
+        '**/src/reportWebVitals.ts',
+        '**/public/**',
+        '**/*.d.ts',
+        '**/index.ts',
       ],
     },
     globals: true,
