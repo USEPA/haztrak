@@ -66,18 +66,18 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTa
           const description = waste.wasteDescription ?? waste.dotInformation?.printedDotInformation;
 
           return (
-            <Card key={waste.lineNumber} className="py-2 px-4 my-2">
+            <Card key={waste.lineNumber} className="py-2 ps-4 pe-2 my-2">
               <Row className="d-flex justify-content-around">
-                <Col xs={9}>
-                  <div>
-                    <h5 className="d-inline border-3 me-3">{waste.lineNumber} </h5>
-                    <span className="overflow-scroll">
-                      {waste.quantity.containerNumber} {waste.quantity.containerType.description}
-                    </span>
-                  </div>
+                <Col xs={10} className="d-flex align-items-center">
+                  <h5 className="me-3 mb-0">{waste.lineNumber} </h5>
+                  <span className="overflow-scroll">
+                    {waste.quantity.containerNumber} {waste.quantity.containerType.description}
+                  </span>
                 </Col>
-                <Col className="d-flex" xs={3}>
-                  {readOnly || (
+                <Col className="d-flex justify-content-end align-items-center" xs={2}>
+                  {readOnly ? (
+                    <CustomToggle eventKey={waste.lineNumber.toString()}></CustomToggle>
+                  ) : (
                     <WasteRowActions
                       wasteForm={wasteForm}
                       setEditWasteLine={() => setEditWasteLineIndex(index)}
@@ -85,7 +85,6 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTa
                       index={index}
                     />
                   )}
-                  <CustomToggle eventKey={waste.lineNumber.toString()}></CustomToggle>
                 </Col>
               </Row>
               <Accordion.Collapse eventKey={waste.lineNumber.toString()}>
