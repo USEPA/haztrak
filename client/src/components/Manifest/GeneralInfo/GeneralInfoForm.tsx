@@ -1,6 +1,6 @@
 import { ManifestStatusSelect } from 'components/Manifest/GeneralInfo/ManifestStatusSelect';
 import { ManifestTypeSelect } from 'components/Manifest/GeneralInfo/ManifestTypeSelect';
-import { Manifest, SubmissionType } from 'components/Manifest/manifestSchema';
+import { Manifest } from 'components/Manifest/manifestSchema';
 import { HtForm, InfoIconTooltip } from 'components/UI';
 import { useReadOnly } from 'hooks/manifest';
 import React from 'react';
@@ -12,13 +12,6 @@ interface GeneralInfoFormProps {
   readOnly?: boolean;
   isDraft?: boolean;
 }
-
-const submissionTypeOptions: Array<{ value: SubmissionType; label: string }> = [
-  { value: 'FullElectronic', label: 'Electronic' },
-  { value: 'Hybrid', label: 'Hybrid' },
-  { value: 'DataImage5Copy', label: 'Data + Image' },
-  { value: 'Image', label: 'Image Only' },
-];
 
 export function GeneralInfoForm({ manifestData, isDraft }: GeneralInfoFormProps) {
   const [readOnly] = useReadOnly();

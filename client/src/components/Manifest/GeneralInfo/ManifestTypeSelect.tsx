@@ -1,8 +1,9 @@
-import { Manifest, SubmissionType } from 'components/Manifest/manifestSchema';
+import { Manifest, ManifestStatus, SubmissionType } from 'components/Manifest/manifestSchema';
 import { HtForm } from 'components/UI';
+import { useManifestStatus } from 'hooks/manifest';
 import React, { useState } from 'react';
-import Select, { SingleValue } from 'react-select';
 import { Controller, useFormContext } from 'react-hook-form';
+import Select, { SingleValue } from 'react-select';
 
 interface SubmissionTypeOption {
   value: SubmissionType;
@@ -25,11 +26,24 @@ export function ManifestTypeSelect({
   isDraft?: boolean;
 }) {
   const manifestForm = useFormContext<Manifest>();
+  const [status] = useManifestStatus();
   const generatorCanESign = manifestForm.getValues('generator.canEsign');
   const [submissionType, setSubmissionType] = useState<SubmissionType>(
     manifestForm.getValues('submissionType') || 'Hybrid'
   );
   const selectedType = submissionTypeOptions.filter((option) => option.value === submissionType);
+
+  const isTypeDisabled = (
+    readOnly: boolean | undefined,
+    isDraft: boolean | undefined,
+    status: ManifestStatus | undefined
+  ) => {
+    if (readOnly) return true; // Read only manifests can never be edited
+    if (isDraft) return false; // Draft manifests can always be edited if not read only
+    if (status === 'NotAssigned') return false; // if editing a previously saved 'NotAssigned', allow editing
+    return true;
+  };
+
   return (
     <HtForm.Group>
       <HtForm.Label htmlFor="submissionType" className="mb-0">
@@ -43,7 +57,7 @@ export function ManifestTypeSelect({
             {...field}
             id="submissionType"
             aria-label="submission type"
-            isDisabled={readOnly || !isDraft}
+            isDisabled={isTypeDisabled(readOnly, isDraft, status)}
             value={selectedType}
             options={submissionTypeOptions}
             defaultValue={submissionTypeOptions[0]}

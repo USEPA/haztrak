@@ -1,11 +1,11 @@
 import { Manifest, ManifestStatus } from 'components/Manifest/manifestSchema';
 import { HtForm, InfoIconTooltip } from 'components/UI';
+import { useManifestStatus } from 'hooks/manifest';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useGetProfileQuery } from 'store';
-import { manifest } from 'services';
 import Select, { SingleValue } from 'react-select';
-import { useManifestStatus } from 'hooks/manifest';
+import { manifest } from 'services';
+import { useGetProfileQuery } from 'store';
 
 interface StatusOption {
   value: ManifestStatus;
@@ -43,6 +43,18 @@ export function ManifestStatusSelect({ readOnly, isDraft }: ManifestStatusFieldP
       })
     : [];
 
+  // Whether the status field should be disabled
+  const isStatusDisabled = (
+    status: ManifestStatus | undefined,
+    readOnly: boolean | undefined,
+    isDraft: boolean | undefined
+  ) => {
+    if (readOnly) return true; // Read only manifests can never be edited
+    if (isDraft) return false; // Draft manifests can always be edited if not read only
+    if (status === 'NotAssigned') return false; // if editing a previously saved 'NotAssigned', allow editing
+    return true;
+  };
+
   return (
     <HtForm.Group>
       <HtForm.Label htmlFor="status" className="mb-0">
@@ -61,7 +73,7 @@ export function ManifestStatusSelect({ readOnly, isDraft }: ManifestStatusFieldP
             aria-label="status"
             value={selectedStatus}
             options={statusOptions}
-            isDisabled={readOnly || !isDraft}
+            isDisabled={isStatusDisabled(status, readOnly, isDraft)}
             data-testid="manifestStatus"
             isLoading={profileLoading || !profile}
             onChange={(option: SingleValue<StatusOption>) => {

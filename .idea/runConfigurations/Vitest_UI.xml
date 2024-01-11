@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Vitest UI" type="JavaScriptTestRunnerVitest">
+    <config value="$PROJECT_DIR$/client/vite.config.ts" />
+    <node-interpreter value="project" />
+    <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+    <working-dir value="$PROJECT_DIR$/client" />
+    <vitest-options value="--ui" />
+    <envs>
+      <env name="VITE_HT_API_URL" value="http://localhost:8000" />
+      <env name="VITE_HT_ENV" value="DEV" />
+    </envs>
+    <scope-kind value="ALL" />
+    <method v="2" />
+  </configuration>
+</component>

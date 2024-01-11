@@ -6,7 +6,7 @@ import { DotIdSelect } from 'components/Manifest/WasteLine/DotIdSelect';
 import { HazardousWasteForm } from 'components/Manifest/WasteLine/HazardousWasteForm';
 import { WasteLine, wasteLineSchema } from 'components/Manifest/WasteLine/wasteLineSchema';
 import { HtCard, HtForm } from 'components/UI';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
 import { Controller, FormProvider, UseFieldArrayReturn, useForm } from 'react-hook-form';
 import { QuantityForm } from './QuantityForm';
@@ -24,11 +24,11 @@ interface WasteLineFormProps {
  * @constructor
  */
 export function WasteLineForm({ handleClose, wasteForm, waste, lineNumber }: WasteLineFormProps) {
-  const [dotHazardous, setDotHazardous] = React.useState<boolean>(
+  const [dotHazardous, setDotHazardous] = useState<boolean>(
     waste?.dotHazardous === undefined ? true : waste.dotHazardous
   );
   const { editWasteLineIndex } = useContext<ManifestContextType>(ManifestContext);
-  const [epaWaste, setEpaWaste] = React.useState<boolean>(
+  const [epaWaste, setEpaWaste] = useState<boolean>(
     waste?.epaWaste === undefined ? true : waste.epaWaste
   );
 

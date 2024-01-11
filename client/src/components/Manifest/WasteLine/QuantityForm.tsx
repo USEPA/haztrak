@@ -1,12 +1,16 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
+import {
+  ContainerType,
+  QuantityUOM,
+  WasteLine,
+} from 'components/Manifest/WasteLine/wasteLineSchema';
 import { HtForm } from 'components/UI';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 
-const unitsOfMeasurements = [
+const unitsOfMeasurements: Array<QuantityUOM> = [
   { code: 'P', description: 'Pounds' },
   { code: 'T', description: 'Tons (2000 Pounds)' },
   { code: 'K', description: 'Kilograms' },
@@ -17,7 +21,7 @@ const unitsOfMeasurements = [
   { code: 'N', description: 'Cubic Meters' },
 ];
 
-const containerTypes = [
+const containerTypes: Array<ContainerType> = [
   { code: 'BA', description: 'Burlap, cloth, paper, or plastic bags' },
   { code: 'DT', description: 'Dump truck' },
   { code: 'CF', description: 'Fiber or plastic boxes, cartons, cases' },
@@ -42,11 +46,14 @@ export function QuantityForm() {
 
   return (
     <>
-      <Row className="mb-2">
-        <Col xs={3}>
+      <Row className="mb-2" xs={1} sm={2}>
+        <Col sm={3}>
           <HtForm.Group className="mb-2">
-            <HtForm.Label className="mb-0">Number</HtForm.Label>
+            <HtForm.Label className="mb-0" htmlFor="count">
+              Count
+            </HtForm.Label>
             <Form.Control
+              id="count"
               type="number"
               min={1}
               {...register(`quantity.containerNumber`, { min: 0, valueAsNumber: true })}
@@ -55,7 +62,7 @@ export function QuantityForm() {
             <div className="invalid-feedback">{errors.quantity?.containerNumber?.message}</div>
           </HtForm.Group>
         </Col>
-        <Col>
+        <Col sm={9}>
           <HtForm.Group className="mb-2">
             <HtForm.Label className="mb-0" htmlFor="quantityContainerType">
               Container Type
@@ -67,21 +74,17 @@ export function QuantityForm() {
                 return (
                   <Select
                     id="quantityContainerType"
+                    {...field}
+                    options={containerTypes}
+                    getOptionLabel={(option) => option.description ?? option.code}
+                    getOptionValue={(option) => option.code}
+                    openMenuOnFocus={false}
                     classNames={{
                       control: () =>
                         `form-control p-0 rounded-2 ${
                           errors.quantity?.containerType && 'border-danger'
                         }`,
                     }}
-                    {...field}
-                    // ToDo: WasteLine type expects a string enum literal as its possible values.
-                    // ToDo: Fix these minor typescript errors
-                    // @ts-ignore
-                    options={containerTypes}
-                    // @ts-ignore
-                    getOptionLabel={(option) => option.description}
-                    getOptionValue={(option) => option.code}
-                    openMenuOnFocus={false}
                   />
                 );
               }}
@@ -94,11 +97,14 @@ export function QuantityForm() {
           </HtForm.Group>
         </Col>
       </Row>
-      <Row>
-        <Col xs={3}>
+      <Row xs={1} sm={2}>
+        <Col sm={3}>
           <HtForm.Group className="mb-2">
-            <HtForm.Label className="mb-0">Quantity</HtForm.Label>
+            <HtForm.Label className="mb-0" htmlFor="quantity">
+              Quantity
+            </HtForm.Label>
             <Form.Control
+              id="quantity"
               type="number"
               min={1}
               {...register(`quantity.quantity`, {
@@ -109,7 +115,7 @@ export function QuantityForm() {
             <div className="invalid-feedback">{errors.quantity?.quantity?.message}</div>
           </HtForm.Group>
         </Col>
-        <Col>
+        <Col sm={9}>
           <HtForm.Group className="mb-2">
             <HtForm.Label className="mb-0" htmlFor="quantityUnitOfMeasurement">
               Units
@@ -122,12 +128,8 @@ export function QuantityForm() {
                   <Select
                     id="quantityUnitOfMeasurement"
                     {...field}
-                    // ToDo: WasteLine type expects a string enum literal as its possible values.
-                    // ToDo: Fix these minor typescript errors
-                    // @ts-ignore
                     options={unitsOfMeasurements}
-                    // @ts-ignore
-                    getOptionLabel={(option) => option.description}
+                    getOptionLabel={(option) => option.description ?? option.code}
                     getOptionValue={(option) => option.code}
                     openMenuOnFocus={false}
                     classNames={{
