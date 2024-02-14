@@ -1,0 +1,94 @@
+version: '3.9'
+services:
+  trak:
+    container_name: trak
+    build:
+      context: ..
+      dockerfile: .devcontainer/Trak/Dockerfile
+    ports:
+      - '8000:8000'
+    env_file:
+      - .env.devcontainer
+    volumes:
+      - ..:/app:cached
+    command: |
+      sh -c "
+      cd ./server &&
+      python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py loaddata dev_data.yaml &&
+      python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+
+  db:
+    restart: unless-stopped
+    container_name: db
+    image: 'postgres:16'
+    env_file:
+      - .env.devcontainer
+    ports:
+      - '5432:5432'
+    volumes:
+      - rdb:/var/lib/postgresql/data
+
+  redis:
+    container_name: redis
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+    volumes:
+      - imdb:/data
+
+  celery-worker:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Trak/Dockerfile
+    restart: unless-stopped
+    container_name: celery-worker
+    volumes:
+      - ..:/app:cached
+    env_file:
+      - .env.devcontainer
+    command: |
+      sh -c "cd ./server &&
+      python manage.py celery_worker"
+    depends_on:
+      - redis
+      - trak
+      - db
+
+  celery-beat:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Trak/Dockerfile
+    restart: unless-stopped
+    container_name: celery-beat
+    env_file:
+      - .env.devcontainer
+    volumes:
+      - ..:/app:cached
+    command: |
+      sh -c "cd ./server &&
+      python manage.py celery_beat"
+    depends_on:
+      - redis
+      - trak
+      - db
+
+  client:
+    container_name: client
+    build:
+      context: ../client
+      target: dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - ..:/app:cached
+    env_file:
+      - .env.devcontainer
+    command: sh -c "cd /app/client; npm install; npm start"
+
+volumes:
+  rdb:
+  imdb:
