@@ -1,7 +1,7 @@
 version: '3.9'
 services:
-  server:
-    container_name: ht-server
+  trak:
+    container_name: trak
     restart: unless-stopped
     image: haztrak-server
     build:
@@ -26,7 +26,7 @@ services:
       HT_DB_NAME: ${HT_DB_NAME}
       HT_DB_USER: ${HT_DB_USER}
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
-      HT_DB_HOST: postgres
+      HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
     command: |
       sh -c "
@@ -35,11 +35,11 @@ services:
       python manage.py loaddata dev_data.yaml &&
       python manage.py runserver 0.0.0.0:8000"
     depends_on:
-      postgres:
+      db:
         condition: service_healthy
 
   redis:
-    container_name: ht-redis
+    container_name: redis
     image: 'redis:alpine'
     ports:
       - '6379:6379'
@@ -48,7 +48,7 @@ services:
 
   celery-worker:
     restart: unless-stopped
-    container_name: ht-celery-worker
+    container_name: celery-worker
     image: haztrak-server
     volumes:
       - ./server:/app
@@ -61,13 +61,13 @@ services:
       HT_DB_NAME: ${HT_DB_NAME}
       HT_DB_USER: ${HT_DB_USER}
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
-      HT_DB_HOST: postgres
+      HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
     command: python manage.py celery_worker
     depends_on:
       - redis
       - server
-      - postgres
+      - db
 
   celery-beat:
     restart: unless-stopped
@@ -84,17 +84,17 @@ services:
       HT_DB_NAME: ${HT_DB_NAME}
       HT_DB_USER: ${HT_DB_USER}
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
-      HT_DB_HOST: postgres
+      HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
     command: python manage.py celery_beat
     depends_on:
       - redis
       - server
-      - postgres
+      - db
 
-  postgres:
+  db:
     restart: unless-stopped
-    container_name: postgres
+    container_name: db
     image: 'postgres:16'
     environment:
       POSTGRES_DB: ${HT_DB_NAME}
