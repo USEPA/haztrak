@@ -1,7 +1,7 @@
 import pytest
 
-from apps.trak.models import Signer
-from apps.trak.serializers import ESignatureSerializer
+from apps.handler.models import Signer
+from apps.handler.serializers import ESignatureSerializer
 
 
 @pytest.fixture

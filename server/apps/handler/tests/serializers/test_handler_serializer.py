@@ -1,7 +1,7 @@
 import pytest
 
-from apps.trak.models import Handler, PaperSignature
-from apps.trak.serializers import HandlerSerializer
+from apps.handler.models import Handler, PaperSignature
+from apps.handler.serializers import HandlerSerializer
 
 
 @pytest.mark.django_db

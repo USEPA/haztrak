@@ -65,7 +65,7 @@ class Handler(TrakBaseModel):
         help_text="Hazardous waste rcra_site associated with the manifest",
     )
     emergency_phone = models.ForeignKey(
-        "trak.ManifestPhone",
+        "handler.ManifestPhone",
         on_delete=models.PROTECT,
         null=True,
         blank=True,

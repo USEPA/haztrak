@@ -3,7 +3,7 @@ from datetime import UTC, datetime
 import pytest
 from django.db import IntegrityError
 
-from apps.trak.models import PaperSignature
+from apps.handler.models import PaperSignature
 
 
 @pytest.mark.django_db

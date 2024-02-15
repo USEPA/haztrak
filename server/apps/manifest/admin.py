@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.db.models import Q, QuerySet
 
+from apps.handler.models import Transporter
 from apps.manifest.models import Manifest
-from apps.trak.models import Transporter
 from apps.wasteline.admin import WasteLineInline
 
 

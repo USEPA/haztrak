@@ -1,6 +1,6 @@
 import pytest
 
-from apps.trak.models import Handler
+from apps.handler.models import Handler
 
 
 @pytest.mark.django_db
