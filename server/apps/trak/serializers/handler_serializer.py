@@ -6,7 +6,7 @@ from rest_framework.exceptions import ValidationError
 from apps.site.serializers import RcraSiteSerializer
 from apps.trak.models import Handler, ManifestPhone, Transporter
 
-from .signature_serializer import ESignatureSerializer, PaperSignatureSerializer
+from .signatures import ESignatureSerializer, PaperSignatureSerializer
 
 
 class ManifestPhoneSerializer(serializers.ModelSerializer):

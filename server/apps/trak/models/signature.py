@@ -3,14 +3,13 @@ from datetime import datetime, timezone
 from typing import List, Literal, Optional
 
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 
 from apps.trak.models.base_models import TrakBaseManager, TrakBaseModel
 
 logger = logging.getLogger(__name__)
 
 
-class Signer(TrakBaseModel):
+class Signer(models.Model):
     """EPA manifest signer definition"""
 
     class Meta:
@@ -107,7 +106,7 @@ class ESignature(TrakBaseModel):
     objects = ESignatureManager()
 
     manifest_handler = models.ForeignKey(
-        "Handler",
+        "trak.Handler",
         related_name="e_signatures",
         on_delete=models.CASCADE,
     )

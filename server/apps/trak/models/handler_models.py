@@ -8,7 +8,7 @@ from apps.site.models import RcraSite
 
 from . import ManifestPhone
 from .base_models import TrakBaseManager, TrakBaseModel
-from .signature_models import ESignature, PaperSignature
+from .signature import ESignature, PaperSignature
 
 logger = logging.getLogger(__name__)
 
@@ -134,7 +134,7 @@ class Transporter(Handler):
     objects = TransporterManager()
 
     manifest = models.ForeignKey(
-        "Manifest",
+        "manifest.Manifest",
         related_name="transporters",
         on_delete=models.CASCADE,
     )

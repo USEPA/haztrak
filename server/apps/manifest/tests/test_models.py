@@ -4,8 +4,8 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 
+from apps.manifest.models import Manifest, draft_mtn, validate_mtn
 from apps.site.models import RcraSiteType
-from apps.trak.models.manifest_models import Manifest, draft_mtn, validate_mtn
 from apps.trak.serializers import HandlerSerializer
 
 

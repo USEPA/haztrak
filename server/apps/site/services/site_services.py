@@ -5,9 +5,9 @@ from typing import Optional
 from django.db import transaction
 
 from apps.core.services import RcrainfoService, get_rcrainfo_client
+from apps.manifest.services import EManifest, PullManifestsResult, TaskResponse
+from apps.manifest.tasks import sync_site_manifests
 from apps.site.models import HaztrakSite
-from apps.trak.services import EManifest, PullManifestsResult, TaskResponse
-from apps.trak.tasks import sync_site_manifests
 
 logger = logging.getLogger(__name__)
 

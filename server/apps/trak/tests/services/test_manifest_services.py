@@ -1,6 +1,6 @@
-from apps.trak.models import Manifest
-from apps.trak.serializers import ManifestSerializer
-from apps.trak.services import create_manifest, get_manifests
+from apps.manifest.models import Manifest
+from apps.manifest.serializers import ManifestSerializer
+from apps.manifest.services import create_manifest, get_manifests
 
 
 class TestGetManifestService:

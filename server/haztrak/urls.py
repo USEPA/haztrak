@@ -28,7 +28,7 @@ urlpatterns = [
         include(
             [
                 path("", include("apps.core.urls")),
-                path("", include("apps.trak.urls")),
+                path("", include("apps.manifest.urls")),
                 path("", include("apps.site.urls")),
                 path("", include("apps.wasteline.urls")),
                 path("schema/", SpectacularAPIView.as_view(), name="schema"),
