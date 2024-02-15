@@ -3,7 +3,7 @@ from typing import Optional
 import pytest
 from faker import Faker
 
-from apps.trak.models import Manifest
+from apps.manifest.models import Manifest
 from apps.wasteline.models import DotLookup, DotLookupType, WasteCode, WasteLine
 
 

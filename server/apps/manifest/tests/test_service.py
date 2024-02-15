@@ -3,7 +3,7 @@ import pytest_mock
 from rest_framework import status
 
 from apps.core.services import RcrainfoService, get_rcrainfo_client
-from apps.trak.services import EManifest
+from apps.manifest.services import EManifest
 
 
 class TestEManifestService:
@@ -26,7 +26,7 @@ class TestEManifestService:
         )
 
     def test_pull_manifests(
-            self, manifest_100033134elc_rcra_response, mocker: pytest_mock.MockerFixture
+        self, manifest_100033134elc_rcra_response, mocker: pytest_mock.MockerFixture
     ):
         """Test retrieves a manifest from RCRAInfo"""
         rcrainfo = RcrainfoService(auto_renew=False)
@@ -37,11 +37,11 @@ class TestEManifestService:
 
 class TestEManifestSignManifest:
     def test_filter_mtn_removed_mtn_not_associated_with_site(
-            self,
-            manifest_factory,
-            rcra_site_factory,
-            manifest_handler_factory,
-            haztrak_profile_factory,
+        self,
+        manifest_factory,
+        rcra_site_factory,
+        manifest_handler_factory,
+        haztrak_profile_factory,
     ):
         # Arrange
         profile = haztrak_profile_factory()

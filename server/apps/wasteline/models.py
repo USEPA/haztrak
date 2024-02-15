@@ -33,7 +33,7 @@ class WasteLine(models.Model):
     objects = WasteLineManager()
 
     manifest = models.ForeignKey(
-        "trak.Manifest",
+        "manifest.Manifest",
         related_name="wastes",
         on_delete=models.CASCADE,
     )

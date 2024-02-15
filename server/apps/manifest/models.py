@@ -197,18 +197,18 @@ class Manifest(models.Model):
         null=True,
         blank=True,
     )
-    # generator = models.ForeignKey(
-    #     "trak.Handler",
-    #     on_delete=models.PROTECT,
-    #     related_name="generator",
-    # )
+    generator = models.ForeignKey(
+        "trak.Handler",
+        on_delete=models.PROTECT,
+        related_name="generator",
+    )
     # transporters
-    # tsdf = models.ForeignKey(
-    #     "trak.Handler",
-    #     verbose_name="designated facility",
-    #     on_delete=models.PROTECT,
-    #     related_name="designated_facility",
-    # )
+    tsdf = models.ForeignKey(
+        "trak.Handler",
+        verbose_name="designated facility",
+        on_delete=models.PROTECT,
+        related_name="designated_facility",
+    )
     broker = models.JSONField(null=True, blank=True)
     # wastes
     rejection = models.BooleanField(

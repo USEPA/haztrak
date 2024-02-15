@@ -3,23 +3,51 @@ from typing import Dict
 
 from rest_framework import serializers
 
-from apps.site.models import RcraStates, Role
-from apps.trak.models import Manifest
-from apps.trak.models.manifest_models import (
+from apps.manifest.models import (
     AdditionalInfo,
     CorrectionInfo,
     ImportInfo,
+    Manifest,
     PortOfEntry,
     draft_mtn,
 )
-from apps.trak.serializers.handler_serializer import HandlerSerializer
-from apps.trak.serializers.signature_serializer import ESignatureSerializer
-from apps.wasteline.serializers import WasteLineSerializer
-
-from .base_serializer import TrakBaseSerializer
-from .handler_serializer import TransporterSerializer
+from apps.site.models import RcraStates, Role
+from apps.trak.serializers import (
+    ESignatureSerializer,
+    HandlerSerializer,
+    TransporterSerializer,
+)
+from apps.wasteline.serializers import (
+    WasteLineSerializer,
+)
 
 logger = logging.getLogger(__name__)
+
+
+class TrakBaseSerializer(serializers.ModelSerializer):
+    """
+    The Django Trak app base serializers class used to share functionality
+    across trak app serializers universally.
+    """
+
+    def __str__(self):
+        return f"{self.__class__.__name__}"
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__}({self.data})>"
+
+    def to_representation(self, instance):
+        """
+        Remove empty fields when serializing
+        """
+        data = super().to_representation(instance)
+        for field in self.fields:
+            try:
+                if data[field] is None:
+                    data.pop(field)
+            except KeyError:
+                pass
+        return data
 
 
 class AdditionalInfoSerializer(TrakBaseSerializer):

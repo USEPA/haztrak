@@ -51,7 +51,7 @@ class TestSignManifestVIew:
 
     @pytest.fixture(autouse=True)
     def _patch_task(self, mocker):
-        mock_task = mocker.patch("apps.trak.tasks.sign_manifest.delay")
+        mock_task = mocker.patch("apps.manifest.tasks.sign_manifest.delay")
         self.mock_task_id = "mock_task_id"
         mock_task.return_value = AsyncResult(self.mock_task_id)
 
