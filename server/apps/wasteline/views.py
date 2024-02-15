@@ -11,9 +11,13 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.trak.models import DotLookup, WasteCode
-from apps.trak.serializers import WasteCodeSerializer
-from apps.trak.services import get_dot_hazard_classes, get_dot_id_numbers, get_dot_shipping_names
+from apps.wasteline.models import DotLookup, WasteCode
+from apps.wasteline.serializers import WasteCodeSerializer
+from apps.wasteline.services import (
+    get_dot_hazard_classes,
+    get_dot_id_numbers,
+    get_dot_shipping_names,
+)
 
 
 class FederalWasteCodesView(ListAPIView):

@@ -1,14 +1,31 @@
 from rest_framework import serializers
 
-from apps.trak.models import DotLookup, WasteCode, WasteLine
-
-from .base_serializer import TrakBaseSerializer
+from apps.wasteline.models import DotLookup, WasteCode, WasteLine
 
 
-class WasteLineSerializer(TrakBaseSerializer):
-    """
-    Waste Line model serializer for JSON marshalling/unmarshalling
-    """
+class WasteBaseSerializer(serializers.ModelSerializer):
+    def __str__(self):
+        return f"{self.__class__.__name__}"
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__}({self.data})>"
+
+    def to_representation(self, instance):
+        """
+        Remove empty fields when serializing
+        """
+        data = super().to_representation(instance)
+        for field in self.fields:
+            try:
+                if data[field] is None:
+                    data.pop(field)
+            except KeyError:
+                pass
+        return data
+
+
+class WasteLineSerializer(WasteBaseSerializer):
+    """Waste Line model serializer for interfacing with RCRAInfo"""
 
     lineNumber = serializers.IntegerField(
         source="line_number",

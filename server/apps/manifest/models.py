@@ -8,7 +8,8 @@ from django.db.models import Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from apps.site.models import RcraSiteType, RcraStates, Role
-from apps.trak.models import Handler, Transporter, WasteLine
+from apps.trak.models import Handler, Transporter
+from apps.wasteline.models import WasteLine
 
 logger = logging.getLogger(__name__)
 

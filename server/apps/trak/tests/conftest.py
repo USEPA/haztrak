@@ -9,16 +9,13 @@ from faker.providers import BaseProvider
 
 from apps.site.models import RcraSite, RcraSiteType
 from apps.trak.models import (
-    DotLookup,
     ESignature,
     Handler,
     Manifest,
     PaperSignature,
     Signer,
     Transporter,
-    WasteCode,
 )
-from apps.trak.models.waste_models import DotLookupType, WasteLine
 
 
 class ManifestProvider(BaseProvider):
@@ -106,34 +103,6 @@ def e_signature_factory(db, signer_factory, manifest_handler_factory, faker: Fak
 
 
 @pytest.fixture
-def waste_code_factory(db):
-    """Abstract factory for waste codes"""
-
-    def create_waste_code(
-        code: Optional[str] = "D001",
-        description: Optional[str] = "IGNITABLE WASTE",
-        code_type: Optional[WasteCode.CodeType] = WasteCode.CodeType.FEDERAL,
-        state_id: Optional[str] = "VA",
-    ) -> WasteCode:
-        if code_type == WasteCode.CodeType.STATE:
-            waste_code = WasteCode.objects.create(
-                code=code,
-                description=description,
-                code_type=code_type,
-                state_id=state_id,
-            )
-        else:
-            waste_code = WasteCode.objects.create(
-                code=code,
-                description=description,
-                code_type=code_type,
-            )
-        return waste_code
-
-    return create_waste_code
-
-
-@pytest.fixture
 def signer_factory(db, faker: Faker):
     """Abstract factory for Haztrak Signer model"""
 
@@ -183,44 +152,3 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
         )
 
     return create_manifest
-
-
-@pytest.fixture
-def waste_line_factory(db):
-    """Abstract factory for Haztrak DotLookup model"""
-
-    def create_waste_line(
-        manifest: Manifest = None,
-        dot_hazardous: Optional[bool] = True,
-        quantity: Optional[dict] = None,
-        line_number: Optional[int] = 1,
-        br: Optional[bool] = False,
-        pcb: Optional[bool] = False,
-        epa_waste: Optional[bool] = True,
-    ) -> WasteLine:
-        return WasteLine.objects.create(
-            manifest=manifest,
-            dot_hazardous=dot_hazardous,
-            quantity=quantity or {"units": "G", "value": 1},  # Temporary
-            line_number=line_number,
-            br=br,
-            pcb=pcb,
-            epa_waste=epa_waste,
-        )
-
-    return create_waste_line
-
-
-@pytest.fixture
-def dot_option_factory(db, faker: Faker):
-    """Abstract factory for Haztrak DotLookup model"""
-
-    def create_dot_option(
-        value: Optional[str] = None,
-        value_type: Optional[DotLookupType] = DotLookupType.ID,
-    ) -> Manifest:
-        return DotLookup.objects.create(
-            value=value or faker.pystr(max_chars=10), value_type=value_type
-        )
-
-    return create_dot_option

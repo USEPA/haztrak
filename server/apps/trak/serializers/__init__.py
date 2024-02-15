@@ -5,4 +5,3 @@ from .signature_serializer import (
     PaperSignatureSerializer,
     QuickerSignSerializer,
 )
-from .waste_serializer import DotOptionSerializer, WasteCodeSerializer, WasteLineSerializer

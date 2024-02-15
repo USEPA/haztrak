@@ -17,10 +17,10 @@ REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [  # noqa: F405
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("HT_DB_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("HT_DB_NAME"),
-        "USER": os.environ.get("HT_DB_USER"),
-        "PASSWORD": os.environ.get("HT_DB_PASSWORD"),
-        "HOST": os.environ.get("HT_DB_HOST"),
+        "NAME": os.environ.get("HT_DB_NAME", "db.sqlite3"),
+        "USER": os.environ.get("HT_DB_USER", "admin"),
+        "PASSWORD": os.environ.get("HT_DB_PASSWORD", "password"),
+        "HOST": os.environ.get("HT_DB_HOST", "localhost"),
         "PORT": os.environ.get("HT_DB_PORT", "5432"),
     }
 }

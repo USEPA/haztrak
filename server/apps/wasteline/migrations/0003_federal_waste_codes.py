@@ -1,12 +1,9 @@
 from django.db import migrations
 
-from apps.trak.models.waste_models import WasteCode
+from apps.wasteline.models import WasteCode
 
 
 def populate_federal_waste_codes(apps, schema_editor):
-    # WasteCode = apps.get_model("trak", "WasteCode")
-
-    # Replace this with your logic to fetch state waste codes from RCRAInfo
     federal_waste_codes = [
         {
             "code": "D001",
@@ -751,7 +748,7 @@ def populate_federal_waste_codes(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("trak", "0002_state_waste_codes"),
+        ("wasteline", "0002_state_waste_codes"),
     ]
 
     operations = [

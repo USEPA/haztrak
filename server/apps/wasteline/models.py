@@ -5,13 +5,11 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.trak.models.base_models import TrakBaseManager, TrakBaseModel
-
 logger = logging.getLogger(__name__)
 
 
-class WasteLineManager(TrakBaseManager):
-    """Inter-model related functionality for Contact Model"""
+class WasteLineManager(models.Manager):
+    """Wasteline model query interface"""
 
     def save(self, instance: Optional["WasteLine"], **waste_data: dict) -> "WasteLine":
         try:
@@ -25,7 +23,7 @@ class WasteLineManager(TrakBaseManager):
             raise ValidationError(f"Missing required field: {e}")
 
 
-class WasteLine(TrakBaseModel):
+class WasteLine(models.Model):
     """Model definition for hazardous waste listed on a uniform hazardous waste manifest."""
 
     class Meta:
@@ -35,7 +33,7 @@ class WasteLine(TrakBaseModel):
     objects = WasteLineManager()
 
     manifest = models.ForeignKey(
-        "Manifest",
+        "trak.Manifest",
         related_name="wastes",
         on_delete=models.CASCADE,
     )

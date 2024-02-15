@@ -3,9 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.trak.models import WasteCode
-from apps.trak.models.waste_models import DotLookupType
-from apps.trak.views import (
+from apps.wasteline.models import DotLookupType, WasteCode
+from apps.wasteline.views import (
     DotHazardClassView,
     DotIdNumberView,
     DotShippingNameView,

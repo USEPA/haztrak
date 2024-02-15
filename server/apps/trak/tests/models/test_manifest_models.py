@@ -5,9 +5,8 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 
 from apps.site.models import RcraSiteType
-from apps.trak.models import WasteLine
 from apps.trak.models.manifest_models import Manifest, draft_mtn, validate_mtn
-from apps.trak.serializers import HandlerSerializer, WasteLineSerializer
+from apps.trak.serializers import HandlerSerializer
 
 
 @pytest.mark.django_db
@@ -69,33 +68,6 @@ class TestManifestManagerSaveMethod:
             old_manifest, **{"generator": generator_validated_data}
         )
         assert new_manifest.generator.rcra_site.epa_id == generator_epa_id
-
-    def test_updates_waste_lines_by_line_number(
-        self,
-        manifest_factory,
-        manifest_handler_factory,
-        rcra_site_factory,
-        waste_line_factory,
-        validated_data_factory,
-    ):
-        mtn = "000000123DFT"
-        original_manifest = manifest_factory(mtn=mtn)
-        original_waste_line = waste_line_factory(
-            manifest=original_manifest, line_number=1, epa_waste=False
-        )
-        waste_data = validated_data_factory(
-            instance=original_waste_line, serializer=WasteLineSerializer
-        )
-        waste_data["epa_waste"] = True
-        Manifest.objects.save(
-            original_manifest,
-            **{"wastes": [waste_data]},
-        )
-        new_waste_lines = WasteLine.objects.filter(manifest__mtn=mtn)
-        for wl in new_waste_lines:
-            print(wl)
-        assert new_waste_lines.count() == 1
-        assert new_waste_lines.first().epa_waste is True
 
     def test_updates_tsdf(
         self, manifest_factory, manifest_handler_factory, rcra_site_factory, validated_data_factory

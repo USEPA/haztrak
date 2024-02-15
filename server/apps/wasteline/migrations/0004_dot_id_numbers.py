@@ -2,14 +2,10 @@
 
 from django.db import migrations
 
-from apps.trak.models import DotLookup
-from apps.trak.models.waste_models import DotLookupType
+from apps.wasteline.models import DotLookupType, DotLookup
 
 
 def populate_dot_id_numbers(apps, schema_editor):
-    # WasteCode = apps.get_model("trak", "WasteCode")
-
-    # Replace this with your logic to fetch state waste codes from RCRAInfo
     id_numbers = [
         {"value": "UN1088", "value_type": DotLookupType.ID},
         {"value": "UN1091", "value_type": DotLookupType.ID},
@@ -2382,7 +2378,7 @@ def populate_dot_id_numbers(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("trak", "0003_federal_waste_codes"),
+        ("wasteline", "0003_federal_waste_codes"),
     ]
 
     operations = [
