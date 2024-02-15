@@ -2,14 +2,10 @@
 
 from django.db import migrations
 
-from apps.trak.models import DotLookup
-from apps.trak.models.waste_models import DotLookupType
+from apps.wasteline.models import DotLookup, DotLookupType
 
 
 def populate_dot_packing_groups(apps, schema_editor):
-    # WasteCode = apps.get_model("trak", "WasteCode")
-
-    # Replace this with your logic to fetch state waste codes from RCRAInfo
     packing_groups = [
         {"value": "I", "value_type": DotLookupType.GROUP},
         {"value": "II", "value_type": DotLookupType.GROUP},
@@ -21,9 +17,6 @@ def populate_dot_packing_groups(apps, schema_editor):
 
 
 def populate_dot_hazard_classes(apps, schema_editor):
-    # WasteCode = apps.get_model("trak", "WasteCode")
-
-    # Replace this with your logic to fetch state waste codes from RCRAInfo
     packing_groups = [
         {"value": "3", "value_type": DotLookupType.CLASS},
         {"value": "5.1", "value_type": DotLookupType.CLASS},
@@ -83,7 +76,7 @@ def populate_dot_hazard_classes(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("trak", "0004_dot_id_numbers"),
+        ("wasteline", "0004_dot_id_numbers"),
     ]
 
     operations = [

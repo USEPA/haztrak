@@ -3,11 +3,11 @@ from typing import Literal, Optional
 
 import emanifest
 from django.db import IntegrityError
-from emanifest import RcrainfoClient, RcrainfoResponse  # type: ignore
+from emanifest import RcrainfoClient, RcrainfoResponse
 
-from apps.core.models import RcrainfoProfile  # type: ignore
+from apps.core.models import RcrainfoProfile
 from apps.site.models.site_models import HaztrakOrg
-from apps.trak.models import WasteCode  # type: ignore
+from apps.wasteline.models import WasteCode
 
 logger = logging.getLogger(__name__)
 

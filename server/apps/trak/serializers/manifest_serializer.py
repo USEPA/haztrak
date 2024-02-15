@@ -14,10 +14,10 @@ from apps.trak.models.manifest_models import (
 )
 from apps.trak.serializers.handler_serializer import HandlerSerializer
 from apps.trak.serializers.signature_serializer import ESignatureSerializer
+from apps.wasteline.serializers import WasteLineSerializer
 
 from .base_serializer import TrakBaseSerializer
 from .handler_serializer import TransporterSerializer
-from .waste_serializer import WasteLineSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -202,7 +202,7 @@ class ManifestSerializer(TrakBaseSerializer):
         """
         Replace 'import_flag' with expected Python Keyword 'import' in JSON
         """
-        data = super(ManifestSerializer, self).to_representation(instance)
+        data = super().to_representation(instance)
         data["import"] = instance.import_flag
         return data
 
@@ -210,7 +210,7 @@ class ManifestSerializer(TrakBaseSerializer):
         """
         Replace 'import_flag' with expected Python Keyword 'import' in JSON
         """
-        instance = super(ManifestSerializer, self).to_internal_value(data)
+        instance = super().to_internal_value(data)
         try:
             instance.import_flag = data.get("import")
             return instance

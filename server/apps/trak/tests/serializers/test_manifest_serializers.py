@@ -1,7 +1,8 @@
 import pytest
 
-from apps.trak.models import AdditionalInfo, Manifest, WasteLine
+from apps.trak.models import AdditionalInfo, Manifest
 from apps.trak.serializers import ManifestSerializer
+from apps.wasteline.models import WasteLine
 
 
 @pytest.fixture

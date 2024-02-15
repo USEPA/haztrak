@@ -9,9 +9,9 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.site.models import RcraSiteType, RcraStates, Role
 from apps.trak.models import Handler, Transporter
+from apps.wasteline.models import WasteLine
 
 from .base_models import TrakBaseManager, TrakBaseModel
-from .waste_models import WasteLine
 
 logger = logging.getLogger(__name__)
 

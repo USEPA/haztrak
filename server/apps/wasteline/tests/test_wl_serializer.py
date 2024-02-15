@@ -1,6 +1,6 @@
 import pytest
 
-from apps.trak.serializers import WasteLineSerializer
+from apps.wasteline.serializers import WasteLineSerializer
 
 
 @pytest.fixture

@@ -2,15 +2,10 @@ from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
 from apps.trak.views import (  # type: ignore
-    DotHazardClassView,
-    DotIdNumberView,
-    DotShippingNameView,
-    FederalWasteCodesView,
     ManifestViewSet,
     MtnListView,
     SaveElectronicManifestView,
     SignManifestView,
-    StateWasteCodesView,
     SyncSiteManifestView,
 )
 
@@ -31,19 +26,6 @@ urlpatterns = [
                 path("mtn", MtnListView.as_view()),
                 path("mtn/<str:epa_id>", MtnListView.as_view()),
                 path("mtn/<str:epa_id>/<str:site_type>", MtnListView.as_view()),
-                # waste info
-                path(
-                    "waste/",
-                    include(
-                        [
-                            path("code/federal", FederalWasteCodesView.as_view()),
-                            path("code/state/<str:state_id>", StateWasteCodesView.as_view()),
-                            path("dot/id", DotIdNumberView.as_view()),
-                            path("dot/class", DotHazardClassView.as_view()),
-                            path("dot/name", DotShippingNameView.as_view()),
-                        ]
-                    ),
-                ),
             ]
         ),
     ),

@@ -1,7 +1,7 @@
 import pytest
 from django.db import IntegrityError
 
-from apps.trak.models import WasteCode
+from apps.wasteline.models import WasteCode
 
 
 @pytest.mark.django_db

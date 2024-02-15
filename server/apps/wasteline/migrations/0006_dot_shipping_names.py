@@ -2,7 +2,7 @@
 
 from django.db import migrations
 
-from apps.trak.models.waste_models import DotLookupType, DotLookup
+from apps.wasteline.models import DotLookupType, DotLookup
 
 
 def populate_dot_shipping_names(apps, schema_editor):
@@ -2978,7 +2978,7 @@ def populate_dot_shipping_names(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("trak", "0005_dot_packing_groups"),
+        ("wasteline", "0005_dot_packing_groups"),
     ]
 
     operations = [
