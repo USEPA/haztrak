@@ -3,7 +3,7 @@ from celery.result import AsyncResult
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.trak.views import ManifestViewSet, SignManifestView
+from apps.manifest.views import ManifestViewSet, SignManifestView
 
 
 class TestManifestCRUD:

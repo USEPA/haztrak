@@ -3,6 +3,11 @@ from typing import Dict
 
 from rest_framework import serializers
 
+from apps.handler.serializers import (
+    ESignatureSerializer,
+    HandlerSerializer,
+    TransporterSerializer,
+)
 from apps.manifest.models import (
     AdditionalInfo,
     CorrectionInfo,
@@ -12,11 +17,6 @@ from apps.manifest.models import (
     draft_mtn,
 )
 from apps.site.models import RcraStates, Role
-from apps.trak.serializers import (
-    ESignatureSerializer,
-    HandlerSerializer,
-    TransporterSerializer,
-)
 from apps.wasteline.serializers import (
     WasteLineSerializer,
 )

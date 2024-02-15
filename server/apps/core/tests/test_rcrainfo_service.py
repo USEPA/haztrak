@@ -5,8 +5,8 @@ from responses import matchers
 from rest_framework import status
 
 from apps.core.services import RcrainfoService, get_rcrainfo_client
-from apps.trak.models import QuickerSign
-from apps.trak.serializers import QuickerSignSerializer
+from apps.handler.models import QuickerSign
+from apps.handler.serializers import QuickerSignSerializer
 
 
 class TestRcrainfoService:

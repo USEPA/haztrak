@@ -15,6 +15,14 @@ from faker.providers import BaseProvider
 from rest_framework.test import APIClient
 
 from apps.core.models import HaztrakProfile, HaztrakUser, RcrainfoProfile
+from apps.handler.models import (
+    ESignature,
+    Handler,
+    ManifestPhone,
+    PaperSignature,
+    Signer,
+    Transporter,
+)
 from apps.manifest.models import Manifest
 from apps.site.models import (
     Address,
@@ -25,14 +33,6 @@ from apps.site.models import (
     RcraSiteType,
 )
 from apps.site.models.site_models import HaztrakOrg, SitePermissions
-from apps.trak.models import (
-    ESignature,
-    Handler,
-    ManifestPhone,
-    PaperSignature,
-    Signer,
-    Transporter,
-)
 
 
 class SiteIDProvider(BaseProvider):

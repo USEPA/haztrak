@@ -4,15 +4,15 @@ from typing import Optional
 import pytest
 from faker import Faker
 
-from apps.manifest.models import Manifest
-from apps.site.models import RcraSite
-from apps.trak.models import (
+from apps.handler.models import (
     ESignature,
     Handler,
     PaperSignature,
     Signer,
     Transporter,
 )
+from apps.manifest.models import Manifest
+from apps.site.models import RcraSite
 
 
 @pytest.fixture

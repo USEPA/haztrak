@@ -89,7 +89,7 @@ generate_api_schema() {
 
 graph_models() {
     print_style "Generating Entity Relationship Diagram...\n" "success";
-    exec_cmd="$base_py_cmd graph_models sites trak core wasteline\
+    exec_cmd="$base_py_cmd graph_models site handler core wasteline manifest\
     -g \
     --settings haztrak.settings \
     --rankdir=RL \

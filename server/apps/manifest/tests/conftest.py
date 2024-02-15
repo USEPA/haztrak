@@ -7,9 +7,9 @@ import pytest
 from faker import Faker
 from faker.providers import BaseProvider
 
+from apps.handler.models import Handler
 from apps.manifest.models import Manifest
 from apps.site.models import RcraSiteType
-from apps.trak.models import Handler
 
 
 class MtnProvider(BaseProvider):

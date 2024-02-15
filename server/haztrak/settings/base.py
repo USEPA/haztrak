@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "django_celery_results",
     "django_celery_beat",
     "drf_spectacular",
-    "apps.trak",
+    "apps.handler",
     "apps.site",
     "apps.core",
     "apps.manifest",

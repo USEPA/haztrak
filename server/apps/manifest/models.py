@@ -7,8 +7,8 @@ from django.db import models
 from django.db.models import Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 
+from apps.handler.models import Handler, Transporter
 from apps.site.models import RcraSiteType, RcraStates, Role
-from apps.trak.models import Handler, Transporter
 from apps.wasteline.models import WasteLine
 
 logger = logging.getLogger(__name__)
@@ -198,13 +198,13 @@ class Manifest(models.Model):
         blank=True,
     )
     generator = models.ForeignKey(
-        "trak.Handler",
+        "handler.Handler",
         on_delete=models.PROTECT,
         related_name="generator",
     )
     # transporters
     tsdf = models.ForeignKey(
-        "trak.Handler",
+        "handler.Handler",
         verbose_name="designated facility",
         on_delete=models.PROTECT,
         related_name="designated_facility",
