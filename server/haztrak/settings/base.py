@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "apps.trak",
     "apps.site",
     "apps.core",
+    "apps.manifest",
 ]
 
 MIDDLEWARE = [
