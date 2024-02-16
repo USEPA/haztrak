@@ -5,13 +5,13 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from apps.core.models import (
-    HaztrakOrg,
     HaztrakProfile,
     HaztrakSite,
     HaztrakUser,
     RcrainfoProfile,
     SitePermissions,
 )
+from apps.org.serializers import HaztrakOrgSerializer
 from apps.rcrasite.serializers import RcraSitePermissionSerializer, RcraSiteSerializer
 from apps.rcrasite.serializers.base_serializer import SitesBaseSerializer
 
@@ -182,29 +182,6 @@ class HaztrakSiteSerializer(ModelSerializer):
     class Meta:
         model = HaztrakSite
         fields = ["name", "handler"]
-
-
-class HaztrakOrgSerializer(ModelSerializer):
-    """Haztrak Organization Model Serializer"""
-
-    id = serializers.CharField(
-        required=False,
-    )
-    name = serializers.CharField(
-        required=False,
-    )
-    rcrainfoIntegrated = serializers.BooleanField(
-        source="is_rcrainfo_integrated",
-        required=False,
-    )
-
-    class Meta:
-        model = HaztrakOrg
-        fields = [
-            "name",
-            "id",
-            "rcrainfoIntegrated",
-        ]
 
 
 class SitePermissionSerializer(SitesBaseSerializer):
