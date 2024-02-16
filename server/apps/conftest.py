@@ -16,10 +16,8 @@ from rest_framework.test import APIClient
 
 from apps.core.models import (
     HaztrakProfile,
-    HaztrakSite,
     HaztrakUser,
     RcrainfoProfile,
-    SitePermissions,
 )
 from apps.handler.models import (
     ESignature,
@@ -38,6 +36,7 @@ from apps.rcrasite.models import (
     RcraSite,
     RcraSiteType,
 )
+from apps.site.models import HaztrakSite, SitePermissions
 
 
 class SiteIDProvider(BaseProvider):

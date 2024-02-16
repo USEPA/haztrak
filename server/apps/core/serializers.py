@@ -6,14 +6,13 @@ from rest_framework.serializers import ModelSerializer
 
 from apps.core.models import (
     HaztrakProfile,
-    HaztrakSite,
     HaztrakUser,
     RcrainfoProfile,
-    SitePermissions,
 )
 from apps.org.serializers import HaztrakOrgSerializer
 from apps.rcrasite.serializers import RcraSitePermissionSerializer, RcraSiteSerializer
 from apps.rcrasite.serializers.base_serializer import SitesBaseSerializer
+from apps.site.models import HaztrakSite, SitePermissions
 
 
 class HaztrakUserSerializer(ModelSerializer):

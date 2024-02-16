@@ -4,8 +4,9 @@ from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
 from apps.rcrasite.models import RcraSitePermissions
+from apps.site.models import SitePermissions
 
-from .models import HaztrakProfile, HaztrakUser, RcrainfoProfile, SitePermissions
+from .models import HaztrakProfile, HaztrakUser, RcrainfoProfile
 
 
 class HiddenListView(admin.ModelAdmin):

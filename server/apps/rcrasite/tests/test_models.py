@@ -2,8 +2,8 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
-from apps.core.models import HaztrakSite
 from apps.rcrasite.models import Address, Contact
+from apps.site.models import HaztrakSite
 
 
 @pytest.mark.django_db
