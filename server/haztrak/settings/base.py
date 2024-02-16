@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "drf_spectacular",
     "apps.handler",
-    "apps.site",
+    "apps.rcrasite",
     "apps.core",
     "apps.manifest",
     "apps.wasteline",
@@ -211,7 +211,7 @@ LOGGING = {
             "handlers": ["console"],
             "propagate": False,
         },
-        "apps.site": {
+        "apps.rcrasite": {
             "level": HT_TRAK_LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,

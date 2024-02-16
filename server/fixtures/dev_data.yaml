@@ -162,7 +162,7 @@
     state: VA
     country: US
     zip: '22202'
-- model: trak.manifestphone
+- model: handler.manifestphone
   pk: 1
   fields:
     number: 321-321-3214
@@ -263,7 +263,7 @@
     rcra_username: emanifestpyuser1
     phone_number: null
     email: testuser1@haztrak.net
-- model: site.haztrakorg
+- model: core.haztrakorg
   pk: efb9e104-7f61-4365-a9af-9d7b55c854c4
   fields:
     name: Generators Org LLC
@@ -286,14 +286,14 @@
     user: 4ac96f68-42cf-47ea-bffb-f24d423dbc35
     rcrainfo_profile: 192c73f4-24f1-4f21-8239-dee2da43c547
     org: efb9e104-7f61-4365-a9af-9d7b55c854c4
-- model: site.haztraksite
+- model: core.haztraksite
   pk: 1
   fields:
     name: VA TEST GEN 2021
     rcra_site: 1
     last_rcrainfo_manifest_sync: null
     org: efb9e104-7f61-4365-a9af-9d7b55c854c4
-- model: site.sitepermissions
+- model: core.sitepermissions
   pk: 1
   fields:
     site: 1

@@ -57,7 +57,7 @@ def sign_manifest(
 @shared_task(name="sync site manifests", bind=True)
 def sync_site_manifests(self, *, site_id: str, username: str):
     """asynchronous task to sync an EPA site's manifests"""
-    from apps.site.services import HaztrakSiteService
+    from apps.rcrasite.services import HaztrakSiteService
 
     try:
         site_service = HaztrakSiteService(username=username)

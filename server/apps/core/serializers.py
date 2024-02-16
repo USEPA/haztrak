@@ -4,9 +4,16 @@ from django_celery_results.models import TaskResult
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.core.models import HaztrakProfile, HaztrakUser, RcrainfoProfile
-from apps.site.serializers import HaztrakOrgSerializer, RcraSitePermissionSerializer
-from apps.site.serializers.profile_serializer import SitePermissionSerializer
+from apps.core.models import (
+    HaztrakOrg,
+    HaztrakProfile,
+    HaztrakSite,
+    HaztrakUser,
+    RcrainfoProfile,
+    SitePermissions,
+)
+from apps.rcrasite.serializers import RcraSitePermissionSerializer, RcraSiteSerializer
+from apps.rcrasite.serializers.base_serializer import SitesBaseSerializer
 
 
 class HaztrakUserSerializer(ModelSerializer):
@@ -35,27 +42,6 @@ class HaztrakUserSerializer(ModelSerializer):
             "firstName",
             "lastName",
             "email",
-        ]
-
-
-class HaztrakProfileSerializer(ModelSerializer):
-    """Serializer for a user's profile"""
-
-    user = serializers.StringRelatedField(
-        required=False,
-    )
-    sites = SitePermissionSerializer(
-        source="site_permissions",
-        many=True,
-    )
-    org = HaztrakOrgSerializer()
-
-    class Meta:
-        model = HaztrakProfile
-        fields = [
-            "user",
-            "sites",
-            "org",
         ]
 
 
@@ -179,3 +165,78 @@ class TaskStatusSerializer(serializers.Serializer):
     def to_representation(self, instance):
         result = super().to_representation(instance)
         return OrderedDict([(key, result[key]) for key in result if result[key] is not None])
+
+
+class HaztrakSiteSerializer(ModelSerializer):
+    """
+    HaztrakSite model serializer for JSON marshalling/unmarshalling
+    """
+
+    name = serializers.CharField(
+        required=False,
+    )
+    handler = RcraSiteSerializer(
+        source="rcra_site",
+    )
+
+    class Meta:
+        model = HaztrakSite
+        fields = ["name", "handler"]
+
+
+class HaztrakOrgSerializer(ModelSerializer):
+    """Haztrak Organization Model Serializer"""
+
+    id = serializers.CharField(
+        required=False,
+    )
+    name = serializers.CharField(
+        required=False,
+    )
+    rcrainfoIntegrated = serializers.BooleanField(
+        source="is_rcrainfo_integrated",
+        required=False,
+    )
+
+    class Meta:
+        model = HaztrakOrg
+        fields = [
+            "name",
+            "id",
+            "rcrainfoIntegrated",
+        ]
+
+
+class SitePermissionSerializer(SitesBaseSerializer):
+    class Meta:
+        model = SitePermissions
+        fields = [
+            "site",
+            "eManifest",
+        ]
+
+    site = HaztrakSiteSerializer()
+    eManifest = serializers.CharField(
+        source="emanifest",
+    )
+
+
+class HaztrakProfileSerializer(ModelSerializer):
+    """Serializer for a user's profile"""
+
+    user = serializers.StringRelatedField(
+        required=False,
+    )
+    sites = SitePermissionSerializer(
+        source="site_permissions",
+        many=True,
+    )
+    org = HaztrakOrgSerializer()
+
+    class Meta:
+        model = HaztrakProfile
+        fields = [
+            "user",
+            "sites",
+            "org",
+        ]
