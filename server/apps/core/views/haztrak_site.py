@@ -4,8 +4,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-from apps.core.models import HaztrakSite
 from apps.core.serializers import HaztrakSiteSerializer
+from apps.site.models import HaztrakSite
 
 logger = logging.getLogger(__name__)
 

@@ -3,12 +3,12 @@ from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
 from apps.core.admin import HiddenListView
-from apps.core.models import HaztrakSite
 from apps.rcrasite.models import (
     Address,
     Contact,
     RcraSite,
 )
+from apps.site.models import HaztrakSite
 
 
 @admin.register(RcraSite)
