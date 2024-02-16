@@ -9,7 +9,7 @@ from faker.providers import BaseProvider
 
 from apps.handler.models import Handler
 from apps.manifest.models import Manifest
-from apps.site.models import RcraSiteType
+from apps.rcrasite.models import RcraSiteType
 
 
 class MtnProvider(BaseProvider):

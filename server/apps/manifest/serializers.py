@@ -16,7 +16,7 @@ from apps.manifest.models import (
     PortOfEntry,
     draft_mtn,
 )
-from apps.site.models import RcraStates, Role
+from apps.rcrasite.models import RcraStates, Role
 from apps.wasteline.serializers import (
     WasteLineSerializer,
 )

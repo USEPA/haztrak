@@ -2,7 +2,10 @@ from dj_rest_auth.views import LoginView, LogoutView, UserDetailsView
 from django.urls import include, path
 
 from .views import (  # type: ignore
+    HaztrakOrgSitesListView,
     HaztrakProfileView,
+    HaztrakSiteDetailsView,
+    HaztrakSiteListView,
     LaunchExampleTaskView,
     RcrainfoProfileView,
     SyncRcrainfoProfileView,
@@ -25,4 +28,7 @@ urlpatterns = [
             ]
         ),
     ),
+    path("site", HaztrakSiteListView.as_view()),
+    path("site/<str:epa_id>", HaztrakSiteDetailsView.as_view()),
+    path("org/<str:org_id>/site", HaztrakOrgSitesListView.as_view()),
 ]

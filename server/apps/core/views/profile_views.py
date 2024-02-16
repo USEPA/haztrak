@@ -10,7 +10,7 @@ from apps.core.serializers import (
     HaztrakProfileSerializer,
     RcrainfoProfileSerializer,
 )
-from apps.site.tasks import sync_user_rcrainfo_sites
+from apps.rcrasite.tasks import sync_user_rcrainfo_sites
 
 
 class HaztrakProfileView(RetrieveAPIView):

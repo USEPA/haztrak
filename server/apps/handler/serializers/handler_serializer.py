@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from apps.handler.models import Handler, ManifestPhone, Transporter
-from apps.site.serializers import RcraSiteSerializer
+from apps.rcrasite.serializers import RcraSiteSerializer
 
 from .signatures import ESignatureSerializer, PaperSignatureSerializer
 

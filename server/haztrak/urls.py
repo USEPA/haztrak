@@ -27,10 +27,17 @@ urlpatterns = [
         "api/",
         include(
             [
+                path(
+                    "rcra/",
+                    include(
+                        [
+                            path("", include("apps.manifest.urls")),
+                            path("", include("apps.rcrasite.urls")),
+                            path("", include("apps.wasteline.urls")),
+                        ]
+                    ),
+                ),
                 path("", include("apps.core.urls")),
-                path("", include("apps.manifest.urls")),
-                path("", include("apps.site.urls")),
-                path("", include("apps.wasteline.urls")),
                 path("schema/", SpectacularAPIView.as_view(), name="schema"),
                 path(
                     "schema/swagger-ui",

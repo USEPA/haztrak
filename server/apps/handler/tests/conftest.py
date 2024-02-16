@@ -12,7 +12,7 @@ from apps.handler.models import (
     Transporter,
 )
 from apps.manifest.models import Manifest
-from apps.site.models import RcraSite
+from apps.rcrasite.models import RcraSite
 
 
 @pytest.fixture
