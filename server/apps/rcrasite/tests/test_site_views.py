@@ -2,7 +2,7 @@ import pytest
 from rest_framework import status
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.core.views import HaztrakSiteDetailsView
+from apps.site.views import HaztrakSiteDetailsView
 
 
 class TestHaztrakSiteListView:

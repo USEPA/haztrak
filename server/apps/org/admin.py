@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from apps.core.models import HaztrakProfile
 from apps.org.models import HaztrakOrg
+from apps.profile.models import HaztrakProfile
 from apps.rcrasite.admin import HaztrakSiteInline
 from apps.site.models import HaztrakSite
 

@@ -190,7 +190,7 @@ class RcraSitePermissions(SitesBaseModel):
         on_delete=models.CASCADE,
     )
     profile = models.ForeignKey(
-        "core.RcrainfoProfile",
+        "profile.RcrainfoProfile",
         on_delete=models.PROTECT,
         related_name="permissions",
     )

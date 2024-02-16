@@ -3,16 +3,16 @@ from typing import Optional
 
 from django.db import transaction
 
-from apps.core.models import RcrainfoProfile
 from apps.core.services import (
-    HaztrakSiteServiceError,
     RcrainfoService,
-    get_or_create_haztrak_profile,
     get_rcrainfo_client,
 )
+from apps.profile.services import get_or_create_haztrak_profile
 from apps.rcrasite.models import RcraSite, RcraSitePermissions
 from apps.rcrasite.serializers import RcraPermissionSerializer
+from apps.site.services import HaztrakSiteServiceError
 
+from ...profile.models import RcrainfoProfile
 from .rcra_site_services import RcraSiteService
 
 logger = logging.getLogger(__name__)

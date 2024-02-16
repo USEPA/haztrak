@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.core.views import RcrainfoProfileView  # type: ignore
+from apps.profile.views import RcrainfoProfileView
 
 
 class TestRcrainfoProfileView:

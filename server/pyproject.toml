@@ -27,8 +27,9 @@ repository = "https://github.com/USEPA/haztrak"
 line-length = 99
 select = ["F", "E", "W", "Q", "I001"]
 
-exclude = ["migrations"]
+[tool.ruff.lint]
 ignore = ["F401"]
+exclude = ["**/migrations/*.py"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "haztrak.settings.test"

@@ -15,9 +15,7 @@ from faker.providers import BaseProvider
 from rest_framework.test import APIClient
 
 from apps.core.models import (
-    HaztrakProfile,
     HaztrakUser,
-    RcrainfoProfile,
 )
 from apps.handler.models import (
     ESignature,
@@ -29,6 +27,7 @@ from apps.handler.models import (
 )
 from apps.manifest.models import Manifest
 from apps.org.models import HaztrakOrg
+from apps.profile.models import HaztrakProfile, RcrainfoProfile
 from apps.rcrasite.models import (
     Address,
     Contact,

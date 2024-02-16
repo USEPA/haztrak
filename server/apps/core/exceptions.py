@@ -6,7 +6,7 @@ from rest_framework.exceptions import APIException
 from rest_framework.serializers import as_serializer_error
 from rest_framework.views import exception_handler
 
-from apps.core.services import HaztrakSiteServiceError
+from apps.site.services import HaztrakSiteServiceError
 
 
 class InternalServer500(APIException):

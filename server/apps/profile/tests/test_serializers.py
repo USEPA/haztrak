@@ -3,6 +3,7 @@ import pytest
 from apps.core.serializers import HaztrakProfileSerializer
 
 
+@pytest.mark.django_db
 class TestHaztrakProfileSerializer:
     def test_serializer_includes_username(self, haztrak_profile_factory, user_factory):
         my_username = "foobar1"

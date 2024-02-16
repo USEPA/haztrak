@@ -12,11 +12,6 @@ from apps.site.models import HaztrakSite
 logger = logging.getLogger(__name__)
 
 
-class HaztrakSiteServiceError(Exception):
-    def __init__(self, message: str):
-        super().__init__(message)
-
-
 class HaztrakSiteService:
     """
     HaztrakSiteService encapsulates the Haztrak site subdomain business logic and use cases.
@@ -62,3 +57,8 @@ class HaztrakSiteService:
         logger.info(f"retrieving updated MTN for site {site_id}")
         emanifest = EManifest(username=self.username, rcrainfo=self.rcrainfo)
         return emanifest.search(site_id=site_id, start_date=last_sync_date)
+
+
+class HaztrakSiteServiceError(Exception):
+    def __init__(self, message: str):
+        super().__init__(message)
