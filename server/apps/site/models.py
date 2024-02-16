@@ -56,7 +56,7 @@ class SitePermissions(models.Model):
         ordering = ["profile"]
 
     profile = models.ForeignKey(
-        "core.HaztrakProfile",
+        "profile.HaztrakProfile",
         on_delete=models.CASCADE,
         related_name="site_permissions",
     )

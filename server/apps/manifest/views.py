@@ -7,7 +7,6 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.core.services import HaztrakSiteService
 from apps.handler.serializers import QuickerSignSerializer
 from apps.manifest.models import Manifest
 from apps.manifest.serializers import ManifestSerializer
@@ -19,6 +18,7 @@ from apps.manifest.services import (
     save_emanifest,
     update_manifest,
 )
+from apps.site.services import HaztrakSiteService
 
 logger = logging.getLogger(__name__)
 

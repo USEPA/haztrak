@@ -2,7 +2,7 @@ import uuid
 
 from django.db import models
 
-from apps.core.models import RcrainfoProfile
+from apps.profile.models import RcrainfoProfile
 
 
 class HaztrakOrg(models.Model):

@@ -1,4 +1,4 @@
-from apps.core.models import HaztrakProfile, RcrainfoProfile
+from apps.profile.models import HaztrakProfile, RcrainfoProfile
 from apps.rcrasite.services import get_or_create_rcra_profile
 
 

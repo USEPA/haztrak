@@ -7,7 +7,7 @@ from apps.rcrasite.models import RcraSiteType  # type: ignore
 from apps.rcrasite.views import SearchRcraSiteView  # type: ignore
 
 
-class TestEpaSiteView:
+class TestRcraSiteView:
     """Handler endpoints test suite"""
 
     URL = "/api/rcra/handler"

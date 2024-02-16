@@ -152,7 +152,7 @@
   fields:
     user: 4ac96f68-42cf-47ea-bffb-f24d423dbc35
     created: 2022-12-18 13:10:40.552000+00:00
-- model: site.address
+- model: rcrasite.address
   pk: 1
   fields:
     street_number: null
@@ -167,12 +167,12 @@
   fields:
     number: 321-321-3214
     extension: null
-- model: site.rcraphone
+- model: rcrasite.rcraphone
   pk: 1
   fields:
     number: 321-321-3214
     extension: null
-- model: site.contact
+- model: rcrasite.contact
   pk: 1
   fields:
     first_name: David
@@ -181,7 +181,7 @@
     phone: 1
     email: testuser1@haztrak.net
     company_name: haztrak
-- model: site.rcrasite
+- model: rcrasite.rcrasite
   pk: 1
   fields:
     site_type: Generator
@@ -197,7 +197,7 @@
     can_esign: true
     limited_esign: true
     registered_emanifest_user: true
-- model: site.rcrasite
+- model: rcrasite.rcrasite
   pk: 2
   fields:
     site_type: Transporter
@@ -213,7 +213,7 @@
     can_esign: true
     limited_esign: true
     registered_emanifest_user: true
-- model: site.rcrasite
+- model: rcrasite.rcrasite
   pk: 3
   fields:
     site_type: Transporter
@@ -229,7 +229,7 @@
     can_esign: true
     limited_esign: true
     registered_emanifest_user: true
-- model: site.rcrasite
+- model: rcrasite.rcrasite
   pk: 4
   fields:
     site_type: Tsdf
@@ -263,43 +263,43 @@
     rcra_username: emanifestpyuser1
     phone_number: null
     email: testuser1@haztrak.net
-- model: core.haztrakorg
+- model: org.haztrakorg
   pk: efb9e104-7f61-4365-a9af-9d7b55c854c4
   fields:
     name: Generators Org LLC
     admin: 8062d496-15f1-485d-961c-a8e5fa118dde
-- model: core.haztrakprofile
+- model: profile.haztrakprofile
   pk: c65dbee9-b6bf-400e-93e0-90a749cc2939
   fields:
     user: 8062d496-15f1-485d-961c-a8e5fa118dde
     rcrainfo_profile: d74f904a-7843-4a60-862c-3b94b6051359
     org: efb9e104-7f61-4365-a9af-9d7b55c854c4
-- model: core.haztrakprofile
+- model: profile.haztrakprofile
   pk: 186642a9-7b5f-4bcb-b328-0fdf8b43f191
   fields:
     user: a0ba4966-aa53-44c8-be1a-0a0d2d6b6acd
     rcrainfo_profile: 1fd27bec-8743-4eb3-a44c-fd063ea62021
     org: efb9e104-7f61-4365-a9af-9d7b55c854c4
-- model: core.haztrakprofile
+- model: profile.haztrakprofile
   pk: 87e355dd-1898-4a0a-81c3-1e9ac8473143
   fields:
     user: 4ac96f68-42cf-47ea-bffb-f24d423dbc35
     rcrainfo_profile: 192c73f4-24f1-4f21-8239-dee2da43c547
     org: efb9e104-7f61-4365-a9af-9d7b55c854c4
-- model: core.haztraksite
+- model: site.haztraksite
   pk: 1
   fields:
     name: VA TEST GEN 2021
     rcra_site: 1
     last_rcrainfo_manifest_sync: null
     org: efb9e104-7f61-4365-a9af-9d7b55c854c4
-- model: core.sitepermissions
+- model: site.sitepermissions
   pk: 1
   fields:
     site: 1
     emanifest: signer
     profile: 87e355dd-1898-4a0a-81c3-1e9ac8473143
-- model: site.rcrasitepermissions
+- model: rcrasite.rcrasitepermissions
   pk: 1
   fields:
     site: 1

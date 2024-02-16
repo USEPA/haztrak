@@ -1,7 +1,8 @@
 """business logic related to a user's Haztrak profile (note: not their RcrainfoProfile)"""
 from django.db import transaction
 
-from apps.core.models import HaztrakProfile, HaztrakUser
+from apps.core.models import HaztrakUser
+from apps.profile.models import HaztrakProfile
 
 
 @transaction.atomic

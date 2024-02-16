@@ -1,6 +1,6 @@
 import pytest
 
-from apps.core.models import HaztrakProfile, RcrainfoProfile
+from apps.profile.models import HaztrakProfile, RcrainfoProfile
 
 
 @pytest.mark.django_db

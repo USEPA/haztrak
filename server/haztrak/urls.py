@@ -38,6 +38,8 @@ urlpatterns = [
                 ),
                 path("", include("apps.core.urls")),
                 path("", include("apps.org.urls")),
+                path("", include("apps.site.urls")),
+                path("", include("apps.profile.urls")),
                 path("schema/", SpectacularAPIView.as_view(), name="schema"),
                 path(
                     "schema/swagger-ui",

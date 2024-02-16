@@ -89,7 +89,7 @@ generate_api_schema() {
 
 graph_models() {
     print_style "Generating Entity Relationship Diagram...\n" "success";
-    exec_cmd="$base_py_cmd graph_models rcrasite handler core org wasteline manifest\
+    exec_cmd="$base_py_cmd graph_models rcrasite handler core org wasteline manifest site profile\
     -g \
     --settings haztrak.settings \
     --rankdir=RL \

@@ -6,7 +6,8 @@ from django.utils.html import format_html, urlencode
 from apps.rcrasite.models import RcraSitePermissions
 from apps.site.models import SitePermissions
 
-from .models import HaztrakProfile, HaztrakUser, RcrainfoProfile
+from ..profile.models import HaztrakProfile, RcrainfoProfile
+from .models import HaztrakUser
 
 
 class HiddenListView(admin.ModelAdmin):

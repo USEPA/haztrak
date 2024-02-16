@@ -5,11 +5,11 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpd
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.core.models import HaztrakProfile, RcrainfoProfile
 from apps.core.serializers import (
     HaztrakProfileSerializer,
     RcrainfoProfileSerializer,
 )
+from apps.profile.models import HaztrakProfile, RcrainfoProfile
 from apps.rcrasite.tasks import sync_user_rcrainfo_sites
 
 
