@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.manifest",
     "apps.wasteline",
+    "apps.org",
 ]
 
 MIDDLEWARE = [

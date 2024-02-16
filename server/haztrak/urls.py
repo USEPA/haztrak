@@ -22,7 +22,6 @@ admin.site.site_header = "Haztrak Admin"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api-auth", include("rest_framework.urls")),
     path(
         "api/",
         include(
@@ -38,6 +37,7 @@ urlpatterns = [
                     ),
                 ),
                 path("", include("apps.core.urls")),
+                path("", include("apps.org.urls")),
                 path("schema/", SpectacularAPIView.as_view(), name="schema"),
                 path(
                     "schema/swagger-ui",

@@ -15,7 +15,6 @@ from faker.providers import BaseProvider
 from rest_framework.test import APIClient
 
 from apps.core.models import (
-    HaztrakOrg,
     HaztrakProfile,
     HaztrakSite,
     HaztrakUser,
@@ -31,6 +30,7 @@ from apps.handler.models import (
     Transporter,
 )
 from apps.manifest.models import Manifest
+from apps.org.models import HaztrakOrg
 from apps.rcrasite.models import (
     Address,
     Contact,

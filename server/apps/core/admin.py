@@ -1,10 +1,11 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
 from apps.rcrasite.models import RcraSitePermissions
 
-from .models import HaztrakProfile, RcrainfoProfile, SitePermissions
+from .models import HaztrakProfile, HaztrakUser, RcrainfoProfile, SitePermissions
 
 
 class HiddenListView(admin.ModelAdmin):
@@ -18,17 +19,16 @@ class HiddenListView(admin.ModelAdmin):
         return False
 
 
-# @admin.register(HaztrakUser)
-# class HaztrakUserAdmin(UserAdmin):
-#     list_display = ["username", "related_profile", "email", "is_staff", "is_superuser"]
-#
-#     @admin.display(description="Profile")
-#     def related_profile(self, user: HaztrakUser) -> str:
-#         url = (
-#             reverse("admin:core_haztrakprofile_changelist") + "?" + urlencode({"user": str(user)})  # noqa E501
-#         )
-#         return format_html("<a href='{}'>{}</a>", url, user.haztrak_profile)
-#
+@admin.register(HaztrakUser)
+class HaztrakUserAdmin(UserAdmin):
+    list_display = ["username", "related_profile", "email", "is_staff", "is_superuser"]
+
+    @admin.display(description="Profile")
+    def related_profile(self, user: HaztrakUser) -> str:
+        url = (
+            reverse("admin:core_haztrakprofile_changelist") + "?" + urlencode({"user": str(user)})  # noqa E501
+        )
+        return format_html("<a href='{}'>{}</a>", url, user.haztrak_profile)
 
 
 class RcraSitePermissionInline(admin.TabularInline):

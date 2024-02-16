@@ -1,6 +1,7 @@
 from django.db.models import QuerySet
 
-from apps.core.models import HaztrakOrg, HaztrakSite
+from apps.core.models import HaztrakSite
+from apps.org.models import HaztrakOrg
 
 
 def get_org(org_id: str) -> HaztrakOrg:
