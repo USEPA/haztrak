@@ -2,10 +2,10 @@ import logging
 from datetime import datetime, timezone
 from typing import List, Literal, Optional
 
+from django.conf import settings
 from django.db import models
 
 from apps.handler.models.base_models import TrakBaseManager, TrakBaseModel
-from haztrak import settings
 
 logger = logging.getLogger(__name__)
 

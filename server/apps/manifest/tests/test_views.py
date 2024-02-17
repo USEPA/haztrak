@@ -56,12 +56,12 @@ class TestSignManifestVIew:
         mock_task.return_value = AsyncResult(self.mock_task_id)
 
     def test_returns_celery_task_id(
-        self, user_factory, haztrak_profile_factory, haztrak_org_factory, org_permission_factory
+        self, user_factory, profile_factory, org_factory, org_access_factory
     ):
         user = user_factory()
-        org = haztrak_org_factory()
-        haztrak_profile_factory(user=user)
-        org_permission_factory(user=user, org=org)
+        org = org_factory()
+        profile_factory(user=user)
+        org_access_factory(user=user, org=org)
         request = self.factory.post(
             f"{self.base_url}",
             data={

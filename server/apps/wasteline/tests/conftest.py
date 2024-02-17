@@ -8,7 +8,7 @@ from apps.wasteline.models import DotLookup, DotLookupType, WasteCode, WasteLine
 
 
 @pytest.fixture
-def dot_option_factory(db, faker: Faker):
+def dot_lookup_factory(db, faker: Faker):
     """Abstract factory for Haztrak DotLookup model"""
 
     def create_dot_option(

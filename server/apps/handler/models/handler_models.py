@@ -1,11 +1,11 @@
 import logging
 from typing import Dict, Optional
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
 from apps.rcrasite.models import RcraSite
-from haztrak import settings
 
 from . import ManifestPhone
 from .base_models import TrakBaseManager, TrakBaseModel
@@ -20,7 +20,6 @@ class HandlerManager(TrakBaseManager):
     def save(self, instance: Optional["Handler"], **handler_data) -> "Handler":
         paper_signature = handler_data.pop("paper_signature", None)
         e_signatures = handler_data.pop("e_signatures", [])
-        print("handler data", handler_data)
         if paper_signature is not None:
             paper_signature = PaperSignature.objects.create(**paper_signature)
         if handler_data.get("emergency_phone", None) is not None:

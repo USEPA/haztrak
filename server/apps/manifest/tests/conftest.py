@@ -7,9 +7,9 @@ import pytest
 from faker import Faker
 from faker.providers import BaseProvider
 
-from apps.handler.models import Handler
+from apps.handler.models import Handler, PaperSignature, Transporter
 from apps.manifest.models import Manifest
-from apps.rcrasite.models import RcraSiteType
+from apps.rcrasite.models import RcraSite, RcraSiteType
 
 
 class MtnProvider(BaseProvider):
@@ -26,7 +26,7 @@ class MtnProvider(BaseProvider):
 
 @pytest.fixture
 def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
-    """Abstract factory for Haztrak Manifest model"""
+    """Abstract factory for hazardous waste Manifest model"""
 
     def create_manifest(
         mtn: Optional[str] = None,
@@ -50,3 +50,55 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
         )
 
     return create_manifest
+
+
+@pytest.fixture
+def manifest_handler_factory(db, rcra_site_factory, paper_signature_factory):
+    """Abstract factory for manifest Handler model"""
+
+    def create_manifest_handler(
+        rcra_site: Optional[RcraSite] = None,
+        paper_signature: Optional[PaperSignature] = None,
+    ) -> Handler:
+        return Handler.objects.create(
+            rcra_site=rcra_site or rcra_site_factory(),
+            paper_signature=paper_signature or paper_signature_factory(),
+        )
+
+    return create_manifest_handler
+
+
+@pytest.fixture
+def manifest_transporter_factory(db, rcra_site_factory, paper_signature_factory):
+    """Abstract factory for the manifest transporter model"""
+
+    def create_manifest_handler(
+        rcra_site: Optional[RcraSite] = None,
+        paper_signature: Optional[PaperSignature] = None,
+        manifest: Manifest = None,
+        order: Optional[int] = 1,
+    ) -> Transporter:
+        return Transporter.objects.create(
+            manifest=manifest,
+            order=order,
+            rcra_site=rcra_site or rcra_site_factory(),
+            paper_signature=paper_signature or paper_signature_factory(),
+        )
+
+    return create_manifest_handler
+
+
+@pytest.fixture
+def paper_signature_factory(db, faker: Faker):
+    """Abstract factory for Paper Signature"""
+
+    def create_signature(
+        printed_name: Optional[str] = None,
+        sign_date: Optional[datetime] = None,
+    ) -> PaperSignature:
+        return PaperSignature.objects.create(
+            printed_name=printed_name or faker.name(),
+            sign_date=sign_date or datetime.now(UTC),
+        )
+
+    return create_signature

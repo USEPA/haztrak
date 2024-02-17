@@ -4,13 +4,13 @@ from apps.rcrasite.services import get_or_create_rcra_profile
 
 class TestRcraProfileServices:
     def test_get_or_create_retrieves_by_username(
-        self, rcra_profile_factory, user_factory, haztrak_profile_factory
+        self, rcrainfo_profile_factory, user_factory, profile_factory
     ):
         username = "my_username"
         mock_rcra_username = "my_rcra_username"
         user = user_factory(username=username)
-        rcra_profile = rcra_profile_factory(rcra_username=mock_rcra_username)
-        haztrak_profile_factory(user=user, rcrainfo_profile=rcra_profile)
+        rcra_profile = rcrainfo_profile_factory(rcra_username=mock_rcra_username)
+        profile_factory(user=user, rcrainfo_profile=rcra_profile)
         retrieved_rcra_profile, created = get_or_create_rcra_profile(username=username)
         assert retrieved_rcra_profile == rcra_profile
         assert created is False

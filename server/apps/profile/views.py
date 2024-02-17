@@ -7,6 +7,7 @@ from rest_framework.response import Response
 
 from apps.profile.models import RcrainfoProfile, TrakProfile
 from apps.profile.serializers import RcrainfoProfileSerializer, TrakProfileSerializer
+from apps.profile.services import get_user_profile
 from apps.rcrasite.tasks import sync_user_rcrainfo_sites
 
 
@@ -15,13 +16,17 @@ class TrakProfileDetailsView(RetrieveAPIView):
 
     queryset = TrakProfile.objects.all()
     serializer_class = TrakProfileSerializer
-    response = Response
 
-    def get_object(self):
-        return TrakProfile.objects.get(user=self.request.user)
+    def get(self, request, *args, **kwargs):
+        try:
+            profile = get_user_profile(user=self.request.user)
+            serializer = self.serializer_class(profile)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        except TrakProfile.DoesNotExist as exc:
+            return Response(data={"error": str(exc)}, status=status.HTTP_404_NOT_FOUND)
 
 
-class RcrainfoProfileDetailsView(RetrieveUpdateAPIView):
+class RcrainfoProfileRetrieveUpdateView(RetrieveUpdateAPIView):
     """
     Responsible for Create/Update operations related to the user RcrainfoProfile,
     which maintains a user's RCRAInfo profile data. This info is necessary for
@@ -31,8 +36,10 @@ class RcrainfoProfileDetailsView(RetrieveUpdateAPIView):
     queryset = RcrainfoProfile.objects.all()
     serializer_class = RcrainfoProfileSerializer
     response = Response
-    lookup_field = "haztrak_profile__user__username"
     lookup_url_kwarg = "username"
+
+    def get_object(self):
+        return RcrainfoProfile.objects.get_by_trak_username(self.kwargs.get(self.lookup_url_kwarg))
 
 
 class RcrainfoProfileSyncView(GenericAPIView):

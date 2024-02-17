@@ -11,17 +11,15 @@ class TestTrakSiteListView:
         self,
         api_client_factory,
         user_factory,
-        haztrak_site_factory,
+        site_factory,
         rcra_site_factory,
-        haztrak_site_permission_factory,
+        site_access_factory,
     ):
         self.user = user_factory()
         self.client = api_client_factory(user=self.user)
-        self.user_site = haztrak_site_factory()
-        self.site_permissions = haztrak_site_permission_factory(
-            user=self.user, site=self.user_site
-        )
-        self.other_site = haztrak_site_factory(rcra_site=rcra_site_factory(epa_id="VA12345678"))
+        self.user_site = site_factory()
+        self.site_permissions = site_access_factory(user=self.user, site=self.user_site)
+        self.other_site = site_factory(rcra_site=rcra_site_factory(epa_id="VA12345678"))
 
     base_url = "/api/site"
 
@@ -50,13 +48,13 @@ class TestTrakSiteDetailsApi:
     def test_returns_site_by_id(
         self,
         user_factory,
-        haztrak_site_factory,
-        haztrak_site_permission_factory,
+        site_factory,
+        site_access_factory,
     ):
         # Arrange
         user = user_factory(username="username1")
-        site = haztrak_site_factory()
-        haztrak_site_permission_factory(user=user, site=site)
+        site = site_factory()
+        site_access_factory(user=user, site=site)
         request = APIRequestFactory()
         request = request.get(f"{self.url}/{site.rcra_site.epa_id}")
         force_authenticate(request, user)
@@ -69,17 +67,17 @@ class TestTrakSiteDetailsApi:
     def test_non_user_sites_not_returned(
         self,
         user_factory,
-        haztrak_site_factory,
-        haztrak_org_factory,
-        haztrak_site_permission_factory,
+        site_factory,
+        org_factory,
+        site_access_factory,
     ):
         # Arrange
         user = user_factory()
-        org = haztrak_org_factory(admin=user)
-        site = haztrak_site_factory(org=org)
-        haztrak_site_permission_factory(user=user, site=site)
-        other_org = haztrak_org_factory()
-        other_site = haztrak_site_factory(org=other_org)
+        org = org_factory(admin=user)
+        site = site_factory(org=org)
+        site_access_factory(user=user, site=site)
+        other_org = org_factory()
+        other_site = site_factory(org=other_org)
         request = APIRequestFactory()
         request = request.get(f"{self.url}/{other_site.rcra_site.epa_id}")
         force_authenticate(request, user)
@@ -91,15 +89,15 @@ class TestTrakSiteDetailsApi:
     def test_returns_formatted_http_response(
         self,
         user_factory,
-        haztrak_site_factory,
-        haztrak_site_permission_factory,
-        haztrak_org_factory,
+        site_factory,
+        site_access_factory,
+        org_factory,
     ):
         # Arrange
         user = user_factory()
-        org = haztrak_org_factory(admin=user)
-        site = haztrak_site_factory(org=org)
-        haztrak_site_permission_factory(user=user, site=site)
+        org = org_factory(admin=user)
+        site = site_factory(org=org)
+        site_access_factory(user=user, site=site)
         client = APIClient()
         client.force_authenticate(user=user)
         # Act
@@ -115,14 +113,14 @@ class TestTrakOrgSitesListView:
     def test_returns_list_of_organizations_sites(
         self,
         user_factory,
-        haztrak_site_factory,
-        haztrak_site_permission_factory,
-        haztrak_org_factory,
+        site_factory,
+        site_access_factory,
+        org_factory,
     ):
         # Arrange
         user = user_factory()
-        org = haztrak_org_factory()
-        haztrak_site_factory(org=org)
+        org = org_factory()
+        site_factory(org=org)
         client = APIClient()
         client.force_authenticate(user=user)
         # Act

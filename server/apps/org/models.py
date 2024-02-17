@@ -1,9 +1,9 @@
 import uuid
 
+from django.conf import settings
 from django.db import models
 
 from apps.profile.models import RcrainfoProfile
-from haztrak import settings
 
 
 class TrakOrg(models.Model):
