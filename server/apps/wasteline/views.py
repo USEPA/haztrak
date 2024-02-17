@@ -14,9 +14,10 @@ from rest_framework.views import APIView
 from apps.wasteline.models import DotLookup, WasteCode
 from apps.wasteline.serializers import WasteCodeSerializer
 from apps.wasteline.services import (
-    get_dot_hazard_classes,
-    get_dot_id_numbers,
-    get_dot_shipping_names,
+    filter_dot_hazard_classes,
+    filter_dot_id_numbers,
+    filter_dot_shipping_names,
+    get_state_waste_codes,
 )
 
 
@@ -41,14 +42,13 @@ class StateWasteCodesView(ListAPIView):
 
     @method_decorator(cache_page(60 * 15 * 24))
     def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-    def get_queryset(self):
         try:
             state_id = self.kwargs["state_id"]
-            return WasteCode.state.filter(state_id=state_id)
-        except KeyError:
-            raise ValueError("State ID is required")
+            state_code_data = get_state_waste_codes(state_id)
+            serializer = WasteCodeSerializer(state_code_data, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except ValueError as e:
+            return Response(data=str(e), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 @extend_schema(
@@ -76,8 +76,8 @@ class DotIdNumberView(APIView):
     @method_decorator(cache_page(60 * 15 * 24))
     def get(self, request, *args, **kwargs):
         query = request.query_params.get("q", "")
-        data = get_dot_id_numbers(query)
-        return Response(data=data, status=status.HTTP_200_OK)
+        id_numbers = filter_dot_id_numbers(query)
+        return Response(data=id_numbers, status=status.HTTP_200_OK)
 
 
 @extend_schema(
@@ -105,8 +105,8 @@ class DotShippingNameView(APIView):
     @method_decorator(cache_page(60 * 15 * 24))
     def get(self, request, *args, **kwargs):
         query = request.query_params.get("q", "")
-        data = get_dot_shipping_names(query)
-        return Response(data=data, status=status.HTTP_200_OK)
+        shipping_names = filter_dot_shipping_names(query)
+        return Response(data=shipping_names, status=status.HTTP_200_OK)
 
 
 @extend_schema(
@@ -134,5 +134,5 @@ class DotHazardClassView(APIView):
     @method_decorator(cache_page(60 * 15 * 24))
     def get(self, request, *args, **kwargs):
         query = request.query_params.get("q", "")
-        data = get_dot_hazard_classes(query)
-        return Response(data=data, status=status.HTTP_200_OK)
+        dot_classes = filter_dot_hazard_classes(query)
+        return Response(data=dot_classes, status=status.HTTP_200_OK)

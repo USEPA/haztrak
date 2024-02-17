@@ -4,7 +4,7 @@ from apps.org.models import TrakOrg
 from apps.site.models import TrakSite
 
 
-def get_org(org_id: str) -> TrakOrg:
+def get_org_by_id(org_id: str) -> TrakOrg:
     """Returns a HaztrakOrg instance or raise an exception"""
     return TrakOrg.objects.get(id=org_id)
 
@@ -12,7 +12,7 @@ def get_org(org_id: str) -> TrakOrg:
 def get_org_rcrainfo_api_credentials(org_id: str) -> tuple[str, str] | None:
     """Returns a tuple of (rcrainfo_api_id, rcrainfo_api_key)"""
     try:
-        org = get_org(org_id)
+        org = get_org_by_id(org_id)
         if org.is_rcrainfo_integrated:
             return org.rcrainfo_api_id_key
     except TrakOrg.DoesNotExist:

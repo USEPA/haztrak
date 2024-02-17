@@ -2,7 +2,6 @@ import json
 import os
 import random
 import string
-from datetime import UTC, datetime
 from enum import Enum
 from typing import Dict, Literal, Optional
 
@@ -17,23 +16,13 @@ from rest_framework.test import APIClient
 from apps.core.models import (
     TrakUser,
 )
-from apps.handler.models import (
-    ESignature,
-    Handler,
-    ManifestPhone,
-    PaperSignature,
-    Signer,
-    Transporter,
-)
-from apps.manifest.models import Manifest
 from apps.org.models import TrakOrg, TrakOrgAccess
-from apps.profile.models import RcrainfoProfile, RcrainfoSiteAccess, TrakProfile
+from apps.profile.models import RcrainfoProfile, TrakProfile
 from apps.rcrasite.models import (
     Address,
     Contact,
     RcraPhone,
     RcraSite,
-    RcraSiteType,
 )
 from apps.site.models import TrakSite, TrakSiteAccess
 
@@ -92,7 +81,7 @@ def user_factory(db, faker):
 
 
 @pytest.fixture
-def rcra_profile_factory(db, user_factory, faker: Faker):
+def rcrainfo_profile_factory(db, user_factory, faker: Faker):
     """Abstract factory for Haztrak RcrainfoProfile model"""
 
     def create_profile(
@@ -110,12 +99,12 @@ def rcra_profile_factory(db, user_factory, faker: Faker):
 
 
 @pytest.fixture
-def haztrak_profile_factory(db, user_factory, rcra_profile_factory, haztrak_org_factory):
+def profile_factory(db, user_factory, rcrainfo_profile_factory, org_factory):
     """Abstract factory for Haztrak RcrainfoProfile model"""
 
     def create_profile(
         user: Optional[User] = None,
-        rcrainfo_profile: Optional[RcrainfoProfile] = rcra_profile_factory(),
+        rcrainfo_profile: Optional[RcrainfoProfile] = rcrainfo_profile_factory(),
     ) -> TrakProfile:
         return TrakProfile.objects.create(
             user=user or user_factory(),
@@ -146,7 +135,7 @@ def address_factory(db, faker: Faker):
 
 
 @pytest.fixture
-def site_phone_factory(db, faker: Faker):
+def rcra_phone_factory(db, faker: Faker):
     """Abstract factory for Haztrak ManifestPhone model"""
 
     def create_site_phone(
@@ -162,23 +151,7 @@ def site_phone_factory(db, faker: Faker):
 
 
 @pytest.fixture
-def epa_phone_factory(db, faker):
-    """Abstract factory for Haztrak ManifestPhone model"""
-
-    def create_epa_phone(
-        number: Optional[str] = None,
-        extension: Optional[str] = "1234",
-    ) -> ManifestPhone:
-        return ManifestPhone.objects.create(
-            number=number or faker.phone_number(),
-            extension=extension,
-        )
-
-    return create_epa_phone
-
-
-@pytest.fixture
-def contact_factory(db, site_phone_factory, faker: Faker):
+def contact_factory(db, rcra_phone_factory, faker: Faker):
     """Abstract factory for Haztrak Contact model"""
 
     def create_contact(
@@ -193,7 +166,7 @@ def contact_factory(db, site_phone_factory, faker: Faker):
             middle_initial=middle_initial or faker.pystr(max_chars=1),
             last_name=last_name or faker.last_name(),
             email=email or faker.email(),
-            phone=phone or site_phone_factory(),
+            phone=phone or rcra_phone_factory(),
         )
         return contact
 
@@ -237,7 +210,7 @@ def validated_data_factory():
 
 
 @pytest.fixture
-def haztrak_org_factory(db, rcra_profile_factory, user_factory, faker):
+def org_factory(db, rcrainfo_profile_factory, user_factory, faker):
     """Abstract factory for Haztrak Org model"""
 
     def create_org(
@@ -255,7 +228,7 @@ def haztrak_org_factory(db, rcra_profile_factory, user_factory, faker):
 
 
 @pytest.fixture
-def haztrak_site_factory(db, rcra_site_factory, haztrak_org_factory, faker):
+def site_factory(db, rcra_site_factory, org_factory, faker):
     """Abstract factory for Haztrak Site model"""
 
     def create_site(
@@ -266,7 +239,7 @@ def haztrak_site_factory(db, rcra_site_factory, haztrak_org_factory, faker):
         return TrakSite.objects.create(
             rcra_site=rcra_site or rcra_site_factory(),
             name=name or faker.name(),
-            org=org or haztrak_org_factory(),
+            org=org or org_factory(),
         )
 
     return create_site
@@ -309,7 +282,7 @@ def mocker(mocker: pytest_mock.MockerFixture):
 
 
 @pytest.fixture
-def haztrak_site_permission_factory(db, faker, haztrak_site_factory, haztrak_profile_factory):
+def site_access_factory(db, faker, site_factory, profile_factory):
     """Abstract factory for Haztrak RcraSitePermissions model"""
 
     def create_permission(
@@ -319,7 +292,7 @@ def haztrak_site_permission_factory(db, faker, haztrak_site_factory, haztrak_pro
     ) -> TrakSiteAccess:
         """Returns testuser1 RcraSitePermissions model to site_generator"""
         return TrakSiteAccess.objects.create(
-            site=site or haztrak_site_factory(),
+            site=site or site_factory(),
             user=user or user_factory(),
             emanifest=emanifest,
         )
@@ -331,10 +304,10 @@ def haztrak_site_permission_factory(db, faker, haztrak_site_factory, haztrak_pro
 def user_with_org_factory(
     db,
     user_factory,
-    haztrak_org_factory,
-    rcra_profile_factory,
-    haztrak_profile_factory,
-    org_permission_factory,
+    org_factory,
+    rcrainfo_profile_factory,
+    profile_factory,
+    org_access_factory,
 ):
     """Fixture for creating a user with an org that has set up RCRAInfo integration"""
 
@@ -354,193 +327,25 @@ def user_with_org_factory(
             rcra_profile_data = {"rcra_api_id": None, "rcra_api_key": None, "rcra_username": None}
         user = user or user_factory()
         admin = user_factory(username="admin")
-        admin_rcrainfo_profile or rcra_profile_factory(**rcra_profile_data)
-        org = org or haztrak_org_factory(admin=admin)
-        org_permission_factory(org=org, user=user)
-        haztrak_profile_factory(user=user)
+        admin_rcrainfo_profile or rcrainfo_profile_factory(**rcra_profile_data)
+        org = org or org_factory(admin=admin)
+        org_access_factory(org=org, user=user)
+        profile_factory(user=user)
         return user, org
 
     return create_fixtures
 
 
-class MtnProvider(BaseProvider):
-    SUFFIXES = ["ELC", "JJK", "FLE"]
-    STATUSES = ["NotAssigned", "Pending", "Scheduled", "InTransit", "ReadyForSignature"]
-    NUMBERS = ["".join(random.choices(string.digits, k=9)) for _ in range(100)]
-
-    def mtn(self):
-        return f"{self.random_element(self.NUMBERS)}{self.random_element(self.SUFFIXES)}"
-
-    def status(self):
-        return f"{self.random_element(self.STATUSES)}"
-
-
 @pytest.fixture
-def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
-    """Abstract factory for Haztrak Manifest model"""
-
-    def create_manifest(
-        mtn: Optional[str] = None,
-        generator: Optional[Handler] = None,
-        tsdf: Optional[Handler] = None,
-        status: Optional[str] = None,
-    ) -> Manifest:
-        fake = Faker()
-        fake.add_provider(MtnProvider)
-        return Manifest.objects.create(
-            mtn=mtn or fake.mtn(),
-            status=status or fake.status(),
-            created_date=datetime.now(UTC),
-            potential_ship_date=datetime.now(UTC),
-            generator=generator
-            or manifest_handler_factory(
-                rcra_site=rcra_site_factory(site_type=RcraSiteType.GENERATOR)
-            ),
-            tsdf=tsdf
-            or manifest_handler_factory(rcra_site=rcra_site_factory(site_type=RcraSiteType.TSDF)),
-        )
-
-    return create_manifest
-
-
-@pytest.fixture
-def manifest_handler_factory(db, rcra_site_factory, paper_signature_factory):
-    """Abstract factory for Haztrak Handler model"""
-
-    def create_manifest_handler(
-        rcra_site: Optional[RcraSite] = None,
-        paper_signature: Optional[PaperSignature] = None,
-    ) -> Handler:
-        return Handler.objects.create(
-            rcra_site=rcra_site or rcra_site_factory(),
-            paper_signature=paper_signature or paper_signature_factory(),
-        )
-
-    return create_manifest_handler
-
-
-@pytest.fixture
-def manifest_transporter_factory(db, rcra_site_factory, paper_signature_factory):
-    """Abstract factory for Haztrak Handler model"""
-
-    def create_manifest_handler(
-        rcra_site: Optional[RcraSite] = None,
-        paper_signature: Optional[PaperSignature] = None,
-        manifest: Manifest = None,
-        order: Optional[int] = 1,
-    ) -> Transporter:
-        return Transporter.objects.create(
-            manifest=manifest,
-            order=order,
-            rcra_site=rcra_site or rcra_site_factory(),
-            paper_signature=paper_signature or paper_signature_factory(),
-        )
-
-    return create_manifest_handler
-
-
-@pytest.fixture
-def paper_signature_factory(db, faker: Faker):
-    """Abstract factory for Paper Signature"""
-
-    def create_signature(
-        printed_name: Optional[str] = None,
-        sign_date: Optional[datetime] = None,
-    ) -> PaperSignature:
-        return PaperSignature.objects.create(
-            printed_name=printed_name or faker.name(),
-            sign_date=sign_date or datetime.now(UTC),
-        )
-
-    return create_signature
-
-
-@pytest.fixture
-def e_signature_factory(db, signer_factory, manifest_handler_factory, faker: Faker):
-    """Abstract factory for Haztrak Handler model"""
-
-    def create_e_signature(
-        signer: Optional[Signer] = None,
-        manifest_handler: Optional[Handler] = None,
-    ) -> ESignature:
-        return ESignature.objects.create(
-            signer=signer or signer_factory(),
-            manifest_handler=manifest_handler or manifest_handler_factory(),
-            sign_date=datetime.now(UTC),
-            cromerr_activity_id=faker.pystr(max_chars=10),
-            cromerr_document_id=faker.pystr(max_chars=10),
-            on_behalf=False,
-        )
-
-    return create_e_signature
-
-
-@pytest.fixture
-def signer_factory(db, faker: Faker):
-    """Abstract factory for Haztrak Signer model"""
-
-    def creat_signer(
-        first_name: Optional[str] = None,
-        middle_initial: Optional[str] = None,
-        last_name: Optional[str] = None,
-        signer_role: Optional[str] = "EP",
-        company_name: Optional[str] = None,
-        rcra_user_id: Optional[str] = None,
-    ) -> Signer:
-        return Signer.objects.create(
-            first_name=first_name or faker.first_name(),
-            middle_initial=middle_initial or faker.pystr(max_chars=1),
-            last_name=last_name or faker.last_name(),
-            signer_role=signer_role,
-            company_name=company_name or faker.company(),
-            rcra_user_id=rcra_user_id or faker.user_name(),
-        )
-
-    return creat_signer
-
-
-@pytest.fixture
-def rcra_permission_factory(db, rcra_site_factory, rcra_profile_factory):
-    """Abstract factory for Haztrak RcraSitePermissions model"""
-
-    def create_permission(
-        site: Optional[str] = None,
-        profile: Optional[RcrainfoProfile] = None,
-        site_manager: Optional[bool] = True,
-        annual_report: Optional[str] = "Certifier",
-        biennial_report: Optional[str] = "Certifier",
-        e_manifest: Optional[str] = "Certifier",
-        wiets: Optional[str] = "Certifier",
-        my_rcra_id: Optional[str] = "Certifier",
-    ) -> RcrainfoSiteAccess:
-        """Returns testuser1 RcraSitePermissions model to site_generator"""
-        fake = Faker()
-        fake.add_provider(SiteIDProvider)
-        return RcrainfoSiteAccess.objects.create(
-            site=site or fake.site_id(),
-            profile=profile or rcra_profile_factory(),
-            site_manager=site_manager,
-            annual_report=annual_report,
-            biennial_report=biennial_report,
-            e_manifest=e_manifest,
-            wiets=wiets,
-            my_rcra_id=my_rcra_id,
-        )
-
-    return create_permission
-
-
-@pytest.fixture
-def org_permission_factory(db, user_factory, haztrak_org_factory):
-    """Abstract factory for Haztrak OrgPermissions model"""
+def org_access_factory(db, user_factory, org_factory):
+    """Abstract factory for creating a model that represents a user's access to an organization"""
 
     def create_permission(
         org: Optional[TrakOrg] = None,
         user: Optional[TrakUser] = None,
     ) -> TrakOrgAccess:
-        """Returns testuser1 RcraSitePermissions model to site_generator"""
         return TrakOrgAccess.objects.create(
-            org=org or haztrak_org_factory(),
+            org=org or org_factory(),
             user=user or user_factory(),
         )
 

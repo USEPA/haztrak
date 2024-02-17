@@ -20,7 +20,7 @@ class TrakSiteListView(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return TrakSite.objects.filter(traksiteaccess__user=user)
+        return TrakSite.objects.filter_by_user(user)
 
 
 @method_decorator(cache_page(60 * 15), name="dispatch")
@@ -40,7 +40,6 @@ class TrakSiteDetailsView(RetrieveAPIView):
 
     def get_queryset(self):
         epa_id = self.kwargs["epa_id"]
-        queryset = TrakSite.objects.filter(
-            rcra_site__epa_id=epa_id, traksiteaccess__user=self.request.user
-        )
-        return queryset
+        filter_by_epa_id = TrakSite.objects.filter_by_epa_id(epa_id)
+        filter_by_user = TrakSite.objects.filter_by_user(self.request.user)
+        return filter_by_epa_id & filter_by_user

@@ -36,6 +36,7 @@ print_usage() {
    echo "-p, --pre-commit    installs hooks, if necessary, and runs pre-commit run --all-files"
    echo "-o, --openapi		   Generate the Open API Schema to /docs/API/"
    echo "-e, --erd           Graph the django models to an entity relationship diagram (ERD), requires graphviz"
+   echo "-c, --coverage      Generate a coverage report for the python server"
    echo "-h, --help          Print this help message"
    echo
 }
@@ -115,6 +116,13 @@ run_pre_commit() {
     fi
 }
 
+run_coverage() {
+    # Run the test suite with coverage
+    (cd $base_dir/server; eval "coverage run -m pytest")
+    (cd $base_dir/server; eval "coverage report")
+    exit
+  }
+
 # Parse CLI argument
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -132,6 +140,9 @@ while [[ $# -gt 0 ]]; do
 		;;
     -e|--erd)
 	  graph_models
+		;;
+    -c|--coverage)
+    run_coverage
 		;;
     -h|--help)
 	  print_usage

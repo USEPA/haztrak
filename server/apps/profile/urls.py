@@ -1,7 +1,7 @@
 from django.urls import include, path
 
 from .views import (
-    RcrainfoProfileDetailsView,
+    RcrainfoProfileRetrieveUpdateView,
     RcrainfoProfileSyncView,
     TrakProfileDetailsView,
 )
@@ -13,7 +13,9 @@ urlpatterns = [
             [
                 path("/profile", TrakProfileDetailsView.as_view()),
                 path("/rcrainfo-profile/sync", RcrainfoProfileSyncView.as_view()),
-                path("/rcrainfo-profile/<str:username>", RcrainfoProfileDetailsView.as_view()),
+                path(
+                    "/rcrainfo-profile/<str:username>", RcrainfoProfileRetrieveUpdateView.as_view()
+                ),
             ]
         ),
     ),

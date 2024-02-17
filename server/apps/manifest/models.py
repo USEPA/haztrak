@@ -2,6 +2,7 @@ import logging
 import re
 from typing import List, Optional
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q, QuerySet
@@ -10,7 +11,6 @@ from django.utils.translation import gettext_lazy as _
 from apps.handler.models import Handler, Transporter
 from apps.rcrasite.models import RcraSiteType, RcraStates
 from apps.wasteline.models import WasteLine
-from haztrak import settings
 
 logger = logging.getLogger(__name__)
 

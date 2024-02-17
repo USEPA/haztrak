@@ -1,7 +1,22 @@
+from django.conf import settings
 from django.core.validators import MinLengthValidator
 from django.db import models
 
-from haztrak import settings
+
+class TrakSiteManager(models.Manager):
+    """Custom manager for TrakSite model"""
+
+    def filter_by_username(self: models.Manager, username: str) -> models.QuerySet:
+        """filter a list of sites a user has access to (by username)"""
+        return self.select_related("rcra_site").filter(traksiteaccess__user__username=username)
+
+    def filter_by_user(self: models.Manager, user: settings.AUTH_USER_MODEL) -> models.QuerySet:
+        """filter a list of sites a user has access to (by user object)"""
+        return self.select_related("rcra_site").filter(traksiteaccess__user=user)
+
+    def filter_by_epa_id(self: models.Manager, epa_id: str) -> models.QuerySet:
+        """Get a sites by EPA ID number"""
+        return self.filter(rcra_site__epa_id=epa_id)
 
 
 class TrakSite(models.Model):
@@ -10,6 +25,8 @@ class TrakSite(models.Model):
     It wraps around RCRAInfo sites (AKA handlers, our RcraSite object). and adds
     additional functionality and fields.
     """
+
+    objects = TrakSiteManager()
 
     class Meta:
         verbose_name = "Haztrak Site"

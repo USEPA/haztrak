@@ -142,7 +142,6 @@ class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
         model = RcrainfoSiteAccess
         fields = [
             "siteId",
-            "name",
             "SiteManagement",
             "AnnualReport",
             "BiennialReport",

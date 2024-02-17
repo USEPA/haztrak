@@ -1,7 +1,7 @@
 import pytest
 from django.db import IntegrityError
 
-from apps.wasteline.models import WasteCode
+from apps.wasteline.models import DotLookup, DotLookupType, WasteCode
 
 
 @pytest.mark.django_db
@@ -63,3 +63,28 @@ class TestWasteCodesModel:
         waste_code_factory(code=code)
         with pytest.raises(IntegrityError):
             WasteCode.objects.create(code=code)
+
+    def test_filter_state_waste_codes_by_state_id(self, waste_code_factory) -> None:
+        va_code = waste_code_factory(
+            code="b123", code_type=WasteCode.CodeType.STATE, state_id="VA"
+        )
+        tx_code = waste_code_factory(
+            code="c321", code_type=WasteCode.CodeType.STATE, state_id="TX"
+        )
+        filtered_codes = WasteCode.state.filter_by_state_id("VA")
+        assert va_code in filtered_codes
+        assert tx_code not in filtered_codes
+
+
+class TestDOTLookupManager:
+    def test_filter_shipping_names(self, dot_lookup_factory) -> None:
+        # Arrange
+        value = "xxxxxxxxxxxxx"
+        other_value = "foo"
+        dot_lookup_factory(value=value, value_type=DotLookupType.NAME)
+        dot_lookup_factory(value=other_value, value_type=DotLookupType.NAME)
+        # Act
+        shipping_names = DotLookup.shipping_names.filter_by_value(value)
+        # Assert
+        assert value in [i["value"] for i in shipping_names.values()]
+        assert other_value not in [i["value"] for i in shipping_names.values()]

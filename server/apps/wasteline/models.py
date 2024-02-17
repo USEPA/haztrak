@@ -1,11 +1,10 @@
 import logging
 from typing import Optional
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from haztrak import settings
 
 logger = logging.getLogger(__name__)
 
@@ -105,6 +104,10 @@ class FederalWasteCodeManager(models.Manager):
 
 class StateWasteCodeManager(models.Manager):
     """WasteCode model manager for dealing with State Waste Codes"""
+
+    def filter_by_state_id(self, state_id: str) -> models.QuerySet:
+        """Get a list of state waste codes by state id"""
+        return self.filter(state_id=state_id)
 
     def get_queryset(self):
         return super().get_queryset().filter(code_type=WasteCode.CodeType.STATE)
@@ -268,28 +271,36 @@ class DotLookupType(models.TextChoices):
     CLASS = ("CLASS", _("Class"))  # DOT Hazard class
 
 
-class IdNumbers(models.Manager):
+class DotLookupBaseManager(models.Manager):
+    def filter_by_value(self, value: str) -> models.QuerySet:
+        return self.filter(value__icontains=value)
+
+
+class IdNumbers(DotLookupBaseManager):
     """DOT Option model manager for dealing with DOT ID numbers"""
 
     def get_queryset(self):
         return super().get_queryset().filter(value_type=DotLookupType.ID)
 
 
-class PackingGroups(models.Manager):
+class PackingGroups(DotLookupBaseManager):
     """DOT Option model manager for dealing with DOT ID numbers"""
 
     def get_queryset(self):
         return super().get_queryset().filter(value_type=DotLookupType.GROUP)
 
 
-class ShippingNames(models.Manager):
+class ShippingNames(DotLookupBaseManager):
     """DOT Option model manager for dealing with DOT ID numbers"""
+
+    def filter_by_value(self, value: str) -> models.QuerySet:
+        return self.filter(value__icontains=value)
 
     def get_queryset(self):
         return super().get_queryset().filter(value_type=DotLookupType.NAME)
 
 
-class HazardClass(models.Manager):
+class HazardClass(DotLookupBaseManager):
     """DOT Option model manager for dealing with DOT ID numbers"""
 
     def get_queryset(self):

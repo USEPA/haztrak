@@ -7,11 +7,11 @@ class TestGetManifestService:
     def test_returns_manifests_from_all_user_sites_by_default(
         self,
         manifest_factory,
-        haztrak_profile_factory,
+        profile_factory,
         user_factory,
-        haztrak_site_factory,
+        site_factory,
         rcra_site_factory,
-        haztrak_site_permission_factory,
+        site_access_factory,
         manifest_handler_factory,
         manifest_transporter_factory,
     ):
@@ -19,21 +19,21 @@ class TestGetManifestService:
         # Arrange
         vatestgen001 = rcra_site_factory(epa_id="VATESTGEN001")
         generator = manifest_handler_factory(rcra_site=vatestgen001)
-        my_site = haztrak_site_factory(rcra_site=vatestgen001, name="My Site")
-        haztrak_site_permission_factory(user=user, site=my_site)
+        my_site = site_factory(rcra_site=vatestgen001, name="My Site")
+        site_access_factory(user=user, site=my_site)
         manifest_factory(generator=generator)
 
         # Transporter site
         vatesttran001 = rcra_site_factory(epa_id="VATESTTRAN001")
-        my_transporter_site = haztrak_site_factory(rcra_site=vatesttran001, name="My Transporter")
-        haztrak_site_permission_factory(user=user, site=my_transporter_site)
+        my_transporter_site = site_factory(rcra_site=vatesttran001, name="My Transporter")
+        site_access_factory(user=user, site=my_transporter_site)
         transporter_manifest = manifest_factory()
         manifest_transporter_factory(rcra_site=vatesttran001, manifest=transporter_manifest)
 
         # TSDF site
         vatesttsdf001 = rcra_site_factory(epa_id="VATESTTSDF001")
-        my_tsdf = haztrak_site_factory(rcra_site=vatesttsdf001, name="My TSDF")
-        haztrak_site_permission_factory(user=user, site=my_tsdf)
+        my_tsdf = site_factory(rcra_site=vatesttsdf001, name="My TSDF")
+        site_access_factory(user=user, site=my_tsdf)
         tsdf = manifest_handler_factory(rcra_site=vatesttsdf001)
         manifest_factory(tsdf=tsdf)
         # Act
@@ -45,9 +45,9 @@ class TestGetManifestService:
         self,
         manifest_factory,
         user_factory,
-        haztrak_site_factory,
+        site_factory,
         rcra_site_factory,
-        haztrak_site_permission_factory,
+        site_access_factory,
         manifest_handler_factory,
         manifest_transporter_factory,
     ):
@@ -56,14 +56,14 @@ class TestGetManifestService:
         # Generator site
         vatestgen001 = rcra_site_factory(epa_id="VATESTGEN001")
         generator = manifest_handler_factory(rcra_site=vatestgen001)
-        my_site = haztrak_site_factory(rcra_site=vatestgen001, name="My Site")
-        haztrak_site_permission_factory(user=user, site=my_site)
+        my_site = site_factory(rcra_site=vatestgen001, name="My Site")
+        site_access_factory(user=user, site=my_site)
         generator_manifest = manifest_factory(generator=generator)
 
         # TSDF site
         vatesttsdf001 = rcra_site_factory(epa_id="VATESTTSDF001")
-        my_tsdf = haztrak_site_factory(rcra_site=vatesttsdf001, name="My TSDF")
-        haztrak_site_permission_factory(user=user, site=my_tsdf)
+        my_tsdf = site_factory(rcra_site=vatesttsdf001, name="My TSDF")
+        site_access_factory(user=user, site=my_tsdf)
         tsdf = manifest_handler_factory(rcra_site=vatesttsdf001)
         tsdf_manifest = manifest_factory(tsdf=tsdf)
         # Act
@@ -77,9 +77,9 @@ class TestGetManifestService:
         self,
         manifest_factory,
         user_factory,
-        haztrak_site_factory,
+        site_factory,
         rcra_site_factory,
-        haztrak_site_permission_factory,
+        site_access_factory,
         manifest_handler_factory,
         manifest_transporter_factory,
     ):
@@ -87,8 +87,8 @@ class TestGetManifestService:
         user = user_factory()
         # my site operates as a TSDF and generator
         vatesttsdf001 = rcra_site_factory(epa_id="VATESTTSDF001")
-        my_site = haztrak_site_factory(rcra_site=vatesttsdf001, name="My TSDF")
-        haztrak_site_permission_factory(user=user, site=my_site)
+        my_site = site_factory(rcra_site=vatesttsdf001, name="My TSDF")
+        site_access_factory(user=user, site=my_site)
         my_site_as_tsdf = manifest_handler_factory(rcra_site=vatesttsdf001)
         tsdf_manifest = manifest_factory(tsdf=my_site_as_tsdf)
         my_site_as_generator = manifest_handler_factory(rcra_site=vatesttsdf001)

@@ -1,13 +1,27 @@
 import uuid
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
 from apps.rcrasite.models.base_models import SitesBaseModel
-from haztrak import settings
+
+
+class TrakProfileManager(models.Manager):
+    """Query manager for the TrakProfile model."""
+
+    def get_profile_by_user(self, user: settings.AUTH_USER_MODEL) -> "TrakProfile":
+        return self.get(user=user)
 
 
 class TrakProfile(models.Model):
+    """
+    User information outside the scope of the User model.
+    Contains a one-to-one relationship with the User model
+    """
+
+    objects = TrakProfileManager()
+
     class Meta:
         verbose_name = "Haztrak Profile"
         ordering = ["user__username"]
@@ -40,11 +54,20 @@ class TrakProfile(models.Model):
         return f"{self.user.username}"
 
 
+class RcrainfoProfileManager(models.Manager):
+    """Query manager for the RcrainfoProfile model."""
+
+    def get_by_trak_username(self, username: str) -> "RcrainfoProfile":
+        return self.get(haztrak_profile__user__username=username)
+
+
 class RcrainfoProfile(models.Model):
     """
     Contains a user's RcrainfoProfile information, such as username, and API credentials.
     Has a one-to-one relationship with the User model.
     """
+
+    objects = RcrainfoProfileManager()
 
     class Meta:
         ordering = ["rcra_username"]

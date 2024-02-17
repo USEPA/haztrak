@@ -22,42 +22,42 @@ class TestRcrainfoService:
         rcrainfo_prod = RcrainfoService(rcrainfo_env="prod")
         assert rcrainfo_prod.base_url == emanifest.RCRAINFO_PROD
 
-    def test_uses_provided_rcra_profile_credentials(self, rcra_profile_factory):
-        admin_rcrainfo_profile = rcra_profile_factory()
+    def test_uses_provided_rcra_profile_credentials(self, rcrainfo_profile_factory):
+        admin_rcrainfo_profile = rcrainfo_profile_factory()
         rcrainfo = RcrainfoService(rcra_profile=admin_rcrainfo_profile, auto_renew=True)
         assert rcrainfo.retrieve_key() == admin_rcrainfo_profile.rcra_api_key
         assert rcrainfo.retrieve_id() == admin_rcrainfo_profile.rcra_api_id
 
     def test_constructor_retrieves_org_api_credentials(
         self,
-        rcra_profile_factory,
+        rcrainfo_profile_factory,
         user_factory,
-        haztrak_org_factory,
-        haztrak_profile_factory,
-        org_permission_factory,
+        org_factory,
+        profile_factory,
+        org_access_factory,
     ):
         # Arrange
         # Set up org with RCRAInfo API credentials
         mock_api_id = "my_mock_id"
         mock_api_key = "my_mock_key"
         admin = user_factory(username="admin")
-        my_org = haztrak_org_factory(admin=admin)
-        admin_rcrainfo_profile = rcra_profile_factory(
+        my_org = org_factory(admin=admin)
+        admin_rcrainfo_profile = rcrainfo_profile_factory(
             rcra_api_id=mock_api_id,
             rcra_api_key=mock_api_key,
         )
-        haztrak_profile_factory(user=admin, rcrainfo_profile=admin_rcrainfo_profile)
+        profile_factory(user=admin, rcrainfo_profile=admin_rcrainfo_profile)
         # Set up user within org
         my_user = user_factory(username="testuser1")
-        org_permission_factory(user=my_user, org=my_org)
-        haztrak_profile_factory(user=my_user)
+        org_access_factory(user=my_user, org=my_org)
+        profile_factory(user=my_user)
         # Act
         rcrainfo: RcrainfoService = get_rcrainfo_client(username=my_user.username)
         # Assert
         assert rcrainfo.has_rcrainfo_credentials
 
     def test_constructor_uses_provided_api_credentials(
-        self, rcra_profile_factory, user_factory, haztrak_org_factory, haztrak_profile_factory
+        self, rcrainfo_profile_factory, user_factory, org_factory, profile_factory
     ):
         # Arrange
         mock_api_id = "my_mock_id"
@@ -83,8 +83,8 @@ class TestQuickerSign:
         self,
         mock_responses,
         user_factory,
-        rcra_profile_factory,
-        haztrak_profile_factory,
+        rcrainfo_profile_factory,
+        profile_factory,
         quicker_sign_response_factory,
     ):
         """
@@ -92,8 +92,8 @@ class TestQuickerSign:
         that's recognized by RCRAInfo
         """
         testuser1 = user_factory()
-        rcra_profile = rcra_profile_factory()
-        haztrak_profile_factory(user=testuser1, rcrainfo_profile=rcra_profile)
+        rcra_profile = rcrainfo_profile_factory()
+        profile_factory(user=testuser1, rcrainfo_profile=rcra_profile)
         rcrainfo = RcrainfoService(auto_renew=False)
         quicker_sign_response_factory(mtn=self.mtn, site_id=self.site_id, sign_date=self.sign_date)
         quicker_sign_url = f"{rcrainfo.base_url}v1/emanifest/manifest/quicker-sign"
