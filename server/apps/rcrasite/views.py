@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 @extend_schema(
     description="Retrieve details on a rcra_site stored in the Haztrak database",
 )
-class GetRcraSiteView(RetrieveAPIView):
+class RcraSiteDetailsView(RetrieveAPIView):
     """Retrieve details on a RCRAInfo Site known to haztrak by their EPA ID number"""
 
     queryset = RcraSite.objects.all()
@@ -45,7 +45,7 @@ class GetRcraSiteView(RetrieveAPIView):
         },
     ),
 )
-class SearchRcraSiteView(APIView):
+class RcraSiteSearchView(APIView):
     """Search for locally saved hazardous waste sites ("Generators", "Transporters", "Tsdf's")"""
 
     queryset = RcraSite.objects.all()
@@ -102,7 +102,7 @@ handler_types = {
         },
     ),
 )
-class SearchHandlerView(APIView):
+class HandlerSearchView(APIView):
     """Search and return a list of Hazardous waste handlers from RCRAInfo."""
 
     class HandlerSearchSerializer(serializers.Serializer):

@@ -18,7 +18,7 @@ from apps.manifest.services import (
     save_emanifest,
     update_manifest,
 )
-from apps.site.services import HaztrakSiteService
+from apps.site.services import TrakSiteService
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +67,7 @@ class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins
 
 
 @extend_schema(request=ManifestSerializer)
-class SaveElectronicManifestView(GenericAPIView):
+class ElectronicManifestSaveView(GenericAPIView):
     """Save a manifest to RCRAInfo."""
 
     queryset = None
@@ -125,7 +125,7 @@ class MtnListView(ListAPIView):
         )
 
 
-class SignManifestView(GenericAPIView):
+class ManifestSignView(GenericAPIView):
     """
     Endpoint to Quicker Sign manifests via an async task
     """
@@ -154,7 +154,7 @@ class SignManifestView(GenericAPIView):
         "site_manifest_sync_response", fields={"task": serializers.CharField()}
     ),
 )
-class SyncSiteManifestView(APIView):
+class TrakSiteManifestSyncView(APIView):
     """
     Pull a site's manifests that are out of sync with RCRAInfo.
     It returns the task id of the long-running background task which can be used to poll
@@ -167,6 +167,6 @@ class SyncSiteManifestView(APIView):
     def post(self, request: Request) -> Response:
         serializer = self.SyncSiteManifestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        site = HaztrakSiteService(username=str(request.user))
+        site = TrakSiteService(username=str(request.user))
         data = site.sync_rcrainfo_manifest(**serializer.validated_data)
         return Response(data=data, status=status.HTTP_200_OK)

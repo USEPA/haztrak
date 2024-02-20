@@ -1,4 +1,4 @@
-from apps.profile.models import HaztrakProfile, RcrainfoProfile
+from apps.profile.models import RcrainfoProfile, TrakProfile
 from apps.rcrasite.services import get_or_create_rcra_profile
 
 
@@ -29,5 +29,5 @@ class TestRcraProfileServices:
         # Act
         rcra_profile, created = get_or_create_rcra_profile(username=username)
         # Assert
-        haztrak_profile = HaztrakProfile.objects.get(user__username=username)
+        haztrak_profile = TrakProfile.objects.get(user__username=username)
         assert haztrak_profile.rcrainfo_profile == rcra_profile

@@ -2,8 +2,7 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 
 
-# Create your models here.
-class HaztrakSite(models.Model):
+class TrakSite(models.Model):
     """
     Haztrak Site is a cornerstone model that many other models rely on.
     It wraps around RCRAInfo sites (AKA handlers, our RcraSite object). and adds
@@ -33,7 +32,7 @@ class HaztrakSite(models.Model):
         blank=True,
     )
     org = models.ForeignKey(
-        "org.HaztrakOrg",
+        "org.TrakOrg",
         on_delete=models.CASCADE,
     )
 
@@ -47,21 +46,21 @@ class HaztrakSite(models.Model):
         return f"{self.rcra_site.epa_id}"
 
 
-class SitePermissions(models.Model):
+class TrakSiteAccess(models.Model):
     """The Role Based access a user has to a site"""
 
     class Meta:
-        verbose_name = "Site Permission"
-        verbose_name_plural = "Site Permissions"
-        ordering = ["profile"]
+        verbose_name = "New Site Permission"
+        verbose_name_plural = "New Site Permissions"
+        ordering = ["user"]
 
-    profile = models.ForeignKey(
-        "profile.HaztrakProfile",
+    user = models.ForeignKey(
+        "core.TrakUser",
         on_delete=models.CASCADE,
         related_name="site_permissions",
     )
     site = models.ForeignKey(
-        HaztrakSite,
+        TrakSite,
         on_delete=models.CASCADE,
     )
     emanifest = models.CharField(
@@ -75,4 +74,4 @@ class SitePermissions(models.Model):
     )
 
     def __str__(self):
-        return f"{self.profile.user}"
+        return f"{self.user.username}"

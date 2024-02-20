@@ -1,13 +1,13 @@
 from django.urls import path
 
 from apps.rcrasite.views import (  # type: ignore
-    GetRcraSiteView,
-    SearchHandlerView,
-    SearchRcraSiteView,
+    HandlerSearchView,
+    RcraSiteDetailsView,
+    RcraSiteSearchView,
 )
 
 urlpatterns = [
-    path("handler/search", SearchHandlerView.as_view()),
-    path("handler/<str:epa_id>", GetRcraSiteView.as_view()),
-    path("site/search", SearchRcraSiteView.as_view()),
+    path("handler/search", HandlerSearchView.as_view()),
+    path("handler/<str:epa_id>", RcraSiteDetailsView.as_view()),
+    path("site/search", RcraSiteSearchView.as_view()),
 ]

@@ -33,30 +33,3 @@ class TestEManifestService:
         emanifest = EManifest(username=self.user.username, rcrainfo=rcrainfo)
         results = emanifest.pull(tracking_numbers=[self.tracking_number])
         assert self.tracking_number in results["success"]
-
-
-class TestEManifestSignManifest:
-    def test_filter_mtn_removed_mtn_not_associated_with_site(
-        self,
-        manifest_factory,
-        rcra_site_factory,
-        manifest_handler_factory,
-        haztrak_profile_factory,
-    ):
-        # Arrange
-        profile = haztrak_profile_factory()
-        my_site = rcra_site_factory()
-        my_handler = manifest_handler_factory(rcra_site=my_site)
-        my_manifest = manifest_factory(generator=my_handler)
-        not_my_manifest = manifest_factory(mtn="123456555ELC")
-
-        emanifest = EManifest(username=profile.user.username)
-        # Act
-        filtered_manifest = emanifest._filter_mtn(
-            mtn=[my_manifest.mtn, not_my_manifest.mtn],
-            site_id=my_handler.rcra_site.epa_id,
-            site_type=my_handler.rcra_site.site_type,
-        )
-        # Assert
-        assert my_manifest.mtn in filtered_manifest
-        assert not_my_manifest.mtn not in filtered_manifest

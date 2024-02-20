@@ -7,12 +7,12 @@ from apps.core.services import (
     RcrainfoService,
     get_rcrainfo_client,
 )
-from apps.profile.services import get_or_create_haztrak_profile
-from apps.rcrasite.models import RcraSite, RcraSitePermissions
-from apps.rcrasite.serializers import RcraPermissionSerializer
-from apps.site.services import HaztrakSiteServiceError
+from apps.profile.services import get_or_create_profile
+from apps.rcrasite.models import RcraSite
+from apps.rcrasite.serializers import RcrainfoSitePermissionsSerializer
+from apps.site.services import TrakSiteServiceError
 
-from ...profile.models import RcrainfoProfile
+from ...profile.models import RcrainfoProfile, RcrainfoSiteAccess
 from .rcra_site_services import RcraSiteService
 
 logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ def get_or_create_rcra_profile(*, username: str) -> tuple[RcrainfoProfile, bool]
         haztrak_profile__user__username=username
     )
     if created:
-        haztrak_profile, created = get_or_create_haztrak_profile(username=username)
+        haztrak_profile, created = get_or_create_profile(username=username)
         haztrak_profile.rcrainfo_profile = profile
         haztrak_profile.save()
     return profile, created
@@ -82,7 +82,7 @@ class RcraProfileService:
                 self._create_or_update_rcra_permission(
                     epa_permission=rcra_site_permission, site=rcra_site
                 )
-        except HaztrakSiteServiceError as exc:
+        except TrakSiteServiceError as exc:
             raise RcraProfileServiceError(f"Error creating or updating Haztrak Site {exc}")
         except KeyError as exc:
             raise RcraProfileServiceError(f"Error parsing RCRAInfo response: {str(exc)}")
@@ -100,10 +100,10 @@ class RcraProfileService:
     @transaction.atomic
     def _create_or_update_rcra_permission(
         self, *, epa_permission: dict, site: RcraSite
-    ) -> RcraSitePermissions:
-        permission_serializer = RcraPermissionSerializer(data=epa_permission)
+    ) -> RcrainfoSiteAccess:
+        permission_serializer = RcrainfoSitePermissionsSerializer(data=epa_permission)
         if permission_serializer.is_valid():
-            obj, created = RcraSitePermissions.objects.update_or_create(
+            obj, created = RcrainfoSiteAccess.objects.update_or_create(
                 **permission_serializer.validated_data, site=site, profile=self.profile
             )
             return obj

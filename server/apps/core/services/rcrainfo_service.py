@@ -5,7 +5,7 @@ import emanifest
 from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse
 
-from apps.org.models import HaztrakOrg
+from apps.org.models import TrakOrg
 from apps.profile.models import RcrainfoProfile
 from apps.wasteline.models import WasteCode
 
@@ -145,7 +145,8 @@ def get_rcrainfo_client(
             **kwargs,
         )
     try:
-        org: HaztrakOrg = HaztrakOrg.objects.get(haztrak_profiles__user__username=username)
+        org: TrakOrg = TrakOrg.objects.get(trakorgaccess__user__username=username)
+        print("org:", org)
         if org.is_rcrainfo_integrated:
             api_id, api_key = org.rcrainfo_api_id_key
         return RcrainfoService(
@@ -154,7 +155,7 @@ def get_rcrainfo_client(
             rcrainfo_env=rcrainfo_env,
             **kwargs,
         )
-    except HaztrakOrg.DoesNotExist:
+    except TrakOrg.DoesNotExist:
         raise ValueError(
             "If not using an organization with RCRAInfo credentials, "
             "you must provide api_id and api_key"
