@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 
 from apps.profile.models import RcrainfoProfile
+from haztrak import settings
 
 
 class TrakOrg(models.Model):
@@ -24,7 +25,7 @@ class TrakOrg(models.Model):
         default=uuid.uuid4,
     )
     admin = models.ForeignKey(
-        "core.TrakUser",
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -67,7 +68,7 @@ class TrakOrgAccess(models.Model):
         blank=True,
     )
     user = models.OneToOneField(
-        "core.TrakUser",
+        settings.AUTH_USER_MODEL,
         related_name="org_permissions",
         on_delete=models.CASCADE,
         null=True,

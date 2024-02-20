@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 from apps.rcrasite.models import RcraSite
+from haztrak import settings
 
 from . import ManifestPhone
 from .base_models import TrakBaseManager, TrakBaseModel
@@ -60,7 +61,7 @@ class Handler(TrakBaseModel):
     objects = HandlerManager()
 
     rcra_site = models.ForeignKey(
-        "rcrasite.RcraSite",
+        settings.TRAK_RCRAINFO_SITE_MODEL,
         on_delete=models.CASCADE,
         help_text="Hazardous waste rcra_site associated with the manifest",
     )
@@ -134,7 +135,7 @@ class Transporter(Handler):
     objects = TransporterManager()
 
     manifest = models.ForeignKey(
-        "manifest.Manifest",
+        settings.TRAK_MANIFEST_MODEL,
         related_name="transporters",
         on_delete=models.CASCADE,
     )

@@ -104,12 +104,8 @@ class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
         "WIETS",
         "SiteManagement",
     ]
-    siteId = serializers.StringRelatedField(
+    siteId = serializers.CharField(
         source="site",
-    )
-    name = serializers.StringRelatedField(
-        source="site.rcra_site.name",
-        required=False,
     )
     SiteManagement = RcraPermissionField(
         source="site_manager",

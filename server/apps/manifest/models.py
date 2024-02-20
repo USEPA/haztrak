@@ -8,8 +8,9 @@ from django.db.models import Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from apps.handler.models import Handler, Transporter
-from apps.rcrasite.models import RcraSiteType, RcraStates, Role
+from apps.rcrasite.models import RcraSiteType, RcraStates
 from apps.wasteline.models import WasteLine
+from haztrak import settings
 
 logger = logging.getLogger(__name__)
 
@@ -198,13 +199,13 @@ class Manifest(models.Model):
         blank=True,
     )
     generator = models.ForeignKey(
-        "handler.Handler",
+        settings.TRAK_HANDLER_MODEL,
         on_delete=models.PROTECT,
         related_name="generator",
     )
     # transporters
     tsdf = models.ForeignKey(
-        "handler.Handler",
+        settings.TRAK_HANDLER_MODEL,
         verbose_name="designated facility",
         on_delete=models.PROTECT,
         related_name="designated_facility",
@@ -385,75 +386,6 @@ class PortOfEntry(models.Model):
     )
     city_port = models.CharField(
         max_length=100,
-        null=True,
-        blank=True,
-    )
-
-
-class ImportInfo(models.Model):
-    """
-    Contains information on hazardous waste imported to the United Stated
-    """
-
-    class Meta:
-        verbose_name = "Import Info"
-        verbose_name_plural = "Import Info"
-
-    import_generator = models.JSONField(
-        null=True,
-        blank=True,
-    )
-    port_of_entry = models.ForeignKey(
-        "PortOfEntry",
-        on_delete=models.PROTECT,
-        null=True,
-        blank=True,
-    )
-
-
-class CorrectionInfo(models.Model):
-    """
-    Contains correction information.
-    Shall not be provided for Save  and Update Manifest services.
-    will be returned by Get manifest service
-    """
-
-    class Meta:
-        verbose_name = "Correction Info"
-        verbose_name_plural = "Correction Info"
-
-    version_number = models.IntegerField(
-        null=True,
-        blank=True,
-    )
-    active = models.BooleanField(
-        null=True,
-        blank=True,
-    )
-    ppc_active = models.BooleanField(
-        null=True,
-        blank=True,
-    )
-    # electronic_signature_info = models.ForeignKey(
-    #     "ESignature",
-    #     on_delete=models.PROTECT,
-    #     null=True,
-    #     blank=True,
-    # )
-    epa_site_id = models.CharField(
-        max_length=100,
-        null=True,
-        blank=True,
-    )
-    initiator_role = models.CharField(
-        choices=Role.choices,
-        max_length=2,
-        null=True,
-        blank=True,
-    )
-    update_role = models.CharField(
-        choices=Role.choices,
-        max_length=2,
         null=True,
         blank=True,
     )

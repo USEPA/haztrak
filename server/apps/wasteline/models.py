@@ -5,6 +5,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from haztrak import settings
+
 logger = logging.getLogger(__name__)
 
 
@@ -33,7 +35,7 @@ class WasteLine(models.Model):
     objects = WasteLineManager()
 
     manifest = models.ForeignKey(
-        "manifest.Manifest",
+        settings.TRAK_MANIFEST_MODEL,
         related_name="wastes",
         on_delete=models.CASCADE,
     )
