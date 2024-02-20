@@ -4,19 +4,16 @@ from typing import Dict
 from rest_framework import serializers
 
 from apps.handler.serializers import (
-    ESignatureSerializer,
     HandlerSerializer,
     TransporterSerializer,
 )
 from apps.manifest.models import (
     AdditionalInfo,
-    CorrectionInfo,
-    ImportInfo,
     Manifest,
     PortOfEntry,
     draft_mtn,
 )
-from apps.rcrasite.models import RcraStates, Role
+from apps.rcrasite.models import RcraStates
 from apps.wasteline.serializers import (
     WasteLineSerializer,
 )
@@ -304,81 +301,3 @@ class PortOfEntrySerializer(TrakBaseSerializer):
     class Meta:
         model = PortOfEntry
         fields = ["state", "cityPort"]
-
-
-class ImportInfoSerializer(TrakBaseSerializer):
-    """
-    Serializer for import information
-    """
-
-    importGenerator = serializers.JSONField(
-        source="import_generator",
-        allow_null=True,
-        required=False,
-    )
-    portOfEntry = PortOfEntrySerializer(
-        source="port_of_entry",
-        required=False,
-        allow_null=True,
-    )
-
-    class Meta:
-        model = ImportInfo
-        fields = ["importGenerator", "PortOfEntry"]
-
-
-class CorrectionInfoSerializer(TrakBaseSerializer):
-    """
-    Serializer for Correction Info
-    """
-
-    versionNumber = serializers.CharField(
-        source="version_number",
-        required=False,
-        allow_null=True,
-    )
-    active = serializers.BooleanField(
-        required=False,
-        allow_null=True,
-        default=False,
-    )
-    ppcActive = serializers.BooleanField(
-        source="ppc_active",
-        required=False,
-        allow_null=True,
-        default=False,
-    )
-    electronicSignatureInfo = ESignatureSerializer(
-        source="electronic_signature_info",
-        required=False,
-        allow_null=True,
-    )
-    epaSiteId = serializers.CharField(
-        source="epa_site_id",
-        required=False,
-        allow_null=True,
-    )
-    initiatorRole = serializers.ChoiceField(
-        source="initiator_role",
-        choices=Role.choices,
-        required=False,
-        allow_null=True,
-    )
-    updateRole = serializers.ChoiceField(
-        source="update_role",
-        choices=Role.choices,
-        required=False,
-        allow_null=True,
-    )
-
-    class Meta:
-        model = CorrectionInfo
-        fields = [
-            "versionNumber",
-            "active",
-            "ppcActive",
-            "electronicSignatureInfo",
-            "epaSiteId",
-            "initiatorRole",
-            "updateRole",
-        ]

@@ -5,6 +5,7 @@ from typing import List, Literal, Optional
 from django.db import models
 
 from apps.handler.models.base_models import TrakBaseManager, TrakBaseModel
+from haztrak import settings
 
 logger = logging.getLogger(__name__)
 
@@ -106,7 +107,7 @@ class ESignature(TrakBaseModel):
     objects = ESignatureManager()
 
     manifest_handler = models.ForeignKey(
-        "handler.Handler",
+        settings.TRAK_HANDLER_MODEL,
         related_name="e_signatures",
         on_delete=models.CASCADE,
     )

@@ -1,6 +1,8 @@
 from django.core.validators import MinLengthValidator
 from django.db import models
 
+from haztrak import settings
+
 
 class TrakSite(models.Model):
     """
@@ -23,7 +25,7 @@ class TrakSite(models.Model):
     )
     rcra_site = models.OneToOneField(
         verbose_name="rcra_site",
-        to="rcrasite.RcraSite",
+        to=settings.TRAK_RCRAINFO_SITE_MODEL,
         on_delete=models.CASCADE,
     )
     last_rcrainfo_manifest_sync = models.DateTimeField(
@@ -32,7 +34,7 @@ class TrakSite(models.Model):
         blank=True,
     )
     org = models.ForeignKey(
-        "org.TrakOrg",
+        settings.TRAK_ORG_MODEL,
         on_delete=models.CASCADE,
     )
 
@@ -55,7 +57,7 @@ class TrakSiteAccess(models.Model):
         ordering = ["user"]
 
     user = models.ForeignKey(
-        "core.TrakUser",
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="site_permissions",
     )
