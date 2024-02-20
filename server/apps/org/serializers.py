@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.org.models import HaztrakOrg
+from apps.org.models import TrakOrg
 
 
-class HaztrakOrgSerializer(ModelSerializer):
+class TrakOrgSerializer(ModelSerializer):
     """Haztrak Organization Model Serializer"""
 
     id = serializers.CharField(
@@ -19,7 +19,7 @@ class HaztrakOrgSerializer(ModelSerializer):
     )
 
     class Meta:
-        model = HaztrakOrg
+        model = TrakOrg
         fields = [
             "name",
             "id",

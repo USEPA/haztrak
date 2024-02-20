@@ -5,16 +5,11 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from apps.core.models import (
-    HaztrakUser,
+    TrakUser,
 )
-from apps.org.serializers import HaztrakOrgSerializer
-from apps.profile.models import HaztrakProfile, RcrainfoProfile
-from apps.rcrasite.serializers import RcraSitePermissionSerializer, RcraSiteSerializer
-from apps.rcrasite.serializers.base_serializer import SitesBaseSerializer
-from apps.site.models import HaztrakSite, SitePermissions
 
 
-class HaztrakUserSerializer(ModelSerializer):
+class TrakUserSerializer(ModelSerializer):
     """
     Model serializer for marshalling/unmarshalling a user's HaztrakUser
     """
@@ -33,64 +28,13 @@ class HaztrakUserSerializer(ModelSerializer):
     )
 
     class Meta:
-        model = HaztrakUser
+        model = TrakUser
         fields = [
             "id",
             "username",
             "firstName",
             "lastName",
             "email",
-        ]
-
-
-class RcrainfoProfileSerializer(ModelSerializer):
-    """Model serializer for marshalling/unmarshalling a user's RcrainfoProfile"""
-
-    user = serializers.StringRelatedField(
-        source="haztrak_profile",
-    )
-    rcraSites = RcraSitePermissionSerializer(
-        source="permissions",
-        required=False,
-        many=True,
-    )
-    phoneNumber = serializers.CharField(
-        source="phone_number",
-        required=False,
-    )
-    rcraAPIID = serializers.CharField(
-        source="rcra_api_id",
-        required=False,
-        allow_null=True,
-        allow_blank=True,
-    )
-    rcraAPIKey = serializers.CharField(
-        source="rcra_api_key",
-        required=False,
-        write_only=True,
-        allow_blank=True,
-        allow_null=True,
-    )
-    rcraUsername = serializers.CharField(
-        source="rcra_username",
-        required=False,
-    )
-    apiUser = serializers.BooleanField(
-        source="has_rcrainfo_api_id_key",
-        required=False,
-        allow_null=False,
-    )
-
-    class Meta:
-        model = RcrainfoProfile
-        fields = [
-            "user",
-            "rcraAPIID",
-            "rcraAPIKey",
-            "rcraUsername",
-            "rcraSites",
-            "phoneNumber",
-            "apiUser",
         ]
 
 
@@ -163,55 +107,3 @@ class TaskStatusSerializer(serializers.Serializer):
     def to_representation(self, instance):
         result = super().to_representation(instance)
         return OrderedDict([(key, result[key]) for key in result if result[key] is not None])
-
-
-class HaztrakSiteSerializer(ModelSerializer):
-    """
-    HaztrakSite model serializer for JSON marshalling/unmarshalling
-    """
-
-    name = serializers.CharField(
-        required=False,
-    )
-    handler = RcraSiteSerializer(
-        source="rcra_site",
-    )
-
-    class Meta:
-        model = HaztrakSite
-        fields = ["name", "handler"]
-
-
-class SitePermissionSerializer(SitesBaseSerializer):
-    class Meta:
-        model = SitePermissions
-        fields = [
-            "site",
-            "eManifest",
-        ]
-
-    site = HaztrakSiteSerializer()
-    eManifest = serializers.CharField(
-        source="emanifest",
-    )
-
-
-class HaztrakProfileSerializer(ModelSerializer):
-    """Serializer for a user's profile"""
-
-    user = serializers.StringRelatedField(
-        required=False,
-    )
-    sites = SitePermissionSerializer(
-        source="site_permissions",
-        many=True,
-    )
-    org = HaztrakOrgSerializer()
-
-    class Meta:
-        model = HaztrakProfile
-        fields = [
-            "user",
-            "sites",
-            "org",
-        ]

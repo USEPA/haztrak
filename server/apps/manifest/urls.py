@@ -2,11 +2,11 @@ from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
 from apps.manifest.views import (  # type: ignore
+    ElectronicManifestSaveView,
+    ManifestSignView,
     ManifestViewSet,
     MtnListView,
-    SaveElectronicManifestView,
-    SignManifestView,
-    SyncSiteManifestView,
+    TrakSiteManifestSyncView,
 )
 
 manifest_router = SimpleRouter(trailing_slash=False)
@@ -18,9 +18,9 @@ urlpatterns = [
         include(
             [
                 # Manifest
-                path("emanifest", SaveElectronicManifestView.as_view()),
-                path("emanifest/sign", SignManifestView.as_view()),
-                path("emanifest/sync", SyncSiteManifestView.as_view()),
+                path("emanifest", ElectronicManifestSaveView.as_view()),
+                path("emanifest/sign", ManifestSignView.as_view()),
+                path("emanifest/sync", TrakSiteManifestSyncView.as_view()),
                 path("", include(manifest_router.urls)),
                 # MT
                 path("mtn", MtnListView.as_view()),

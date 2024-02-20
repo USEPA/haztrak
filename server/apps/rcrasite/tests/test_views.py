@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
 from apps.rcrasite.models import RcraSiteType  # type: ignore
-from apps.rcrasite.views import SearchRcraSiteView  # type: ignore
+from apps.rcrasite.views import RcraSiteSearchView  # type: ignore
 
 
 class TestRcraSiteView:
@@ -49,7 +49,7 @@ class TestRcraSiteSearchView:
         )
         force_authenticate(request, user)
         # Act
-        response = SearchRcraSiteView.as_view()(request)
+        response = RcraSiteSearchView.as_view()(request)
         # Assert
         assert len(response.data) > 0
         for handler_data in response.data:
@@ -76,7 +76,7 @@ class TestRcraSiteSearchView:
         )
         force_authenticate(request, user)
         # Act
-        response = SearchRcraSiteView.as_view()(request)
+        response = RcraSiteSearchView.as_view()(request)
         # Assert
         for handler_data in response.data:
             assert handler_data["siteType"] == RcraSiteType.TSDF

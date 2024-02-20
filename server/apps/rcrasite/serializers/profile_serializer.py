@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.rcrasite.models import RcraSitePermissions
-
+from ...profile.models import RcrainfoSiteAccess
 from .base_serializer import SitesBaseSerializer
 
 
@@ -23,7 +22,7 @@ class RcraSitePermissionSerializer(SitesBaseSerializer):
         "myRCRAid",
     ]
 
-    epaSiteId = serializers.StringRelatedField(
+    epaSiteId = serializers.CharField(
         read_only=True,
         source="site",
     )
@@ -54,7 +53,7 @@ class RcraSitePermissionSerializer(SitesBaseSerializer):
         return representation
 
     class Meta:
-        model = RcraSitePermissions
+        model = RcrainfoSiteAccess
         fields = [
             "epaSiteId",
             "siteManagement",
@@ -91,7 +90,7 @@ class RcraPermissionField(serializers.Field):
             raise ValidationError(f"malformed JSON: {exc}")
 
 
-class RcraPermissionSerializer(RcraSitePermissionSerializer):
+class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
     """
     RcraSitePermissions model serializer specifically for reading a user's site permissions
     from RCRAInfo. It's not used for serializing, only deserializing permissions from RCRAinfo
@@ -144,7 +143,7 @@ class RcraPermissionSerializer(RcraSitePermissionSerializer):
             raise ValidationError(f"malformed JSON: {exc}")
 
     class Meta:
-        model = RcraSitePermissions
+        model = RcrainfoSiteAccess
         fields = [
             "siteId",
             "name",

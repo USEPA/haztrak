@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 
-class TrakBaseSerializer(serializers.ModelSerializer):
+class HandlerBaseSerializer(serializers.ModelSerializer):
     """
     The Django Trak app base serializers class used to share functionality
     across trak app serializers universally.

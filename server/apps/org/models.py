@@ -5,7 +5,7 @@ from django.db import models
 from apps.profile.models import RcrainfoProfile
 
 
-class HaztrakOrg(models.Model):
+class TrakOrg(models.Model):
     """Haztrak Organization"""
 
     class Meta:
@@ -24,7 +24,7 @@ class HaztrakOrg(models.Model):
         default=uuid.uuid4,
     )
     admin = models.ForeignKey(
-        "core.HaztrakUser",
+        "core.TrakUser",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -51,3 +51,28 @@ class HaztrakOrg(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class TrakOrgAccess(models.Model):
+    """Organization Permissions"""
+
+    class Meta:
+        verbose_name = "Organization Permission"
+        verbose_name_plural = "Org Permissions"
+
+    org = models.ForeignKey(
+        TrakOrg,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    user = models.OneToOneField(
+        "core.TrakUser",
+        related_name="org_permissions",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        return f"{self.user} - {self.org}"

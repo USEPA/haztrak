@@ -1,7 +1,7 @@
-from apps.org.serializers import HaztrakOrgSerializer
+from apps.org.serializers import TrakOrgSerializer
 
 
-class TestHaztrakOrgSerializer:
+class TestTrakOrgSerializer:
     def test_rcrainfo_integrated_is_true(
         self, haztrak_org_factory, haztrak_profile_factory, rcra_profile_factory, user_factory
     ):
@@ -12,7 +12,7 @@ class TestHaztrakOrgSerializer:
         )
         haztrak_profile_factory(user=admin, rcrainfo_profile=rcra_profile)
         org = haztrak_org_factory(admin=admin)
-        serializer = HaztrakOrgSerializer(org)
+        serializer = TrakOrgSerializer(org)
         assert serializer.data["rcrainfoIntegrated"] is True
 
     def test_rcrainfo_integrated_is_false(
@@ -25,5 +25,5 @@ class TestHaztrakOrgSerializer:
         )
         haztrak_profile_factory(user=admin, rcrainfo_profile=rcra_profile)
         org = haztrak_org_factory(admin=admin)
-        serializer = HaztrakOrgSerializer(org)
+        serializer = TrakOrgSerializer(org)
         assert serializer.data["rcrainfoIntegrated"] is False

@@ -5,26 +5,23 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpd
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.core.serializers import (
-    HaztrakProfileSerializer,
-    RcrainfoProfileSerializer,
-)
-from apps.profile.models import HaztrakProfile, RcrainfoProfile
+from apps.profile.models import RcrainfoProfile, TrakProfile
+from apps.profile.serializers import RcrainfoProfileSerializer, TrakProfileSerializer
 from apps.rcrasite.tasks import sync_user_rcrainfo_sites
 
 
-class HaztrakProfileView(RetrieveAPIView):
+class TrakProfileDetailsView(RetrieveAPIView):
     """Displays a user's HaztrakProfile"""
 
-    queryset = HaztrakProfile.objects.all()
-    serializer_class = HaztrakProfileSerializer
+    queryset = TrakProfile.objects.all()
+    serializer_class = TrakProfileSerializer
     response = Response
 
     def get_object(self):
-        return HaztrakProfile.objects.get(user=self.request.user)
+        return TrakProfile.objects.get(user=self.request.user)
 
 
-class RcrainfoProfileView(RetrieveUpdateAPIView):
+class RcrainfoProfileDetailsView(RetrieveUpdateAPIView):
     """
     Responsible for Create/Update operations related to the user RcrainfoProfile,
     which maintains a user's RCRAInfo profile data. This info is necessary for
@@ -38,7 +35,7 @@ class RcrainfoProfileView(RetrieveUpdateAPIView):
     lookup_url_kwarg = "username"
 
 
-class SyncRcrainfoProfileView(GenericAPIView):
+class RcrainfoProfileSyncView(GenericAPIView):
     """
     This endpoint launches a task to sync the logged-in user's RCRAInfo profile
     with their haztrak (Rcra)profile.

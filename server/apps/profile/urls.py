@@ -1,9 +1,9 @@
 from django.urls import include, path
 
 from .views import (
-    HaztrakProfileView,
-    RcrainfoProfileView,
-    SyncRcrainfoProfileView,
+    RcrainfoProfileDetailsView,
+    RcrainfoProfileSyncView,
+    TrakProfileDetailsView,
 )
 
 urlpatterns = [
@@ -11,9 +11,9 @@ urlpatterns = [
         "user",
         include(
             [
-                path("/profile", HaztrakProfileView.as_view()),
-                path("/rcrainfo-profile/sync", SyncRcrainfoProfileView.as_view()),
-                path("/rcrainfo-profile/<str:username>", RcrainfoProfileView.as_view()),
+                path("/profile", TrakProfileDetailsView.as_view()),
+                path("/rcrainfo-profile/sync", RcrainfoProfileSyncView.as_view()),
+                path("/rcrainfo-profile/<str:username>", RcrainfoProfileDetailsView.as_view()),
             ]
         ),
     ),

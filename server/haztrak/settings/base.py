@@ -18,7 +18,7 @@ HT_CORE_LOG_LEVEL = os.getenv("HT_CORE_LOG_LEVEL", HT_LOG_LEVEL)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-AUTH_USER_MODEL = "core.HaztrakUser"
+AUTH_USER_MODEL = "core.TrakUser"
 
 WSGI_APPLICATION = "haztrak.wsgi.application"
 
@@ -227,4 +227,4 @@ LOGGING = {
     },
 }
 
-REST_AUTH = {"USER_DETAILS_SERIALIZER": "apps.core.serializers.HaztrakUserSerializer"}
+REST_AUTH = {"USER_DETAILS_SERIALIZER": "apps.core.serializers.TrakUserSerializer"}

@@ -3,11 +3,9 @@ from django.contrib.auth.admin import UserAdmin
 from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
-from apps.rcrasite.models import RcraSitePermissions
-from apps.site.models import SitePermissions
+from apps.profile.models import RcrainfoProfile, RcrainfoSiteAccess, TrakProfile
 
-from ..profile.models import HaztrakProfile, RcrainfoProfile
-from .models import HaztrakUser
+from .models import TrakUser
 
 
 class HiddenListView(admin.ModelAdmin):
@@ -21,12 +19,12 @@ class HiddenListView(admin.ModelAdmin):
         return False
 
 
-@admin.register(HaztrakUser)
-class HaztrakUserAdmin(UserAdmin):
+@admin.register(TrakUser)
+class TrakUserAdmin(UserAdmin):
     list_display = ["username", "related_profile", "email", "is_staff", "is_superuser"]
 
     @admin.display(description="Profile")
-    def related_profile(self, user: HaztrakUser) -> str:
+    def related_profile(self, user: TrakUser) -> str:
         url = (
             reverse("admin:core_haztrakprofile_changelist") + "?" + urlencode({"user": str(user)})  # noqa E501
         )
@@ -34,7 +32,7 @@ class HaztrakUserAdmin(UserAdmin):
 
 
 class RcraSitePermissionInline(admin.TabularInline):
-    model = RcraSitePermissions
+    model = RcrainfoSiteAccess
     extra = 0
 
     ordering = ["site"]
@@ -46,31 +44,25 @@ class RcraSitePermissionInline(admin.TabularInline):
         return False
 
 
-class SitePermissionsInline(admin.TabularInline):
-    model = SitePermissions
-    extra = 0
-    ordering = ["site"]
-
-
-@admin.register(HaztrakProfile)
-class HaztrakProfileAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "number_of_sites", "rcrainfo_integrated_org"]
-    search_fields = ["user__username"]
-    inlines = [SitePermissionsInline]
-    raw_id_fields = ["user", "rcrainfo_profile"]
-    readonly_fields = ["rcrainfo_integrated_org"]
-
-    def rcrainfo_integrated_org(self, profile: HaztrakProfile) -> bool:
-        if profile.org:
-            return profile.rcrainfo_integrated_org
-        return False
-
-    rcrainfo_integrated_org.boolean = True
-
-    @staticmethod
-    def number_of_sites(profile: HaztrakProfile) -> str:
-        # return ", ".join([str(site) for site in profile.sit])
-        return str(profile.site_permissions.all().count())
+# @admin.register(HaztrakProfile)
+# class HaztrakProfileAdmin(admin.ModelAdmin):
+#     list_display = ["__str__", "number_of_sites", "rcrainfo_integrated_org"]
+#     search_fields = ["user__username"]
+#     inlines = [SitePermissionsInline]
+#     raw_id_fields = ["user", "rcrainfo_profile"]
+#     readonly_fields = ["rcrainfo_integrated_org"]
+#
+#     def rcrainfo_integrated_org(self, profile: HaztrakProfile) -> bool:
+#         if profile.org:
+#             return profile.rcrainfo_integrated_org
+#         return False
+#
+#     rcrainfo_integrated_org.boolean = True
+#
+#     @staticmethod
+#     def number_of_sites(profile: HaztrakProfile) -> str:
+#         # return ", ".join([str(site) for site in profile.sit])
+#         return str(profile.site_permissions.all().count())
 
 
 @admin.register(RcrainfoProfile)
@@ -100,4 +92,5 @@ try:
 except ImportError:
     from rest_framework.authtoken.models import Token as DRFToken
 
+admin.site.register(TrakProfile)
 admin.site.unregister(DRFToken)

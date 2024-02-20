@@ -1,6 +1,6 @@
 import pytest
 
-from apps.profile.models import HaztrakProfile, RcrainfoProfile
+from apps.profile.models import RcrainfoProfile, TrakProfile
 
 
 @pytest.mark.django_db
@@ -30,7 +30,7 @@ class TestRcrainfoProfileModel:
 
 
 @pytest.mark.django_db
-class TestHaztrakProfileModel:
+class TestTrakProfileModel:
     def test_haztrak_profile_factory(self, haztrak_profile_factory):
         profile = haztrak_profile_factory()
-        assert isinstance(profile, HaztrakProfile)
+        assert isinstance(profile, TrakProfile)

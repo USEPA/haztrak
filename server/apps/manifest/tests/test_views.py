@@ -3,7 +3,7 @@ from celery.result import AsyncResult
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.manifest.views import ManifestViewSet, SignManifestView
+from apps.manifest.views import ManifestSignView, ManifestViewSet
 
 
 class TestManifestCRUD:
@@ -56,11 +56,12 @@ class TestSignManifestVIew:
         mock_task.return_value = AsyncResult(self.mock_task_id)
 
     def test_returns_celery_task_id(
-        self, user_factory, haztrak_profile_factory, haztrak_org_factory
+        self, user_factory, haztrak_profile_factory, haztrak_org_factory, org_permission_factory
     ):
         user = user_factory()
         org = haztrak_org_factory()
-        haztrak_profile_factory(user=user, org=org)
+        haztrak_profile_factory(user=user)
+        org_permission_factory(user=user, org=org)
         request = self.factory.post(
             f"{self.base_url}",
             data={
@@ -72,5 +73,5 @@ class TestSignManifestVIew:
             format="json",
         )
         force_authenticate(request, user)
-        response = SignManifestView.as_view()(request)
+        response = ManifestSignView.as_view()(request)
         assert response.data["taskId"] == self.mock_task_id

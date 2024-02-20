@@ -4,7 +4,7 @@ from rest_framework import status
 from apps.core.exceptions import haztrak_exception_handler
 
 
-class TestHaztrakExceptionHandler:
+class TestTrakExceptionHandler:
     def test_http404_to_not_found(self):
         http404_exec = Http404()
         context = {}

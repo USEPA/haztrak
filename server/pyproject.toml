@@ -15,7 +15,7 @@ classifiers = [
 ]
 
 license = { text = "MIT" }
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 
 [project.urls]
 issues = "https://github.com/USEPA/haztrak/issues"
@@ -25,9 +25,9 @@ repository = "https://github.com/USEPA/haztrak"
 
 [tool.ruff]
 line-length = 99
-select = ["F", "E", "W", "Q", "I001"]
 
 [tool.ruff.lint]
+select = ["F", "E", "W", "Q", "I001"]
 ignore = ["F401"]
 exclude = ["**/migrations/*.py"]
 

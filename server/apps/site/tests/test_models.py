@@ -1,13 +1,13 @@
 import pytest
 
-from apps.site.models import HaztrakSite
+from apps.site.models import TrakSite
 
 
 @pytest.mark.django_db
-class TestHaztrakSiteModel:
+class TestTrakSiteModel:
     def test_haztrak_site_model_factory(self, haztrak_site_factory):
         haztrak_site = haztrak_site_factory()
-        assert isinstance(haztrak_site, HaztrakSite)
+        assert isinstance(haztrak_site, TrakSite)
 
     def test_returns_true_if_admin_has_provided_api_credentials(
         self,

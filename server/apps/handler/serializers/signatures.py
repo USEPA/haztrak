@@ -7,7 +7,7 @@ from rest_framework import serializers
 from apps.handler.models import ESignature, PaperSignature, QuickerSign, Signer
 from apps.rcrasite.serializers import RcraPhoneSerializer
 
-from .base_serializer import TrakBaseSerializer
+from .base_serializer import HandlerBaseSerializer
 
 
 class QuickerSignSerializer(serializers.Serializer):
@@ -73,7 +73,7 @@ class QuickerSignSerializer(serializers.Serializer):
         ]
 
 
-class SignerSerializer(TrakBaseSerializer):
+class SignerSerializer(HandlerBaseSerializer):
     """Serializer for EPA Signer Object"""
 
     userId = serializers.CharField(
@@ -126,7 +126,7 @@ class SignerSerializer(TrakBaseSerializer):
         ]
 
 
-class ESignatureSerializer(TrakBaseSerializer):
+class ESignatureSerializer(HandlerBaseSerializer):
     """Serializer for Electronic Signature on manifest"""
 
     signer = SignerSerializer(
@@ -171,7 +171,7 @@ class ESignatureSerializer(TrakBaseSerializer):
         ]
 
 
-class PaperSignatureSerializer(TrakBaseSerializer):
+class PaperSignatureSerializer(HandlerBaseSerializer):
     """
     Serializer for Paper Signature on manifest which indicates the change
     of custody with paper manifests

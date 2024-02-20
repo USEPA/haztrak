@@ -1,11 +1,13 @@
 import uuid
 
+from django.core.exceptions import ValidationError
 from django.db import models
 
+from apps.rcrasite.models.base_models import SitesBaseModel
 from haztrak import settings
 
 
-class HaztrakProfile(models.Model):
+class TrakProfile(models.Model):
     class Meta:
         verbose_name = "Haztrak Profile"
         ordering = ["user__username"]
@@ -28,18 +30,11 @@ class HaztrakProfile(models.Model):
         null=True,
         blank=True,
     )
-    org = models.ForeignKey(
-        "org.HaztrakOrg",
-        on_delete=models.SET_NULL,
-        related_name="haztrak_profiles",
-        null=True,
-        blank=True,
-    )
 
     @property
     def rcrainfo_integrated_org(self) -> bool:
         """Returns true if the user's organization is integrated with RCRAInfo"""
-        return self.org.is_rcrainfo_integrated
+        return self.user.org_permissions.org.is_rcrainfo_integrated()
 
     def __str__(self):
         return f"{self.user.username}"
@@ -88,3 +83,66 @@ class RcrainfoProfile(models.Model):
     def has_rcrainfo_api_id_key(self) -> bool:
         """Returns true if the use has Rcrainfo API credentials"""
         return self.rcra_api_id is not None and self.rcra_api_key is not None
+
+
+class RcrainfoSiteAccess(SitesBaseModel):
+    """Permissions a user has in their RCRAInfo account"""
+
+    CERTIFIER = "Certifier"
+    PREPARER = "Preparer"
+    VIEWER = "Viewer"
+
+    EPA_PERMISSION_LEVEL = [
+        (CERTIFIER, "Certifier"),
+        (PREPARER, "Preparer"),
+        (VIEWER, "Viewer"),
+    ]
+
+    class Meta:
+        verbose_name = "RCRAInfo Permission"
+        verbose_name_plural = "RCRAInfo Permissions"
+        ordering = ["site"]
+
+    site = models.CharField(
+        max_length=12,
+    )
+    profile = models.ForeignKey(
+        RcrainfoProfile,
+        on_delete=models.PROTECT,
+        related_name="permissions",
+    )
+    site_manager = models.BooleanField(
+        default=False,
+    )
+    annual_report = models.CharField(
+        max_length=12,
+        choices=EPA_PERMISSION_LEVEL,
+    )
+    biennial_report = models.CharField(
+        max_length=12,
+        choices=EPA_PERMISSION_LEVEL,
+    )
+    e_manifest = models.CharField(
+        max_length=12,
+        choices=EPA_PERMISSION_LEVEL,
+    )
+    my_rcra_id = models.CharField(
+        max_length=12,
+        choices=EPA_PERMISSION_LEVEL,
+    )
+    wiets = models.CharField(
+        max_length=12,
+        choices=EPA_PERMISSION_LEVEL,
+    )
+
+    def __str__(self):
+        return f"{self.site}"
+
+    def clean(self):
+        if self.site_manager:
+            fields = ["annual_report", "biennial_report", "e_manifest", "my_rcra_id", "wiets"]
+            for field_name in fields:
+                if getattr(self, field_name) != "Certifier":
+                    raise ValidationError(
+                        f"If Site Manager, '{field_name}' field must be set to 'Certifier'."
+                    )

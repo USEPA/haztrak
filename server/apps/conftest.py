@@ -15,7 +15,7 @@ from faker.providers import BaseProvider
 from rest_framework.test import APIClient
 
 from apps.core.models import (
-    HaztrakUser,
+    TrakUser,
 )
 from apps.handler.models import (
     ESignature,
@@ -26,8 +26,8 @@ from apps.handler.models import (
     Transporter,
 )
 from apps.manifest.models import Manifest
-from apps.org.models import HaztrakOrg
-from apps.profile.models import HaztrakProfile, RcrainfoProfile
+from apps.org.models import TrakOrg, TrakOrgAccess
+from apps.profile.models import RcrainfoProfile, RcrainfoSiteAccess, TrakProfile
 from apps.rcrasite.models import (
     Address,
     Contact,
@@ -35,7 +35,7 @@ from apps.rcrasite.models import (
     RcraSite,
     RcraSiteType,
 )
-from apps.site.models import HaztrakSite, SitePermissions
+from apps.site.models import TrakSite, TrakSiteAccess
 
 
 class SiteIDProvider(BaseProvider):
@@ -79,8 +79,8 @@ def user_factory(db, faker):
         last_name: Optional[str] = None,
         email: Optional[str] = None,
         password: Optional[str] = None,
-    ) -> HaztrakUser:
-        return HaztrakUser.objects.create_user(
+    ) -> TrakUser:
+        return TrakUser.objects.create_user(
             username=username or faker.user_name(),
             first_name=first_name or faker.first_name(),
             last_name=last_name or faker.last_name(),
@@ -116,12 +116,10 @@ def haztrak_profile_factory(db, user_factory, rcra_profile_factory, haztrak_org_
     def create_profile(
         user: Optional[User] = None,
         rcrainfo_profile: Optional[RcrainfoProfile] = rcra_profile_factory(),
-        org: Optional[HaztrakOrg] = haztrak_org_factory(),
-    ) -> HaztrakProfile:
-        return HaztrakProfile.objects.create(
+    ) -> TrakProfile:
+        return TrakProfile.objects.create(
             user=user or user_factory(),
             rcrainfo_profile=rcrainfo_profile,
-            org=org,
         )
 
     return create_profile
@@ -245,9 +243,9 @@ def haztrak_org_factory(db, rcra_profile_factory, user_factory, faker):
     def create_org(
         org_id: Optional[str] = None,
         name: Optional[str] = None,
-        admin: Optional[HaztrakUser] = None,
-    ) -> HaztrakOrg:
-        return HaztrakOrg.objects.create(
+        admin: Optional[TrakUser] = None,
+    ) -> TrakOrg:
+        return TrakOrg.objects.create(
             id=org_id or faker.uuid4(),
             name=name or faker.company(),
             admin=admin or user_factory(),
@@ -263,9 +261,9 @@ def haztrak_site_factory(db, rcra_site_factory, haztrak_org_factory, faker):
     def create_site(
         rcra_site: Optional[RcraSite] = None,
         name: Optional[str] = None,
-        org: Optional[HaztrakOrg] = None,
-    ) -> HaztrakSite:
-        return HaztrakSite.objects.create(
+        org: Optional[TrakOrg] = None,
+    ) -> TrakSite:
+        return TrakSite.objects.create(
             rcra_site=rcra_site or rcra_site_factory(),
             name=name or faker.name(),
             org=org or haztrak_org_factory(),
@@ -311,18 +309,18 @@ def mocker(mocker: pytest_mock.MockerFixture):
 
 
 @pytest.fixture
-def haztrak_site_permission_factory(db, haztrak_site_factory, haztrak_profile_factory):
+def haztrak_site_permission_factory(db, faker, haztrak_site_factory, haztrak_profile_factory):
     """Abstract factory for Haztrak RcraSitePermissions model"""
 
     def create_permission(
-        site: Optional[HaztrakSite] = None,
-        profile: Optional[HaztrakProfile] = None,
+        site: Optional[TrakSite] = None,
+        user: Optional[TrakUser] = None,
         emanifest: Optional[Literal["viewer", "signer", "editor"]] = "viewer",
-    ) -> SitePermissions:
+    ) -> TrakSiteAccess:
         """Returns testuser1 RcraSitePermissions model to site_generator"""
-        return SitePermissions.objects.create(
+        return TrakSiteAccess.objects.create(
             site=site or haztrak_site_factory(),
-            profile=profile or haztrak_profile_factory(),
+            user=user or user_factory(),
             emanifest=emanifest,
         )
 
@@ -336,12 +334,13 @@ def user_with_org_factory(
     haztrak_org_factory,
     rcra_profile_factory,
     haztrak_profile_factory,
+    org_permission_factory,
 ):
     """Fixture for creating a user with an org that has set up RCRAInfo integration"""
 
     def create_fixtures(
         user: Optional[User] = None,
-        org: Optional[HaztrakOrg] = None,
+        org: Optional[TrakOrg] = None,
         admin_rcrainfo_profile: Optional[RcrainfoProfile] = None,
         is_rcrainfo_enabled: Optional[bool] = True,
     ):
@@ -357,7 +356,8 @@ def user_with_org_factory(
         admin = user_factory(username="admin")
         admin_rcrainfo_profile or rcra_profile_factory(**rcra_profile_data)
         org = org or haztrak_org_factory(admin=admin)
-        haztrak_profile_factory(user=user, org=org)
+        org_permission_factory(org=org, user=user)
+        haztrak_profile_factory(user=user)
         return user, org
 
     return create_fixtures
@@ -497,3 +497,51 @@ def signer_factory(db, faker: Faker):
         )
 
     return creat_signer
+
+
+@pytest.fixture
+def rcra_permission_factory(db, rcra_site_factory, rcra_profile_factory):
+    """Abstract factory for Haztrak RcraSitePermissions model"""
+
+    def create_permission(
+        site: Optional[str] = None,
+        profile: Optional[RcrainfoProfile] = None,
+        site_manager: Optional[bool] = True,
+        annual_report: Optional[str] = "Certifier",
+        biennial_report: Optional[str] = "Certifier",
+        e_manifest: Optional[str] = "Certifier",
+        wiets: Optional[str] = "Certifier",
+        my_rcra_id: Optional[str] = "Certifier",
+    ) -> RcrainfoSiteAccess:
+        """Returns testuser1 RcraSitePermissions model to site_generator"""
+        fake = Faker()
+        fake.add_provider(SiteIDProvider)
+        return RcrainfoSiteAccess.objects.create(
+            site=site or fake.site_id(),
+            profile=profile or rcra_profile_factory(),
+            site_manager=site_manager,
+            annual_report=annual_report,
+            biennial_report=biennial_report,
+            e_manifest=e_manifest,
+            wiets=wiets,
+            my_rcra_id=my_rcra_id,
+        )
+
+    return create_permission
+
+
+@pytest.fixture
+def org_permission_factory(db, user_factory, haztrak_org_factory):
+    """Abstract factory for Haztrak OrgPermissions model"""
+
+    def create_permission(
+        org: Optional[TrakOrg] = None,
+        user: Optional[TrakUser] = None,
+    ) -> TrakOrgAccess:
+        """Returns testuser1 RcraSitePermissions model to site_generator"""
+        return TrakOrgAccess.objects.create(
+            org=org or haztrak_org_factory(),
+            user=user or user_factory(),
+        )
+
+    return create_permission

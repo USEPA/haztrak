@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.profile.views import RcrainfoProfileView
+from apps.profile.views import RcrainfoProfileDetailsView
 
 
 class TestRcrainfoProfileView:
@@ -50,7 +50,7 @@ class TestRcrainfoProfileView:
         )
         force_authenticate(request, user)
         # Act
-        response = RcrainfoProfileView.as_view()(request, username=user.username)
+        response = RcrainfoProfileDetailsView.as_view()(request, username=user.username)
         assert response.data[self.id_field] == rcra_profile.rcra_api_id
         assert response.data[self.username_field] == user.username
 
@@ -73,7 +73,7 @@ class TestRcrainfoProfileView:
         )
         force_authenticate(request, user)
         # Act
-        response = RcrainfoProfileView.as_view()(request, username=profile.user.username)
+        response = RcrainfoProfileDetailsView.as_view()(request, username=profile.user.username)
         # Assert
         assert self.key_field not in response.data
         assert self.id_field in response.data

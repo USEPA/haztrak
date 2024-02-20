@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class HaztrakUser(AbstractUser):
+class TrakUser(AbstractUser):
     """Haztrak abstract user model. It simply inherits from Django's AbstractUser model."""
 
     class Meta:
