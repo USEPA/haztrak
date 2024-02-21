@@ -21,7 +21,7 @@ class RcraSiteType(models.TextChoices):
 
 
 class RcraSiteManager(SitesBaseManager):
-    """Inter-model related functionality for RcraSite Model"""
+    """RcraSite Model database querying interface"""
 
     def __init__(self):
         self.handler_data = None

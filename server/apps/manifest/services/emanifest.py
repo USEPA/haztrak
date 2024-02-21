@@ -163,9 +163,10 @@ class EManifest:
     def _filter_mtn(
         *, mtn: list[str], site_id: str, site_type: Literal["Generator", "Tsdf", "Transporter"]
     ) -> list[str]:
-        site_filter = Manifest.objects.get_handler_query(site_id, site_type)
-        existing_mtn = Manifest.objects.existing_mtn(site_filter, mtn=mtn)
-        return [manifest.mtn for manifest in existing_mtn]
+        handler_filter = Manifest.objects.filter_by_handler_epa_id([site_id], site_type)
+        existing_mtn = Manifest.objects.filter_existing_mtn(mtn=mtn)
+        filtered_mtn = handler_filter & existing_mtn
+        return [manifest.mtn for manifest in filtered_mtn]
 
     def _retrieve_manifest(self, mtn: str):
         """Retrieve a manifest from RCRAInfo"""

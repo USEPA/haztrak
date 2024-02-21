@@ -1,6 +1,7 @@
 import logging
 import re
-from typing import List, Optional
+from abc import ABC, abstractmethod
+from typing import List, Literal, Optional
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -16,15 +17,13 @@ logger = logging.getLogger(__name__)
 
 
 def draft_mtn():
-    """
-    A callable that returns a timestamped draft MTN in lieu of an
-    official MTN from e-Manifest
-    """
+    """returns a timestamped draft MTN in lieu of an official MTN from e-Manifest"""
     mtn_count: int = Manifest.objects.all().count()
     return f"{str(mtn_count).zfill(9)}DFT"
 
 
 def validate_mtn(value):
+    """Validate manifest tracking number format"""
     if not re.match(r"[0-9]{9}[A-Z]{3}", value):
         raise ValidationError(
             _("%(value)s is not in valid MTN format: [0-9]{9}[A-Z]{3}"),
@@ -32,30 +31,76 @@ def validate_mtn(value):
         )
 
 
-class ManifestManager(models.Manager):
-    """Manifest Model querying interface"""
+class ManifestHandlerFilter(ABC):
+    """Abstract class with methods for filtering manifests by handler"""
 
-    def existing_mtn(self, *args, mtn: List[str]) -> QuerySet:
-        """
-        Filter non-existent manifest tracking numbers (MTN).
-        Also accepts *args to pass things like django.db.models.Q objects
-        """
-        return self.model.objects.filter(*args, mtn__in=mtn)
+    @abstractmethod
+    def filter_by_epa_id(self, epa_id: str) -> QuerySet:
+        pass
+
+
+class GeneratorFilter(ManifestHandlerFilter):
+    """ManifestHandlerFilter implementation for filtering manifests by generator"""
+
+    def filter_by_epa_id(self, epa_id: str) -> Q:
+        return Q(generator__rcra_site__epa_id=epa_id)
+
+
+class TransporterFilter(ManifestHandlerFilter):
+    """ManifestHandlerFilter implementation for filtering manifests by Transporter"""
+
+    def filter_by_epa_id(self, epa_id: str) -> Q:
+        return Q(transporters__rcra_site__epa_id=epa_id)
+
+
+class TsdfFilter(ManifestHandlerFilter):
+    """ManifestHandlerFilter implementation for filtering manifests by receiving facility"""
+
+    def filter_by_epa_id(self, epa_id: str) -> Q:
+        return Q(tsdf__rcra_site__epa_id=epa_id)
+
+
+class AllHandlerFilter(ManifestHandlerFilter):
+    """ManifestHandlerFilter implementation for filtering manifests by all handlers types"""
+
+    def filter_by_epa_id(self, epa_id: str) -> Q:
+        return Q(
+            Q(generator__rcra_site__epa_id=epa_id)
+            | Q(tsdf__rcra_site__epa_id=epa_id)
+            | Q(transporters__rcra_site__epa_id=epa_id)
+        )
+
+
+class HandlerFilterFactory:
+    """Abstract Factory for creating ManifestHandlerFilter instances based on site_type"""
 
     @staticmethod
-    def get_handler_query(site_id: str, site_type: RcraSiteType | str):
-        """Returns a Django Query object for filtering by rcra_site type"""
-        if isinstance(site_type, str) and not isinstance(site_type, RcraSiteType):
-            site_type = site_type.lower()
-        match site_type:
-            case RcraSiteType.GENERATOR | "generator":
-                return Q(generator__rcra_site__epa_id=site_id)
-            case RcraSiteType.TRANSPORTER | "transporter":
-                return Q(transporters__rcra_site__epa_id=site_id)
-            case RcraSiteType.TSDF | "tsdf":
-                return Q(tsdf__rcra_site__epa_id=site_id)
-            case _:
-                raise ValueError(f"unrecognized site_type argument {site_type}")
+    def get_filter(site_type: RcraSiteType | Literal["all"]):
+        if site_type == RcraSiteType.GENERATOR:
+            return GeneratorFilter()
+        elif site_type == RcraSiteType.TRANSPORTER:
+            return TransporterFilter()
+        elif site_type == RcraSiteType.TSDF:
+            return TsdfFilter()
+        elif site_type == "all":
+            return AllHandlerFilter()
+        else:
+            raise ValueError(f"unrecognized site_type argument {site_type}")
+
+
+class ManifestManager(models.Manager):
+    """Manifest Model database querying interface"""
+
+    def filter_existing_mtn(self, mtn: List[str]) -> QuerySet:
+        """Filter non-existent manifest tracking numbers (MTN)."""
+        return self.model.objects.filter(mtn__in=mtn)
+
+    def filter_by_handler_epa_id(
+        self, epa_ids: [str], site_type: RcraSiteType | Literal["all"] = "all"
+    ) -> QuerySet:
+        """Filter manifests by site_id and site_type"""
+        handler_filter = HandlerFilterFactory.get_filter(site_type)
+        return self.filter(handler_filter.filter_by_epa_id(epa_ids))
 
     @classmethod
     def save(cls, instance: Optional["Manifest"], **manifest_data: dict) -> "Manifest":

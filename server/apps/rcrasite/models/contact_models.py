@@ -175,9 +175,7 @@ class Address(SitesBaseModel):
 
 
 class ContactManager(SitesBaseManager):
-    """
-    Inter-model related functionality for Contact Model
-    """
+    """Contact Model database querying interface"""
 
     def save(self, **contact_data) -> models.QuerySet:
         """
