@@ -1,0 +1,36 @@
+[run]
+source = apps
+branch = True
+command_line = -m pytest
+
+omit =
+    *admin.py
+    *apps.py
+    **/__init__.py
+    *wsgi.py
+    *asgi.py
+    *settings.py
+
+[report]
+# Exclude lines that are pragma: no cover
+exclude_lines =
+    pragma: no cover
+
+    # Don't complain about missing debug-only code:
+    def __repr__
+    if self\.debug
+
+    # Don't complain if tests don't hit defensive assertion code:
+    raise AssertionError
+    raise NotImplementedError
+
+    # Don't complain if non-runnable code isn't run:
+    if 0:
+    if __name__ == .__main__.:
+    pass
+
+# files to run coverage on but omit in the report
+omit =
+    **/migrations/*
+    **/test_*.py
+skip_empty = True

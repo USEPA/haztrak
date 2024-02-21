@@ -12,3 +12,4 @@ django-stubs-ext==4.2.7
 Faker==23.1.0
 -r requirements.txt
 coverage==7.4.1
+pytest-xdist==3.5.0
