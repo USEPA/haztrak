@@ -5,8 +5,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.rcrasite.models import Address, Contact
-from apps.rcrasite.models.contact_models import RcraPhone
+from apps.rcrasite.models import Address, Contact, RcraPhone
 
 from .base_models import SitesBaseManager, SitesBaseModel
 
@@ -22,6 +21,10 @@ class RcraSiteType(models.TextChoices):
 
 class RcraSiteManager(SitesBaseManager):
     """RcraSite Model database querying interface"""
+
+    def get_by_epa_id(self, epa_id: str) -> "RcraSite":
+        """Return an RcraSite object by its epa_id"""
+        return self.get(epa_id__iexact=epa_id)
 
     def __init__(self):
         self.handler_data = None

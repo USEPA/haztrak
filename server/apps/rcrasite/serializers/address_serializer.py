@@ -3,9 +3,8 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.rcrasite.models import Address, RcraStates
+from apps.rcrasite.models import Address, RcraCountries, RcraStates
 
-from ..models.contact_models import RcraCountries
 from .base_serializer import SitesBaseSerializer
 
 

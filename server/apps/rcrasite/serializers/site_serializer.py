@@ -86,3 +86,21 @@ class RcraSiteSerializer(SitesBaseSerializer):
             "hasRegisteredEmanifestUser",
             "gisPrimary",
         ]
+
+
+class RcraSiteSearchSerializer(serializers.Serializer):
+    epaId = serializers.CharField(required=False, source="epa_id")
+    siteName = serializers.CharField(required=False, source="name")
+    siteType = serializers.ChoiceField(
+        required=False,
+        source="site_type",
+        choices=[
+            "transporter",
+            "Transporter",
+            "Tsdf",
+            "tsdf",
+            "designatedFacility",
+            "Generator",
+            "generator",
+        ],
+    )

@@ -1,10 +1,10 @@
 import pytest
 
 from apps.profile.models import RcrainfoSiteAccess
-from apps.profile.serializers import TrakProfileSerializer
-from apps.rcrasite.serializers import (
+from apps.profile.serializers import (
     RcrainfoSitePermissionsSerializer,
     RcraSitePermissionSerializer,
+    TrakProfileSerializer,
 )
 
 

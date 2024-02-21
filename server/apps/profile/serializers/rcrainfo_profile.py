@@ -1,34 +1,9 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.org.serializers import TrakOrgSerializer
-from apps.profile.models import RcrainfoProfile, TrakProfile
-from apps.rcrasite.serializers import RcraSitePermissionSerializer
-from apps.site.serializers import TrakSiteAccessSerializer
+from apps.profile.models import RcrainfoProfile
 
-
-class TrakProfileSerializer(ModelSerializer):
-    """Serializer for a user's profile"""
-
-    user = serializers.StringRelatedField(
-        required=False,
-    )
-    sites = TrakSiteAccessSerializer(
-        source="user.site_permissions",
-        many=True,
-    )
-    org = TrakOrgSerializer(
-        source="user.org_permissions.org",
-        required=False,
-    )
-
-    class Meta:
-        model = TrakProfile
-        fields = [
-            "user",
-            "sites",
-            "org",
-        ]
+from .rcrasite_access import RcraSitePermissionSerializer
 
 
 class RcrainfoProfileSerializer(ModelSerializer):

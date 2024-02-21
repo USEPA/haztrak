@@ -25,12 +25,9 @@ class TrakSiteListView(ListAPIView):
 
 @method_decorator(cache_page(60 * 15), name="dispatch")
 class TrakSiteDetailsView(RetrieveAPIView):
-    """
-    View to GET a Haztrak Site, which encapsulates the EPA RcraSite plus some.
-    """
+    """View details of a Haztrak Site, which encapsulates the EPA RcraSite plus some."""
 
     serializer_class = TrakSiteSerializer
-    lookup_field = "rcra_site__epa_id"
     lookup_url_kwarg = "epa_id"
     queryset = TrakSite.objects.all()
 

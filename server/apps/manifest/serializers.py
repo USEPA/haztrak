@@ -21,12 +21,7 @@ from apps.wasteline.serializers import (
 logger = logging.getLogger(__name__)
 
 
-class TrakBaseSerializer(serializers.ModelSerializer):
-    """
-    The Django Trak app base serializers class used to share functionality
-    across trak app serializers universally.
-    """
-
+class ManifestBaseSerializer(serializers.ModelSerializer):
     def __str__(self):
         return f"{self.__class__.__name__}"
 
@@ -47,7 +42,7 @@ class TrakBaseSerializer(serializers.ModelSerializer):
         return data
 
 
-class AdditionalInfoSerializer(TrakBaseSerializer):
+class AdditionalInfoSerializer(ManifestBaseSerializer):
     originalManifestTrackingNumbers = serializers.JSONField(
         allow_null=True,
         required=False,
@@ -87,7 +82,7 @@ class AdditionalInfoSerializer(TrakBaseSerializer):
         )
 
 
-class ManifestSerializer(TrakBaseSerializer):
+class ManifestSerializer(ManifestBaseSerializer):
     """
     Manifest model serializer for JSON marshalling/unmarshalling
     """
@@ -281,7 +276,7 @@ class ManifestSerializer(TrakBaseSerializer):
         ]
 
 
-class PortOfEntrySerializer(TrakBaseSerializer):
+class PortOfEntrySerializer(ManifestBaseSerializer):
     """
     Serializer for Port Of Entry
     """
@@ -301,3 +296,31 @@ class PortOfEntrySerializer(TrakBaseSerializer):
     class Meta:
         model = PortOfEntry
         fields = ["state", "cityPort"]
+
+
+class MtnSerializer(serializers.ModelSerializer):
+    """Select details of a manifest including manifest tracking number (mtn)."""
+
+    manifestTrackingNumber = serializers.CharField(
+        source="mtn",
+        required=False,
+    )
+    # status
+    submissionType = serializers.CharField(
+        source="submission_type",
+        required=False,
+    )
+    signatureStatus = serializers.BooleanField(
+        source="signature_status",
+        allow_null=True,
+        default=False,
+    )
+
+    class Meta:
+        model = Manifest
+        fields = [
+            "manifestTrackingNumber",
+            "status",
+            "submissionType",
+            "signatureStatus",
+        ]
