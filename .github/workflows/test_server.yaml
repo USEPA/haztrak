@@ -78,4 +78,4 @@ jobs:
           HT_DB_NAME: ${{ env.POSTGRES_DB }}
           HT_DB_PORT: ${{ job.services.postgres.ports[5432] }}
         run: |
-          pytest
+          pytest -n auto
