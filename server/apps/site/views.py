@@ -2,7 +2,9 @@ import logging
 
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.response import Response
 
 from apps.site.models import TrakSite
 from apps.site.serializers import TrakSiteSerializer
@@ -33,10 +35,11 @@ class TrakSiteDetailsView(RetrieveAPIView):
 
     @method_decorator(cache_page(60 * 15))
     def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-    def get_queryset(self):
-        epa_id = self.kwargs["epa_id"]
-        filter_by_epa_id = TrakSite.objects.filter_by_epa_id(epa_id)
-        filter_by_user = TrakSite.objects.filter_by_user(self.request.user)
-        return filter_by_epa_id & filter_by_user
+        try:
+            site = TrakSite.objects.get_user_site_by_epa_id(
+                request.user, self.kwargs.get("epa_id")
+            )
+            data = self.serializer_class(site).data
+            return Response(data, status=status.HTTP_200_OK)
+        except TrakSite.DoesNotExist as e:
+            return Response(data=str(e), status=status.HTTP_404_NOT_FOUND)
