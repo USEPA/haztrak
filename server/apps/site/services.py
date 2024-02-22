@@ -39,7 +39,7 @@ class TrakSiteService:
     def sync_manifests(self, *, site_id: str) -> PullManifestsResult:
         """Pull manifests and update the last sync date for a site"""
         try:
-            site = TrakSite.objects.get(rcra_site__epa_id=site_id)
+            site = TrakSite.objects.get_by_epa_id(site_id)
             updated_mtn = self._get_updated_mtn(
                 site_id=site.rcra_site.epa_id, last_sync_date=site.last_rcrainfo_manifest_sync
             )
