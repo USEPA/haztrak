@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 
 from apps.handler.serializers import QuickerSignSerializer
 from apps.manifest.models import Manifest
-from apps.manifest.serializers import ManifestSerializer
+from apps.manifest.serializers import ManifestSerializer, MtnSerializer
 from apps.manifest.services import (
     EManifest,
     TaskResponse,
@@ -84,33 +84,6 @@ class ElectronicManifestSaveView(GenericAPIView):
 class MtnListView(ListAPIView):
     """List of manifest tracking numbers and select details."""
 
-    class MtnSerializer(serializers.ModelSerializer):
-        """Select details of a manifest including manifest tracking number (mtn)."""
-
-        manifestTrackingNumber = serializers.CharField(
-            source="mtn",
-            required=False,
-        )
-        # status
-        submissionType = serializers.CharField(
-            source="submission_type",
-            required=False,
-        )
-        signatureStatus = serializers.BooleanField(
-            source="signature_status",
-            allow_null=True,
-            default=False,
-        )
-
-        class Meta:
-            model = Manifest
-            fields = [
-                "manifestTrackingNumber",
-                "status",
-                "submissionType",
-                "signatureStatus",
-            ]
-
     serializer_class = MtnSerializer
     queryset = Manifest.objects.all()
 
@@ -125,7 +98,7 @@ class MtnListView(ListAPIView):
         )
 
 
-class ManifestSignView(GenericAPIView):
+class ElectronicManifestSignView(GenericAPIView):
     """
     Endpoint to Quicker Sign manifests via an async task
     """

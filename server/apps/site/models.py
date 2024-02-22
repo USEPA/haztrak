@@ -1,22 +1,38 @@
 from django.conf import settings
 from django.core.validators import MinLengthValidator
 from django.db import models
+from django.db.models import QuerySet
 
 
 class TrakSiteManager(models.Manager):
     """Custom manager for TrakSite model"""
 
-    def filter_by_username(self: models.Manager, username: str) -> models.QuerySet:
+    def filter_by_username(self: models.Manager, username: str) -> QuerySet:
         """filter a list of sites a user has access to (by username)"""
         return self.select_related("rcra_site").filter(traksiteaccess__user__username=username)
 
-    def filter_by_user(self: models.Manager, user: settings.AUTH_USER_MODEL) -> models.QuerySet:
+    def get_user_site_by_epa_id(
+        self: models.Manager, user: settings.AUTH_USER_MODEL, epa_id: str
+    ) -> QuerySet:
+        """Get a site by EPA ID number that a user has access to"""
+        combined_filter: QuerySet = self.filter_by_user(user) & self.filter_by_epa_id(epa_id)
+        return combined_filter.get()
+
+    def filter_by_user(self: models.Manager, user: settings.AUTH_USER_MODEL) -> QuerySet:
         """filter a list of sites a user has access to (by user object)"""
         return self.select_related("rcra_site").filter(traksiteaccess__user=user)
 
-    def filter_by_epa_id(self: models.Manager, epa_id: str) -> models.QuerySet:
-        """Get a sites by EPA ID number"""
+    def filter_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:
+        """filter a sites by EPA ID number"""
         return self.filter(rcra_site__epa_id=epa_id)
+
+    def get_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:
+        """Get a TrakSites by RCRAInfo EPA ID number. Throws TrakSite.DoesNotExist if not found."""
+        return self.filter_by_epa_id(epa_id).get()
+
+    def filter_by_org(self: models.Manager, org: settings.TRAK_ORG_MODEL) -> QuerySet:
+        """Get a list of sites by organization"""
+        return self.filter(org=org)
 
 
 class TrakSite(models.Model):

@@ -3,6 +3,7 @@ from datetime import UTC, datetime
 from typing import Optional
 
 from django.db import transaction
+from django.db.models import QuerySet
 
 from apps.core.services import RcrainfoService, get_rcrainfo_client
 from apps.manifest.services import EManifest, PullManifestsResult, TaskResponse
@@ -38,7 +39,7 @@ class TrakSiteService:
     def sync_manifests(self, *, site_id: str) -> PullManifestsResult:
         """Pull manifests and update the last sync date for a site"""
         try:
-            site = TrakSite.objects.get(rcra_site__epa_id=site_id)
+            site = TrakSite.objects.get_by_epa_id(site_id)
             updated_mtn = self._get_updated_mtn(
                 site_id=site.rcra_site.epa_id, last_sync_date=site.last_rcrainfo_manifest_sync
             )
@@ -62,3 +63,9 @@ class TrakSiteService:
 class TrakSiteServiceError(Exception):
     def __init__(self, message: str):
         super().__init__(message)
+
+
+def filter_sites_by_org(org_id: str) -> [TrakSite]:
+    """Returns a list of TrakSites associated with an Org."""
+    sites: QuerySet = TrakSite.objects.filter(org_id=org_id).select_related("rcra_site")
+    return sites

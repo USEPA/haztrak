@@ -1,16 +1,17 @@
 import logging
 
+from django.core.exceptions import ValidationError
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, inline_serializer
-from rest_framework import permissions, serializers, status
+from rest_framework import serializers, status
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.rcrasite.models import RcraSite
-from apps.rcrasite.serializers import RcraSiteSerializer
+from apps.rcrasite.serializers import RcraSiteSearchSerializer, RcraSiteSerializer
 from apps.rcrasite.services import RcraSiteService
 from apps.rcrasite.services.rcra_site_services import query_rcra_sites
 
@@ -25,13 +26,19 @@ class RcraSiteDetailsView(RetrieveAPIView):
 
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
-    lookup_field = "epa_id__iexact"
     lookup_url_kwarg = "epa_id"
-    permission_classes = [permissions.IsAuthenticated]
 
     @method_decorator(cache_page(60 * 15))
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+
+    def get_object(self):
+        try:
+            return RcraSite.objects.get_by_epa_id(self.kwargs[self.lookup_url_kwarg])
+        except KeyError:
+            raise ValidationError(
+                {"detail": "The EPA ID parameter is required to retrieve a site"}
+            )
 
 
 @extend_schema(
@@ -46,34 +53,17 @@ class RcraSiteDetailsView(RetrieveAPIView):
     ),
 )
 class RcraSiteSearchView(APIView):
-    """Search for locally saved hazardous waste sites ("Generators", "Transporters", "Tsdf's")"""
+    """Search for locally saved hazardous waste sites ("Generators", "Transporters", "TSDF")"""
 
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
 
-    class RcraSiteSearchSerializer(serializers.Serializer):
-        epaId = serializers.CharField(required=False, source="epa_id")
-        siteName = serializers.CharField(required=False, source="name")
-        siteType = serializers.ChoiceField(
-            required=False,
-            source="site_type",
-            choices=[
-                "transporter",
-                "Transporter",
-                "Tsdf",
-                "tsdf",
-                "designatedFacility",
-                "Generator",
-                "generator",
-            ],
-        )
-
     def get(self, request, *args, **kwargs):
         query_params = request.query_params
-        serializer = self.RcraSiteSearchSerializer(data=query_params)
+        serializer = RcraSiteSearchSerializer(data=query_params)
         serializer.is_valid(raise_exception=True)
         rcra_sites = query_rcra_sites(**serializer.validated_data)
-        data = RcraSiteSerializer(rcra_sites, many=True).data
+        data = self.serializer_class(rcra_sites, many=True).data
         return Response(data, status=status.HTTP_200_OK)
 
 

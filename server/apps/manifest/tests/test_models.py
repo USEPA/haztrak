@@ -2,7 +2,6 @@ import re
 
 import pytest
 from django.core.exceptions import ValidationError
-from django.db.models import Q
 
 from apps.handler.serializers import HandlerSerializer
 from apps.manifest.models import Manifest, draft_mtn, validate_mtn
@@ -21,31 +20,15 @@ class TestManifestModel:
 
     @pytest.mark.parametrize("mtn", ["123456789ELC", "111111111DFT", "100200300JJK"])
     def test_mtn_validation_raises_no_error(self, mtn):
-        # Act/Assert
         assert validate_mtn(mtn) is None
 
     @pytest.mark.parametrize("mtn", ["foo_bar", "111111DFT", "123456789"])
     def test_mtn_validation_raises_error(self, mtn):
-        # Act/Assert
         with pytest.raises(ValidationError):
             assert validate_mtn(mtn) is None
 
-    def test_get_handler_query_maps_handler_types(self):
-        query = Manifest.objects.get_handler_query(
-            site_type=RcraSiteType.GENERATOR, site_id="mock_EPA_ID"
-        )
-        assert isinstance(query, Q)
 
-    def test_get_handler_query_maps_strings(self):
-        query = Manifest.objects.get_handler_query(site_type="generator", site_id="mock_EPA_ID")
-        assert isinstance(query, Q)
-
-    def test_get_handler_query_raises_value_error(self):
-        with pytest.raises(ValueError):
-            Manifest.objects.get_handler_query(site_type="bad_argument", site_id="mock_EPA_ID")
-
-
-class TestManifestManagerSaveMethod:
+class TestManifestSaveMethod:
     def test_updates_the_manifest_tracking_number(self, manifest_factory):
         old_mtn = "000000123DFT"
         new_mtn = "000000123DFT"
@@ -82,3 +65,53 @@ class TestManifestManagerSaveMethod:
         )
         new_manifest = Manifest.objects.save(original_manifest, **{"tsdf": validated_data})
         assert new_manifest.tsdf.rcra_site.epa_id == tsdf_epa_id
+
+
+class TestManifestManager:
+    def test_filter_manifest_by_site_by_all_handler_type_by_default(
+        self, manifest_factory, rcra_site_factory, manifest_handler_factory
+    ):
+        epa_id = "TXD987654321"
+        txd987654321 = rcra_site_factory(epa_id=epa_id)
+        my_handler = manifest_handler_factory(rcra_site=txd987654321)
+        manifest_factory(generator=my_handler)
+        manifest_factory(tsdf=my_handler)
+        assert Manifest.objects.filter_by_handler_epa_id(epa_id).count() == 2
+
+    def test_filter_manifests_where_site_is_generator(
+        self, manifest_factory, rcra_site_factory, manifest_handler_factory
+    ):
+        epa_id = "TXD987654321"
+        txd987654321 = rcra_site_factory(epa_id=epa_id)
+        manifest_generator = manifest_handler_factory(rcra_site=txd987654321)
+        manifest_factory(generator=manifest_generator)
+        manifest_factory(tsdf=manifest_generator)
+        assert (
+            Manifest.objects.filter_by_handler_epa_id(epa_id, RcraSiteType.GENERATOR).count() == 1
+        )
+
+    def test_filter_manifests_where_site_is_tsdf(
+        self, manifest_factory, rcra_site_factory, manifest_handler_factory
+    ):
+        epa_id = "TXD987654321"
+        txd987654321 = rcra_site_factory(epa_id=epa_id)
+        tsdf = manifest_handler_factory(rcra_site=txd987654321)
+        manifest_factory()
+        manifest_factory(tsdf=tsdf)
+        assert Manifest.objects.filter_by_handler_epa_id(epa_id, RcraSiteType.TSDF).count() == 1
+
+    def test_filter_manifest_where_site_is_transporter(
+        self,
+        manifest_factory,
+        rcra_site_factory,
+        manifest_handler_factory,
+        manifest_transporter_factory,
+    ):
+        epa_id = "TXD987654321"
+        txd987654321 = rcra_site_factory(epa_id=epa_id)
+        manifest = manifest_factory()
+        manifest_transporter_factory(rcra_site=txd987654321, manifest=manifest)
+        assert (
+            Manifest.objects.filter_by_handler_epa_id(epa_id, RcraSiteType.TRANSPORTER).count()
+            == 1
+        )

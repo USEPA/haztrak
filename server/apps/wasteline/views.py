@@ -38,7 +38,6 @@ class StateWasteCodesView(ListAPIView):
     serializer_class = WasteCodeSerializer
     queryset = WasteCode.state.all()
     lookup_url_kwarg = "state_id"
-    lookup_field = "state_id"
 
     @method_decorator(cache_page(60 * 15 * 24))
     def get(self, request, *args, **kwargs):

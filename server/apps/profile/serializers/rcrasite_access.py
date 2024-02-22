@@ -1,16 +1,34 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from ...profile.models import RcrainfoSiteAccess
-from .base_serializer import SitesBaseSerializer
+from apps.profile.models import RcrainfoSiteAccess
 
 
-class RcraSitePermissionSerializer(SitesBaseSerializer):
+class RcraSiteBaseSerializer(serializers.ModelSerializer):
+    def __str__(self):
+        return f"{self.__class__.__name__}"
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__}({self.data})>"
+
+    def to_representation(self, instance):
+        """
+        Remove empty fields when serializing
+        """
+        data = super().to_representation(instance)
+        for field in self.fields:
+            try:
+                if data[field] is None:
+                    data.pop(field)
+            except KeyError:
+                pass
+        return data
+
+
+class RcraSitePermissionSerializer(RcraSiteBaseSerializer):
     """
-    RcraSitePermissions model serializer
     We use this internally because it's easier to handle, using consistent naming,
     Haztrak has a separate serializer for user permissions from RCRAInfo.
-    See RcraPermissionSerializer.
     """
 
     rcrainfo_modules = [

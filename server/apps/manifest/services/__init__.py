@@ -1,5 +1,5 @@
 from .emanifest import EManifest, EManifestError, PullManifestsResult, TaskResponse
-from .manifest_services import (
+from .manifest import (
     create_manifest,
     get_manifests,
     save_emanifest,

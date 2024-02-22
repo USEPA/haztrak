@@ -2,7 +2,6 @@
 **/.env
 **/.secrets
 .coverage
-.coveragerc
 **/*.sqlite3
 **/*.rdb
 **/.pytest_cache/

@@ -83,9 +83,7 @@ class Signer(models.Model):
 
 
 class ESignatureManager(TrakBaseManager):
-    """
-    Inter-model related functionality for ESignature Model
-    """
+    """ESignature Model database querying interface"""
 
     def save(self, **e_signature_data):
         """

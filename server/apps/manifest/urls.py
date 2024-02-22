@@ -3,7 +3,7 @@ from rest_framework.routers import SimpleRouter
 
 from apps.manifest.views import (  # type: ignore
     ElectronicManifestSaveView,
-    ManifestSignView,
+    ElectronicManifestSignView,
     ManifestViewSet,
     MtnListView,
     TrakSiteManifestSyncView,
@@ -19,7 +19,7 @@ urlpatterns = [
             [
                 # Manifest
                 path("emanifest", ElectronicManifestSaveView.as_view()),
-                path("emanifest/sign", ManifestSignView.as_view()),
+                path("emanifest/sign", ElectronicManifestSignView.as_view()),
                 path("emanifest/sync", TrakSiteManifestSyncView.as_view()),
                 path("", include(manifest_router.urls)),
                 # MT

@@ -118,8 +118,8 @@ run_pre_commit() {
 
 run_coverage() {
     # Run the test suite with coverage
-    (cd $base_dir/server; eval "coverage run -m pytest")
-    (cd $base_dir/server; eval "coverage report")
+    (cd "$base_dir"/server || exit; eval "coverage run")
+    (cd "$base_dir"/server || exit; eval "coverage report")
     exit
   }
 

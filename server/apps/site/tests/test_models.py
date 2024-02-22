@@ -1,4 +1,5 @@
 import pytest
+from django.db.models import QuerySet
 
 from apps.site.models import TrakSite
 
@@ -41,7 +42,7 @@ class TestTrakSiteModel:
 
 
 class TestTrakSiteModelManager:
-    def test_get_user_sites_by_username(self, site_factory, site_access_factory, user_factory):
+    def test_filter_sites_by_username(self, site_factory, site_access_factory, user_factory):
         user = user_factory()
         site = site_factory()
         other_site = site_factory()
@@ -50,7 +51,7 @@ class TestTrakSiteModelManager:
         assert site in sites
         assert other_site not in sites
 
-    def test_get_user_sites(self, site_factory, site_access_factory, user_factory):
+    def test_filter_user_sites(self, site_factory, site_access_factory, user_factory):
         user = user_factory()
         site = site_factory()
         other_site = site_factory()
@@ -58,3 +59,30 @@ class TestTrakSiteModelManager:
         sites = TrakSite.objects.filter_by_user(user)
         assert site in sites
         assert other_site not in sites
+
+    def test_get_by_epa_id(self, site_factory):
+        site = site_factory()
+        returned_site = TrakSite.objects.get_by_epa_id(site.rcra_site.epa_id)
+        assert site == returned_site
+        assert isinstance(returned_site, TrakSite)
+
+    def test_get_by_epa_id_throws_does_not_exists(self, site_factory):
+        with pytest.raises(TrakSite.DoesNotExist):
+            TrakSite.objects.get_by_epa_id("bad_id")
+
+    def test_get_user_site(self, site_factory, site_access_factory, user_factory):
+        user = user_factory()
+        site = site_factory()
+        site_access_factory(site=site, user=user)
+        returned_site = TrakSite.objects.get_user_site_by_epa_id(user, site.rcra_site.epa_id)
+        assert isinstance(returned_site, TrakSite)
+        assert returned_site == site
+
+    def test_filter_sites_by_org(self, site_factory, org_factory):
+        org = org_factory()
+        sites = [site_factory(org=org) for _ in range(2)]
+        not_my_site = site_factory()
+        returned_sites = TrakSite.objects.filter_by_org(org.id)
+        assert isinstance(returned_sites, QuerySet)
+        assert set(sites).issubset(returned_sites)
+        assert not_my_site not in returned_sites
