@@ -124,7 +124,7 @@ class TestTrakOrgSitesListView:
         client = APIClient()
         client.force_authenticate(user=user)
         # Act
-        response = client.get(f"{self.URL}/{org.id}/site")
+        response = client.get(f"{self.URL}/{org.id}/sites")
         # Assert
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK

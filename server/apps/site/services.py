@@ -3,6 +3,7 @@ from datetime import UTC, datetime
 from typing import Optional
 
 from django.db import transaction
+from django.db.models import QuerySet
 
 from apps.core.services import RcrainfoService, get_rcrainfo_client
 from apps.manifest.services import EManifest, PullManifestsResult, TaskResponse
@@ -62,3 +63,9 @@ class TrakSiteService:
 class TrakSiteServiceError(Exception):
     def __init__(self, message: str):
         super().__init__(message)
+
+
+def filter_sites_by_org(org_id: str) -> [TrakSite]:
+    """Returns a list of TrakSites associated with an Org."""
+    sites: QuerySet = TrakSite.objects.filter(org_id=org_id).select_related("rcra_site")
+    return sites

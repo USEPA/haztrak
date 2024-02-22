@@ -26,6 +26,10 @@ class TrakSiteManager(models.Manager):
         """Get a sites by EPA ID number"""
         return self.filter(rcra_site__epa_id=epa_id)
 
+    def filter_by_org(self: models.Manager, org: settings.TRAK_ORG_MODEL) -> QuerySet:
+        """Get a list of sites by organization"""
+        return self.filter(org=org)
+
 
 class TrakSite(models.Model):
     """

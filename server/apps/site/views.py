@@ -5,9 +5,11 @@ from django.views.decorators.cache import cache_page
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apps.site.models import TrakSite
 from apps.site.serializers import TrakSiteSerializer
+from apps.site.services import filter_sites_by_org
 
 logger = logging.getLogger(__name__)
 
@@ -21,8 +23,7 @@ class TrakSiteListView(ListAPIView):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
-        user = self.request.user
-        return TrakSite.objects.filter_by_user(user)
+        return TrakSite.objects.filter_by_user(self.request.user)
 
 
 @method_decorator(cache_page(60 * 15), name="dispatch")
@@ -43,3 +44,18 @@ class TrakSiteDetailsView(RetrieveAPIView):
             return Response(data, status=status.HTTP_200_OK)
         except TrakSite.DoesNotExist as e:
             return Response(data=str(e), status=status.HTTP_404_NOT_FOUND)
+
+
+class TrakOrgSitesListView(APIView):
+    """Retrieve a list of sites for a given Org"""
+
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, *args, **kwargs):
+        try:
+            trak_sites = filter_sites_by_org(self.kwargs["org_id"])
+            serializer = TrakSiteSerializer(trak_sites, many=True)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        except TrakSite.DoesNotExist as e:
+            return Response(data=str(e), status=status.HTTP_404_NOT_FOUND)
+        except KeyError:
+            return Response(data="bad request", status=status.HTTP_400_BAD_REQUEST)

@@ -1,4 +1,5 @@
 import pytest
+from django.db.models import QuerySet
 
 from apps.site.models import TrakSite
 
@@ -66,3 +67,12 @@ class TestTrakSiteModelManager:
         returned_site = TrakSite.objects.get_user_site_by_epa_id(user, site.rcra_site.epa_id)
         assert isinstance(returned_site, TrakSite)
         assert returned_site == site
+
+    def test_filter_sites_by_org(self, site_factory, org_factory):
+        org = org_factory()
+        sites = [site_factory(org=org) for _ in range(2)]
+        not_my_site = site_factory()
+        returned_sites = TrakSite.objects.filter_by_org(org.id)
+        assert isinstance(returned_sites, QuerySet)
+        assert set(sites).issubset(returned_sites)
+        assert not_my_site not in returned_sites
