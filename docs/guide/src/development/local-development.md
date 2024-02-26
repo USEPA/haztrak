@@ -19,7 +19,7 @@ If you find something missing or inaccurate, please submit an issue
 - The easiest way to set up a local development environment is to
   use [docker compose](https://docs.docker.com/compose/gettingstarted/)
   - You can use one of our [config file](/configs) to inject the
-    [environment variables](../deployment/configuration.md) needed to configure Haztrak (
+    [environment variables](../operations/configuration.md) needed to configure Haztrak (
     see [docker composes' documentation on environment files](https://docs.docker.com/compose/environment-variables/set-environment-variables/)).
   - You can either use the `--env-file` flag
 
@@ -34,15 +34,18 @@ cp ./configs/.env.dev .env
 docker compose up --build
 ```
 
-*You may find that after some changes (e.g., to the database) you need to rebuild the containers instead of restarting them. 
-In that case, use the  `--build` flag, or you'll be running the last built image instead of the Dockerfile's build target
-that we've specified in the [docker-compose.yaml](https://github.com/USEPA/haztrak/blob/main/docker-compose.yaml) file.*
+_You may find that after some changes (e.g., to the database) you need to rebuild the containers
+instead of restarting them.
+In that case, use the `--build` flag, or you'll be running the last built image instead of the
+Dockerfile's build target
+that we've specified in
+the [docker-compose.yaml](https://github.com/USEPA/haztrak/blob/main/docker-compose.yaml) file._
 
 After all containers are successfully running (you can inspect with `docker ps`), visit one of the following
 
 - [localhost:3000](http://localhost:3000) to visit the browser client (React.js application)
 - [localhost:8000/admin](http://localhost:8000/admin) to login to the admin interface
-- The database will be exposed on port `5432` and Redis will be exposed on port `6379` of your local machine. 
+- The database will be exposed on port `5432` and Redis will be exposed on port `6379` of your local machine.
 
 ## Fixtures (logging in)
 
@@ -75,7 +78,7 @@ If you'd like to start using features that push/pull information from RCRAInfo/e
 need API credentials to the appropriate RCRAInfo deployment (e.g., 'preproduction').
 
 For development, **ONLY USE THE PREPRODUCTION
-** environment. See [Haztrak's config documentation](../deployment/configuration.md).
+** environment. See [Haztrak's config documentation](../operations/configuration.md).
 
 The general steps for obtaining an API ID and key (in preprod) are as follows.
 

@@ -1,5 +1,11 @@
-name: 'Deploy Documentation'
-# when changes are made to the documentation, build and deploy it to GitHub Pages
+name: 'Build and Deploy Project Documentation'
+
+# This Workflow builds a static site using mdBook and deploys it to GitHub Pages.
+
+# The GitHub repo settings must be configured for pages deployed from this workflow to persist after
+# another push to the repository. Go to Repository Settings > Pages -> Build and Deployment,
+# set the source to the `GitHub Actions` branch.
+# For more information on mdbook, see https://rust-lang.github.io/mdBook/
 
 on:
   push:
@@ -17,32 +23,36 @@ concurrency:
   group: 'pages'
   cancel-in-progress: true
 
+env:
+  BOOK_DIRECTORY: ./docs/guide
+  MDBOOK_VERSION: v0.4.37
+
 jobs:
   build:
     name: 'Build Documentation'
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./docs/guide
+        working-directory: ${{ env.BOOK_DIRECTORY }}
     steps:
-      - name: 'Checkout Repo'
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: 'Setup mdBook'
+      - name: Setup mdBook
         run: |
           mkdir bin
-          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.25/mdbook-v0.4.25-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
+          curl -sSL https://github.com/rust-lang/mdBook/releases/download/${{env.MDBOOK_VERSION}}/mdbook-${{env.MDBOOK_VERSION}}-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
 
-      - name: 'Build Documentation'
+      - name: Build Documentation
         run: bin/mdbook build
 
-      - name: 'Upload Docs'
-        uses: actions/upload-pages-artifact@v1
+      - name: Upload Docs
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: ./docs/guide/book
+          path: '${{ env.BOOK_DIRECTORY }}/book'
 
   deploy_pages:
-    name: 'Deploy Documentation'
+    name: Deploy Documentation
     needs: build
     environment:
       name: github-pages
@@ -51,4 +61,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4

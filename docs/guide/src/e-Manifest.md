@@ -18,5 +18,4 @@ This project would not be possible without the work of the EPA e-Manifest Team.
 
 ## e-Manifest Documentation
 
-The e-Manifest team maintains a public repository on GitHub at [USEPA/e-Manifest](https://github.com/USEPA/e-manifest)
-that contains documentation on the RCRAInfo web services. You can also find more information on the [e-Manifest](https://www.epa.gov/e-manifest) homepage on recent regulatory changes, webinars, user calls, and other resources.
+To learn more about e-Manifest, visit the developer documentation in the [USEPA/e-Manifest](https://github.com/USEPA/e-manifest) repository. You can also find more information on the [e-Manifest](https://www.epa.gov/e-manifest) homepage on recent regulatory and policy changes, webinars, user calls, and other resources.
