@@ -1,4 +1,4 @@
-name: 'Haztrak Server Tests'
+name: 'Trak Service Tests'
 # This workflow is responsible for running the Haztrak server tests.
 # It spins up a postgres container and runs the tests against it.
 

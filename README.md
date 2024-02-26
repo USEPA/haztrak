@@ -3,6 +3,11 @@
 [![Client Tests](https://github.com/USEPA/haztrak/actions/workflows/test_client.yaml/badge.svg)](https://github.com/USEPA/haztrak/actions/workflows/test_client.yaml)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/USEPA/haztrak?label=latest%20release)](https://github.com/my-user/my-repo/releases/tag/v1.0.0)
 
+[![Backend Framework](https://img.shields.io/badge/Django-RESTful_API-0C4B33?logo=django)](https://www.djangoproject.com/)
+[![Frontend Framework](https://img.shields.io/badge/React-SPA-374151?logo=react)](https://reactjs.org/)
+[![Database](https://img.shields.io/badge/PostgreSQL-Database-336791?logo=postgresql)](https://www.postgresql.org/)
+[![Async Tasks](https://img.shields.io/badge/Celery-Async_Tasks-A9CC54?logo=celery)](https://www.postgresql.org/)
+
 ---
 
 # Haztrak :recycle:

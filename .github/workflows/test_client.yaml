@@ -1,4 +1,4 @@
-name: 'Haztrak Client Tests'
+name: 'React Client Tests'
 # This workflow is responsible for running the Haztrak react client tests.
 
 on:

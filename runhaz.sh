@@ -97,7 +97,7 @@ graph_models() {
     --arrow-shape=normal \
     --exclude-models=*BaseModel \
     --disable-abstract-fields \
-    -o $base_dir/docs/guide/src/assets/erd.png"
+    -o $base_dir/docs/guide/src/assets/images/erd.png"
     eval "$exec_cmd"
     exit
 }
