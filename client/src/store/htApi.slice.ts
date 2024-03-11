@@ -88,7 +88,7 @@ export const haztrakApi = createApi({
     }),
     searchRcraSites: build.query<Array<RcraSite>, RcrainfoSiteSearch>({
       query: (data: RcrainfoSiteSearch) => ({
-        url: 'site/search',
+        url: 'rcra/site/search',
         method: 'get',
         params: { epaId: data.siteId, siteType: data.siteType },
       }),
