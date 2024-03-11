@@ -31,7 +31,7 @@ const mockRcrainfoSite2 = createMockRcrainfoSite({ epaSiteId: mockRcrainfoSite2I
 const mockRcraSite1 = createMockRcrainfoSite({ epaSiteId: mockRcraSite1Id });
 const mockRcraSite2 = createMockRcrainfoSite({ epaSiteId: mockRcraSite2Id });
 export const mockHandlerSearches = [
-  http.get(`${API_BASE_URL}/api/site/search`, () => {
+  http.get(`${API_BASE_URL}/api/rcra/site/search`, () => {
     return HttpResponse.json([mockRcraSite1, mockRcraSite2], { status: 200 });
   }),
   http.get(`${API_BASE_URL}/api/rcra/handler/search`, () => {
