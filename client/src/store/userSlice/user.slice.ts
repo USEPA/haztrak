@@ -89,7 +89,7 @@ export const userApi = haztrakApi.injectEndpoints({
     // Note: build.query<ReturnType, ArgType>
     login: build.mutation<LoginResponse, LoginRequest>({
       query: (data) => ({
-        url: 'login',
+        url: 'user/login',
         method: 'POST',
         data: data,
       }),
