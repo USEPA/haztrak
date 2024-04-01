@@ -9,7 +9,7 @@ djangorestframework-stubs==3.14.5
 ruff-lsp==0.0.53
 django-stubs==4.2.7
 django-stubs-ext==4.2.7
-Faker==23.1.0
+Faker==24.4.0
 coverage==7.4.3
 pytest-xdist==3.5.0
 -r requirements.txt
