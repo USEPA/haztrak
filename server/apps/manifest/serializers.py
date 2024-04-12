@@ -232,10 +232,10 @@ class ManifestSerializer(ManifestBaseSerializer):
         """
         instance = super().to_internal_value(data)
         try:
-            instance.import_flag = data.get("import")
+            instance["import_flag"] = data.get("import")
             return instance
         except KeyError:
-            instance.import_flag = False
+            instance["import_flag"] = False
             return instance
 
     class Meta:

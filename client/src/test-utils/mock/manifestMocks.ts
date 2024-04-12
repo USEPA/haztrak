@@ -14,7 +14,10 @@ export const manifestMocks = [
   http.post(`${API_BASE_URL}/api/rcra/manifest`, async (info) => {
     let bodyManifest = (await info.request.json()) as Manifest;
     if (!bodyManifest.manifestTrackingNumber)
-      bodyManifest.manifestTrackingNumber = `${Math.floor(Math.random() * 1000000000)}DFT`;
+      bodyManifest.manifestTrackingNumber = `${Math.floor(Math.random() * 1000000000)}DFT`.padEnd(
+        9,
+        '0'
+      );
     return HttpResponse.json(bodyManifest, { status: 200 });
   }),
   /** Mock update local Manifests*/
