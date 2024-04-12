@@ -1,5 +1,5 @@
-asgiref==3.7.2
-Django==5.0.3
+asgiref==3.8.1
+Django==5.0.4
 django-celery-results==2.5.1
 django-cors-headers==4.3.1
 django-extensions==3.2.3
@@ -14,7 +14,7 @@ tzdata==2024.1
 whitenoise==6.6.0
 celery==5.3.6
 redis==5.0.3
-drf-spectacular==0.27.1
+drf-spectacular==0.27.2
 django-health-check==3.18.1
 django-allauth==0.61.1
 dj-rest-auth==5.0.2
