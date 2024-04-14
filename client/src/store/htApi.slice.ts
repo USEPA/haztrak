@@ -115,7 +115,7 @@ export const haztrakApi = createApi({
       providesTags: ['code'],
     }),
     getOrgSites: build.query<Array<HaztrakSite>, string>({
-      query: (id) => ({ url: `org/${id}/site`, method: 'get' }),
+      query: (id) => ({ url: `org/${id}/sites`, method: 'get' }),
       providesTags: ['site'],
     }),
     getUserHaztrakSites: build.query<Array<HaztrakSite>, void>({

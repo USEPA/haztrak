@@ -33,6 +33,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
   });
 
   useEffect(() => {
+    // ToDo: invalidating tags should be done in the slice
     dispatch(userApi.util?.invalidateTags(['rcrainfoProfile']));
   }, [inProgress]);
 
@@ -48,6 +49,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
 
   /** submitting the RcrainfoProfile form (RCRAInfo API ID, Key, username, etc.)*/
   const onSubmit = (data: RcraProfileForm) => {
+    console.log('submitting form');
     setProfileLoading(!profileLoading);
     setEditable(!editable);
     updateRcrainfoProfile({ username: profile.user, data: data });
@@ -107,37 +109,21 @@ export function RcraProfile({ profile }: ProfileViewProps) {
             </Col>
           </Row>
           <Row>
-            <div className="mx-1 d-flex flex-row-reverse">
-              {!editable ? (
-                <>
-                  <Button
-                    className="mx-2"
-                    variant="outline-info"
-                    type="button"
-                    onClick={() => {
-                      setEditable(!editable);
-                    }}
-                  >
-                    Edit
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button className="mx-2" variant="success" type="submit">
-                    Save
-                  </Button>
-                  <Button
-                    className="mx-2"
-                    variant="danger"
-                    onClick={() => {
-                      setEditable(!editable);
-                      reset();
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </>
-              )}
+            <div className="mx-1 d-flex flex-row justify-content-end">
+              <Button
+                className="mx-2"
+                variant={editable ? 'danger' : 'primary'}
+                type="button"
+                onClick={() => {
+                  setEditable(!editable);
+                  reset();
+                }}
+              >
+                {editable ? 'Cancel' : 'Edit'}
+              </Button>
+              <Button className="mx-2" disabled={!editable} variant="success" type="submit">
+                Save
+              </Button>
             </div>
           </Row>
         </Container>
