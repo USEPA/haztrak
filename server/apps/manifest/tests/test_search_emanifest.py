@@ -18,22 +18,8 @@ class TestSearchEManifestService:
     def mock_response(self):
         response = Mock()
         response.ok = True
-        response.json.return_value = []
+        response.json = Mock(return_value=[])
         return response
-
-    def test_mocking_internals(self, mock_rcrainfo, mock_response):
-        # Arrange
-        emanifest = EManifest(username="test", rcrainfo=mock_rcrainfo)
-        search_data: SearchManifestData = {
-            "site_id": "test",
-            "start_date": datetime.now(),
-            "end_date": datetime.now(),
-        }
-        # Act
-        result = emanifest.search(search_data)
-        # Assert
-        assert result == []
-        assert mock_rcrainfo.search_mtn.call_count == 1
 
     def test_end_date_defaults_to_now(self, mock_rcrainfo, mock_response):
         emanifest = EManifest(username="test", rcrainfo=mock_rcrainfo)

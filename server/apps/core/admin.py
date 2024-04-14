@@ -44,27 +44,6 @@ class RcraSitePermissionInline(admin.TabularInline):
         return False
 
 
-# @admin.register(HaztrakProfile)
-# class HaztrakProfileAdmin(admin.ModelAdmin):
-#     list_display = ["__str__", "number_of_sites", "rcrainfo_integrated_org"]
-#     search_fields = ["user__username"]
-#     inlines = [SitePermissionsInline]
-#     raw_id_fields = ["user", "rcrainfo_profile"]
-#     readonly_fields = ["rcrainfo_integrated_org"]
-#
-#     def rcrainfo_integrated_org(self, profile: HaztrakProfile) -> bool:
-#         if profile.org:
-#             return profile.rcrainfo_integrated_org
-#         return False
-#
-#     rcrainfo_integrated_org.boolean = True
-#
-#     @staticmethod
-#     def number_of_sites(profile: HaztrakProfile) -> str:
-#         # return ", ".join([str(site) for site in profile.sit])
-#         return str(profile.site_permissions.all().count())
-
-
 @admin.register(RcrainfoProfile)
 class RcraProfileAdmin(admin.ModelAdmin):
     list_display = ["__str__", "related_user", "rcra_username", "api_user"]

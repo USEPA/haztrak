@@ -80,7 +80,10 @@ class EManifest:
         data["start_date"] = self._date_or_three_years_past(search_data.get("start_date", None))
         response = self.rcrainfo.search_mtn(**data)
         if response.ok:
-            return response.json()
+            print("response OK")
+            ret = response.json()
+            print(ret)
+            return ret
         return []
 
     def pull(self, tracking_numbers: List[str]) -> PullManifestsResult:

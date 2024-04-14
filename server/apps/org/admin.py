@@ -3,11 +3,6 @@ from django.contrib import admin
 from apps.org.models import TrakOrg, TrakOrgAccess
 from apps.site.models import TrakSite
 
-# class HaztrakProfileInline(admin.TabularInline):
-#     model = HaztrakProfile
-#     extra = 0
-
-
 admin.site.register(TrakOrgAccess)
 
 
