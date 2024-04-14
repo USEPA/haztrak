@@ -28,6 +28,18 @@ class QuickerSignData(TypedDict):
     transporter_order: NotRequired[int]
 
 
+class SearchManifestData(TypedDict, total=False):
+    """Type definition for the data required to search for manifests"""
+
+    site_id: Optional[str]
+    start_date: Optional[datetime]
+    end_date: Optional[datetime]
+    status: Optional[str]
+    date_type: Optional[str]
+    state_code: Optional[str]
+    site_type: Optional[str]
+
+
 class TaskResponse(TypedDict):
     """Type definition for the response returned from starting a task"""
 
@@ -61,45 +73,12 @@ class EManifest:
         """Check if e-Manifest is available"""
         return self.rcrainfo.has_rcrainfo_credentials
 
-    def search(
-        self,
-        *,
-        site_id: Optional[str] = None,
-        start_date: Optional[datetime] = None,
-        end_date: Optional[datetime] = None,
-        status: Optional[str] = None,
-        date_type: str = "UpdatedDate",
-        state_code: Optional[str] = None,
-        site_type: Optional[str] = None,
-    ) -> List[str]:
-        """Search for manifests from e-Manifest, an abstraction of RcrainfoService's search_mtn"""
-        date_format = "%Y-%m-%dT%H:%M:%SZ"
-        if end_date:
-            end_date_str = end_date.replace(tzinfo=timezone.utc).strftime(date_format)
-        else:
-            end_date_str = datetime.now(UTC).strftime(date_format)
-        if start_date:
-            start_date_str = start_date.replace(tzinfo=timezone.utc).strftime(date_format)
-        else:
-            # If no start date is specified, retrieve for last ~3 years
-            start_date = datetime.now(UTC) - timedelta(
-                minutes=60  # 60 seconds/1minutes
-                * 24  # 24 hours/1day
-                * 30  # 30 days/1month
-                * 36  # 36 months/3years = 3/years
-            )
-            start_date_str = start_date.strftime(date_format)
-
-        response = self.rcrainfo.search_mtn(
-            site_id=site_id,
-            site_type=site_type,
-            state_code=state_code,
-            start_date=start_date_str,
-            end_date=end_date_str,
-            status=status,
-            date_type=date_type,
-        )
-
+    def search(self, search_data: SearchManifestData) -> List[str]:
+        """Search for manifests from e-Manifest"""
+        data: dict = search_data.copy()
+        data["end_date"] = self._date_or_now(search_data.get("end_date", None))
+        data["start_date"] = self._date_or_three_years_past(search_data.get("start_date", None))
+        response = self.rcrainfo.search_mtn(**data)
         if response.ok:
             return response.json()
         return []
@@ -158,6 +137,28 @@ class EManifest:
                 f"error retrieving manifestTrackingNumber from response: {create_resp.json()}"
             )
             raise EManifestError("malformed payload")
+
+    def _date_or_three_years_past(self, start_date: Optional[datetime]) -> str:
+        return (
+            start_date.replace(tzinfo=timezone.utc).strftime(self.rcrainfo.datetime_format)
+            if start_date
+            else (
+                datetime.now(UTC)
+                - timedelta(
+                    minutes=60  # 60 seconds/1minutes
+                    * 24  # 24 hours/1day
+                    * 30  # 30 days/1month
+                    * 36  # 36 months/3years = 3/years
+                )
+            ).strftime(self.rcrainfo.datetime_format)
+        )
+
+    def _date_or_now(self, end_date: Optional[datetime]) -> str:
+        return (
+            end_date.replace(tzinfo=timezone.utc).strftime(self.rcrainfo.datetime_format)
+            if end_date
+            else datetime.now(UTC).strftime(self.rcrainfo.datetime_format)
+        )
 
     @staticmethod
     def _filter_mtn(

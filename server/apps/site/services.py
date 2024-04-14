@@ -56,8 +56,9 @@ class TrakSiteService:
 
     def _get_updated_mtn(self, site_id: str, last_sync_date: datetime) -> list[str]:
         logger.info(f"retrieving updated MTN for site {site_id}")
-        emanifest = EManifest(username=self.username, rcrainfo=self.rcrainfo)
-        return emanifest.search(site_id=site_id, start_date=last_sync_date)
+        return EManifest(username=self.username, rcrainfo=self.rcrainfo).search(
+            {"site_id": site_id, "start_date": last_sync_date}
+        )
 
 
 class TrakSiteServiceError(Exception):
