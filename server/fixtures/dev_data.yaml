@@ -268,6 +268,11 @@
   fields:
     name: Generators Org LLC
     admin: 8062d496-15f1-485d-961c-a8e5fa118dde
+- model: org.trakorgaccess
+  pk: 1
+  fields:
+    org: efb9e104-7f61-4365-a9af-9d7b55c854c4
+    user: 4ac96f68-42cf-47ea-bffb-f24d423dbc35
 - model: profile.trakprofile
   pk: c65dbee9-b6bf-400e-93e0-90a749cc2939
   fields:
