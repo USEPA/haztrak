@@ -11,5 +11,5 @@ django-stubs==4.2.7
 django-stubs-ext==4.2.7
 Faker==24.8.0
 coverage==7.4.4
-pytest-xdist==3.5.0
+pytest-xdist==3.6.1
 -r requirements.txt
