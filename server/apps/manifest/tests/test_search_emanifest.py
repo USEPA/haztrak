@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timezone
 from unittest.mock import Mock, patch
 
@@ -54,17 +55,32 @@ class TestEmanifestSearchClass:
         assert search.rcra_client is not None
         assert search.rcra_client.is_authenticated is False
 
-    def test_execute_sends_a_request_to_rcrainfo(self, mock_responses):
+    @pytest.mark.parametrize("mock_emanifest_auth_response", [["foo", "foo"]], indirect=True)
+    def test_execute_sends_a_request_to_rcrainfo(
+        self, mock_responses, mock_emanifest_auth_response
+    ):
         stub_rcra_client = RcrainfoService(rcrainfo_env="preprod", api_key="foo", api_id="foo")
-        mock_responses.get(
-            "https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/auth/foo/foo",
-            body='{"token": "mocK_token", "expiration": "2021-01-01T00:00:00.000000Z"}',
-        )
         mock_responses.post(
             "https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/emanifest/search"
         )
         result = EmanifestSearch(stub_rcra_client).execute()
         assert result.status_code == 200
+
+    @pytest.mark.parametrize("mock_emanifest_auth_response", [["foo", "foo"]], indirect=True)
+    def test_search_builds_json(self, mock_responses, mock_emanifest_auth_response):
+        stub_rcra_client = RcrainfoService(rcrainfo_env="preprod", api_key="foo", api_id="foo")
+        mock_responses.post(
+            "https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/emanifest/search"
+        )
+        EmanifestSearch(stub_rcra_client).add_state_code("CA").add_site_type(
+            "Generator"
+        ).add_site_id("VATESTGEN001").execute()
+        for call in mock_responses.calls:
+            if "emanifest/search" in call.request.url:
+                request_body = json.loads(call.request.body)
+                assert request_body["stateCode"] == "CA"
+                assert request_body["siteType"] == "Generator"
+                assert request_body["siteId"] == "VATESTGEN001"
 
     class TestBuildSearchWithStateCode:
         def test_add_state_code(self):

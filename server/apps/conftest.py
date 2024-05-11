@@ -272,6 +272,15 @@ def mock_responses():
         yield mock_responses
 
 
+@pytest.fixture()
+def mock_emanifest_auth_response(request, mock_responses):
+    api_id, api_key = request.param
+    mock_responses.get(
+        f"https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/auth/{api_id}/{api_key}",
+        body='{"token": "mocK_token", "expiration": "2021-01-01T00:00:00.000000Z"}',
+    )
+
+
 @pytest.fixture
 def mocker(mocker: pytest_mock.MockerFixture):
     """
