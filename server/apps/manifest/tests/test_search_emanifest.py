@@ -1,52 +1,10 @@
 import json
-from datetime import datetime, timezone
-from unittest.mock import Mock, patch
+from datetime import datetime
 
 import pytest
 
 from apps.core.services import RcrainfoService
-from apps.manifest.services import EManifest
-from apps.manifest.services.emanifest import SearchManifestData
 from apps.manifest.services.emanifest_search import EmanifestSearch
-
-
-class TestSearchEManifestService:
-    @pytest.fixture()
-    def mock_rcrainfo(self):
-        rcrainfo_client = Mock()
-        rcrainfo_client.datetime_format = "%Y-%m-%d"
-        return rcrainfo_client
-
-    @pytest.fixture()
-    def mock_response(self):
-        response = Mock()
-        response.ok = True
-        response.json = Mock(return_value=[])
-        return response
-
-    def test_end_date_defaults_to_now(self, mock_rcrainfo, mock_response):
-        emanifest = EManifest(username="test", rcrainfo=mock_rcrainfo)
-        search_data: SearchManifestData = {
-            "site_id": "test",
-            "start_date": datetime.now(),
-        }
-        # Act
-        emanifest.search(search_data)
-        _, kwargs = mock_rcrainfo.search_mtn.call_args
-        end_date = kwargs["end_date"]
-        assert end_date is not None
-        assert end_date == datetime.now().strftime(mock_rcrainfo.datetime_format)
-
-    def test_uses_a_default_start_date(self, mock_rcrainfo, mock_response):
-        emanifest = EManifest(username="test", rcrainfo=mock_rcrainfo)
-        search_data: SearchManifestData = {
-            "site_id": "test",
-        }
-        # Act
-        emanifest.search(search_data)
-        _, kwargs = mock_rcrainfo.search_mtn.call_args
-        start_date = kwargs["start_date"]
-        assert start_date is not None
 
 
 class TestEmanifestSearchClass:
@@ -143,11 +101,12 @@ class TestEmanifestSearchClass:
             assert search.end_date is not None
 
         def test_add_end_date_defaults_to_now(self):
-            with patch("apps.manifest.services.emanifest_search.datetime") as mock_datetime:
-                mock_datetime.now.return_value = datetime(2021, 1, 1).replace(tzinfo=timezone.utc)
-                search = EmanifestSearch().add_end_date()
-                assert search.end_date is not None
-                assert search.end_date == datetime(2021, 1, 1).replace(tzinfo=timezone.utc)
+            now = datetime.now()
+            search = EmanifestSearch().add_end_date()
+            end_date = datetime.strptime(search.end_date, RcrainfoService.datetime_format)
+            assert end_date.day == now.day
+            assert end_date.month == now.month
+            assert end_date.year == now.year
 
     class TestBuildSearchWithCorrectionRequestStatus:
         def test_add_correction_request_status(self):

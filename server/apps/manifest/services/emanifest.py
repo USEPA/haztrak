@@ -1,5 +1,5 @@
 import logging
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import datetime
 from typing import List, Literal, NotRequired, Optional, TypedDict
 
 from django.db import transaction
@@ -73,19 +73,6 @@ class EManifest:
         """Check if e-Manifest is available"""
         return self.rcrainfo.has_rcrainfo_credentials
 
-    def search(self, search_data: SearchManifestData) -> List[str]:
-        """Search for manifests from e-Manifest"""
-        data: dict = search_data.copy()
-        data["end_date"] = self._date_or_now(search_data.get("end_date", None))
-        data["start_date"] = self._date_or_three_years_past(search_data.get("start_date", None))
-        response = self.rcrainfo.search_mtn(**data)
-        if response.ok:
-            print("response OK")
-            ret = response.json()
-            print(ret)
-            return ret
-        return []
-
     def pull(self, tracking_numbers: List[str]) -> PullManifestsResult:
         """Retrieve manifests from e-Manifest and save to database"""
         results: PullManifestsResult = {"success": [], "error": []}
@@ -140,28 +127,6 @@ class EManifest:
                 f"error retrieving manifestTrackingNumber from response: {create_resp.json()}"
             )
             raise EManifestError("malformed payload")
-
-    def _date_or_three_years_past(self, start_date: Optional[datetime]) -> str:
-        return (
-            start_date.replace(tzinfo=timezone.utc).strftime(self.rcrainfo.datetime_format)
-            if start_date
-            else (
-                datetime.now(UTC)
-                - timedelta(
-                    minutes=60  # 60 seconds/1minutes
-                    * 24  # 24 hours/1day
-                    * 30  # 30 days/1month
-                    * 36  # 36 months/3years = 3/years
-                )
-            ).strftime(self.rcrainfo.datetime_format)
-        )
-
-    def _date_or_now(self, end_date: Optional[datetime]) -> str:
-        return (
-            end_date.replace(tzinfo=timezone.utc).strftime(self.rcrainfo.datetime_format)
-            if end_date
-            else datetime.now(UTC).strftime(self.rcrainfo.datetime_format)
-        )
 
     @staticmethod
     def _filter_mtn(
