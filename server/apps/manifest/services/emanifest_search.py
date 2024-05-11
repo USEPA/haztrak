@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
 from typing import Literal, Optional, get_args
 
+from apps.core.services import RcrainfoService
+
 EmanifestStatus = Literal[
     "Pending",
     "Scheduled",
@@ -20,7 +22,8 @@ DateType = Literal["CertifiedDate", "ReceivedDate", "ShippedDate", "UpdatedDate"
 
 
 class EmanifestSearch:
-    def __init__(self):
+    def __init__(self, rcra_client: Optional[RcrainfoService] = None):
+        self._rcra_client = rcra_client or RcrainfoService()
         self.state_code: Optional[str] = None
         self.site_id: Optional[str] = None
         self.status: Optional[EmanifestStatus] = None
@@ -29,6 +32,16 @@ class EmanifestSearch:
         self.start_date: Optional[datetime] = None
         self.end_date: Optional[datetime] = None
         self.correction_request_status: Optional[CorrectionRequestStatus] = None
+
+    @property
+    def rcra_client(self):
+        if not self._rcra_client:
+            self._rcra_client = RcrainfoService()
+        return self._rcra_client
+
+    @rcra_client.setter
+    def rcra_client(self, value):
+        self._rcra_client = value
 
     @staticmethod
     def __validate_literal(value, literal) -> bool:
@@ -57,6 +70,18 @@ class EmanifestSearch:
     @classmethod
     def _emanifest_correction_request_status(cls, correction_request_status) -> bool:
         return cls.__validate_literal(correction_request_status, CorrectionRequestStatus)
+
+    def build_search_args(self):
+        search_params = {
+            "stateCode": self.state_code,
+            "siteId": self.site_id,
+            "status": self.status,
+            "dateType": self.date_type,
+            "siteType": self.site_type,
+            "endDate": self.end_date,
+            "startDate": self.start_date,
+        }
+        return {k: v for k, v in search_params.items() if v is not None}
 
     def add_state_code(self, state: str):
         if not self._valid_state_code(state):
@@ -103,3 +128,7 @@ class EmanifestSearch:
             end_date = datetime.now().replace(tzinfo=timezone.utc)
         self.end_date = end_date
         return self
+
+    def execute(self):
+        search_args = self.build_search_args()
+        return self._rcra_client.search_mtn(**search_args)

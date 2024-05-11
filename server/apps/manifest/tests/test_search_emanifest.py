@@ -3,6 +3,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
+from apps.core.services import RcrainfoService
 from apps.manifest.services import EManifest
 from apps.manifest.services.emanifest import SearchManifestData
 from apps.manifest.services.emanifest_search import EmanifestSearch
@@ -48,6 +49,23 @@ class TestSearchEManifestService:
 
 
 class TestEmanifestSearchClass:
+    def test_defaults_to_unauthenticated_rcra_client(self):
+        search = EmanifestSearch()
+        assert search.rcra_client is not None
+        assert search.rcra_client.is_authenticated is False
+
+    def test_execute_sends_a_request_to_rcrainfo(self, mock_responses):
+        stub_rcra_client = RcrainfoService(rcrainfo_env="preprod", api_key="foo", api_id="foo")
+        mock_responses.get(
+            "https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/auth/foo/foo",
+            body='{"token": "mocK_token", "expiration": "2021-01-01T00:00:00.000000Z"}',
+        )
+        mock_responses.post(
+            "https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/emanifest/search"
+        )
+        result = EmanifestSearch(stub_rcra_client).execute()
+        assert result.status_code == 200
+
     class TestBuildSearchWithStateCode:
         def test_add_state_code(self):
             search = EmanifestSearch().add_state_code("CA")
