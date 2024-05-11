@@ -87,23 +87,15 @@ class RcraPermissionField(serializers.Field):
     """Serializer for communicating with RCRAInfo, translates internal to RCRAInfo field names."""
 
     def to_representation(self, value):
-        if value:
-            # convert boolean to 'Active' or 'Inactive' when talking to RcraInfo
-            value = "Active"
-        elif not value:
-            value = "InActive"
+        value = "Active" if value else "InActive"
         # RcraInfo gives us an array of object with module and level keys
-        ret = {"module": f"{self.field_name}", "level": value}
-        return ret
+        return {"module": f"{self.field_name}", "level": value}
 
     def to_internal_value(self, data):
         try:
-            data = data["level"]
-            if data == "Active":
-                data = True
-            elif data == "InActive":
-                data = False
-            return data
+            passed_value = data["level"]
+            # if 'Active' or 'InActive' is passed, convert it to True or False
+            return {"Active": True, "InActive": False}.get(passed_value, passed_value)
         except KeyError as exc:
             raise ValidationError(f"malformed JSON: {exc}")
 

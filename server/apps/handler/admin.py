@@ -56,7 +56,6 @@ class HandlerAdmin(admin.ModelAdmin):
             return obj.generator.get()
         if obj.designated_facility:
             return obj.designated_facility.get()
-        # return obj.manifest.__str__() if obj.manifest else None
 
     related_manifest.short_description = "Manifest"
 

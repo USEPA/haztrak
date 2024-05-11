@@ -7,6 +7,7 @@ from django.db.models import QuerySet
 
 from apps.core.services import RcrainfoService, get_rcrainfo_client
 from apps.manifest.services import EManifest, PullManifestsResult, TaskResponse
+from apps.manifest.services.emanifest_search import EmanifestSearch
 from apps.manifest.tasks import sync_site_manifests
 from apps.site.models import TrakSite
 
@@ -56,8 +57,13 @@ class TrakSiteService:
 
     def _get_updated_mtn(self, site_id: str, last_sync_date: datetime) -> list[str]:
         logger.info(f"retrieving updated MTN for site {site_id}")
-        emanifest = EManifest(username=self.username, rcrainfo=self.rcrainfo)
-        return emanifest.search(site_id=site_id, start_date=last_sync_date)
+        return (
+            EmanifestSearch(self.rcrainfo)
+            .add_site_id(site_id)
+            .add_start_date(last_sync_date)
+            .add_end_date()
+            .execute()
+        )
 
 
 class TrakSiteServiceError(Exception):

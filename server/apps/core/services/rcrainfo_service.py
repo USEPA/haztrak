@@ -94,32 +94,6 @@ class RcrainfoService(RcrainfoClient):
         sign_data = {k: v for k, v in sign_data.items() if v is not None}
         return super().sign_manifest(**sign_data)
 
-    def search_mtn(
-        self,
-        reg: bool = False,
-        site_id: Optional[str] = None,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
-        status: Optional[str] = None,
-        date_type: str = "UpdatedDate",
-        state_code: Optional[str] = None,
-        site_type: Optional[str] = None,
-    ) -> RcrainfoResponse:
-        # map our python friendly keyword arguments to RCRAInfo expected fields
-        search_params = {
-            "stateCode": state_code,
-            "siteId": site_id,
-            "status": status,
-            "dateType": date_type,
-            "siteType": site_type,
-            "endDate": end_date,
-            "startDate": start_date,
-        }
-        # Remove arguments that are None
-        filtered_params = {k: v for k, v in search_params.items() if v is not None}
-        logger.debug(f"rcrainfo manifest search parameters {filtered_params}")
-        return super().search_mtn(**filtered_params)
-
     def __bool__(self):
         """
         This Overrides the RcrainfoClient bool

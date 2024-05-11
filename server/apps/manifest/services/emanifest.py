@@ -1,5 +1,5 @@
 import logging
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import datetime
 from typing import List, Literal, NotRequired, Optional, TypedDict
 
 from django.db import transaction
@@ -26,6 +26,18 @@ class QuickerSignData(TypedDict):
     printed_name: str
     printed_data: datetime
     transporter_order: NotRequired[int]
+
+
+class SearchManifestData(TypedDict, total=False):
+    """Type definition for the data required to search for manifests"""
+
+    site_id: Optional[str]
+    start_date: Optional[datetime]
+    end_date: Optional[datetime]
+    status: Optional[str]
+    date_type: Optional[str]
+    state_code: Optional[str]
+    site_type: Optional[str]
 
 
 class TaskResponse(TypedDict):
@@ -60,49 +72,6 @@ class EManifest:
     def is_available(self) -> bool:
         """Check if e-Manifest is available"""
         return self.rcrainfo.has_rcrainfo_credentials
-
-    def search(
-        self,
-        *,
-        site_id: Optional[str] = None,
-        start_date: Optional[datetime] = None,
-        end_date: Optional[datetime] = None,
-        status: Optional[str] = None,
-        date_type: str = "UpdatedDate",
-        state_code: Optional[str] = None,
-        site_type: Optional[str] = None,
-    ) -> List[str]:
-        """Search for manifests from e-Manifest, an abstraction of RcrainfoService's search_mtn"""
-        date_format = "%Y-%m-%dT%H:%M:%SZ"
-        if end_date:
-            end_date_str = end_date.replace(tzinfo=timezone.utc).strftime(date_format)
-        else:
-            end_date_str = datetime.now(UTC).strftime(date_format)
-        if start_date:
-            start_date_str = start_date.replace(tzinfo=timezone.utc).strftime(date_format)
-        else:
-            # If no start date is specified, retrieve for last ~3 years
-            start_date = datetime.now(UTC) - timedelta(
-                minutes=60  # 60 seconds/1minutes
-                * 24  # 24 hours/1day
-                * 30  # 30 days/1month
-                * 36  # 36 months/3years = 3/years
-            )
-            start_date_str = start_date.strftime(date_format)
-
-        response = self.rcrainfo.search_mtn(
-            site_id=site_id,
-            site_type=site_type,
-            state_code=state_code,
-            start_date=start_date_str,
-            end_date=end_date_str,
-            status=status,
-            date_type=date_type,
-        )
-
-        if response.ok:
-            return response.json()
-        return []
 
     def pull(self, tracking_numbers: List[str]) -> PullManifestsResult:
         """Retrieve manifests from e-Manifest and save to database"""
