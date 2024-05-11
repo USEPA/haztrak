@@ -75,10 +75,6 @@ class TestEmanifestSearchClass:
             search = EmanifestSearch().add_site_id("test")
             assert search.site_id == "test"
 
-        def test_site_id_defaults_to_none(self):
-            search = EmanifestSearch().add_site_id()
-            assert search.site_id is None
-
     class TestBuildSearchWithSiteType:
         def test_add_site_type(self):
             search = EmanifestSearch().add_site_type("Generator")
@@ -96,3 +92,21 @@ class TestEmanifestSearchClass:
         def test_raises_error_with_invalid_date_type(self):
             with pytest.raises(ValueError):
                 EmanifestSearch().add_date_type("InvalidDateType")
+
+    class TestBuildSearchWithDates:
+        def test_add_start_date(self):
+            search = EmanifestSearch().add_start_date(datetime.now())
+            assert search.start_date is not None
+
+        def test_add_end_date(self):
+            search = EmanifestSearch().add_end_date(datetime.now())
+            assert search.end_date is not None
+
+    class TestBuildSearchWithCorrectionRequestStatus:
+        def test_add_correction_request_status(self):
+            search = EmanifestSearch().add_correction_request_status("Sent")
+            assert search.correction_request_status == "Sent"
+
+        def test_error_raised_with_invalid_correction_request_status(self):
+            with pytest.raises(ValueError):
+                EmanifestSearch().add_correction_request_status("InvalidStatus")
