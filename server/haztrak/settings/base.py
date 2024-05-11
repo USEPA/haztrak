@@ -1,6 +1,7 @@
 """
 Haztrak project settings.
 """
+
 import os
 from pathlib import Path
 
@@ -232,6 +233,6 @@ REST_AUTH = {"USER_DETAILS_SERIALIZER": "apps.core.serializers.TrakUserSerialize
 TRAK_ORG_MODEL = "org.TrakOrg"
 TRAK_RCRAINFO_SITE_MODEL = "rcrasite.RcraSite"
 TRAK_MANIFEST_MODEL = "manifest.Manifest"
-TRAK_SITE_MODEL = "site.TrakSite"
+TRAK_SITE_MODEL = "site.Site"
 TRAK_WASTELINE_MODEL = "wasteline.Wasteline"
 TRAK_HANDLER_MODEL = "handler.Handler"

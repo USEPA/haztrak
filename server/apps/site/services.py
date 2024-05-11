@@ -9,14 +9,15 @@ from apps.core.services import RcrainfoService, get_rcrainfo_client
 from apps.manifest.services import EManifest, PullManifestsResult, TaskResponse
 from apps.manifest.services.emanifest_search import EmanifestSearch
 from apps.manifest.tasks import sync_site_manifests
-from apps.site.models import TrakSite
+from apps.site.models import Site
 
 logger = logging.getLogger(__name__)
 
 
-class TrakSiteService:
+class SiteService:
     """
-    HaztrakSiteService encapsulates the Haztrak site subdomain business logic and use cases.
+    Business logic and use cases related to a Site,
+    a location that conducts hazardous waste activities.
     """
 
     def __init__(
@@ -40,7 +41,7 @@ class TrakSiteService:
     def sync_manifests(self, *, site_id: str) -> PullManifestsResult:
         """Pull manifests and update the last sync date for a site"""
         try:
-            site = TrakSite.objects.get_by_epa_id(site_id)
+            site = Site.objects.get_by_epa_id(site_id)
             updated_mtn = self._get_updated_mtn(
                 site_id=site.rcra_site.epa_id, last_sync_date=site.last_rcrainfo_manifest_sync
             )
@@ -51,9 +52,9 @@ class TrakSiteService:
             site.last_rcrainfo_manifest_sync = datetime.now(UTC)
             site.save()
             return results
-        except TrakSite.DoesNotExist:
+        except Site.DoesNotExist:
             logger.warning(f"Site Does not exists {site_id}")
-            raise TrakSiteServiceError(f"Site Does not exists {site_id}")
+            raise SiteServiceError(f"Site Does not exists {site_id}")
 
     def _get_updated_mtn(self, site_id: str, last_sync_date: datetime) -> list[str]:
         logger.info(f"retrieving updated MTN for site {site_id}")
@@ -66,12 +67,12 @@ class TrakSiteService:
         )
 
 
-class TrakSiteServiceError(Exception):
+class SiteServiceError(Exception):
     def __init__(self, message: str):
         super().__init__(message)
 
 
-def filter_sites_by_org(org_id: str) -> [TrakSite]:
-    """Returns a list of TrakSites associated with an Org."""
-    sites: QuerySet = TrakSite.objects.filter(org_id=org_id).select_related("rcra_site")
+def filter_sites_by_org(org_id: str) -> [Site]:
+    """Returns a list of Sites associated with an Org."""
+    sites: QuerySet = Site.objects.filter(org_id=org_id).select_related("rcra_site")
     return sites

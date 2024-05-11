@@ -142,10 +142,12 @@ class EmanifestSearch:
         return self
 
     def add_start_date(self, start_date: datetime = None):
+        """Start of date range for manifest search. Default to three years ago."""
         self.start_date = self._date_or_three_years_past(start_date)
         return self
 
     def add_end_date(self, end_date: datetime = None):
+        """End of date range for manifest search. Default to now."""
         self.end_date = self._date_or_now(end_date)
         return self
 

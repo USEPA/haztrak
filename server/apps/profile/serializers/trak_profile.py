@@ -3,7 +3,7 @@ from rest_framework.serializers import ModelSerializer
 
 from apps.org.serializers import TrakOrgSerializer
 from apps.profile.models import TrakProfile
-from apps.site.serializers import TrakSiteAccessSerializer
+from apps.site.serializers import SiteAccessSerializer
 
 
 class TrakProfileSerializer(ModelSerializer):
@@ -12,7 +12,7 @@ class TrakProfileSerializer(ModelSerializer):
     user = serializers.StringRelatedField(
         required=False,
     )
-    sites = TrakSiteAccessSerializer(
+    sites = SiteAccessSerializer(
         source="user.site_permissions",
         many=True,
     )

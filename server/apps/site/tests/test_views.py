@@ -2,10 +2,10 @@ import pytest
 from rest_framework import status
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.site.views import TrakSiteDetailsView
+from apps.site.views import SiteDetailsView
 
 
-class TestTrakSiteListView:
+class TestSiteListView:
     @pytest.fixture
     def api_client(
         self,
@@ -38,7 +38,7 @@ class TestTrakSiteListView:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
-class TestTrakSiteDetailsApi:
+class TestSiteDetailsApi:
     """
     Tests the site details endpoint
     """
@@ -59,7 +59,7 @@ class TestTrakSiteDetailsApi:
         request = request.get(f"{self.url}/{site.rcra_site.epa_id}")
         force_authenticate(request, user)
         # Act
-        response = TrakSiteDetailsView.as_view()(request, epa_id=site.rcra_site.epa_id)
+        response = SiteDetailsView.as_view()(request, epa_id=site.rcra_site.epa_id)
         # Assert
         assert response.status_code == status.HTTP_200_OK
         assert response.data["handler"]["epaSiteId"] == site.rcra_site.epa_id
@@ -82,7 +82,7 @@ class TestTrakSiteDetailsApi:
         request = request.get(f"{self.url}/{other_site.rcra_site.epa_id}")
         force_authenticate(request, user)
         # Act
-        response = TrakSiteDetailsView.as_view()(request, epa_id=other_site.rcra_site.epa_id)
+        response = SiteDetailsView.as_view()(request, epa_id=other_site.rcra_site.epa_id)
         # Assert
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
@@ -107,7 +107,7 @@ class TestTrakSiteDetailsApi:
         assert response.status_code == status.HTTP_200_OK
 
 
-class TestTrakOrgSitesListView:
+class TestOrgSitesListView:
     URL = "/api/org"
 
     def test_returns_list_of_organizations_sites(

@@ -7,7 +7,7 @@ from django.db.models import Q, QuerySet
 from apps.manifest.models import Manifest
 from apps.manifest.services import EManifest, EManifestError, TaskResponse
 from apps.manifest.tasks import save_to_emanifest as save_to_emanifest_task
-from apps.site.models import TrakSite
+from apps.site.models import Site
 
 logger = logging.getLogger(__name__)
 
@@ -29,9 +29,7 @@ def get_manifests(
     site_type: Optional[Literal["Generator", "Tsdf", "Transporter"]] = None,
 ) -> QuerySet[Manifest]:
     """Get a list of manifest tracking numbers and select details for a users site"""
-    sites: QuerySet[TrakSite] = TrakSite.objects.filter_by_username(username).values(
-        "rcra_site__epa_id"
-    )
+    sites: QuerySet[Site] = Site.objects.filter_by_username(username).values("rcra_site__epa_id")
     if epa_id:
         sites = sites.filter(rcra_site__epa_id__iexact=epa_id)
     if site_type:

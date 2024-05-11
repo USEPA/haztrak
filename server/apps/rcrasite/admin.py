@@ -8,7 +8,7 @@ from apps.rcrasite.models import (
     Contact,
     RcraSite,
 )
-from apps.site.models import TrakSite
+from apps.site.models import Site
 
 
 @admin.register(RcraSite)
@@ -18,13 +18,13 @@ class HandlerAdmin(admin.ModelAdmin):
     search_fields = ["epa_id"]
 
 
-@admin.register(TrakSite)
+@admin.register(Site)
 class HaztrakSiteAdmin(admin.ModelAdmin):
     list_display = ["__str__", "related_handler", "last_rcrainfo_manifest_sync"]
     list_display_links = ["__str__", "related_handler"]
 
     @admin.display(description="EPA Site")
-    def related_handler(self, site: TrakSite) -> str:
+    def related_handler(self, site: Site) -> str:
         url = (
             reverse("admin:sites_rcrasite_changelist")
             + "?"
@@ -34,7 +34,7 @@ class HaztrakSiteAdmin(admin.ModelAdmin):
 
 
 class HaztrakSiteInline(admin.TabularInline):
-    model = TrakSite
+    model = Site
     extra = 0
 
     def has_change_permission(self, request, obj=None):

@@ -4,12 +4,12 @@ from django.db import models
 from django.db.models import QuerySet
 
 
-class TrakSiteManager(models.Manager):
-    """Custom manager for TrakSite model"""
+class SiteManager(models.Manager):
+    """Query interface for the Site model"""
 
     def filter_by_username(self: models.Manager, username: str) -> QuerySet:
         """filter a list of sites a user has access to (by username)"""
-        return self.select_related("rcra_site").filter(traksiteaccess__user__username=username)
+        return self.select_related("rcra_site").filter(siteaccess__user__username=username)
 
     def get_user_site_by_epa_id(
         self: models.Manager, user: settings.AUTH_USER_MODEL, epa_id: str
@@ -20,14 +20,14 @@ class TrakSiteManager(models.Manager):
 
     def filter_by_user(self: models.Manager, user: settings.AUTH_USER_MODEL) -> QuerySet:
         """filter a list of sites a user has access to (by user object)"""
-        return self.select_related("rcra_site").filter(traksiteaccess__user=user)
+        return self.select_related("rcra_site").filter(siteaccess__user=user)
 
     def filter_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:
         """filter a sites by EPA ID number"""
         return self.filter(rcra_site__epa_id=epa_id)
 
     def get_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:
-        """Get a TrakSites by RCRAInfo EPA ID number. Throws TrakSite.DoesNotExist if not found."""
+        """Get a site by RCRAInfo EPA ID number. Throws Site.DoesNotExist if not found."""
         return self.filter_by_epa_id(epa_id).get()
 
     def filter_by_org(self: models.Manager, org: settings.TRAK_ORG_MODEL) -> QuerySet:
@@ -35,14 +35,14 @@ class TrakSiteManager(models.Manager):
         return self.filter(org=org)
 
 
-class TrakSite(models.Model):
+class Site(models.Model):
     """
     Haztrak Site is a cornerstone model that many other models rely on.
     It wraps around RCRAInfo sites (AKA handlers, our RcraSite object). and adds
     additional functionality and fields.
     """
 
-    objects = TrakSiteManager()
+    objects = SiteManager()
 
     class Meta:
         verbose_name = "Haztrak Site"
@@ -81,7 +81,7 @@ class TrakSite(models.Model):
         return f"{self.rcra_site.epa_id}"
 
 
-class TrakSiteAccess(models.Model):
+class SiteAccess(models.Model):
     """The Role Based access a user has to a site"""
 
     class Meta:
@@ -95,7 +95,7 @@ class TrakSiteAccess(models.Model):
         related_name="site_permissions",
     )
     site = models.ForeignKey(
-        TrakSite,
+        Site,
         on_delete=models.CASCADE,
     )
     emanifest = models.CharField(

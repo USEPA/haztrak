@@ -6,7 +6,7 @@ from apps.manifest.views import (  # type: ignore
     ElectronicManifestSignView,
     ManifestViewSet,
     MtnListView,
-    TrakSiteManifestSyncView,
+    SiteManifestSyncView,
 )
 
 manifest_router = SimpleRouter(trailing_slash=False)
@@ -20,7 +20,7 @@ urlpatterns = [
                 # Manifest
                 path("emanifest", ElectronicManifestSaveView.as_view()),
                 path("emanifest/sign", ElectronicManifestSignView.as_view()),
-                path("emanifest/sync", TrakSiteManifestSyncView.as_view()),
+                path("emanifest/sync", SiteManifestSyncView.as_view()),
                 path("", include(manifest_router.urls)),
                 # MT
                 path("mtn", MtnListView.as_view()),

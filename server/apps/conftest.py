@@ -24,7 +24,7 @@ from apps.rcrasite.models import (
     RcraPhone,
     RcraSite,
 )
-from apps.site.models import TrakSite, TrakSiteAccess
+from apps.site.models import Site, SiteAccess
 
 
 class SiteIDProvider(BaseProvider):
@@ -235,8 +235,8 @@ def site_factory(db, rcra_site_factory, org_factory, faker):
         rcra_site: Optional[RcraSite] = None,
         name: Optional[str] = None,
         org: Optional[TrakOrg] = None,
-    ) -> TrakSite:
-        return TrakSite.objects.create(
+    ) -> Site:
+        return Site.objects.create(
             rcra_site=rcra_site or rcra_site_factory(),
             name=name or faker.name(),
             org=org or org_factory(),
@@ -295,12 +295,12 @@ def site_access_factory(db, faker, site_factory, profile_factory):
     """Abstract factory for Haztrak RcraSitePermissions model"""
 
     def create_permission(
-        site: Optional[TrakSite] = None,
+        site: Optional[Site] = None,
         user: Optional[TrakUser] = None,
         emanifest: Optional[Literal["viewer", "signer", "editor"]] = "viewer",
-    ) -> TrakSiteAccess:
+    ) -> SiteAccess:
         """Returns testuser1 RcraSitePermissions model to site_generator"""
-        return TrakSiteAccess.objects.create(
+        return SiteAccess.objects.create(
             site=site or site_factory(),
             user=user or user_factory(),
             emanifest=emanifest,
