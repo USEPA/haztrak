@@ -1,5 +1,5 @@
-from datetime import datetime
-from unittest.mock import Mock
+from datetime import datetime, timezone
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -68,12 +68,18 @@ class TestEmanifestSearchClass:
 
         def test_error_raised_with_invalid_status(self):
             with pytest.raises(ValueError):
-                EmanifestSearch().add_status("InvalidStatus")
+                EmanifestSearch().add_status("InvalidStatus")  # noqa
 
     class TestBuildSearchWithSiteId:
         def test_add_site_id(self):
             search = EmanifestSearch().add_site_id("test")
             assert search.site_id == "test"
+            search_2 = EmanifestSearch().add_site_id("test123")
+            assert search_2.site_id == "test123"
+
+        def test_site_id_is_alphanumeric(self):
+            with pytest.raises(ValueError):
+                EmanifestSearch().add_site_id("test!")
 
     class TestBuildSearchWithSiteType:
         def test_add_site_type(self):
@@ -82,7 +88,7 @@ class TestEmanifestSearchClass:
 
         def test_error_raised_with_invalid_site_type(self):
             with pytest.raises(ValueError):
-                EmanifestSearch().add_site_type("InvalidSiteType")
+                EmanifestSearch().add_site_type("InvalidSiteType")  # noqa
 
     class TestBuildSearchWithDateType:
         def test_add_date_type(self):
@@ -91,7 +97,7 @@ class TestEmanifestSearchClass:
 
         def test_raises_error_with_invalid_date_type(self):
             with pytest.raises(ValueError):
-                EmanifestSearch().add_date_type("InvalidDateType")
+                EmanifestSearch().add_date_type("InvalidDateType")  # noqa
 
     class TestBuildSearchWithDates:
         def test_add_start_date(self):
@@ -102,6 +108,13 @@ class TestEmanifestSearchClass:
             search = EmanifestSearch().add_end_date(datetime.now())
             assert search.end_date is not None
 
+        def test_add_end_date_defaults_to_now(self):
+            with patch("apps.manifest.services.emanifest_search.datetime") as mock_datetime:
+                mock_datetime.now.return_value = datetime(2021, 1, 1).replace(tzinfo=timezone.utc)
+                search = EmanifestSearch().add_end_date()
+                assert search.end_date is not None
+                assert search.end_date == datetime(2021, 1, 1).replace(tzinfo=timezone.utc)
+
     class TestBuildSearchWithCorrectionRequestStatus:
         def test_add_correction_request_status(self):
             search = EmanifestSearch().add_correction_request_status("Sent")
@@ -109,4 +122,4 @@ class TestEmanifestSearchClass:
 
         def test_error_raised_with_invalid_correction_request_status(self):
             with pytest.raises(ValueError):
-                EmanifestSearch().add_correction_request_status("InvalidStatus")
+                EmanifestSearch().add_correction_request_status("InvalidStatus")  # noqa

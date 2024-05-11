@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Literal, Optional, get_args
 
 EmanifestStatus = Literal[
@@ -38,6 +38,10 @@ class EmanifestSearch:
     def _valid_state_code(state_code) -> bool:
         return len(state_code) == 2 and state_code.isalpha()
 
+    @staticmethod
+    def _valid_site_id(site_id: str) -> bool:
+        return len(site_id) > 2 and site_id.isalnum()
+
     @classmethod
     def _emanifest_status(cls, status) -> bool:
         return cls.__validate_literal(status, EmanifestStatus)
@@ -61,6 +65,8 @@ class EmanifestSearch:
         return self
 
     def add_site_id(self, site_id: str):
+        if not self._valid_site_id(site_id):
+            raise ValueError("Invalid Site ID")
         self.site_id = site_id
         return self
 
@@ -93,5 +99,7 @@ class EmanifestSearch:
         return self
 
     def add_end_date(self, end_date: datetime = None):
+        if not end_date:
+            end_date = datetime.now().replace(tzinfo=timezone.utc)
         self.end_date = end_date
         return self
