@@ -48,22 +48,51 @@ class TestSearchEManifestService:
 
 
 class TestEmanifestSearchClass:
-    def test_add_state_code(self):
-        search = EmanifestSearch().add_state_code("CA")
-        assert search.state_code == "CA"
+    class TestBuildSearchWithStateCode:
+        def test_add_state_code(self):
+            search = EmanifestSearch().add_state_code("CA")
+            assert search.state_code == "CA"
 
-    def test_add_site_id(self):
-        search = EmanifestSearch().add_site_id("test")
-        assert search.site_id == "test"
+        def test_state_code_only_accepts_two_letters(self):
+            with pytest.raises(ValueError):
+                EmanifestSearch().add_state_code("California")
 
-    def test_add_status(self):
-        search = EmanifestSearch().add_status("Pending")
-        assert search.status == "Pending"
+        def test_state_code_alphabetical(self):
+            with pytest.raises(ValueError):
+                EmanifestSearch().add_state_code("12")
 
-    def test_add_site_type(self):
-        search = EmanifestSearch().add_site_type("Generator")
-        assert search.site_type == "Generator"
+    class TestBuildSearchWithStatus:
+        def test_add_status(self):
+            search = EmanifestSearch().add_status("Pending")
+            assert search.status == "Pending"
 
-    def test_add_date_type(self):
-        search = EmanifestSearch().add_date_type("CertifiedDate")
-        assert search.date_type == "CertifiedDate"
+        def test_error_raised_with_invalid_status(self):
+            with pytest.raises(ValueError):
+                EmanifestSearch().add_status("InvalidStatus")
+
+    class TestBuildSearchWithSiteId:
+        def test_add_site_id(self):
+            search = EmanifestSearch().add_site_id("test")
+            assert search.site_id == "test"
+
+        def test_site_id_defaults_to_none(self):
+            search = EmanifestSearch().add_site_id()
+            assert search.site_id is None
+
+    class TestBuildSearchWithSiteType:
+        def test_add_site_type(self):
+            search = EmanifestSearch().add_site_type("Generator")
+            assert search.site_type == "Generator"
+
+        def test_error_raised_with_invalid_site_type(self):
+            with pytest.raises(ValueError):
+                EmanifestSearch().add_site_type("InvalidSiteType")
+
+    class TestBuildSearchWithDateType:
+        def test_add_date_type(self):
+            search = EmanifestSearch().add_date_type("CertifiedDate")
+            assert search.date_type == "CertifiedDate"
+
+        def test_raises_error_with_invalid_date_type(self):
+            with pytest.raises(ValueError):
+                EmanifestSearch().add_date_type("InvalidDateType")
