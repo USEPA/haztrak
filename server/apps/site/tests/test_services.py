@@ -1,9 +1,10 @@
+import datetime
 from unittest.mock import patch
 
 import pytest
 
 from apps.site.models import Site
-from apps.site.services import filter_sites_by_org, get_user_site
+from apps.site.services import filter_sites_by_org, get_user_site, update_last_emanifest_sync
 
 
 class TestFilterOrgSites:
@@ -42,3 +43,23 @@ class TestFilterSitesByUser:
             mock_query.return_value = []
             result = Site.objects.filter_by_user("username")
             assert isinstance(result, list)
+
+
+class TestUpdateEmanifestSyncDate:
+    def test_updates_the_last_sync_field(self, site_factory):
+        site = site_factory(last_rcrainfo_manifest_sync=None)
+        update_last_emanifest_sync(site=site)
+        assert site.last_rcrainfo_manifest_sync is not None
+
+    def test_uses_datetime_now_by_default(self, site_factory):
+        with patch("apps.site.services.datetime") as mock_datetime:
+            mock_datetime.now.return_value = datetime.datetime(2021, 1, 1)
+            site = site_factory(last_rcrainfo_manifest_sync=None)
+            update_last_emanifest_sync(site=site)
+            assert site.last_rcrainfo_manifest_sync == datetime.datetime(2021, 1, 1)
+
+    def test_uses_optional_passed_datetime(self, site_factory):
+        passed_datetime = datetime.datetime(2021, 1, 1)
+        site = site_factory(last_rcrainfo_manifest_sync=None)
+        update_last_emanifest_sync(site=site, last_sync_date=passed_datetime)
+        assert site.last_rcrainfo_manifest_sync == passed_datetime

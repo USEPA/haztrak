@@ -33,8 +33,7 @@ def sync_manifests(*, site_id: str, username: str) -> PullManifestsResult:
         updated_mtn = updated_mtn[:15]  # temporary limit to 15
         emanifest = EManifest(username=username, rcrainfo=rcra_client)
         results: PullManifestsResult = emanifest.pull(tracking_numbers=updated_mtn)
-        site.last_rcrainfo_manifest_sync = datetime.now(UTC)
-        site.save()
+        update_last_emanifest_sync(site=site)
         return results
     except Site.DoesNotExist:
         logger.warning(f"Site Does not exists {site_id}")
@@ -51,10 +50,19 @@ def _get_updated_mtn(site_id: str, last_sync_date: datetime, rcra_client) -> lis
         .add_end_date()
         .execute()
     )
-    print(f"response {response.json()}, status {response.status_code}")
     if response.ok:
         return response.json()
     return []
+
+
+@transaction.atomic
+def update_last_emanifest_sync(site: Site, last_sync_date: Optional[datetime] = None):
+    """Update the last sync date for a site. Defaults to now if no date is provided."""
+    if last_sync_date is not None:
+        site.last_rcrainfo_manifest_sync = last_sync_date
+    else:
+        site.last_rcrainfo_manifest_sync = datetime.now(UTC)
+    site.save()
 
 
 def filter_sites_by_org(org_id: str) -> [Site]:

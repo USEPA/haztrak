@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 import random
@@ -235,11 +236,14 @@ def site_factory(db, rcra_site_factory, org_factory, faker):
         rcra_site: Optional[RcraSite] = None,
         name: Optional[str] = None,
         org: Optional[TrakOrg] = None,
+        last_rcrainfo_manifest_sync: Optional[datetime.datetime] = None,
     ) -> Site:
         return Site.objects.create(
             rcra_site=rcra_site or rcra_site_factory(),
             name=name or faker.name(),
             org=org or org_factory(),
+            last_rcrainfo_manifest_sync=last_rcrainfo_manifest_sync
+            or datetime.datetime.now(datetime.UTC),
         )
 
     return create_site
