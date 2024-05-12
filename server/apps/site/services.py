@@ -14,6 +14,11 @@ from apps.site.models import Site
 logger = logging.getLogger(__name__)
 
 
+class SiteServiceError(Exception):
+    def __init__(self, message: str):
+        super().__init__(message)
+
+
 class SiteService:
     """
     Business logic and use cases related to a Site,
@@ -30,12 +35,6 @@ class SiteService:
         self.username = username
         self.rcrainfo = rcrainfo or get_rcrainfo_client(username=username)
         self.site_id = site_id
-
-    def sync_rcrainfo_manifest(self, *, site_id: Optional[str] = None) -> TaskResponse:
-        """Validate input and Launch a Celery task to sync a site's manifests from RCRAInfo"""
-        logger.info(f"{self} sync rcra manifest, site ID {site_id}")
-        task = sync_site_manifests.delay(site_id=site_id, username=self.username)
-        return {"taskId": task.id}
 
     @transaction.atomic
     def sync_manifests(self, *, site_id: str) -> PullManifestsResult:
@@ -67,12 +66,15 @@ class SiteService:
         )
 
 
-class SiteServiceError(Exception):
-    def __init__(self, message: str):
-        super().__init__(message)
-
-
 def filter_sites_by_org(org_id: str) -> [Site]:
     """Returns a list of Sites associated with an Org."""
     sites: QuerySet = Site.objects.filter(org_id=org_id).select_related("rcra_site")
     return sites
+
+
+def sync_site_manifest_with_rcrainfo(
+    *, username: str, site_id: Optional[str] = None
+) -> TaskResponse:
+    """Launch a batch processing task to sync a site's manifests from RCRAInfo"""
+    task = sync_site_manifests.delay(site_id=site_id, username=username)
+    return {"taskId": task.id}

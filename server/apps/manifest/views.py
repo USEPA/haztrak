@@ -18,7 +18,7 @@ from apps.manifest.services import (
     save_emanifest,
     update_manifest,
 )
-from apps.site.services import SiteService
+from apps.site.services import sync_site_manifest_with_rcrainfo
 
 logger = logging.getLogger(__name__)
 
@@ -140,6 +140,7 @@ class SiteManifestSyncView(APIView):
     def post(self, request: Request) -> Response:
         serializer = self.SyncSiteManifestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        site = SiteService(username=str(request.user))
-        data = site.sync_rcrainfo_manifest(**serializer.validated_data)
+        data = sync_site_manifest_with_rcrainfo(
+            username=request.user.username, **serializer.validated_data
+        )
         return Response(data=data, status=status.HTTP_200_OK)
