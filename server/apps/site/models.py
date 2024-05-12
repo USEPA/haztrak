@@ -11,11 +11,18 @@ class SiteManager(models.Manager):
         """filter a list of sites a user has access to (by username)"""
         return self.select_related("rcra_site").filter(siteaccess__user__username=username)
 
-    def get_user_site_by_epa_id(
+    def get_by_user_and_epa_id(
         self: models.Manager, user: settings.AUTH_USER_MODEL, epa_id: str
     ) -> QuerySet:
         """Get a site by EPA ID number that a user has access to"""
         combined_filter: QuerySet = self.filter_by_user(user) & self.filter_by_epa_id(epa_id)
+        return combined_filter.get()
+
+    def get_by_username_and_epa_id(self: models.Manager, username: str, epa_id: str) -> QuerySet:
+        """Get a site by EPA ID number that a user has access to"""
+        combined_filter: QuerySet = self.filter_by_username(username) & self.filter_by_epa_id(
+            epa_id
+        )
         return combined_filter.get()
 
     def filter_by_user(self: models.Manager, user: settings.AUTH_USER_MODEL) -> QuerySet:
@@ -48,8 +55,6 @@ class Site(models.Model):
         verbose_name = "Haztrak Site"
         verbose_name_plural = "Haztrak Sites"
         ordering = ["rcra_site__epa_id"]
-
-    # ToDo: use UUIDField as primary key
 
     name = models.CharField(
         verbose_name="site alias",

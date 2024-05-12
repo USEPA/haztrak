@@ -9,26 +9,25 @@ from rest_framework.views import APIView
 
 from apps.site.models import Site
 from apps.site.serializers import SiteSerializer
-from apps.site.services import filter_sites_by_org
+from apps.site.services import filter_sites_by_org, filter_sites_by_username, get_user_site
 
 logger = logging.getLogger(__name__)
 
 
 class SiteListView(ListAPIView):
-    """that returns haztrak sites that the current user has access to."""
+    """that returns all haztrak sites that the user has access to."""
 
     serializer_class = SiteSerializer
 
     def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-    def get_queryset(self):
-        return Site.objects.filter_by_user(self.request.user)
+        sites = filter_sites_by_username(username=request.user.username)
+        data = self.serializer_class(sites, many=True).data
+        return Response(data, status=status.HTTP_200_OK)
 
 
 @method_decorator(cache_page(60 * 15), name="dispatch")
 class SiteDetailsView(RetrieveAPIView):
-    """View details of a Haztrak Site, which encapsulates the EPA RcraSite plus some."""
+    """View details of a Haztrak Site."""
 
     serializer_class = SiteSerializer
     lookup_url_kwarg = "epa_id"
@@ -37,7 +36,7 @@ class SiteDetailsView(RetrieveAPIView):
     @method_decorator(cache_page(60 * 15))
     def get(self, request, *args, **kwargs):
         try:
-            site = Site.objects.get_user_site_by_epa_id(request.user, self.kwargs.get("epa_id"))
+            site = get_user_site(username=request.user.username, epa_id=self.kwargs["epa_id"])
             data = self.serializer_class(site).data
             return Response(data, status=status.HTTP_200_OK)
         except Site.DoesNotExist as e:
@@ -45,7 +44,7 @@ class SiteDetailsView(RetrieveAPIView):
 
 
 class OrgSitesListView(APIView):
-    """Retrieve a list of sites for a given Org"""
+    """Retrieve a list of sites filtered by organization."""
 
     @method_decorator(cache_page(60 * 15))
     def get(self, request, *args, **kwargs):

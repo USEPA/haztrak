@@ -41,7 +41,7 @@ class TestSiteModel:
         assert not site.admin_has_rcrainfo_api_credentials
 
 
-class TestSiteModelManager:
+class TestSiteManager:
     def test_filter_sites_by_username(self, site_factory, site_access_factory, user_factory):
         user = user_factory()
         site = site_factory()
@@ -74,7 +74,7 @@ class TestSiteModelManager:
         user = user_factory()
         site = site_factory()
         site_access_factory(site=site, user=user)
-        returned_site = Site.objects.get_user_site_by_epa_id(user, site.rcra_site.epa_id)
+        returned_site = Site.objects.get_by_user_and_epa_id(user, site.rcra_site.epa_id)
         assert isinstance(returned_site, Site)
         assert returned_site == site
 
@@ -86,3 +86,13 @@ class TestSiteModelManager:
         assert isinstance(returned_sites, QuerySet)
         assert set(sites).issubset(returned_sites)
         assert not_my_site not in returned_sites
+
+    def test_get_by_username_and_epa_id(self, site_factory, site_access_factory, user_factory):
+        user = user_factory()
+        site = site_factory()
+        site_access_factory(site=site, user=user)
+        returned_site = Site.objects.get_by_username_and_epa_id(
+            user.username, site.rcra_site.epa_id
+        )
+        assert isinstance(returned_site, Site)
+        assert returned_site == site

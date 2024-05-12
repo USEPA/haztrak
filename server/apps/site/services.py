@@ -29,12 +29,10 @@ class SiteService:
         self,
         *,
         username: str,
-        site_id: Optional[str] = None,
         rcrainfo: Optional[RcrainfoService] = None,
     ):
         self.username = username
         self.rcrainfo = rcrainfo or get_rcrainfo_client(username=username)
-        self.site_id = site_id
 
     @transaction.atomic
     def sync_manifests(self, *, site_id: str) -> PullManifestsResult:
@@ -69,6 +67,17 @@ class SiteService:
 def filter_sites_by_org(org_id: str) -> [Site]:
     """Returns a list of Sites associated with an Org."""
     sites: QuerySet = Site.objects.filter(org_id=org_id).select_related("rcra_site")
+    return sites
+
+
+def get_user_site(username: str, epa_id: str) -> Site:
+    """Returns a user Site if it exists, else throws a DoesNotExist exception."""
+    return Site.objects.get_by_username_and_epa_id(username, epa_id)
+
+
+def filter_sites_by_username(username: str) -> [Site]:
+    """Returns a list of Sites associated with a user."""
+    sites: QuerySet = Site.objects.filter_by_username(username)
     return sites
 
 
