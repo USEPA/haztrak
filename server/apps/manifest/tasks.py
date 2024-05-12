@@ -57,11 +57,11 @@ def sign_manifest(
 @shared_task(name="sync site manifests", bind=True)
 def sync_site_manifests(self, *, site_id: str, username: str):
     """asynchronous task to sync an EPA site's manifests"""
-    from apps.site.services import SiteService
+
+    from apps.site.services import sync_manifests
 
     try:
-        site_service = SiteService(username=username)
-        results = site_service.sync_manifests(site_id=site_id)
+        results = sync_manifests(site_id=site_id, username=username)
         return results
     except Exception as exc:
         logger.error(f"failed to sync {site_id} manifest")

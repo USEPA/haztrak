@@ -120,7 +120,6 @@ def get_rcrainfo_client(
         )
     try:
         org: TrakOrg = TrakOrg.objects.get(trakorgaccess__user__username=username)
-        print("org:", org)
         if org.is_rcrainfo_integrated:
             api_id, api_key = org.rcrainfo_api_id_key
         return RcrainfoService(

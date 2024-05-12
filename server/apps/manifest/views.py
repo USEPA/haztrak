@@ -88,6 +88,7 @@ class MtnListView(ListAPIView):
     queryset = Manifest.objects.all()
 
     def get(self, request, *args, **kwargs):
+        print(f" MTN List View {request.user}")
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):

@@ -10,7 +10,7 @@ from apps.manifest.views import (  # type: ignore
 )
 
 manifest_router = SimpleRouter(trailing_slash=False)
-manifest_router.register("manifest", ManifestViewSet, basename="manifest")
+manifest_router.register("", ManifestViewSet, basename="manifest")
 
 urlpatterns = [
     path(
@@ -21,11 +21,11 @@ urlpatterns = [
                 path("emanifest", ElectronicManifestSaveView.as_view()),
                 path("emanifest/sign", ElectronicManifestSignView.as_view()),
                 path("emanifest/sync", SiteManifestSyncView.as_view()),
-                path("", include(manifest_router.urls)),
                 # MT
                 path("mtn", MtnListView.as_view()),
                 path("mtn/<str:epa_id>", MtnListView.as_view()),
                 path("mtn/<str:epa_id>/<str:site_type>", MtnListView.as_view()),
+                path("", include(manifest_router.urls)),
             ]
         ),
     ),

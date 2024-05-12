@@ -20,6 +20,8 @@ CorrectionRequestStatus = Literal["NotSent", "Sent", "IndustryResponded", "Cance
 
 DateType = Literal["CertifiedDate", "ReceivedDate", "ShippedDate", "UpdatedDate"]
 
+RCRAINFO_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
+
 
 class EmanifestSearch:
     def __init__(self, rcra_client: Optional[RcrainfoService] = None):
@@ -72,7 +74,7 @@ class EmanifestSearch:
         return cls.__validate_literal(correction_request_status, CorrectionRequestStatus)
 
     def _date_or_three_years_past(self, start_date: Optional[datetime]) -> str:
-        return (
+        date = (
             start_date.replace(tzinfo=timezone.utc).strftime(self.rcra_client.datetime_format)
             if start_date
             else (
@@ -85,13 +87,19 @@ class EmanifestSearch:
                 )
             ).strftime(self.rcra_client.datetime_format)
         )
+        return self.__format_rcrainfo_date_string(date)
 
     def _date_or_now(self, end_date: Optional[datetime]) -> str:
-        return (
+        date = (
             end_date.replace(tzinfo=timezone.utc).strftime(self.rcra_client.datetime_format)
             if end_date
             else datetime.now(UTC).strftime(self.rcra_client.datetime_format)
         )
+        return self.__format_rcrainfo_date_string(date)
+
+    @staticmethod
+    def __format_rcrainfo_date_string(str_date: str) -> str:
+        return str_date[:-8] + "Z"
 
     def build_search_args(self):
         search_params = {
@@ -150,6 +158,9 @@ class EmanifestSearch:
         """End of date range for manifest search. Default to now."""
         self.end_date = self._date_or_now(end_date)
         return self
+
+    def output(self):
+        return self.build_search_args()
 
     def execute(self):
         search_args = self.build_search_args()
