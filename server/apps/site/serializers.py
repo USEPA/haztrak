@@ -3,12 +3,12 @@ from rest_framework.serializers import ModelSerializer
 
 from apps.rcrasite.serializers import RcraSiteSerializer
 from apps.rcrasite.serializers.base_serializer import SitesBaseSerializer
-from apps.site.models import TrakSite, TrakSiteAccess
+from apps.site.models import Site, SiteAccess
 
 
-class TrakSiteSerializer(ModelSerializer):
+class SiteSerializer(ModelSerializer):
     """
-    HaztrakSite model serializer for JSON marshalling/unmarshalling
+    Haztrak Site model serializer for JSON marshalling/unmarshalling
     """
 
     name = serializers.CharField(
@@ -19,19 +19,19 @@ class TrakSiteSerializer(ModelSerializer):
     )
 
     class Meta:
-        model = TrakSite
+        model = Site
         fields = ["name", "handler"]
 
 
-class TrakSiteAccessSerializer(SitesBaseSerializer):
+class SiteAccessSerializer(SitesBaseSerializer):
     class Meta:
-        model = TrakSiteAccess
+        model = SiteAccess
         fields = [
             "site",
             "eManifest",
         ]
 
-    site = TrakSiteSerializer()
+    site = SiteSerializer()
     eManifest = serializers.CharField(
         source="emanifest",
     )

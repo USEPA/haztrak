@@ -5,10 +5,10 @@ import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockHandler } from 'test-utils/fixtures';
-import { userApiMocks } from 'test-utils/mock';
+import { mockUserEndpoints } from 'test-utils/mock';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
-const server = setupServer(...userApiMocks);
+const server = setupServer(...mockUserEndpoints);
 afterEach(() => cleanup());
 beforeAll(() => server.listen());
 afterAll(() => server.close()); // Disable API mocking after the tests are done.

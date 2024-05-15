@@ -5,7 +5,7 @@ import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockTransporter } from 'test-utils/fixtures';
-import { userApiMocks } from 'test-utils/mock';
+import { mockUserEndpoints } from 'test-utils/mock';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { TransporterTable } from './index';
 
@@ -24,7 +24,7 @@ const TRAN_ARRAY: Array<Transporter> = [
     ...createMockTransporter({ epaSiteId: HANDLER_ID_2, name: HANDLER_NAME_2, order: 2 }),
   },
 ];
-const server = setupServer(...userApiMocks);
+const server = setupServer(...mockUserEndpoints);
 afterEach(() => cleanup());
 beforeAll(() => server.listen());
 afterAll(() => server.close());

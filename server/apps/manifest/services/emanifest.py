@@ -12,6 +12,7 @@ from apps.handler.models import QuickerSign
 from apps.handler.serializers import QuickerSignSerializer
 from apps.manifest.models import Manifest
 from apps.manifest.serializers import ManifestSerializer
+from apps.manifest.services.emanifest_search import EmanifestSearch
 from apps.manifest.tasks import pull_manifest, sign_manifest
 
 logger = logging.getLogger(__name__)
@@ -164,3 +165,35 @@ class EManifest:
         manifest = serializer.save()
         logger.info(f"saved manifest {manifest.mtn}")
         return manifest
+
+
+def get_updated_mtn(site_id: str, last_sync_date: datetime, rcra_client) -> list[str]:
+    """Use the last sync date for a site to get a list of updated MTNs from RCRAInfo"""
+    logger.info(f"retrieving updated MTN for site {site_id}")
+    response = (
+        EmanifestSearch(rcra_client)
+        .add_date_type("UpdatedDate")
+        .add_site_id(site_id)
+        .add_start_date(last_sync_date)
+        .add_end_date()
+        .execute()
+    )
+    if response.ok:
+        return response.json()
+    return []
+
+
+@transaction.atomic
+def sync_manifests(
+    *, site_id: str, last_sync_date: datetime, rcra_client: RcrainfoService
+) -> PullManifestsResult:
+    """Pull manifests and update the last sync date for a site"""
+    updated_mtn = get_updated_mtn(
+        site_id=site_id,
+        last_sync_date=last_sync_date,
+        rcra_client=rcra_client,
+    )
+    updated_mtn = updated_mtn[:15]  # temporary limit to 15
+    emanifest = EManifest(rcrainfo=rcra_client)
+    results: PullManifestsResult = emanifest.pull(tracking_numbers=updated_mtn)
+    return results

@@ -3,13 +3,13 @@ import { Dashboard } from 'features/Dashboard/Dashboard';
 import { setupServer } from 'msw/node';
 import React, { createElement } from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { userApiMocks } from 'test-utils/mock';
-import { htApiMocks } from 'test-utils/mock/htApiMocks';
+import { mockUserEndpoints } from 'test-utils/mock';
+import { mockSiteEndpoints } from 'test-utils/mock/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 const USERNAME = 'testuser1';
 
-const server = setupServer(...htApiMocks, ...userApiMocks);
+const server = setupServer(...mockSiteEndpoints, ...mockUserEndpoints);
 
 beforeAll(() => {
   vi.mock('recharts', async (importOriginal) => {

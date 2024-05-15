@@ -18,7 +18,7 @@ from apps.manifest.services import (
     save_emanifest,
     update_manifest,
 )
-from apps.site.services import TrakSiteService
+from apps.site.services import sync_site_manifest_with_rcrainfo
 
 logger = logging.getLogger(__name__)
 
@@ -88,6 +88,7 @@ class MtnListView(ListAPIView):
     queryset = Manifest.objects.all()
 
     def get(self, request, *args, **kwargs):
+        print(f" MTN List View {request.user}")
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -127,7 +128,7 @@ class ElectronicManifestSignView(GenericAPIView):
         "site_manifest_sync_response", fields={"task": serializers.CharField()}
     ),
 )
-class TrakSiteManifestSyncView(APIView):
+class SiteManifestSyncView(APIView):
     """
     Pull a site's manifests that are out of sync with RCRAInfo.
     It returns the task id of the long-running background task which can be used to poll
@@ -140,6 +141,7 @@ class TrakSiteManifestSyncView(APIView):
     def post(self, request: Request) -> Response:
         serializer = self.SyncSiteManifestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        site = TrakSiteService(username=str(request.user))
-        data = site.sync_rcrainfo_manifest(**serializer.validated_data)
+        data = sync_site_manifest_with_rcrainfo(
+            username=request.user.username, **serializer.validated_data
+        )
         return Response(data=data, status=status.HTTP_200_OK)

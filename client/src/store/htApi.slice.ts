@@ -127,7 +127,10 @@ export const haztrakApi = createApi({
       providesTags: ['site'],
     }),
     getMTN: build.query<Array<MtnDetails>, string | undefined>({
-      query: (siteId) => ({ url: siteId ? `rcra/mtn/${siteId}` : 'rcra/mtn', method: 'get' }),
+      query: (siteId) => ({
+        url: siteId ? `rcra/manifest/mtn/${siteId}` : 'rcra/manifest/mtn',
+        method: 'get',
+      }),
       providesTags: ['manifest'],
     }),
     getManifest: build.query<Manifest, string>({

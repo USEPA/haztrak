@@ -1,4 +1,5 @@
 """business logic related to a user's Haztrak profile (note: not their RcrainfoProfile)"""
+
 from typing import Optional
 
 from django.conf import settings
@@ -10,7 +11,7 @@ from apps.profile.models import RcrainfoProfile, RcrainfoSiteAccess, TrakProfile
 from apps.profile.serializers import RcrainfoSitePermissionsSerializer
 from apps.rcrasite.models import RcraSite
 from apps.rcrasite.services import RcraSiteService
-from apps.site.services import TrakSiteServiceError
+from apps.site.services import SiteServiceError
 
 
 @transaction.atomic
@@ -98,7 +99,7 @@ class RcraProfileService:
                 self._create_or_update_rcra_permission(
                     epa_permission=rcra_site_permission, site=rcra_site
                 )
-        except TrakSiteServiceError as exc:
+        except SiteServiceError as exc:
             raise RcraProfileServiceError(f"Error creating or updating Haztrak Site {exc}")
         except KeyError as exc:
             raise RcraProfileServiceError(f"Error parsing RCRAInfo response: {str(exc)}")

@@ -4,13 +4,13 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { userApiMocks } from 'test-utils/mock';
-import { API_BASE_URL } from 'test-utils/mock/htApiMocks';
+import { mockUserEndpoints } from 'test-utils/mock';
+import { API_BASE_URL } from 'test-utils/mock/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 const testTaskID = 'testTaskId';
 
-const server = setupServer(...userApiMocks);
+const server = setupServer(...mockUserEndpoints);
 server.use(
   http.post(`${API_BASE_URL}rcra/manifest/emanifest/sync`, () => {
     // Mock Sync Site Manifests response

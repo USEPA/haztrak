@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 import random
@@ -9,6 +10,7 @@ import pytest
 import pytest_mock
 import responses
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from faker import Faker
 from faker.providers import BaseProvider
 from rest_framework.test import APIClient
@@ -24,7 +26,7 @@ from apps.rcrasite.models import (
     RcraPhone,
     RcraSite,
 )
-from apps.site.models import TrakSite, TrakSiteAccess
+from apps.site.models import Site, SiteAccess
 
 
 class SiteIDProvider(BaseProvider):
@@ -186,14 +188,18 @@ def rcra_site_factory(db, address_factory, contact_factory):
     ) -> RcraSite:
         fake = Faker()
         fake.add_provider(SiteIDProvider)
-        return RcraSite.objects.create(
-            epa_id=epa_id or fake.site_id(),
-            name=name or fake.name(),
-            site_type=site_type,
-            site_address=site_address or address_factory(),
-            mail_address=mail_address or address_factory(),
-            contact=contact_factory(),
-        )
+        while True:
+            try:
+                return RcraSite.objects.create(
+                    epa_id=epa_id or fake.site_id(),
+                    name=name or fake.name(),
+                    site_type=site_type,
+                    site_address=site_address or address_factory(),
+                    mail_address=mail_address or address_factory(),
+                    contact=contact_factory(),
+                )
+            except IntegrityError:
+                epa_id = None
 
     return create_rcra_site
 
@@ -235,11 +241,14 @@ def site_factory(db, rcra_site_factory, org_factory, faker):
         rcra_site: Optional[RcraSite] = None,
         name: Optional[str] = None,
         org: Optional[TrakOrg] = None,
-    ) -> TrakSite:
-        return TrakSite.objects.create(
+        last_rcrainfo_manifest_sync: Optional[datetime.datetime] = None,
+    ) -> Site:
+        return Site.objects.create(
             rcra_site=rcra_site or rcra_site_factory(),
             name=name or faker.name(),
             org=org or org_factory(),
+            last_rcrainfo_manifest_sync=last_rcrainfo_manifest_sync
+            or datetime.datetime.now(datetime.UTC),
         )
 
     return create_site
@@ -295,12 +304,12 @@ def site_access_factory(db, faker, site_factory, profile_factory):
     """Abstract factory for Haztrak RcraSitePermissions model"""
 
     def create_permission(
-        site: Optional[TrakSite] = None,
+        site: Optional[Site] = None,
         user: Optional[TrakUser] = None,
         emanifest: Optional[Literal["viewer", "signer", "editor"]] = "viewer",
-    ) -> TrakSiteAccess:
+    ) -> SiteAccess:
         """Returns testuser1 RcraSitePermissions model to site_generator"""
-        return TrakSiteAccess.objects.create(
+        return SiteAccess.objects.create(
             site=site or site_factory(),
             user=user or user_factory(),
             emanifest=emanifest,

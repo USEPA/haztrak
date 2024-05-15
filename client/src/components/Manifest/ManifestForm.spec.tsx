@@ -2,13 +2,13 @@ import '@testing-library/jest-dom';
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ManifestForm } from 'components/Manifest';
+import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders } from 'test-utils';
+import { mockUserEndpoints, mockWasteEndpoints } from 'test-utils/mock';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
-import { setupServer } from 'msw/node';
-import { userApiMocks, wasteApiMocks } from 'test-utils/mock';
 
-const server = setupServer(...userApiMocks, ...wasteApiMocks);
+const server = setupServer(...mockUserEndpoints, ...mockWasteEndpoints);
 afterEach(() => cleanup());
 beforeAll(() => server.listen());
 afterAll(() => server.close());

@@ -9,7 +9,7 @@ import {
 
 /** mock Rest API*/
 const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
-export const userApiMocks = [
+export const mockUserEndpoints = [
   /** GET User */
   http.get(`${API_BASE_URL}/api/user`, () => {
     return HttpResponse.json({ ...createMockHaztrakUser() }, { status: 200 });

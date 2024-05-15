@@ -7,11 +7,11 @@ import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockHandler, createMockSite } from 'test-utils/fixtures';
 import { createMockProfileResponse } from 'test-utils/fixtures/mockUser';
-import { userApiMocks } from 'test-utils/mock';
-import { API_BASE_URL } from 'test-utils/mock/htApiMocks';
+import { mockUserEndpoints } from 'test-utils/mock';
+import { API_BASE_URL } from 'test-utils/mock/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
-const server = setupServer(...userApiMocks);
+const server = setupServer(...mockUserEndpoints);
 afterEach(() => cleanup());
 beforeAll(() => server.listen());
 afterAll(() => server.close()); // Disable API mocking after the tests are done.
