@@ -7,7 +7,7 @@ import React from 'react';
 import { HaztrakProfileResponse } from 'store/userSlice/user.slice';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockMTNHandler } from 'test-utils/fixtures';
-import { userApiMocks } from 'test-utils/mock';
+import { mockUserEndpoints } from 'test-utils/mock';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { undefined } from 'zod';
 
@@ -21,7 +21,7 @@ const mockProfile: HaztrakProfileResponse = {
   },
 };
 
-const server = setupServer(...userApiMocks);
+const server = setupServer(...mockUserEndpoints);
 afterEach(() => cleanup());
 beforeAll(() => server.listen());
 afterAll(() => server.close()); // Disable API mocking after the tests are done.

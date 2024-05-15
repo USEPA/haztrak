@@ -7,10 +7,10 @@ import React from 'react';
 import { HaztrakUser, ProfileSlice } from 'store';
 import { renderWithProviders, screen } from 'test-utils';
 import { createMockHaztrakUser } from 'test-utils/fixtures';
-import { userApiMocks } from 'test-utils/mock';
+import { mockUserEndpoints } from 'test-utils/mock';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
-const server = setupServer(...userApiMocks);
+const server = setupServer(...mockUserEndpoints);
 
 // pre-/post-test hooks
 beforeAll(() => server.listen());

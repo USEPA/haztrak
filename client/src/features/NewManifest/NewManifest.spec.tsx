@@ -7,8 +7,8 @@ import React from 'react';
 import { HaztrakProfileResponse } from 'store/userSlice/user.slice';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockSite } from 'test-utils/fixtures';
-import { userApiMocks } from 'test-utils/mock';
-import { API_BASE_URL } from 'test-utils/mock/htApiMocks';
+import { mockUserEndpoints } from 'test-utils/mock';
+import { API_BASE_URL } from 'test-utils/mock/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 const mySiteId = 'VATESTGEN001';
@@ -29,7 +29,7 @@ const mockProfile: HaztrakProfileResponse = {
   },
 };
 
-const server = setupServer(...userApiMocks);
+const server = setupServer(...mockUserEndpoints);
 server.use(
   http.get(`${API_BASE_URL}/api/user/profile`, () => {
     return HttpResponse.json({ ...mockProfile }, { status: 200 });

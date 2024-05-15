@@ -6,8 +6,8 @@ import '@testing-library/jest-dom';
 import { HaztrakProfileResponse } from 'store/userSlice/user.slice';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockRcrainfoSite } from 'test-utils/fixtures';
-import { userApiMocks } from 'test-utils/mock';
-import { API_BASE_URL } from 'test-utils/mock/htApiMocks';
+import { mockUserEndpoints } from 'test-utils/mock';
+import { API_BASE_URL } from 'test-utils/mock/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { HandlerSearchForm } from './HandlerSearchForm';
 
@@ -45,7 +45,7 @@ export const mockHandlerSearches = [
   }),
 ];
 
-const server = setupServer(...userApiMocks, ...mockHandlerSearches);
+const server = setupServer(...mockUserEndpoints, ...mockHandlerSearches);
 afterEach(() => {
   cleanup();
 });

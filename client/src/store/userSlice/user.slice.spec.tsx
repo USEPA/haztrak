@@ -4,10 +4,10 @@ import { setupServer } from 'msw/node';
 import { useEffect, useState } from 'react';
 import { useGetUserQuery, useUpdateUserMutation } from 'store';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { userApiMocks } from 'test-utils/mock';
+import { mockUserEndpoints } from 'test-utils/mock';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
-const server = setupServer(...userApiMocks);
+const server = setupServer(...mockUserEndpoints);
 afterEach(() => {
   cleanup();
 });

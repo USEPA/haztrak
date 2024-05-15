@@ -7,8 +7,8 @@ import React from 'react';
 import { renderWithProviders, screen } from 'test-utils';
 import { createMockHandler, createMockSite } from 'test-utils/fixtures';
 import { createMockProfileResponse } from 'test-utils/fixtures/mockUser';
-import { userApiMocks, wasteApiMocks } from 'test-utils/mock';
-import { API_BASE_URL } from 'test-utils/mock/htApiMocks';
+import { mockUserEndpoints, mockWasteEndpoints } from 'test-utils/mock';
+import { API_BASE_URL } from 'test-utils/mock/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 
 function TestComponent() {
@@ -23,7 +23,7 @@ function TestComponent() {
   );
 }
 
-const server = setupServer(...userApiMocks, ...wasteApiMocks);
+const server = setupServer(...mockUserEndpoints, ...mockWasteEndpoints);
 beforeAll(() => server.listen());
 afterAll(() => server.close());
 afterEach(() => cleanup());

@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node';
 import React from 'react';
 import { renderWithProviders, screen } from 'test-utils';
 import { createMockHandler, createMockSite } from 'test-utils/fixtures/mockHandler';
-import { htApiMocks, userApiMocks } from 'test-utils/mock';
+import { mockSiteEndpoints, mockUserEndpoints } from 'test-utils/mock';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import { SiteList } from './SiteList';
 
@@ -13,7 +13,7 @@ const mockSites = [
   createMockSite({ handler: mockHandler1 }),
   createMockSite({ handler: mockHandler2 }),
 ];
-const server = setupServer(...userApiMocks, ...htApiMocks);
+const server = setupServer(...mockUserEndpoints, ...mockSiteEndpoints);
 
 // pre-/post-test hooks
 beforeAll(() => server.listen());
