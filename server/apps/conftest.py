@@ -10,6 +10,7 @@ import pytest
 import pytest_mock
 import responses
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from faker import Faker
 from faker.providers import BaseProvider
 from rest_framework.test import APIClient
@@ -187,14 +188,18 @@ def rcra_site_factory(db, address_factory, contact_factory):
     ) -> RcraSite:
         fake = Faker()
         fake.add_provider(SiteIDProvider)
-        return RcraSite.objects.create(
-            epa_id=epa_id or fake.site_id(),
-            name=name or fake.name(),
-            site_type=site_type,
-            site_address=site_address or address_factory(),
-            mail_address=mail_address or address_factory(),
-            contact=contact_factory(),
-        )
+        while True:
+            try:
+                return RcraSite.objects.create(
+                    epa_id=epa_id or fake.site_id(),
+                    name=name or fake.name(),
+                    site_type=site_type,
+                    site_address=site_address or address_factory(),
+                    mail_address=mail_address or address_factory(),
+                    contact=contact_factory(),
+                )
+            except IntegrityError:
+                epa_id = None
 
     return create_rcra_site
 

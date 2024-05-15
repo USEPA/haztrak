@@ -4,6 +4,7 @@ from datetime import UTC, datetime
 from typing import Optional
 
 import pytest
+from django.db import IntegrityError
 from faker import Faker
 from faker.providers import BaseProvider
 
@@ -36,18 +37,24 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
     ) -> Manifest:
         fake = Faker()
         fake.add_provider(MtnProvider)
-        return Manifest.objects.create(
-            mtn=mtn or fake.mtn(),
-            status=status or fake.status(),
-            created_date=datetime.now(UTC),
-            potential_ship_date=datetime.now(UTC),
-            generator=generator
-            or manifest_handler_factory(
-                rcra_site=rcra_site_factory(site_type=RcraSiteType.GENERATOR)
-            ),
-            tsdf=tsdf
-            or manifest_handler_factory(rcra_site=rcra_site_factory(site_type=RcraSiteType.TSDF)),
-        )
+        while True:
+            try:
+                return Manifest.objects.create(
+                    mtn=mtn or fake.mtn(),
+                    status=status or fake.status(),
+                    created_date=datetime.now(UTC),
+                    potential_ship_date=datetime.now(UTC),
+                    generator=generator
+                    or manifest_handler_factory(
+                        rcra_site=rcra_site_factory(site_type=RcraSiteType.GENERATOR)
+                    ),
+                    tsdf=tsdf
+                    or manifest_handler_factory(
+                        rcra_site=rcra_site_factory(site_type=RcraSiteType.TSDF)
+                    ),
+                )
+            except IntegrityError:
+                mtn = None
 
     return create_manifest
 
