@@ -5,9 +5,7 @@ from typing import Optional
 from django.db import transaction
 from django.db.models import QuerySet
 
-from apps.core.services import get_rcrainfo_client
-from apps.manifest.services import EManifest, PullManifestsResult, TaskResponse
-from apps.manifest.services.emanifest_search import EmanifestSearch
+from apps.manifest.services import TaskResponse
 from apps.manifest.tasks import sync_site_manifests
 from apps.site.models import Site
 
@@ -20,43 +18,7 @@ class SiteServiceError(Exception):
 
 
 @transaction.atomic
-def sync_manifests(*, site_id: str, username: str) -> PullManifestsResult:
-    """Pull manifests and update the last sync date for a site"""
-    try:
-        rcra_client = get_rcrainfo_client(username=username)
-        site = get_user_site(username=username, epa_id=site_id)
-        updated_mtn = _get_updated_mtn(
-            site_id=site.rcra_site.epa_id,
-            last_sync_date=site.last_rcrainfo_manifest_sync,
-            rcra_client=rcra_client,
-        )
-        updated_mtn = updated_mtn[:15]  # temporary limit to 15
-        emanifest = EManifest(username=username, rcrainfo=rcra_client)
-        results: PullManifestsResult = emanifest.pull(tracking_numbers=updated_mtn)
-        update_last_emanifest_sync(site=site)
-        return results
-    except Site.DoesNotExist:
-        logger.warning(f"Site Does not exists {site_id}")
-        raise SiteServiceError(f"Site Does not exists {site_id}")
-
-
-def _get_updated_mtn(site_id: str, last_sync_date: datetime, rcra_client) -> list[str]:
-    logger.info(f"retrieving updated MTN for site {site_id}")
-    response = (
-        EmanifestSearch(rcra_client)
-        .add_date_type("UpdatedDate")
-        .add_site_id(site_id)
-        .add_start_date(last_sync_date)
-        .add_end_date()
-        .execute()
-    )
-    if response.ok:
-        return response.json()
-    return []
-
-
-@transaction.atomic
-def update_last_emanifest_sync(site: Site, last_sync_date: Optional[datetime] = None):
+def update_emanifest_sync_date(site: Site, last_sync_date: Optional[datetime] = None):
     """Update the last sync date for a site. Defaults to now if no date is provided."""
     if last_sync_date is not None:
         site.last_rcrainfo_manifest_sync = last_sync_date
