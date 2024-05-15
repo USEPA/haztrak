@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import UTC, datetime
 
 import pytest
 
@@ -101,7 +101,7 @@ class TestEmanifestSearchClass:
             assert search.end_date is not None
 
         def test_add_end_date_defaults_to_now(self):
-            now = datetime.now()
+            now = datetime.now(UTC)
             search = EmanifestSearch().add_end_date()
             end_date = datetime.strptime(search.end_date, RcrainfoService.datetime_format)
             assert end_date.day == now.day
