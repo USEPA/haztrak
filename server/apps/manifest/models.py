@@ -32,7 +32,7 @@ def validate_mtn(value):
 
 
 class ManifestHandlerFilter(ABC):
-    """Abstract class with methods for filtering manifests by handler"""
+    """Interface for filtering manifests by handler"""
 
     @abstractmethod
     def filter_by_epa_id(self, epa_id: str) -> QuerySet:
@@ -40,28 +40,28 @@ class ManifestHandlerFilter(ABC):
 
 
 class GeneratorFilter(ManifestHandlerFilter):
-    """ManifestHandlerFilter implementation for filtering manifests by generator"""
+    """implementation for filtering manifests by generator"""
 
     def filter_by_epa_id(self, epa_id: str) -> Q:
         return Q(generator__rcra_site__epa_id=epa_id)
 
 
 class TransporterFilter(ManifestHandlerFilter):
-    """ManifestHandlerFilter implementation for filtering manifests by Transporter"""
+    """implementation for filtering manifests by Transporter"""
 
     def filter_by_epa_id(self, epa_id: str) -> Q:
         return Q(transporters__rcra_site__epa_id=epa_id)
 
 
 class TsdfFilter(ManifestHandlerFilter):
-    """ManifestHandlerFilter implementation for filtering manifests by receiving facility"""
+    """implementation for filtering manifests by receiving facility"""
 
     def filter_by_epa_id(self, epa_id: str) -> Q:
         return Q(tsdf__rcra_site__epa_id=epa_id)
 
 
 class AllHandlerFilter(ManifestHandlerFilter):
-    """ManifestHandlerFilter implementation for filtering manifests by all handlers types"""
+    """implementation for filtering manifests by all handlers types"""
 
     def filter_by_epa_id(self, epa_id: str) -> Q:
         return Q(
@@ -89,13 +89,13 @@ class HandlerFilterFactory:
 
 
 class ManifestManager(models.Manager):
-    """Manifest Model database querying interface"""
+    """Manifest repository manager"""
 
     def filter_existing_mtn(self, mtn: List[str]) -> QuerySet:
         """Filter non-existent manifest tracking numbers (MTN)."""
         return self.model.objects.filter(mtn__in=mtn)
 
-    def filter_by_handler_epa_id(
+    def filter_by_epa_id_and_site_type(
         self, epa_ids: [str], site_type: RcraSiteType | Literal["all"] = "all"
     ) -> QuerySet:
         """Filter manifests by site_id and site_type"""
@@ -153,9 +153,7 @@ class ManifestManager(models.Manager):
 
 
 class Manifest(models.Model):
-    """
-    Model definition the e-Manifest Uniform Hazardous Waste Manifest
-    """
+    """Model definition the RCRA Uniform Hazardous Waste Manifest"""
 
     class Meta:
         ordering = ["update_date", "mtn"]
@@ -248,7 +246,7 @@ class Manifest(models.Model):
         on_delete=models.PROTECT,
         related_name="generator",
     )
-    # transporters
+    # transporters - one-to-many relationship, a manifest can have many transporters
     tsdf = models.ForeignKey(
         settings.TRAK_HANDLER_MODEL,
         verbose_name="designated facility",
@@ -256,7 +254,7 @@ class Manifest(models.Model):
         related_name="designated_facility",
     )
     broker = models.JSONField(null=True, blank=True)
-    # wastes
+    # wastes - one-to-many relationship, a manifest can have many waste lines
     rejection = models.BooleanField(
         blank=True,
         null=True,

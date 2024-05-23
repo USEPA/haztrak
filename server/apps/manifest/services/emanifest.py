@@ -133,7 +133,7 @@ class EManifest:
     def _filter_mtn(
         *, mtn: list[str], site_id: str, site_type: Literal["Generator", "Tsdf", "Transporter"]
     ) -> list[str]:
-        handler_filter = Manifest.objects.filter_by_handler_epa_id([site_id], site_type)
+        handler_filter = Manifest.objects.filter_by_epa_id_and_site_type([site_id], site_type)
         existing_mtn = Manifest.objects.filter_existing_mtn(mtn=mtn)
         filtered_mtn = handler_filter & existing_mtn
         return [manifest.mtn for manifest in filtered_mtn]

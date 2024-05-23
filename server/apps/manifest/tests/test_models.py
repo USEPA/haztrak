@@ -76,7 +76,7 @@ class TestManifestManager:
         my_handler = manifest_handler_factory(rcra_site=txd987654321)
         manifest_factory(generator=my_handler)
         manifest_factory(tsdf=my_handler)
-        assert Manifest.objects.filter_by_handler_epa_id(epa_id).count() == 2
+        assert Manifest.objects.filter_by_epa_id_and_site_type(epa_id).count() == 2
 
     def test_filter_manifests_where_site_is_generator(
         self, manifest_factory, rcra_site_factory, manifest_handler_factory
@@ -87,7 +87,8 @@ class TestManifestManager:
         manifest_factory(generator=manifest_generator)
         manifest_factory(tsdf=manifest_generator)
         assert (
-            Manifest.objects.filter_by_handler_epa_id(epa_id, RcraSiteType.GENERATOR).count() == 1
+            Manifest.objects.filter_by_epa_id_and_site_type(epa_id, RcraSiteType.GENERATOR).count()
+            == 1
         )
 
     def test_filter_manifests_where_site_is_tsdf(
@@ -98,7 +99,9 @@ class TestManifestManager:
         tsdf = manifest_handler_factory(rcra_site=txd987654321)
         manifest_factory()
         manifest_factory(tsdf=tsdf)
-        assert Manifest.objects.filter_by_handler_epa_id(epa_id, RcraSiteType.TSDF).count() == 1
+        assert (
+            Manifest.objects.filter_by_epa_id_and_site_type(epa_id, RcraSiteType.TSDF).count() == 1
+        )
 
     def test_filter_manifest_where_site_is_transporter(
         self,
@@ -112,6 +115,8 @@ class TestManifestManager:
         manifest = manifest_factory()
         manifest_transporter_factory(rcra_site=txd987654321, manifest=manifest)
         assert (
-            Manifest.objects.filter_by_handler_epa_id(epa_id, RcraSiteType.TRANSPORTER).count()
+            Manifest.objects.filter_by_epa_id_and_site_type(
+                epa_id, RcraSiteType.TRANSPORTER
+            ).count()
             == 1
         )
