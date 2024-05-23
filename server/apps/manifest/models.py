@@ -396,7 +396,7 @@ class AdditionalInfo(models.Model):
         null=True,
         blank=True,
     )
-    # comments ToDo: implement Comment model, one-to-many relationship with additional info
+    # comments ToDo: implement Comment model
     comments = models.JSONField(
         null=True,
         blank=True,
@@ -413,9 +413,7 @@ class AdditionalInfo(models.Model):
 
 
 class PortOfEntry(models.Model):
-    """
-    Contains location information pertaining to where hazardous waste was imported
-    """
+    """location of where hazardous waste is imported or exported"""
 
     class Meta:
         verbose_name = "Port of Entry"
