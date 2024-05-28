@@ -6,7 +6,7 @@ from django.db import models
 from apps.profile.models import RcrainfoProfile
 
 
-class TrakOrg(models.Model):
+class Org(models.Model):
     """Haztrak Organization"""
 
     class Meta:
@@ -62,7 +62,7 @@ class TrakOrgAccess(models.Model):
         verbose_name_plural = "Org Permissions"
 
     org = models.ForeignKey(
-        TrakOrg,
+        Org,
         on_delete=models.CASCADE,
         null=True,
         blank=True,

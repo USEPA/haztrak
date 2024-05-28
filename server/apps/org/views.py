@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 
-from apps.org.models import TrakOrg
+from apps.org.models import Org
 from apps.org.serializers import TrakOrgSerializer
 from apps.org.services import get_org_by_id
 
@@ -17,7 +17,7 @@ class TrakOrgDetailsView(RetrieveAPIView):
     """Retrieve details for a given Org"""
 
     serializer_class = TrakOrgSerializer
-    queryset = TrakOrg.objects.all()
+    queryset = Org.objects.all()
     lookup_url_kwarg = "org_id"
 
     @method_decorator(cache_page(60 * 15))
