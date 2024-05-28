@@ -1,7 +1,7 @@
 from django.urls import path
 
-from apps.org.views import TrakOrgDetailsView
+from apps.org.views import OrgDetailsView
 
 urlpatterns = [
-    path("org/<str:org_id>", TrakOrgDetailsView.as_view()),
+    path("org/<str:org_id>", OrgDetailsView.as_view()),
 ]

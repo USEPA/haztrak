@@ -13,7 +13,7 @@ from apps.org.services import get_org_by_id
 logger = logging.getLogger(__name__)
 
 
-class TrakOrgDetailsView(RetrieveAPIView):
+class OrgDetailsView(RetrieveAPIView):
     """Retrieve details for a given Org"""
 
     serializer_class = TrakOrgSerializer
