@@ -4,7 +4,7 @@ from rest_framework.test import APIRequestFactory, force_authenticate
 from apps.org.views import OrgDetailsView
 
 
-class TestTrakOrgDetailsView:
+class TestOrgDetailsView:
     base_url = "/api/org"
     factory = APIRequestFactory()
 

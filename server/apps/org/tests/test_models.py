@@ -1,7 +1,7 @@
 from apps.org.models import Org
 
 
-class TestTrakOrgModel:
+class TestOrgModel:
     def test_haztrak_org_factory(self, org_factory):
         org = org_factory()
         assert isinstance(org, Org)

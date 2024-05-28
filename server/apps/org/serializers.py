@@ -4,7 +4,7 @@ from rest_framework.serializers import ModelSerializer
 from apps.org.models import Org
 
 
-class TrakOrgSerializer(ModelSerializer):
+class OrgSerializer(ModelSerializer):
     """Haztrak Organization Model Serializer"""
 
     id = serializers.CharField(
