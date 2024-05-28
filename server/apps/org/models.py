@@ -54,7 +54,7 @@ class Org(models.Model):
         return f"{self.name}"
 
 
-class TrakOrgAccess(models.Model):
+class OrgAccess(models.Model):
     """Organization Permissions"""
 
     class Meta:

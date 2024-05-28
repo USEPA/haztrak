@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from apps.org.models import Org, TrakOrgAccess
+from apps.org.models import Org, OrgAccess
 from apps.site.models import Site
 
-admin.site.register(TrakOrgAccess)
+admin.site.register(OrgAccess)
 
 
 @admin.register(Org)

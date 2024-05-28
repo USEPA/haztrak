@@ -18,7 +18,7 @@ from rest_framework.test import APIClient
 from apps.core.models import (
     TrakUser,
 )
-from apps.org.models import Org, TrakOrgAccess
+from apps.org.models import Org, OrgAccess
 from apps.profile.models import RcrainfoProfile, TrakProfile
 from apps.rcrasite.models import (
     Address,
@@ -361,8 +361,8 @@ def org_access_factory(db, user_factory, org_factory):
     def create_permission(
         org: Optional[Org] = None,
         user: Optional[TrakUser] = None,
-    ) -> TrakOrgAccess:
-        return TrakOrgAccess.objects.create(
+    ) -> OrgAccess:
+        return OrgAccess.objects.create(
             org=org or org_factory(),
             user=user or user_factory(),
         )
