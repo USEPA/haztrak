@@ -1,10 +1,10 @@
-from apps.org.models import TrakOrg
+from apps.org.models import Org
 
 
-class TestTrakOrgModel:
+class TestOrgModel:
     def test_haztrak_org_factory(self, org_factory):
         org = org_factory()
-        assert isinstance(org, TrakOrg)
+        assert isinstance(org, Org)
 
     def test_getting_org_api_credentials(
         self, org_factory, rcrainfo_profile_factory, user_factory, profile_factory
@@ -45,3 +45,11 @@ class TestTrakOrgModel:
         org = org_factory(admin=admin)
         # Act/Assert
         assert org.is_rcrainfo_integrated
+
+    class TestGetUserOrg:
+        def test_get_user_org(self, user_factory, org_factory, org_access_factory):
+            user = user_factory()
+            org = org_factory()
+            org_access_factory(user=user, org=org)
+            user_org = Org.objects.get_by_username(user.username)
+            assert str(user_org) == str(org)

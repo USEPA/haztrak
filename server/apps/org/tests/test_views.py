@@ -1,10 +1,10 @@
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.org.views import TrakOrgDetailsView
+from apps.org.views import OrgDetailsView
 
 
-class TestTrakOrgDetailsView:
+class TestOrgDetailsView:
     base_url = "/api/org"
     factory = APIRequestFactory()
 
@@ -16,6 +16,6 @@ class TestTrakOrgDetailsView:
             f"{self.base_url}/{org.id}",
         )
         force_authenticate(request, user)
-        response = TrakOrgDetailsView.as_view()(request, org_id=org.id)
+        response = OrgDetailsView.as_view()(request, org_id=org.id)
         assert response.status_code == status.HTTP_200_OK
         assert response.data["id"] == org.id

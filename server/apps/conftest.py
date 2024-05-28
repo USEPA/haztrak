@@ -18,7 +18,7 @@ from rest_framework.test import APIClient
 from apps.core.models import (
     TrakUser,
 )
-from apps.org.models import TrakOrg, TrakOrgAccess
+from apps.org.models import Org, OrgAccess
 from apps.profile.models import RcrainfoProfile, TrakProfile
 from apps.rcrasite.models import (
     Address,
@@ -223,8 +223,8 @@ def org_factory(db, rcrainfo_profile_factory, user_factory, faker):
         org_id: Optional[str] = None,
         name: Optional[str] = None,
         admin: Optional[TrakUser] = None,
-    ) -> TrakOrg:
-        return TrakOrg.objects.create(
+    ) -> Org:
+        return Org.objects.create(
             id=org_id or faker.uuid4(),
             name=name or faker.company(),
             admin=admin or user_factory(),
@@ -240,7 +240,7 @@ def site_factory(db, rcra_site_factory, org_factory, faker):
     def create_site(
         rcra_site: Optional[RcraSite] = None,
         name: Optional[str] = None,
-        org: Optional[TrakOrg] = None,
+        org: Optional[Org] = None,
         last_rcrainfo_manifest_sync: Optional[datetime.datetime] = None,
     ) -> Site:
         return Site.objects.create(
@@ -331,7 +331,7 @@ def user_with_org_factory(
 
     def create_fixtures(
         user: Optional[User] = None,
-        org: Optional[TrakOrg] = None,
+        org: Optional[Org] = None,
         admin_rcrainfo_profile: Optional[RcrainfoProfile] = None,
         is_rcrainfo_enabled: Optional[bool] = True,
     ):
@@ -359,10 +359,10 @@ def org_access_factory(db, user_factory, org_factory):
     """Abstract factory for creating a model that represents a user's access to an organization"""
 
     def create_permission(
-        org: Optional[TrakOrg] = None,
+        org: Optional[Org] = None,
         user: Optional[TrakUser] = None,
-    ) -> TrakOrgAccess:
-        return TrakOrgAccess.objects.create(
+    ) -> OrgAccess:
+        return OrgAccess.objects.create(
             org=org or org_factory(),
             user=user or user_factory(),
         )

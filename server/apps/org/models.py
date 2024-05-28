@@ -6,8 +6,17 @@ from django.db import models
 from apps.profile.models import RcrainfoProfile
 
 
-class TrakOrg(models.Model):
+class OrgManager(models.Manager):
+    """Organization Repository manager"""
+
+    def get_by_username(self, username: str) -> "Org":
+        return self.get(orgaccess__user__username=username)
+
+
+class Org(models.Model):
     """Haztrak Organization"""
+
+    objects = OrgManager()
 
     class Meta:
         verbose_name = "Organization"
@@ -54,7 +63,7 @@ class TrakOrg(models.Model):
         return f"{self.name}"
 
 
-class TrakOrgAccess(models.Model):
+class OrgAccess(models.Model):
     """Organization Permissions"""
 
     class Meta:
@@ -62,7 +71,7 @@ class TrakOrgAccess(models.Model):
         verbose_name_plural = "Org Permissions"
 
     org = models.ForeignKey(
-        TrakOrg,
+        Org,
         on_delete=models.CASCADE,
         null=True,
         blank=True,

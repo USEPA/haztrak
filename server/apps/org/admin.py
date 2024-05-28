@@ -1,12 +1,12 @@
 from django.contrib import admin
 
-from apps.org.models import TrakOrg, TrakOrgAccess
+from apps.org.models import Org, OrgAccess
 from apps.site.models import Site
 
-admin.site.register(TrakOrgAccess)
+admin.site.register(OrgAccess)
 
 
-@admin.register(TrakOrg)
+@admin.register(Org)
 class HaztrakOrgAdmin(admin.ModelAdmin):
     list_display = ["__str__", "number_of_sites"]
     readonly_fields = ["rcrainfo_integrated"]
@@ -17,5 +17,5 @@ class HaztrakOrgAdmin(admin.ModelAdmin):
     rcrainfo_integrated.boolean = True
     rcrainfo_integrated.short_description = "Admin has setup RCRAInfo integration"
 
-    def number_of_sites(self, org: TrakOrg):
+    def number_of_sites(self, org: Org):
         return Site.objects.filter(org=org).count()

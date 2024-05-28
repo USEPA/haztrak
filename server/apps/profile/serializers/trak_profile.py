@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.org.serializers import TrakOrgSerializer
+from apps.org.serializers import OrgSerializer
 from apps.profile.models import TrakProfile
 from apps.site.serializers import SiteAccessSerializer
 
@@ -16,7 +16,7 @@ class TrakProfileSerializer(ModelSerializer):
         source="user.site_permissions",
         many=True,
     )
-    org = TrakOrgSerializer(
+    org = OrgSerializer(
         source="user.org_permissions.org",
         required=False,
     )
