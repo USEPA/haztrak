@@ -6,8 +6,17 @@ from django.db import models
 from apps.profile.models import RcrainfoProfile
 
 
+class OrgManager(models.Manager):
+    """Organization Repository manager"""
+
+    def get_by_username(self, username: str) -> "Org":
+        return self.get(orgaccess__user__username=username)
+
+
 class Org(models.Model):
     """Haztrak Organization"""
+
+    objects = OrgManager()
 
     class Meta:
         verbose_name = "Organization"

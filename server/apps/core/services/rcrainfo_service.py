@@ -119,7 +119,7 @@ def get_rcrainfo_client(
             **kwargs,
         )
     try:
-        org: Org = Org.objects.get(orgaccess__user__username=username)
+        org: Org = Org.objects.get_by_username(username)
         if org.is_rcrainfo_integrated:
             api_id, api_key = org.rcrainfo_api_id_key
         return RcrainfoService(
