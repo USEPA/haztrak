@@ -101,7 +101,7 @@ style guide. Most popular IDEs have a plugin to support these configs.
 - pre-commit
   - [pre-commit](https://pre-commit.com/) hooks are set to run a number of linting and formatting checks before commits on any branch is accepted.
   ```shell
-   pip install -r requirements_dev.txt
+   pip install -r server/requirements_dev.txt
    pre-commit install
   ```
 - .editorconfig
