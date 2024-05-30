@@ -8,6 +8,7 @@ import { useReadOnly } from 'hooks/manifest';
 import React, { useState } from 'react';
 import { Accordion, Button, Card, Col, Row, Table, useAccordionButton } from 'react-bootstrap';
 import { UseFieldArrayReturn } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 import { TransporterRowActions } from './TransporterRowActions';
 
 interface TransporterTableProps {
@@ -52,7 +53,7 @@ function TransporterTable({ transporters, arrayFieldMethods, setupSign }: Transp
     <>
       <Accordion ref={parent}>
         {transporters.map((transporter, index) => {
-          const transporterKey: string = `${transporter.epaSiteId}-${index.toString()}`;
+          const transporterKey: string = transporter.clientKey || uuidv4();
           return (
             <Card key={transporterKey} className="py-2 ps-4 pe-2 my-2">
               <Row className="d-flex justify-content-around">

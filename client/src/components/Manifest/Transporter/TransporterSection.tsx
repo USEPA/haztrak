@@ -6,9 +6,14 @@ import { useReadOnly } from 'hooks/manifest';
 import { useHandlerSearchConfig } from 'hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
 import { Alert } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 
 interface TransporterSectionProps {
   setupSign: () => void;
+}
+
+interface TransporterWithKey extends Transporter {
+  key: string;
 }
 
 export function TransporterSection({ setupSign }: TransporterSectionProps) {
@@ -20,7 +25,14 @@ export function TransporterSection({ setupSign }: TransporterSectionProps) {
     control: manifestForm.control,
     name: 'transporters',
   });
-  const transporters: Array<Transporter> = manifestForm.getValues('transporters');
+  const transporters = transporterForm.fields;
+
+  transporters.forEach((transporter, index) => {
+    if (!transporter.clientKey) {
+      // @ts-ignore
+      manifestForm.setValue(`transporters[${index}].clientKey`, uuidv4());
+    }
+  });
 
   return (
     <>
