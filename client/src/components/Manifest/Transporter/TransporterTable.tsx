@@ -8,6 +8,7 @@ import { useReadOnly } from 'hooks/manifest';
 import React, { useState } from 'react';
 import { Accordion, Button, Card, Col, Row, Table, useAccordionButton } from 'react-bootstrap';
 import { UseFieldArrayReturn } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 import { TransporterRowActions } from './TransporterRowActions';
 
 interface TransporterTableProps {
@@ -52,8 +53,9 @@ function TransporterTable({ transporters, arrayFieldMethods, setupSign }: Transp
     <>
       <Accordion ref={parent}>
         {transporters.map((transporter, index) => {
+          const transporterKey: string = transporter.clientKey || uuidv4();
           return (
-            <Card key={transporter.epaSiteId} className="py-2 ps-4 pe-2 my-2">
+            <Card key={transporterKey} className="py-2 ps-4 pe-2 my-2">
               <Row className="d-flex justify-content-around">
                 <Col xs={8} className="d-flex align-items-center">
                   <h5 className="mb-0 me-3">{transporter.order} </h5>
@@ -76,19 +78,19 @@ function TransporterTable({ transporters, arrayFieldMethods, setupSign }: Transp
                 </Col>
                 <Col xs={2} className="d-flex justify-content-end align-items-center">
                   {readOnly ? (
-                    <CustomToggle eventKey={transporter.epaSiteId}></CustomToggle>
+                    <CustomToggle eventKey={transporterKey}></CustomToggle>
                   ) : (
                     <TransporterRowActions
                       removeTransporter={arrayFieldMethods.remove}
                       swapTransporter={arrayFieldMethods.swap}
                       index={index}
                       length={transporters?.length}
-                      eventKey={transporter.epaSiteId}
+                      eventKey={transporterKey}
                     />
                   )}
                 </Col>
               </Row>
-              <Accordion.Collapse eventKey={transporter.epaSiteId}>
+              <Accordion.Collapse eventKey={transporterKey}>
                 <Card.Body>
                   <Table responsive>
                     <thead>

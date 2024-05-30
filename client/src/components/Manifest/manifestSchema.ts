@@ -47,6 +47,7 @@ export const handlerSchema = rcraSite.extend({
 export type Handler = z.infer<typeof handlerSchema>;
 
 export const transporterSchema = handlerSchema.extend({
+  clientKey: z.string().optional(),
   order: z.number(),
   manifest: z.number().optional(),
 });

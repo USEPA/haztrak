@@ -21,3 +21,9 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: vi.fn(),
   })),
 });
+
+// Mocking the useAutoAnimate hook which causes error in the test environment
+// https://github.com/formkit/auto-animate/issues/149#issuecomment-1782772600
+vi.mock('@formkit/auto-animate/react', () => ({
+  useAutoAnimate: () => [null],
+}));

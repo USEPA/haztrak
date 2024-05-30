@@ -54,7 +54,7 @@ export function TransporterRowActions({
         swapTransporter(index, index - 1);
       },
       disabled: isFirst,
-      label: `move transporter ${index} up`,
+      label: `move transporter ${index + 1} up`,
     },
     {
       text: 'Move Down',
@@ -68,7 +68,7 @@ export function TransporterRowActions({
         swapTransporter(index, index + 1);
       },
       disabled: isLast,
-      label: `move transporter ${index} down`,
+      label: `move transporter ${index + 1} down`,
     },
     {
       text: 'Remove',
@@ -77,7 +77,7 @@ export function TransporterRowActions({
         removeTransporter(index);
       },
       disabled: false,
-      label: `remove transporter ${index}`,
+      label: `remove transporter ${index + 1}`,
     },
     {
       text: open ? 'Close' : 'Details',
@@ -86,7 +86,7 @@ export function TransporterRowActions({
         decoratedOnClick(event);
       },
       disabled: false,
-      label: `View transporter ${index} details`,
+      label: `View transporter ${index + 1} details`,
     },
   ];
 

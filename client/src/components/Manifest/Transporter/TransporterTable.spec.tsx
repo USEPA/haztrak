@@ -94,7 +94,7 @@ describe('TransporterTable', () => {
     });
     for (let i = 1; i < TRAN_ARRAY.length; i++) {
       await userEvent.click(actionDropdowns[i]);
-      expect(screen.getByTitle(`move transporter ${i} up`)).not.toBeDisabled();
+      expect(screen.getByTitle(`move transporter ${i + 1} up`)).not.toBeDisabled();
     }
   });
   test('All but last move-down buttons are not disabled', async () => {
@@ -113,7 +113,33 @@ describe('TransporterTable', () => {
     });
     for (let i = 0; i < TRAN_ARRAY.length; i++) {
       await userEvent.click(actionDropdowns[i]);
-      expect(screen.getByTitle(`move transporter ${i} down`)).not.toBeDisabled();
+      expect(screen.getByTitle(`move transporter ${i + 1} down`)).not.toBeDisabled();
     }
   });
+});
+test('Expanding transporter opens one accordion only', async () => {
+  const emptyArrayFieldMethods = {}; // empty method placeholders to fulfill required prop
+  TRAN_ARRAY.push({
+    ...createMockTransporter({ epaSiteId: HANDLER_ID_1, name: HANDLER_NAME_1, order: 3 }),
+  });
+
+  renderWithProviders(
+    <TransporterTable
+      setupSign={mockSetupSign}
+      // @ts-ignore
+      arrayFieldMethods={emptyArrayFieldMethods}
+      transporters={TRAN_ARRAY}
+    />,
+    { preloadedState: { manifest: { readOnly: false } } }
+  );
+  const actionDropdown = await screen.findByRole('button', {
+    name: /transporter 1 actions/,
+  });
+  await userEvent.click(actionDropdown);
+  const detailButton = await screen.findByTitle('View transporter 1 details');
+  await userEvent.click(detailButton);
+
+  const accordion = document.querySelectorAll('.accordion-collapse.collapse.show');
+  expect(accordion).toHaveLength(1);
+  expect(accordion[0]).toBeInTheDocument();
 });
