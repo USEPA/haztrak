@@ -12,10 +12,6 @@ interface TransporterSectionProps {
   setupSign: () => void;
 }
 
-interface TransporterWithKey extends Transporter {
-  key: string;
-}
-
 export function TransporterSection({ setupSign }: TransporterSectionProps) {
   const [, setSearchConfigs] = useHandlerSearchConfig();
   const [readOnly] = useReadOnly();
@@ -25,7 +21,7 @@ export function TransporterSection({ setupSign }: TransporterSectionProps) {
     control: manifestForm.control,
     name: 'transporters',
   });
-  const transporters = transporterForm.fields;
+  const transporters = manifestForm.watch('transporters');
 
   transporters.forEach((transporter, index) => {
     if (!transporter.clientKey) {
