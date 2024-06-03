@@ -96,3 +96,19 @@ class TestSiteManager:
         )
         assert isinstance(returned_site, Site)
         assert returned_site == site
+
+    def test_filter_by_epa_ids(self, site_factory):
+        site = site_factory()
+        returned_sites = Site.objects.filter_by_epa_ids([site.rcra_site.epa_id])
+        assert isinstance(returned_sites, QuerySet)
+        assert site in returned_sites
+
+    def test_combining_query_interfaces(self, site_factory, site_access_factory, user_factory):
+        user = user_factory()
+        site = site_factory()
+        site_access_factory(site=site, user=user)
+        returned_site = Site.objects.filter_by_username(user.username).get_by_epa_id(
+            site.rcra_site.epa_id
+        )
+        assert isinstance(returned_site, Site)
+        assert returned_site == site

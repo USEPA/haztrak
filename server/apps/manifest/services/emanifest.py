@@ -65,7 +65,7 @@ class PullManifestsResult(TypedDict):
 class EManifest:
     """IO interface with the e-Manifest system."""
 
-    def __init__(self, *, username: str, rcrainfo: Optional[RcrainfoService] = None):
+    def __init__(self, *, username: Optional[str], rcrainfo: Optional[RcrainfoService] = None):
         self.username = username
         self.rcrainfo = rcrainfo or get_rcrainfo_client(username=username)
 
