@@ -7,7 +7,7 @@ from django.db import transaction
 
 from apps.core.models import TrakUser
 from apps.core.services import RcrainfoService, get_rcrainfo_client
-from apps.profile.models import RcrainfoProfile, RcrainfoSiteAccess, TrakProfile
+from apps.profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 from apps.profile.serializers import RcrainfoSitePermissionsSerializer
 from apps.rcrasite.models import RcraSite
 from apps.rcrasite.services import RcraSiteService
@@ -15,19 +15,19 @@ from apps.site.services import SiteServiceError
 
 
 @transaction.atomic
-def get_or_create_profile(*, username: str) -> tuple[TrakProfile, bool]:
+def get_or_create_profile(*, username: str) -> tuple[Profile, bool]:
     """Retrieve a user's HaztrakProfile"""
     user = TrakUser.objects.get(username=username)
-    profile, created = TrakProfile.objects.get_or_create(user=user)
+    profile, created = Profile.objects.get_or_create(user=user)
     if created:
         profile.user = TrakUser.objects.get(username=username)
         profile.save()
     return profile, created
 
 
-def get_user_profile(*, user: settings.AUTH_USER_MODEL) -> TrakProfile:
+def get_user_profile(*, user: settings.AUTH_USER_MODEL) -> Profile:
     """Retrieve a user's Profile"""
-    return TrakProfile.objects.get_profile_by_user(user=user)
+    return Profile.objects.get_profile_by_user(user=user)
 
 
 def get_user_rcrainfo_profile(*, user: settings.AUTH_USER_MODEL) -> RcrainfoProfile:

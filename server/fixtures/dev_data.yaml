@@ -273,17 +273,17 @@
   fields:
     org: efb9e104-7f61-4365-a9af-9d7b55c854c4
     user: 4ac96f68-42cf-47ea-bffb-f24d423dbc35
-- model: profile.trakprofile
+- model: profile.profile
   pk: c65dbee9-b6bf-400e-93e0-90a749cc2939
   fields:
     user: 8062d496-15f1-485d-961c-a8e5fa118dde
     rcrainfo_profile: d74f904a-7843-4a60-862c-3b94b6051359
-- model: profile.trakprofile
+- model: profile.profile
   pk: 186642a9-7b5f-4bcb-b328-0fdf8b43f191
   fields:
     user: a0ba4966-aa53-44c8-be1a-0a0d2d6b6acd
     rcrainfo_profile: 1fd27bec-8743-4eb3-a44c-fd063ea62021
-- model: profile.trakprofile
+- model: profile.profile
   pk: 87e355dd-1898-4a0a-81c3-1e9ac8473143
   fields:
     user: 4ac96f68-42cf-47ea-bffb-f24d423dbc35

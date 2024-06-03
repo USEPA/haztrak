@@ -5,8 +5,8 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpd
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.profile.models import RcrainfoProfile, TrakProfile
-from apps.profile.serializers import RcrainfoProfileSerializer, TrakProfileSerializer
+from apps.profile.models import Profile, RcrainfoProfile
+from apps.profile.serializers import ProfileSerializer, RcrainfoProfileSerializer
 from apps.profile.services import get_user_profile
 from apps.rcrasite.tasks import sync_user_rcrainfo_sites
 
@@ -14,15 +14,15 @@ from apps.rcrasite.tasks import sync_user_rcrainfo_sites
 class TrakProfileDetailsView(RetrieveAPIView):
     """Displays a user's HaztrakProfile"""
 
-    queryset = TrakProfile.objects.all()
-    serializer_class = TrakProfileSerializer
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
 
     def get(self, request, *args, **kwargs):
         try:
             profile = get_user_profile(user=self.request.user)
             serializer = self.serializer_class(profile)
             return Response(data=serializer.data, status=status.HTTP_200_OK)
-        except TrakProfile.DoesNotExist as exc:
+        except Profile.DoesNotExist as exc:
             return Response(data={"error": str(exc)}, status=status.HTTP_404_NOT_FOUND)
 
 

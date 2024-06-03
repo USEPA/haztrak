@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
-from apps.profile.models import RcrainfoProfile, RcrainfoSiteAccess, TrakProfile
+from apps.profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 
 from .models import TrakUser
 
@@ -71,5 +71,5 @@ try:
 except ImportError:
     from rest_framework.authtoken.models import Token as DRFToken
 
-admin.site.register(TrakProfile)
+admin.site.register(Profile)
 admin.site.unregister(DRFToken)
