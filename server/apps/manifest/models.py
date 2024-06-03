@@ -152,6 +152,11 @@ class ManifestManager(models.Manager):
         return instance
 
 
+def manifest_factory(mtn=None, generator=None, tsdf=None, **kwargs):
+    """Simple factory to create a Manifest instance with default values."""
+    return Manifest(mtn=mtn, generator=generator, tsdf=tsdf, **kwargs)
+
+
 class Manifest(models.Model):
     """Model definition the RCRA Uniform Hazardous Waste Manifest"""
 

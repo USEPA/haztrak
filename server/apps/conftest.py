@@ -19,7 +19,7 @@ from apps.core.models import (
     TrakUser,
 )
 from apps.org.models import Org, OrgAccess
-from apps.profile.models import RcrainfoProfile, TrakProfile
+from apps.profile.models import Profile, RcrainfoProfile
 from apps.rcrasite.models import (
     Address,
     Contact,
@@ -107,8 +107,8 @@ def profile_factory(db, user_factory, rcrainfo_profile_factory, org_factory):
     def create_profile(
         user: Optional[User] = None,
         rcrainfo_profile: Optional[RcrainfoProfile] = rcrainfo_profile_factory(),
-    ) -> TrakProfile:
-        return TrakProfile.objects.create(
+    ) -> Profile:
+        return Profile.objects.create(
             user=user or user_factory(),
             rcrainfo_profile=rcrainfo_profile,
         )

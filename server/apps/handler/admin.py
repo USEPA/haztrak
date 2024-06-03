@@ -11,7 +11,7 @@ from .models import (
     Signer,
     Transporter,
 )
-from .models.contact_models import ManifestPhone
+from .models.contact import ManifestPhone
 
 
 class IsApiUser(admin.SimpleListFilter):

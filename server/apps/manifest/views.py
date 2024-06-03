@@ -100,9 +100,7 @@ class MtnListView(ListAPIView):
 
 
 class ElectronicManifestSignView(GenericAPIView):
-    """
-    Endpoint to Quicker Sign manifests via an async task
-    """
+    """Endpoint to Quicker Sign manifests via an async task."""
 
     serializer_class = QuickerSignSerializer
     queryset = None

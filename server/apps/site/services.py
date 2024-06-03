@@ -44,6 +44,13 @@ def filter_sites_by_username(username: str) -> [Site]:
     return sites
 
 
+def filter_sites_by_username_and_epa_id(username: str, epa_ids: [str]) -> [Site]:
+    """Returns a list of Sites associated with a user."""
+    sites: QuerySet = Site.objects.filter_by_username(username)
+    other_sites = Site.objects.filter_by_epa_id(epa_ids)
+    return [site for site in sites if site in other_sites]
+
+
 def sync_site_manifest_with_rcrainfo(
     *, username: str, site_id: Optional[str] = None
 ) -> TaskResponse:

@@ -1,16 +1,25 @@
 import re
+from unittest.mock import MagicMock, patch
 
 import pytest
 from django.core.exceptions import ValidationError
 
 from apps.handler.serializers import HandlerSerializer
-from apps.manifest.models import Manifest, draft_mtn, validate_mtn
+from apps.manifest.models import Manifest, draft_mtn, manifest_factory, validate_mtn
 from apps.rcrasite.models import RcraSiteType
 
 
 @pytest.mark.django_db
 class TestManifestModel:
-    def test_draft_mtn_format(self):
+    def test_draft_mtn_follow_rcrainfo_pattern_with_dft_suffix(self, mocker):
+        mock = MagicMock()
+        mock.count.return_value = 5
+        with patch("apps.manifest.models.Manifest.objects.all", return_value=mock):
+            result = draft_mtn()
+            assert isinstance(result, str)
+            assert re.match(r"\d{9}DFT", result)
+
+    def test_draft_mtn_uses_nine_number_three_letter_format(self):
         """
         ensure our default MTN for draft manifests follows the
         same format as EPA uniform hazardous waste (e.g., 123456789ELC)
@@ -19,13 +28,26 @@ class TestManifestModel:
         assert re.match(r"[0-9]{9}[a-zA-Z]{3}", new_mtn)
 
     @pytest.mark.parametrize("mtn", ["123456789ELC", "111111111DFT", "100200300JJK"])
-    def test_mtn_validation_raises_no_error(self, mtn):
+    def test_mtn_validation_raises_no_error_with_correct_format(self, mtn):
         assert validate_mtn(mtn) is None
 
     @pytest.mark.parametrize("mtn", ["foo_bar", "111111DFT", "123456789"])
     def test_mtn_validation_raises_error(self, mtn):
         with pytest.raises(ValidationError):
             assert validate_mtn(mtn) is None
+
+    def test_manifest_factory_returns_instance(self):
+        manifest = manifest_factory()
+        assert isinstance(manifest, Manifest)
+
+    def test_is_draft_returns_true_when_mtn_ends_with_dft(self):
+        manifest = manifest_factory(mtn="123456789DFT")
+        assert manifest.is_draft is True
+
+    def test_dunder_str_returns_the_mtn(self):
+        mtn = "123456789DFT"
+        manifest = manifest_factory(mtn=mtn)
+        assert str(manifest) == mtn
 
 
 class TestManifestSaveMethod:

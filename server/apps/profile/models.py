@@ -4,23 +4,21 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from apps.rcrasite.models.base_models import SitesBaseModel
 
-
-class TrakProfileManager(models.Manager):
+class ProfileManager(models.QuerySet):
     """Query manager for the TrakProfile model."""
 
-    def get_profile_by_user(self, user: settings.AUTH_USER_MODEL) -> "TrakProfile":
+    def get_profile_by_user(self, user: settings.AUTH_USER_MODEL) -> "Profile":
         return self.get(user=user)
 
 
-class TrakProfile(models.Model):
+class Profile(models.Model):
     """
     User information outside the scope of the User model.
     Contains a one-to-one relationship with the User model
     """
 
-    objects = TrakProfileManager()
+    objects = ProfileManager.as_manager()
 
     class Meta:
         verbose_name = "Haztrak Profile"
@@ -108,7 +106,7 @@ class RcrainfoProfile(models.Model):
         return self.rcra_api_id is not None and self.rcra_api_key is not None
 
 
-class RcrainfoSiteAccess(SitesBaseModel):
+class RcrainfoSiteAccess(models.Model):
     """Permissions a user has in their RCRAInfo account"""
 
     CERTIFIER = "Certifier"

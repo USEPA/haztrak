@@ -7,14 +7,13 @@ from django.db import models
 
 from apps.rcrasite.models import RcraSite
 
-from . import ManifestPhone
-from .base_models import TrakBaseManager, TrakBaseModel
+from .contact import ManifestPhone
 from .signature import ESignature, PaperSignature
 
 logger = logging.getLogger(__name__)
 
 
-class HandlerManager(TrakBaseManager):
+class HandlerManager(models.Manager):
     """model manager and query interface for Handler model."""
 
     def save(self, instance: Optional["Handler"], **handler_data) -> "Handler":
@@ -51,7 +50,7 @@ class HandlerManager(TrakBaseManager):
             raise exc
 
 
-class Handler(TrakBaseModel):
+class Handler(models.Model):
     """Handler corresponds to a RCRAInfo site that is listed on a manifest."""
 
     class Meta:

@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import QuerySet
 
 
-class SiteManager(models.Manager):
+class SiteManager(QuerySet):
     """Query interface for the Site model"""
 
     def filter_by_username(self: models.Manager, username: str) -> QuerySet:
@@ -33,6 +33,10 @@ class SiteManager(models.Manager):
         """filter a sites by EPA ID number"""
         return self.filter(rcra_site__epa_id=epa_id)
 
+    def filter_by_epa_ids(self: models.Manager, epa_ids: [str]) -> QuerySet:
+        """filter a sites by EPA ID number"""
+        return self.filter(rcra_site__epa_id__in=epa_ids)
+
     def get_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:
         """Get a site by RCRAInfo EPA ID number. Throws Site.DoesNotExist if not found."""
         return self.filter_by_epa_id(epa_id).get()
@@ -49,7 +53,7 @@ class Site(models.Model):
     additional functionality and fields.
     """
 
-    objects = SiteManager()
+    objects = SiteManager.as_manager()
 
     class Meta:
         verbose_name = "Haztrak Site"

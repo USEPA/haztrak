@@ -5,8 +5,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from .base_models import SitesBaseManager, SitesBaseModel
-
 logger = logging.getLogger(__name__)
 
 
@@ -121,7 +119,7 @@ class RcraPhone(models.Model):
         return f"{self.number}"
 
 
-class Address(SitesBaseModel):
+class Address(models.Model):
     """
     Used to capture RCRAInfo address instances (mail, site).
     """
@@ -174,7 +172,7 @@ class Address(SitesBaseModel):
         return f" {self.address1}"
 
 
-class ContactManager(SitesBaseManager):
+class ContactManager(models.Manager):
     """Contact Model database querying interface"""
 
     def save(self, **contact_data) -> models.QuerySet:
@@ -192,7 +190,7 @@ class ContactManager(SitesBaseManager):
         return super().save(**contact_data)
 
 
-class Contact(SitesBaseModel):
+class Contact(models.Model):
     """
     RCRAInfo contact including personnel information such as name, email, company,
     includes a phone related field.

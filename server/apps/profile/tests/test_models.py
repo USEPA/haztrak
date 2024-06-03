@@ -1,6 +1,6 @@
 import pytest
 
-from apps.profile.models import RcrainfoProfile, TrakProfile
+from apps.profile.models import Profile, RcrainfoProfile
 
 
 @pytest.mark.django_db
@@ -38,13 +38,13 @@ class TestRcrainfoProfileModel:
         assert isinstance(returned_profile, RcrainfoProfile)
 
 
-class TestTrakProfileModel:
+class TestProfileModel:
     def test_haztrak_profile_factory(self, profile_factory):
         profile = profile_factory()
-        assert isinstance(profile, TrakProfile)
+        assert isinstance(profile, Profile)
 
     def test_get_profile_by_user(self, profile_factory, user_factory):
         user = user_factory()
         saved_profile = profile_factory(user=user)
-        profile = TrakProfile.objects.get_profile_by_user(user)
+        profile = Profile.objects.get_profile_by_user(user)
         assert profile == saved_profile

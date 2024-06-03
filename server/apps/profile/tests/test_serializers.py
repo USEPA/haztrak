@@ -2,9 +2,9 @@ import pytest
 
 from apps.profile.models import RcrainfoSiteAccess
 from apps.profile.serializers import (
+    ProfileSerializer,
     RcrainfoSitePermissionsSerializer,
     RcraSitePermissionSerializer,
-    TrakProfileSerializer,
 )
 
 
@@ -14,13 +14,13 @@ class TestTrakProfileSerializer:
         my_username = "foobar1"
         user = user_factory(username=my_username)
         profile = profile_factory(user=user)
-        serializer = TrakProfileSerializer(profile)
+        serializer = ProfileSerializer(profile)
         assert serializer.data["user"] == my_username
 
     def test_org_returns_null(self, profile_factory, user_factory, org_factory):
         user = user_factory()
         profile = profile_factory(user=user)
-        serializer = TrakProfileSerializer(profile)
+        serializer = ProfileSerializer(profile)
         assert serializer.data["org"] is None
 
     def test_returns_the_user_org(
@@ -30,7 +30,7 @@ class TestTrakProfileSerializer:
         org = org_factory()
         org_access_factory(user=user, org=org)
         profile = profile_factory(user=user)
-        serializer = TrakProfileSerializer(profile)
+        serializer = ProfileSerializer(profile)
         assert serializer.data["org"]["name"] == org.name
 
 

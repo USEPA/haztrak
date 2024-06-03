@@ -2,11 +2,11 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from apps.org.serializers import OrgSerializer
-from apps.profile.models import TrakProfile
+from apps.profile.models import Profile
 from apps.site.serializers import SiteAccessSerializer
 
 
-class TrakProfileSerializer(ModelSerializer):
+class ProfileSerializer(ModelSerializer):
     """Serializer for a user's profile"""
 
     user = serializers.StringRelatedField(
@@ -22,7 +22,7 @@ class TrakProfileSerializer(ModelSerializer):
     )
 
     class Meta:
-        model = TrakProfile
+        model = Profile
         fields = [
             "user",
             "sites",
