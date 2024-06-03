@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="enviroPro" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/enviroPro/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="dev" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs>
+      <env name="VITE_HT_API_URL" value="http://localhost:8000" />
+      <env name="VITE_HT_ENV" value="DEV" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>

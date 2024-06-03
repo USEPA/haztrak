@@ -199,7 +199,14 @@ def rcra_site_factory(db, address_factory, contact_factory):
                     contact=contact_factory(),
                 )
             except IntegrityError:
-                epa_id = None
+                return RcraSite.objects.create(
+                    epa_id=fake.site_id(),
+                    name=name or fake.name(),
+                    site_type=site_type,
+                    site_address=site_address or address_factory(),
+                    mail_address=mail_address or address_factory(),
+                    contact=contact_factory(),
+                )
 
     return create_rcra_site
 
