@@ -5,8 +5,6 @@ from typing import List, Literal, Optional
 from django.conf import settings
 from django.db import models
 
-from apps.handler.models.base_models import TrakBaseManager, TrakBaseModel
-
 logger = logging.getLogger(__name__)
 
 
@@ -82,7 +80,7 @@ class Signer(models.Model):
         )
 
 
-class ESignatureManager(TrakBaseManager):
+class ESignatureManager(models.Manager):
     """ESignature Model database querying interface"""
 
     def save(self, **e_signature_data):
@@ -92,10 +90,10 @@ class ESignatureManager(TrakBaseManager):
         """
         if "signer" in e_signature_data:
             e_signature_data["signer"] = Signer.objects.create(**e_signature_data.pop("signer"))
-        return super().save(**e_signature_data)
+        return super().create(**e_signature_data)
 
 
-class ESignature(TrakBaseModel):
+class ESignature(models.Model):
     """EPA electronic signature"""
 
     class Meta:
@@ -146,7 +144,7 @@ class ESignature(TrakBaseModel):
         return f"e-signature on {self.sign_date}"
 
 
-class PaperSignature(TrakBaseModel):
+class PaperSignature(models.Model):
     """
     Contains printed name of the rcra_site Signee and
     Date of Signature for paper manifests.

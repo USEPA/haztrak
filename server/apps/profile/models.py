@@ -4,8 +4,6 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from apps.rcrasite.models.base_models import SitesBaseModel
-
 
 class ProfileManager(models.QuerySet):
     """Query manager for the TrakProfile model."""
@@ -108,7 +106,7 @@ class RcrainfoProfile(models.Model):
         return self.rcra_api_id is not None and self.rcra_api_key is not None
 
 
-class RcrainfoSiteAccess(SitesBaseModel):
+class RcrainfoSiteAccess(models.Model):
     """Permissions a user has in their RCRAInfo account"""
 
     CERTIFIER = "Certifier"
