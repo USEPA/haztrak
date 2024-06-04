@@ -95,7 +95,10 @@ class HandlerSearchView(APIView):
     """Search and return a list of Hazardous waste handlers from RCRAInfo."""
 
     class HandlerSearchSerializer(serializers.Serializer):
-        siteId = serializers.CharField(required=True)
+        siteId = serializers.CharField(
+            required=True,
+            min_length=2,
+        )
         siteType = serializers.ChoiceField(
             required=True,
             choices=[
