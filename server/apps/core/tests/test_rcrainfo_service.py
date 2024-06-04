@@ -4,27 +4,27 @@ import emanifest
 from responses import matchers
 from rest_framework import status
 
-from apps.core.services import RcrainfoService, get_rcrainfo_client
+from apps.core.services import RcraClient, get_rcra_client
 from apps.handler.models import QuickerSign
 from apps.handler.serializers import QuickerSignSerializer
 
 
 class TestRcrainfoService:
-    """Tests the for the RcrainfoService class"""
+    """Tests the for the RcraClient class"""
 
     def test_inits_to_correct_environment(self):
-        rcrainfo = RcrainfoService(rcrainfo_env="preprod")
+        rcrainfo = RcraClient(rcrainfo_env="preprod")
         assert rcrainfo.rcrainfo_env == "preprod"
 
     def test_inits_base_url_by_env(self):
-        rcrainfo_preprod = RcrainfoService(rcrainfo_env="preprod")
+        rcrainfo_preprod = RcraClient(rcrainfo_env="preprod")
         assert rcrainfo_preprod.base_url == emanifest.RCRAINFO_PREPROD
-        rcrainfo_prod = RcrainfoService(rcrainfo_env="prod")
+        rcrainfo_prod = RcraClient(rcrainfo_env="prod")
         assert rcrainfo_prod.base_url == emanifest.RCRAINFO_PROD
 
     def test_uses_provided_rcra_profile_credentials(self, rcrainfo_profile_factory):
         admin_rcrainfo_profile = rcrainfo_profile_factory()
-        rcrainfo = RcrainfoService(rcra_profile=admin_rcrainfo_profile, auto_renew=True)
+        rcrainfo = RcraClient(rcra_profile=admin_rcrainfo_profile, auto_renew=True)
         assert rcrainfo.retrieve_key() == admin_rcrainfo_profile.rcra_api_key
         assert rcrainfo.retrieve_id() == admin_rcrainfo_profile.rcra_api_id
 
@@ -52,7 +52,7 @@ class TestRcrainfoService:
         org_access_factory(user=my_user, org=my_org)
         profile_factory(user=my_user)
         # Act
-        rcrainfo: RcrainfoService = get_rcrainfo_client(username=my_user.username)
+        rcrainfo: RcraClient = get_rcra_client(username=my_user.username)
         # Assert
         assert rcrainfo.has_rcrainfo_credentials
 
@@ -63,7 +63,7 @@ class TestRcrainfoService:
         mock_api_id = "my_mock_id"
         mock_api_key = "my_mock_key"
         # Act
-        rcrainfo: RcrainfoService = get_rcrainfo_client(api_id=mock_api_id, api_key=mock_api_key)
+        rcrainfo: RcraClient = get_rcra_client(api_id=mock_api_id, api_key=mock_api_key)
         # Assert
         assert rcrainfo.has_rcrainfo_credentials
         assert rcrainfo.api_id == mock_api_id
@@ -94,7 +94,7 @@ class TestQuickerSign:
         testuser1 = user_factory()
         rcra_profile = rcrainfo_profile_factory()
         profile_factory(user=testuser1, rcrainfo_profile=rcra_profile)
-        rcrainfo = RcrainfoService(auto_renew=False)
+        rcrainfo = RcraClient(auto_renew=False)
         quicker_sign_response_factory(mtn=self.mtn, site_id=self.site_id, sign_date=self.sign_date)
         quicker_sign_url = f"{rcrainfo.base_url}v1/emanifest/manifest/quicker-sign"
         mock_responses.post(

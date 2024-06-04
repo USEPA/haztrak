@@ -54,7 +54,20 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
                     ),
                 )
             except IntegrityError:
-                mtn = None
+                return Manifest.objects.create(
+                    mtn=fake.mtn(),
+                    status=status or fake.status(),
+                    created_date=datetime.now(UTC),
+                    potential_ship_date=datetime.now(UTC),
+                    generator=generator
+                    or manifest_handler_factory(
+                        rcra_site=rcra_site_factory(site_type=RcraSiteType.GENERATOR)
+                    ),
+                    tsdf=tsdf
+                    or manifest_handler_factory(
+                        rcra_site=rcra_site_factory(site_type=RcraSiteType.TSDF)
+                    ),
+                )
 
     return create_manifest
 

@@ -3,7 +3,7 @@ from datetime import UTC, datetime
 
 import pytest
 
-from apps.core.services import RcrainfoService
+from apps.core.services import RcraClient
 from apps.manifest.services.emanifest_search import EmanifestSearch
 
 
@@ -17,7 +17,7 @@ class TestEmanifestSearchClass:
     def test_execute_sends_a_request_to_rcrainfo(
         self, mock_responses, mock_emanifest_auth_response
     ):
-        stub_rcra_client = RcrainfoService(rcrainfo_env="preprod", api_key="foo", api_id="foo")
+        stub_rcra_client = RcraClient(rcrainfo_env="preprod", api_key="foo", api_id="foo")
         mock_responses.post(
             "https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/emanifest/search"
         )
@@ -26,7 +26,7 @@ class TestEmanifestSearchClass:
 
     @pytest.mark.parametrize("mock_emanifest_auth_response", [["foo", "foo"]], indirect=True)
     def test_search_builds_json(self, mock_responses, mock_emanifest_auth_response):
-        stub_rcra_client = RcrainfoService(rcrainfo_env="preprod", api_key="foo", api_id="foo")
+        stub_rcra_client = RcraClient(rcrainfo_env="preprod", api_key="foo", api_id="foo")
         mock_responses.post(
             "https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/emanifest/search"
         )
@@ -103,7 +103,7 @@ class TestEmanifestSearchClass:
         def test_add_end_date_defaults_to_now(self):
             now = datetime.now(UTC)
             search = EmanifestSearch().add_end_date()
-            end_date = datetime.strptime(search.end_date, RcrainfoService.datetime_format)
+            end_date = datetime.strptime(search.end_date, RcraClient.datetime_format)
             assert end_date.day == now.day
             assert end_date.month == now.month
             assert end_date.year == now.year

@@ -4,7 +4,7 @@ from typing import Dict, List
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
 
-from apps.core.services import get_rcrainfo_client
+from apps.core.services import get_rcra_client
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +64,7 @@ def sync_site_manifests(self, *, site_id: str, username: str):
     from apps.site.services import get_user_site, update_emanifest_sync_date
 
     try:
-        client = get_rcrainfo_client(username=username)
+        client = get_rcra_client(username=username)
         site = get_user_site(username=username, epa_id=site_id)
         results = sync_manifests(
             site_id=site_id, last_sync_date=site.last_rcrainfo_manifest_sync, rcra_client=client

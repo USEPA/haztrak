@@ -1,6 +1,6 @@
 import pytest
 
-from apps.core.services import RcrainfoService
+from apps.core.services import RcraClient
 from apps.rcrasite.models import RcraSite
 from apps.rcrasite.services import RcraSiteService
 
@@ -17,17 +17,17 @@ class TestHandlerService:
     def test_rcrainfo_returns_true_when_instance(self):
         """
         the e-Manifest PyPI package RcrainfoClient uses a __bool__ method we need to override
-        in order for self.rcrainfo = rcrainfo or RcrainfoService(...) to work.
+        in order for self.rcrainfo = rcrainfo or RcraClient(...) to work.
         """
         # Arrange
-        rcrainfo = RcrainfoService(auto_renew=False)
+        rcrainfo = RcraClient(auto_renew=False)
         # Act and Assert
         assert rcrainfo  # should return true
 
     def test_pulls_site_details_from_rcrainfo(self, mock_responses):
         """test pulling a rcra_site's information from rcrainfo"""
         # Arrange
-        rcrainfo = RcrainfoService(auto_renew=False)
+        rcrainfo = RcraClient(auto_renew=False)
         handler_service = RcraSiteService(username=self.user.username, rcrainfo=rcrainfo)
         rcrainfo_site_details_url = f"{rcrainfo.base_url}v1/site-details/{self.epa_id}"
         # mock response from Rcrainfo

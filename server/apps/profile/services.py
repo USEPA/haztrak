@@ -6,7 +6,7 @@ from django.conf import settings
 from django.db import transaction
 
 from apps.core.models import TrakUser
-from apps.core.services import RcrainfoService, get_rcrainfo_client
+from apps.core.services import RcraClient, get_rcra_client
 from apps.profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 from apps.profile.serializers import RcrainfoSitePermissionsSerializer
 from apps.rcrasite.models import RcraSite
@@ -61,11 +61,11 @@ class RcraProfileService:
     of a and exposes method corresponding to use cases.
     """
 
-    def __init__(self, *, username: str, rcrainfo: Optional[RcrainfoService] = None):
+    def __init__(self, *, username: str, rcrainfo: Optional[RcraClient] = None):
         self.username = username
         profile, created = get_or_create_rcra_profile(username=username)
         self.profile: RcrainfoProfile = profile
-        self.rcrainfo = rcrainfo or get_rcrainfo_client(username=username)
+        self.rcrainfo = rcrainfo or get_rcra_client(username=username)
 
     def update_rcrainfo_profile(self, *, rcrainfo_username: Optional[str] = None) -> None:
         """
