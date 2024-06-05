@@ -45,6 +45,13 @@ class TestRcraSiteSearchClass:
             assert partial_id in search.outputs().values()
             assert "epaSiteId" in search.outputs().keys()
 
+    class TestBuildSearchWithSiteType:
+        def test_add_state_code(self):
+            site_type = "Generator"
+            search = RcraSiteSearch().site_type(site_type)
+            assert site_type in search.outputs().values()
+            assert "siteType" in search.outputs().keys()
+
     class TestValidation:
         def test_no_validation_error_raised(self):
             assert RcraSiteSearch().state("CA").epa_id("foo").validate()

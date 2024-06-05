@@ -76,7 +76,7 @@ class RcraSiteService:
             if not data:
                 response = (
                     RcraSiteSearch(rcra_client=self.rcrainfo)
-                    .state(search_parameters.get("state"))
+                    .site_type(search_parameters.get("siteType"))
                     .epa_id(search_parameters.get("epaSiteId"))
                     .execute()
                 )
