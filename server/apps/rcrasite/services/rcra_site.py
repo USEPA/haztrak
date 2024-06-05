@@ -10,6 +10,8 @@ from apps.core.services import RcraClient, get_rcra_client
 from apps.rcrasite.models import RcraSite
 from apps.rcrasite.serializers import RcraSiteSerializer
 
+from .rcra_site_search import RcraSiteSearch
+
 
 class HandlerSearchResults(TypedDict):
     sites: list[RcraSite]
@@ -72,7 +74,12 @@ class RcraSiteService:
         try:
             data = cache.get(cache_key)
             if not data:
-                response = self.rcrainfo.search_sites(**search_parameters)
+                response = (
+                    RcraSiteSearch(rcra_client=self.rcrainfo)
+                    .state(search_parameters.get("state"))
+                    .epa_id(search_parameters.get("epaSiteId"))
+                    .execute()
+                )
                 if response.ok:
                     data = response.json()
                     cache.set(cache_key, data, 60 * 60 * 24)

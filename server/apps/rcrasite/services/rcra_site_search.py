@@ -1,5 +1,7 @@
 from typing import Optional
 
+from emanifest import RcrainfoResponse
+
 from apps.core.services import RcraClient
 
 
@@ -63,7 +65,7 @@ class RcraSiteSearch:
             validate_method(value)
         return True
 
-    def execute(self):
+    def execute(self) -> RcrainfoResponse:
         self.validate()
         search_args = self.build_search_args()
         return self._rcra_client.search_sites(**search_args)
