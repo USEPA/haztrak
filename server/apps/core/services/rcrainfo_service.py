@@ -12,9 +12,9 @@ from apps.wasteline.models import WasteCode
 logger = logging.getLogger(__name__)
 
 
-class RcrainfoService(RcrainfoClient):
+class RcraClient(RcrainfoClient):
     """
-    RcrainfoService is our IO interface for communicating with the EPA RCRAInfo
+    RcraClient is our IO interface for communicating with the EPA RCRAInfo
     web services.
     """
 
@@ -97,22 +97,22 @@ class RcrainfoService(RcrainfoClient):
     def __bool__(self):
         """
         This Overrides the RcrainfoClient bool
-        we use this to test a RcrainfoService instance is not None
+        we use this to test a RcraClient instance is not None
         """
         return True
 
 
-def get_rcrainfo_client(
+def get_rcra_client(
     *,
     username: Optional[str] = None,
     api_id: Optional[str] = None,
     api_key: Optional[str] = None,
     rcrainfo_env: Optional[Literal["preprod"] | Literal["prod"]] = None,
     **kwargs,
-) -> RcrainfoService:
-    """RcrainfoService Constructor for interacting with RCRAInfo web services"""
+) -> RcraClient:
+    """RcraClient Constructor for interacting with RCRAInfo web services"""
     if api_id is not None and api_key is not None:
-        return RcrainfoService(
+        return RcraClient(
             api_id=api_id,
             api_key=api_key,
             rcrainfo_env=rcrainfo_env,
@@ -122,7 +122,7 @@ def get_rcrainfo_client(
         org: Org = Org.objects.get_by_username(username)
         if org.is_rcrainfo_integrated:
             api_id, api_key = org.rcrainfo_api_id_key
-        return RcrainfoService(
+        return RcraClient(
             api_id=api_id,
             api_key=api_key,
             rcrainfo_env=rcrainfo_env,

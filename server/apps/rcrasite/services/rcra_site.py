@@ -6,9 +6,11 @@ from django.db import transaction
 from django.db.models import QuerySet
 from rest_framework.exceptions import ValidationError
 
-from apps.core.services import RcrainfoService, get_rcrainfo_client
+from apps.core.services import RcraClient, get_rcra_client
 from apps.rcrasite.models import RcraSite
 from apps.rcrasite.serializers import RcraSiteSerializer
+
+from .rcra_site_search import RcraSiteSearch
 
 
 class HandlerSearchResults(TypedDict):
@@ -41,15 +43,9 @@ class RcraSiteService:
     directly relate to use cases.
     """
 
-    def __init__(self, *, username: str, rcrainfo: Optional[RcrainfoService] = None):
+    def __init__(self, *, username: str, rcrainfo: Optional[RcraClient] = None):
         self.username = username
-        self.rcrainfo = rcrainfo or get_rcrainfo_client(username=self.username)
-
-    def __repr__(self):
-        return (
-            f"<{self.__class__.__name__}(api_username='{self.username}', "
-            f"rcrainfo='{self.rcrainfo}')>"
-        )
+        self.rcrainfo = rcrainfo or get_rcra_client(username=self.username)
 
     def pull_rcrainfo_site(self, *, site_id: str) -> RcraSite:
         """Retrieve a site/rcra_site from Rcrainfo and return RcraSiteSerializer"""
@@ -78,7 +74,12 @@ class RcraSiteService:
         try:
             data = cache.get(cache_key)
             if not data:
-                response = self.rcrainfo.search_sites(**search_parameters)
+                response = (
+                    RcraSiteSearch(rcra_client=self.rcrainfo)
+                    .site_type(search_parameters.get("siteType"))
+                    .epa_id(search_parameters.get("epaSiteId"))
+                    .execute()
+                )
                 if response.ok:
                     data = response.json()
                     cache.set(cache_key, data, 60 * 60 * 24)

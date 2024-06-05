@@ -12,8 +12,7 @@ from rest_framework.views import APIView
 
 from apps.rcrasite.models import RcraSite
 from apps.rcrasite.serializers import RcraSiteSearchSerializer, RcraSiteSerializer
-from apps.rcrasite.services import RcraSiteService
-from apps.rcrasite.services.rcra_site_services import query_rcra_sites
+from apps.rcrasite.services import RcraSiteService, query_rcra_sites
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +95,10 @@ class HandlerSearchView(APIView):
     """Search and return a list of Hazardous waste handlers from RCRAInfo."""
 
     class HandlerSearchSerializer(serializers.Serializer):
-        siteId = serializers.CharField(required=True)
+        siteId = serializers.CharField(
+            required=True,
+            min_length=2,
+        )
         siteType = serializers.ChoiceField(
             required=True,
             choices=[
