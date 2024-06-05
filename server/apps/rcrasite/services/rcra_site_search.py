@@ -19,12 +19,31 @@ class RcraSiteSearch:
     def rcra_client(self, value) -> None:
         self._rcra_client = value
 
+    def get_search_attributes(self) -> dict:
+        search_params = {
+            "state": self._state,
+            "epa_id": self._epa_id,
+        }
+        return {k: v for k, v in search_params.items() if v is not None}
+
     def build_search_args(self) -> dict:
         search_params = {
             "state": self._state,
             "epaSiteId": self._epa_id,
         }
         return {k: v for k, v in search_params.items() if v is not None}
+
+    def _validate_state(self, state: str) -> None:
+        if not state.isalpha():
+            raise ValueError("State code must be alphabetical")
+        if len(state) != 2:
+            raise ValueError("State code must be two letters")
+
+    def _validate_epa_id(self, epa_id: str) -> None:
+        if len(epa_id) <= 2:
+            raise ValueError("EPA ID must be at least 2 characters")
+        if len(epa_id) != 12 and self._state is None:
+            raise ValueError("EPA ID must be 12 characters if state is not provided")
 
     def state(self, state: str) -> "RcraSiteSearch":
         self._state = state
@@ -37,6 +56,14 @@ class RcraSiteSearch:
     def outputs(self) -> dict:
         return self.build_search_args()
 
+    def validate(self):
+        search_args = self.get_search_attributes()
+        for key, value in search_args.items():
+            validate_method = getattr(self, f"_validate_{key}")
+            validate_method(value)
+        return True
+
     def execute(self):
+        self.validate()
         search_args = self.build_search_args()
         return self._rcra_client.search_sites(**search_args)

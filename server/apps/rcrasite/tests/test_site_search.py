@@ -44,3 +44,11 @@ class TestRcraSiteSearchClass:
             search = RcraSiteSearch().epa_id(partial_id)
             assert partial_id in search.outputs().values()
             assert "epaSiteId" in search.outputs().keys()
+
+    class TestValidation:
+        def test_no_validation_error_raised(self):
+            assert RcraSiteSearch().state("CA").epa_id("foo").validate()
+
+        def test_error_when_partial_id_without_other_params(self):
+            with pytest.raises(ValueError):
+                RcraSiteSearch().epa_id("foo").validate()
