@@ -15,6 +15,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { useGetProfileQuery, useSearchRcrainfoSitesQuery, useSearchRcraSitesQuery } from 'store';
+import { useDebounce } from 'hooks';
 
 interface Props {
   handleClose: () => void;
@@ -37,19 +38,20 @@ export function HandlerSearchForm({
   const { handleSubmit, control } = useForm<searchHandlerForm>();
   const manifestForm = useFormContext<Manifest>();
   const [inputValue, setInputValue] = useState<string>('');
+  const debouncedInputValue = useDebounce(inputValue, 500);
+
   const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
   const { org } = useGetProfileQuery(undefined, {
     selectFromResult: ({ data }) => {
       return { org: data?.org };
     },
   });
-  const [skip, setSkip] = useState<boolean>(true);
   const { data } = useSearchRcraSitesQuery(
     {
       siteType: handlerType,
-      siteId: inputValue,
+      siteId: debouncedInputValue,
     },
-    { skip }
+    { skip: false }
   );
   const {
     data: rcrainfoData,
@@ -58,9 +60,9 @@ export function HandlerSearchForm({
   } = useSearchRcrainfoSitesQuery(
     {
       siteType: handlerType,
-      siteId: inputValue,
+      siteId: debouncedInputValue,
     },
-    { skip: skip || !org?.rcrainfoIntegrated }
+    { skip: !org?.rcrainfoIntegrated }
   );
   const { setGeneratorStateCode, setTsdfStateCode } =
     useContext<ManifestContextType>(ManifestContext);
@@ -95,10 +97,10 @@ export function HandlerSearchForm({
     handleClose();
   };
 
-  useEffect(() => {
-    const inputTooShort = inputValue.length < 5;
-    setSkip(inputTooShort);
-  }, [inputValue]);
+  // useEffect(() => {
+  //   const inputTooShort = inputValue.length < 1;
+  //   setSkip(inputTooShort);
+  // }, [debouncedInputValue]);
 
   useEffect(() => {
     const knownSites = data && data.length > 0 ? data : [];
