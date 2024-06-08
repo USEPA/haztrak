@@ -1,7 +1,7 @@
 from datetime import UTC, datetime, timedelta, timezone
 from typing import Literal, Optional, get_args
 
-from apps.core.services import RcrainfoService
+from apps.core.services import RcraClient
 
 EmanifestStatus = Literal[
     "Pending",
@@ -24,8 +24,8 @@ RCRAINFO_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
 
 class EmanifestSearch:
-    def __init__(self, rcra_client: Optional[RcrainfoService] = None):
-        self._rcra_client = rcra_client or RcrainfoService()
+    def __init__(self, rcra_client: Optional[RcraClient] = None):
+        self._rcra_client = rcra_client or RcraClient()
         self.state_code: Optional[str] = None
         self.site_id: Optional[str] = None
         self.status: Optional[EmanifestStatus] = None
@@ -38,7 +38,7 @@ class EmanifestSearch:
     @property
     def rcra_client(self):
         if not self._rcra_client:
-            self._rcra_client = RcrainfoService()
+            self._rcra_client = RcraClient()
         return self._rcra_client
 
     @rcra_client.setter

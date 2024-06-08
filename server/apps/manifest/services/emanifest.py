@@ -7,7 +7,7 @@ from django.db.models import QuerySet
 from emanifest import RcrainfoResponse
 from requests import RequestException
 
-from apps.core.services import RcrainfoService, get_rcrainfo_client
+from apps.core.services import RcraClient, get_rcra_client
 from apps.handler.models import QuickerSign
 from apps.handler.serializers import QuickerSignSerializer
 from apps.manifest.models import Manifest
@@ -65,9 +65,9 @@ class PullManifestsResult(TypedDict):
 class EManifest:
     """IO interface with the e-Manifest system."""
 
-    def __init__(self, *, username: Optional[str], rcrainfo: Optional[RcrainfoService] = None):
+    def __init__(self, *, username: Optional[str], rcrainfo: Optional[RcraClient] = None):
         self.username = username
-        self.rcrainfo = rcrainfo or get_rcrainfo_client(username=username)
+        self.rcrainfo = rcrainfo or get_rcra_client(username=username)
 
     @property
     def is_available(self) -> bool:
@@ -185,7 +185,7 @@ def get_updated_mtn(site_id: str, last_sync_date: datetime, rcra_client) -> list
 
 @transaction.atomic
 def sync_manifests(
-    *, site_id: str, last_sync_date: datetime, rcra_client: RcrainfoService
+    *, site_id: str, last_sync_date: datetime, rcra_client: RcraClient
 ) -> PullManifestsResult:
     """Pull manifests and update the last sync date for a site"""
     updated_mtn = get_updated_mtn(
