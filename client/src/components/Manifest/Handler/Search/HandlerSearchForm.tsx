@@ -46,6 +46,7 @@ export function HandlerSearchForm({
       return { org: data?.org };
     },
   });
+  const [skip, setSkip] = useState<boolean>(true);
   const { data } = useSearchRcraSitesQuery(
     {
       siteType: handlerType,
@@ -97,10 +98,10 @@ export function HandlerSearchForm({
     handleClose();
   };
 
-  // useEffect(() => {
-  //   const inputTooShort = inputValue.length < 1;
-  //   setSkip(inputTooShort);
-  // }, [debouncedInputValue]);
+  useEffect(() => {
+    const inputTooShort = inputValue.length < 2;
+    setSkip(inputTooShort);
+  }, [debouncedInputValue]);
 
   useEffect(() => {
     const knownSites = data && data.length > 0 ? data : [];
