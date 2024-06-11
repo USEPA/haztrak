@@ -52,7 +52,7 @@ export function HandlerSearchForm({
       siteType: handlerType,
       siteId: debouncedInputValue,
     },
-    { skip: false }
+    { skip }
   );
   const {
     data: rcrainfoData,
@@ -63,7 +63,7 @@ export function HandlerSearchForm({
       siteType: handlerType,
       siteId: debouncedInputValue,
     },
-    { skip: !org?.rcrainfoIntegrated }
+    { skip: skip || !org?.rcrainfoIntegrated }
   );
   const { setGeneratorStateCode, setTsdfStateCode } =
     useContext<ManifestContextType>(ManifestContext);
