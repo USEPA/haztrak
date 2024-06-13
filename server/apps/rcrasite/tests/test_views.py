@@ -3,6 +3,7 @@ from unittest.mock import patch
 import pytest
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
 from apps.rcrasite.models import RcraSiteType  # type: ignore
@@ -11,8 +12,6 @@ from apps.rcrasite.views import HandlerSearchView, RcraSiteSearchView  # type: i
 
 class TestRcraSiteView:
     """Handler endpoints test suite"""
-
-    URL = "/api/rcra/handler"
 
     @pytest.fixture
     def client(self, api_client_factory):
@@ -23,7 +22,7 @@ class TestRcraSiteView:
         return rcra_site_factory()
 
     def test_endpoint_returns_json_with_rcra_site(self, client, generator):
-        response: Response = client.get(f"{self.URL}/{generator.epa_id}")
+        response: Response = client.get(reverse("rcrasite:details", args=[generator.epa_id]))
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK
         assert response.data["epaSiteId"] == generator.epa_id
@@ -34,7 +33,7 @@ class TestRcraSiteSearchView:
     Tests for the RcraSite Search endpoint
     """
 
-    URL = "/api/rcra/site/search"
+    URL = reverse("rcrasite:search")
 
     def test_view_returns_array_of_handlers(self, user_factory, rcra_site_factory):
         # Arrange
@@ -106,20 +105,9 @@ class TestRcraSiteSearchView:
         assert response.headers["Content-Type"] == "application/json"
 
 
-# class TestHandlerSearchView:
-#
-#     @patch("apps.rcrasite.services.RcraSiteService.search_rcrainfo_handlers")
-#     def test_endpoint_returns_404_if_no_epa_id(self, client):
-#         response: Response = client.get("/api/rcra/handler/")
-#
-
-
 class TestHandlerSearchView:
-    base_url = "/api/site/search"
-
     @pytest.fixture(autouse=True)
     def set_up(self):
-        self.view = HandlerSearchView()
         self.request_factory = APIRequestFactory()
 
     def test_valid_search_returns_200(self, user_factory):
@@ -129,7 +117,7 @@ class TestHandlerSearchView:
             user = user_factory()
             data = {"siteId": "VAT000000000", "siteType": "designatedFacility"}
             request = self.request_factory.post(
-                f"{self.base_url}",
+                reverse("rcrasite:rcrainfo:search"),
                 data=data,
                 format="json",
             )
@@ -141,7 +129,7 @@ class TestHandlerSearchView:
         user = user_factory()
         data = {"siteId": "V", "siteType": "designatedFacility"}
         request = self.request_factory.post(
-            f"{self.base_url}",
+            reverse("rcrasite:rcrainfo:search"),
             data=data,
             format="json",
         )
@@ -153,7 +141,7 @@ class TestHandlerSearchView:
         user = user_factory()
         data = {"siteType": "designatedFacility"}
         request = self.request_factory.post(
-            f"{self.base_url}",
+            reverse("rcrasite:rcrainfo:search"),
             data=data,
             format="json",
         )

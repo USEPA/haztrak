@@ -9,7 +9,7 @@ from apps.manifest.views import ElectronicManifestSignView, ManifestViewSet
 class TestManifestCRUD:
     """Tests the for the Manifest ModelViewSet"""
 
-    base_url = "/api/rcra/manifest"
+    base_url = "/api/manifest"
 
     @pytest.fixture
     def factory(self):
