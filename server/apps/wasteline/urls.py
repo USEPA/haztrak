@@ -8,8 +8,8 @@ from apps.wasteline.views import (  # type: ignore
     StateWasteCodesView,
 )
 
+app_name = "wasteline"
 urlpatterns = [
-    # waste info
     path(
         "waste/",
         include(

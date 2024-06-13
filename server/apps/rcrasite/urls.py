@@ -6,6 +6,7 @@ from apps.rcrasite.views import (  # type: ignore
     RcraSiteSearchView,
 )
 
+app_name = "rcrasite"
 urlpatterns = [
     path("handler/search", HandlerSearchView.as_view()),
     path("handler/<str:epa_id>", RcraSiteDetailsView.as_view()),

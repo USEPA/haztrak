@@ -12,6 +12,7 @@ from apps.manifest.views import (  # type: ignore
 manifest_router = SimpleRouter(trailing_slash=False)
 manifest_router.register("", ManifestViewSet, basename="manifest")
 
+app_name = "manifest"
 urlpatterns = [
     path(
         "manifest/",

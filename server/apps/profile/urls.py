@@ -6,6 +6,7 @@ from .views import (
     TrakProfileDetailsView,
 )
 
+app_name = "profile"
 urlpatterns = [
     path(
         "user",

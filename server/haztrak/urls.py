@@ -32,16 +32,16 @@ urlpatterns = [
                     "rcra/",
                     include(
                         [
-                            path("", include("apps.manifest.urls")),
-                            path("", include("apps.rcrasite.urls")),
-                            path("", include("apps.wasteline.urls")),
+                            path("", include("apps.manifest.urls", namespace="manifest")),
+                            path("", include("apps.rcrasite.urls", namespace="rcrasite")),
+                            path("", include("apps.wasteline.urls", namespace="wasteline")),
                         ]
                     ),
                 ),
-                path("", include("apps.core.urls")),
-                path("", include("apps.org.urls")),
-                path("", include("apps.site.urls")),
-                path("", include("apps.profile.urls")),
+                path("", include("apps.core.urls", namespace="core")),
+                path("", include("apps.org.urls", namespace="org")),
+                path("", include("apps.site.urls", namespace="site")),
+                path("", include("apps.profile.urls", namespace="profile")),
                 path("schema/", SpectacularAPIView.as_view(), name="schema"),
                 path(
                     "schema/swagger-ui",

@@ -6,6 +6,7 @@ from .views import (
     TaskStatusView,
 )
 
+app_name = "core"
 urlpatterns = [
     path("task/example", LaunchExampleTaskView.as_view()),
     path("task/<str:task_id>", TaskStatusView.as_view()),
