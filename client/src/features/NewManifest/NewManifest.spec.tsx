@@ -31,7 +31,7 @@ const mockProfile: HaztrakProfileResponse = {
 
 const server = setupServer(...mockUserEndpoints);
 server.use(
-  http.get(`${API_BASE_URL}/api/user/profile`, () => {
+  http.get(`${API_BASE_URL}/api/profile`, () => {
     return HttpResponse.json({ ...mockProfile }, { status: 200 });
   })
 );

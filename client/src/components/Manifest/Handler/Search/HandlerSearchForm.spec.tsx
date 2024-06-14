@@ -38,7 +38,7 @@ export const mockHandlerSearches = [
   http.get(`${API_BASE_URL}/api/rcrainfo/rcrasite/search`, () => {
     return HttpResponse.json([mockRcrainfoSite1, mockRcrainfoSite2], { status: 200 });
   }),
-  http.get(`${API_BASE_URL}/api/user/profile`, () => {
+  http.get(`${API_BASE_URL}/api/profile`, () => {
     return HttpResponse.json({ ...mockProfile }, { status: 200 });
   }),
   http.post(`${API_BASE_URL}/api/rcrainfo/rcrasite/search`, () => {
@@ -73,7 +73,7 @@ describe('HandlerSearchForm', () => {
   });
   test('retrieves rcra sites from haztrak if org not rcrainfo integrated', async () => {
     server.use(
-      http.get(`${API_BASE_URL}/api/user/profile`, () => {
+      http.get(`${API_BASE_URL}/api/profile`, () => {
         return HttpResponse.json(
           {
             ...mockProfile,

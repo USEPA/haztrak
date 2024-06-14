@@ -20,7 +20,7 @@ export const mockUserEndpoints = [
     return HttpResponse.json({ ...user, ...info.request.body }, { status: 200 });
   }),
   /** GET Profile */
-  http.get(`${API_BASE_URL}/api/user/profile`, () => {
+  http.get(`${API_BASE_URL}/api/profile`, () => {
     return HttpResponse.json({ ...createMockProfileResponse() }, { status: 200 });
   }),
   /** Login */
@@ -34,7 +34,7 @@ export const mockUserEndpoints = [
     );
   }),
   /** GET RCRAInfo profile */
-  http.get(`${API_BASE_URL}/api/user/rcrainfo-profile/:username`, (info) => {
+  http.get(`${API_BASE_URL}/api/rcrainfo-profile/:username`, (info) => {
     const { username } = info.params;
     // @ts-ignore
     const rcrainfoProfile = createMockRcrainfoProfileResponse({ user: username ?? '' });
