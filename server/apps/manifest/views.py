@@ -82,14 +82,10 @@ class ElectronicManifestSaveView(GenericAPIView):
 
 
 class MtnListView(ListAPIView):
-    """List of manifest tracking numbers and select details."""
+    """List of manifest tracking numbers and select details. Filter by EPA ID and site type."""
 
     serializer_class = MtnSerializer
     queryset = Manifest.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        print(f" MTN List View {request.user}")
-        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         return get_manifests(
