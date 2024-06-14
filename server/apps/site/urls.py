@@ -6,8 +6,9 @@ from .views import (
     SiteListView,
 )
 
+app_name = "site"
 urlpatterns = [
-    path("site", SiteListView.as_view()),
-    path("site/<str:epa_id>", SiteDetailsView.as_view()),
-    path("org/<str:org_id>/sites", OrgSitesListView.as_view()),
+    path("site", SiteListView.as_view(), name="list"),
+    path("site/<str:epa_id>", SiteDetailsView.as_view(), name="details"),
+    path("org/<str:org_id>/sites", OrgSitesListView.as_view(), name="org-sites"),
 ]

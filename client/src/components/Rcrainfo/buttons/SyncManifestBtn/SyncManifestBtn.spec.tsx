@@ -12,7 +12,7 @@ const testTaskID = 'testTaskId';
 
 const server = setupServer(...mockUserEndpoints);
 server.use(
-  http.post(`${API_BASE_URL}rcra/manifest/emanifest/sync`, () => {
+  http.post(`${API_BASE_URL}manifest/emanifest/sync`, () => {
     // Mock Sync Site Manifests response
     return HttpResponse.json(
       {

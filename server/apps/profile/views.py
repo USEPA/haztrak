@@ -11,7 +11,7 @@ from apps.profile.services import get_user_profile
 from apps.rcrasite.tasks import sync_user_rcrainfo_sites
 
 
-class TrakProfileDetailsView(RetrieveAPIView):
+class ProfileDetailsView(RetrieveAPIView):
     """Displays a user's HaztrakProfile"""
 
     queryset = Profile.objects.all()

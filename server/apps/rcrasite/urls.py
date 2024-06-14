@@ -1,13 +1,17 @@
-from django.urls import path
+from django.urls import include, path
 
-from apps.rcrasite.views import (  # type: ignore
-    HandlerSearchView,
-    RcraSiteDetailsView,
-    RcraSiteSearchView,
+from apps.rcrasite.views import HandlerSearchView, RcraSiteDetailsView, RcraSiteSearchView
+
+rcrainfo_rcrasite_patterns = (
+    [
+        path("/rcrasite/search", HandlerSearchView.as_view(), name="search"),
+    ],
+    "rcrainfo",
 )
 
+app_name = "rcrasite"
 urlpatterns = [
-    path("handler/search", HandlerSearchView.as_view()),
-    path("handler/<str:epa_id>", RcraSiteDetailsView.as_view()),
-    path("site/search", RcraSiteSearchView.as_view()),
+    path("rcrainfo", include(rcrainfo_rcrasite_patterns)),
+    path("rcrasite/search", RcraSiteSearchView.as_view(), name="search"),
+    path("rcrasite/<str:epa_id>", RcraSiteDetailsView.as_view(), name="details"),
 ]

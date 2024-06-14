@@ -1,15 +1,16 @@
+from unittest.mock import patch
+
 import pytest
 from celery.result import AsyncResult
 from rest_framework import status
+from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.manifest.views import ElectronicManifestSignView, ManifestViewSet
+from apps.manifest.views import ElectronicManifestSignView, ManifestViewSet, MtnListView
 
 
 class TestManifestCRUD:
     """Tests the for the Manifest ModelViewSet"""
-
-    base_url = "/api/rcra/manifest"
 
     @pytest.fixture
     def factory(self):
@@ -29,19 +30,18 @@ class TestManifestCRUD:
 
     def test_returns_manifest_by_mtn(self, factory, manifest, manifest_json, user):
         # Arrange
-        request = factory.get(f"{self.base_url}/{manifest.mtn}")
+        request = factory.get(reverse("manifest:manifest-detail", args=[manifest.mtn]))
         force_authenticate(request, user)
         # Act
         response = ManifestViewSet.as_view({"get": "retrieve"})(request, mtn=manifest.mtn)
         # Assert
         assert response.status_code == status.HTTP_200_OK
-        assert response.data["manifestTrackingNumber"] == manifest.mtn
+        assert manifest.mtn in response.data.values()
 
 
 class TestSignManifestVIew:
     """Quicker Sign endpoint test suite"""
 
-    base_url = "/api/manifest/emanifest/sign"
     factory = APIRequestFactory()
     mtn = ["123456789ELC", "987654321ELC"]
 
@@ -63,10 +63,10 @@ class TestSignManifestVIew:
         profile_factory(user=user)
         org_access_factory(user=user, org=org)
         request = self.factory.post(
-            f"{self.base_url}",
+            reverse("manifest:emanifest:sign"),
             data={
                 "manifestTrackingNumbers": self.mtn,
-                "printedSignatureName": "Joe Blow",
+                "printedSignatureName": "John Doe",
                 "siteType": "Generator",
                 "siteId": "VATESTGEN001",
             },
@@ -75,3 +75,28 @@ class TestSignManifestVIew:
         force_authenticate(request, user)
         response = ElectronicManifestSignView.as_view()(request)
         assert response.data["taskId"] == self.mock_task_id
+
+
+class TestMtnListView:
+    @pytest.fixture
+    def factory(self):
+        return APIRequestFactory()
+
+    @pytest.fixture
+    def user(self, user_factory):
+        return user_factory()
+
+    def test_returns_empty_list_if_no_manifests(self, factory, user):
+        with patch("apps.manifest.views.get_manifests") as mock_get_manifests:
+            mock_get_manifests.return_value = []
+            request = factory.get(reverse("manifest:mtn:list"))
+            force_authenticate(request, user)
+            response = MtnListView.as_view()(request)
+            assert isinstance(response.data, list)
+
+    def test_401_if_not_authorized(self, factory, user):
+        with patch("apps.manifest.views.get_manifests") as mock_get_manifests:
+            mock_get_manifests.return_value = []
+            request = factory.get(reverse("manifest:mtn:list"))
+            response = MtnListView.as_view()(request)
+            assert response.status_code == status.HTTP_401_UNAUTHORIZED

@@ -1,11 +1,12 @@
+import pytest
 from rest_framework import status
+from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.profile.views import RcrainfoProfileRetrieveUpdateView
+from apps.profile.views import ProfileDetailsView, RcrainfoProfileRetrieveUpdateView
 
 
 class TestRcrainfoProfileRetrieveUpdateView:
-    base_url = "/api/user/rcrainfo-profile"
     factory = APIRequestFactory()
 
     id_field = "rcraAPIID"
@@ -19,7 +20,7 @@ class TestRcrainfoProfileRetrieveUpdateView:
         rcrainfo_profile = rcrainfo_profile_factory()
         profile_factory(user=user, rcrainfo_profile=rcrainfo_profile)
         request = self.factory.get(
-            f"{self.base_url}/{user.username}",
+            reverse("profile:rcrainfo:retrieve-update", args=[user.username])
         )
         force_authenticate(request, user)
         response = RcrainfoProfileRetrieveUpdateView.as_view()(request, username=user.username)
@@ -35,7 +36,7 @@ class TestRcrainfoProfileRetrieveUpdateView:
         rcrainfo_profile = rcrainfo_profile_factory(rcra_api_key=my_key, rcra_api_id=my_id)
         profile_factory(user=user, rcrainfo_profile=rcrainfo_profile)
         request = self.factory.get(
-            f"{self.base_url}/{user.username}",
+            reverse("profile:rcrainfo:retrieve-update", args=[user.username])
         )
         force_authenticate(request, user)
         response = RcrainfoProfileRetrieveUpdateView.as_view()(request, username=user.username)
@@ -49,7 +50,7 @@ class TestRcrainfoProfileRetrieveUpdateView:
         client = api_client_factory(user=user)
         rcra_profile = rcrainfo_profile_factory()
         profile_factory(user=user, rcrainfo_profile=rcra_profile)
-        response = client.get(f"{self.base_url}/{user.username}")
+        response = client.get(reverse("profile:rcrainfo:retrieve-update", args=[user.username]))
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK
 
@@ -62,7 +63,7 @@ class TestRcrainfoProfileRetrieveUpdateView:
         profile_factory(user=user, rcrainfo_profile=rcra_profile)
         factory = APIRequestFactory()
         request = factory.put(
-            f"{self.base_url}/{user.username}",
+            reverse("profile:rcrainfo:retrieve-update", args=[user.username]),
             {
                 self.id_field: rcra_profile.rcra_api_id,
                 self.username_field: user.username,
@@ -85,7 +86,7 @@ class TestRcrainfoProfileRetrieveUpdateView:
         profile = profile_factory(user=user, rcrainfo_profile=rcra_profile)
         factory = APIRequestFactory()
         request = factory.put(
-            f"{self.base_url}/{user.username}",
+            reverse("profile:rcrainfo:retrieve-update", args=[user.username]),
             {
                 self.id_field: rcra_profile.rcra_api_id,
                 self.username_field: user.username,
@@ -101,3 +102,28 @@ class TestRcrainfoProfileRetrieveUpdateView:
         # Assert
         assert self.key_field not in response.data
         assert self.id_field in response.data
+
+
+class TestProfileDetailsView:
+    @pytest.fixture
+    def request_factory(self, user_factory):
+        user = user_factory()
+        factory = APIRequestFactory()
+        request = factory.get(reverse("profile:details"))
+        force_authenticate(request, user)
+        return request, user
+
+    def test_returns_profile(self, request_factory, profile_factory):
+        request, user = request_factory
+        profile_factory(user=user)
+        response = ProfileDetailsView.as_view()(request)
+        assert response.status_code == status.HTTP_200_OK
+        assert "user" in response.data.keys()
+
+    def test_returns_401_when_unauthenticated(self, profile_factory, user_factory):
+        user = user_factory()
+        factory = APIRequestFactory()
+        request = factory.get(reverse("profile:details"))
+        profile_factory(user=user)
+        response = ProfileDetailsView.as_view()(request)
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED

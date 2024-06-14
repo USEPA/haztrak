@@ -112,7 +112,7 @@ export const userApi = haztrakApi.injectEndpoints({
     }),
     getProfile: build.query<ProfileSlice, void>({
       query: () => ({
-        url: 'user/profile',
+        url: 'profile',
         method: 'GET',
       }),
       providesTags: ['profile'],
@@ -135,7 +135,7 @@ export const userApi = haztrakApi.injectEndpoints({
     }),
     getRcrainfoProfile: build.query<RcrainfoProfileState, string>({
       query: (username) => ({
-        url: `user/rcrainfo-profile/${username}`,
+        url: `rcrainfo-profile/${username}`,
         method: 'GET',
       }),
       providesTags: ['rcrainfoProfile'],
@@ -154,7 +154,7 @@ export const userApi = haztrakApi.injectEndpoints({
     }),
     updateRcrainfoProfile: build.mutation<any, { username: string; data: any }>({
       query: (data) => ({
-        url: `user/rcrainfo-profile/${data.username}`,
+        url: `rcrainfo-profile/${data.username}`,
         method: 'PUT',
         data: data.data,
       }),
@@ -162,7 +162,7 @@ export const userApi = haztrakApi.injectEndpoints({
     }),
     syncRcrainfoProfile: build.mutation<TaskResponse, void>({
       query: () => ({
-        url: `user/rcrainfo-profile/sync`,
+        url: `rcrainfo-profile/sync`,
         method: 'POST',
       }),
       invalidatesTags: ['rcrainfoProfile'],

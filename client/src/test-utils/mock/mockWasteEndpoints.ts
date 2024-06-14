@@ -5,10 +5,10 @@ import { mockDotIdNumbers, mockFederalWasteCodes } from 'test-utils/fixtures/moc
 const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
 export const mockWasteEndpoints = [
   /** GET User */
-  http.get(`${API_BASE_URL}/api/rcra/waste/code/federal`, (info) => {
+  http.get(`${API_BASE_URL}/api/waste/code/federal`, (info) => {
     return HttpResponse.json(mockFederalWasteCodes, { status: 200 });
   }),
-  http.get(`${API_BASE_URL}/api/rcra/waste/dot/id`, (info) => {
+  http.get(`${API_BASE_URL}/api/waste/dot/id`, (info) => {
     const url = new URL(info.request.url);
     const query = url.searchParams.get('q');
     let filteredIds: Array<string> = [];

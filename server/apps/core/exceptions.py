@@ -1,8 +1,8 @@
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.http import Http404
 from rest_framework import exceptions
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import APIException, NotFound
 from rest_framework.serializers import as_serializer_error
 from rest_framework.views import exception_handler
 
@@ -32,6 +32,8 @@ def haztrak_exception_handler(exc, context):
             exc = exceptions.PermissionDenied()
         case Http404():
             exc = exceptions.NotFound()
+        case ObjectDoesNotExist():
+            exc = NotFound()
         case KeyError():
             exc = exceptions.ParseError()
         case ValueError():

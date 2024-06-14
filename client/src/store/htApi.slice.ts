@@ -81,21 +81,21 @@ export const haztrakApi = createApi({
     // Note: build.query<ReturnType, ArgType>
     searchRcrainfoSites: build.query<Array<RcraSite>, RcrainfoSiteSearch>({
       query: (data: RcrainfoSiteSearch) => ({
-        url: 'rcra/handler/search',
+        url: 'rcrainfo/rcrasite/search',
         method: 'post',
         data: data,
       }),
     }),
     searchRcraSites: build.query<Array<RcraSite>, RcrainfoSiteSearch>({
       query: (data: RcrainfoSiteSearch) => ({
-        url: 'rcra/site/search',
+        url: 'rcrasite/search',
         method: 'get',
         params: { epaId: data.siteId, siteType: data.siteType },
       }),
     }),
     getRcrainfoSite: build.query<RcraSite, string | null>({
       query: (epaSiteId) => ({
-        url: `rcra/handler/${epaSiteId}`,
+        url: `rcrasite/${epaSiteId}`,
         method: 'get',
       }),
     }),
@@ -103,15 +103,15 @@ export const haztrakApi = createApi({
       query: (taskId) => ({ url: `task/${taskId}`, method: 'get' }),
     }),
     getFedWasteCodes: build.query<Array<Code>, void>({
-      query: () => ({ url: 'rcra/waste/code/federal', method: 'get' }),
+      query: () => ({ url: 'waste/code/federal', method: 'get' }),
       providesTags: ['code'],
     }),
     getStateWasteCodes: build.query<Array<Code>, string>({
-      query: (state) => ({ url: `rcra/waste/code/state/${state}`, method: 'get' }),
+      query: (state) => ({ url: `waste/code/state/${state}`, method: 'get' }),
       providesTags: ['code'],
     }),
     getDotIdNumbers: build.query<Array<string>, string>({
-      query: (id) => ({ url: 'rcra/waste/dot/id', method: 'get', params: { q: id } }),
+      query: (id) => ({ url: 'waste/dot/id', method: 'get', params: { q: id } }),
       providesTags: ['code'],
     }),
     getOrgSites: build.query<Array<HaztrakSite>, string>({
@@ -128,18 +128,18 @@ export const haztrakApi = createApi({
     }),
     getMTN: build.query<Array<MtnDetails>, string | undefined>({
       query: (siteId) => ({
-        url: siteId ? `rcra/manifest/mtn/${siteId}` : 'rcra/manifest/mtn',
+        url: siteId ? `manifest/mtn/${siteId}` : 'manifest/mtn',
         method: 'get',
       }),
       providesTags: ['manifest'],
     }),
     getManifest: build.query<Manifest, string>({
-      query: (mtn) => ({ url: `rcra/manifest/${mtn}`, method: 'get' }),
+      query: (mtn) => ({ url: `manifest/${mtn}`, method: 'get' }),
       providesTags: ['manifest'],
     }),
     createManifest: build.mutation<Manifest, Manifest>({
       query: (data) => ({
-        url: 'rcra/manifest',
+        url: 'manifest',
         method: 'POST',
         data,
       }),
@@ -147,7 +147,7 @@ export const haztrakApi = createApi({
     }),
     updateManifest: build.mutation<Manifest, { mtn: string; manifest: Manifest }>({
       query: ({ mtn, manifest }) => ({
-        url: `rcra/manifest/${mtn}`,
+        url: `manifest/${mtn}`,
         method: 'PUT',
         data: manifest,
       }),
@@ -155,7 +155,7 @@ export const haztrakApi = createApi({
     }),
     saveEManifest: build.mutation<TaskResponse, Manifest>({
       query: (data) => ({
-        url: 'rcra/manifest/emanifest',
+        url: 'manifest/emanifest',
         method: 'POST',
         data,
       }),
@@ -163,7 +163,7 @@ export const haztrakApi = createApi({
     }),
     syncEManifest: build.mutation<TaskResponse, string>({
       query: (siteId) => ({
-        url: 'rcra/manifest/emanifest/sync',
+        url: 'manifest/emanifest/sync',
         method: 'POST',
         data: { siteId: siteId },
       }),
@@ -171,7 +171,7 @@ export const haztrakApi = createApi({
     }),
     signEManifest: build.mutation<TaskResponse, QuickerSignature>({
       query: (signature) => ({
-        url: 'rcra/manifest/emanifest/sign',
+        url: 'manifest/emanifest/sign',
         method: 'POST',
         data: signature,
       }),

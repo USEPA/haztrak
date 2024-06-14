@@ -11,18 +11,18 @@ const generateRandomMTN = (): string => {
 
 export const mockManifestEndpoints = [
   /** mock GET Manifest*/
-  http.get(`${API_BASE_URL}/api/rcra/manifest/${mockMTN}`, (info) => {
+  http.get(`${API_BASE_URL}/api/manifest/${mockMTN}`, (info) => {
     return HttpResponse.json(createMockManifest(), { status: 200 });
   }),
   /** Mock create local Manifests*/
-  http.post(`${API_BASE_URL}/api/rcra/manifest`, async (info) => {
+  http.post(`${API_BASE_URL}/api/manifest`, async (info) => {
     let bodyManifest = (await info.request.json()) as Manifest;
     if (!bodyManifest.manifestTrackingNumber)
       bodyManifest.manifestTrackingNumber = `${generateRandomMTN()}DFT`.padEnd(9, '0');
     return HttpResponse.json(bodyManifest, { status: 200 });
   }),
   /** Mock update local Manifests*/
-  http.put(`${API_BASE_URL}/api/rcra/manifest/:mtn`, async (info) => {
+  http.put(`${API_BASE_URL}/api/manifest/:mtn`, async (info) => {
     const { mtn } = info.params;
     let bodyManifest = (await info.request.json()) as Manifest;
     if (bodyManifest.manifestTrackingNumber !== mtn)
@@ -30,7 +30,7 @@ export const mockManifestEndpoints = [
     return HttpResponse.json(bodyManifest, { status: 200 });
   }),
   /** list of manifests ('My Manifests' feature and a site's manifests)*/
-  http.get(`${API_BASE_URL}/api/rcra/mtn*`, (info) => {
+  http.get(`${API_BASE_URL}/api/mtn*`, (info) => {
     const mockManifestArray = [
       createMockManifest(),
       createMockManifest({ manifestTrackingNumber: '987654321ELC', status: 'Pending' }),
