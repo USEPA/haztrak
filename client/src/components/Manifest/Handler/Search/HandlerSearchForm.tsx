@@ -52,7 +52,7 @@ export function HandlerSearchForm({
       siteType: handlerType,
       siteId: debouncedInputValue,
     },
-    { skip }
+    { skip: skip || debouncedInputValue === '' }
   );
   const {
     data: rcrainfoData,

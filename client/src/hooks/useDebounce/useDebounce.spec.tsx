@@ -5,11 +5,11 @@ import { beforeAll, afterAll, afterEach, describe, expect, it, vi } from 'vitest
 
 describe('useDebounce hook', () => {
   beforeAll(() => {
-    vi.useFakeTimers(); // Use fake timers
+    vi.useFakeTimers();
   });
 
   afterAll(() => {
-    vi.clearAllTimers(); // Clear all timers after tests
+    vi.clearAllTimers();
   });
 
   it('should return the initial value immediately', () => {
@@ -22,18 +22,14 @@ describe('useDebounce hook', () => {
       initialProps: { value: 'initial', delay: 500 },
     });
 
-    // Update the value
     rerender({ value: 'updated', delay: 500 });
 
-    // Before the delay, the debounced value should still be 'initial'
     expect(result.current).toBe('initial');
 
-    // Fast forward time by 500ms
     act(() => {
       vi.advanceTimersByTime(500);
     });
 
-    // After the delay, the debounced value should be 'updated'
     expect(result.current).toBe('updated');
   });
 
@@ -42,31 +38,26 @@ describe('useDebounce hook', () => {
       initialProps: { value: 'initial', delay: 500 },
     });
 
-    // Update the value multiple times within the delay period
     rerender({ value: 'updated1', delay: 500 });
     act(() => {
       vi.advanceTimersByTime(300);
     });
     rerender({ value: 'updated2', delay: 500 });
 
-    // Fast forward time by the remaining 200ms
     act(() => {
       vi.advanceTimersByTime(200);
     });
 
-    // The debounced value should still be 'initial' because the timer was reset
     expect(result.current).toBe('initial');
 
-    // Fast forward time by 300ms
     act(() => {
       vi.advanceTimersByTime(300);
     });
 
-    // After the full delay, the debounced value should be 'updated2'
     expect(result.current).toBe('updated2');
   });
 
   afterEach(() => {
-    vi.clearAllTimers(); // Clear all timers after each test
+    vi.clearAllTimers();
   });
 });
