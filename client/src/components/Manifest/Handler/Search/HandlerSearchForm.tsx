@@ -15,6 +15,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { useGetProfileQuery, useSearchRcrainfoSitesQuery, useSearchRcraSitesQuery } from 'store';
+import { useDebounce } from 'hooks';
 
 interface Props {
   handleClose: () => void;
@@ -37,6 +38,8 @@ export function HandlerSearchForm({
   const { handleSubmit, control } = useForm<searchHandlerForm>();
   const manifestForm = useFormContext<Manifest>();
   const [inputValue, setInputValue] = useState<string>('');
+  const debouncedInputValue = useDebounce(inputValue, 500);
+
   const [selectedHandler, setSelectedHandler] = useState<RcraSite | null>(null);
   const { org } = useGetProfileQuery(undefined, {
     selectFromResult: ({ data }) => {
@@ -47,9 +50,9 @@ export function HandlerSearchForm({
   const { data } = useSearchRcraSitesQuery(
     {
       siteType: handlerType,
-      siteId: inputValue,
+      siteId: debouncedInputValue,
     },
-    { skip }
+    { skip: skip || debouncedInputValue === '' }
   );
   const {
     data: rcrainfoData,
@@ -58,7 +61,7 @@ export function HandlerSearchForm({
   } = useSearchRcrainfoSitesQuery(
     {
       siteType: handlerType,
-      siteId: inputValue,
+      siteId: debouncedInputValue,
     },
     { skip: skip || !org?.rcrainfoIntegrated }
   );
@@ -96,9 +99,9 @@ export function HandlerSearchForm({
   };
 
   useEffect(() => {
-    const inputTooShort = inputValue.length < 5;
+    const inputTooShort = inputValue.length < 2;
     setSkip(inputTooShort);
-  }, [inputValue]);
+  }, [debouncedInputValue]);
 
   useEffect(() => {
     const knownSites = data && data.length > 0 ? data : [];
