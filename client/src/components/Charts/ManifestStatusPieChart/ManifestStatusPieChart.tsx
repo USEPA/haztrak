@@ -15,8 +15,8 @@ const data: Array<Entry> = [
   { name: 'Ready for TSDF Signature', value: 21, searchParam: 'readyforsignature' },
 ];
 
-const normalAlpha = '0.6';
-const activeAlpha = '1';
+const normalAlpha = '1';
+const activeAlpha = '.75';
 
 const COLORS = [
   { normal: `rgba(0, 136, 254, ${normalAlpha})`, active: `rgba(0, 136, 254, ${activeAlpha})` },
@@ -134,7 +134,7 @@ const renderShape = (props: any, isActive: boolean) => {
 };
 
 const renderLegend = (props: any) => {
-  const { payload, handleMouseEnter, handleMouseLeave } = props;
+  const { payload, handleMouseEnter, handleMouseLeave, handleClick } = props;
 
   return (
     <div
@@ -146,18 +146,30 @@ const renderLegend = (props: any) => {
         style={{ padding: '0px', margin: '0px', textAlign: 'center' }}
       >
         {payload.map((entry: any, index: number) => {
-          const activeLegend =
-            entry.color.slice(entry.color.lastIndexOf(' ') + 1, entry.color.length - 1) === '1';
+          const dataEntry = data.find((d) => d.name === entry.value);
+          const activeAlphaColor = entry.color.slice(
+            entry.color.lastIndexOf(' ') + 1,
+            entry.color.length - 1
+          );
+          const activeLegend = activeAlphaColor === activeAlpha;
           const baseStyle = { color: entry.color, paddingBottom: '2px' };
           const spanStyle = activeLegend
             ? { ...baseStyle, borderBottom: `2px solid ${entry.color}` }
-            : { ...baseStyle };
+            : baseStyle;
+
+          // const activeLegend =
+          //   entry.color.slice(entry.color.lastIndexOf(' ') + 1, entry.color.length - 1) === activeAlpha;
+          // const baseStyle = { color: entry.color, paddingBottom: '2px' };
+          // const spanStyle = activeLegend
+          //   ? { ...baseStyle, borderBottom: `2px solid ${entry.color}` }
+          //   : { ...baseStyle };
 
           return (
-            <li
+            <button
               key={`item-${index}`}
               onMouseEnter={() => handleMouseEnter(null, index)}
               onMouseLeave={handleMouseLeave}
+              onClick={() => handleClick(dataEntry)}
               className={`recharts-legend-item legend-item-${index}`}
               style={{ display: 'inline-block', marginRight: '10px' }}
             >
@@ -180,7 +192,7 @@ const renderLegend = (props: any) => {
               <span className="recharts-legend-item-text" style={spanStyle}>
                 {entry.value}
               </span>
-            </li>
+            </button>
           );
         })}
       </ul>
@@ -214,7 +226,9 @@ export function ManifestStatusPieChart() {
     <ResponsiveContainer minWidth={100} minHeight={300} height="10%">
       <PieChart width={400} height={400}>
         <Legend
-          content={(props: any) => renderLegend({ ...props, handleMouseEnter, handleMouseLeave })}
+          content={(props: any) =>
+            renderLegend({ ...props, handleMouseEnter, handleMouseLeave, handleClick })
+          }
           verticalAlign="bottom"
           height={36}
         />

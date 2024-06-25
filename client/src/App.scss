@@ -264,3 +264,11 @@ body {
 }
 
 @import '~bootstrap/scss/bootstrap';
+
+button {
+  all: unset;
+}
+
+button:focus {
+  outline: revert;
+}
