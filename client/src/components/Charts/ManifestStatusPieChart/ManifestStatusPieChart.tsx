@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Sector } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 
@@ -160,7 +160,7 @@ const renderLegend = (props: any) => {
               key={`item-${index}`}
               onMouseEnter={() => handleMouseEnter(null, index)}
               onMouseLeave={handleMouseLeave}
-              onClick={() => handleClick(dataEntry)}
+              onClick={handleClick(dataEntry)}
               className={`recharts-legend-item legend-item-${index}`}
               style={{ display: 'inline-block', marginRight: '10px' }}
             >
@@ -193,6 +193,7 @@ const renderLegend = (props: any) => {
 
 export function ManifestStatusPieChart() {
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [chartRenderComplete, setChartRenderComplete] = useState(false);
   const navigate = useNavigate();
 
   const handleMouseEnter = useCallback(
@@ -206,12 +207,20 @@ export function ManifestStatusPieChart() {
     setActiveIndex(-1);
   }, [setActiveIndex]);
 
-  const handleClick = (entry: Entry) => {
+  const renderLabel = (props: any) => {
+    if (chartRenderComplete) {
+      return renderCustomLabel({ ...props, hover: false, activeIndex: activeIndex });
+    }
+  };
+
+  const handleClick = (entry: Entry) => () => {
     navigate({
       pathname: './manifest',
       search: `?status=${entry.searchParam}`,
     });
   };
+
+  const animationDuration = chartRenderComplete ? 0 : 1000;
 
   return (
     <ResponsiveContainer minWidth={100} minHeight={300} height="10%">
@@ -224,6 +233,8 @@ export function ManifestStatusPieChart() {
           height={36}
         />
         <Pie
+          animationDuration={animationDuration}
+          onAnimationEnd={() => setChartRenderComplete(true)}
           activeIndex={activeIndex}
           activeShape={(props: any) => renderShape(props, true)}
           inactiveShape={(props: any) => renderShape(props, false)}
@@ -234,9 +245,7 @@ export function ManifestStatusPieChart() {
           fill="#8884d8"
           dataKey="value"
           labelLine={false}
-          label={(props: any) =>
-            renderCustomLabel({ ...props, hover: false, activeIndex: activeIndex })
-          }
+          label={renderLabel}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           cursor={'pointer'}
@@ -245,7 +254,7 @@ export function ManifestStatusPieChart() {
             <Cell
               key={`cell-${index}`}
               fill={index === activeIndex ? COLORS[index].active : COLORS[index].normal}
-              onClick={() => handleClick(entry)}
+              onClick={handleClick(entry)}
             />
           ))}
         </Pie>
