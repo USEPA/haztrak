@@ -265,10 +265,11 @@ body {
 
 @import '~bootstrap/scss/bootstrap';
 
-button {
+button.recharts-legend-item {
   all: unset;
+  cursor: pointer;
 }
 
-button:focus {
-  outline: revert;
+.recharts-legend-item:focus .recharts-legend-item-text {
+  border-bottom: 2px solid;
 }

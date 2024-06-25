@@ -153,16 +153,7 @@ const renderLegend = (props: any) => {
           );
           const activeLegend = activeAlphaColor === activeAlpha;
           const baseStyle = { color: entry.color, paddingBottom: '2px' };
-          const spanStyle = activeLegend
-            ? { ...baseStyle, borderBottom: `2px solid ${entry.color}` }
-            : baseStyle;
-
-          // const activeLegend =
-          //   entry.color.slice(entry.color.lastIndexOf(' ') + 1, entry.color.length - 1) === activeAlpha;
-          // const baseStyle = { color: entry.color, paddingBottom: '2px' };
-          // const spanStyle = activeLegend
-          //   ? { ...baseStyle, borderBottom: `2px solid ${entry.color}` }
-          //   : { ...baseStyle };
+          const spanStyle = activeLegend ? { ...baseStyle, borderBottom: `2px solid` } : baseStyle;
 
           return (
             <button
