@@ -58,10 +58,20 @@ const renderCustomLabel = (props: any): JSX.Element | null => {
   const { sin, cos } = calculateTrig(midAngle);
   const label = calculateCoordinates(outerRadius, -MID_LABEL_DISTANCE, cx, cy, sin, cos);
 
+  // correct for text anchoring bottom-left on (x,y) coord
+  // a positive Y value moves the element down
+  // a postiive X value moves the element right
+  const ySign = sin < 0 ? -1 : 1;
+  const dDistance = 2;
+  const dx = value.toString().length * -dDistance;
+  const dy = sin > 0 ? value.toString().length * ySign * dDistance : 0;
+
   const labelElement = (
     <text
       x={hover ? label.x + 8 * cos : label.x}
       y={hover ? label.y + 8 * sin : label.y}
+      dx={dx}
+      dy={dy}
       fill="white"
       dominantBaseline="central"
     >
