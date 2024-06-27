@@ -258,7 +258,7 @@ export function ManifestStatusPieChart() {
   const animationDuration = chartRenderComplete ? 0 : 1000;
 
   return (
-    <ResponsiveContainer minWidth={100} minHeight={300} height="10%">
+    <ResponsiveContainer minWidth={100} minHeight={300} height={'10%'}>
       <PieChart width={400} height={400}>
         <Legend
           content={(props: any) =>
