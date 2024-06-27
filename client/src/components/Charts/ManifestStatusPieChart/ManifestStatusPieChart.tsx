@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, ReactElement } from 'react';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Sector } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +8,11 @@ interface Entry {
   searchParam: string;
 }
 
+interface Color {
+  normal: string;
+  active: string;
+}
+
 const data: Array<Entry> = [
   { name: 'Pending', value: 40, searchParam: 'pending' },
   { name: 'Scheduled', value: 39, searchParam: 'scheduled' },
@@ -15,32 +20,48 @@ const data: Array<Entry> = [
   { name: 'Ready for TSDF Signature', value: 21, searchParam: 'readyforsignature' },
 ];
 
-const normalAlpha = '1';
+const inactiveAlpha = '1';
 const activeAlpha = '.75';
 
-const COLORS = [
-  { normal: `rgba(0, 136, 254, ${normalAlpha})`, active: `rgba(0, 136, 254, ${activeAlpha})` },
-  { normal: `rgba(0, 196, 159, ${normalAlpha})`, active: `rgba(0, 196, 159, ${activeAlpha})` },
-  { normal: `rgba(255, 187, 40, ${normalAlpha})`, active: `rgba(255, 187, 40, ${activeAlpha})` },
-  { normal: `rgba(255, 128, 66, ${normalAlpha})`, active: `rgba(255, 128, 66, ${activeAlpha})` },
+const COLORS: Array<Color> = [
+  { normal: `rgba(0, 136, 254, ${inactiveAlpha})`, active: `rgba(0, 136, 254, ${activeAlpha})` },
+  { normal: `rgba(0, 196, 159, ${inactiveAlpha})`, active: `rgba(0, 196, 159, ${activeAlpha})` },
+  { normal: `rgba(255, 187, 40, ${inactiveAlpha})`, active: `rgba(255, 187, 40, ${activeAlpha})` },
+  { normal: `rgba(255, 128, 66, ${inactiveAlpha})`, active: `rgba(255, 128, 66, ${activeAlpha})` },
 ];
 
+const PIE_HOVER_OFFSET_DISTANCE = 9;
+const START_LABEL_DISTANCE = 10;
+const MID_LABEL_DISTANCE = 30;
 const RADIAN = Math.PI / 180;
 
-const renderCustomLabel = (props: any) => {
+const calculateTrig = (midAngle: number): { sin: number; cos: number } => ({
+  sin: Math.sin(-RADIAN * midAngle),
+  cos: Math.cos(-RADIAN * midAngle),
+});
+const calculateCoordinates = (
+  radius: number,
+  distance: number,
+  x: number,
+  y: number,
+  sin: number,
+  cos: number
+): { x: number; y: number } => {
+  return {
+    x: x + (radius + distance) * cos,
+    y: y + (radius + distance) * sin,
+  };
+};
+
+const renderCustomLabel = (props: any): JSX.Element | null => {
   const { cx, cy, midAngle, outerRadius, value, hover, activeIndex } = props;
+  const { sin, cos } = calculateTrig(midAngle);
+  const label = calculateCoordinates(outerRadius, -MID_LABEL_DISTANCE, cx, cy, sin, cos);
 
-  const sin = Math.sin(-RADIAN * midAngle);
-  const cos = Math.cos(-RADIAN * midAngle);
-  const lx = cx + (outerRadius - 30) * cos;
-  const ly = cy + (outerRadius - 30) * sin;
-  const hoverPieX = lx + 8 * cos;
-  const hoverPieY = ly + 8 * sin;
-
-  const label = (
+  const labelElement = (
     <text
-      x={hover ? hoverPieX : lx}
-      y={hover ? hoverPieY : ly}
+      x={hover ? label.x + 8 * cos : label.x}
+      y={hover ? label.y + 8 * sin : label.y}
       fill="white"
       dominantBaseline="central"
     >
@@ -48,33 +69,38 @@ const renderCustomLabel = (props: any) => {
     </text>
   );
 
-  return activeIndex < 0 ? label : null;
+  return activeIndex < 0 ? labelElement : null;
 };
 
-const renderOuterRing = (props: any) => {
+const renderOuterRing = (props: any): JSX.Element => {
   const { cx, cy, midAngle, outerRadius, startAngle, endAngle, fill, payload, percent } = props;
+  const { sin, cos } = calculateTrig(midAngle);
 
-  const sin = Math.sin(-RADIAN * midAngle);
-  const cos = Math.cos(-RADIAN * midAngle);
-  const PIE_HOVER_OFFSET_DISTANCE = 9;
-
-  const hoverPieX = cx + PIE_HOVER_OFFSET_DISTANCE * cos;
-  const hoverPieY = cy + PIE_HOVER_OFFSET_DISTANCE * sin;
-
-  const labelStartX = hoverPieX + (outerRadius + 10) * cos;
-  const labelStartY = hoverPieY + (outerRadius + 10) * sin;
-  const labelMidX = hoverPieX + (outerRadius + 30) * cos;
-  const labelMidY = hoverPieY + (outerRadius + 30) * sin;
-
-  const labelEndX = labelMidX + (cos >= 0 ? 1 : -1) * 22;
-  const labelEndY = labelMidY;
+  const hover = calculateCoordinates(0, PIE_HOVER_OFFSET_DISTANCE, cx, cy, sin, cos);
+  const labelStart = calculateCoordinates(
+    outerRadius,
+    START_LABEL_DISTANCE,
+    hover.x,
+    hover.y,
+    sin,
+    cos
+  );
+  const labelMid = calculateCoordinates(
+    outerRadius,
+    MID_LABEL_DISTANCE,
+    hover.x,
+    hover.y,
+    sin,
+    cos
+  );
+  const labelEnd = { x: labelMid.x + (cos >= 0 ? 1 : -1) * 22, y: labelMid.y };
   const textAnchor = cos >= 0 ? 'start' : 'end';
 
   return (
     <>
       <Sector
-        cx={hoverPieX}
-        cy={hoverPieY}
+        cx={hover.x}
+        cy={hover.y}
         startAngle={startAngle}
         endAngle={endAngle}
         innerRadius={outerRadius + 6}
@@ -91,14 +117,14 @@ const renderOuterRing = (props: any) => {
         activeIndex: -1,
       })}
       <path
-        d={`M${labelStartX},${labelStartY}L${labelMidX},${labelMidY}L${labelEndX},${labelEndY}`}
+        d={`M${labelStart.x},${labelStart.y}L${labelMid.x},${labelMid.y}L${labelEnd.x},${labelEnd.y}`}
         stroke={fill}
         fill="none"
       />
-      <circle cx={labelEndX} cy={labelEndY} r={2} fill={fill} stroke="none" />
+      <circle cx={labelEnd.x} cy={labelEnd.y} r={2} fill={fill} stroke="none" />
       <text
-        x={labelEndX + (cos >= 0 ? 12 : -12)}
-        y={labelEndY}
+        x={labelEnd.x + (cos >= 0 ? 12 : -12)}
+        y={labelEnd.y}
         dy={6}
         textAnchor={textAnchor}
         fill="#333"
@@ -107,10 +133,9 @@ const renderOuterRing = (props: any) => {
   );
 };
 
-const renderShape = (props: any, isActive: boolean) => {
+const renderShape = (props: any, isActive: boolean): JSX.Element => {
   const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, onClick } = props;
-  const sin = Math.sin(-RADIAN * midAngle);
-  const cos = Math.cos(-RADIAN * midAngle);
+  const { sin, cos } = calculateTrig(midAngle);
   const offset = isActive ? 9 : 0;
   const x = cx + offset * cos;
   const y = cy + offset * sin;
@@ -133,7 +158,7 @@ const renderShape = (props: any, isActive: boolean) => {
   );
 };
 
-const renderLegend = (props: any) => {
+const renderLegend = (props: any): ReactElement => {
   const { payload, handleMouseEnter, handleMouseLeave, handleClick } = props;
 
   return (
@@ -143,7 +168,7 @@ const renderLegend = (props: any) => {
     >
       <ul
         className="recharts-default-legend"
-        style={{ padding: '0px', margin: '0px', textAlign: 'center' }}
+        style={{ padding: '0px', margin: '10px', textAlign: 'center' }}
       >
         {payload.map((entry: any, index: number) => {
           const dataEntry = data.find((d) => d.name === entry.value);
