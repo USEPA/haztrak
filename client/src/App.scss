@@ -264,3 +264,12 @@ body {
 }
 
 @import '~bootstrap/scss/bootstrap';
+
+button.recharts-legend-item {
+  all: unset;
+  cursor: pointer;
+}
+
+.recharts-legend-item:focus .recharts-legend-item-text {
+  border-bottom: 2px solid;
+}
