@@ -4,6 +4,7 @@
   - [About e-Manifest](e-Manifest.md)
 - [Project Design](design/source-roadmap.md)
   - [Repo Roadmap](design/source-roadmap.md)
+  - [Authentication & Authorization](design/auth.md)
   - [Source Design Document](design/sdd.md)
     - [Http Server Design](design/server.md)
     - [Client Design](design/browser-client.md)
