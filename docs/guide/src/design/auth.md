@@ -37,4 +37,32 @@ The system must:
    A user can have multiple user roles. A user role has a one-to-one relationship with a `Role` model.
 5. Define a `Role` model that represents the function/job/actions that a user has. A role has a one-to-many
    relationship with a `Permission` model.
-6. Define a `Permission` model that represents the actions that a user can perform.
+6. Define a `Permission` model that represents the actions that a user can perform for resources
+   (e.g., a manifest) associated with a site or organization.
+
+### Django Implementation Notes
+
+The requirements for this system's authorization systems are relatively complex, they require
+object-level permissions, knowledge of a resource hierarchy (a site has manifests, you cannot
+edit another site's manifest), and dynamic permissions (e.g., a manifest can only be edited
+depending on the status)
+
+Here's where things get tricky. The Django framework ships with a built-in authentication
+and authorization system. The components of this built in system are found
+under the `django.contrib.auth` package. Leveraging the built-in system would allow us to
+take advantage of the many features that Django (such as the admin interface) provides and would
+ensure that we are using a well-tested, battle-hardened system.
+
+### Multi-Tenancy
+
+Pros:
+
+1. efficiency: the system would be able to handle multiple clients from a limited number of deployments
+2. scalability: the system would be able to scale in and out to handle increase load from multiple clients
+3. cost: the system would be able to handle multiple clients from a single deployment, reducing costs
+
+Cons:
+
+1. Security: the system would need to be designed to ensure that one client's data is not accessible by another client
+2. Complexity: the system would need to be designed to handle multiple clients, which would
+   increase the complexity of the system, in particular the authorization system.
