@@ -1,6 +1,6 @@
-import { useState, useCallback, ReactElement } from 'react';
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Sector } from 'recharts';
+import React, { ReactElement, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Sector } from 'recharts';
 
 interface Entry {
   name: string;
@@ -39,6 +39,7 @@ const calculateTrig = (midAngle: number): { sin: number; cos: number } => ({
   sin: Math.sin(-RADIAN * midAngle),
   cos: Math.cos(-RADIAN * midAngle),
 });
+
 const calculateCoordinates = (
   radius: number,
   distance: number,
@@ -60,7 +61,7 @@ const renderCustomLabel = (props: any): JSX.Element | null => {
 
   // correct for text anchoring bottom-left on (x,y) coord
   // a positive Y value moves the element down
-  // a postiive X value moves the element right
+  // a positive X value moves the element right
   const ySign = sin < 0 ? -1 : 1;
   const dDistance = 2;
   const dx = value.toString().length * -dDistance;
@@ -228,7 +229,6 @@ const renderLegend = (props: any): ReactElement => {
 
 export function ManifestStatusPieChart() {
   const [activeIndex, setActiveIndex] = useState(-1);
-  const [chartRenderComplete, setChartRenderComplete] = useState(false);
   const navigate = useNavigate();
 
   const handleMouseEnter = useCallback(
@@ -243,9 +243,7 @@ export function ManifestStatusPieChart() {
   }, [setActiveIndex]);
 
   const renderLabel = (props: any) => {
-    if (chartRenderComplete) {
-      return renderCustomLabel({ ...props, hover: false, activeIndex: activeIndex });
-    }
+    return renderCustomLabel({ ...props, hover: false, activeIndex: activeIndex });
   };
 
   const handleClick = (entry: Entry) => () => {
@@ -254,8 +252,6 @@ export function ManifestStatusPieChart() {
       search: `?status=${entry.searchParam}`,
     });
   };
-
-  const animationDuration = chartRenderComplete ? 0 : 1000;
 
   return (
     <ResponsiveContainer minWidth={100} minHeight={300} height={'10%'}>
@@ -268,8 +264,6 @@ export function ManifestStatusPieChart() {
           height={36}
         />
         <Pie
-          animationDuration={animationDuration}
-          onAnimationEnd={() => setChartRenderComplete(true)}
           activeIndex={activeIndex}
           activeShape={(props: any) => renderShape(props, true)}
           inactiveShape={(props: any) => renderShape(props, false)}
