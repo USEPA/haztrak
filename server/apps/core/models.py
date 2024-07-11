@@ -1,8 +1,9 @@
 import uuid
 
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from django.contrib.auth.models import Permission as DjangoPermission
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class TrakUser(AbstractUser):
@@ -39,3 +40,25 @@ class Permission(DjangoPermission):
 
     def __str__(self):
         return f"{self.content_type.name} | {self.name}"
+
+
+class Role(models.Model):
+    """A job/function within the system that can assigned to users to grant them permissions."""
+
+    class Meta:
+        verbose_name = _("Role")
+        verbose_name_plural = _("Roles")
+        ordering = ["name"]
+
+    name = models.CharField(
+        _("name"),
+        max_length=150,
+        unique=True,
+    )
+    permissions = models.ManyToManyField(
+        Permission,
+        verbose_name=_("permissions"),
+    )
+
+    def __str__(self):
+        return f"{self.name}"
