@@ -144,7 +144,8 @@ const renderOuterRing = (props: any): ReactElement => {
   );
 };
 
-const renderShape = (props: any): ReactElement => {
+/** Render the currently focused pie slice*/
+const renderActiveShape = (props: any): ReactElement => {
   const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, onClick } = props;
   const { sin, cos } = calculateTrig(midAngle);
   const offset = 9;
@@ -234,14 +235,14 @@ export function ManifestStatusPieChart() {
 
   const handleMouseEnter = useCallback(
     (_: any, index: number) => {
-      setAnimationIsActive(false);
+      setAnimationIsActive(false); // stop animation if impatient user
       setActiveIndex(index);
     },
     [setActiveIndex]
   );
 
   const handleMouseLeave = useCallback(() => {
-    setAnimationIsActive(false);
+    setAnimationIsActive(false); // stop animation if impatient user
     setActiveIndex(-1);
   }, [setActiveIndex]);
 
@@ -260,9 +261,9 @@ export function ManifestStatusPieChart() {
     <ResponsiveContainer minWidth={100} minHeight={300} height={'10%'}>
       <PieChart width={400} height={400}>
         <Legend
-          content={(props: any) => {
-            return renderLegend({ ...props, handleMouseEnter, handleMouseLeave, handleClick });
-          }}
+          content={(props: any) =>
+            renderLegend({ ...props, handleMouseEnter, handleMouseLeave, handleClick })
+          }
           verticalAlign="bottom"
           height={36}
         />
@@ -271,7 +272,7 @@ export function ManifestStatusPieChart() {
           onAnimationEnd={() => setAnimationIsActive(false)}
           onAnimationStart={() => setAnimationIsActive(true)}
           activeIndex={activeIndex}
-          activeShape={(props: any) => renderShape(props)}
+          activeShape={renderActiveShape}
           data={data}
           cx="50%"
           cy="50%"
