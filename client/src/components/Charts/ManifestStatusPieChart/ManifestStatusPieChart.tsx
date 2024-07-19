@@ -55,7 +55,7 @@ const calculateCoordinates = (
 };
 
 const renderCustomLabel = (props: any): JSX.Element | null => {
-  const { cx, cy, midAngle, outerRadius, value, hover, activeIndex } = props;
+  const { cx, cy, midAngle, outerRadius, value, hover, activeIndex, index } = props;
   const { sin, cos } = calculateTrig(midAngle);
   const label = calculateCoordinates(outerRadius, -MID_LABEL_DISTANCE, cx, cy, sin, cos);
 
@@ -80,7 +80,7 @@ const renderCustomLabel = (props: any): JSX.Element | null => {
     </text>
   );
 
-  return activeIndex < 0 ? labelElement : null;
+  return activeIndex !== index ? labelElement : null;
 };
 
 const renderOuterRing = (props: any): JSX.Element => {
@@ -144,10 +144,10 @@ const renderOuterRing = (props: any): JSX.Element => {
   );
 };
 
-const renderShape = (props: any, isActive: boolean): JSX.Element => {
+const renderShape = (props: any): JSX.Element => {
   const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, onClick } = props;
   const { sin, cos } = calculateTrig(midAngle);
-  const offset = isActive ? 9 : 0;
+  const offset = 9;
   const x = cx + offset * cos;
   const y = cy + offset * sin;
 
@@ -164,7 +164,7 @@ const renderShape = (props: any, isActive: boolean): JSX.Element => {
         fill={fill}
         onClick={onClick}
       />
-      {isActive && renderOuterRing(props)}
+      {renderOuterRing(props)}
     </g>
   );
 };
@@ -214,7 +214,7 @@ const renderLegend = (props: any): ReactElement => {
                   fill={entry.color}
                   d="M0,4h32v24h-32z"
                   className="recharts-legend-icon"
-                ></path>
+                />
               </svg>
               <span className="recharts-legend-item-text" style={spanStyle}>
                 {entry.value}
@@ -229,16 +229,19 @@ const renderLegend = (props: any): ReactElement => {
 
 export function ManifestStatusPieChart() {
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [animationIsActive, setAnimationIsActive] = useState(true);
   const navigate = useNavigate();
 
   const handleMouseEnter = useCallback(
     (_: any, index: number) => {
+      setAnimationIsActive(false);
       setActiveIndex(index);
     },
     [setActiveIndex]
   );
 
   const handleMouseLeave = useCallback(() => {
+    setAnimationIsActive(false);
     setActiveIndex(-1);
   }, [setActiveIndex]);
 
@@ -257,16 +260,18 @@ export function ManifestStatusPieChart() {
     <ResponsiveContainer minWidth={100} minHeight={300} height={'10%'}>
       <PieChart width={400} height={400}>
         <Legend
-          content={(props: any) =>
-            renderLegend({ ...props, handleMouseEnter, handleMouseLeave, handleClick })
-          }
+          content={(props: any) => {
+            return renderLegend({ ...props, handleMouseEnter, handleMouseLeave, handleClick });
+          }}
           verticalAlign="bottom"
           height={36}
         />
         <Pie
+          isAnimationActive={animationIsActive}
+          onAnimationEnd={() => setAnimationIsActive(false)}
+          onAnimationStart={() => setAnimationIsActive(true)}
           activeIndex={activeIndex}
-          activeShape={(props: any) => renderShape(props, true)}
-          inactiveShape={(props: any) => renderShape(props, false)}
+          activeShape={(props: any) => renderShape(props)}
           data={data}
           cx="50%"
           cy="50%"
@@ -274,7 +279,9 @@ export function ManifestStatusPieChart() {
           fill="#8884d8"
           dataKey="value"
           labelLine={false}
-          label={renderLabel}
+          label={(props) => {
+            if (!animationIsActive) return renderLabel(props);
+          }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           cursor={'pointer'}
