@@ -54,7 +54,7 @@ const calculateCoordinates = (
   };
 };
 
-const renderCustomLabel = (props: any): JSX.Element | null => {
+const renderCustomLabel = (props: any): ReactElement | null => {
   const { cx, cy, midAngle, outerRadius, value, hover, activeIndex, index } = props;
   const { sin, cos } = calculateTrig(midAngle);
   const label = calculateCoordinates(outerRadius, -MID_LABEL_DISTANCE, cx, cy, sin, cos);
@@ -83,7 +83,7 @@ const renderCustomLabel = (props: any): JSX.Element | null => {
   return activeIndex !== index ? labelElement : null;
 };
 
-const renderOuterRing = (props: any): JSX.Element => {
+const renderOuterRing = (props: any): ReactElement => {
   const { cx, cy, midAngle, outerRadius, startAngle, endAngle, fill, payload, percent } = props;
   const { sin, cos } = calculateTrig(midAngle);
 
@@ -144,7 +144,7 @@ const renderOuterRing = (props: any): JSX.Element => {
   );
 };
 
-const renderShape = (props: any): JSX.Element => {
+const renderShape = (props: any): ReactElement => {
   const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, onClick } = props;
   const { sin, cos } = calculateTrig(midAngle);
   const offset = 9;
