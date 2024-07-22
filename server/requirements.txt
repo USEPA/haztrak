@@ -17,3 +17,4 @@ drf-spectacular==0.27.2
 django-health-check==3.18.3
 django-allauth==0.63.3
 dj-rest-auth==6.0.0
+django-guardian==2.4.0
