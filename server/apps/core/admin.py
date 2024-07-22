@@ -5,7 +5,7 @@ from django.utils.html import format_html, urlencode
 
 from apps.profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 
-from .models import Permission, Role, TrakUser
+from .models import GroupPermission, TrakUser, UserPermission
 
 
 class HiddenListView(admin.ModelAdmin):
@@ -73,5 +73,5 @@ except ImportError:
 
 admin.site.register(Profile)
 admin.site.unregister(DRFToken)
-admin.site.register(Permission)
-admin.site.register(Role)
+admin.site.register(UserPermission)
+admin.site.register(GroupPermission)

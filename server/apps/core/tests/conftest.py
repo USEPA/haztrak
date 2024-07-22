@@ -2,10 +2,8 @@ from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
 import pytest
-from django.contrib.contenttypes.models import ContentType
 from faker import Faker
 
-from apps.core.models import Permission
 from apps.rcrasite.models import RcraSiteType
 
 
@@ -42,23 +40,3 @@ def quicker_sign_response_factory(faker: Faker):
         }
 
     return create_quicker_sign
-
-
-@pytest.fixture
-def permission_factory(faker: Faker):
-    """
-    Factory for creating dynamic permission data
-    """
-
-    def create_permission(
-        name: str = faker.word(),
-        content_type_id: int = faker.random_int(min=1),
-    ) -> Permission:
-        content_type = ContentType.objects.create(app_label=faker.word(), model=faker.word())
-        return Permission.objects.create(
-            name=name,
-            content_type=content_type,
-            content_type_id=content_type_id,
-        )
-
-    return create_permission
