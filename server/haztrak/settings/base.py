@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
+    "guardian",
     "allauth",
     "allauth.account",
     "dj_rest_auth",
@@ -117,6 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
+    "guardian.backends.ObjectPermissionBackend",
 ]
 
 # Internationalization
@@ -229,6 +231,11 @@ LOGGING = {
 }
 
 REST_AUTH = {"USER_DETAILS_SERIALIZER": "apps.core.serializers.TrakUserSerializer"}
+
+# Guardian
+GUARDIAN_USER_OBJ_PERMS_MODEL = "core.UserPermission"
+GUARDIAN_GROUP_OBJ_PERMS_MODEL = "core.GroupPermission"
+GUARDIAN_RAISE_403 = True
 
 TRAK_ORG_MODEL = "org.Org"
 TRAK_RCRAINFO_SITE_MODEL = "rcrasite.RcraSite"

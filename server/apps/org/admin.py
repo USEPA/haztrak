@@ -1,6 +1,9 @@
 from django.contrib import admin
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
+from guardian.admin import GuardedModelAdmin
 
-from apps.org.models import Org, OrgAccess
+from apps.org.models import Org, OrgAccess, OrgGroupObjectPermission, OrgUserObjectPermission
 from apps.site.models import Site
 
 admin.site.register(OrgAccess)
@@ -19,3 +22,21 @@ class HaztrakOrgAdmin(admin.ModelAdmin):
 
     def number_of_sites(self, org: Org):
         return Site.objects.filter(org=org).count()
+
+
+@admin.register(OrgUserObjectPermission)
+class OrgUserObjectPermissionAdmin(GuardedModelAdmin):
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "permission":
+            content_type = ContentType.objects.get_for_model(Site)
+            kwargs["queryset"] = Permission.objects.filter(content_type=content_type)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+@admin.register(OrgGroupObjectPermission)
+class OrgGroupObjectPermissionAdmin(GuardedModelAdmin):
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "permission":
+            content_type = ContentType.objects.get_for_model(Site)
+            kwargs["queryset"] = Permission.objects.filter(content_type=content_type)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)

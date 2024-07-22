@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.db.models import QuerySet
+from guardian.models.models import GroupObjectPermissionBase, UserObjectPermissionBase
 
 
 class SiteManager(QuerySet):
@@ -94,8 +95,8 @@ class SiteAccess(models.Model):
     """The Role Based access a user has to a site"""
 
     class Meta:
-        verbose_name = "New Site Permission"
-        verbose_name_plural = "New Site Permissions"
+        verbose_name = "Site Permission"
+        verbose_name_plural = "Site Permissions"
         ordering = ["user"]
 
     user = models.ForeignKey(
@@ -119,3 +120,23 @@ class SiteAccess(models.Model):
 
     def __str__(self):
         return f"{self.user.username}"
+
+
+class SiteUserObjectPermission(UserObjectPermissionBase):
+    """Site object level permission."""
+
+    class Meta(UserObjectPermissionBase.Meta):
+        verbose_name = "Site Permission"
+        verbose_name_plural = "Site Permissions"
+
+    content_object = models.ForeignKey(Site, on_delete=models.CASCADE)
+
+
+class SiteGroupObjectPermission(GroupObjectPermissionBase):
+    """Site object level Group."""
+
+    class Meta(GroupObjectPermissionBase.Meta):
+        verbose_name = "Site Role"
+        verbose_name_plural = "Site Roles"
+
+    content_object = models.ForeignKey(Site, on_delete=models.CASCADE)
