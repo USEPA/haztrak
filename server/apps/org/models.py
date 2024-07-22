@@ -2,6 +2,7 @@ import uuid
 
 from django.conf import settings
 from django.db import models
+from guardian.models.models import GroupObjectPermissionBase, UserObjectPermissionBase
 
 from apps.profile.models import RcrainfoProfile
 
@@ -86,3 +87,15 @@ class OrgAccess(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.org}"
+
+
+class OrgUserObjectPermission(UserObjectPermissionBase):
+    """Org object level permission."""
+
+    content_object = models.ForeignKey(Org, on_delete=models.CASCADE)
+
+
+class OrgGroupObjectPermission(GroupObjectPermissionBase):
+    """Org object level Group."""
+
+    content_object = models.ForeignKey(Org, on_delete=models.CASCADE)

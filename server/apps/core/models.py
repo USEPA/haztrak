@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser, Group
 from django.contrib.auth.models import Permission as DjangoPermission
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from guardian.models import GroupObjectPermissionAbstract, UserObjectPermissionAbstract
 
 
 class TrakUser(AbstractUser):
@@ -62,3 +63,25 @@ class Role(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class UserPermission(UserObjectPermissionAbstract):
+    """
+    User object permission model for Haztrak.
+    access via guardian.utils.get_user_obj_perms_model()
+    We define this class if we need to customize User object level permissions later.
+    """
+
+    class Meta(UserObjectPermissionAbstract.Meta):
+        abstract = False
+
+
+class GroupPermission(GroupObjectPermissionAbstract):
+    """
+    Group object permission model for Haztrak.
+    access via guardian.utils get_group_obj_perms_model()
+    We define this class if we need to customize Group object level permissions later.
+    """
+
+    class Meta(GroupObjectPermissionAbstract.Meta):
+        abstract = False

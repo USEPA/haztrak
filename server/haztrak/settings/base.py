@@ -232,6 +232,11 @@ LOGGING = {
 
 REST_AUTH = {"USER_DETAILS_SERIALIZER": "apps.core.serializers.TrakUserSerializer"}
 
+# Guardian
+GUARDIAN_USER_OBJ_PERMS_MODEL = "core.UserPermission"
+GUARDIAN_GROUP_OBJ_PERMS_MODEL = "core.GroupPermission"
+GUARDIAN_RAISE_403 = True
+
 TRAK_ORG_MODEL = "org.Org"
 TRAK_RCRAINFO_SITE_MODEL = "rcrasite.RcraSite"
 TRAK_MANIFEST_MODEL = "manifest.Manifest"
