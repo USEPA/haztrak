@@ -125,10 +125,18 @@ class SiteAccess(models.Model):
 class SiteUserObjectPermission(UserObjectPermissionBase):
     """Site object level permission."""
 
+    class Meta(UserObjectPermissionBase.Meta):
+        verbose_name = "Site Permission"
+        verbose_name_plural = "Site Permissions"
+
     content_object = models.ForeignKey(Site, on_delete=models.CASCADE)
 
 
 class SiteGroupObjectPermission(GroupObjectPermissionBase):
     """Site object level Group."""
+
+    class Meta(GroupObjectPermissionBase.Meta):
+        verbose_name = "Site Role"
+        verbose_name_plural = "Site Roles"
 
     content_object = models.ForeignKey(Site, on_delete=models.CASCADE)
