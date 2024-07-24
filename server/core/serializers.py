@@ -4,7 +4,7 @@ from django_celery_results.models import TaskResult
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.core.models import (
+from core.models import (
     TrakUser,
 )
 

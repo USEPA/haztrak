@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "handler",
     "rcrasite",
-    "apps.core",
+    "core",
     "manifest",
     "wasteline",
     "org",
@@ -143,7 +143,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": [
         "rest_framework.parsers.JSONParser",
     ],
-    "EXCEPTION_HANDLER": "apps.core.exceptions.haztrak_exception_handler",
+    "EXCEPTION_HANDLER": "core.exceptions.haztrak_exception_handler",
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
@@ -222,7 +222,7 @@ LOGGING = {
             "handlers": ["console"],
             "propagate": False,
         },
-        "apps.core": {
+        "core": {
             "level": HT_CORE_LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
@@ -230,7 +230,7 @@ LOGGING = {
     },
 }
 
-REST_AUTH = {"USER_DETAILS_SERIALIZER": "apps.core.serializers.TrakUserSerializer"}
+REST_AUTH = {"USER_DETAILS_SERIALIZER": "core.serializers.TrakUserSerializer"}
 
 # Guardian
 GUARDIAN_USER_OBJ_PERMS_MODEL = "core.UserPermission"

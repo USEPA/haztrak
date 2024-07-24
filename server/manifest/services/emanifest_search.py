@@ -1,7 +1,7 @@
 from datetime import UTC, datetime, timedelta, timezone
 from typing import Literal, Optional, get_args
 
-from apps.core.services import RcraClient
+from core.services import RcraClient
 
 EmanifestStatus = Literal[
     "Pending",

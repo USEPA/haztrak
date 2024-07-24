@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.core.views import LaunchExampleTaskView, TaskStatusView
+from core.views import LaunchExampleTaskView, TaskStatusView
 
 
 class TestUserViews:
@@ -34,7 +34,7 @@ class TestLaunchExampleTaskView:
         return APIRequestFactory()
 
     def test_successful_launch(self, factory):
-        with mock.patch("apps.core.views.launch_example_task") as mock_task:
+        with mock.patch("core.views.launch_example_task") as mock_task:
             request = factory.get(reverse("core:task:example"))
             mock_task.return_value = "123"
             response = LaunchExampleTaskView.as_view()(request)
@@ -52,7 +52,7 @@ class TestTaskStatusView:
         task_id = "123"
         request = factory.get(reverse("core:task:status", args=[task_id]))
         force_authenticate(request, user)
-        with mock.patch("apps.core.views.get_task_status") as mock_task:
+        with mock.patch("core.views.get_task_status") as mock_task:
             mock_task.return_value = {
                 "status": "PENDING",
                 "name": "task_name",

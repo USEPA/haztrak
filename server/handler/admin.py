@@ -3,7 +3,7 @@ from django.db.models import Q, QuerySet
 from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
-from apps.core.admin import HiddenListView
+from core.admin import HiddenListView
 
 from .models import (
     ESignature,

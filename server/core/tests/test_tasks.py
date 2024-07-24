@@ -5,8 +5,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.core.services.task_service import TaskService
-from apps.core.views import TaskStatusView
+from core.services.task_service import TaskService
+from core.views import TaskStatusView
 
 
 class TestTaskStatusView:

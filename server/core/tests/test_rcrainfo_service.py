@@ -4,7 +4,7 @@ import emanifest
 from responses import matchers
 from rest_framework import status
 
-from apps.core.services import RcraClient, get_rcra_client
+from core.services import RcraClient, get_rcra_client
 from handler.models import QuickerSign
 from handler.serializers import QuickerSignSerializer
 

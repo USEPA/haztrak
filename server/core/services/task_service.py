@@ -7,8 +7,8 @@ from django_celery_results.models import TaskResult
 from rest_framework.exceptions import ValidationError
 from rest_framework.utils.serializer_helpers import ReturnDict
 
-from apps.core.serializers import TaskStatusSerializer  # type: ignore
-from apps.core.tasks import example_task  # type: ignore
+from core.serializers import TaskStatusSerializer  # type: ignore
+from core.tasks import example_task  # type: ignore
 
 logger = logging.getLogger(__name__)
 

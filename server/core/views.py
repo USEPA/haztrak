@@ -5,7 +5,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.core.services.task_service import get_task_status, launch_example_task
+from core.services.task_service import get_task_status, launch_example_task
 
 
 class LaunchExampleTaskView(APIView):

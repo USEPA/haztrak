@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.core.admin import HiddenListView
+from core.admin import HiddenListView
 from rcrasite.models import (
     Address,
     Contact,

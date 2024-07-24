@@ -7,7 +7,7 @@ from django.db.models import QuerySet
 from emanifest import RcrainfoResponse
 from requests import RequestException
 
-from apps.core.services import RcraClient, get_rcra_client
+from core.services import RcraClient, get_rcra_client
 from handler.models import QuickerSign
 from handler.serializers import QuickerSignSerializer
 from manifest.models import Manifest

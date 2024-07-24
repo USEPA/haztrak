@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from apps.core.services import RcraClient
+from core.services import RcraClient
 from rcrasite.services import RcraSiteSearch
 
 

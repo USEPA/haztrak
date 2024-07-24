@@ -7,9 +7,9 @@ from typing import Optional
 from django.conf import settings
 from django.db import transaction
 
-from apps.core.models import TrakUser
-from apps.core.services import RcraClient, get_rcra_client
 from apps.orgsite.services import SiteServiceError
+from core.models import TrakUser
+from core.services import RcraClient, get_rcra_client
 from rcrasite.models import RcraSite
 from rcrasite.services import RcraSiteService
 

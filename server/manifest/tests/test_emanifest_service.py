@@ -2,7 +2,7 @@ import pytest
 import pytest_mock
 from rest_framework import status
 
-from apps.core.services import RcraClient, get_rcra_client
+from core.services import RcraClient, get_rcra_client
 from manifest.services import EManifest
 
 

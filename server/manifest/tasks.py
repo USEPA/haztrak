@@ -4,7 +4,7 @@ from typing import Dict, List
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
 
-from apps.core.services import get_rcra_client
+from core.services import get_rcra_client
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +15,7 @@ def pull_manifest(self: Task, *, mtn: List[str], username: str) -> dict:
     This task initiates a call to the EManifest to pull a manifest by MTN
     """
 
-    from apps.core.services import TaskService
+    from core.services import TaskService
     from manifest.services import EManifest
 
     logger.info(f"start task {self.name}, manifest {mtn}")
@@ -84,7 +84,7 @@ def save_to_emanifest(self, *, manifest_data: dict, username: str):
     it accepts a Python dict of the manifest data to be submitted as JSON, and the username of the
     user who is creating the manifest
     """
-    from apps.core.services import TaskService
+    from core.services import TaskService
     from manifest.services import EManifest, EManifestError
 
     logger.info(f"start task: {self.name}")

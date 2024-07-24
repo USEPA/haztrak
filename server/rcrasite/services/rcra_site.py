@@ -6,7 +6,7 @@ from django.db import transaction
 from django.db.models import QuerySet
 from rest_framework.exceptions import ValidationError
 
-from apps.core.services import RcraClient, get_rcra_client
+from core.services import RcraClient, get_rcra_client
 from rcrasite.models import RcraSite
 from rcrasite.serializers import RcraSiteSerializer
 

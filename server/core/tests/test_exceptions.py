@@ -1,7 +1,7 @@
 from django.http import Http404
 from rest_framework import status
 
-from apps.core.exceptions import haztrak_exception_handler
+from core.exceptions import haztrak_exception_handler
 
 
 class TestTrakExceptionHandler:
