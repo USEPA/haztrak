@@ -3,8 +3,8 @@ from typing import Optional
 import pytest
 from faker import Faker
 
-from apps.conftest import SiteIDProvider
 from apps.profile.models import RcrainfoProfile, RcrainfoSiteAccess
+from conftest import SiteIDProvider
 
 
 @pytest.fixture
