@@ -228,8 +228,8 @@ LOGGING = {
 REST_AUTH = {"USER_DETAILS_SERIALIZER": "core.serializers.TrakUserSerializer"}
 
 # Guardian
-GUARDIAN_USER_OBJ_PERMS_MODEL = "core.UserPermission"
-GUARDIAN_GROUP_OBJ_PERMS_MODEL = "core.GroupPermission"
+# GUARDIAN_USER_OBJ_PERMS_MODEL = "core.UserPermission"
+# GUARDIAN_GROUP_OBJ_PERMS_MODEL = "core.GroupPermission"
 GUARDIAN_RAISE_403 = True
 GUARDIAN_MONKEY_PATCH = False
 

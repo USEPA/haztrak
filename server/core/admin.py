@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.urls import reverse
 from django.utils.html import format_html, urlencode
 
-from .models import GroupPermission, TrakUser, UserPermission
+from .models import TrakUser
 
 
 class HiddenListView(admin.ModelAdmin):
@@ -73,5 +73,3 @@ except ImportError:
 
 admin.site.register(Profile)
 admin.site.unregister(DRFToken)
-admin.site.register(UserPermission)
-admin.site.register(GroupPermission)
