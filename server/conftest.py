@@ -16,11 +16,11 @@ from faker import Faker
 from faker.providers import BaseProvider
 from rest_framework.test import APIClient
 
-from apps.orgsite.models import Site, SiteAccess
 from core.models import (
     TrakUser,
 )
 from org.models import Org, OrgAccess
+from orgsite.models import Site, SiteAccess
 from rcrasite.models import (
     Address,
     Contact,

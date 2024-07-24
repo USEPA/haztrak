@@ -2,8 +2,8 @@ from typing import Optional
 
 import pytest
 
-from apps.orgsite.models import Site
 from org.models import Org
+from orgsite.models import Site
 from rcrasite.models import RcraSite
 
 

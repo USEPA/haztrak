@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     "manifest",
     "wasteline",
     "org",
-    "apps.orgsite",
+    "orgsite",
     "profile",
 ]
 

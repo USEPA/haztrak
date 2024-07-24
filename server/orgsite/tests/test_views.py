@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.orgsite.views import SiteDetailsView
+from orgsite.views import SiteDetailsView
 
 
 class TestSiteListView:

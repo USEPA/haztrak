@@ -6,7 +6,7 @@ from rest_framework.exceptions import APIException, NotFound
 from rest_framework.serializers import as_serializer_error
 from rest_framework.views import exception_handler
 
-from apps.orgsite.services import SiteServiceError
+from orgsite.services import SiteServiceError
 
 
 class InternalServer500(APIException):
