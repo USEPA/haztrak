@@ -1,10 +1,9 @@
 import uuid
+from profile.models import RcrainfoProfile
 
 from django.conf import settings
 from django.db import models
 from guardian.models.models import GroupObjectPermissionBase, UserObjectPermissionBase
-
-from apps.profile.models import RcrainfoProfile
 
 
 class OrgManager(models.Manager):

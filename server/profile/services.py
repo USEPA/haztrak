@@ -1,5 +1,7 @@
 """business logic related to a user's Haztrak profile (note: not their RcrainfoProfile)"""
 
+from profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
+from profile.serializers import RcrainfoSitePermissionsSerializer
 from typing import Optional
 
 from django.conf import settings
@@ -7,8 +9,6 @@ from django.db import transaction
 
 from apps.core.models import TrakUser
 from apps.core.services import RcraClient, get_rcra_client
-from apps.profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
-from apps.profile.serializers import RcrainfoSitePermissionsSerializer
 from apps.rcrasite.models import RcraSite
 from apps.rcrasite.services import RcraSiteService
 from apps.site.services import SiteServiceError

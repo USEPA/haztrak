@@ -1,3 +1,7 @@
+from profile.models import Profile, RcrainfoProfile
+from profile.serializers import ProfileSerializer, RcrainfoProfileSerializer
+from profile.services import get_user_profile
+
 from celery.exceptions import CeleryError
 from celery.result import AsyncResult as CeleryTask
 from rest_framework import status
@@ -5,9 +9,6 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpd
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.profile.models import Profile, RcrainfoProfile
-from apps.profile.serializers import ProfileSerializer, RcrainfoProfileSerializer
-from apps.profile.services import get_user_profile
 from apps.rcrasite.tasks import sync_user_rcrainfo_sites
 
 

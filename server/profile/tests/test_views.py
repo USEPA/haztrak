@@ -1,9 +1,9 @@
+from profile.views import ProfileDetailsView, RcrainfoProfileRetrieveUpdateView
+
 import pytest
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
-
-from apps.profile.views import ProfileDetailsView, RcrainfoProfileRetrieveUpdateView
 
 
 class TestRcrainfoProfileRetrieveUpdateView:

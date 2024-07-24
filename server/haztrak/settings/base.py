@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     "wasteline",
     "org",
     "apps.site",
-    "apps.profile",
+    "profile",
 ]
 
 MIDDLEWARE = [

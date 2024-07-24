@@ -1,11 +1,11 @@
-import pytest
-
-from apps.profile.models import RcrainfoSiteAccess
-from apps.profile.serializers import (
+from profile.models import RcrainfoSiteAccess
+from profile.serializers import (
     ProfileSerializer,
     RcrainfoSitePermissionsSerializer,
     RcraSitePermissionSerializer,
 )
+
+import pytest
 
 
 @pytest.mark.django_db

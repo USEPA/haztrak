@@ -4,6 +4,7 @@ import os
 import random
 import string
 from enum import Enum
+from profile.models import Profile, RcrainfoProfile
 from typing import Dict, Literal, Optional
 
 import pytest
@@ -18,7 +19,6 @@ from rest_framework.test import APIClient
 from apps.core.models import (
     TrakUser,
 )
-from apps.profile.models import Profile, RcrainfoProfile
 from apps.rcrasite.models import (
     Address,
     Contact,

@@ -1,11 +1,11 @@
 import logging
+from profile.models import RcrainfoProfile
 from typing import Literal, Optional
 
 import emanifest
 from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse
 
-from apps.profile.models import RcrainfoProfile
 from org.models import Org
 from wasteline.models import WasteCode
 

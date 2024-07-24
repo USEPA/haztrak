@@ -1,10 +1,9 @@
 import logging
+from profile.services import RcraProfileService, RcraProfileServiceError
 
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
 from requests import RequestException
-
-from apps.profile.services import RcraProfileService, RcraProfileServiceError
 
 logger = logging.getLogger(__name__)
 

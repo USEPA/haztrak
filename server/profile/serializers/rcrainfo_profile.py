@@ -1,7 +1,7 @@
+from profile.models import RcrainfoProfile
+
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-
-from apps.profile.models import RcrainfoProfile
 
 from .rcrasite_access import RcraSitePermissionSerializer
 

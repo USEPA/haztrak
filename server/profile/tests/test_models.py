@@ -1,6 +1,6 @@
-import pytest
+from profile.models import Profile, RcrainfoProfile
 
-from apps.profile.models import Profile, RcrainfoProfile
+import pytest
 
 
 @pytest.mark.django_db

@@ -1,9 +1,9 @@
+from profile.models import RcrainfoProfile, RcrainfoSiteAccess
 from typing import Optional
 
 import pytest
 from faker import Faker
 
-from apps.profile.models import RcrainfoProfile, RcrainfoSiteAccess
 from conftest import SiteIDProvider
 
 

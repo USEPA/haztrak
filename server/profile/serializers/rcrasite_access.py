@@ -1,7 +1,7 @@
+from profile.models import RcrainfoSiteAccess
+
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-
-from apps.profile.models import RcrainfoSiteAccess
 
 
 class RcraSiteBaseSerializer(serializers.ModelSerializer):
