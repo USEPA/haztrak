@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.manifest.views import ElectronicManifestSignView, ManifestViewSet, MtnListView
+from manifest.views import ElectronicManifestSignView, ManifestViewSet, MtnListView
 
 
 class TestManifestCRUD:
@@ -51,7 +51,7 @@ class TestSignManifestVIew:
 
     @pytest.fixture(autouse=True)
     def _patch_task(self, mocker):
-        mock_task = mocker.patch("apps.manifest.tasks.sign_manifest.delay")
+        mock_task = mocker.patch("manifest.tasks.sign_manifest.delay")
         self.mock_task_id = "mock_task_id"
         mock_task.return_value = AsyncResult(self.mock_task_id)
 
@@ -87,7 +87,7 @@ class TestMtnListView:
         return user_factory()
 
     def test_returns_empty_list_if_no_manifests(self, factory, user):
-        with patch("apps.manifest.views.get_manifests") as mock_get_manifests:
+        with patch("manifest.views.get_manifests") as mock_get_manifests:
             mock_get_manifests.return_value = []
             request = factory.get(reverse("manifest:mtn:list"))
             force_authenticate(request, user)
@@ -95,7 +95,7 @@ class TestMtnListView:
             assert isinstance(response.data, list)
 
     def test_401_if_not_authorized(self, factory, user):
-        with patch("apps.manifest.views.get_manifests") as mock_get_manifests:
+        with patch("manifest.views.get_manifests") as mock_get_manifests:
             mock_get_manifests.return_value = []
             request = factory.get(reverse("manifest:mtn:list"))
             response = MtnListView.as_view()(request)

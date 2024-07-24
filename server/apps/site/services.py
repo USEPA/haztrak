@@ -5,9 +5,9 @@ from typing import Optional
 from django.db import transaction
 from django.db.models import QuerySet
 
-from apps.manifest.services import TaskResponse
-from apps.manifest.tasks import sync_site_manifests
 from apps.site.models import Site
+from manifest.services import TaskResponse
+from manifest.tasks import sync_site_manifests
 
 logger = logging.getLogger(__name__)
 

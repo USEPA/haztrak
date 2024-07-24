@@ -7,9 +7,11 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.manifest.models import Manifest
-from apps.manifest.serializers import ManifestSerializer, MtnSerializer
-from apps.manifest.services import (
+from apps.site.services import sync_site_manifest_with_rcrainfo
+from handler.serializers import QuickerSignSerializer
+from manifest.models import Manifest
+from manifest.serializers import ManifestSerializer, MtnSerializer
+from manifest.services import (
     EManifest,
     TaskResponse,
     create_manifest,
@@ -17,8 +19,6 @@ from apps.manifest.services import (
     save_emanifest,
     update_manifest,
 )
-from apps.site.services import sync_site_manifest_with_rcrainfo
-from handler.serializers import QuickerSignSerializer
 
 logger = logging.getLogger(__name__)
 

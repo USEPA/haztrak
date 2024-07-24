@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 import pytest
 
 from apps.core.services import RcraClient
-from apps.manifest.services.emanifest_search import EmanifestSearch
+from manifest.services.emanifest_search import EmanifestSearch
 
 
 class TestEmanifestSearchClass:

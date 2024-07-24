@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
-from apps.manifest.views import (  # type: ignore
+from manifest.views import (  # type: ignore
     ElectronicManifestSaveView,
     ElectronicManifestSignView,
     ManifestViewSet,

@@ -28,7 +28,7 @@ urlpatterns = [
         "api/",
         include(
             [
-                path("", include("apps.manifest.urls", namespace="manifest")),
+                path("", include("manifest.urls", namespace="manifest")),
                 path("", include("wasteline.urls", namespace="wasteline")),
                 path("", include("apps.rcrasite.urls", namespace="rcrasite")),
                 path("", include("apps.core.urls", namespace="core")),

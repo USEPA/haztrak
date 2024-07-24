@@ -4,10 +4,10 @@ from typing import Literal, Optional
 from django.db import transaction
 from django.db.models import Q, QuerySet
 
-from apps.manifest.models import Manifest
-from apps.manifest.services import EManifest, EManifestError, TaskResponse
-from apps.manifest.tasks import save_to_emanifest as save_to_emanifest_task
 from apps.site.models import Site
+from manifest.models import Manifest
+from manifest.services import EManifest, EManifestError, TaskResponse
+from manifest.tasks import save_to_emanifest as save_to_emanifest_task
 
 logger = logging.getLogger(__name__)
 

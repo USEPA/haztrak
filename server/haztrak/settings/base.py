@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "handler",
     "apps.rcrasite",
     "apps.core",
-    "apps.manifest",
+    "manifest",
     "wasteline",
     "org",
     "apps.site",

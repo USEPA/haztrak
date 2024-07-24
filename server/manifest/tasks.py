@@ -16,7 +16,7 @@ def pull_manifest(self: Task, *, mtn: List[str], username: str) -> dict:
     """
 
     from apps.core.services import TaskService
-    from apps.manifest.services import EManifest
+    from manifest.services import EManifest
 
     logger.info(f"start task {self.name}, manifest {mtn}")
     task_status = TaskService(task_id=self.request.id, task_name=self.name, status="STARTED")
@@ -44,7 +44,7 @@ def sign_manifest(
     """
     a task to Quicker Sign manifest, by MTN, in RCRAInfo
     """
-    from apps.manifest.services import EManifest
+    from manifest.services import EManifest
 
     try:
         emanifest = EManifest(username=username)
@@ -60,8 +60,8 @@ def sign_manifest(
 def sync_site_manifests(self, *, site_id: str, username: str):
     """asynchronous task to sync an EPA site's manifests"""
 
-    from apps.manifest.services.emanifest import sync_manifests
     from apps.site.services import get_user_site, update_emanifest_sync_date
+    from manifest.services.emanifest import sync_manifests
 
     try:
         client = get_rcra_client(username=username)
@@ -85,7 +85,7 @@ def save_to_emanifest(self, *, manifest_data: dict, username: str):
     user who is creating the manifest
     """
     from apps.core.services import TaskService
-    from apps.manifest.services import EManifest, EManifestError
+    from manifest.services import EManifest, EManifestError
 
     logger.info(f"start task: {self.name}")
     task_status = TaskService(task_id=self.request.id, task_name=self.name, status="STARTED")

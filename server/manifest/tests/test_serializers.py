@@ -1,7 +1,7 @@
 import pytest
 
-from apps.manifest.models import AdditionalInfo, Manifest
-from apps.manifest.serializers import ManifestSerializer
+from manifest.models import AdditionalInfo, Manifest
+from manifest.serializers import ManifestSerializer
 from wasteline.models import WasteLine
 
 
