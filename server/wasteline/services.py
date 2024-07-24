@@ -1,6 +1,6 @@
 from typing import Optional
 
-from apps.wasteline.models import DotLookup, WasteCode
+from wasteline.models import DotLookup, WasteCode
 
 
 def filter_dot_shipping_names(query: Optional[str]) -> list[str]:

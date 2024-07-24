@@ -1,7 +1,7 @@
 import pytest
 from django.db import IntegrityError
 
-from apps.wasteline.models import DotLookup, DotLookupType, WasteCode
+from wasteline.models import DotLookup, DotLookupType, WasteCode
 
 
 @pytest.mark.django_db

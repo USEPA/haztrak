@@ -29,7 +29,7 @@ urlpatterns = [
         include(
             [
                 path("", include("apps.manifest.urls", namespace="manifest")),
-                path("", include("apps.wasteline.urls", namespace="wasteline")),
+                path("", include("wasteline.urls", namespace="wasteline")),
                 path("", include("apps.rcrasite.urls", namespace="rcrasite")),
                 path("", include("apps.core.urls", namespace="core")),
                 path("", include("apps.org.urls", namespace="org")),

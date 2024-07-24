@@ -2,7 +2,7 @@ import pytest
 
 from apps.manifest.models import AdditionalInfo, Manifest
 from apps.manifest.serializers import ManifestSerializer
-from apps.wasteline.models import WasteLine
+from wasteline.models import WasteLine
 
 
 @pytest.fixture

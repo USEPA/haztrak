@@ -7,7 +7,7 @@ from emanifest import RcrainfoClient, RcrainfoResponse
 
 from apps.org.models import Org
 from apps.profile.models import RcrainfoProfile
-from apps.wasteline.models import WasteCode
+from wasteline.models import WasteCode
 
 logger = logging.getLogger(__name__)
 

@@ -11,9 +11,9 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.wasteline.models import DotLookup, WasteCode
-from apps.wasteline.serializers import WasteCodeSerializer
-from apps.wasteline.services import (
+from wasteline.models import DotLookup, WasteCode
+from wasteline.serializers import WasteCodeSerializer
+from wasteline.services import (
     filter_dot_hazard_classes,
     filter_dot_id_numbers,
     filter_dot_shipping_names,

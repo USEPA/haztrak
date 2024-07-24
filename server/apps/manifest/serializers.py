@@ -14,7 +14,7 @@ from apps.manifest.models import (
     draft_mtn,
 )
 from apps.rcrasite.models import RcraStates
-from apps.wasteline.serializers import (
+from wasteline.serializers import (
     WasteLineSerializer,
 )
 

@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.handler.models import Handler, Transporter
 from apps.rcrasite.models import RcraSiteType, RcraStates
-from apps.wasteline.models import WasteLine
+from wasteline.models import WasteLine
 
 logger = logging.getLogger(__name__)
 

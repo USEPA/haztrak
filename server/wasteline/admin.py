@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.wasteline.models import DotLookup, WasteCode, WasteLine
+from wasteline.models import DotLookup, WasteCode, WasteLine
 
 
 @admin.register(DotLookup)

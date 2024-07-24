@@ -1,6 +1,6 @@
 from django.db import migrations
 
-from apps.wasteline.models import WasteCode
+from wasteline.models import WasteCode
 
 
 def populate_federal_waste_codes(apps, schema_editor):

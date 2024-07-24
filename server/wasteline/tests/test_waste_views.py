@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.wasteline.models import DotLookupType, WasteCode
-from apps.wasteline.views import (
+from wasteline.models import DotLookupType, WasteCode
+from wasteline.views import (
     DotHazardClassView,
     DotIdNumberView,
     DotShippingNameView,

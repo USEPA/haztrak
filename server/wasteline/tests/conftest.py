@@ -4,7 +4,7 @@ import pytest
 from faker import Faker
 
 from apps.manifest.models import Manifest
-from apps.wasteline.models import DotLookup, DotLookupType, WasteCode, WasteLine
+from wasteline.models import DotLookup, DotLookupType, WasteCode, WasteLine
 
 
 @pytest.fixture

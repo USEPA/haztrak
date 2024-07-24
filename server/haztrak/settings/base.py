@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     "apps.rcrasite",
     "apps.core",
     "apps.manifest",
-    "apps.wasteline",
+    "wasteline",
     "apps.org",
     "apps.site",
     "apps.profile",

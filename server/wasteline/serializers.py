@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.wasteline.models import DotLookup, WasteCode, WasteLine
+from wasteline.models import DotLookup, WasteCode, WasteLine
 
 
 class WasteBaseSerializer(serializers.ModelSerializer):

@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from apps.wasteline.views import (  # type: ignore
+from wasteline.views import (  # type: ignore
     DotHazardClassView,
     DotIdNumberView,
     DotShippingNameView,

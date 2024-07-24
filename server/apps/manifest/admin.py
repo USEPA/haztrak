@@ -3,7 +3,7 @@ from django.db.models import Q, QuerySet
 
 from apps.handler.models import Transporter
 from apps.manifest.models import Manifest
-from apps.wasteline.admin import WasteLineInline
+from wasteline.admin import WasteLineInline
 
 
 class IsDraftMtn(admin.SimpleListFilter):

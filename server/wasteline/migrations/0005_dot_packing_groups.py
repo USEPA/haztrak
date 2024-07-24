@@ -2,7 +2,7 @@
 
 from django.db import migrations
 
-from apps.wasteline.models import DotLookup, DotLookupType
+from wasteline.models import DotLookup, DotLookupType
 
 
 def populate_dot_packing_groups(apps, schema_editor):

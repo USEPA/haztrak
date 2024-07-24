@@ -2,7 +2,7 @@
 
 from django.db import migrations
 
-from apps.wasteline.models import DotLookupType, DotLookup
+from wasteline.models import DotLookupType, DotLookup
 
 
 def populate_dot_id_numbers(apps, schema_editor):
