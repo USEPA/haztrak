@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from apps.rcrasite.models import RcraSite, RcraSiteType
-from apps.rcrasite.serializers import AddressSerializer, ContactSerializer, RcraPhoneSerializer
+from rcrasite.models import RcraSite, RcraSiteType
+from rcrasite.serializers import AddressSerializer, ContactSerializer, RcraPhoneSerializer
 
 from .base_serializer import SitesBaseSerializer
 

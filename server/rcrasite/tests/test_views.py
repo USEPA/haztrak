@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from apps.rcrasite.models import RcraSiteType  # type: ignore
-from apps.rcrasite.views import HandlerSearchView, RcraSiteSearchView  # type: ignore
+from rcrasite.models import RcraSiteType  # type: ignore
+from rcrasite.views import HandlerSearchView, RcraSiteSearchView  # type: ignore
 
 
 class TestRcraSiteView:
@@ -111,7 +111,7 @@ class TestHandlerSearchView:
         self.request_factory = APIRequestFactory()
 
     def test_valid_search_returns_200(self, user_factory):
-        with patch("apps.rcrasite.views.RcraSiteService") as MockRcraSiteService:
+        with patch("rcrasite.views.RcraSiteService") as MockRcraSiteService:
             mock_service = MockRcraSiteService.return_value
             mock_service.search_rcrainfo_handlers.return_value = {"sites": []}
             user = user_factory()

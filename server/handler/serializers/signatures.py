@@ -4,8 +4,8 @@ from typing import Dict
 
 from rest_framework import serializers
 
-from apps.rcrasite.serializers import RcraPhoneSerializer
 from handler.models import ESignature, PaperSignature, QuickerSign, Signer
+from rcrasite.serializers import RcraPhoneSerializer
 
 from .base_serializer import HandlerBaseSerializer
 

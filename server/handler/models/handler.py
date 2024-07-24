@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from apps.rcrasite.models import RcraSite
+from rcrasite.models import RcraSite
 
 from .contact import ManifestPhone
 from .signature import ESignature, PaperSignature

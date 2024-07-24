@@ -3,7 +3,7 @@ import json
 import pytest
 
 from apps.core.services import RcraClient
-from apps.rcrasite.services import RcraSiteSearch
+from rcrasite.services import RcraSiteSearch
 
 
 class TestRcraSiteSearchClass:

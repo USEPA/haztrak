@@ -4,7 +4,6 @@ from typing import Optional
 import pytest
 from faker import Faker
 
-from apps.rcrasite.models import RcraSite
 from handler.models import (
     ESignature,
     Handler,
@@ -13,6 +12,7 @@ from handler.models import (
     Transporter,
 )
 from manifest.models import Manifest
+from rcrasite.models import RcraSite
 
 
 @pytest.fixture

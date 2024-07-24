@@ -10,9 +10,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.rcrasite.models import RcraSite
-from apps.rcrasite.serializers import RcraSiteSearchSerializer, RcraSiteSerializer
-from apps.rcrasite.services import RcraSiteService, query_rcra_sites
+from rcrasite.models import RcraSite
+from rcrasite.serializers import RcraSiteSearchSerializer, RcraSiteSerializer
+from rcrasite.services import RcraSiteService, query_rcra_sites
 
 logger = logging.getLogger(__name__)
 

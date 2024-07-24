@@ -1,8 +1,8 @@
 import pytest
 
 from apps.core.services import RcraClient
-from apps.rcrasite.models import RcraSite
-from apps.rcrasite.services import RcraSiteService
+from rcrasite.models import RcraSite
+from rcrasite.services import RcraSiteService
 
 
 class TestHandlerService:

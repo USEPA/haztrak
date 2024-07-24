@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.rcrasite.serializers import RcraSiteSerializer
-from apps.rcrasite.serializers.base_serializer import SitesBaseSerializer
 from apps.site.models import Site, SiteAccess
+from rcrasite.serializers import RcraSiteSerializer
+from rcrasite.serializers.base_serializer import SitesBaseSerializer
 
 
 class SiteSerializer(ModelSerializer):

@@ -2,7 +2,7 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
-from apps.rcrasite.models import Address, Contact
+from rcrasite.models import Address, Contact
 
 
 @pytest.mark.django_db

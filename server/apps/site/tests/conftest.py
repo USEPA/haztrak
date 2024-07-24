@@ -2,9 +2,9 @@ from typing import Optional
 
 import pytest
 
-from apps.rcrasite.models import RcraSite
 from apps.site.models import Site
 from org.models import Org
+from rcrasite.models import RcraSite
 
 
 @pytest.fixture

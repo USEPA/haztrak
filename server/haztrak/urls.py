@@ -30,7 +30,7 @@ urlpatterns = [
             [
                 path("", include("manifest.urls", namespace="manifest")),
                 path("", include("wasteline.urls", namespace="wasteline")),
-                path("", include("apps.rcrasite.urls", namespace="rcrasite")),
+                path("", include("rcrasite.urls", namespace="rcrasite")),
                 path("", include("apps.core.urls", namespace="core")),
                 path("", include("org.urls", namespace="org")),
                 path("", include("apps.site.urls", namespace="site")),

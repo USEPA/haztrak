@@ -9,8 +9,8 @@ from django.db import models
 from django.db.models import Q, QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from apps.rcrasite.models import RcraSiteType, RcraStates
 from handler.models import Handler, Transporter
+from rcrasite.models import RcraSiteType, RcraStates
 from wasteline.models import WasteLine
 
 logger = logging.getLogger(__name__)

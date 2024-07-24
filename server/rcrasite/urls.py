@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from apps.rcrasite.views import HandlerSearchView, RcraSiteDetailsView, RcraSiteSearchView
+from rcrasite.views import HandlerSearchView, RcraSiteDetailsView, RcraSiteSearchView
 
 rcrainfo_rcrasite_patterns = (
     [

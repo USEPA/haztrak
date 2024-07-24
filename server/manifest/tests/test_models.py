@@ -4,9 +4,9 @@ from unittest.mock import MagicMock, patch
 import pytest
 from django.core.exceptions import ValidationError
 
-from apps.rcrasite.models import RcraSiteType
 from handler.serializers import HandlerSerializer
 from manifest.models import Manifest, draft_mtn, manifest_factory, validate_mtn
+from rcrasite.models import RcraSiteType
 
 
 @pytest.mark.django_db

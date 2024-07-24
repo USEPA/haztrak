@@ -3,7 +3,6 @@ from typing import Dict, override
 
 from rest_framework import serializers
 
-from apps.rcrasite.models import RcraStates
 from handler.serializers import (
     HandlerSerializer,
     TransporterSerializer,
@@ -14,6 +13,7 @@ from manifest.models import (
     PortOfEntry,
     draft_mtn,
 )
+from rcrasite.models import RcraStates
 from wasteline.serializers import (
     WasteLineSerializer,
 )
