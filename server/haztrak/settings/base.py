@@ -212,11 +212,6 @@ LOGGING = {
             "handlers": ["console"],
             "propagate": False,
         },
-        "apps.trak": {
-            "level": HT_TRAK_LOG_LEVEL,
-            "handlers": ["console"],
-            "propagate": False,
-        },
         "rcrasite": {
             "level": HT_TRAK_LOG_LEVEL,
             "handlers": ["console"],
@@ -236,6 +231,7 @@ REST_AUTH = {"USER_DETAILS_SERIALIZER": "core.serializers.TrakUserSerializer"}
 GUARDIAN_USER_OBJ_PERMS_MODEL = "core.UserPermission"
 GUARDIAN_GROUP_OBJ_PERMS_MODEL = "core.GroupPermission"
 GUARDIAN_RAISE_403 = True
+GUARDIAN_MONKEY_PATCH = False
 
 TRAK_ORG_MODEL = "org.Org"
 TRAK_RCRAINFO_SITE_MODEL = "rcrasite.RcraSite"
