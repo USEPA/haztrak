@@ -8,12 +8,12 @@ from emanifest import RcrainfoResponse
 from requests import RequestException
 
 from apps.core.services import RcraClient, get_rcra_client
-from apps.handler.models import QuickerSign
-from apps.handler.serializers import QuickerSignSerializer
 from apps.manifest.models import Manifest
 from apps.manifest.serializers import ManifestSerializer
 from apps.manifest.services.emanifest_search import EmanifestSearch
 from apps.manifest.tasks import pull_manifest, sign_manifest
+from handler.models import QuickerSign
+from handler.serializers import QuickerSignSerializer
 
 logger = logging.getLogger(__name__)
 

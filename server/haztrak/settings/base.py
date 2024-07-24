@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     "django_celery_results",
     "django_celery_beat",
     "drf_spectacular",
-    "apps.handler",
+    "handler",
     "apps.rcrasite",
     "apps.core",
     "apps.manifest",

@@ -3,8 +3,8 @@ from typing import Dict
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.handler.models import Handler, ManifestPhone, Transporter
 from apps.rcrasite.serializers import RcraSiteSerializer
+from handler.models import Handler, ManifestPhone, Transporter
 
 from .signatures import ESignatureSerializer, PaperSignatureSerializer
 
