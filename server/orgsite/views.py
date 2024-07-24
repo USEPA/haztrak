@@ -9,7 +9,12 @@ from rest_framework.views import APIView
 
 from orgsite.models import Site
 from orgsite.serializers import SiteSerializer
-from orgsite.services import filter_sites_by_org, filter_sites_by_username, get_user_site
+from orgsite.services import (
+    filter_sites_by_org,
+    filter_sites_by_username,
+    get_site_by_epa_id,
+    get_user_site,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +30,6 @@ class SiteListView(ListAPIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
-@method_decorator(cache_page(60 * 15), name="dispatch")
 class SiteDetailsView(RetrieveAPIView):
     """View details of a Haztrak Site."""
 
@@ -33,10 +37,12 @@ class SiteDetailsView(RetrieveAPIView):
     lookup_url_kwarg = "epa_id"
     queryset = Site.objects.all()
 
-    @method_decorator(cache_page(60 * 15))
-    def get(self, request, *args, **kwargs):
+    def get_object(self):
+        return get_site_by_epa_id(epa_id=self.kwargs["epa_id"])
+
+    def retrieve(self, request, *args, **kwargs):
         try:
-            site = get_user_site(username=request.user.username, epa_id=self.kwargs["epa_id"])
+            site = self.get_object()
             data = self.serializer_class(site).data
             return Response(data, status=status.HTTP_200_OK)
         except Site.DoesNotExist as e:

@@ -4,6 +4,12 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.urls import reverse
 from django.utils.html import format_html, urlencode
+from guardian.models import (
+    GroupObjectPermission,
+    GroupObjectPermissionAbstract,
+    UserObjectPermission,
+    UserObjectPermissionAbstract,
+)
 
 from .models import TrakUser
 
@@ -72,4 +78,6 @@ except ImportError:
     from rest_framework.authtoken.models import Token as DRFToken
 
 admin.site.register(Profile)
+admin.site.register(UserObjectPermission)
+admin.site.register(GroupObjectPermission)
 admin.site.unregister(DRFToken)

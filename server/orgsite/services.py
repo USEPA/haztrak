@@ -38,6 +38,11 @@ def get_user_site(username: str, epa_id: str) -> Site:
     return Site.objects.get_by_username_and_epa_id(username, epa_id)
 
 
+def get_site_by_epa_id(epa_id: str) -> Site:
+    """Returns a Site by its RCRA EPA ID number, else throws a DoesNotExist exception."""
+    return Site.objects.get_by_epa_id(epa_id)
+
+
 def filter_sites_by_username(username: str) -> [Site]:
     """Returns a list of Sites associated with a user."""
     sites: QuerySet = Site.objects.filter_by_username(username)
