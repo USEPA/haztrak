@@ -50,14 +50,14 @@ INSTALLED_APPS = [
     "django_celery_results",
     "django_celery_beat",
     "drf_spectacular",
-    "apps.handler",
-    "apps.rcrasite",
-    "apps.core",
-    "apps.manifest",
-    "apps.wasteline",
-    "apps.org",
-    "apps.site",
-    "apps.profile",
+    "handler",
+    "rcrasite",
+    "core",
+    "manifest",
+    "wasteline",
+    "org",
+    "orgsite",
+    "profile",
 ]
 
 MIDDLEWARE = [
@@ -143,7 +143,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": [
         "rest_framework.parsers.JSONParser",
     ],
-    "EXCEPTION_HANDLER": "apps.core.exceptions.haztrak_exception_handler",
+    "EXCEPTION_HANDLER": "core.exceptions.haztrak_exception_handler",
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
@@ -217,12 +217,12 @@ LOGGING = {
             "handlers": ["console"],
             "propagate": False,
         },
-        "apps.rcrasite": {
+        "rcrasite": {
             "level": HT_TRAK_LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
-        "apps.core": {
+        "core": {
             "level": HT_CORE_LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
@@ -230,7 +230,7 @@ LOGGING = {
     },
 }
 
-REST_AUTH = {"USER_DETAILS_SERIALIZER": "apps.core.serializers.TrakUserSerializer"}
+REST_AUTH = {"USER_DETAILS_SERIALIZER": "core.serializers.TrakUserSerializer"}
 
 # Guardian
 GUARDIAN_USER_OBJ_PERMS_MODEL = "core.UserPermission"
@@ -240,6 +240,6 @@ GUARDIAN_RAISE_403 = True
 TRAK_ORG_MODEL = "org.Org"
 TRAK_RCRAINFO_SITE_MODEL = "rcrasite.RcraSite"
 TRAK_MANIFEST_MODEL = "manifest.Manifest"
-TRAK_SITE_MODEL = "site.Site"
+TRAK_SITE_MODEL = "orgsite.Site"
 TRAK_WASTELINE_MODEL = "wasteline.Wasteline"
 TRAK_HANDLER_MODEL = "handler.Handler"

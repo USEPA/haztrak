@@ -28,13 +28,13 @@ urlpatterns = [
         "api/",
         include(
             [
-                path("", include("apps.manifest.urls", namespace="manifest")),
-                path("", include("apps.wasteline.urls", namespace="wasteline")),
-                path("", include("apps.rcrasite.urls", namespace="rcrasite")),
-                path("", include("apps.core.urls", namespace="core")),
-                path("", include("apps.org.urls", namespace="org")),
-                path("", include("apps.site.urls", namespace="site")),
-                path("", include("apps.profile.urls", namespace="profile")),
+                path("", include("manifest.urls", namespace="manifest")),
+                path("", include("wasteline.urls", namespace="wasteline")),
+                path("", include("rcrasite.urls", namespace="rcrasite")),
+                path("", include("core.urls", namespace="core")),
+                path("", include("org.urls", namespace="org")),
+                path("", include("orgsite.urls", namespace="site")),
+                path("", include("profile.urls", namespace="profile")),
                 path("schema/", SpectacularAPIView.as_view(), name="schema"),
                 path(
                     "schema/swagger-ui",
