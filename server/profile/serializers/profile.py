@@ -3,7 +3,7 @@ from profile.models import Profile
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.site.serializers import SiteAccessSerializer
+from apps.orgsite.serializers import SiteAccessSerializer
 from org.serializers import OrgSerializer
 
 

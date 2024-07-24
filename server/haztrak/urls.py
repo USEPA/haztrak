@@ -33,7 +33,7 @@ urlpatterns = [
                 path("", include("rcrasite.urls", namespace="rcrasite")),
                 path("", include("apps.core.urls", namespace="core")),
                 path("", include("org.urls", namespace="org")),
-                path("", include("apps.site.urls", namespace="site")),
+                path("", include("apps.orgsite.urls", namespace="site")),
                 path("", include("profile.urls", namespace="profile")),
                 path("schema/", SpectacularAPIView.as_view(), name="schema"),
                 path(

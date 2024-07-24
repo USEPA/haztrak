@@ -2,7 +2,7 @@ from typing import Optional
 
 import pytest
 
-from apps.site.models import Site
+from apps.orgsite.models import Site
 from org.models import Org
 from rcrasite.models import RcraSite
 

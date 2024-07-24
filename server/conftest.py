@@ -19,7 +19,7 @@ from rest_framework.test import APIClient
 from apps.core.models import (
     TrakUser,
 )
-from apps.site.models import Site, SiteAccess
+from apps.orgsite.models import Site, SiteAccess
 from org.models import Org, OrgAccess
 from rcrasite.models import (
     Address,

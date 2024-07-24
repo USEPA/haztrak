@@ -7,9 +7,9 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.site.models import Site
-from apps.site.serializers import SiteSerializer
-from apps.site.services import filter_sites_by_org, filter_sites_by_username, get_user_site
+from apps.orgsite.models import Site
+from apps.orgsite.serializers import SiteSerializer
+from apps.orgsite.services import filter_sites_by_org, filter_sites_by_username, get_user_site
 
 logger = logging.getLogger(__name__)
 

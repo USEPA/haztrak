@@ -5,7 +5,7 @@ from typing import Optional
 from django.db import transaction
 from django.db.models import QuerySet
 
-from apps.site.models import Site
+from apps.orgsite.models import Site
 from manifest.services import TaskResponse
 from manifest.tasks import sync_site_manifests
 

@@ -7,7 +7,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.site.services import sync_site_manifest_with_rcrainfo
+from apps.orgsite.services import sync_site_manifest_with_rcrainfo
 from handler.serializers import QuickerSignSerializer
 from manifest.models import Manifest
 from manifest.serializers import ManifestSerializer, MtnSerializer

@@ -5,20 +5,19 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('org', '0001_initial'),
-        ('site', '0001_initial'),
+        ("org", "0001_initial"),
+        ("orgsite", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='TrakOrg',
-            new_name='Org',
+            old_name="TrakOrg",
+            new_name="Org",
         ),
         migrations.RenameModel(
-            old_name='TrakOrgAccess',
-            new_name='OrgAccess',
+            old_name="TrakOrgAccess",
+            new_name="OrgAccess",
         ),
     ]

@@ -60,7 +60,7 @@ def sign_manifest(
 def sync_site_manifests(self, *, site_id: str, username: str):
     """asynchronous task to sync an EPA site's manifests"""
 
-    from apps.site.services import get_user_site, update_emanifest_sync_date
+    from apps.orgsite.services import get_user_site, update_emanifest_sync_date
     from manifest.services.emanifest import sync_manifests
 
     try:

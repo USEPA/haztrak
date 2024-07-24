@@ -9,7 +9,7 @@ from django.db import transaction
 
 from apps.core.models import TrakUser
 from apps.core.services import RcraClient, get_rcra_client
-from apps.site.services import SiteServiceError
+from apps.orgsite.services import SiteServiceError
 from rcrasite.models import RcraSite
 from rcrasite.services import RcraSiteService
 

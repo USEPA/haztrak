@@ -3,7 +3,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from guardian.admin import GuardedModelAdmin
 
-from apps.site.models import Site, SiteGroupObjectPermission, SiteUserObjectPermission
+from apps.orgsite.models import Site, SiteGroupObjectPermission, SiteUserObjectPermission
 
 
 @admin.register(Site)

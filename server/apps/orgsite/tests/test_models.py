@@ -1,7 +1,7 @@
 import pytest
 from django.db.models import QuerySet
 
-from apps.site.models import Site
+from apps.orgsite.models import Site
 
 
 @pytest.mark.django_db

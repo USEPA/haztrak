@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     "manifest",
     "wasteline",
     "org",
-    "apps.site",
+    "apps.orgsite",
     "profile",
 ]
 
@@ -240,6 +240,6 @@ GUARDIAN_RAISE_403 = True
 TRAK_ORG_MODEL = "org.Org"
 TRAK_RCRAINFO_SITE_MODEL = "rcrasite.RcraSite"
 TRAK_MANIFEST_MODEL = "manifest.Manifest"
-TRAK_SITE_MODEL = "site.Site"
+TRAK_SITE_MODEL = "orgsite.Site"
 TRAK_WASTELINE_MODEL = "wasteline.Wasteline"
 TRAK_HANDLER_MODEL = "handler.Handler"
