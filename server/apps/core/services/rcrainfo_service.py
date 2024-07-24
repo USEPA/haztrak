@@ -5,8 +5,8 @@ import emanifest
 from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse
 
-from apps.org.models import Org
 from apps.profile.models import RcrainfoProfile
+from org.models import Org
 from wasteline.models import WasteCode
 
 logger = logging.getLogger(__name__)

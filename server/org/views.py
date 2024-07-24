@@ -6,9 +6,9 @@ from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 
-from apps.org.models import Org
-from apps.org.serializers import OrgSerializer
-from apps.org.services import get_org_by_id
+from org.models import Org
+from org.serializers import OrgSerializer
+from org.services import get_org_by_id
 
 logger = logging.getLogger(__name__)
 

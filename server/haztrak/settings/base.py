@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.manifest",
     "wasteline",
-    "apps.org",
+    "org",
     "apps.site",
     "apps.profile",
 ]

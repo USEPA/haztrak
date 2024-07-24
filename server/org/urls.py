@@ -1,6 +1,6 @@
 from django.urls import path
 
-from apps.org.views import OrgDetailsView
+from org.views import OrgDetailsView
 
 app_name = "org"
 urlpatterns = [

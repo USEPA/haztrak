@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.org.serializers import OrgSerializer
 from apps.profile.models import Profile
 from apps.site.serializers import SiteAccessSerializer
+from org.serializers import OrgSerializer
 
 
 class ProfileSerializer(ModelSerializer):

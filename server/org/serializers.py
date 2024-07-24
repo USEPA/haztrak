@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from apps.org.models import Org
+from org.models import Org
 
 
 class OrgSerializer(ModelSerializer):

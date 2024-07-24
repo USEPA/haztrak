@@ -5,8 +5,8 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.org.models import Org
-from apps.org.views import OrgDetailsView
+from org.models import Org
+from org.views import OrgDetailsView
 
 
 class TestOrgDetailsView:
@@ -31,7 +31,7 @@ class TestOrgDetailsView:
     def test_404_when_org_id_not_defined(self, org, org_access_factory, user):
         request = self.factory.get(reverse("org:details", args=["foo"]))
         force_authenticate(request, user)
-        with patch("apps.org.views.get_org_by_id") as mock_org:
+        with patch("org.views.get_org_by_id") as mock_org:
             mock_org.side_effect = Org.DoesNotExist
             response = OrgDetailsView.as_view()(request, org_id="foo")
             assert response.status_code == status.HTTP_404_NOT_FOUND

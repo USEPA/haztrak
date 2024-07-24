@@ -18,7 +18,6 @@ from rest_framework.test import APIClient
 from apps.core.models import (
     TrakUser,
 )
-from apps.org.models import Org, OrgAccess
 from apps.profile.models import Profile, RcrainfoProfile
 from apps.rcrasite.models import (
     Address,
@@ -27,6 +26,7 @@ from apps.rcrasite.models import (
     RcraSite,
 )
 from apps.site.models import Site, SiteAccess
+from org.models import Org, OrgAccess
 
 
 class SiteIDProvider(BaseProvider):

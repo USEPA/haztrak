@@ -1,4 +1,4 @@
-from apps.org.models import Org
+from org.models import Org
 
 
 class TestOrgModel:

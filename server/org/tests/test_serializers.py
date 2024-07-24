@@ -1,4 +1,4 @@
-from apps.org.serializers import OrgSerializer
+from org.serializers import OrgSerializer
 
 
 class TestOrgSerializer:

@@ -1,4 +1,4 @@
-from apps.org.models import Org
+from org.models import Org
 
 
 def get_org_by_id(org_id: str) -> Org:

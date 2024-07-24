@@ -1,6 +1,6 @@
 import uuid
 
-from apps.org.services import get_org_by_id, get_org_rcrainfo_api_credentials
+from org.services import get_org_by_id, get_org_rcrainfo_api_credentials
 
 
 class TestOrgServices:
