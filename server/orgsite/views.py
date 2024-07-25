@@ -1,11 +1,8 @@
 import logging
 
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from orgsite.models import Site
 from orgsite.permissions import SiteObjectPermissions
@@ -45,16 +42,11 @@ class SiteDetailsView(RetrieveAPIView):
         return site
 
 
-class OrgSitesListView(APIView):
+class OrgSitesListView(ListAPIView):
     """Retrieve a list of sites filtered by organization."""
 
-    @method_decorator(cache_page(60 * 15))
-    def get(self, request, *args, **kwargs):
-        try:
-            trak_sites = filter_sites_by_org(self.kwargs["org_id"])
-            serializer = SiteSerializer(trak_sites, many=True)
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
-        except Site.DoesNotExist as e:
-            return Response(data=str(e), status=status.HTTP_404_NOT_FOUND)
-        except KeyError:
-            return Response(data="bad request", status=status.HTTP_400_BAD_REQUEST)
+    queryset = Site.objects.all()
+    serializer_class = SiteSerializer
+
+    def get_queryset(self):
+        return filter_sites_by_org(self.kwargs["org_id"])
