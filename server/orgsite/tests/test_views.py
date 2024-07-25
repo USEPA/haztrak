@@ -14,12 +14,10 @@ class TestSiteListView:
         user_factory,
         site_factory,
         rcra_site_factory,
-        site_access_factory,
     ):
         self.user = user_factory()
         self.client = api_client_factory(user=self.user)
         self.user_site = site_factory()
-        self.site_permissions = site_access_factory(user=self.user, site=self.user_site)
         self.other_site = site_factory(rcra_site=rcra_site_factory(epa_id="VA12345678"))
 
     def test_responds_with_site_in_json_format(self, api_client):
@@ -78,7 +76,6 @@ class TestOrgSitesListView:
         self,
         user_factory,
         site_factory,
-        site_access_factory,
         org_factory,
     ):
         # Arrange

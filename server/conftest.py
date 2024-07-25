@@ -21,7 +21,7 @@ from core.models import (
     TrakUser,
 )
 from org.models import Org, OrgAccess
-from orgsite.models import Site, SiteAccess
+from orgsite.models import Site
 from rcrasite.models import (
     Address,
     Contact,
@@ -339,25 +339,6 @@ def mocker(mocker: pytest_mock.MockerFixture):
     https://github.com/pytest-dev/pytest-mock
     """
     return mocker
-
-
-@pytest.fixture
-def site_access_factory(db, faker, site_factory, profile_factory):
-    """Abstract factory for Haztrak RcraSitePermissions model"""
-
-    def create_permission(
-        site: Optional[Site] = None,
-        user: Optional[TrakUser] = None,
-        emanifest: Optional[Literal["viewer", "signer", "editor"]] = "viewer",
-    ) -> SiteAccess:
-        """Returns testuser1 RcraSitePermissions model to site_generator"""
-        return SiteAccess.objects.create(
-            site=site or site_factory(),
-            user=user or user_factory(),
-            emanifest=emanifest,
-        )
-
-    return create_permission
 
 
 @pytest.fixture
