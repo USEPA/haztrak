@@ -33,9 +33,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "guardian",
     "rest_framework",
     "rest_framework.authtoken",
-    "guardian",
     "allauth",
     "allauth.account",
     "dj_rest_auth",
@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     "manifest",
     "wasteline",
     "org",
-    "orgsite",
     "profile",
 ]
 
@@ -117,8 +116,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
     "guardian.backends.ObjectPermissionBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 # Internationalization
@@ -143,7 +142,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": [
         "rest_framework.parsers.JSONParser",
     ],
-    "EXCEPTION_HANDLER": "core.exceptions.haztrak_exception_handler",
+    "EXCEPTION_HANDLER": "core.utils.exception_handler",
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
@@ -212,11 +211,6 @@ LOGGING = {
             "handlers": ["console"],
             "propagate": False,
         },
-        "apps.trak": {
-            "level": HT_TRAK_LOG_LEVEL,
-            "handlers": ["console"],
-            "propagate": False,
-        },
         "rcrasite": {
             "level": HT_TRAK_LOG_LEVEL,
             "handlers": ["console"],
@@ -233,13 +227,14 @@ LOGGING = {
 REST_AUTH = {"USER_DETAILS_SERIALIZER": "core.serializers.TrakUserSerializer"}
 
 # Guardian
-GUARDIAN_USER_OBJ_PERMS_MODEL = "core.UserPermission"
-GUARDIAN_GROUP_OBJ_PERMS_MODEL = "core.GroupPermission"
+# GUARDIAN_USER_OBJ_PERMS_MODEL = "core.UserPermission"
+# GUARDIAN_GROUP_OBJ_PERMS_MODEL = "core.GroupPermission"
 GUARDIAN_RAISE_403 = True
+GUARDIAN_MONKEY_PATCH = False
 
 TRAK_ORG_MODEL = "org.Org"
 TRAK_RCRAINFO_SITE_MODEL = "rcrasite.RcraSite"
 TRAK_MANIFEST_MODEL = "manifest.Manifest"
-TRAK_SITE_MODEL = "orgsite.Site"
+TRAK_SITE_MODEL = "org.Site"
 TRAK_WASTELINE_MODEL = "wasteline.Wasteline"
 TRAK_HANDLER_MODEL = "handler.Handler"

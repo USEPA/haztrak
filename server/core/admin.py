@@ -4,8 +4,14 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.urls import reverse
 from django.utils.html import format_html, urlencode
+from guardian.models import (
+    GroupObjectPermission,
+    GroupObjectPermissionAbstract,
+    UserObjectPermission,
+    UserObjectPermissionAbstract,
+)
 
-from .models import GroupPermission, TrakUser, UserPermission
+from .models import TrakUser
 
 
 class HiddenListView(admin.ModelAdmin):
@@ -21,14 +27,7 @@ class HiddenListView(admin.ModelAdmin):
 
 @admin.register(TrakUser)
 class TrakUserAdmin(UserAdmin):
-    list_display = ["username", "related_profile", "email", "is_staff", "is_superuser"]
-
-    @admin.display(description="Profile")
-    def related_profile(self, user: TrakUser) -> str:
-        url = (
-            reverse("admin:core_haztrakprofile_changelist") + "?" + urlencode({"user": str(user)})  # noqa E501
-        )
-        return format_html("<a href='{}'>{}</a>", url, user.haztrak_profile)
+    list_display = ["username", "email", "is_staff", "is_superuser"]
 
 
 class RcraSitePermissionInline(admin.TabularInline):
@@ -72,6 +71,6 @@ except ImportError:
     from rest_framework.authtoken.models import Token as DRFToken
 
 admin.site.register(Profile)
+admin.site.register(UserObjectPermission)
+admin.site.register(GroupObjectPermission)
 admin.site.unregister(DRFToken)
-admin.site.register(UserPermission)
-admin.site.register(GroupPermission)

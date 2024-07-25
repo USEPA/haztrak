@@ -7,7 +7,7 @@ from django.db.models import Q, QuerySet
 from manifest.models import Manifest
 from manifest.services import EManifest, EManifestError, TaskResponse
 from manifest.tasks import save_to_emanifest as save_to_emanifest_task
-from orgsite.models import Site
+from org.models import Site
 
 logger = logging.getLogger(__name__)
 

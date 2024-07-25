@@ -5,7 +5,7 @@ import random
 import string
 from enum import Enum
 from profile.models import Profile, RcrainfoProfile
-from typing import Dict, Literal, Optional
+from typing import Any, Dict, Literal, Optional, Required, TypedDict
 
 import pytest
 import pytest_mock
@@ -14,13 +14,13 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from faker import Faker
 from faker.providers import BaseProvider
+from guardian.shortcuts import assign_perm
 from rest_framework.test import APIClient
 
 from core.models import (
     TrakUser,
 )
-from org.models import Org, OrgAccess
-from orgsite.models import Site, SiteAccess
+from org.models import Org, Site
 from rcrasite.models import (
     Address,
     Contact,
@@ -60,6 +60,11 @@ def haztrak_json():
     return Json
 
 
+class UserFactoryPermissions(TypedDict, total=False):
+    perms: Required[list[str] | str]
+    objs: list[Any]
+
+
 @pytest.fixture
 def user_factory(db, faker):
     """Abstract factory for Django's User model"""
@@ -70,8 +75,9 @@ def user_factory(db, faker):
         last_name: Optional[str] = None,
         email: Optional[str] = None,
         password: Optional[str] = None,
+        permissions: Optional[list[UserFactoryPermissions]] = None,
     ) -> TrakUser:
-        return TrakUser.objects.create_user(
+        user = TrakUser.objects.create_user(
             username=username or faker.user_name(),
             first_name=first_name or faker.first_name(),
             last_name=last_name or faker.last_name(),
@@ -79,7 +85,35 @@ def user_factory(db, faker):
             password=password or faker.password(),
         )
 
+        if permissions is not None:
+            for permission in permissions:
+                assign_perm(permission["perms"], user, permission["objs"])
+
+        return user
+
     return create_user
+
+
+@pytest.fixture
+def perm_factory(db):
+    """Abstract factory for creating permissions for a user"""
+
+    def create_permissions(
+        user: TrakUser,
+        perms: list[str] | str,
+        obj: Any = None,
+    ) -> None:
+        if isinstance(perms, str):
+            if obj:
+                assign_perm(perms, user, obj)
+            assign_perm(perms, user)
+        else:
+            for perm in perms:
+                if obj:
+                    assign_perm(perm, user, obj)
+                assign_perm(perm, user)
+
+    return create_permissions
 
 
 @pytest.fixture
@@ -307,32 +341,13 @@ def mocker(mocker: pytest_mock.MockerFixture):
 
 
 @pytest.fixture
-def site_access_factory(db, faker, site_factory, profile_factory):
-    """Abstract factory for Haztrak RcraSitePermissions model"""
-
-    def create_permission(
-        site: Optional[Site] = None,
-        user: Optional[TrakUser] = None,
-        emanifest: Optional[Literal["viewer", "signer", "editor"]] = "viewer",
-    ) -> SiteAccess:
-        """Returns testuser1 RcraSitePermissions model to site_generator"""
-        return SiteAccess.objects.create(
-            site=site or site_factory(),
-            user=user or user_factory(),
-            emanifest=emanifest,
-        )
-
-    return create_permission
-
-
-@pytest.fixture
 def user_with_org_factory(
     db,
     user_factory,
     org_factory,
     rcrainfo_profile_factory,
     profile_factory,
-    org_access_factory,
+    perm_factory,
 ):
     """Fixture for creating a user with an org that has set up RCRAInfo integration"""
 
@@ -354,27 +369,11 @@ def user_with_org_factory(
         admin = user_factory(username="admin")
         admin_rcrainfo_profile or rcrainfo_profile_factory(**rcra_profile_data)
         org = org or org_factory(admin=admin)
-        org_access_factory(org=org, user=user)
+        perm_factory(user, ["org.view_org"], org)
         profile_factory(user=user)
         return user, org
 
     return create_fixtures
-
-
-@pytest.fixture
-def org_access_factory(db, user_factory, org_factory):
-    """Abstract factory for creating a model that represents a user's access to an organization"""
-
-    def create_permission(
-        org: Optional[Org] = None,
-        user: Optional[TrakUser] = None,
-    ) -> OrgAccess:
-        return OrgAccess.objects.create(
-            org=org or org_factory(),
-            user=user or user_factory(),
-        )
-
-    return create_permission
 
 
 @pytest.fixture(autouse=True)

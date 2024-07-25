@@ -3,10 +3,14 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from guardian.admin import GuardedModelAdmin
 
-from org.models import Org, OrgAccess, OrgGroupObjectPermission, OrgUserObjectPermission
-from orgsite.models import Site
-
-admin.site.register(OrgAccess)
+from org.models import (
+    Org,
+    OrgGroupObjectPermission,
+    OrgUserObjectPermission,
+    Site,
+    SiteGroupObjectPermission,
+    SiteUserObjectPermission,
+)
 
 
 @admin.register(Org)
@@ -20,23 +24,36 @@ class HaztrakOrgAdmin(admin.ModelAdmin):
     rcrainfo_integrated.boolean = True
     rcrainfo_integrated.short_description = "Admin has setup RCRAInfo integration"
 
-    def number_of_sites(self, org: Org):
+    @staticmethod
+    def number_of_sites(org: Org):
         return Site.objects.filter(org=org).count()
 
 
-@admin.register(OrgUserObjectPermission)
-class OrgUserObjectPermissionAdmin(GuardedModelAdmin):
+@admin.register(Site)
+class HaztrakSiteAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "last_rcrainfo_manifest_sync"]
+    search_fields = ["rcra_site__epa_id"]
+
+
+class BasePermissionAdmin(GuardedModelAdmin):
+    _my_model_name = None
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "permission":
-            content_type = ContentType.objects.get_for_model(Site)
+            content_type = ContentType.objects.get_for_model(self._my_model_name)
             kwargs["queryset"] = Permission.objects.filter(content_type=content_type)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-@admin.register(OrgGroupObjectPermission)
-class OrgGroupObjectPermissionAdmin(GuardedModelAdmin):
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "permission":
-            content_type = ContentType.objects.get_for_model(Site)
-            kwargs["queryset"] = Permission.objects.filter(content_type=content_type)
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+class SitePermissionAdmin(BasePermissionAdmin):
+    _my_model_name = Site
+
+
+class OrgPermissionAdmin(BasePermissionAdmin):
+    _my_model_name = Org
+
+
+admin.site.register(SiteUserObjectPermission, SitePermissionAdmin)
+admin.site.register(SiteGroupObjectPermission, SitePermissionAdmin)
+admin.site.register(OrgGroupObjectPermission, OrgPermissionAdmin)
+admin.site.register(OrgUserObjectPermission, OrgPermissionAdmin)
