@@ -5,6 +5,7 @@ from typing import Optional
 from django.db import transaction
 from django.db.models import QuerySet
 
+from haztrak import settings
 from manifest.services import TaskResponse
 from manifest.tasks import sync_site_manifests
 from orgsite.models import Site
@@ -41,6 +42,11 @@ def get_user_site(username: str, epa_id: str) -> Site:
 def get_site_by_epa_id(epa_id: str) -> Site:
     """Returns a Site by its RCRA EPA ID number, else throws a DoesNotExist exception."""
     return Site.objects.get_by_epa_id(epa_id)
+
+
+def find_sites_by_user(user: settings.AUTH_USER_MODEL) -> [Site]:
+    """Returns a list of Sites associated with a user."""
+    return Site.objects.filter_by_user(user)
 
 
 def filter_sites_by_username(username: str) -> [Site]:

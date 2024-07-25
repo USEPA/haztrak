@@ -3,6 +3,7 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 from django.db.models import QuerySet
 from guardian.models.models import GroupObjectPermissionBase, UserObjectPermissionBase
+from guardian.shortcuts import get_objects_for_user
 
 
 class SiteManager(QuerySet):
@@ -10,7 +11,9 @@ class SiteManager(QuerySet):
 
     def filter_by_username(self: models.Manager, username: str) -> QuerySet:
         """filter a list of sites a user has access to (by username)"""
-        return self.select_related("rcra_site").filter(siteaccess__user__username=username)
+        return get_objects_for_user(
+            settings.AUTH_USER_MODEL.objects.get(username=username), "view_site", self.model
+        )
 
     def get_by_user_and_epa_id(
         self: models.Manager, user: settings.AUTH_USER_MODEL, epa_id: str
@@ -28,7 +31,7 @@ class SiteManager(QuerySet):
 
     def filter_by_user(self: models.Manager, user: settings.AUTH_USER_MODEL) -> QuerySet:
         """filter a list of sites a user has access to (by user object)"""
-        return self.select_related("rcra_site").filter(siteaccess__user=user)
+        return get_objects_for_user(user, "view_site", self.model)
 
     def filter_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:
         """filter a sites by EPA ID number"""

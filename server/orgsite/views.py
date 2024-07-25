@@ -12,7 +12,7 @@ from orgsite.permissions import SiteObjectPermissions
 from orgsite.serializers import SiteSerializer
 from orgsite.services import (
     filter_sites_by_org,
-    filter_sites_by_username,
+    find_sites_by_user,
     get_site_by_epa_id,
 )
 
@@ -23,14 +23,14 @@ class SiteListView(ListAPIView):
     """that returns all haztrak sites that the user has access to."""
 
     serializer_class = SiteSerializer
+    queryset = Site.objects.all()
 
-    def get(self, request, *args, **kwargs):
-        sites = filter_sites_by_username(username=request.user.username)
+    def list(self, request, *args, **kwargs):
+        sites = find_sites_by_user(request.user)
         data = self.serializer_class(sites, many=True).data
         return Response(data, status=status.HTTP_200_OK)
 
 
-# class SiteDetailsView(PermissionRequiredMixin, RetrieveAPIView):
 class SiteDetailsView(RetrieveAPIView):
     """View details of a Haztrak Site."""
 
