@@ -7,7 +7,7 @@ from guardian.mixins import GuardianUserMixin
 from guardian.models import GroupObjectPermissionAbstract, UserObjectPermissionAbstract
 
 
-class TrakUser(AbstractUser, GuardianUserMixin):
+class TrakUser(GuardianUserMixin, AbstractUser):
     """Haztrak abstract user model. It simply inherits from Django's AbstractUser model."""
 
     class Meta:

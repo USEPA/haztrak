@@ -27,14 +27,7 @@ class HiddenListView(admin.ModelAdmin):
 
 @admin.register(TrakUser)
 class TrakUserAdmin(UserAdmin):
-    list_display = ["username", "related_profile", "email", "is_staff", "is_superuser"]
-
-    @admin.display(description="Profile")
-    def related_profile(self, user: TrakUser) -> str:
-        url = (
-            reverse("admin:core_haztrakprofile_changelist") + "?" + urlencode({"user": str(user)})  # noqa E501
-        )
-        return format_html("<a href='{}'>{}</a>", url, user.haztrak_profile)
+    list_display = ["username", "email", "is_staff", "is_superuser"]
 
 
 class RcraSitePermissionInline(admin.TabularInline):
