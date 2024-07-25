@@ -6,7 +6,7 @@ from .views import (
     SiteListView,
 )
 
-app_name = "site"
+app_name = "orgsite"
 urlpatterns = [
     path("site", SiteListView.as_view(), name="list"),
     path("site/<str:epa_id>", SiteDetailsView.as_view(), name="details"),
