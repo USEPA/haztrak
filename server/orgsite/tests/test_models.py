@@ -46,7 +46,7 @@ class TestSiteManager:
         user = user_factory()
         site = site_factory()
         # ToDo, our model managers should not be concerned with permissions
-        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
+        perm_factory(user, ["orgsite.view_site"], site)
         other_site = site_factory()
         sites = Site.objects.filter_by_username(user.username)
         assert site in sites
@@ -57,7 +57,7 @@ class TestSiteManager:
         site = site_factory()
         other_site = site_factory()
         # ToDo, our model managers should not be concerned with permissions
-        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
+        perm_factory(user, ["orgsite.view_site"], site)
         sites = Site.objects.filter_by_user(user)
         assert site in sites
         assert other_site not in sites
@@ -76,7 +76,7 @@ class TestSiteManager:
         user = user_factory()
         site = site_factory()
         # ToDo, our model managers should not be concerned with permissions
-        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
+        perm_factory(user, ["orgsite.view_site"], site)
         returned_site = Site.objects.get_by_user_and_epa_id(user, site.rcra_site.epa_id)
         assert isinstance(returned_site, Site)
         assert returned_site == site
@@ -94,7 +94,7 @@ class TestSiteManager:
         user = user_factory()
         site = site_factory()
         # ToDo, our model managers should not be concerned with permissions
-        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
+        perm_factory(user, ["orgsite.view_site"], site)
         returned_site = Site.objects.get_by_username_and_epa_id(
             user.username, site.rcra_site.epa_id
         )
@@ -111,7 +111,7 @@ class TestSiteManager:
         user = user_factory()
         site = site_factory()
         # ToDo, our model managers should not be concerned with permissions
-        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
+        perm_factory(user, ["orgsite.view_site"], site)
         returned_site = Site.objects.filter_by_username(user.username).get_by_epa_id(
             site.rcra_site.epa_id
         )

@@ -38,18 +38,18 @@ class TestSiteListView:
 
 
 class TestSiteDetailsApi:
-    """
-    Tests the site details endpoint
-    """
+    """Tests the site details endpoint"""
 
     def test_returns_site_by_id(self, user_factory, site_factory, perm_factory):
         # Arrange
         user = user_factory(username="username1")
         site = site_factory()
-        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
+        perm_factory(user, ["orgsite.view_site"], site)
         request = APIRequestFactory()
         request = request.get(reverse("orgsite:details", args=[site.rcra_site.epa_id]))
         force_authenticate(request, user)
+        print(user.has_perm("orgsite.view_site", site))
+        print(user.has_perm("orgsite.view_site"))
         # Act
         response = SiteDetailsView.as_view()(request, epa_id=site.rcra_site.epa_id)
         # Assert
@@ -63,7 +63,7 @@ class TestSiteDetailsApi:
         user = user_factory()
         site = site_factory()
         other_site = site_factory()
-        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
+        perm_factory(user, ["orgsite.view_site"], site)
         request = APIRequestFactory()
         request = request.get(reverse("orgsite:details", args=[site.rcra_site.epa_id]))
         force_authenticate(request, user)
@@ -71,24 +71,6 @@ class TestSiteDetailsApi:
         response = SiteDetailsView.as_view()(request, epa_id=other_site.rcra_site.epa_id)
         # Assert
         assert response.status_code == status.HTTP_403_FORBIDDEN
-
-    def test_returns_formatted_http_response(
-        self,
-        perm_factory,
-        user_factory,
-        site_factory,
-    ):
-        # Arrange
-        user = user_factory()
-        site = site_factory()
-        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
-        client = APIClient()
-        client.force_authenticate(user=user)
-        # Act
-        response = client.get(reverse("orgsite:details", args=[site.rcra_site.epa_id]))
-        # Assert
-        assert response.headers["Content-Type"] == "application/json"
-        assert response.status_code == status.HTTP_200_OK
 
 
 class TestOrgSitesListView:

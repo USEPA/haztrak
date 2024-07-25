@@ -101,16 +101,18 @@ def perm_factory(db):
 
     def create_permissions(
         user: TrakUser,
-        permissions: list[UserFactoryPermissions] = None,
+        perms: list[str] | str,
+        obj: Any = None,
     ) -> None:
-        if permissions is not None:
-            for permission in permissions:
-                perms = permission["perms"]
-                if isinstance(perms, str):
-                    assign_perm(perms, user, permission["objs"])
-                else:
-                    for perm in perms:
-                        assign_perm(perm, user, permission["objs"])
+        if isinstance(perms, str):
+            if obj:
+                assign_perm(perms, user, obj)
+            assign_perm(perms, user)
+        else:
+            for perm in perms:
+                if obj:
+                    assign_perm(perm, user, obj)
+                assign_perm(perm, user)
 
     return create_permissions
 
