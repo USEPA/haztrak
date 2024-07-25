@@ -20,7 +20,7 @@ from rest_framework.test import APIClient
 from core.models import (
     TrakUser,
 )
-from org.models import Org, OrgAccess, Site
+from org.models import Org, Site
 from rcrasite.models import (
     Address,
     Contact,
@@ -347,7 +347,7 @@ def user_with_org_factory(
     org_factory,
     rcrainfo_profile_factory,
     profile_factory,
-    org_access_factory,
+    perm_factory,
 ):
     """Fixture for creating a user with an org that has set up RCRAInfo integration"""
 
@@ -369,27 +369,11 @@ def user_with_org_factory(
         admin = user_factory(username="admin")
         admin_rcrainfo_profile or rcrainfo_profile_factory(**rcra_profile_data)
         org = org or org_factory(admin=admin)
-        org_access_factory(org=org, user=user)
+        perm_factory(user, ["org.view_org"], org)
         profile_factory(user=user)
         return user, org
 
     return create_fixtures
-
-
-@pytest.fixture
-def org_access_factory(db, user_factory, org_factory):
-    """Abstract factory for creating a model that represents a user's access to an organization"""
-
-    def create_permission(
-        org: Optional[Org] = None,
-        user: Optional[TrakUser] = None,
-    ) -> OrgAccess:
-        return OrgAccess.objects.create(
-            org=org or org_factory(),
-            user=user or user_factory(),
-        )
-
-    return create_permission
 
 
 @pytest.fixture(autouse=True)

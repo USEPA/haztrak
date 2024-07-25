@@ -20,15 +20,15 @@ class TestOrgDetailsView:
     def org(self, org_factory):
         return org_factory()
 
-    def test_get_returns_org_details(self, org, org_access_factory, user):
-        org_access_factory(org=org, user=user)
+    def test_get_returns_org_details(self, org, user, perm_factory):
+        perm_factory(user, ["org.view_org"], org)
         request = self.factory.get(reverse("org:details", args=[org.id]))
         force_authenticate(request, user)
         response = OrgDetailsView.as_view()(request, org_id=org.id)
         assert response.status_code == status.HTTP_200_OK
         assert response.data["id"] == org.id
 
-    def test_404_when_org_id_not_defined(self, org, org_access_factory, user):
+    def test_404_when_org_id_not_defined(self, org, user):
         request = self.factory.get(reverse("org:details", args=["foo"]))
         force_authenticate(request, user)
         with patch("org.views.get_org_by_id") as mock_org:
