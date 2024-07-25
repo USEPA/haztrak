@@ -10,3 +10,9 @@ class SiteObjectPermissions(DjangoObjectPermissions):
         "OPTIONS": ["%(app_label)s.view_%(model_name)s"],
         "HEAD": ["%(app_label)s.view_%(model_name)s"],
     }
+
+
+class OrgObjectPermissions(DjangoObjectPermissions):
+    """Object level permission for Org model."""
+
+    pass

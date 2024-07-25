@@ -50,10 +50,10 @@ class TestOrgModel:
         assert org.is_rcrainfo_integrated
 
     class TestGetUserOrg:
-        def test_get_user_org(self, user_factory, org_factory, org_access_factory):
+        def test_get_user_org(self, user_factory, org_factory, perm_factory):
             user = user_factory()
             org = org_factory()
-            org_access_factory(user=user, org=org)
+            perm_factory(user, ["org.view_org"], org)
             user_org = Org.objects.get_by_username(user.username)
             assert str(user_org) == str(org)
 

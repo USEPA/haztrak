@@ -6,8 +6,8 @@ app_name = "org"
 
 site_urls = (
     [
-        path("site", SiteListView.as_view(), name="list"),
-        path("site/<str:epa_id>", SiteDetailsView.as_view(), name="details"),
+        path("", SiteListView.as_view(), name="list"),
+        path("/<str:epa_id>", SiteDetailsView.as_view(), name="details"),
     ],
     "site",
 )

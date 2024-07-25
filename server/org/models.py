@@ -15,7 +15,13 @@ class OrgManager(models.Manager):
     """Organization Repository manager"""
 
     def get_by_username(self, username: str) -> "Org":
-        return self.get(orgaccess__user__username=username)
+        user = TrakUser.objects.get(username=username)
+        # ToDo: Currently we are assuming the use only has one org
+        # return self.get(orgaccess__user__username=username)
+        orgs: QuerySet["Org"] = get_objects_for_user(
+            user, "view_org", self.model, accept_global_perms=False
+        )
+        return orgs.first()
 
 
 class Org(models.Model):
@@ -66,31 +72,6 @@ class Org(models.Model):
 
     def __str__(self):
         return f"{self.name}"
-
-
-class OrgAccess(models.Model):
-    """Organization Permissions"""
-
-    class Meta:
-        verbose_name = "Organization Permission"
-        verbose_name_plural = "Org Permissions"
-
-    org = models.ForeignKey(
-        Org,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-    )
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        related_name="org_permissions",
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-    )
-
-    def __str__(self):
-        return f"{self.user} - {self.org}"
 
 
 class OrgUserObjectPermission(UserObjectPermissionBase):

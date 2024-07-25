@@ -29,12 +29,7 @@ class TestRcrainfoService:
         assert rcrainfo.retrieve_id() == admin_rcrainfo_profile.rcra_api_id
 
     def test_constructor_retrieves_org_api_credentials(
-        self,
-        rcrainfo_profile_factory,
-        user_factory,
-        org_factory,
-        profile_factory,
-        org_access_factory,
+        self, rcrainfo_profile_factory, user_factory, org_factory, profile_factory, perm_factory
     ):
         # Arrange
         # Set up org with RCRAInfo API credentials
@@ -49,7 +44,7 @@ class TestRcrainfoService:
         profile_factory(user=admin, rcrainfo_profile=admin_rcrainfo_profile)
         # Set up user within org
         my_user = user_factory(username="testuser1")
-        org_access_factory(user=my_user, org=my_org)
+        perm_factory(my_user, ["org.view_org"], my_org)
         profile_factory(user=my_user)
         # Act
         rcrainfo: RcraClient = get_rcra_client(username=my_user.username)
