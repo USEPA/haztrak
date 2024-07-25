@@ -6,19 +6,21 @@ import React, { useContext } from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { removeCredentials, selectAuthenticated } from 'store';
+import { removeCredentials, selectAuthenticated, useLogoutMutation } from 'store';
 
 export function TopNav() {
   const { showSidebar, setShowSidebar } = useContext<NavContextProps>(NavContext);
   const isAuthenticated = useSelector(selectAuthenticated);
   const dispatch = useDispatch();
   const navigation = useNavigate();
+  const [logout] = useLogoutMutation();
 
   if (!isAuthenticated) return null;
 
   const handleLogout = () => {
     dispatch(removeCredentials());
     navigation('/login');
+    logout(undefined);
   };
 
   const toggleSidebar = () => {
