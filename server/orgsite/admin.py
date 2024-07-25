@@ -9,7 +9,6 @@ from orgsite.models import Site, SiteGroupObjectPermission, SiteUserObjectPermis
 @admin.register(Site)
 class HaztrakSiteAdmin(admin.ModelAdmin):
     list_display = ["__str__", "last_rcrainfo_manifest_sync"]
-    readonly_fields = ["rcra_site"]
     search_fields = ["rcra_site__epa_id"]
 
 

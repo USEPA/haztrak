@@ -2,13 +2,13 @@ import logging
 
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from guardian.mixins import PermissionRequiredMixin
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from orgsite.models import Site
+from orgsite.permissions import SiteObjectPermissions
 from orgsite.serializers import SiteSerializer
 from orgsite.services import (
     filter_sites_by_org,
@@ -30,19 +30,19 @@ class SiteListView(ListAPIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
-class SiteDetailsView(PermissionRequiredMixin, RetrieveAPIView):
+# class SiteDetailsView(PermissionRequiredMixin, RetrieveAPIView):
+class SiteDetailsView(RetrieveAPIView):
     """View details of a Haztrak Site."""
-
-    #  ToDo: use DRF permission mixins to avoid html 403 response
 
     serializer_class = SiteSerializer
     lookup_url_kwarg = "epa_id"
     queryset = Site.objects.all()
-    permission_required = "view_site"
-    return_403 = True
+    permission_classes = [SiteObjectPermissions]
 
     def get_object(self):
-        return get_site_by_epa_id(epa_id=self.kwargs["epa_id"])
+        site = get_site_by_epa_id(epa_id=self.kwargs["epa_id"])
+        self.check_object_permissions(self.request, site)
+        return site
 
 
 class OrgSitesListView(APIView):

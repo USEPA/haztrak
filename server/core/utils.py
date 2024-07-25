@@ -24,7 +24,6 @@ def exception_handler(exc, context):
     and the django-styleguide
     https://github.com/HackSoftware/Django-Styleguide#approach-1---use-drfs-default-exceptions-with-very-little-modifications
     """
-    print(f"custom exception {exc}")
     match exc:
         case DjangoValidationError():
             exc = exceptions.ValidationError(as_serializer_error(exc))

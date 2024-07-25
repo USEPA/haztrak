@@ -20,3 +20,6 @@ class TrakUser(GuardianUserMixin, AbstractUser):
         editable=False,
         default=uuid.uuid4,
     )
+
+    def has_perm(self, perm, obj=None):
+        return super().has_perm(perm, obj)
