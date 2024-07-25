@@ -61,7 +61,7 @@ def sync_site_manifests(self, *, site_id: str, username: str):
     """asynchronous task to sync an EPA site's manifests"""
 
     from manifest.services.emanifest import sync_manifests
-    from orgsite.services import get_user_site, update_emanifest_sync_date
+    from org.services import get_user_site, update_emanifest_sync_date
 
     try:
         client = get_rcra_client(username=username)

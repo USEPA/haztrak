@@ -288,19 +288,13 @@
   fields:
     user: 4ac96f68-42cf-47ea-bffb-f24d423dbc35
     rcrainfo_profile: 192c73f4-24f1-4f21-8239-dee2da43c547
-- model: orgsite.site
+- model: org.site
   pk: 1
   fields:
     name: VA TEST GEN 2021
     rcra_site: 1
     last_rcrainfo_manifest_sync: null
     org: efb9e104-7f61-4365-a9af-9d7b55c854c4
-- model: orgsite.siteaccess
-  pk: 1
-  fields:
-    site: 1
-    emanifest: signer
-    user: 4ac96f68-42cf-47ea-bffb-f24d423dbc35
 - model: profile.rcrainfositeaccess
   pk: 1
   fields:

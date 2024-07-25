@@ -20,8 +20,7 @@ from rest_framework.test import APIClient
 from core.models import (
     TrakUser,
 )
-from org.models import Org, OrgAccess
-from orgsite.models import Site
+from org.models import Org, OrgAccess, Site
 from rcrasite.models import (
     Address,
     Contact,

@@ -1,8 +1,8 @@
 from guardian.shortcuts import assign_perm
 from rest_framework.test import APIRequestFactory
 
-from orgsite.permissions import SiteObjectPermissions
-from orgsite.views import SiteDetailsView
+from org.permissions import SiteObjectPermissions
+from org.views import SiteDetailsView
 
 
 class TestSiteObjectPermissions:
@@ -11,7 +11,7 @@ class TestSiteObjectPermissions:
     def test_user_can_view_site(self, user_factory, site_factory):
         user = user_factory()
         site = site_factory()
-        assign_perm("orgsite.view_site", user, site)
+        assign_perm("org.view_site", user, site)
         request = APIRequestFactory().get("")
         request.user = user
         mock_view = SiteDetailsView()

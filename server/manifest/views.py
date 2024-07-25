@@ -18,7 +18,7 @@ from manifest.services import (
     save_emanifest,
     update_manifest,
 )
-from orgsite.services import sync_site_manifest_with_rcrainfo
+from org.services import sync_site_manifest_with_rcrainfo
 
 logger = logging.getLogger(__name__)
 

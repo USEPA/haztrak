@@ -20,20 +20,20 @@ class TestGetManifestService:
         vatestgen001 = rcra_site_factory(epa_id="VATESTGEN001")
         generator = manifest_handler_factory(rcra_site=vatestgen001)
         my_site = site_factory(rcra_site=vatestgen001, name="My Site")
-        perm_factory(user, ["orgsite.view_site"], my_site)
+        perm_factory(user, ["org.view_site"], my_site)
         manifest_factory(generator=generator)
 
         # Transporter site
         vatesttran001 = rcra_site_factory(epa_id="VATESTTRAN001")
         my_transporter_site = site_factory(rcra_site=vatesttran001, name="My Transporter")
-        perm_factory(user, ["orgsite.view_site"], my_transporter_site)
+        perm_factory(user, ["org.view_site"], my_transporter_site)
         transporter_manifest = manifest_factory()
         manifest_transporter_factory(rcra_site=vatesttran001, manifest=transporter_manifest)
 
         # TSDF site
         vatesttsdf001 = rcra_site_factory(epa_id="VATESTTSDF001")
         my_tsdf = site_factory(rcra_site=vatesttsdf001, name="My TSDF")
-        perm_factory(user, ["orgsite.view_site"], my_tsdf)
+        perm_factory(user, ["org.view_site"], my_tsdf)
         tsdf = manifest_handler_factory(rcra_site=vatesttsdf001)
         manifest_factory(tsdf=tsdf)
         # Act
@@ -57,13 +57,13 @@ class TestGetManifestService:
         vatestgen001 = rcra_site_factory(epa_id="VATESTGEN001")
         generator = manifest_handler_factory(rcra_site=vatestgen001)
         my_site = site_factory(rcra_site=vatestgen001, name="My Site")
-        perm_factory(user, ["orgsite.view_site"], my_site)
+        perm_factory(user, ["org.view_site"], my_site)
         generator_manifest = manifest_factory(generator=generator)
 
         # TSDF site
         vatesttsdf001 = rcra_site_factory(epa_id="VATESTTSDF001")
         my_tsdf = site_factory(rcra_site=vatesttsdf001, name="My TSDF")
-        perm_factory(user, ["orgsite.view_site"], my_tsdf)
+        perm_factory(user, ["org.view_site"], my_tsdf)
         tsdf = manifest_handler_factory(rcra_site=vatesttsdf001)
         tsdf_manifest = manifest_factory(tsdf=tsdf)
         # Act
@@ -88,7 +88,7 @@ class TestGetManifestService:
         # my site operates as a TSDF and generator
         vatesttsdf001 = rcra_site_factory(epa_id="VATESTTSDF001")
         my_site = site_factory(rcra_site=vatesttsdf001, name="My TSDF")
-        perm_factory(user, ["orgsite.view_site"], my_site)
+        perm_factory(user, ["org.view_site"], my_site)
         my_site_as_tsdf = manifest_handler_factory(rcra_site=vatesttsdf001)
         tsdf_manifest = manifest_factory(tsdf=my_site_as_tsdf)
         my_site_as_generator = manifest_handler_factory(rcra_site=vatesttsdf001)
