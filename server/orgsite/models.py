@@ -99,37 +99,6 @@ class Site(models.Model):
         return f"{self.rcra_site.epa_id}"
 
 
-class SiteAccess(models.Model):
-    """The Role Based access a user has to a site"""
-
-    class Meta:
-        verbose_name = "Site Permission"
-        verbose_name_plural = "Site Permissions"
-        ordering = ["user"]
-
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="site_permissions",
-    )
-    site = models.ForeignKey(
-        Site,
-        on_delete=models.CASCADE,
-    )
-    emanifest = models.CharField(
-        max_length=6,
-        default="view",
-        choices=[
-            ("viewer", "view"),
-            ("editor", "edit"),
-            ("signer", "sign"),
-        ],
-    )
-
-    def __str__(self):
-        return f"{self.user.username}"
-
-
 class SiteUserObjectPermission(UserObjectPermissionBase):
     """Site object level permission."""
 

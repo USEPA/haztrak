@@ -1,9 +1,8 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from orgsite.models import Site, SiteAccess
+from orgsite.models import Site
 from rcrasite.serializers import RcraSiteSerializer
-from rcrasite.serializers.base_serializer import SitesBaseSerializer
 
 
 class SiteSerializer(ModelSerializer):
@@ -21,17 +20,3 @@ class SiteSerializer(ModelSerializer):
     class Meta:
         model = Site
         fields = ["name", "handler"]
-
-
-class SiteAccessSerializer(SitesBaseSerializer):
-    class Meta:
-        model = SiteAccess
-        fields = [
-            "site",
-            "eManifest",
-        ]
-
-    site = SiteSerializer()
-    eManifest = serializers.CharField(
-        source="emanifest",
-    )
