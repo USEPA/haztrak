@@ -14,7 +14,10 @@ class SiteManager(QuerySet):
     def filter_by_username(self: models.Manager, username: str) -> QuerySet:
         """filter a list of sites a user has access to (by username)"""
         return get_objects_for_user(
-            TrakUser.objects.get(username=username), "view_site", self.model
+            TrakUser.objects.get(username=username),
+            "view_site",
+            self.model,
+            accept_global_perms=False,
         )
 
     def get_by_user_and_epa_id(
@@ -33,7 +36,7 @@ class SiteManager(QuerySet):
 
     def filter_by_user(self: models.Manager, user: settings.AUTH_USER_MODEL) -> QuerySet:
         """filter a list of sites a user has access to (by user object)"""
-        return get_objects_for_user(user, "view_site", self.model)
+        return get_objects_for_user(user, "view_site", self.model, accept_global_perms=False)
 
     def filter_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:
         """filter a sites by EPA ID number"""

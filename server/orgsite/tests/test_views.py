@@ -70,7 +70,7 @@ class TestSiteDetailsApi:
         # Act
         response = SiteDetailsView.as_view()(request, epa_id=other_site.rcra_site.epa_id)
         # Assert
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
 class TestOrgSitesListView:
