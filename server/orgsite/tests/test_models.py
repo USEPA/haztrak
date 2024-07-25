@@ -42,20 +42,22 @@ class TestSiteModel:
 
 
 class TestSiteManager:
-    def test_filter_sites_by_username(self, site_factory, site_access_factory, user_factory):
+    def test_filter_sites_by_username(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
+        # ToDo, our model managers should not be concerned with permissions
+        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
         other_site = site_factory()
-        site_access_factory(site=site, user=user)
         sites = Site.objects.filter_by_username(user.username)
         assert site in sites
         assert other_site not in sites
 
-    def test_filter_user_sites(self, site_factory, site_access_factory, user_factory):
+    def test_filter_user_sites(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
         other_site = site_factory()
-        site_access_factory(site=site, user=user)
+        # ToDo, our model managers should not be concerned with permissions
+        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
         sites = Site.objects.filter_by_user(user)
         assert site in sites
         assert other_site not in sites
@@ -70,10 +72,11 @@ class TestSiteManager:
         with pytest.raises(Site.DoesNotExist):
             Site.objects.get_by_epa_id("bad_id")
 
-    def test_get_user_site(self, site_factory, site_access_factory, user_factory):
+    def test_get_user_site(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
-        site_access_factory(site=site, user=user)
+        # ToDo, our model managers should not be concerned with permissions
+        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
         returned_site = Site.objects.get_by_user_and_epa_id(user, site.rcra_site.epa_id)
         assert isinstance(returned_site, Site)
         assert returned_site == site
@@ -87,10 +90,11 @@ class TestSiteManager:
         assert set(sites).issubset(returned_sites)
         assert not_my_site not in returned_sites
 
-    def test_get_by_username_and_epa_id(self, site_factory, site_access_factory, user_factory):
+    def test_get_by_username_and_epa_id(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
-        site_access_factory(site=site, user=user)
+        # ToDo, our model managers should not be concerned with permissions
+        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
         returned_site = Site.objects.get_by_username_and_epa_id(
             user.username, site.rcra_site.epa_id
         )
@@ -103,10 +107,11 @@ class TestSiteManager:
         assert isinstance(returned_sites, QuerySet)
         assert site in returned_sites
 
-    def test_combining_query_interfaces(self, site_factory, site_access_factory, user_factory):
+    def test_combining_query_interfaces(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
-        site_access_factory(site=site, user=user)
+        # ToDo, our model managers should not be concerned with permissions
+        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
         returned_site = Site.objects.filter_by_username(user.username).get_by_epa_id(
             site.rcra_site.epa_id
         )

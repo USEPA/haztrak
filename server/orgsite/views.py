@@ -37,6 +37,7 @@ class SiteDetailsView(RetrieveAPIView):
     permission_classes = [SiteObjectPermissions]
 
     def get_object(self):
+        print(f"Checking permissions for user {self.request.user} ")
         site = get_site_by_epa_id(epa_id=self.kwargs["epa_id"])
         self.check_object_permissions(self.request, site)
         return site

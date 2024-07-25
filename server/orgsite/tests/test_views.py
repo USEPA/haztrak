@@ -42,16 +42,11 @@ class TestSiteDetailsApi:
     Tests the site details endpoint
     """
 
-    def test_returns_site_by_id(
-        self,
-        user_factory,
-        site_factory,
-        site_access_factory,
-    ):
+    def test_returns_site_by_id(self, user_factory, site_factory, perm_factory):
         # Arrange
         user = user_factory(username="username1")
         site = site_factory()
-        site_access_factory(user=user, site=site)
+        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
         request = APIRequestFactory()
         request = request.get(reverse("orgsite:details", args=[site.rcra_site.epa_id]))
         force_authenticate(request, user)
@@ -62,39 +57,31 @@ class TestSiteDetailsApi:
         assert response.data["handler"]["epaSiteId"] == site.rcra_site.epa_id
 
     def test_non_user_sites_not_returned(
-        self,
-        user_factory,
-        site_factory,
-        org_factory,
-        site_access_factory,
+        self, user_factory, site_factory, org_factory, perm_factory
     ):
         # Arrange
         user = user_factory()
-        org = org_factory(admin=user)
-        site = site_factory(org=org)
-        site_access_factory(user=user, site=site)
-        other_org = org_factory()
-        other_site = site_factory(org=other_org)
+        site = site_factory()
+        other_site = site_factory()
+        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
         request = APIRequestFactory()
         request = request.get(reverse("orgsite:details", args=[site.rcra_site.epa_id]))
         force_authenticate(request, user)
         # Act
         response = SiteDetailsView.as_view()(request, epa_id=other_site.rcra_site.epa_id)
         # Assert
-        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_returns_formatted_http_response(
         self,
+        perm_factory,
         user_factory,
         site_factory,
-        site_access_factory,
-        org_factory,
     ):
         # Arrange
         user = user_factory()
-        org = org_factory(admin=user)
-        site = site_factory(org=org)
-        site_access_factory(user=user, site=site)
+        site = site_factory()
+        perm_factory(user, [{"perms": ["orgsite.view_site"], "objs": site}])
         client = APIClient()
         client.force_authenticate(user=user)
         # Act

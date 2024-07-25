@@ -5,7 +5,7 @@ import random
 import string
 from enum import Enum
 from profile.models import Profile, RcrainfoProfile
-from typing import Dict, Literal, Optional
+from typing import Any, Dict, Literal, Optional, Required, TypedDict
 
 import pytest
 import pytest_mock
@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from faker import Faker
 from faker.providers import BaseProvider
+from guardian.shortcuts import assign_perm
 from rest_framework.test import APIClient
 
 from core.models import (
@@ -60,6 +61,11 @@ def haztrak_json():
     return Json
 
 
+class UserFactoryPermissions(TypedDict, total=False):
+    perms: Required[list[str] | str]
+    objs: list[Any]
+
+
 @pytest.fixture
 def user_factory(db, faker):
     """Abstract factory for Django's User model"""
@@ -70,8 +76,9 @@ def user_factory(db, faker):
         last_name: Optional[str] = None,
         email: Optional[str] = None,
         password: Optional[str] = None,
+        permissions: Optional[list[UserFactoryPermissions]] = None,
     ) -> TrakUser:
-        return TrakUser.objects.create_user(
+        user = TrakUser.objects.create_user(
             username=username or faker.user_name(),
             first_name=first_name or faker.first_name(),
             last_name=last_name or faker.last_name(),
@@ -79,7 +86,33 @@ def user_factory(db, faker):
             password=password or faker.password(),
         )
 
+        if permissions is not None:
+            for permission in permissions:
+                assign_perm(permission["perms"], user, permission["objs"])
+
+        return user
+
     return create_user
+
+
+@pytest.fixture
+def perm_factory(db):
+    """Abstract factory for creating permissions for a user"""
+
+    def create_permissions(
+        user: TrakUser,
+        permissions: list[UserFactoryPermissions] = None,
+    ) -> None:
+        if permissions is not None:
+            for permission in permissions:
+                perms = permission["perms"]
+                if isinstance(perms, str):
+                    assign_perm(perms, user, permission["objs"])
+                else:
+                    for perm in perms:
+                        assign_perm(perm, user, permission["objs"])
+
+    return create_permissions
 
 
 @pytest.fixture
