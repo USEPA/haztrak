@@ -4,35 +4,17 @@ import { NewManifest } from 'features/NewManifest/NewManifest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { HaztrakProfileResponse } from 'store/userSlice/user.slice';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockSite } from 'test-utils/fixtures';
-import { mockUserEndpoints } from 'test-utils/mock';
+import { mockSiteEndpoints, mockUserEndpoints } from 'test-utils/mock';
 import { API_BASE_URL } from 'test-utils/mock/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
-const mySiteId = 'VATESTGEN001';
-const mySiteName = 'My Site';
-const mySite = createMockSite({
-  name: mySiteName,
-  // @ts-ignore
-  handler: { epaSiteId: mySiteId, siteType: 'Tsdf' },
-});
-
-const mockProfile: HaztrakProfileResponse = {
-  user: 'testuser1',
-  sites: [{ site: mySite, eManifest: 'viewer' }],
-  org: {
-    name: 'my org',
-    rcrainfoIntegrated: true,
-    id: '1234',
-  },
-};
-
-const server = setupServer(...mockUserEndpoints);
+const mockSites = [createMockSite(), createMockSite()];
+const server = setupServer(...mockUserEndpoints, ...mockSiteEndpoints);
 server.use(
-  http.get(`${API_BASE_URL}/api/profile`, () => {
-    return HttpResponse.json({ ...mockProfile }, { status: 200 });
+  http.get(`${API_BASE_URL}/api/site`, () => {
+    return HttpResponse.json(mockSites, { status: 200 });
   })
 );
 afterEach(() => {
@@ -56,7 +38,9 @@ describe('NewManifest', () => {
     const siteSelection = screen.getByRole('combobox', { name: /site select/i });
     await userEvent.click(siteSelection);
     await userEvent.keyboard('{enter}');
-    expect(screen.getByText(new RegExp(`${mySiteId} --`, 'i'))).toBeInTheDocument();
+    expect(
+      screen.getByText(new RegExp(`${mockSites[0].handler.epaSiteId}`, 'i'))
+    ).toBeInTheDocument();
     const siteRole = screen.getByRole('combobox', { name: /site Role/i });
     expect(siteRole).not.toBeDisabled();
   });

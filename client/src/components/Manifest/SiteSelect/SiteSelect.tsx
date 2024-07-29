@@ -4,7 +4,8 @@ import { HtForm } from 'components/UI';
 import React, { useMemo } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import Select from 'react-select';
-import { ProfileSlice, useGetProfileQuery } from 'store';
+import { useGetUserHaztrakSitesQuery } from 'store';
+import { HaztrakSite } from 'components/HaztrakSite';
 
 interface SiteSelectProps<T> {
   control: Control;
@@ -20,12 +21,11 @@ export function SiteSelect({
   const selectUserSites = useMemo(() => {
     return createSelector(
       (res) => res?.data,
-      (data: ProfileSlice) =>
-        !data || !data.sites ? [] : Object.values(data.sites).map((site) => site.handler)
+      (data: Array<HaztrakSite>) => (!data ? [] : Object.values(data).map((site) => site.handler))
     );
   }, []);
 
-  const { siteOptions } = useGetProfileQuery(undefined, {
+  const { siteOptions } = useGetUserHaztrakSitesQuery(undefined, {
     selectFromResult: (result) => ({
       ...result,
       siteOptions: selectUserSites(result),
