@@ -6,6 +6,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default [
+  // ToDo: eslint-plugin-react-hooks does not yet support eslint > 9 and this config
   pluginJs.configs.recommended,
   jsxA11y.flatConfigs.recommended,
   ...tseslint.configs.recommended,
