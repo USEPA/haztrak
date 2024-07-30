@@ -41,9 +41,9 @@ export function NewManifest() {
 
   const selectBySiteId = useMemo(() => {
     return createSelector(
-      (res) => res.data,
-      (res, siteId) => siteId,
-      (data, siteId) => {
+      (res: any) => res.data,
+      (_res, siteId) => siteId,
+      (data: any, siteId) => {
         return data?.sites[siteId]?.handler ?? undefined;
       }
     );

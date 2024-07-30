@@ -1,12 +1,8 @@
 import {
-  Area,
-  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
-  Label,
   Legend,
-  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -91,7 +87,6 @@ const renderQuarterTick = (
   const date = new Date(value);
   const month = date.getMonth();
   const quarterNo = Math.floor(month / 3) + 1;
-  const isMidMonth = month % 3 === 1;
 
   if (month % 3 === 1) {
     return <text x={x} y={y - 4} textAnchor="middle">{`Q${quarterNo}`}</text>;
@@ -122,7 +117,7 @@ export function ManifestCountBarChart() {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        {/* @ts-ignore*/}
+        {/* @ts-expect-error - ok with dummy data for now*/}
         <XAxis dataKey="date" tickFormatter={monthTickFormatter} />
         <XAxis
           dataKey="date"

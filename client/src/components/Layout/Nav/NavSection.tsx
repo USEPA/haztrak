@@ -1,9 +1,6 @@
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavItem } from 'components/Layout/Nav/NavItem';
 import { RoutesSection } from 'components/Layout/Sidebar/SidebarRoutes';
-import React, { useState } from 'react';
-import { Button, Collapse } from 'react-bootstrap';
+import React from 'react';
 
 interface SidebarSectionProps {
   section: RoutesSection;

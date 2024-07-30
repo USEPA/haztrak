@@ -1,18 +1,16 @@
-import React from 'react';
 import {
   Area,
   AreaChart,
   CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
   Label,
   ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from 'recharts';
-import { Container } from 'react-bootstrap';
 
-const generatorStatusYAxis = ([dataMin, dataMax]: [number, number]): [number, number] => {
+const generatorStatusYAxis = ([_dataMin, dataMax]: [number, number]): [number, number] => {
   const yMax = dataMax < 100 ? 120 : dataMax < 1000 ? 1200 : Math.ceil((dataMax * 1.5) / 100) * 100;
   return [0, yMax];
 };
@@ -111,7 +109,7 @@ export function GeneratorStatusAreaChart() {
           dataKey="day"
           type="number"
           domain={[1, days]}
-          tickFormatter={(value, index) => `${monthNumber + 1}/${value}`}
+          tickFormatter={(value, _index) => `${monthNumber + 1}/${value}`}
         >
           <Label value="Date" position="bottom" />
         </XAxis>

@@ -1,4 +1,3 @@
-import { Card } from 'react-bootstrap';
 import React from 'react';
 import { HtCard } from 'components/UI';
 

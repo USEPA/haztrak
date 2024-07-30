@@ -18,7 +18,7 @@ const TestComponent = ({
 }) => {
   useReadOnly(readOnly);
   return (
-    // @ts-ignore
+    // @ts-expect-error - ok for tests
     <ManifestContext.Provider value={{ status, signAble }}>
       <ManifestFABs onSignClick={() => undefined} />
     </ManifestContext.Provider>

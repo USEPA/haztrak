@@ -24,7 +24,7 @@ export function QuickSignBtn({ mtnHandler, iconOnly = false, ...props }: QuickSi
   const selectBySiteId = useMemo(() => {
     return createSelector(
       (res) => res.data,
-      (res, siteId) => siteId,
+      (_res, siteId) => siteId,
       (data: ProfileSlice, siteId) => {
         return data && data.sites ? data.sites[siteId] : undefined;
       }

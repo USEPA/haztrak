@@ -40,6 +40,7 @@ export function UpdateRcra({ taskId }: UpdateRcraProps) {
     if (typeof resp === 'string') {
       resp = JSON.parse(resp);
     }
+    // @ts-expect-error - ToDo fix
     return <Navigate to={`/manifest/${resp.manifestTrackingNumber}/view`} />;
   } else if (status === 'FAILURE') {
     return <></>;

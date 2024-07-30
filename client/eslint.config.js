@@ -4,10 +4,14 @@ import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default [
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
   {
-    ignores: ['**/build/', '**/dist/', '**/node_modules/'],
+    name: 'ignore-outputs',
+    ignores: ['**/build/', '**/dist/', '**/node_modules/', '**/.next/'],
   },
   {
+    name: 'react',
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     ...reactPlugin.configs.flat.recommended,
     languageOptions: {
@@ -22,8 +26,6 @@ export default [
       'react/jsx-uses-react': 0,
     },
   },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
   {
     name: 'ts-migration-relax',
     files: ['**/*.{ts,tsx}'],
