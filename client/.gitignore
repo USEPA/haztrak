@@ -18,3 +18,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 tsconfig.tsbuildinfo
+.next
+next-env.d.ts
