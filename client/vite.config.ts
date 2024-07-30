@@ -43,6 +43,9 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    sequence: {
+      hooks: 'parallel',
+    },
     coverage: {
       provider: 'v8', // or 'istanbul'
       reporter: ['text', 'json', 'html'],

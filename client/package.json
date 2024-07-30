@@ -44,18 +44,18 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
-    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
     "@types/eslint__js": "^8.42.3",
     "@types/lodash": "^4.17.6",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.13",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^4.3.1",
-    "@vitest/coverage-v8": "^1.6.0",
-    "@vitest/ui": "^1.6.0",
+    "@vitest/coverage-v8": "^2.0.4",
+    "@vitest/ui": "^2.0.4",
     "c8": "^10.1.2",
     "esbuild": "0.23.0",
     "eslint": "^9.8.0",
@@ -73,7 +73,7 @@
     "vite": "^5.3.5",
     "vite-plugin-eslint": "^1.8.1",
     "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.4"
   },
   "overrides": {
     "eslint": "^9.8.0"
