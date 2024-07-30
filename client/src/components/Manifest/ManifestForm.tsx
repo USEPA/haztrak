@@ -188,7 +188,7 @@ export function ManifestForm({
 
   const { userSiteIds } = useUserSiteIds();
   const nextSigner = manifest.getNextSigner(manifestData);
-  const signAble = userSiteIds.some((site) => site.epaSiteId === nextSigner?.epaSiteId ?? '');
+  const signAble = userSiteIds.some((site) => site.epaSiteId === nextSigner?.epaSiteId || '');
   const isDraft = manifestData?.manifestTrackingNumber === undefined;
 
   return (

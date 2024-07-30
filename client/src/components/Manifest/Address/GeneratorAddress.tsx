@@ -159,10 +159,6 @@ export function GeneratorAddress({ addressType, readOnly }: GeneratorAddressProp
                 name={`generator.${addressType}.country`}
                 render={({ field }) => {
                   return (
-                    // ToDo: 'true' controlled component by adding a value prop
-                    //  (state will likely need to be controlled by HandlerForm)
-                    //  and onChange handler, that has the same type expected by react-select
-                    // @ts-ignore
                     <Select
                       id={`generator.${addressType}Country`}
                       {...field}

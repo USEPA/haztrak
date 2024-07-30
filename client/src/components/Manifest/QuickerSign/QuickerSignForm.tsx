@@ -60,7 +60,7 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
   const userName = useAppSelector(selectUserName);
   const [signManifest, { data, error: ApiError }] = useSignEManifestMutation();
   const [taskId, setTaskId] = useState<string | undefined>(undefined);
-  const { inProgress, data: progressData } = useProgressTracker({ taskId: taskId });
+  useProgressTracker({ taskId: taskId });
   const { register, handleSubmit, setValue } = useForm<QuickerSignature>({
     defaultValues: {
       printedSignatureName: userName,

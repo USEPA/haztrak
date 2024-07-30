@@ -7,7 +7,7 @@ import { ButtonProps } from 'react-bootstrap';
 
 interface ManifestSaveBtnProps extends ButtonProps {}
 
-export function ManifestSaveBtn({ children, ...props }: ManifestSaveBtnProps) {
+export function ManifestSaveBtn({ children: _unused, ...props }: ManifestSaveBtnProps) {
   const [readOnly] = useReadOnly();
   if (readOnly) return <></>;
   return (

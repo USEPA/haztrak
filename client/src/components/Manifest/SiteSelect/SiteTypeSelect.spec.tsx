@@ -10,7 +10,6 @@ function TestComponent({ siteType }: { siteType?: RcraSiteType }) {
   const [mockSiteType, setMockSiteType] = useState();
   const handleChange = (siteType: any) => setMockSiteType(siteType);
   const { control } = useForm();
-  // @ts-ignore
   return (
     <SiteTypeSelect
       siteType={siteType}
