@@ -2,10 +2,14 @@ import reactPlugin from 'eslint-plugin-react'; // https://github.com/jsx-eslint/
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default [
   pluginJs.configs.recommended,
+  jsxA11y.flatConfigs.recommended,
   ...tseslint.configs.recommended,
+  eslintPluginPrettierRecommended,
   {
     name: 'ignore-outputs',
     ignores: ['**/build/', '**/dist/', '**/node_modules/', '**/.next/'],
