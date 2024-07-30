@@ -21,4 +21,11 @@ export default [
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
+  {
+    name: 'ts-migration-relax',
+    files: ['**/*.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ];

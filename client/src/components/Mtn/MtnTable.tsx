@@ -85,7 +85,7 @@ const columns = [
     id: 'actions',
     header: 'Actions',
 
-    cell: ({ row: { getValue } }: CellContext<MtnDetails, any>) => (
+    cell: ({ row: { getValue } }: CellContext<MtnDetails, unknown>) => (
       <MtnRowActions mtn={getValue('manifestTrackingNumber')} />
     ),
   }),
@@ -114,7 +114,7 @@ const fuzzyFilter: FilterFn<MtnDetails> = (row, columnId, value, addMeta) => {
  * @param manifest
  */
 export function MtnTable({ manifests }: MtnTableProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [searchValue, setSearchValue] = useState(searchParams.get('mtn') ?? '');
   const table = useReactTable({
