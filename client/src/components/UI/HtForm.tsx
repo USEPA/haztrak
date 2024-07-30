@@ -60,7 +60,7 @@ HtForm.Select = React.forwardRef<HTMLSelectElement, FormSelectProps>(
 
 HtForm.Switch = React.forwardRef<HTMLInputElement, FormCheckProps>(
   (props: FormCheckProps, ref: React.Ref<HTMLInputElement>) => {
-    const { children, dangerouslySetInnerHTML, ...rest } = props;
+    const { children, ...rest } = props;
     return (
       <Form.Check ref={ref} {...rest} type="switch">
         {children}

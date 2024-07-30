@@ -5,6 +5,9 @@ import tseslint from 'typescript-eslint';
 
 export default [
   {
+    ignores: ['**/build/', '**/dist/', '**/node_modules/'],
+  },
+  {
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     ...reactPlugin.configs.flat.recommended,
     languageOptions: {

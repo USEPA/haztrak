@@ -32,7 +32,7 @@ export function WasteLineForm({ handleClose, wasteForm, waste, lineNumber }: Was
     waste?.epaWaste === undefined ? true : waste.epaWaste
   );
 
-  // @ts-ignore - we do not want a default container type or unit of measure
+  // @ts-expect-error - we do not want a default container type or unit of measure
   const wasteLineDefaultValues: Partial<WasteLine> = waste
     ? waste
     : {

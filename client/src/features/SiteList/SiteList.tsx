@@ -9,7 +9,7 @@ import { useGetUserHaztrakSitesQuery } from 'store';
 /** Returns a table displaying the Haztrak sites a user has access to.*/
 export function SiteList() {
   useTitle('Sites');
-  const { data, isLoading, error } = useGetUserHaztrakSitesQuery(); // ToDO global error handling
+  const { data, isLoading } = useGetUserHaztrakSitesQuery(); // ToDO global error handling
 
   if (isLoading) return <HtSpinner center size="6x" />;
 

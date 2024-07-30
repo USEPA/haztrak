@@ -27,7 +27,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
   const [profileLoading, setProfileLoading] = useState(false);
   const [taskId, setTaskId] = useState<undefined | string>();
   const [updateRcrainfoProfile] = useUpdateRcrainfoProfileMutation();
-  const { rcraSites, isLoading, ...formValues } = profile;
+  const { ...formValues } = profile;
   const { inProgress } = useProgressTracker({
     taskId: taskId,
   });

@@ -1,5 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { Manifest, Transporter } from 'components/Manifest/manifestSchema';
+import { Manifest } from 'components/Manifest/manifestSchema';
 import { TransporterTable } from 'components/Manifest/Transporter/TransporterTable';
 import { HtButton } from 'components/UI';
 import { useReadOnly } from 'hooks/manifest';
@@ -25,7 +25,7 @@ export function TransporterSection({ setupSign }: TransporterSectionProps) {
 
   transporters.forEach((transporter, index) => {
     if (!transporter.clientKey) {
-      // @ts-ignore
+      // @ts-expect-error - we are setting a value on the form transporter array
       manifestForm.setValue(`transporters[${index}].clientKey`, uuidv4());
     }
   });

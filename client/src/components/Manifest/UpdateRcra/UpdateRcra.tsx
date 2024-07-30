@@ -20,7 +20,7 @@ export function UpdateRcra({ taskId }: UpdateRcraProps) {
     undefined
   );
 
-  const { data, isLoading, error } = useGetTaskStatusQuery(taskId, {
+  const { data, error } = useGetTaskStatusQuery(taskId, {
     pollingInterval: 3000,
     skip: status === 'SUCCESS' || status === 'FAILURE',
   });

@@ -24,7 +24,7 @@ export function NewManifest() {
   const { control } = useForm();
   const { siteId } = useParams();
   useReadOnly(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const urlSiteType = searchParams.get('st');
 

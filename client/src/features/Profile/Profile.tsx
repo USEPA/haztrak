@@ -19,7 +19,7 @@ export function Profile(): ReactElement {
   const isLoading = profileLoading || userLoading;
   useTitle('Profile');
 
-  if (isLoading ?? !user ?? !profile) {
+  if (isLoading || !user || !profile) {
     return <HtSpinner center />;
   }
 
