@@ -12,7 +12,8 @@ import {
 
 interface UseProgressTrackerConfig {
   taskId: string | undefined;
-  reduxAction?: UnknownAction | ThunkAction<any, any, any, any>;
+  // @ts-expect-error - ToDO fix
+  reduxAction?: UnknownAction | ThunkAction<unknown, unknown, unknown, unknown>;
   pollingInterval?: number;
   showMessages?: boolean;
 }
@@ -24,7 +25,7 @@ interface TaskStatusResponse<T> extends Omit<TaskStatus, 'result'> {
 interface UseProgressTrackerReturn<T> {
   data?: TaskStatusResponse<T>;
   inProgress: boolean;
-  error?: any;
+  error?: unknown;
 }
 
 /**
@@ -40,11 +41,11 @@ export function useProgressTracker<T>({
   const taskComplete = useAppSelector(selectTaskCompletion(taskId));
   const [inProgress, setInProgress] = useState<boolean>(taskId !== undefined);
   const [data, setData] = useState<TaskStatusResponse<T> | undefined>(undefined);
-  const [error, setError] = useState<any | undefined>(
+  const [error, setError] = useState<unknown | undefined>(
     useAppSelector(selectTask(taskId))?.status === 'FAILURE'
   );
 
-  const failTask = (queryError: any) => {
+  const failTask = (queryError: unknown) => {
     setInProgress(false);
     dispatch(updateTask({ taskId: taskId, status: 'FAILURE', complete: true }));
     setError('Task failed');
@@ -54,7 +55,7 @@ export function useProgressTracker<T>({
   const {
     data: queryData,
     error: queryError,
-    // @ts-ignore - if taskId is undefined, the query is skipped
+    // @ts-expect-error - if taskId is undefined, the query is skipped
   } = useGetTaskStatusQuery(taskId, {
     pollingInterval: pollingInterval ?? 3000,
     skip: !inProgress || taskId === undefined,

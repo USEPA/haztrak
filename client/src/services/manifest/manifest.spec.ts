@@ -7,6 +7,7 @@ import {
 } from 'test-utils/fixtures';
 import { describe, expect, test } from 'vitest';
 import { ProfileSlice } from 'store';
+import { ManifestStatus } from 'components/Manifest/manifestSchema';
 
 describe('manifest.getNextSigner', () => {
   test('returns the the generator if scheduled and no generator signature present', () => {
@@ -64,17 +65,19 @@ describe('manifest.getNextSigner', () => {
     const result = manifest.getNextSigner(mockManifest);
     expect(result?.epaSiteId).toBe(mockId);
   });
-  test.each(['NotAssigned', 'Pending', 'Corrected', 'Signed', 'UnderCorrection'])(
-    `returns undefined if status is %s`,
-    (status: string) => {
-      const mockManifest = createMockManifest({
-        // @ts-ignore
-        status,
-      });
-      const result = manifest.getNextSigner(mockManifest);
-      expect(result).toBe(undefined);
-    }
-  );
+  test.each([
+    'NotAssigned',
+    'Pending',
+    'Corrected',
+    'Signed',
+    'UnderCorrection',
+  ] as ManifestStatus[])(`returns undefined if status is %s`, (status: ManifestStatus) => {
+    const mockManifest = createMockManifest({
+      status,
+    });
+    const result = manifest.getNextSigner(mockManifest);
+    expect(result).toBe(undefined);
+  });
   test('getStatusOptions returns pending and NotAssigned', () => {
     const mockManifest = createMockManifest({
       status: 'NotAssigned',

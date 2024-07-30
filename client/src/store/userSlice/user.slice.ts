@@ -159,7 +159,7 @@ export const userApi = haztrakApi.injectEndpoints({
         };
       },
     }),
-    updateRcrainfoProfile: build.mutation<any, { username: string; data: any }>({
+    updateRcrainfoProfile: build.mutation<unknown, { username: string; data: unknown }>({
       query: (data) => ({
         url: `rcrainfo-profile/${data.username}`,
         method: 'PUT',

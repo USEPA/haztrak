@@ -10,6 +10,7 @@ const root = createRoot(container);
 // initiate the mock service worker if deployed in TEST environment
 // intercepts API calls and returns fake/test responses
 if (import.meta.env.VITE_HT_ENV && import.meta.env.VITE_HT_ENV.toUpperCase() === 'TEST') {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { worker } = require('./test-utils/mock/browser');
   worker.start();
 }
