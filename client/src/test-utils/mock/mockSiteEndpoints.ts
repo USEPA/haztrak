@@ -7,11 +7,11 @@ const mockSites = [createMockSite(), createMockSite()];
 
 export const mockSiteEndpoints = [
   /** List user sites*/
-  http.get(`${API_BASE_URL}/api/site`, (info) => {
+  http.get(`${API_BASE_URL}/api/site`, () => {
     return HttpResponse.json(mockSites, { status: 200 });
   }),
   /** Site Details*/
-  http.get(`${API_BASE_URL}/api/site/${mockEpaId}`, (info) => {
+  http.get(`${API_BASE_URL}/api/site/${mockEpaId}`, () => {
     return HttpResponse.json(mockSites[0], { status: 200 });
   }),
 ];

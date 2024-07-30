@@ -38,16 +38,15 @@ export const htApiBaseQuery =
   ): BaseQueryFn<
     HtApiQueryArgs, // Args
     unknown, // Result
-    HtApiError, // Error
-    {}, // DefinitionExtraOptions
-    {} // Meta
+    HtApiError
+    // Meta
   > =>
   async ({ url, method, data, params }) => {
     try {
       const response = await htApi({ url: baseUrl + url, method, data, params });
       return { data: response.data };
     } catch (axiosError) {
-      let err = axiosError as AxiosError;
+      const err = axiosError as AxiosError;
       return {
         error: {
           statusText: err.response?.statusText,
@@ -63,7 +62,7 @@ export interface TaskStatus {
   taskName: string;
   createdDate?: string;
   doneDate?: string;
-  result?: any;
+  result?: never;
 }
 
 interface RcrainfoSiteSearch {

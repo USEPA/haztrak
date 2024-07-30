@@ -57,7 +57,7 @@ export const manifest = {
     }
   },
   getStatusOptions({ manifest, profile }: { manifest: Manifest; profile: ProfileSlice }) {
-    let options: ManifestStatus[] = [];
+    const options: ManifestStatus[] = [];
     const currentStatus = manifest.status;
     if (
       currentStatus === 'NotAssigned' ||

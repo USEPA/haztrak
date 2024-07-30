@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 export const DOTS = '...';
 
 const range = (start: number, end: number) => {
-  let length = end - start + 1;
+  const length = end - start + 1;
   return Array.from({ length }, (_, idx) => idx + start);
 };
 
@@ -61,8 +61,8 @@ export function usePagination({
     if (!showLeftDots && showRightDots) {
       // create an array that shows the max number of page minus
       // 1 for the ellipsis, and 1 for the last page
-      let leftItemCount = maxVisiblePages - 2;
-      let leftRange = range(1, leftItemCount);
+      const leftItemCount = maxVisiblePages - 2;
+      const leftRange = range(1, leftItemCount);
       return [...leftRange, DOTS, totalPages];
     }
 
@@ -71,15 +71,15 @@ export function usePagination({
     if (showLeftDots && !showRightDots) {
       // create an array that shows the max number of page minus
       // 1 for the ellipsis, and 1 for the last page
-      let rightItemCount = maxVisiblePages - 2;
-      let rightRange = range(totalPages - rightItemCount + 1, totalPages);
+      const rightItemCount = maxVisiblePages - 2;
+      const rightRange = range(totalPages - rightItemCount + 1, totalPages);
       return [1, DOTS, ...rightRange];
     }
 
     // show dots on both sides of active page
     // 1, ..., 4, [5], 6, ..., 8
     if (showLeftDots && showRightDots) {
-      let middleRange = range(leftSiblingIndex, rightSiblingIndex);
+      const middleRange = range(leftSiblingIndex, rightSiblingIndex);
       return [1, DOTS, ...middleRange, DOTS, totalPages];
     }
   }, [totalCount, pageSize, siblingCount, currentPageIndex]);
