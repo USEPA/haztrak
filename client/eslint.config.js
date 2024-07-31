@@ -1,7 +1,7 @@
 import reactPlugin from 'eslint-plugin-react'; // https://github.com/jsx-eslint/eslint-plugin-react?tab=readme-ov-file#configuration
 import globals from 'globals';
 import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import tsEslint from 'typescript-eslint';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
@@ -9,9 +9,9 @@ export default [
   // ToDo: eslint-plugin-react-hooks does not yet support eslint > 9 and this config
   pluginJs.configs.recommended,
   jsxA11y.flatConfigs.recommended,
-  // ...tseslint.configs.recommended,
-  ...tseslint.configs.strict,
-  ...tseslint.configs.stylistic,
+  // ...tseslint.configs.recommended, // recommended config is overridden by strict/stylistic
+  ...tsEslint.configs.strict,
+  ...tsEslint.configs.stylistic,
   eslintPluginPrettierRecommended,
   {
     name: 'ignore-outputs',
@@ -39,6 +39,7 @@ export default [
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-empty-interface': 'off',
+      '@typescript-eslint/no-empty-function': 'off',
     },
   },
   {

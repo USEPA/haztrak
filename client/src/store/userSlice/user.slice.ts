@@ -101,7 +101,8 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       invalidatesTags: ['auth'],
     }),
-    getUser: build.query<HaztrakUser, null>({
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    getUser: build.query<HaztrakUser, void>({
       query: () => ({
         url: 'user',
         method: 'GET',
@@ -116,7 +117,8 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       invalidatesTags: ['user'],
     }),
-    getProfile: build.query<ProfileSlice, null>({
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    getProfile: build.query<ProfileSlice, void>({
       query: () => ({
         url: 'profile',
         method: 'GET',
@@ -166,7 +168,8 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       invalidatesTags: ['rcrainfoProfile'],
     }),
-    syncRcrainfoProfile: build.mutation<TaskResponse, null>({
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    syncRcrainfoProfile: build.mutation<TaskResponse, void>({
       query: () => ({
         url: `rcrainfo-profile/sync`,
         method: 'POST',

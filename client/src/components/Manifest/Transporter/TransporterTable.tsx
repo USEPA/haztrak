@@ -64,7 +64,6 @@ function TransporterTable({ transporters, arrayFieldMethods, setupSign }: Transp
                 <Col xs={2}>
                   {readOnly ? (
                     <QuickSignBtn
-                      siteType={'Transporter'}
                       mtnHandler={transporter}
                       onClick={setupSign}
                       iconOnly={true}

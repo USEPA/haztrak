@@ -16,7 +16,6 @@ beforeAll(() => server.listen());
 afterAll(() => server.close()); // Disable API mocking after the tests are done.
 
 function TestComponent({
-  siteType,
   handler,
   signingSite,
 }: {
@@ -28,7 +27,6 @@ function TestComponent({
     transporterOrder?: number | undefined;
   };
 }) {
-  if (!siteType) siteType = 'Generator';
   const setGeneratorStateCode = vi.fn();
   const setTsdfStateCode = vi.fn();
   const setEditWasteLineIndex = vi.fn();
@@ -43,7 +41,7 @@ function TestComponent({
           setEditWasteLineIndex,
         }}
       >
-        <QuickSignBtn siteType={siteType} mtnHandler={handler} onClick={() => undefined} />
+        <QuickSignBtn mtnHandler={handler} onClick={() => undefined} />
       </ManifestContext.Provider>
     </div>
   );

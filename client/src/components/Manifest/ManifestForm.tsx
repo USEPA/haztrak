@@ -50,13 +50,10 @@ export interface ManifestContextType {
 export const ManifestContext = createContext<ManifestContextType>({
   trackingNumber: undefined,
   generatorStateCode: undefined,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setGeneratorStateCode: () => {},
   tsdfStateCode: undefined,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setTsdfStateCode: () => {},
   editWasteLineIndex: undefined,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setEditWasteLineIndex: () => {},
   nextSigningSite: undefined,
   viewingAsSiteId: undefined,

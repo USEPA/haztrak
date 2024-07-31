@@ -29,7 +29,7 @@ export function GeneratorSection({ setupSign, signAble }: GeneratorSectionProps)
   const toggleShowGeneratorForm = () => setShowGeneratorForm(!showGeneratorForm);
   const urlGeneratorId = searchParams.get('generator');
 
-  const { data, isLoading, error } = useGetRcrainfoSiteQuery(urlGeneratorId, {
+  const { data, isLoading, error } = useGetRcrainfoSiteQuery(urlGeneratorId ?? '', {
     skip: !urlGeneratorId,
   });
 
@@ -72,7 +72,6 @@ export function GeneratorSection({ setupSign, signAble }: GeneratorSectionProps)
           <div className="d-flex justify-content-between">
             <Col className="text-end">
               <QuickSignBtn
-                siteType={'Generator'}
                 mtnHandler={generator}
                 onClick={setupSign}
                 disabled={generator?.signed || !signAble}

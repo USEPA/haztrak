@@ -92,7 +92,8 @@ export const haztrakApi = createApi({
         params: { epaId: data.siteId, siteType: data.siteType },
       }),
     }),
-    getRcrainfoSite: build.query<RcraSite, string | null>({
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    getRcrainfoSite: build.query<RcraSite, string | void>({
       query: (epaSiteId) => ({
         url: `rcrasite/${epaSiteId}`,
         method: 'get',
@@ -101,7 +102,8 @@ export const haztrakApi = createApi({
     getTaskStatus: build.query<TaskStatus, string>({
       query: (taskId) => ({ url: `task/${taskId}`, method: 'get' }),
     }),
-    getFedWasteCodes: build.query<Code[], null>({
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    getFedWasteCodes: build.query<Code[], void>({
       query: () => ({ url: 'waste/code/federal', method: 'get' }),
       providesTags: ['code'],
     }),
@@ -117,7 +119,8 @@ export const haztrakApi = createApi({
       query: (id) => ({ url: `org/${id}/sites`, method: 'get' }),
       providesTags: ['site'],
     }),
-    getUserHaztrakSites: build.query<HaztrakSite[], null>({
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    getUserHaztrakSites: build.query<HaztrakSite[], void>({
       query: () => ({ url: 'site', method: 'get' }),
       providesTags: ['site'],
     }),

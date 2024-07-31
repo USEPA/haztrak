@@ -36,7 +36,7 @@ export const mockUserEndpoints = [
   /** GET RCRAInfo profile */
   http.get(`${API_BASE_URL}/api/rcrainfo-profile/:username`, (info) => {
     const { username } = info.params;
-    if (!username) {
+    if (typeof username !== 'string') {
       return HttpResponse.json({}, { status: 404 });
     }
     const rcrainfoProfile = createMockRcrainfoProfileResponse({ user: username });
