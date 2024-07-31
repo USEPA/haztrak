@@ -8,9 +8,7 @@ import reducer, {
   setManifestStatus,
 } from 'store/manifestSlice/manifest.slice';
 import { renderWithProviders, screen } from 'test-utils';
-import { afterEach, describe, expect, test } from 'vitest';
-
-afterEach(() => {});
+import { describe, expect, test } from 'vitest';
 
 const TestComponent = () => {
   const readOnly = useAppSelector(selectManifestReadOnly);

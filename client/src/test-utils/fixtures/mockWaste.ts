@@ -21,13 +21,13 @@ export function createMockWaste(overWrites?: Partial<WasteLine>): WasteLine {
   };
 }
 
-export const mockFederalWasteCodes: Array<Code> = [
+export const mockFederalWasteCodes: Code[] = [
   { code: 'D001', description: 'Ignitable' },
   { code: 'D002', description: 'Corrosive' },
   { code: 'P003', description: 'something something poly-propel' },
 ];
 
-export const mockDotIdNumbers: Array<string> = [
+export const mockDotIdNumbers: string[] = [
   'ID8000',
   'NA0027',
   'NA0124',

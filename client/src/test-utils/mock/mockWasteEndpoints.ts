@@ -11,7 +11,7 @@ export const mockWasteEndpoints = [
   http.get(`${API_BASE_URL}/api/waste/dot/id`, (info) => {
     const url = new URL(info.request.url);
     const query = url.searchParams.get('q');
-    let filteredIds: Array<string> = [];
+    let filteredIds: string[] = [];
     if (query) {
       filteredIds = mockDotIdNumbers.filter((id) => id.includes(query));
     } else {

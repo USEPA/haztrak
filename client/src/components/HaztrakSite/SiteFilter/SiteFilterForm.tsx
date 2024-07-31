@@ -7,7 +7,7 @@ import { HaztrakSite } from 'components/HaztrakSite/haztrakSiteSchema';
 import { useSearchParams } from 'react-router-dom';
 
 interface SiteFilterFormProps {
-  sites: Array<HaztrakSite>;
+  sites: HaztrakSite[];
   setFilteredSites: Dispatch<SetStateAction<HaztrakSite[]>>;
   onClear?: () => void;
 }

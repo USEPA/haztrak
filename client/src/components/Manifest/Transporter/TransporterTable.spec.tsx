@@ -16,7 +16,7 @@ const HANDLER_NAME_2 = 'My Other Transporter';
 
 const mockSetupSign = () => undefined;
 
-const TRAN_ARRAY: Array<Transporter> = [
+const TRAN_ARRAY: Transporter[] = [
   {
     ...createMockTransporter({ epaSiteId: HANDLER_ID_1, name: HANDLER_NAME_1, order: 1 }),
   },

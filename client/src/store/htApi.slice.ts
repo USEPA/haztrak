@@ -78,14 +78,14 @@ export const haztrakApi = createApi({
   }),
   endpoints: (build) => ({
     // Note: build.query<ReturnType, ArgType>
-    searchRcrainfoSites: build.query<Array<RcraSite>, RcrainfoSiteSearch>({
+    searchRcrainfoSites: build.query<RcraSite[], RcrainfoSiteSearch>({
       query: (data: RcrainfoSiteSearch) => ({
         url: 'rcrainfo/rcrasite/search',
         method: 'post',
         data: data,
       }),
     }),
-    searchRcraSites: build.query<Array<RcraSite>, RcrainfoSiteSearch>({
+    searchRcraSites: build.query<RcraSite[], RcrainfoSiteSearch>({
       query: (data: RcrainfoSiteSearch) => ({
         url: 'rcrasite/search',
         method: 'get',
@@ -101,23 +101,23 @@ export const haztrakApi = createApi({
     getTaskStatus: build.query<TaskStatus, string>({
       query: (taskId) => ({ url: `task/${taskId}`, method: 'get' }),
     }),
-    getFedWasteCodes: build.query<Array<Code>, void>({
+    getFedWasteCodes: build.query<Code[], null>({
       query: () => ({ url: 'waste/code/federal', method: 'get' }),
       providesTags: ['code'],
     }),
-    getStateWasteCodes: build.query<Array<Code>, string>({
+    getStateWasteCodes: build.query<Code[], string>({
       query: (state) => ({ url: `waste/code/state/${state}`, method: 'get' }),
       providesTags: ['code'],
     }),
-    getDotIdNumbers: build.query<Array<string>, string>({
+    getDotIdNumbers: build.query<string[], string>({
       query: (id) => ({ url: 'waste/dot/id', method: 'get', params: { q: id } }),
       providesTags: ['code'],
     }),
-    getOrgSites: build.query<Array<HaztrakSite>, string>({
+    getOrgSites: build.query<HaztrakSite[], string>({
       query: (id) => ({ url: `org/${id}/sites`, method: 'get' }),
       providesTags: ['site'],
     }),
-    getUserHaztrakSites: build.query<Array<HaztrakSite>, void>({
+    getUserHaztrakSites: build.query<HaztrakSite[], null>({
       query: () => ({ url: 'site', method: 'get' }),
       providesTags: ['site'],
     }),
@@ -125,7 +125,7 @@ export const haztrakApi = createApi({
       query: (epaId) => ({ url: `site/${epaId}`, method: 'get' }),
       providesTags: ['site'],
     }),
-    getMTN: build.query<Array<MtnDetails>, string | undefined>({
+    getMTN: build.query<MtnDetails[], string | undefined>({
       query: (siteId) => ({
         url: siteId ? `manifest/mtn/${siteId}` : 'manifest/mtn',
         method: 'get',

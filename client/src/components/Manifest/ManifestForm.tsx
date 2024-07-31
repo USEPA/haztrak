@@ -50,10 +50,13 @@ export interface ManifestContextType {
 export const ManifestContext = createContext<ManifestContextType>({
   trackingNumber: undefined,
   generatorStateCode: undefined,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setGeneratorStateCode: () => {},
   tsdfStateCode: undefined,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setTsdfStateCode: () => {},
   editWasteLineIndex: undefined,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setEditWasteLineIndex: () => {},
   nextSigningSite: undefined,
   viewingAsSiteId: undefined,
@@ -180,7 +183,7 @@ export function ManifestForm({
   const [showWasteLineForm, setShowWasteLineForm] = useState<boolean>(false);
   const toggleWlFormShow = () => setShowWasteLineForm(!showWasteLineForm);
   const [editWasteLine, setEditWasteLine] = useState<number | undefined>(undefined);
-  const allWastes: Array<WasteLine> = manifestForm.getValues('wastes');
+  const allWastes: WasteLine[] = manifestForm.getValues('wastes');
   const wasteForm = useFieldArray<Manifest, 'wastes'>({
     control: manifestForm.control,
     name: 'wastes',

@@ -47,7 +47,7 @@ const mtnDetailsSchema = z.object({
 export type MtnDetails = z.infer<typeof mtnDetailsSchema>;
 
 interface MtnTableProps {
-  manifests: Array<MtnDetails>;
+  manifests: MtnDetails[];
   pageSize?: number;
 }
 

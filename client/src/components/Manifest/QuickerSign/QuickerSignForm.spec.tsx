@@ -11,7 +11,7 @@ afterEach(() => {
 
 describe('QuickerSignForm', () => {
   test('displays the MTN to be signed', () => {
-    const manifestTrackingNumbers: Array<string> = ['123456789ELC', '987654321ELC'];
+    const manifestTrackingNumbers: string[] = ['123456789ELC', '987654321ELC'];
     const handler = createMockMTNHandler();
     renderWithProviders(
       <QuickerSignForm mtn={manifestTrackingNumbers} mtnHandler={handler} siteType={'Generator'} />
@@ -21,7 +21,7 @@ describe('QuickerSignForm', () => {
     }
   });
   test('shows what site is signing', () => {
-    const manifestTrackingNumbers: Array<string> = ['123456789ELC', '987654321ELC'];
+    const manifestTrackingNumbers: string[] = ['123456789ELC', '987654321ELC'];
     const handler = createMockMTNHandler();
     renderWithProviders(
       <QuickerSignForm mtn={manifestTrackingNumbers} mtnHandler={handler} siteType={'Generator'} />

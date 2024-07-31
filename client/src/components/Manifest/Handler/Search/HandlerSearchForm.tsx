@@ -20,7 +20,7 @@ import { useDebounce } from 'hooks';
 interface Props {
   handleClose: () => void;
   handlerType: SiteType;
-  currentTransporters?: Array<RcraSite>;
+  currentTransporters?: RcraSite[];
   appendTransporter?: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 

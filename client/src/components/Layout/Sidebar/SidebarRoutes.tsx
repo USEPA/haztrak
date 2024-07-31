@@ -25,7 +25,7 @@ export interface RoutesSection {
   routes: Route[];
 }
 
-export const routes: Array<Route | RoutesSection> = [
+export const routes: (Route | RoutesSection)[] = [
   {
     id: 'Dashboard',
     icon: faTachometerAlt,

@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { TransporterRowActions } from './TransporterRowActions';
 
 interface TransporterTableProps {
-  transporters?: Array<Transporter>;
+  transporters?: Transporter[];
   arrayFieldMethods: UseFieldArrayReturn<Manifest, 'transporters', 'id'>;
   setupSign: () => void;
 }

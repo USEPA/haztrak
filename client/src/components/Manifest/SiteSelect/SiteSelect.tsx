@@ -21,7 +21,7 @@ export function SiteSelect({
   const selectUserSites = useMemo(() => {
     return createSelector(
       (res) => res?.data,
-      (data: Array<HaztrakSite>) => (!data ? [] : Object.values(data).map((site) => site.handler))
+      (data: HaztrakSite[]) => (!data ? [] : Object.values(data).map((site) => site.handler))
     );
   }, []);
 

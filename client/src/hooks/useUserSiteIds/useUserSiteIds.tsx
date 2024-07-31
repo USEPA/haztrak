@@ -21,7 +21,7 @@ export function useUserSiteIds() {
     []
   );
 
-  const { userSiteIds, ...rest } = useGetProfileQuery(undefined, {
+  const { userSiteIds, ...rest } = useGetProfileQuery(null, {
     selectFromResult: (result) => ({
       ...result,
       userSiteIds: selectUserSiteIds(result),

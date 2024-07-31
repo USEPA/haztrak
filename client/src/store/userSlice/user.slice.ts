@@ -34,8 +34,7 @@ export interface HaztrakSitePermissions {
   eManifest: HaztrakModulePermissions;
 }
 
-export interface RcrainfoProfileState
-  extends RcrainfoProfile<Record<string, RcrainfoProfileSite>> {}
+export type RcrainfoProfileState = RcrainfoProfile<Record<string, RcrainfoProfileSite>>;
 
 export interface RcrainfoProfile<T> {
   user: string;
@@ -75,14 +74,14 @@ interface HaztrakOrgResponse {
 
 export interface HaztrakProfileResponse {
   user: string;
-  sites: Array<{
+  sites: {
     site: HaztrakSite;
     eManifest: HaztrakModulePermissions;
-  }>;
+  }[];
   org?: HaztrakOrgResponse;
 }
 
-interface RcrainfoProfileResponse extends RcrainfoProfile<Array<RcrainfoProfileSite>> {}
+type RcrainfoProfileResponse = RcrainfoProfile<RcrainfoProfileSite[]>;
 
 export const userApi = haztrakApi.injectEndpoints({
   endpoints: (build) => ({
@@ -102,7 +101,7 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       invalidatesTags: ['auth'],
     }),
-    getUser: build.query<HaztrakUser, void>({
+    getUser: build.query<HaztrakUser, null>({
       query: () => ({
         url: 'user',
         method: 'GET',
@@ -117,7 +116,7 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       invalidatesTags: ['user'],
     }),
-    getProfile: build.query<ProfileSlice, void>({
+    getProfile: build.query<ProfileSlice, null>({
       query: () => ({
         url: 'profile',
         method: 'GET',
@@ -167,7 +166,7 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       invalidatesTags: ['rcrainfoProfile'],
     }),
-    syncRcrainfoProfile: build.mutation<TaskResponse, void>({
+    syncRcrainfoProfile: build.mutation<TaskResponse, null>({
       query: () => ({
         url: `rcrainfo-profile/sync`,
         method: 'POST',

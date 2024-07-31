@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { HtModal } from 'components/UI';
 import React from 'react';
 import { cleanup, render, screen } from 'test-utils';
-import { afterEach, describe, expect, test } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 
 afterEach(() => {
   cleanup();
@@ -10,8 +10,9 @@ afterEach(() => {
 
 describe('HtModal', () => {
   test('renders', () => {
+    const handleClose = vi.fn();
     render(
-      <HtModal showModal={true} handleClose={() => {}}>
+      <HtModal showModal={true} handleClose={handleClose}>
         <HtModal.Header>
           <HtModal.Title title="Hello world" />
         </HtModal.Header>

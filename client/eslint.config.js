@@ -9,7 +9,9 @@ export default [
   // ToDo: eslint-plugin-react-hooks does not yet support eslint > 9 and this config
   pluginJs.configs.recommended,
   jsxA11y.flatConfigs.recommended,
-  ...tseslint.configs.recommended,
+  // ...tseslint.configs.recommended,
+  ...tseslint.configs.strict,
+  ...tseslint.configs.stylistic,
   eslintPluginPrettierRecommended,
   {
     name: 'ignore-outputs',
@@ -36,6 +38,7 @@ export default [
     files: ['**/*.{ts,tsx}'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-empty-interface': 'off',
     },
   },
   {

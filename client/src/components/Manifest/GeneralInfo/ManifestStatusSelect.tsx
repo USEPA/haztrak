@@ -36,7 +36,7 @@ export function ManifestStatusSelect({ readOnly, isDraft }: ManifestStatusFieldP
   const manifestForm = useFormContext<Manifest>();
   const { data: profile, isLoading: profileLoading } = useGetProfileQuery();
 
-  const availableStatuses: Array<ManifestStatus> = profile
+  const availableStatuses: ManifestStatus[] = profile
     ? manifest.getStatusOptions({
         manifest: manifestForm.getValues(),
         profile: profile,

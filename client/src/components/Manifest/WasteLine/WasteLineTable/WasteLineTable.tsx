@@ -11,7 +11,7 @@ import { Accordion, Button, Card, Col, Row, useAccordionButton } from 'react-boo
 import { UseFieldArrayReturn } from 'react-hook-form';
 
 interface WasteLineTableProps {
-  wastes: Array<WasteLine>;
+  wastes: WasteLine[];
   toggleWLModal: () => void;
   wasteForm: UseFieldArrayReturn<Manifest, 'wastes'>;
 }
