@@ -1,3 +1,4 @@
+import React, { ReactElement } from 'react';
 import {
   Bar,
   BarChart,
@@ -8,7 +9,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import React, { JSXElementConstructor, ReactElement } from 'react';
 
 const data = [
   {
@@ -73,6 +73,7 @@ const data = [
   },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const monthTickFormatter = (tick: any) => {
   const date = new Date(tick);
 
@@ -80,8 +81,9 @@ const monthTickFormatter = (tick: any) => {
 };
 
 const renderQuarterTick = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tickProps: any
-): ReactElement<SVGElement, string | JSXElementConstructor<any>> => {
+): ReactElement<SVGElement> => {
   const { x, y, payload } = tickProps;
   const { value, offset } = payload;
   const date = new Date(value);

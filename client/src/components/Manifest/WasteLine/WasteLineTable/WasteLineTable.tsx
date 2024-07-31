@@ -34,6 +34,7 @@ const WasteCodes = ({ wasteLine }: { wasteLine: WasteLine }) => {
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CustomToggle = ({ eventKey }: any) => {
   const [open, setOpen] = useState(false);
   const decoratedOnClick = useAccordionButton(eventKey, () => setOpen(!open));

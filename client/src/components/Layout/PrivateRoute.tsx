@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { selectAuthenticated, useAppSelector } from 'store';
 
 interface Props {
-  children: any;
+  children: ReactElement;
 }
 
 /** Redirect to the login if user is not authenticated*/

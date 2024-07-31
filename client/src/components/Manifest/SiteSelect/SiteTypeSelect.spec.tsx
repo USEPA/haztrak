@@ -8,6 +8,7 @@ import { describe, expect, test } from 'vitest';
 
 function TestComponent({ siteType }: { siteType?: RcraSiteType }) {
   const [mockSiteType, setMockSiteType] = useState();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (siteType: any) => setMockSiteType(siteType);
   const { control } = useForm();
   return (
