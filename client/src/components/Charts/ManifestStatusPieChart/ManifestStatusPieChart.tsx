@@ -54,6 +54,7 @@ const calculateCoordinates = (
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderCustomLabel = (props: any): ReactElement | null => {
   const { cx, cy, midAngle, outerRadius, value, hover, activeIndex, index } = props;
   const { sin, cos } = calculateTrig(midAngle);
@@ -83,6 +84,7 @@ const renderCustomLabel = (props: any): ReactElement | null => {
   return activeIndex !== index ? labelElement : null;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderOuterRing = (props: any): ReactElement => {
   const { cx, cy, midAngle, outerRadius, startAngle, endAngle, fill, payload, percent } = props;
   const { sin, cos } = calculateTrig(midAngle);
@@ -145,6 +147,7 @@ const renderOuterRing = (props: any): ReactElement => {
 };
 
 /** Render the currently focused pie slice*/
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderActiveShape = (props: any): ReactElement => {
   const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, onClick } = props;
   const { sin, cos } = calculateTrig(midAngle);
@@ -170,6 +173,7 @@ const renderActiveShape = (props: any): ReactElement => {
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderLegend = (props: any): ReactElement => {
   const { payload, handleMouseEnter, handleMouseLeave, handleClick } = props;
 
@@ -182,6 +186,7 @@ const renderLegend = (props: any): ReactElement => {
         className="recharts-default-legend"
         style={{ padding: '0px', margin: '10px', textAlign: 'center' }}
       >
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
         {payload.map((entry: any, index: number) => {
           const dataEntry = data.find((d) => d.name === entry.value);
           const activeAlphaColor = entry.color.slice(
@@ -234,6 +239,7 @@ export function ManifestStatusPieChart() {
   const navigate = useNavigate();
 
   const handleMouseEnter = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (_: any, index: number) => {
       setAnimationIsActive(false); // stop animation if impatient user
       setActiveIndex(index);
@@ -246,6 +252,7 @@ export function ManifestStatusPieChart() {
     setActiveIndex(-1);
   }, [setActiveIndex]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderLabel = (props: any) => {
     return renderCustomLabel({ ...props, hover: false, activeIndex: activeIndex });
   };
@@ -261,6 +268,7 @@ export function ManifestStatusPieChart() {
     <ResponsiveContainer minWidth={100} minHeight={300} height={'10%'}>
       <PieChart width={400} height={400}>
         <Legend
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           content={(props: any) =>
             renderLegend({ ...props, handleMouseEnter, handleMouseLeave, handleClick })
           }

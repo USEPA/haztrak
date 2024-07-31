@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { Manifest } from 'components/Manifest';
+import { useEffect, useState } from 'react';
 import {
   useCreateManifestMutation,
   useSaveEManifestMutation,
@@ -13,7 +13,7 @@ export function useSaveManifest() {
   const [data, setData] = useState<Manifest | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const [taskId, setTaskId] = useState<string | undefined>();
-  const [error, setError] = useState<any | undefined>(null);
+  const [error, setError] = useState<unknown | undefined>(null);
 
   const [createManifest, { data: createData, error: createError, isLoading: createIsLoading }] =
     useCreateManifestMutation();

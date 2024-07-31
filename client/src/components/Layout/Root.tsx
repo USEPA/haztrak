@@ -22,15 +22,17 @@ export function Root() {
   return (
     <NavContext.Provider value={{ showSidebar, setShowSidebar }}>
       <PrivateRoute>
-        <TopNav />
-        <Sidebar />
-        <Container fluid>
-          <ErrorBoundary>
-            <Suspense fallback={<HtSpinner center className="my-auto" />}>
-              <Outlet />
-            </Suspense>
-          </ErrorBoundary>
-        </Container>
+        <div>
+          <TopNav />
+          <Sidebar />
+          <Container fluid>
+            <ErrorBoundary>
+              <Suspense fallback={<HtSpinner center className="my-auto" />}>
+                <Outlet />
+              </Suspense>
+            </ErrorBoundary>
+          </Container>
+        </div>
       </PrivateRoute>
     </NavContext.Provider>
   );

@@ -43,6 +43,7 @@ export function StateWasteCodeSelect({ stateId, fieldName }: StateWasteCodeSelec
    * see SO question here
    * https://stackoverflow.com/questions/52482985/react-select-show-different-text-label-for-drop-down-and-control
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const MultiValue = (props: any) => (
     <components.MultiValue {...props}>{props.data.code}</components.MultiValue>
   );

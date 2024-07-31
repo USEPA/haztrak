@@ -41,8 +41,10 @@ export function NewManifest() {
 
   const selectBySiteId = useMemo(() => {
     return createSelector(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (res: any) => res.data,
       (_res, siteId) => siteId,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (data: any, siteId) => {
         return data?.sites[siteId]?.handler ?? undefined;
       }
@@ -72,6 +74,7 @@ export function NewManifest() {
 
   if (isLoading && siteId) return <HtSpinner center />;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSiteChange = (site: any) => {
     updateSiteSelection(site);
   };
