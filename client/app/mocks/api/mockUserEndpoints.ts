@@ -1,11 +1,11 @@
 import { http, HttpResponse } from 'msw';
 import { HaztrakUser } from '~/store/authSlice/auth.slice';
 import { LoginResponse } from '~/store/userSlice/user.slice';
-import { createMockHaztrakUser } from '~/test-utils/fixtures';
+import { createMockHaztrakUser } from '~/mocks/fixtures';
 import {
   createMockProfileResponse,
   createMockRcrainfoProfileResponse,
-} from '~/test-utils/fixtures/mockUser';
+} from '~/mocks/fixtures/mockUser';
 
 /** mock Rest API*/
 const API_BASE_URL = import.meta.env.VITE_HT_API_URL;

@@ -11,7 +11,7 @@ const root = createRoot(container);
 // intercepts API calls and returns fake/test responses
 if (import.meta.env.VITE_HT_ENV && import.meta.env.VITE_HT_ENV.toUpperCase() === 'TEST') {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { worker } = require('./test-utils/mock/browser');
+  const { worker } = require('~/mocks/api/browser');
   worker.start();
 }
 

@@ -6,7 +6,7 @@ import { RcrainfoSitePermissions } from '~/store';
 import { RcraContact } from '~/components/RcraSite/rcraSiteSchema';
 
 /**
- * A mock handler object for tests
+ * A api handler object for tests
  */
 const DEFAULT_HANDLER: Handler = {
   epaSiteId: 'testSiteIdNumber',

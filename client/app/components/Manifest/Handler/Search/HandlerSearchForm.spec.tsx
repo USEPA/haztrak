@@ -4,10 +4,10 @@ import { setupServer } from 'msw/node';
 import React from 'react';
 import '@testing-library/jest-dom';
 import { HaztrakProfileResponse } from '~/store/userSlice/user.slice';
-import { cleanup, renderWithProviders, screen } from '~/test-utils';
-import { createMockRcrainfoSite } from '~/test-utils/fixtures';
-import { mockUserEndpoints } from '~/test-utils/mock';
-import { API_BASE_URL } from '~/test-utils/mock/mockSiteEndpoints';
+import { cleanup, renderWithProviders, screen } from 'app/mocks';
+import { createMockRcrainfoSite } from '~/mocks/fixtures';
+import { mockUserEndpoints } from 'app/mocks/api';
+import { API_BASE_URL } from '~/mocks/api/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { HandlerSearchForm } from './HandlerSearchForm';
 

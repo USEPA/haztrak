@@ -3,8 +3,8 @@ import { waitFor } from '@testing-library/react';
 import { setupServer } from 'msw/node';
 import { useEffect, useState } from 'react';
 import { useGetUserQuery, useUpdateUserMutation } from '~/store';
-import { cleanup, renderWithProviders, screen } from '~/test-utils';
-import { mockUserEndpoints } from '~/test-utils/mock';
+import { cleanup, renderWithProviders, screen } from 'app/mocks';
+import { mockUserEndpoints } from 'app/mocks/api';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 const server = setupServer(...mockUserEndpoints);

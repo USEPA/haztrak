@@ -4,7 +4,7 @@ import {
   createMockMTNHandler,
   createMockSite,
   createMockTransporter,
-} from '~/test-utils/fixtures';
+} from '~/mocks/fixtures';
 import { describe, expect, test } from 'vitest';
 import { ProfileSlice } from '~/store';
 import { ManifestStatus } from '~/components/Manifest/manifestSchema';

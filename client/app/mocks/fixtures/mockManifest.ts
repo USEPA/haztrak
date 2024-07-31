@@ -1,6 +1,6 @@
 import { Manifest } from '~/components/Manifest/manifestSchema';
-import { createMockMTNHandler, createMockTransporter } from '~/test-utils/fixtures/mockHandler';
-import { createMockWaste } from '~/test-utils/fixtures/mockWaste';
+import { createMockMTNHandler, createMockTransporter } from '~/mocks/fixtures/mockHandler';
+import { createMockWaste } from '~/mocks/fixtures/mockWaste';
 
 const DEFAULT_MANIFEST: Manifest = {
   manifestTrackingNumber: '123456789ELC',

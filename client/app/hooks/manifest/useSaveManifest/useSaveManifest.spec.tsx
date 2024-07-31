@@ -4,9 +4,9 @@ import userEvent from '@testing-library/user-event';
 import { Manifest } from '~/components/Manifest';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { renderWithProviders, screen } from '~/test-utils';
-import { createMockManifest } from '~/test-utils/fixtures';
-import { mockManifestEndpoints } from '~/test-utils/mock';
+import { renderWithProviders, screen } from 'app/mocks';
+import { createMockManifest } from '~/mocks/fixtures';
+import { mockManifestEndpoints } from 'app/mocks/api';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { useSaveManifest } from './useSaveManifest';
 

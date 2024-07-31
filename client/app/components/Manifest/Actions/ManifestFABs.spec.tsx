@@ -4,7 +4,7 @@ import { ManifestContext } from '~/components/Manifest/ManifestForm';
 import { ManifestStatus } from '~/components/Manifest/manifestSchema';
 import { useReadOnly } from '~/hooks/manifest';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from '~/test-utils';
+import { cleanup, renderWithProviders, screen } from 'app/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
 
 const TestComponent = ({

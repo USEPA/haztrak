@@ -4,11 +4,11 @@ import { useUserSiteIds } from '~/hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { renderWithProviders, screen } from '~/test-utils';
-import { createMockHandler, createMockSite } from '~/test-utils/fixtures';
-import { createMockProfileResponse } from '~/test-utils/fixtures/mockUser';
-import { mockUserEndpoints, mockWasteEndpoints } from '~/test-utils/mock';
-import { API_BASE_URL } from '~/test-utils/mock/mockSiteEndpoints';
+import { renderWithProviders, screen } from 'app/mocks';
+import { createMockHandler, createMockSite } from '~/mocks/fixtures';
+import { createMockProfileResponse } from '~/mocks/fixtures/mockUser';
+import { mockUserEndpoints, mockWasteEndpoints } from 'app/mocks/api';
+import { API_BASE_URL } from '~/mocks/api/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 
 function TestComponent() {

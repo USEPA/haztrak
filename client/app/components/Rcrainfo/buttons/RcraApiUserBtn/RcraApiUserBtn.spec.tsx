@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { RcraApiUserBtn } from '~/components/Rcrainfo/buttons/RcraApiUserBtn/RcraApiUserBtn';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from '~/test-utils';
+import { cleanup, renderWithProviders, screen } from 'app/mocks';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 afterEach(() => {

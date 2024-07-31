@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { ManifestForm } from '~/components/Manifest';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders } from '~/test-utils';
-import { mockUserEndpoints, mockWasteEndpoints } from '~/test-utils/mock';
+import { cleanup, renderWithProviders } from 'app/mocks';
+import { mockUserEndpoints, mockWasteEndpoints } from 'app/mocks/api';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 const server = setupServer(...mockUserEndpoints, ...mockWasteEndpoints);

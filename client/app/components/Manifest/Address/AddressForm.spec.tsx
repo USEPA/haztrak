@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from '~/test-utils';
+import { cleanup, renderWithProviders, screen } from 'app/mocks';
 import { AddressForm } from './AddressForm';
 import { afterEach, describe, test, expect } from 'vitest';
 

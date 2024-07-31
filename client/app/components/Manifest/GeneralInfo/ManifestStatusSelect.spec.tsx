@@ -4,11 +4,11 @@ import { ManifestStatusSelect } from '~/components/Manifest/GeneralInfo/Manifest
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from '~/test-utils';
-import { createMockHandler, createMockSite } from '~/test-utils/fixtures';
-import { createMockProfileResponse } from '~/test-utils/fixtures/mockUser';
-import { mockUserEndpoints } from '~/test-utils/mock';
-import { API_BASE_URL } from '~/test-utils/mock/mockSiteEndpoints';
+import { cleanup, renderWithProviders, screen } from 'app/mocks';
+import { createMockHandler, createMockSite } from '~/mocks/fixtures';
+import { createMockProfileResponse } from '~/mocks/fixtures/mockUser';
+import { mockUserEndpoints } from 'app/mocks/api';
+import { API_BASE_URL } from '~/mocks/api/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 const server = setupServer(...mockUserEndpoints);

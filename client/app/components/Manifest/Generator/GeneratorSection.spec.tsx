@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
-import { cleanup, renderWithProviders, screen } from '~/test-utils';
-import { createMockHandler } from '~/test-utils/fixtures';
+import { cleanup, renderWithProviders, screen } from 'app/mocks';
+import { createMockHandler } from '~/mocks/fixtures';
 import { afterEach, describe, expect, test } from 'vitest';
 import { GeneratorSection } from './GeneratorSection';
 

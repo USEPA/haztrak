@@ -1,6 +1,6 @@
 import React from 'react';
 import { addAlert, HaztrakAlert, removeAlert, useAppSelector } from '~/store';
-import { renderWithProviders, screen } from '~/test-utils';
+import { renderWithProviders, screen } from 'app/mocks';
 import { describe, expect, test } from 'vitest';
 import reducer, { selectAllAlerts } from './notification.slice';
 

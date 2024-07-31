@@ -7,7 +7,7 @@ import reducer, {
   setManifestReadOnly,
   setManifestStatus,
 } from '~/store/manifestSlice/manifest.slice';
-import { renderWithProviders, screen } from '~/test-utils';
+import { renderWithProviders, screen } from 'app/mocks';
 import { describe, expect, test } from 'vitest';
 
 const TestComponent = () => {

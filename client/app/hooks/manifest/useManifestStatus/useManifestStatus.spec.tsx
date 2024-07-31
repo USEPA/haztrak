@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import React from 'react';
-import { renderWithProviders, screen } from '~/test-utils';
+import { renderWithProviders, screen } from 'app/mocks';
 import { useManifestStatus } from './useManifestStatus';
 import userEvent from '@testing-library/user-event';
 import { ManifestStatus } from '~/components/Manifest/manifestSchema';
