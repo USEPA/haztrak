@@ -2,15 +2,16 @@
 import viteReact from '@vitejs/plugin-react';
 import * as path from 'path';
 import { defineConfig } from 'vite';
+// @ts-expect-error - error with vite-plugin-eslint
 import eslint from 'vite-plugin-eslint';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
-// @ts-expect-error - we know package.json exists
 import { dependencies } from './package.json';
 
 function renderChunks(deps: Record<string, string>) {
   const chunks = {};
   Object.keys(deps).forEach((key) => {
     if (['react', 'react-router-dom', 'react-dom'].includes(key)) return;
+    // @ts-expect-error - error with vite-plugin-eslint
     chunks[key] = [key];
   });
   return chunks;

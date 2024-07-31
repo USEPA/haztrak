@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { useTitle } from 'hooks';
-import { HaztrakLicense, SectionTitle } from 'components/Help';
+import { useTitle } from '~/hooks';
+import { HaztrakLicense, SectionTitle } from '~/components/Help';
 
 /**
  * Static page that talks about Haztrak's licensing, maybe versioning in future
