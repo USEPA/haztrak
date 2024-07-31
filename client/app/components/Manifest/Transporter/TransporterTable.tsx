@@ -1,10 +1,10 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { faAngleRight, faCheck, faSignature } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Transporter } from 'components/Manifest';
-import { Manifest } from 'components/Manifest/manifestSchema';
-import { QuickSignBtn } from 'components/Manifest/QuickerSign';
-import { useReadOnly } from 'hooks/manifest';
+import { Transporter } from '~/components/Manifest';
+import { Manifest } from '~/components/Manifest/manifestSchema';
+import { QuickSignBtn } from '~/components/Manifest/QuickerSign';
+import { useReadOnly } from '~/hooks/manifest';
 import React, { useState } from 'react';
 import { Accordion, Button, Card, Col, Row, Table, useAccordionButton } from 'react-bootstrap';
 import { UseFieldArrayReturn } from 'react-hook-form';

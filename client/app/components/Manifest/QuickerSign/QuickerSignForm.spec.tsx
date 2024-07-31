@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom';
-import { QuickerSignForm } from 'components/Manifest/QuickerSign';
+import { QuickerSignForm } from '~/components/Manifest/QuickerSign';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { createMockMTNHandler } from 'test-utils/fixtures';
+import { cleanup, renderWithProviders, screen } from '~/test-utils';
+import { createMockMTNHandler } from '~/test-utils/fixtures';
 import { afterEach, describe, expect, test } from 'vitest';
 
 afterEach(() => {

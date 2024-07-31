@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtForm, HtSpinner } from 'components/UI';
+import { HtForm, HtSpinner } from '~/components/UI';
 import React, { useEffect, useState } from 'react';
 import { FloatingLabel, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
@@ -10,7 +10,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useLoginMutation,
-} from 'store';
+} from '~/store';
 import { z } from 'zod';
 
 const loginSchema = z.object({

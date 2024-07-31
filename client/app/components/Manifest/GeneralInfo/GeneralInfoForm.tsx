@@ -1,8 +1,8 @@
-import { ManifestStatusSelect } from 'components/Manifest/GeneralInfo/ManifestStatusSelect';
-import { ManifestTypeSelect } from 'components/Manifest/GeneralInfo/ManifestTypeSelect';
-import { Manifest } from 'components/Manifest/manifestSchema';
-import { HtForm, InfoIconTooltip } from 'components/UI';
-import { useReadOnly } from 'hooks/manifest';
+import { ManifestStatusSelect } from '~/components/Manifest/GeneralInfo/ManifestStatusSelect';
+import { ManifestTypeSelect } from '~/components/Manifest/GeneralInfo/ManifestTypeSelect';
+import { Manifest } from '~/components/Manifest/manifestSchema';
+import { HtForm, InfoIconTooltip } from '~/components/UI';
+import { useReadOnly } from '~/hooks/manifest';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';

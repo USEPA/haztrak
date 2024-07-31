@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { UserInfoForm } from 'components/User/UserInfoForm';
+import { UserInfoForm } from '~/components/User/UserInfoForm';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { HaztrakUser, ProfileSlice } from 'store';
-import { renderWithProviders, screen } from 'test-utils';
-import { createMockHaztrakUser } from 'test-utils/fixtures';
-import { mockUserEndpoints } from 'test-utils/mock';
+import { HaztrakUser, ProfileSlice } from '~/store';
+import { renderWithProviders, screen } from '~/test-utils';
+import { createMockHaztrakUser } from '~/test-utils/fixtures';
+import { mockUserEndpoints } from '~/test-utils/mock';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 const server = setupServer(...mockUserEndpoints);

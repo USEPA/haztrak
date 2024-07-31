@@ -1,16 +1,16 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { Manifest, ManifestForm } from 'components/Manifest';
-import { RcraSiteType } from 'components/Manifest/manifestSchema';
-import { SiteSelect, SiteTypeSelect } from 'components/Manifest/SiteSelect';
-import { RcraSite } from 'components/RcraSite';
-import { HtCard, HtSpinner } from 'components/UI';
-import { useTitle } from 'hooks';
-import { useReadOnly } from 'hooks/manifest';
+import { Manifest, ManifestForm } from '~/components/Manifest';
+import { RcraSiteType } from '~/components/Manifest/manifestSchema';
+import { SiteSelect, SiteTypeSelect } from '~/components/Manifest/SiteSelect';
+import { RcraSite } from '~/components/RcraSite';
+import { HtCard, HtSpinner } from '~/components/UI';
+import { useTitle } from '~/hooks';
+import { useReadOnly } from '~/hooks/manifest';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Col, Container, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { useGetProfileQuery } from 'store';
+import { useGetProfileQuery } from '~/store';
 
 /**
  * NewManifest component allows a user to create a new electronic manifest.

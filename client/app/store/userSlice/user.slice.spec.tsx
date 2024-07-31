@@ -2,9 +2,9 @@ import '@testing-library/jest-dom';
 import { waitFor } from '@testing-library/react';
 import { setupServer } from 'msw/node';
 import { useEffect, useState } from 'react';
-import { useGetUserQuery, useUpdateUserMutation } from 'store';
-import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { mockUserEndpoints } from 'test-utils/mock';
+import { useGetUserQuery, useUpdateUserMutation } from '~/store';
+import { cleanup, renderWithProviders, screen } from '~/test-utils';
+import { mockUserEndpoints } from '~/test-utils/mock';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 const server = setupServer(...mockUserEndpoints);

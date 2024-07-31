@@ -1,5 +1,5 @@
-import { Error404 } from 'components/Error';
-import { HtCard } from 'components/UI';
+import { Error404 } from '~/components/Error';
+import { HtCard } from '~/components/UI';
 import React, { ReactElement } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';

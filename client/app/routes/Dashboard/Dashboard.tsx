@@ -1,16 +1,16 @@
-import { NewManifestBtn } from 'components/Manifest';
-import { HtButton, HtCard } from 'components/UI';
-import { useTitle } from 'hooks';
+import { NewManifestBtn } from '~/components/Manifest';
+import { HtButton, HtCard } from '~/components/UI';
+import { useTitle } from '~/hooks';
 import React, { ReactElement } from 'react';
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { htApi } from 'services';
-import { addAlert, addTask, useAppDispatch } from 'store';
+import { htApi } from '~/services';
+import { addAlert, addTask, useAppDispatch } from '~/store';
 import {
   GeneratorStatusAreaChart,
   ManifestCountBarChart,
   ManifestStatusPieChart,
-} from 'components/Charts';
+} from '~/components/Charts';
 
 /** Dashboard page for logged-in user*/
 export function Dashboard(): ReactElement {

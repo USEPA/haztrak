@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { ManifestStatus } from 'components/Manifest/manifestSchema';
-import { useAppDispatch, useAppSelector } from 'store';
-import { selectManifestStatus, setManifestStatus } from 'store/manifestSlice/manifest.slice';
+import { ManifestStatus } from '~/components/Manifest/manifestSchema';
+import { useAppDispatch, useAppSelector } from '~/store';
+import { selectManifestStatus, setManifestStatus } from '~/store/manifestSlice/manifest.slice';
 
 /** State management for the e-Manifest status (e.g., 'NotAssigned', 'Scheduled')
  * @example const [status, setStatus] = useManifestStatus(optionalDefault);

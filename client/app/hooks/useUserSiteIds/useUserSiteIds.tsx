@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { useMemo } from 'react';
-import { ProfileSlice, useGetProfileQuery } from 'store';
+import { ProfileSlice, useGetProfileQuery } from '~/store';
 
 /**
  * Get select details for sites that the user has access to

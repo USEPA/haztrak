@@ -1,11 +1,11 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { faAngleRight, faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Manifest } from 'components/Manifest';
-import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
-import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
-import { WasteRowActions } from 'components/Manifest/WasteLine/WasteLineTable/WasteRowActions';
-import { useReadOnly } from 'hooks/manifest';
+import { Manifest } from '~/components/Manifest';
+import { ManifestContext, ManifestContextType } from '~/components/Manifest/ManifestForm';
+import { WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
+import { WasteRowActions } from '~/components/Manifest/WasteLine/WasteLineTable/WasteRowActions';
+import { useReadOnly } from '~/hooks/manifest';
 import React, { useContext, useState } from 'react';
 import { Accordion, Button, Card, Col, Row, useAccordionButton } from 'react-bootstrap';
 import { UseFieldArrayReturn } from 'react-hook-form';

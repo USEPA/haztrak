@@ -1,11 +1,11 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtForm, HtSpinner } from 'components/UI';
+import { HtForm, HtSpinner } from '~/components/UI';
 import React, { createRef, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { HaztrakUser, ProfileSlice, useUpdateUserMutation } from 'store';
+import { HaztrakUser, ProfileSlice, useUpdateUserMutation } from '~/store';
 import { z } from 'zod';
 
 interface UserProfileProps {

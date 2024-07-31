@@ -1,9 +1,9 @@
-import { RcraSiteDetails } from 'components/RcraSite';
-import { HtCard, HtSpinner } from 'components/UI';
+import { RcraSiteDetails } from '~/components/RcraSite';
+import { HtCard, HtSpinner } from '~/components/UI';
 import React, { ReactElement } from 'react';
 import { Button, Container, Stack } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetUserHaztrakSiteQuery } from 'store';
+import { useGetUserHaztrakSiteQuery } from '~/store';
 
 /**
  * GET and Display details of the Haztrak site including RCRA site details.

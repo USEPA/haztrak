@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
-import { TopNav } from 'components/Layout/TopNav/TopNav';
+import { TopNav } from '~/components/Layout/TopNav/TopNav';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test-utils';
+import { cleanup, renderWithProviders, screen } from '~/test-utils';
 import { afterEach, describe, expect, test } from 'vitest';
 
 afterEach(() => {

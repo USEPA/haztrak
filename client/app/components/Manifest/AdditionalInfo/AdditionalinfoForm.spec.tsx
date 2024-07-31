@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom';
 import { fireEvent } from '@testing-library/react';
-import { AdditionalInfoForm } from 'components/Manifest/AdditionalInfo';
+import { AdditionalInfoForm } from '~/components/Manifest/AdditionalInfo';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test-utils';
+import { cleanup, renderWithProviders, screen } from '~/test-utils';
 import { afterEach, describe, expect, test } from 'vitest';
 
 afterEach(() => {

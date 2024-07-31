@@ -1,7 +1,7 @@
-import { HandlerSearchForm } from 'components/Manifest/Handler';
-import { Manifest, Transporter } from 'components/Manifest/manifestSchema';
-import { HtModal } from 'components/UI';
-import { useHandlerSearchConfig } from 'hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
+import { HandlerSearchForm } from '~/components/Manifest/Handler';
+import { Manifest, Transporter } from '~/components/Manifest/manifestSchema';
+import { HtModal } from '~/components/UI';
+import { useHandlerSearchConfig } from '~/hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';

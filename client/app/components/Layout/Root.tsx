@@ -1,5 +1,5 @@
-import { ErrorBoundary } from 'components/Error';
-import { HtSpinner } from 'components/UI';
+import { ErrorBoundary } from '~/components/Error';
+import { HtSpinner } from '~/components/UI';
 import React, { createContext, Dispatch, SetStateAction, Suspense, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { Outlet } from 'react-router-dom';

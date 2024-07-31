@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom';
-import { useAppSelector } from 'store';
+import { useAppSelector } from '~/store';
 import reducer, {
   ManifestSlice,
   selectManifestReadOnly,
   setHandlerSearchConfigs,
   setManifestReadOnly,
   setManifestStatus,
-} from 'store/manifestSlice/manifest.slice';
-import { renderWithProviders, screen } from 'test-utils';
+} from '~/store/manifestSlice/manifest.slice';
+import { renderWithProviders, screen } from '~/test-utils';
 import { describe, expect, test } from 'vitest';
 
 const TestComponent = () => {

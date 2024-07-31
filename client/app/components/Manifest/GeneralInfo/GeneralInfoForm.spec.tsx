@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test-utils';
+import { cleanup, renderWithProviders, screen } from '~/test-utils';
 import { afterEach, describe, expect, test } from 'vitest';
 import { GeneralInfoForm } from './GeneralInfoForm';
 

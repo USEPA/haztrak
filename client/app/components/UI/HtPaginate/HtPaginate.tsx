@@ -1,4 +1,4 @@
-import { usePagination } from 'hooks';
+import { usePagination } from '~/hooks';
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
 

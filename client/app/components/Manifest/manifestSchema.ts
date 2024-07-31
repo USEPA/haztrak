@@ -1,5 +1,5 @@
-import { additionalInfoSchema } from 'components/Manifest/AdditionalInfo/additionalInfoSchema';
-import { rcraPhoneSchema, rcraSite } from 'components/RcraSite';
+import { additionalInfoSchema } from '~/components/Manifest/AdditionalInfo/additionalInfoSchema';
+import { rcraPhoneSchema, rcraSite } from '~/components/RcraSite';
 import { z } from 'zod';
 
 export const siteType = z.enum(['generator', 'designatedFacility', 'transporter']);

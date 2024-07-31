@@ -1,1 +1,1 @@
-export { UserInfoForm } from 'components/User/UserInfoForm';
+export { UserInfoForm } from '~/components/User/UserInfoForm';

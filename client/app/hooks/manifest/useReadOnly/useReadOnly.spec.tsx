@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { renderWithProviders, screen } from 'test-utils';
+import { renderWithProviders, screen } from '~/test-utils';
 import { afterEach, describe, expect, it } from 'vitest';
 import { useReadOnly } from './useReadOnly';
 

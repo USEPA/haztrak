@@ -3,8 +3,8 @@ import {
   ContainerType,
   QuantityUOM,
   WasteLine,
-} from 'components/Manifest/WasteLine/wasteLineSchema';
-import { HtForm } from 'components/UI';
+} from '~/components/Manifest/WasteLine/wasteLineSchema';
+import { HtForm } from '~/components/UI';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';

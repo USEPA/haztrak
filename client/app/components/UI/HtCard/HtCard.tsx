@@ -1,4 +1,4 @@
-import { ErrorBoundary } from 'components/Error';
+import { ErrorBoundary } from '~/components/Error';
 import React, { ReactElement } from 'react';
 import { Card, CardHeaderProps, CardProps, Container } from 'react-bootstrap';
 

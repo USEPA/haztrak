@@ -1,9 +1,9 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { renderWithProviders, screen } from 'test-utils';
-import { createMockHandler, createMockSite } from 'test-utils/fixtures/mockHandler';
-import { mockSiteEndpoints, mockUserEndpoints } from 'test-utils/mock';
+import { renderWithProviders, screen } from '~/test-utils';
+import { createMockHandler, createMockSite } from '~/test-utils/fixtures/mockHandler';
+import { mockSiteEndpoints, mockUserEndpoints } from '~/test-utils/mock';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import { SiteList } from './SiteList';
 

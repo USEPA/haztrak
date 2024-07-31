@@ -16,10 +16,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { MtnRowActions } from 'components/Mtn/MtnRowActions';
-import { MtnSearchField } from 'components/Mtn/MtnSearchField/MtnSearchField';
-import { MtnStatusField, StatusOption } from 'components/Mtn/MtnStatusField/MtnStatusField';
-import { HtPageBtns, HtPageControls } from 'components/UI';
+import { MtnRowActions } from '~/components/Mtn/MtnRowActions';
+import { MtnSearchField } from '~/components/Mtn/MtnSearchField/MtnSearchField';
+import { MtnStatusField, StatusOption } from '~/components/Mtn/MtnStatusField/MtnStatusField';
+import { HtPageBtns, HtPageControls } from '~/components/UI';
 import React, { ChangeEvent, useState } from 'react';
 import { Button, Col, Table } from 'react-bootstrap';
 import { Link, useSearchParams } from 'react-router-dom';

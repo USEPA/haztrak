@@ -1,4 +1,4 @@
-import { Manifest } from 'components/Manifest';
+import { Manifest } from '~/components/Manifest';
 import { http, HttpResponse } from 'msw';
 import { createMockManifest } from '../fixtures';
 

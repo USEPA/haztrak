@@ -1,9 +1,9 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { Manifest } from 'components/Manifest/manifestSchema';
-import { TransporterTable } from 'components/Manifest/Transporter/TransporterTable';
-import { HtButton } from 'components/UI';
-import { useReadOnly } from 'hooks/manifest';
-import { useHandlerSearchConfig } from 'hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
+import { Manifest } from '~/components/Manifest/manifestSchema';
+import { TransporterTable } from '~/components/Manifest/Transporter/TransporterTable';
+import { HtButton } from '~/components/UI';
+import { useReadOnly } from '~/hooks/manifest';
+import { useHandlerSearchConfig } from '~/hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
 import { Alert } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';

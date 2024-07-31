@@ -1,1 +1,1 @@
-export { ErrorPage as Component } from 'routes/ErrorPage/ErrorPage';
+export { ErrorPage as Component } from '~/routes/ErrorPage/ErrorPage';

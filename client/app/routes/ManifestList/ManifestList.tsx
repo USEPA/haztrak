@@ -1,12 +1,12 @@
-import { NewManifestBtn } from 'components/Manifest';
-import { MtnTable } from 'components/Mtn';
-import { SyncManifestBtn } from 'components/Rcrainfo';
-import { HtCard, HtSpinner } from 'components/UI';
-import { useTitle } from 'hooks';
+import { NewManifestBtn } from '~/components/Manifest';
+import { MtnTable } from '~/components/Mtn';
+import { SyncManifestBtn } from '~/components/Rcrainfo';
+import { HtCard, HtSpinner } from '~/components/UI';
+import { useTitle } from '~/hooks';
 import React, { ReactElement, useState } from 'react';
 import { Container, Row, Stack } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { useGetMTNQuery } from 'store';
+import { useGetMTNQuery } from '~/store';
 
 /**
  * Fetch and display all the manifest tracking number (MTN) known by haztrak

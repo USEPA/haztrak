@@ -8,7 +8,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useGetTaskStatusQuery,
-} from 'store';
+} from '~/store';
 
 interface UseProgressTrackerConfig {
   taskId: string | undefined;

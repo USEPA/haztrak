@@ -1,7 +1,7 @@
-import { Manifest } from 'components/Manifest';
-import { AddressForm } from 'components/Manifest/Address';
-import { HtForm } from 'components/UI';
-import { useReadOnly } from 'hooks/manifest';
+import { Manifest } from '~/components/Manifest';
+import { AddressForm } from '~/components/Manifest/Address';
+import { HtForm } from '~/components/UI';
+import { useReadOnly } from '~/hooks/manifest';
 import { ReactElement, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';

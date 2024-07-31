@@ -1,7 +1,7 @@
 import { faCircleCheck, faCircleXmark, faSignature } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Handler } from 'components/Manifest';
-import { AddressListGroup, RcraSite } from 'components/RcraSite';
+import { Handler } from '~/components/Manifest';
+import { AddressListGroup, RcraSite } from '~/components/RcraSite';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 

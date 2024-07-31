@@ -3,7 +3,7 @@ import React, { PropsWithChildren, ReactElement } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { AppStore, RootState, setupStore } from 'store';
+import { AppStore, RootState, setupStore } from '~/store';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: Partial<RootState>;

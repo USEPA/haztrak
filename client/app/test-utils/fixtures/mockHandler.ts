@@ -1,9 +1,9 @@
-import { HaztrakSite } from 'components/HaztrakSite';
-import { Handler } from 'components/Manifest';
-import { Transporter } from 'components/Manifest/Transporter';
-import { RcraAddress, RcraSite } from 'components/RcraSite';
-import { RcrainfoSitePermissions } from 'store';
-import { RcraContact } from 'components/RcraSite/rcraSiteSchema';
+import { HaztrakSite } from '~/components/HaztrakSite';
+import { Handler } from '~/components/Manifest';
+import { Transporter } from '~/components/Manifest/Transporter';
+import { RcraAddress, RcraSite } from '~/components/RcraSite';
+import { RcrainfoSitePermissions } from '~/store';
+import { RcraContact } from '~/components/RcraSite/rcraSiteSchema';
 
 /**
  * A mock handler object for tests

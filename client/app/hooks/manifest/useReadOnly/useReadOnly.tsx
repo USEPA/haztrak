@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'store';
-import { selectManifestReadOnly, setManifestReadOnly } from 'store/manifestSlice/manifest.slice';
+import { useAppDispatch, useAppSelector } from '~/store';
+import { selectManifestReadOnly, setManifestReadOnly } from '~/store/manifestSlice/manifest.slice';
 
 /** State management for whether a manifest is editable/read only
  * @example const [status, setStatus] = useReadOnly();

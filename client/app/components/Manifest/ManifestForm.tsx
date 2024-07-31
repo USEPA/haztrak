@@ -4,24 +4,24 @@ import {
   ManifestEditBtn,
   ManifestFABs,
   ManifestSaveBtn,
-} from 'components/Manifest/Actions';
-import { AdditionalInfoForm } from 'components/Manifest/AdditionalInfo';
-import { GeneralInfoForm } from 'components/Manifest/GeneralInfo';
-import { GeneratorSection } from 'components/Manifest/Generator';
-import { TransporterSection } from 'components/Manifest/Transporter/TransporterSection';
-import { TsdfSection } from 'components/Manifest/Tsdf';
-import { UpdateRcra } from 'components/Manifest/UpdateRcra/UpdateRcra';
-import { WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
-import { WasteLineSection } from 'components/Manifest/WasteLine/WasteLineSection';
-import { HtCard, HtForm } from 'components/UI';
-import { useUserSiteIds } from 'hooks';
-import { useManifestStatus, useReadOnly, useSaveManifest } from 'hooks/manifest';
+} from '~/components/Manifest/Actions';
+import { AdditionalInfoForm } from '~/components/Manifest/AdditionalInfo';
+import { GeneralInfoForm } from '~/components/Manifest/GeneralInfo';
+import { GeneratorSection } from '~/components/Manifest/Generator';
+import { TransporterSection } from '~/components/Manifest/Transporter/TransporterSection';
+import { TsdfSection } from '~/components/Manifest/Tsdf';
+import { UpdateRcra } from '~/components/Manifest/UpdateRcra/UpdateRcra';
+import { WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
+import { WasteLineSection } from '~/components/Manifest/WasteLine/WasteLineSection';
+import { HtCard, HtForm } from '~/components/UI';
+import { useUserSiteIds } from '~/hooks';
+import { useManifestStatus, useReadOnly, useSaveManifest } from '~/hooks/manifest';
 import React, { createContext, useEffect, useState } from 'react';
 import { Container, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { manifest } from 'services';
+import { manifest } from '~/services';
 import { HandlerSearchModal } from './Handler';
 import { Manifest, manifestSchema, SiteType } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal } from './QuickerSign';

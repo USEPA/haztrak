@@ -1,12 +1,12 @@
 import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
 import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavContext, NavContextProps } from 'components/Layout/Root';
+import { NavContext, NavContextProps } from '~/components/Layout/Root';
 import React, { useContext } from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { removeCredentials, selectAuthenticated, useLogoutMutation } from 'store';
+import { removeCredentials, selectAuthenticated, useLogoutMutation } from '~/store';
 
 export function TopNav() {
   const { showSidebar, setShowSidebar } = useContext<NavContextProps>(NavContext);

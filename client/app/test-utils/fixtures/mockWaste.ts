@@ -1,4 +1,4 @@
-import { Code, WasteLine } from 'components/Manifest/WasteLine/wasteLineSchema';
+import { Code, WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
 
 const DEFAULT_WASTELINE: WasteLine = {
   dotHazardous: false,

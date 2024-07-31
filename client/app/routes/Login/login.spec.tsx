@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
-import { renderWithProviders, screen } from 'test-utils';
-import { Login } from 'routes/Login';
+import { renderWithProviders, screen } from '~/test-utils';
+import { Login } from '~/routes/Login';
 import { describe, expect, test } from 'vitest';
 
 describe('Login component', () => {

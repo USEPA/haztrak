@@ -1,11 +1,11 @@
-import { UserOrg } from 'components/Org';
-import { RcraProfile } from 'components/RcraProfile';
-import { HtCard, HtSpinner } from 'components/UI';
-import { UserInfoForm } from 'components/User';
-import { useTitle } from 'hooks';
+import { UserOrg } from '~/components/Org';
+import { RcraProfile } from '~/components/RcraProfile';
+import { HtCard, HtSpinner } from '~/components/UI';
+import { UserInfoForm } from '~/components/User';
+import { useTitle } from '~/hooks';
 import React, { ReactElement } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { useGetProfileQuery, useGetRcrainfoProfileQuery, useGetUserQuery } from 'store';
+import { useGetProfileQuery, useGetRcrainfoProfileQuery, useGetUserQuery } from '~/store';
 
 /**
  * Display user profile, including their Haztrak information, their organization,

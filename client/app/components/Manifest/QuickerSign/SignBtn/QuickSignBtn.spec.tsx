@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom';
-import { ManifestContext } from 'components/Manifest/ManifestForm';
-import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
-import { QuickSignBtn } from 'components/Manifest/QuickerSign/index';
+import { ManifestContext } from '~/components/Manifest/ManifestForm';
+import { Handler, RcraSiteType } from '~/components/Manifest/manifestSchema';
+import { QuickSignBtn } from '~/components/Manifest/QuickerSign/index';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { createMockMTNHandler } from 'test-utils/fixtures';
-import { mockUserEndpoints } from 'test-utils/mock';
+import { cleanup, renderWithProviders, screen } from '~/test-utils';
+import { createMockMTNHandler } from '~/test-utils/fixtures';
+import { mockUserEndpoints } from '~/test-utils/mock';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 import { undefined } from 'zod';
 

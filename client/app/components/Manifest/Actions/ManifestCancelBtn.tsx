@@ -1,9 +1,9 @@
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ManifestContext } from 'components/Manifest/ManifestForm';
-import { Manifest } from 'components/Manifest/manifestSchema';
-import { HtButton } from 'components/UI';
-import { useReadOnly } from 'hooks/manifest';
+import { ManifestContext } from '~/components/Manifest/ManifestForm';
+import { Manifest } from '~/components/Manifest/manifestSchema';
+import { HtButton } from '~/components/UI';
+import { useReadOnly } from '~/hooks/manifest';
 import React, { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';

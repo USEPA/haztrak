@@ -1,7 +1,7 @@
-import { HaztrakSite } from 'components/HaztrakSite/haztrakSiteSchema';
+import { HaztrakSite } from '~/components/HaztrakSite/haztrakSiteSchema';
 import { Col, Container, ListGroup, Row } from 'react-bootstrap';
-import { SiteListItem } from 'components/HaztrakSite/SiteListItem/SiteListItem';
-import { SiteFilterForm } from 'components/HaztrakSite/SiteFilter/SiteFilterForm';
+import { SiteListItem } from '~/components/HaztrakSite/SiteListItem/SiteListItem';
+import { SiteFilterForm } from '~/components/HaztrakSite/SiteFilter/SiteFilterForm';
 import React, { useState } from 'react';
 import winkingRobot from '/assets/img/robot/robot-wink.jpg';
 import { useAutoAnimate } from '@formkit/auto-animate/react';

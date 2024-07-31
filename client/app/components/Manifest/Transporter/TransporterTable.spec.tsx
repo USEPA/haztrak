@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import { Transporter } from 'components/Manifest';
+import { Transporter } from '~/components/Manifest';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { createMockTransporter } from 'test-utils/fixtures';
-import { mockUserEndpoints } from 'test-utils/mock';
+import { cleanup, renderWithProviders, screen } from '~/test-utils';
+import { createMockTransporter } from '~/test-utils/fixtures';
+import { mockUserEndpoints } from '~/test-utils/mock';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { TransporterTable } from './index';
 

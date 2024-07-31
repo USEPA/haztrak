@@ -1,9 +1,9 @@
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { RcraApiUserBtn } from 'components/Rcrainfo/buttons/RcraApiUserBtn/RcraApiUserBtn';
-import { useProgressTracker } from 'hooks';
+import { RcraApiUserBtn } from '~/components/Rcrainfo/buttons/RcraApiUserBtn/RcraApiUserBtn';
+import { useProgressTracker } from '~/hooks';
 import React, { useEffect, useState } from 'react';
-import { addTask, updateTask, useAppDispatch, useSyncEManifestMutation } from 'store';
+import { addTask, updateTask, useAppDispatch, useSyncEManifestMutation } from '~/store';
 
 interface SyncManifestProps {
   siteId?: string;

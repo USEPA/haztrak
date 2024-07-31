@@ -1,12 +1,12 @@
 import { BaseQueryFn, createApi } from '@reduxjs/toolkit/query/react';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { HaztrakSite } from 'components/HaztrakSite';
-import { Manifest } from 'components/Manifest';
-import { QuickerSignature } from 'components/Manifest/QuickerSign';
-import { Code } from 'components/Manifest/WasteLine/wasteLineSchema';
-import { MtnDetails } from 'components/Mtn';
-import { RcraSite } from 'components/RcraSite';
-import { htApi } from 'services';
+import { HaztrakSite } from '~/components/HaztrakSite';
+import { Manifest } from '~/components/Manifest';
+import { QuickerSignature } from '~/components/Manifest/QuickerSign';
+import { Code } from '~/components/Manifest/WasteLine/wasteLineSchema';
+import { MtnDetails } from '~/components/Mtn';
+import { RcraSite } from '~/components/RcraSite';
+import { htApi } from '~/services';
 
 export interface TaskResponse {
   taskId: string;

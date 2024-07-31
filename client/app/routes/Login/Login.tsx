@@ -1,6 +1,6 @@
 import logo from '/assets/img/haztrak-logos/low-resolution/svg/haztrak-low-resolution-logo-black-on-transparent-background.svg';
-import { LoginForm } from 'components/Auth';
-import { useTitle } from 'hooks';
+import { LoginForm } from '~/components/Auth';
+import { useTitle } from '~/hooks';
 import React, { ReactElement } from 'react';
 import { Container } from 'react-bootstrap';
 

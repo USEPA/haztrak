@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SyncRcrainfoProfileBtn } from 'components/RcraProfile/SyncRcrainfoProfileBtn';
-import { HtForm, HtSpinner } from 'components/UI';
-import { useProgressTracker } from 'hooks';
+import { SyncRcrainfoProfileBtn } from '~/components/RcraProfile/SyncRcrainfoProfileBtn';
+import { HtForm, HtSpinner } from '~/components/UI';
+import { useProgressTracker } from '~/hooks';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { RcrainfoProfileState, useAppDispatch, useUpdateRcrainfoProfileMutation } from 'store';
-import { userApi } from 'store/userSlice/user.slice';
+import { RcrainfoProfileState, useAppDispatch, useUpdateRcrainfoProfileMutation } from '~/store';
+import { userApi } from '~/store/userSlice/user.slice';
 import { z } from 'zod';
 
 interface ProfileViewProps {

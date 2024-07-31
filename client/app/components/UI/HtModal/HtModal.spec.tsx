@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
-import { HtModal } from 'components/UI';
+import { HtModal } from '~/components/UI';
 import React from 'react';
-import { cleanup, render, screen } from 'test-utils';
+import { cleanup, render, screen } from '~/test-utils';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 afterEach(() => {

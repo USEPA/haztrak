@@ -1,12 +1,12 @@
 import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/png/logo-black-crop.png';
-import { NavSection } from 'components/Layout/Nav/NavSection';
-import { NavItem } from 'components/Layout/Nav/NavItem';
-import { NavContext, NavContextProps } from 'components/Layout/Root';
+import { NavSection } from '~/components/Layout/Nav/NavSection';
+import { NavItem } from '~/components/Layout/Nav/NavItem';
+import { NavContext, NavContextProps } from '~/components/Layout/Root';
 import React, { ReactElement, useContext } from 'react';
 import { Nav, Offcanvas } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { RootState } from 'store';
+import { RootState } from '~/store';
 import { routes } from './SidebarRoutes';
 
 /** Vertical sidebar for navigation that disappears when the viewport is small*/

@@ -1,8 +1,8 @@
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ManifestContext } from 'components/Manifest/ManifestForm';
-import { HtButton } from 'components/UI';
-import { useReadOnly } from 'hooks/manifest';
+import { ManifestContext } from '~/components/Manifest/ManifestForm';
+import { HtButton } from '~/components/UI';
+import { useReadOnly } from '~/hooks/manifest';
 import React, { useContext } from 'react';
 import { ButtonProps } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';

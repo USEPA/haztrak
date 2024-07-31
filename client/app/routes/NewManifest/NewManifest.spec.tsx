@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import { NewManifest } from 'routes/NewManifest/NewManifest';
+import { NewManifest } from '~/routes/NewManifest/NewManifest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { createMockSite } from 'test-utils/fixtures';
-import { mockSiteEndpoints, mockUserEndpoints } from 'test-utils/mock';
-import { API_BASE_URL } from 'test-utils/mock/mockSiteEndpoints';
+import { cleanup, renderWithProviders, screen } from '~/test-utils';
+import { createMockSite } from '~/test-utils/fixtures';
+import { mockSiteEndpoints, mockUserEndpoints } from '~/test-utils/mock';
+import { API_BASE_URL } from '~/test-utils/mock/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 const mockSites = [createMockSite(), createMockSite()];

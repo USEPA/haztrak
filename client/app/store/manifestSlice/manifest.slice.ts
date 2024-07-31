@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ManifestStatus, SiteType } from 'components/Manifest/manifestSchema';
+import { ManifestStatus, SiteType } from '~/components/Manifest/manifestSchema';
 
 export interface HandlerSearchConfig {
   siteType: SiteType;

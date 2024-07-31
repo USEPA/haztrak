@@ -1,8 +1,8 @@
-import { RcrainfoSiteSearchBadge } from 'components/Manifest/Handler/Search/RcrainfoSiteSearchBadge';
-import { ManifestContext, ManifestContextType } from 'components/Manifest/ManifestForm';
-import { Manifest, SiteType, Transporter } from 'components/Manifest/manifestSchema';
-import { RcraSite } from 'components/RcraSite';
-import { HtForm } from 'components/UI';
+import { RcrainfoSiteSearchBadge } from '~/components/Manifest/Handler/Search/RcrainfoSiteSearchBadge';
+import { ManifestContext, ManifestContextType } from '~/components/Manifest/ManifestForm';
+import { Manifest, SiteType, Transporter } from '~/components/Manifest/manifestSchema';
+import { RcraSite } from '~/components/RcraSite';
+import { HtForm } from '~/components/UI';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import {
@@ -14,8 +14,8 @@ import {
 } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
-import { useGetProfileQuery, useSearchRcrainfoSitesQuery, useSearchRcraSitesQuery } from 'store';
-import { useDebounce } from 'hooks';
+import { useGetProfileQuery, useSearchRcrainfoSitesQuery, useSearchRcraSitesQuery } from '~/store';
+import { useDebounce } from '~/hooks';
 
 interface Props {
   handleClose: () => void;

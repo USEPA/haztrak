@@ -2,8 +2,8 @@ import '@testing-library/jest-dom';
 import { describe, expect, afterEach, it } from 'vitest';
 import { cleanup, fireEvent } from '@testing-library/react';
 import React from 'react';
-import { render, screen } from 'test-utils';
-import { useTitle } from 'hooks';
+import { render, screen } from '~/test-utils';
+import { useTitle } from '~/hooks';
 
 const originalPageTitle = 'originalPageTitle';
 const newPageTitle = 'newPageTitle';

@@ -1,6 +1,6 @@
-import { RcraApiUserBtn } from 'components/Rcrainfo';
+import { RcraApiUserBtn } from '~/components/Rcrainfo';
 import React, { useEffect } from 'react';
-import { addTask, updateTask, useAppDispatch, useSyncRcrainfoProfileMutation } from 'store';
+import { addTask, updateTask, useAppDispatch, useSyncRcrainfoProfileMutation } from '~/store';
 
 interface SyncRcrainfoProfileBtnProps {
   taskId?: string;

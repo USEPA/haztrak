@@ -1,12 +1,12 @@
-import { ErrorBoundary } from 'components/Error';
-import { Notifications } from 'components/Notifications/Notifications';
-import { HtSpinner } from 'components/UI';
+import { ErrorBoundary } from '~/components/Error';
+import { Notifications } from '~/components/Notifications/Notifications';
+import { HtSpinner } from '~/components/UI';
 import React, { ReactElement, Suspense } from 'react';
 import { Container } from 'react-bootstrap';
 import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { router } from 'routes';
+import { router } from '~/routes';
 import './App.scss';
 
 const GlobalSpinner = () => (

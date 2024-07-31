@@ -1,5 +1,5 @@
 import React from 'react';
-import { HtCard } from 'components/UI';
+import { HtCard } from '~/components/UI';
 
 export function HaztrakLicense() {
   return (

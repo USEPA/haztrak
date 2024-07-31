@@ -1,4 +1,4 @@
-import { QuickSignBtn } from 'components/Manifest/QuickerSign/SignBtn/QuickSignBtn';
+import { QuickSignBtn } from '~/components/Manifest/QuickerSign/SignBtn/QuickSignBtn';
 import { QuickerSignature, QuickerSignData, QuickerSignForm } from './QuickerSignForm';
 import { QuickerSignModal } from './QuickerSignModal';
 

@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
 import { screen } from '@testing-library/react';
 import React, { useState } from 'react';
-import { cleanup, renderWithProviders } from 'test-utils';
+import { cleanup, renderWithProviders } from '~/test-utils';
 import { afterEach, describe, expect, test } from 'vitest';
-import { createMockHandler, createMockSite } from 'test-utils/fixtures/mockHandler';
-import { SiteFilterForm } from 'components/HaztrakSite/SiteFilter/SiteFilterForm';
+import { createMockHandler, createMockSite } from '~/test-utils/fixtures/mockHandler';
+import { SiteFilterForm } from '~/components/HaztrakSite/SiteFilter/SiteFilterForm';
 import { useSearchParams } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 

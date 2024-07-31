@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components } from 'react-select';
-import { useGetStateWasteCodesQuery } from 'store';
+import { useGetStateWasteCodesQuery } from '~/store';
 
 interface StateWasteCodeSelectProps {
   stateId?: string;

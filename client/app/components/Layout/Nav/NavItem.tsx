@@ -1,7 +1,7 @@
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavContext, NavContextProps } from 'components/Layout/Root';
-import { Route } from 'components/Layout/Sidebar/SidebarRoutes';
+import { NavContext, NavContextProps } from '~/components/Layout/Root';
+import { Route } from '~/components/Layout/Sidebar/SidebarRoutes';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { NavLink } from 'react-bootstrap';

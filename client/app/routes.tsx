@@ -1,13 +1,13 @@
-import { ErrorPage } from 'routes/ErrorPage/ErrorPage';
-import { Login } from 'routes/Login';
+import { ErrorPage } from '~/routes/ErrorPage/ErrorPage';
+import { Login } from '~/routes/Login';
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
-const Dashboard = React.lazy(() => import('routes/Dashboard'));
-const Profile = React.lazy(() => import('routes/Profile'));
-const SiteList = React.lazy(() => import('routes/SiteList'));
-const SiteDetails = React.lazy(() => import('routes/SiteDetails'));
-const Help = React.lazy(() => import('routes/About'));
+const Dashboard = React.lazy(() => import('~/routes/Dashboard'));
+const Profile = React.lazy(() => import('~/routes/Profile'));
+const SiteList = React.lazy(() => import('~/routes/SiteList'));
+const SiteDetails = React.lazy(() => import('~/routes/SiteDetails'));
+const Help = React.lazy(() => import('~/routes/About'));
 
 export const router = createBrowserRouter([
   {

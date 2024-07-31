@@ -1,15 +1,15 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { Handler, Manifest } from 'components/Manifest/manifestSchema';
-import { QuickSignBtn } from 'components/Manifest/QuickerSign';
-import { RcraSiteDetails } from 'components/RcraSite';
-import { HtButton, HtSpinner } from 'components/UI';
-import { useReadOnly } from 'hooks/manifest';
-import { useHandlerSearchConfig } from 'hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
+import { Handler, Manifest } from '~/components/Manifest/manifestSchema';
+import { QuickSignBtn } from '~/components/Manifest/QuickerSign';
+import { RcraSiteDetails } from '~/components/RcraSite';
+import { HtButton, HtSpinner } from '~/components/UI';
+import { useReadOnly } from '~/hooks/manifest';
+import { useHandlerSearchConfig } from '~/hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
 import React, { useEffect } from 'react';
 import { Alert, Col } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
-import { useGetRcrainfoSiteQuery } from 'store';
+import { useGetRcrainfoSiteQuery } from '~/store';
 
 interface TsdfSectionProps {
   setupSign: () => void;

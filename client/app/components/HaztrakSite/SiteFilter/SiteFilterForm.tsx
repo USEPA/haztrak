@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { FloatingLabel, Form } from 'react-bootstrap';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HaztrakSite } from 'components/HaztrakSite/haztrakSiteSchema';
+import { HaztrakSite } from '~/components/HaztrakSite/haztrakSiteSchema';
 import { useSearchParams } from 'react-router-dom';
 
 interface SiteFilterFormProps {

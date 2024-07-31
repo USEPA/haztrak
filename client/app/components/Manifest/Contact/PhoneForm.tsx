@@ -1,5 +1,5 @@
-import { Manifest } from 'components/Manifest';
-import { HtForm } from 'components/UI';
+import { Manifest } from '~/components/Manifest';
+import { HtForm } from '~/components/UI';
 import React, { useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';

@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom';
-import { SyncManifestBtn } from 'components/Rcrainfo/buttons/SyncManifestBtn/SyncManifestBtn';
+import { SyncManifestBtn } from '~/components/Rcrainfo/buttons/SyncManifestBtn/SyncManifestBtn';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { mockUserEndpoints } from 'test-utils/mock';
-import { API_BASE_URL } from 'test-utils/mock/mockSiteEndpoints';
+import { cleanup, renderWithProviders, screen } from '~/test-utils';
+import { mockUserEndpoints } from '~/test-utils/mock';
+import { API_BASE_URL } from '~/test-utils/mock/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 const testTaskID = 'testTaskId';

@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SiteType } from 'components/Manifest/manifestSchema';
-import { useHandlerSearchConfig } from 'hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
+import { SiteType } from '~/components/Manifest/manifestSchema';
+import { useHandlerSearchConfig } from '~/hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
 import React from 'react';
-import { renderWithProviders, screen } from 'test-utils';
+import { renderWithProviders, screen } from '~/test-utils';
 import { afterEach, describe, expect, it } from 'vitest';
 
 const TestChildComponent = () => {

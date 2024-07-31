@@ -2,8 +2,8 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test-utils';
-import { mockUserEndpoints, mockWasteEndpoints } from 'test-utils/mock';
+import { cleanup, renderWithProviders, screen } from '~/test-utils';
+import { mockUserEndpoints, mockWasteEndpoints } from '~/test-utils/mock';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { WasteLineForm } from './WasteLineForm';
 

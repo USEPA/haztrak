@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'store';
+import { useAppDispatch, useAppSelector } from '~/store';
 import {
   HandlerSearchConfig,
   selectHandlerSearchConfigs,
   setHandlerSearchConfigs,
-} from 'store/manifestSlice/manifest.slice';
+} from '~/store/manifestSlice/manifest.slice';
 
 /** hook used to control the handler Search Form modal
  * @example const [open, setOpen] = useOpenHandlerSearch();

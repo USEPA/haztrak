@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
-import { QuantityForm } from 'components/Manifest/WasteLine/QuantityForm';
+import { QuantityForm } from '~/components/Manifest/WasteLine/QuantityForm';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'test-utils';
+import { cleanup, renderWithProviders, screen } from '~/test-utils';
 import { afterEach, describe, expect, test } from 'vitest';
 
 afterEach(() => cleanup());
