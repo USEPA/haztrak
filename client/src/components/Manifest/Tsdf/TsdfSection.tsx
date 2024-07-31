@@ -26,7 +26,7 @@ export function TsdfSection({ signAble, setupSign }: TsdfSectionProps) {
   const tsdf: Handler | undefined = manifestForm.watch('designatedFacility');
   const [readOnly] = useReadOnly();
   const urlTsdfId = searchParams.get('tsdf');
-  const { data, isLoading, error } = useGetRcrainfoSiteQuery(urlTsdfId, {
+  const { data, isLoading, error } = useGetRcrainfoSiteQuery(urlTsdfId ?? '', {
     skip: !urlTsdfId,
   });
 
@@ -68,7 +68,6 @@ export function TsdfSection({ signAble, setupSign }: TsdfSectionProps) {
             {/* Button to bring up the Quicker Sign modal*/}
             <Col className="text-end">
               <QuickSignBtn
-                siteType={'Tsdf'}
                 mtnHandler={tsdf}
                 onClick={setupSign}
                 disabled={tsdf.signed || !signAble}

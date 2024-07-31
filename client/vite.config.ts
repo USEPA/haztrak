@@ -4,14 +4,13 @@ import * as path from 'path';
 import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
-// @ts-ignore
+// @ts-expect-error - we know package.json exists
 import { dependencies } from './package.json';
 
 function renderChunks(deps: Record<string, string>) {
   const chunks = {};
   Object.keys(deps).forEach((key) => {
     if (['react', 'react-router-dom', 'react-dom'].includes(key)) return;
-    // @ts-ignore
     chunks[key] = [key];
   });
   return chunks;
@@ -44,6 +43,9 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    sequence: {
+      hooks: 'parallel',
+    },
     coverage: {
       provider: 'v8', // or 'istanbul'
       reporter: ['text', 'json', 'html'],

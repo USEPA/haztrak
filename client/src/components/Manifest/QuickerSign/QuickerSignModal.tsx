@@ -6,7 +6,7 @@ import { QuickerSignForm } from './QuickerSignForm';
 interface QuickerSignModalProps {
   handleClose: () => void;
   show: boolean;
-  mtn?: Array<string>;
+  mtn?: string[];
   mtnHandler?: Handler;
   siteType: RcraSiteType;
 }

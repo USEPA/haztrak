@@ -9,7 +9,7 @@ import { useGetManifestQuery } from 'store';
 export function ManifestDetails() {
   const { mtn, action, siteId } = useParams();
   useTitle(`${mtn}`);
-  const { data, error, isLoading } = useGetManifestQuery(mtn!, { skip: !mtn });
+  const { data, error, isLoading } = useGetManifestQuery(mtn ?? '', { skip: !mtn });
   useReadOnly(true);
 
   const readOnly = action !== 'edit';

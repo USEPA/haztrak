@@ -4,22 +4,11 @@ import { Handler, RcraSiteType } from 'components/Manifest/manifestSchema';
 import { QuickSignBtn } from 'components/Manifest/QuickerSign/index';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { HaztrakProfileResponse } from 'store/userSlice/user.slice';
 import { cleanup, renderWithProviders, screen } from 'test-utils';
 import { createMockMTNHandler } from 'test-utils/fixtures';
 import { mockUserEndpoints } from 'test-utils/mock';
-import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 import { undefined } from 'zod';
-
-const mockProfile: HaztrakProfileResponse = {
-  user: 'testuser1',
-  sites: [],
-  org: {
-    name: 'my org',
-    rcrainfoIntegrated: true,
-    id: '1234',
-  },
-};
 
 const server = setupServer(...mockUserEndpoints);
 afterEach(() => cleanup());
@@ -27,10 +16,8 @@ beforeAll(() => server.listen());
 afterAll(() => server.close()); // Disable API mocking after the tests are done.
 
 function TestComponent({
-  siteType,
   handler,
   signingSite,
-  status = 'NotAssigned',
 }: {
   siteType?: RcraSiteType;
   handler?: Handler;
@@ -39,15 +26,22 @@ function TestComponent({
     siteType: 'generator' | 'designatedFacility' | 'transporter';
     transporterOrder?: number | undefined;
   };
-  status?: 'NotAssigned' | 'Pending' | 'Scheduled' | 'InTransit' | 'ReadyForSignature';
 }) {
-  if (!siteType) siteType = 'Generator';
+  const setGeneratorStateCode = vi.fn();
+  const setTsdfStateCode = vi.fn();
+  const setEditWasteLineIndex = vi.fn();
 
   return (
     <div>
-      {/*@ts-ignore*/}
-      <ManifestContext.Provider value={{ status: status, nextSigningSite: signingSite }}>
-        <QuickSignBtn siteType={siteType} mtnHandler={handler} onClick={() => undefined} />
+      <ManifestContext.Provider
+        value={{
+          nextSigningSite: signingSite,
+          setGeneratorStateCode,
+          setTsdfStateCode,
+          setEditWasteLineIndex,
+        }}
+      >
+        <QuickSignBtn mtnHandler={handler} onClick={() => undefined} />
       </ManifestContext.Provider>
     </div>
   );

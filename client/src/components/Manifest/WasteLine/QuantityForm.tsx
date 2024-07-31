@@ -10,7 +10,7 @@ import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 
-const unitsOfMeasurements: Array<QuantityUOM> = [
+const unitsOfMeasurements: QuantityUOM[] = [
   { code: 'P', description: 'Pounds' },
   { code: 'T', description: 'Tons (2000 Pounds)' },
   { code: 'K', description: 'Kilograms' },
@@ -21,7 +21,7 @@ const unitsOfMeasurements: Array<QuantityUOM> = [
   { code: 'N', description: 'Cubic Meters' },
 ];
 
-const containerTypes: Array<ContainerType> = [
+const containerTypes: ContainerType[] = [
   { code: 'BA', description: 'Burlap, cloth, paper, or plastic bags' },
   { code: 'DT', description: 'Dump truck' },
   { code: 'CF', description: 'Fiber or plastic boxes, cartons, cases' },

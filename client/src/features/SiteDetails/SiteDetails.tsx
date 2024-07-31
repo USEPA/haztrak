@@ -14,7 +14,7 @@ import { useGetUserHaztrakSiteQuery } from 'store';
  * @constructor
  */
 export function SiteDetails(): ReactElement {
-  let { siteId } = useParams();
+  const { siteId } = useParams();
   const { data, isLoading, error } = useGetUserHaztrakSiteQuery(siteId ? siteId : '');
   const navigate = useNavigate();
 

@@ -15,7 +15,7 @@ interface WasteLineSectionProps {
 export function WasteLineSection({ toggleWlFormShow }: WasteLineSectionProps) {
   const manifestForm = useFormContext<Manifest>();
   const { errors } = manifestForm.formState;
-  const allWastes: Array<WasteLine> = manifestForm.getValues('wastes');
+  const allWastes: WasteLine[] = manifestForm.getValues('wastes');
   const wasteForm = useFieldArray<Manifest, 'wastes'>({
     control: manifestForm.control,
     name: 'wastes',

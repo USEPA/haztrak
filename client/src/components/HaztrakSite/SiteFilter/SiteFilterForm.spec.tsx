@@ -21,7 +21,7 @@ const mockSites = [mySite1, mySite2];
 
 const TestComponent = () => {
   const [filteredSites, setFilteredSites] = useState(mockSites);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const siteFilter = searchParams.get('q') ?? undefined;
   return (
     <div>

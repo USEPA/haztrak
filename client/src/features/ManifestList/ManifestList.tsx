@@ -13,12 +13,12 @@ import { useGetMTNQuery } from 'store';
  * @constructor
  */
 export function ManifestList(): ReactElement {
-  let { siteId } = useParams();
+  const { siteId } = useParams();
   useTitle(`${siteId || ''} Manifest`);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
   const [syncInProgress, setSyncInProgress] = useState(false);
 
-  const { data, isLoading, error } = useGetMTNQuery(siteId, {
+  const { data, isLoading } = useGetMTNQuery(siteId, {
     pollingInterval: syncInProgress ? 1000 : 0,
   });
 

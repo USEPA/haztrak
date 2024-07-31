@@ -18,7 +18,7 @@ export function HandlerSearchModal() {
     control: manifestForm.control,
     name: 'transporters',
   });
-  const transporters: Array<Transporter> = manifestForm.getValues('transporters');
+  const transporters: Transporter[] = manifestForm.getValues('transporters');
 
   if (!configs) return null;
   const { siteType, open } = configs;

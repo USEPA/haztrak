@@ -20,7 +20,7 @@ export function UpdateRcra({ taskId }: UpdateRcraProps) {
     undefined
   );
 
-  const { data, isLoading, error } = useGetTaskStatusQuery(taskId, {
+  const { data, error } = useGetTaskStatusQuery(taskId, {
     pollingInterval: 3000,
     skip: status === 'SUCCESS' || status === 'FAILURE',
   });
@@ -40,6 +40,7 @@ export function UpdateRcra({ taskId }: UpdateRcraProps) {
     if (typeof resp === 'string') {
       resp = JSON.parse(resp);
     }
+    // @ts-expect-error - ToDo fix
     return <Navigate to={`/manifest/${resp.manifestTrackingNumber}/view`} />;
   } else if (status === 'FAILURE') {
     return <></>;

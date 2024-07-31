@@ -10,7 +10,7 @@ interface SubmissionTypeOption {
   label: string;
 }
 
-const submissionTypeOptions: Array<SubmissionTypeOption> = [
+const submissionTypeOptions: SubmissionTypeOption[] = [
   { value: 'Hybrid', label: 'Hybrid' },
   { value: 'FullElectronic', label: 'Electronic' },
   { value: 'DataImage5Copy', label: 'Data + Image' },

@@ -37,7 +37,7 @@ export function renderWithProviders(
     ...renderOptions // react-testing library function options
   }: ExtendedRenderOptions = {} // default to empty object
 ) {
-  function Wrapper({ children }: PropsWithChildren<{}>): ReactElement {
+  function Wrapper({ children }: PropsWithChildren<NonNullable<unknown>>): ReactElement {
     const formMethods = useForm(useFormProps);
     return (
       <Provider store={store}>

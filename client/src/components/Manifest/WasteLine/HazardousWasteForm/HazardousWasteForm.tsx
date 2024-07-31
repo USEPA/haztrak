@@ -6,7 +6,7 @@ import { HtForm } from 'components/UI';
 import React, { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
-import Select, { components, GroupBase, MultiValueProps, StylesConfig } from 'react-select';
+import Select, { components, StylesConfig } from 'react-select';
 import { useGetFedWasteCodesQuery } from 'store';
 
 interface HazardousWasteFormProps {
@@ -39,8 +39,7 @@ export function HazardousWasteForm({ epaWaste }: HazardousWasteFormProps) {
       ...baseStyle,
       borderRadius: '5px',
     }),
-    // leaving this here as documentation
-    multiValueRemove: (baseStyle, state: MultiValueProps<Code, true, GroupBase<Code>>) => ({
+    multiValueRemove: (baseStyle) => ({
       ...baseStyle,
       borderRadius: '5px',
       ':hover': {
@@ -82,7 +81,7 @@ export function HazardousWasteForm({ epaWaste }: HazardousWasteFormProps) {
                     options={federalWasteCodes}
                     isLoading={federalLoading}
                     getOptionLabel={(option) =>
-                      // @ts-ignore
+                      // @ts-expect-error - we know option is a Code
                       `${option.code}: ${option.description.toLowerCase()}`
                     }
                     getOptionValue={(option) => option.code}

@@ -16,7 +16,7 @@ const HANDLER_NAME_2 = 'My Other Transporter';
 
 const mockSetupSign = () => undefined;
 
-const TRAN_ARRAY: Array<Transporter> = [
+const TRAN_ARRAY: Transporter[] = [
   {
     ...createMockTransporter({ epaSiteId: HANDLER_ID_1, name: HANDLER_NAME_1, order: 1 }),
   },
@@ -35,7 +35,7 @@ describe('TransporterTable', () => {
     renderWithProviders(
       <TransporterTable
         setupSign={mockSetupSign}
-        // @ts-ignore
+        // @ts-expect-error - we do not need to pass the arrayFieldMethods for this test
         arrayFieldMethods={emptyArrayFieldMethods}
         transporters={TRAN_ARRAY}
       />,
@@ -50,7 +50,7 @@ describe('TransporterTable', () => {
     renderWithProviders(
       <TransporterTable
         setupSign={mockSetupSign}
-        // @ts-ignore
+        // @ts-expect-error - we do not need to pass the arrayFieldMethods for this test
         arrayFieldMethods={emptyArrayFieldMethods}
         transporters={TRAN_ARRAY}
         readOnly={false}
@@ -67,7 +67,7 @@ describe('TransporterTable', () => {
     renderWithProviders(
       <TransporterTable
         setupSign={mockSetupSign}
-        // @ts-ignore
+        // @ts-expect-error - we do not need to pass the arrayFieldMethods for this test
         arrayFieldMethods={emptyArrayFieldMethods}
         transporters={TRAN_ARRAY}
       />,
@@ -83,7 +83,7 @@ describe('TransporterTable', () => {
     renderWithProviders(
       <TransporterTable
         setupSign={mockSetupSign}
-        // @ts-ignore
+        // @ts-expect-error - we do not need to pass the arrayFieldMethods for this test
         arrayFieldMethods={emptyArrayFieldMethods}
         transporters={TRAN_ARRAY}
       />,
@@ -102,7 +102,7 @@ describe('TransporterTable', () => {
     renderWithProviders(
       <TransporterTable
         setupSign={mockSetupSign}
-        // @ts-ignore
+        // @ts-expect-error - we do not need to pass the arrayFieldMethods for this test
         arrayFieldMethods={emptyArrayFieldMethods}
         transporters={TRAN_ARRAY}
       />,
@@ -126,7 +126,7 @@ test('Expanding transporter opens one accordion only', async () => {
   renderWithProviders(
     <TransporterTable
       setupSign={mockSetupSign}
-      // @ts-ignore
+      // @ts-expect-error - we do not need to pass the arrayFieldMethods for this test
       arrayFieldMethods={emptyArrayFieldMethods}
       transporters={TRAN_ARRAY}
     />,

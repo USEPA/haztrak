@@ -7,7 +7,7 @@ import winkingRobot from '/assets/img/robot/robot-wink.jpg';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 interface SiteListGroupProps {
-  sites: Array<HaztrakSite>;
+  sites: HaztrakSite[];
 }
 
 export function SiteListGroup({ sites }: SiteListGroupProps) {

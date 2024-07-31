@@ -13,7 +13,7 @@ interface Color {
   active: string;
 }
 
-const data: Array<Entry> = [
+const data: Entry[] = [
   { name: 'Pending', value: 40, searchParam: 'pending' },
   { name: 'Scheduled', value: 39, searchParam: 'scheduled' },
   { name: 'In Transit', value: 33, searchParam: 'intransit' },
@@ -23,7 +23,7 @@ const data: Array<Entry> = [
 const inactiveAlpha = '1';
 const activeAlpha = '.75';
 
-const COLORS: Array<Color> = [
+const COLORS: Color[] = [
   { normal: `rgba(0, 136, 254, ${inactiveAlpha})`, active: `rgba(0, 136, 254, ${activeAlpha})` },
   { normal: `rgba(0, 196, 159, ${inactiveAlpha})`, active: `rgba(0, 196, 159, ${activeAlpha})` },
   { normal: `rgba(255, 187, 40, ${inactiveAlpha})`, active: `rgba(255, 187, 40, ${activeAlpha})` },

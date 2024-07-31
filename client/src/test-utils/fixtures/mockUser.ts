@@ -16,7 +16,7 @@ export function createMockHaztrakUser(overWrites?: Partial<HaztrakUser>): Haztra
   };
 }
 
-interface RcrainfoProfileResponse extends RcrainfoProfile<Array<RcrainfoProfileSite>> {}
+interface RcrainfoProfileResponse extends RcrainfoProfile<RcrainfoProfileSite[]> {}
 
 const DEFAULT_RCRAINFO_PROFILE_RESPONSE: RcrainfoProfileResponse = {
   user: 'testuser1',

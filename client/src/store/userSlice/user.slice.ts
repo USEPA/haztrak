@@ -34,8 +34,7 @@ export interface HaztrakSitePermissions {
   eManifest: HaztrakModulePermissions;
 }
 
-export interface RcrainfoProfileState
-  extends RcrainfoProfile<Record<string, RcrainfoProfileSite>> {}
+export type RcrainfoProfileState = RcrainfoProfile<Record<string, RcrainfoProfileSite>>;
 
 export interface RcrainfoProfile<T> {
   user: string;
@@ -75,14 +74,14 @@ interface HaztrakOrgResponse {
 
 export interface HaztrakProfileResponse {
   user: string;
-  sites: Array<{
+  sites: {
     site: HaztrakSite;
     eManifest: HaztrakModulePermissions;
-  }>;
+  }[];
   org?: HaztrakOrgResponse;
 }
 
-interface RcrainfoProfileResponse extends RcrainfoProfile<Array<RcrainfoProfileSite>> {}
+type RcrainfoProfileResponse = RcrainfoProfile<RcrainfoProfileSite[]>;
 
 export const userApi = haztrakApi.injectEndpoints({
   endpoints: (build) => ({
@@ -102,6 +101,7 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       invalidatesTags: ['auth'],
     }),
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     getUser: build.query<HaztrakUser, void>({
       query: () => ({
         url: 'user',
@@ -117,6 +117,7 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       invalidatesTags: ['user'],
     }),
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     getProfile: build.query<ProfileSlice, void>({
       query: () => ({
         url: 'profile',
@@ -159,7 +160,7 @@ export const userApi = haztrakApi.injectEndpoints({
         };
       },
     }),
-    updateRcrainfoProfile: build.mutation<any, { username: string; data: any }>({
+    updateRcrainfoProfile: build.mutation<unknown, { username: string; data: unknown }>({
       query: (data) => ({
         url: `rcrainfo-profile/${data.username}`,
         method: 'PUT',
@@ -167,6 +168,7 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       invalidatesTags: ['rcrainfoProfile'],
     }),
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     syncRcrainfoProfile: build.mutation<TaskResponse, void>({
       query: () => ({
         url: `rcrainfo-profile/sync`,

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface ManifestEditBtnProps extends ButtonProps {}
 
-export function ManifestEditBtn({ children, ...props }: ManifestEditBtnProps) {
+export function ManifestEditBtn({ children: _unused, ...props }: ManifestEditBtnProps) {
   const navigate = useNavigate();
   const { trackingNumber, viewingAsSiteId } = useContext(ManifestContext);
   const [readOnly, setReadOnly] = useReadOnly();

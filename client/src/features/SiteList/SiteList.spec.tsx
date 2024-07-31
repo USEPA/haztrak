@@ -25,12 +25,12 @@ describe('SiteList component', () => {
   });
   test('displays all sites a user has access to', async () => {
     server.use(
-      http.get(`${import.meta.env.VITE_HT_API_URL}/api/site`, (info) => {
+      http.get(`${import.meta.env.VITE_HT_API_URL}/api/site`, () => {
         return HttpResponse.json(mockSites, { status: 200 });
       })
     );
     renderWithProviders(<SiteList />);
-    let numIds = await screen.findAllByRole('listitem');
+    const numIds = await screen.findAllByRole('listitem');
     expect(numIds.length).toEqual(mockSites.length);
   });
 });

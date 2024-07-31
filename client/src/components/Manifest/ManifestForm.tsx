@@ -180,7 +180,7 @@ export function ManifestForm({
   const [showWasteLineForm, setShowWasteLineForm] = useState<boolean>(false);
   const toggleWlFormShow = () => setShowWasteLineForm(!showWasteLineForm);
   const [editWasteLine, setEditWasteLine] = useState<number | undefined>(undefined);
-  const allWastes: Array<WasteLine> = manifestForm.getValues('wastes');
+  const allWastes: WasteLine[] = manifestForm.getValues('wastes');
   const wasteForm = useFieldArray<Manifest, 'wastes'>({
     control: manifestForm.control,
     name: 'wastes',
@@ -188,7 +188,7 @@ export function ManifestForm({
 
   const { userSiteIds } = useUserSiteIds();
   const nextSigner = manifest.getNextSigner(manifestData);
-  const signAble = userSiteIds.some((site) => site.epaSiteId === nextSigner?.epaSiteId ?? '');
+  const signAble = userSiteIds.some((site) => site.epaSiteId === nextSigner?.epaSiteId || '');
   const isDraft = manifestData?.manifestTrackingNumber === undefined;
 
   return (

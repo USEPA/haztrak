@@ -24,7 +24,7 @@ export const mockUserEndpoints = [
     return HttpResponse.json({ ...createMockProfileResponse() }, { status: 200 });
   }),
   /** Login */
-  http.post(`${API_BASE_URL}/api/user/login`, (info) => {
+  http.post(`${API_BASE_URL}/api/user/login`, () => {
     const body: LoginResponse = { key: 'mockToken' };
     return HttpResponse.json(
       {
@@ -36,8 +36,10 @@ export const mockUserEndpoints = [
   /** GET RCRAInfo profile */
   http.get(`${API_BASE_URL}/api/rcrainfo-profile/:username`, (info) => {
     const { username } = info.params;
-    // @ts-ignore
-    const rcrainfoProfile = createMockRcrainfoProfileResponse({ user: username ?? '' });
+    if (typeof username !== 'string') {
+      return HttpResponse.json({}, { status: 404 });
+    }
+    const rcrainfoProfile = createMockRcrainfoProfileResponse({ user: username });
     return HttpResponse.json(
       {
         ...rcrainfoProfile,

@@ -24,7 +24,7 @@ export function NewManifest() {
   const { control } = useForm();
   const { siteId } = useParams();
   useReadOnly(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const urlSiteType = searchParams.get('st');
 
@@ -41,9 +41,9 @@ export function NewManifest() {
 
   const selectBySiteId = useMemo(() => {
     return createSelector(
-      (res) => res.data,
-      (res, siteId) => siteId,
-      (data, siteId) => {
+      (res: any) => res.data,
+      (_res, siteId) => siteId,
+      (data: any, siteId) => {
         return data?.sites[siteId]?.handler ?? undefined;
       }
     );

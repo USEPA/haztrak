@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { TransporterRowActions } from './TransporterRowActions';
 
 interface TransporterTableProps {
-  transporters?: Array<Transporter>;
+  transporters?: Transporter[];
   arrayFieldMethods: UseFieldArrayReturn<Manifest, 'transporters', 'id'>;
   setupSign: () => void;
 }
@@ -64,7 +64,6 @@ function TransporterTable({ transporters, arrayFieldMethods, setupSign }: Transp
                 <Col xs={2}>
                   {readOnly ? (
                     <QuickSignBtn
-                      siteType={'Transporter'}
                       mtnHandler={transporter}
                       onClick={setupSign}
                       iconOnly={true}

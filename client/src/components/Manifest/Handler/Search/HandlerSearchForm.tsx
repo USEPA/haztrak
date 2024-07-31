@@ -20,7 +20,7 @@ import { useDebounce } from 'hooks';
 interface Props {
   handleClose: () => void;
   handlerType: SiteType;
-  currentTransporters?: Array<RcraSite>;
+  currentTransporters?: RcraSite[];
   appendTransporter?: UseFieldArrayAppend<Manifest, 'transporters'>;
 }
 
@@ -70,7 +70,7 @@ export function HandlerSearchForm({
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [options, setOptions] = useState<RcraSite[]>([]);
-  const [rcrainfoSitesLoading, setRcrainfoSitesLoading] = useState<boolean>(false);
+  const [rcrainfoSitesLoading] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<searchHandlerForm> = () => {
     if (selectedHandler !== null) {

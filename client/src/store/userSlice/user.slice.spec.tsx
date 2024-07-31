@@ -17,7 +17,7 @@ afterAll(() => server.close());
 const UserQueryComponent = () => {
   const [fetchCount, setFetchCount] = useState(0);
   const { data, error, isLoading, isFetching } = useGetUserQuery();
-  const [updateUser, results] = useUpdateUserMutation();
+  const [updateUser] = useUpdateUserMutation();
 
   useEffect(() => {
     if (isFetching) setFetchCount(fetchCount + 1);

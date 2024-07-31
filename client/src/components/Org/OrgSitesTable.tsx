@@ -8,7 +8,7 @@ interface OrgSitesProps {
 }
 
 export function OrgSitesTable({ org }: OrgSitesProps) {
-  const { data, isLoading, error } = useGetOrgSitesQuery(org.id);
+  const { data } = useGetOrgSitesQuery(org.id);
   return (
     <Row className="my-2">
       <Table hover responsive>

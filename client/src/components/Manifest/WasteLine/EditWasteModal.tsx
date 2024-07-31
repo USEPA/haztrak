@@ -10,7 +10,7 @@ import { WasteLineForm } from './WasteLineForm';
 interface Props {
   handleClose: () => void;
   show: boolean | undefined;
-  currentWastes: Array<WasteLine>;
+  currentWastes: WasteLine[];
   wasteForm: UseFieldArrayReturn<Manifest, 'wastes'>;
 }
 

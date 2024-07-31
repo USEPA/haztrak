@@ -11,7 +11,7 @@ export function useUserSiteIds() {
       createSelector(
         (res) => res.data,
         (data: ProfileSlice) =>
-          !data ?? !data.sites
+          !data || !data.sites
             ? []
             : Object.values(data.sites).map((site) => ({
                 epaSiteId: site.handler.epaSiteId,
@@ -21,7 +21,7 @@ export function useUserSiteIds() {
     []
   );
 
-  const { userSiteIds, currentData, ...rest } = useGetProfileQuery(undefined, {
+  const { userSiteIds, ...rest } = useGetProfileQuery(undefined, {
     selectFromResult: (result) => ({
       ...result,
       userSiteIds: selectUserSiteIds(result),

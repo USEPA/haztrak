@@ -38,16 +38,15 @@ export const htApiBaseQuery =
   ): BaseQueryFn<
     HtApiQueryArgs, // Args
     unknown, // Result
-    HtApiError, // Error
-    {}, // DefinitionExtraOptions
-    {} // Meta
+    HtApiError
+    // Meta
   > =>
   async ({ url, method, data, params }) => {
     try {
       const response = await htApi({ url: baseUrl + url, method, data, params });
       return { data: response.data };
     } catch (axiosError) {
-      let err = axiosError as AxiosError;
+      const err = axiosError as AxiosError;
       return {
         error: {
           statusText: err.response?.statusText,
@@ -63,7 +62,7 @@ export interface TaskStatus {
   taskName: string;
   createdDate?: string;
   doneDate?: string;
-  result?: any;
+  result?: unknown;
 }
 
 interface RcrainfoSiteSearch {
@@ -79,21 +78,22 @@ export const haztrakApi = createApi({
   }),
   endpoints: (build) => ({
     // Note: build.query<ReturnType, ArgType>
-    searchRcrainfoSites: build.query<Array<RcraSite>, RcrainfoSiteSearch>({
+    searchRcrainfoSites: build.query<RcraSite[], RcrainfoSiteSearch>({
       query: (data: RcrainfoSiteSearch) => ({
         url: 'rcrainfo/rcrasite/search',
         method: 'post',
         data: data,
       }),
     }),
-    searchRcraSites: build.query<Array<RcraSite>, RcrainfoSiteSearch>({
+    searchRcraSites: build.query<RcraSite[], RcrainfoSiteSearch>({
       query: (data: RcrainfoSiteSearch) => ({
         url: 'rcrasite/search',
         method: 'get',
         params: { epaId: data.siteId, siteType: data.siteType },
       }),
     }),
-    getRcrainfoSite: build.query<RcraSite, string | null>({
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    getRcrainfoSite: build.query<RcraSite, string | void>({
       query: (epaSiteId) => ({
         url: `rcrasite/${epaSiteId}`,
         method: 'get',
@@ -102,23 +102,25 @@ export const haztrakApi = createApi({
     getTaskStatus: build.query<TaskStatus, string>({
       query: (taskId) => ({ url: `task/${taskId}`, method: 'get' }),
     }),
-    getFedWasteCodes: build.query<Array<Code>, void>({
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    getFedWasteCodes: build.query<Code[], void>({
       query: () => ({ url: 'waste/code/federal', method: 'get' }),
       providesTags: ['code'],
     }),
-    getStateWasteCodes: build.query<Array<Code>, string>({
+    getStateWasteCodes: build.query<Code[], string>({
       query: (state) => ({ url: `waste/code/state/${state}`, method: 'get' }),
       providesTags: ['code'],
     }),
-    getDotIdNumbers: build.query<Array<string>, string>({
+    getDotIdNumbers: build.query<string[], string>({
       query: (id) => ({ url: 'waste/dot/id', method: 'get', params: { q: id } }),
       providesTags: ['code'],
     }),
-    getOrgSites: build.query<Array<HaztrakSite>, string>({
+    getOrgSites: build.query<HaztrakSite[], string>({
       query: (id) => ({ url: `org/${id}/sites`, method: 'get' }),
       providesTags: ['site'],
     }),
-    getUserHaztrakSites: build.query<Array<HaztrakSite>, void>({
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    getUserHaztrakSites: build.query<HaztrakSite[], void>({
       query: () => ({ url: 'site', method: 'get' }),
       providesTags: ['site'],
     }),
@@ -126,7 +128,7 @@ export const haztrakApi = createApi({
       query: (epaId) => ({ url: `site/${epaId}`, method: 'get' }),
       providesTags: ['site'],
     }),
-    getMTN: build.query<Array<MtnDetails>, string | undefined>({
+    getMTN: build.query<MtnDetails[], string | undefined>({
       query: (siteId) => ({
         url: siteId ? `manifest/mtn/${siteId}` : 'manifest/mtn',
         method: 'get',

@@ -8,7 +8,7 @@ import { describe, expect, test } from 'vitest';
 function TestComponent() {
   const [selected, setSelected] = useState();
   const { control } = useForm();
-  // @ts-ignore
+  // @ts-expect-error - mock state for testing
   return <SiteSelect value={selected} handleChange={setSelected} control={control} />;
 }
 

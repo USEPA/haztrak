@@ -57,7 +57,6 @@ export function AdditionalInfoForm() {
                       key={`${keyBase}-label`}
                       readOnly={readOnly}
                       plaintext={readOnly}
-                      // @ts-ignore
                       {...register(`${baseFieldName}[${index}].label`)}
                     />
                   </HtForm.Group>
@@ -79,7 +78,6 @@ export function AdditionalInfoForm() {
                       readOnly={readOnly}
                       plaintext={readOnly}
                       key={`${keyBase}-description-group`}
-                      // @ts-ignore
                       {...register(`${baseFieldName}[${index}].description`)}
                     />
                   </HtForm.Group>

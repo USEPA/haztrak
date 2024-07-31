@@ -46,7 +46,7 @@ export function LoginForm() {
       } else {
         setLoginError('something went wrong');
       }
-    } catch (error) {
+    } catch (_error) {
       setLoginError('unable to log in with the provided credentials');
     }
   }

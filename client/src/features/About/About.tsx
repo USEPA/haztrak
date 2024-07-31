@@ -1,7 +1,6 @@
 import React from 'react';
-import { Card, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useTitle } from 'hooks';
-import { HtSpinner } from 'components/UI';
 import { HaztrakLicense, SectionTitle } from 'components/Help';
 
 /**
