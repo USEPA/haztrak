@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import react from '@vitejs/plugin-react';
+import viteReact from '@vitejs/plugin-react';
 import * as path from 'path';
 import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
@@ -36,7 +36,7 @@ export default defineConfig({
       },
     },
   },
-  plugins: [react(), viteTsconfigPaths(), eslint()],
+  plugins: [viteReact(), viteTsconfigPaths(), eslint()],
   server: {
     host: true,
     port: 3000,

@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import { NewManifest } from 'features/NewManifest/NewManifest';
+import { NewManifest } from 'routes/NewManifest/NewManifest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';

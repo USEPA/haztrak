@@ -1,4 +1,4 @@
-import { Dashboard } from 'features/Dashboard/Dashboard';
+import { Dashboard } from 'routes/Dashboard/Dashboard';
 
 export { Dashboard as Component };
 export default Dashboard;
