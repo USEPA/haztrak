@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';
 import { createMockMTNHandler } from '~/mocks/fixtures';
-import { mockUserEndpoints } from 'app/mocks/api';
+import { mockUserEndpoints } from 'app/mocks/handlers';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 import { undefined } from 'zod';
 

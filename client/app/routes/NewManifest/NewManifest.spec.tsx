@@ -6,8 +6,8 @@ import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';
 import { createMockSite } from '~/mocks/fixtures';
-import { mockSiteEndpoints, mockUserEndpoints } from 'app/mocks/api';
-import { API_BASE_URL } from '~/mocks/api/mockSiteEndpoints';
+import { mockSiteEndpoints, mockUserEndpoints } from 'app/mocks/handlers';
+import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 const mockSites = [createMockSite(), createMockSite()];

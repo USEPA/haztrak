@@ -4,21 +4,24 @@ import { Provider } from 'react-redux';
 import { rootStore } from '~/store';
 import App from './App';
 
+// Start mock service worker in development mode
+async function enableMocking() {
+  if (process.env.NODE_ENV !== 'development') {
+    return;
+  }
+  const { worker } = await import('./mocks/browser');
+  return worker.start();
+}
+
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 
-// initiate the mock service worker if deployed in TEST environment
-// intercepts API calls and returns fake/test responses
-if (import.meta.env.VITE_HT_ENV && import.meta.env.VITE_HT_ENV.toUpperCase() === 'TEST') {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { worker } = require('~/mocks/api/browser');
-  worker.start();
-}
-
-root.render(
-  <React.StrictMode>
-    <Provider store={rootStore}>
-      <App />
-    </Provider>
-  </React.StrictMode>
-);
+enableMocking().then(() => {
+  root.render(
+    <React.StrictMode>
+      <Provider store={rootStore}>
+        <App />
+      </Provider>
+    </React.StrictMode>
+  );
+});

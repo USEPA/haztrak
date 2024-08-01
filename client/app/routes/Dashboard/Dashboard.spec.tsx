@@ -3,8 +3,8 @@ import { Dashboard } from '~/routes/Dashboard/Dashboard';
 import { setupServer } from 'msw/node';
 import React, { createElement } from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';
-import { mockUserEndpoints } from 'app/mocks/api';
-import { mockSiteEndpoints } from '~/mocks/api/mockSiteEndpoints';
+import { mockUserEndpoints } from 'app/mocks/handlers';
+import { mockSiteEndpoints } from '~/mocks/handlers/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 const USERNAME = 'testuser1';

@@ -5,7 +5,7 @@ import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';
 import { createMockTransporter } from '~/mocks/fixtures';
-import { mockUserEndpoints } from 'app/mocks/api';
+import { mockUserEndpoints } from 'app/mocks/handlers';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { TransporterTable } from './index';
 

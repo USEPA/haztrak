@@ -6,8 +6,8 @@ import '@testing-library/jest-dom';
 import { HaztrakProfileResponse } from '~/store/userSlice/user.slice';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';
 import { createMockRcrainfoSite } from '~/mocks/fixtures';
-import { mockUserEndpoints } from 'app/mocks/api';
-import { API_BASE_URL } from '~/mocks/api/mockSiteEndpoints';
+import { mockUserEndpoints } from 'app/mocks/handlers';
+import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { HandlerSearchForm } from './HandlerSearchForm';
 

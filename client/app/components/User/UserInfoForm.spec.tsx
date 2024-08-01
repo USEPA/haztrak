@@ -7,7 +7,7 @@ import React from 'react';
 import { HaztrakUser, ProfileSlice } from '~/store';
 import { renderWithProviders, screen } from 'app/mocks';
 import { createMockHaztrakUser } from '~/mocks/fixtures';
-import { mockUserEndpoints } from 'app/mocks/api';
+import { mockUserEndpoints } from 'app/mocks/handlers';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 const server = setupServer(...mockUserEndpoints);

@@ -7,8 +7,8 @@ import React from 'react';
 import { renderWithProviders, screen } from 'app/mocks';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures';
 import { createMockProfileResponse } from '~/mocks/fixtures/mockUser';
-import { mockUserEndpoints, mockWasteEndpoints } from 'app/mocks/api';
-import { API_BASE_URL } from '~/mocks/api/mockSiteEndpoints';
+import { mockUserEndpoints, mockWasteEndpoints } from 'app/mocks/handlers';
+import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 
 function TestComponent() {

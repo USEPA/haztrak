@@ -7,8 +7,8 @@ import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures';
 import { createMockProfileResponse } from '~/mocks/fixtures/mockUser';
-import { mockUserEndpoints } from 'app/mocks/api';
-import { API_BASE_URL } from '~/mocks/api/mockSiteEndpoints';
+import { mockUserEndpoints } from 'app/mocks/handlers';
+import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 const server = setupServer(...mockUserEndpoints);

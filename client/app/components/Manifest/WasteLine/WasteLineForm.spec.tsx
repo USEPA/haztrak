@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';
-import { mockUserEndpoints, mockWasteEndpoints } from 'app/mocks/api';
+import { mockUserEndpoints, mockWasteEndpoints } from 'app/mocks/handlers';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { WasteLineForm } from './WasteLineForm';
 

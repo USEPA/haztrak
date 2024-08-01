@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import React from 'react';
 import { renderWithProviders, screen } from 'app/mocks';
 import { createMockManifest } from '~/mocks/fixtures';
-import { mockManifestEndpoints } from 'app/mocks/api';
+import { mockManifestEndpoints } from 'app/mocks/handlers';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { useSaveManifest } from './useSaveManifest';
 
