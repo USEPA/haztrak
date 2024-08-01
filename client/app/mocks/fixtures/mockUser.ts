@@ -40,6 +40,7 @@ export function createMockOrg(overWrites?: Partial<Organization>): Organization 
   return {
     name: 'mockOrg',
     id: 'mockOrgId',
+    slug: 'mock-org',
     rcrainfoIntegrated: true,
     ...overWrites,
   };
