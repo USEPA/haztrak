@@ -3,15 +3,15 @@
 ci:
   autofix_commit_msg: |
     [pre-commit.ci] auto fixes from pre-commit.com hooks
-  autoupdate_branch: 'pre-commit'
-  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_branch: "pre-commit"
+  autoupdate_commit_msg: "[pre-commit.ci] pre-commit autoupdate"
   autoupdate_schedule: quarterly
   skip: []
   submodules: false
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 'v4.5.0'
+    rev: "v4.5.0"
     hooks:
       - id: trailing-whitespace
       - id: check-json
@@ -24,7 +24,7 @@ repos:
             \.vscode\/.*|
           )$
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.1.11'
+    rev: "v0.1.11"
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -38,17 +38,18 @@ repos:
           - python
         pass_filenames: false
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: 'v9.8.0'
+    rev: "v9.8.0"
     hooks:
       - id: eslint
         files: ^client/.*\.[jt]sx?$
         args: [-c=client/eslint.config.js]
         types: [file]
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: 'v3.1.0'
+    rev: "v3.1.0"
     hooks:
       - id: prettier
         exclude: infra/haztrak/
+        files: ^(client/.*\.[jt]sx?|.*\.md|.*\.yaml)$
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.15.0
     hooks:
