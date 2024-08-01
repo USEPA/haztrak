@@ -1,0 +1,38 @@
+- model: auth.group
+  fields:
+    name: Org admin
+    permissions:
+      - - view_org
+        - org
+        - org
+      - - view_orguserobjectpermission
+        - org
+        - orguserobjectpermission
+      - - view_site
+        - org
+        - site
+      - - view_sitegroupobjectpermission
+        - org
+        - sitegroupobjectpermission
+      - - view_siteuserobjectpermission
+        - org
+        - siteuserobjectpermission
+- model: auth.group
+  fields:
+    name: Org viewer
+    permissions:
+      - - view_org
+        - org
+        - org
+      - - view_orguserobjectpermission
+        - org
+        - orguserobjectpermission
+      - - view_site
+        - org
+        - site
+      - - view_sitegroupobjectpermission
+        - org
+        - sitegroupobjectpermission
+      - - view_siteuserobjectpermission
+        - org
+        - siteuserobjectpermission
