@@ -232,6 +232,13 @@ REST_AUTH = {"USER_DETAILS_SERIALIZER": "core.serializers.TrakUserSerializer"}
 GUARDIAN_RAISE_403 = True
 GUARDIAN_MONKEY_PATCH = False
 
+HEALTH_CHECK = {
+    "SUBSETS": {
+        "startup-probe": ["MigrationsHealthCheck", "DatabaseBackend"],
+        "liveness-probe": ["DatabaseBackend"],
+    },
+}
+
 TRAK_ORG_MODEL = "org.Org"
 TRAK_RCRAINFO_SITE_MODEL = "rcrasite.RcraSite"
 TRAK_MANIFEST_MODEL = "manifest.Manifest"
