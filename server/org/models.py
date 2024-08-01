@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.db.models import QuerySet
+from django_extensions.db.fields import AutoSlugField
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import get_objects_for_user
 
@@ -17,7 +18,6 @@ class OrgManager(models.Manager):
     def get_by_username(self, username: str) -> "Org":
         user = TrakUser.objects.get(username=username)
         # ToDo: Currently we are assuming the use only has one org
-        # return self.get(orgaccess__user__username=username)
         orgs: QuerySet["Org"] = get_objects_for_user(
             user, "view_org", self.model, accept_global_perms=False
         )
@@ -34,15 +34,22 @@ class Org(models.Model):
         verbose_name_plural = "Organizations"
         ordering = ["name"]
 
-    name = models.CharField(
-        max_length=200,
-        unique=True,
-    )
     id = models.UUIDField(
         unique=True,
         editable=False,
         primary_key=True,
         default=uuid.uuid4,
+    )
+    slug = AutoSlugField(
+        populate_from="name",
+        max_length=50,
+        null=False,
+    )
+    name = models.CharField(
+        max_length=200,
+        unique=True,
+        null=False,
+        blank=False,
     )
     admin = models.ForeignKey(
         settings.AUTH_USER_MODEL,
