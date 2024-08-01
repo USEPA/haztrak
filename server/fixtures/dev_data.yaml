@@ -1,107 +1,333 @@
 - model: auth.group
-  pk: 1
   fields:
     name: Org admin
     permissions:
-      - 161
-      - 162
-      - 163
-      - 164
-      - 157
-      - 158
-      - 159
-      - 160
-      - 165
-      - 166
-      - 167
-      - 168
-      - 126
-      - 127
-      - 128
-      - 129
-      - 130
-      - 131
-      - 132
-      - 133
-      - 134
-      - 135
-      - 136
-      - 137
-      - 138
-      - 139
-      - 140
-      - 141
-      - 142
-      - 143
-      - 144
-      - 145
-      - 146
-      - 147
-      - 148
-      - 153
-      - 154
-      - 155
-      - 156
-      - 149
-      - 150
-      - 151
-      - 152
-      - 69
-      - 70
-      - 71
-      - 72
-      - 117
-      - 118
-      - 119
-      - 120
-      - 73
-      - 74
-      - 75
-      - 76
-      - 113
-      - 114
-      - 115
-      - 116
-      - 77
-      - 78
-      - 79
-      - 80
-      - 109
-      - 110
-      - 111
-      - 112
-      - 81
-      - 82
-      - 83
-      - 84
-      - 85
-      - 86
-      - 87
-      - 88
-      - 89
-      - 90
-      - 91
-      - 92
-      - 93
-      - 94
-      - 95
-      - 96
-      - 105
-      - 106
-      - 107
-      - 108
-      - 121
-      - 122
-      - 123
-      - 124
-      - 97
-      - 98
-      - 99
-      - 100
-      - 101
-      - 102
-      - 103
-      - 104
+      - - add_trakuser
+        - core
+        - trakuser
+      - - change_trakuser
+        - core
+        - trakuser
+      - - delete_trakuser
+        - core
+        - trakuser
+      - - view_trakuser
+        - core
+        - trakuser
+      - - add_clockedschedule
+        - django_celery_beat
+        - clockedschedule
+      - - change_clockedschedule
+        - django_celery_beat
+        - clockedschedule
+      - - delete_clockedschedule
+        - django_celery_beat
+        - clockedschedule
+      - - view_clockedschedule
+        - django_celery_beat
+        - clockedschedule
+      - - add_intervalschedule
+        - django_celery_beat
+        - intervalschedule
+      - - change_intervalschedule
+        - django_celery_beat
+        - intervalschedule
+      - - delete_intervalschedule
+        - django_celery_beat
+        - intervalschedule
+      - - view_intervalschedule
+        - django_celery_beat
+        - intervalschedule
+      - - add_periodictask
+        - django_celery_beat
+        - periodictask
+      - - change_periodictask
+        - django_celery_beat
+        - periodictask
+      - - delete_periodictask
+        - django_celery_beat
+        - periodictask
+      - - view_periodictask
+        - django_celery_beat
+        - periodictask
+      - - add_periodictasks
+        - django_celery_beat
+        - periodictasks
+      - - change_periodictasks
+        - django_celery_beat
+        - periodictasks
+      - - delete_periodictasks
+        - django_celery_beat
+        - periodictasks
+      - - view_periodictasks
+        - django_celery_beat
+        - periodictasks
+      - - add_solarschedule
+        - django_celery_beat
+        - solarschedule
+      - - change_solarschedule
+        - django_celery_beat
+        - solarschedule
+      - - delete_solarschedule
+        - django_celery_beat
+        - solarschedule
+      - - view_solarschedule
+        - django_celery_beat
+        - solarschedule
+      - - add_esignature
+        - handler
+        - esignature
+      - - change_esignature
+        - handler
+        - esignature
+      - - delete_esignature
+        - handler
+        - esignature
+      - - view_esignature
+        - handler
+        - esignature
+      - - add_handler
+        - handler
+        - handler
+      - - change_handler
+        - handler
+        - handler
+      - - delete_handler
+        - handler
+        - handler
+      - - view_handler
+        - handler
+        - handler
+      - - add_manifestphone
+        - handler
+        - manifestphone
+      - - change_manifestphone
+        - handler
+        - manifestphone
+      - - delete_manifestphone
+        - handler
+        - manifestphone
+      - - view_manifestphone
+        - handler
+        - manifestphone
+      - - add_papersignature
+        - handler
+        - papersignature
+      - - change_papersignature
+        - handler
+        - papersignature
+      - - delete_papersignature
+        - handler
+        - papersignature
+      - - view_papersignature
+        - handler
+        - papersignature
+      - - add_signer
+        - handler
+        - signer
+      - - change_signer
+        - handler
+        - signer
+      - - delete_signer
+        - handler
+        - signer
+      - - view_signer
+        - handler
+        - signer
+      - - add_transporter
+        - handler
+        - transporter
+      - - change_transporter
+        - handler
+        - transporter
+      - - delete_transporter
+        - handler
+        - transporter
+      - - view_transporter
+        - handler
+        - transporter
+      - - add_additionalinfo
+        - manifest
+        - additionalinfo
+      - - change_additionalinfo
+        - manifest
+        - additionalinfo
+      - - delete_additionalinfo
+        - manifest
+        - additionalinfo
+      - - view_additionalinfo
+        - manifest
+        - additionalinfo
+      - - add_manifest
+        - manifest
+        - manifest
+      - - change_manifest
+        - manifest
+        - manifest
+      - - delete_manifest
+        - manifest
+        - manifest
+      - - view_manifest
+        - manifest
+        - manifest
+      - - add_portofentry
+        - manifest
+        - portofentry
+      - - change_portofentry
+        - manifest
+        - portofentry
+      - - delete_portofentry
+        - manifest
+        - portofentry
+      - - view_portofentry
+        - manifest
+        - portofentry
+      - - add_org
+        - org
+        - org
+      - - change_org
+        - org
+        - org
+      - - delete_org
+        - org
+        - org
+      - - view_org
+        - org
+        - org
+      - - add_orggroupobjectpermission
+        - org
+        - orggroupobjectpermission
+      - - change_orggroupobjectpermission
+        - org
+        - orggroupobjectpermission
+      - - delete_orggroupobjectpermission
+        - org
+        - orggroupobjectpermission
+      - - view_orggroupobjectpermission
+        - org
+        - orggroupobjectpermission
+      - - add_site
+        - org
+        - site
+      - - change_site
+        - org
+        - site
+      - - delete_site
+        - org
+        - site
+      - - view_site
+        - org
+        - site
+      - - add_address
+        - rcrasite
+        - address
+      - - change_address
+        - rcrasite
+        - address
+      - - delete_address
+        - rcrasite
+        - address
+      - - view_address
+        - rcrasite
+        - address
+      - - add_contact
+        - rcrasite
+        - contact
+      - - change_contact
+        - rcrasite
+        - contact
+      - - delete_contact
+        - rcrasite
+        - contact
+      - - view_contact
+        - rcrasite
+        - contact
+      - - add_rcraphone
+        - rcrasite
+        - rcraphone
+      - - change_rcraphone
+        - rcrasite
+        - rcraphone
+      - - delete_rcraphone
+        - rcrasite
+        - rcraphone
+      - - view_rcraphone
+        - rcrasite
+        - rcraphone
+      - - change_rcrasite
+        - rcrasite
+        - rcrasite
+      - - delete_rcrasite
+        - rcrasite
+        - rcrasite
+      - - view_rcrasite
+        - rcrasite
+        - rcrasite
+      - - add_dotlookup
+        - wasteline
+        - dotlookup
+      - - change_dotlookup
+        - wasteline
+        - dotlookup
+      - - delete_dotlookup
+        - wasteline
+        - dotlookup
+      - - view_dotlookup
+        - wasteline
+        - dotlookup
+      - - add_wastecode
+        - wasteline
+        - wastecode
+      - - change_wastecode
+        - wasteline
+        - wastecode
+      - - delete_wastecode
+        - wasteline
+        - wastecode
+      - - view_wastecode
+        - wasteline
+        - wastecode
+      - - add_wasteline
+        - wasteline
+        - wasteline
+      - - change_wasteline
+        - wasteline
+        - wasteline
+      - - delete_wasteline
+        - wasteline
+        - wasteline
+      - - view_wasteline
+        - wasteline
+        - wasteline
+- model: org.siteuserobjectpermission
+  pk: 1
+  fields:
+    permission:
+      - view_site
+      - org
+      - site
+    user:
+      - testuser1
+    content_object: 1
+- model: auth.group
+  fields:
+    name: Org viewer
+    permissions:
+      - - view_org
+        - org
+        - org
+      - - view_orguserobjectpermission
+        - org
+        - orguserobjectpermission
+      - - view_site
+        - org
+        - site
+      - - view_sitegroupobjectpermission
+        - org
+        - sitegroupobjectpermission
+      - - view_siteuserobjectpermission
+        - org
+        - siteuserobjectpermission
 - model: core.trakuser
   pk: 8062d496-15f1-485d-961c-a8e5fa118dde
   fields:
@@ -109,13 +335,13 @@
     last_login: 2023-03-19 00:29:46.249589+00:00
     is_superuser: false
     username: orgadmin
-    first_name: 'org'
-    last_name: 'admin'
+    first_name: "org"
+    last_name: "admin"
     email: foo@generator.com
     is_staff: true
     is_active: true
     date_joined: 2022-12-17 19:14:17.239000+00:00
-    groups: [1]
+    groups: [1, 2]
     user_permissions: []
 - model: core.trakuser
   pk: a0ba4966-aa53-44c8-be1a-0a0d2d6b6acd
@@ -124,8 +350,8 @@
     last_login: 2023-03-19 00:29:46.249589+00:00
     is_superuser: true
     username: admin
-    first_name: ''
-    last_name: ''
+    first_name: ""
+    last_name: ""
     email: balh@blah.com
     is_staff: true
     is_active: true
@@ -139,13 +365,13 @@
     last_login: null
     is_superuser: false
     username: testuser1
-    first_name: 'David'
-    last_name: 'Graham'
-    email: 'myemail@proton.me'
+    first_name: "David"
+    last_name: "Graham"
+    email: "myemail@proton.me"
     is_staff: false
     is_active: true
     date_joined: 2022-12-17 19:17:58.260000+00:00
-    groups: []
+    groups: [2]
     user_permissions: []
 - model: authtoken.token
   pk: d9609d7764af771ee0def1db08dc7f90dd5e2d6d
@@ -161,7 +387,7 @@
     city: ARLINGTON
     state: VA
     country: US
-    zip: '22202'
+    zip: "22202"
 - model: handler.manifestphone
   pk: 1
   fields:
@@ -254,7 +480,7 @@
 - model: profile.rcrainfoprofile
   pk: 1fd27bec-8743-4eb3-a44c-fd063ea62021
   fields:
-    rcra_username: ''
+    rcra_username: ""
     phone_number: null
     email: superadmin@gmail.com
 - model: profile.rcrainfoprofile

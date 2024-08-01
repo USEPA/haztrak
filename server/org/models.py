@@ -81,7 +81,8 @@ class OrgUserObjectPermission(UserObjectPermissionBase):
         verbose_name = "Org Permission"
         verbose_name_plural = "Org Permissions"
 
-    content_object = models.ForeignKey(Org, on_delete=models.CASCADE)
+    # Note: class attribute must be named content_object (see django-guardian docs)
+    content_object = models.ForeignKey(Org, on_delete=models.CASCADE, db_column="org_object_id")
 
 
 class OrgGroupObjectPermission(GroupObjectPermissionBase):
@@ -91,7 +92,7 @@ class OrgGroupObjectPermission(GroupObjectPermissionBase):
         verbose_name = "Org Role"
         verbose_name_plural = "Org Roles"
 
-    content_object = models.ForeignKey(Org, on_delete=models.CASCADE)
+    content_object = models.ForeignKey(Org, on_delete=models.CASCADE, db_column="org_object_id")
 
 
 class SiteManager(QuerySet):
@@ -188,7 +189,7 @@ class SiteUserObjectPermission(UserObjectPermissionBase):
         verbose_name = "Site Permission"
         verbose_name_plural = "Site Permissions"
 
-    content_object = models.ForeignKey(Site, on_delete=models.CASCADE)
+    content_object = models.ForeignKey(Site, on_delete=models.CASCADE, db_column="site_object_id")
 
 
 class SiteGroupObjectPermission(GroupObjectPermissionBase):
@@ -198,4 +199,4 @@ class SiteGroupObjectPermission(GroupObjectPermissionBase):
         verbose_name = "Site Role"
         verbose_name_plural = "Site Roles"
 
-    content_object = models.ForeignKey(Site, on_delete=models.CASCADE)
+    content_object = models.ForeignKey(Site, on_delete=models.CASCADE, db_column="site_object_id")
