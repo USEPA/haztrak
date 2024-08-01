@@ -63,6 +63,6 @@ export default defineConfig({
       ],
     },
     globals: true,
-    setupFiles: ['app/setupTests.ts'],
+    setupFiles: ['app/mocks/setupTests.ts'],
   },
 });
