@@ -6,7 +6,7 @@ import App from './App';
 
 // Start mock service worker in development mode
 async function enableMocking() {
-  if (process.env.NODE_ENV !== 'development') {
+  if (process.env.NODE_ENV !== 'test') {
     return;
   }
   const { worker } = await import('./mocks/browser');
