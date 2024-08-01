@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 services:
   trak:
     container_name: trak
@@ -7,12 +7,12 @@ services:
     build:
       context: ./server
     ports:
-      - '8000:8000'
+      - "8000:8000"
     volumes:
       - ./server:/app
     environment:
-      DJANGO_SETTINGS_MODULE: 'haztrak.settings.dev'
-      HT_HOST: 'localhost'
+      DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
+      HT_HOST: "localhost"
       HT_SECRET_KEY: ${HT_SECRET_KEY}
       HT_DEBUG: ${HT_DEBUG}
       HT_LOG_LEVEL: ${HT_LOG_LEVEL}
@@ -32,17 +32,24 @@ services:
       sh -c "
       python manage.py makemigrations &&
       python manage.py migrate &&
-      python manage.py loaddata dev_data.yaml &&
+      python manage.py loaddata dev_data.yaml org_permissions.yaml &&
       python manage.py runserver 0.0.0.0:8000"
+    healthcheck:
+      test:
+        ["CMD", "curl", "-f", "http://localhost:8000/api/health/startup-probe/"]
+      interval: 30s
+      timeout: 20s
+      retries: 5
+      start_period: 10s
     depends_on:
       db:
         condition: service_healthy
 
   redis:
     container_name: redis
-    image: 'redis:alpine'
+    image: "redis:alpine"
     ports:
-      - '6379:6379'
+      - "6379:6379"
     volumes:
       - imdb:/data
 
@@ -65,9 +72,8 @@ services:
       HT_DB_PORT: ${HT_DB_PORT}
     command: python manage.py celery_worker
     depends_on:
-      - redis
-      - trak
-      - db
+      trak:
+        condition: service_healthy
 
   celery-beat:
     restart: unless-stopped
@@ -88,22 +94,21 @@ services:
       HT_DB_PORT: ${HT_DB_PORT}
     command: python manage.py celery_beat
     depends_on:
-      - redis
-      - trak
-      - db
+      trak:
+        condition: service_healthy
 
   db:
     restart: unless-stopped
     container_name: db
-    image: 'postgres:16'
+    image: "postgres:16"
     environment:
       POSTGRES_DB: ${HT_DB_NAME}
       POSTGRES_USER: ${HT_DB_USER}
       POSTGRES_PASSWORD: ${HT_DB_PASSWORD}
     ports:
-      - '5432:5432'
+      - "5432:5432"
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U $HT_DB_USER -d $HT_DB_NAME']
+      test: ["CMD-SHELL", "pg_isready -U $HT_DB_USER -d $HT_DB_NAME"]
       interval: 3s
       timeout: 3s
       retries: 5
@@ -116,7 +121,7 @@ services:
       context: ./client
       target: dev
     ports:
-      - '3000:3000'
+      - "3000:3000"
     volumes:
       - ./client:/app
     environment:

@@ -1,0 +1,21 @@
+import '@testing-library/jest-dom';
+import React from 'react';
+import { cleanup, renderWithProviders, screen } from 'app/mocks';
+import { afterEach, describe, expect, test } from 'vitest';
+import { GeneralInfoForm } from './GeneralInfoForm';
+
+afterEach(() => {
+  cleanup();
+});
+
+describe('Manifest General Info Form', () => {
+  test('renders', () => {
+    renderWithProviders(<GeneralInfoForm isDraft={true} />);
+  });
+  test('is editable if not readOnly', () => {
+    renderWithProviders(<GeneralInfoForm isDraft={true} />, {
+      preloadedState: { manifest: { readOnly: false } },
+    });
+    expect(screen.getByLabelText(/Potential Ship Date/i)).toBeEnabled();
+  });
+});

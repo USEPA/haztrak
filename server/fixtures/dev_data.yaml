@@ -1,107 +1,3 @@
-- model: auth.group
-  pk: 1
-  fields:
-    name: Org admin
-    permissions:
-      - 161
-      - 162
-      - 163
-      - 164
-      - 157
-      - 158
-      - 159
-      - 160
-      - 165
-      - 166
-      - 167
-      - 168
-      - 126
-      - 127
-      - 128
-      - 129
-      - 130
-      - 131
-      - 132
-      - 133
-      - 134
-      - 135
-      - 136
-      - 137
-      - 138
-      - 139
-      - 140
-      - 141
-      - 142
-      - 143
-      - 144
-      - 145
-      - 146
-      - 147
-      - 148
-      - 153
-      - 154
-      - 155
-      - 156
-      - 149
-      - 150
-      - 151
-      - 152
-      - 69
-      - 70
-      - 71
-      - 72
-      - 117
-      - 118
-      - 119
-      - 120
-      - 73
-      - 74
-      - 75
-      - 76
-      - 113
-      - 114
-      - 115
-      - 116
-      - 77
-      - 78
-      - 79
-      - 80
-      - 109
-      - 110
-      - 111
-      - 112
-      - 81
-      - 82
-      - 83
-      - 84
-      - 85
-      - 86
-      - 87
-      - 88
-      - 89
-      - 90
-      - 91
-      - 92
-      - 93
-      - 94
-      - 95
-      - 96
-      - 105
-      - 106
-      - 107
-      - 108
-      - 121
-      - 122
-      - 123
-      - 124
-      - 97
-      - 98
-      - 99
-      - 100
-      - 101
-      - 102
-      - 103
-      - 104
 - model: core.trakuser
   pk: 8062d496-15f1-485d-961c-a8e5fa118dde
   fields:
@@ -109,13 +5,13 @@
     last_login: 2023-03-19 00:29:46.249589+00:00
     is_superuser: false
     username: orgadmin
-    first_name: 'org'
-    last_name: 'admin'
+    first_name: "org"
+    last_name: "admin"
     email: foo@generator.com
     is_staff: true
     is_active: true
     date_joined: 2022-12-17 19:14:17.239000+00:00
-    groups: [1]
+    groups: [1, 2]
     user_permissions: []
 - model: core.trakuser
   pk: a0ba4966-aa53-44c8-be1a-0a0d2d6b6acd
@@ -124,8 +20,8 @@
     last_login: 2023-03-19 00:29:46.249589+00:00
     is_superuser: true
     username: admin
-    first_name: ''
-    last_name: ''
+    first_name: ""
+    last_name: ""
     email: balh@blah.com
     is_staff: true
     is_active: true
@@ -139,13 +35,13 @@
     last_login: null
     is_superuser: false
     username: testuser1
-    first_name: 'David'
-    last_name: 'Graham'
-    email: 'myemail@proton.me'
+    first_name: "David"
+    last_name: "Graham"
+    email: "myemail@proton.me"
     is_staff: false
     is_active: true
     date_joined: 2022-12-17 19:17:58.260000+00:00
-    groups: []
+    groups: [2]
     user_permissions: []
 - model: authtoken.token
   pk: d9609d7764af771ee0def1db08dc7f90dd5e2d6d
@@ -161,7 +57,7 @@
     city: ARLINGTON
     state: VA
     country: US
-    zip: '22202'
+    zip: "22202"
 - model: handler.manifestphone
   pk: 1
   fields:
@@ -254,7 +150,7 @@
 - model: profile.rcrainfoprofile
   pk: 1fd27bec-8743-4eb3-a44c-fd063ea62021
   fields:
-    rcra_username: ''
+    rcra_username: ""
     phone_number: null
     email: superadmin@gmail.com
 - model: profile.rcrainfoprofile
@@ -301,3 +197,13 @@
     e_manifest: Certifier
     my_rcra_id: Certifier
     wiets: Certifier
+- model: org.siteuserobjectpermission
+  pk: 1
+  fields:
+    permission:
+      - view_site
+      - org
+      - site
+    user:
+      - testuser1
+    content_object: 1

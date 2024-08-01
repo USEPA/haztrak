@@ -4,7 +4,7 @@ LABEL maintainer="graham.david@epa.gov"
 ENV APP_DIRECTORY=/app/
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-RUN apk add libffi-dev gcc libc-dev
+RUN apk add libffi-dev gcc libc-dev curl
 WORKDIR $APP_DIRECTORY
 COPY requirements.txt ./
 RUN mkdir $APP_DIRECTORY/static
