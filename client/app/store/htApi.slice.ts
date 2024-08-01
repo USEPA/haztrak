@@ -7,6 +7,7 @@ import { Code } from '~/components/Manifest/WasteLine/wasteLineSchema';
 import { MtnDetails } from '~/components/Mtn';
 import { RcraSite } from '~/components/RcraSite';
 import { htApi } from '~/services';
+import { Organization } from '~/store/userSlice/user.slice';
 
 export interface TaskResponse {
   taskId: string;
@@ -71,7 +72,7 @@ interface RcrainfoSiteSearch {
 }
 
 export const haztrakApi = createApi({
-  tagTypes: ['user', 'auth', 'profile', 'rcrainfoProfile', 'site', 'code', 'manifest'],
+  tagTypes: ['user', 'auth', 'profile', 'rcrainfoProfile', 'site', 'code', 'manifest', 'org'],
   reducerPath: 'haztrakApi',
   baseQuery: htApiBaseQuery({
     baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/`,
@@ -118,6 +119,10 @@ export const haztrakApi = createApi({
     getOrgSites: build.query<HaztrakSite[], string>({
       query: (id) => ({ url: `org/${id}/sites`, method: 'get' }),
       providesTags: ['site'],
+    }),
+    getOrg: build.query<Organization, string>({
+      query: (orgSlug) => ({ url: `org/${orgSlug}`, method: 'get' }),
+      providesTags: ['org'],
     }),
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     getUserHaztrakSites: build.query<HaztrakSite[], void>({

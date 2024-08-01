@@ -7,14 +7,15 @@ export interface ProfileSlice {
   user: string | undefined;
   rcrainfoProfile?: RcrainfoProfile<Record<string, RcrainfoProfileSite>>;
   sites?: Record<string, HaztrakProfileSite>;
-  org?: HaztrakProfileOrg | null;
+  org?: Organization | null;
   loading?: boolean;
   error?: string;
 }
 
-export interface HaztrakProfileOrg {
+export interface Organization {
   id: string;
   name: string;
+  slug: string;
   rcrainfoIntegrated: boolean;
 }
 
@@ -66,19 +67,13 @@ export interface LoginResponse {
   key: string;
 }
 
-interface HaztrakOrgResponse {
-  id: string;
-  name: string;
-  rcrainfoIntegrated: boolean;
-}
-
 export interface HaztrakProfileResponse {
   user: string;
   sites: {
     site: HaztrakSite;
     eManifest: HaztrakModulePermissions;
   }[];
-  org?: HaztrakOrgResponse;
+  org?: Organization;
 }
 
 type RcrainfoProfileResponse = RcrainfoProfile<RcrainfoProfileSite[]>;
