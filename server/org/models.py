@@ -23,6 +23,9 @@ class OrgManager(models.Manager):
         )
         return orgs.first()
 
+    def get_by_slug(self, slug: str) -> "Org":
+        return self.model.objects.get(slug=slug)
+
 
 class Org(models.Model):
     """Haztrak Organization"""
