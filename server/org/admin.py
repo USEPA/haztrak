@@ -16,7 +16,7 @@ from org.models import (
 @admin.register(Org)
 class HaztrakOrgAdmin(admin.ModelAdmin):
     list_display = ["__str__", "number_of_sites"]
-    readonly_fields = ["rcrainfo_integrated"]
+    readonly_fields = ["rcrainfo_integrated", "slug"]
 
     def rcrainfo_integrated(self, obj):
         return obj.is_rcrainfo_integrated

@@ -11,8 +11,13 @@ from org.models import Org, Site
 
 
 def get_org_by_id(org_id: str) -> Org:
-    """Returns a HaztrakOrg instance or raise an exception"""
+    """Returns an Organization instance or raise a 404"""
     return Org.objects.get(id=org_id)
+
+
+def get_org_by_slug(org_slug: str) -> Org:
+    """Returns an Organization instance or raise a 404"""
+    return Org.objects.get_by_slug(org_slug)
 
 
 def get_org_rcrainfo_api_credentials(org_id: str) -> tuple[str, str] | None:

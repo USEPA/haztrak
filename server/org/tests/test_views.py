@@ -22,18 +22,18 @@ class TestOrgDetailsView:
 
     def test_get_returns_org_details(self, org, user, perm_factory):
         perm_factory(user, ["org.view_org"], org)
-        request = self.factory.get(reverse("org:details", args=[org.id]))
+        request = self.factory.get(reverse("org:details", args=[org.slug]))
         force_authenticate(request, user)
-        response = OrgDetailsView.as_view()(request, org_id=org.id)
+        response = OrgDetailsView.as_view()(request, org_slug=org.slug)
         assert response.status_code == status.HTTP_200_OK
-        assert response.data["id"] == org.id
+        assert response.data["slug"] == org.slug
 
     def test_404_when_org_id_not_defined(self, org, user):
         request = self.factory.get(reverse("org:details", args=["foo"]))
         force_authenticate(request, user)
-        with patch("org.views.get_org_by_id") as mock_org:
+        with patch("org.views.get_org_by_slug") as mock_org:
             mock_org.side_effect = Org.DoesNotExist
-            response = OrgDetailsView.as_view()(request, org_id="foo")
+            response = OrgDetailsView.as_view()(request, org_slug="foo")
             assert response.status_code == status.HTTP_404_NOT_FOUND
 
 

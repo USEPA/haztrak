@@ -164,6 +164,7 @@
   fields:
     name: Generators Org LLC
     admin: 8062d496-15f1-485d-961c-a8e5fa118dde
+    slug: generators-org-llc
 - model: profile.profile
   pk: c65dbee9-b6bf-400e-93e0-90a749cc2939
   fields:

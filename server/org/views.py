@@ -8,7 +8,12 @@ from rest_framework.response import Response
 from org.models import Org, Site
 from org.permissions import OrgObjectPermissions, SiteObjectPermissions
 from org.serializers import OrgSerializer, SiteSerializer
-from org.services import filter_sites_by_org, find_sites_by_user, get_org_by_id, get_site_by_epa_id
+from org.services import (
+    filter_sites_by_org,
+    find_sites_by_user,
+    get_org_by_slug,
+    get_site_by_epa_id,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -18,11 +23,11 @@ class OrgDetailsView(RetrieveAPIView):
 
     serializer_class = OrgSerializer
     queryset = Org.objects.all()
-    lookup_url_kwarg = "org_id"
+    lookup_url_kwarg = "org_slug"
     permission_classes = [OrgObjectPermissions, IsAuthenticated]
 
     def get_object(self):
-        org = get_org_by_id(self.kwargs["org_id"])
+        org = get_org_by_slug(self.kwargs["org_slug"])
         self.check_object_permissions(self.request, org)
         return org
 
