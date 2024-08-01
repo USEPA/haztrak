@@ -1,10 +1,10 @@
-import { HaztrakSite } from '~/components/HaztrakSite';
 import React from 'react';
 import { Row, Table } from 'react-bootstrap';
-import { HaztrakProfileOrg, useGetOrgSitesQuery } from '~/store';
+import { HaztrakSite } from '~/components/HaztrakSite';
+import { Organization, useGetOrgSitesQuery } from '~/store';
 
 interface OrgSitesProps {
-  org: HaztrakProfileOrg;
+  org: Organization;
 }
 
 export function OrgSitesTable({ org }: OrgSitesProps) {

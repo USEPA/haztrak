@@ -14,6 +14,9 @@ class OrgSerializer(ModelSerializer):
     name = serializers.CharField(
         required=False,
     )
+    slug = serializers.SlugField(
+        required=False,
+    )
     rcrainfoIntegrated = serializers.BooleanField(
         source="is_rcrainfo_integrated",
         required=False,
@@ -24,6 +27,7 @@ class OrgSerializer(ModelSerializer):
         fields = [
             "name",
             "id",
+            "slug",
             "rcrainfoIntegrated",
         ]
 

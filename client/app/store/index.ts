@@ -75,7 +75,7 @@ export type {
   HaztrakSitePermissions,
   RcrainfoSitePermissions,
   HaztrakModulePermissions,
-  HaztrakProfileOrg,
+  Organization,
   RcrainfoProfile,
   RcrainfoProfileSite,
 } from './userSlice/user.slice';

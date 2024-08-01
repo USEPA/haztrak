@@ -1,14 +1,14 @@
 import userEvent from '@testing-library/user-event';
+import { cleanup, renderWithProviders, screen } from 'app/mocks';
+import { mockUserEndpoints } from 'app/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import '@testing-library/jest-dom';
-import { HaztrakProfileResponse } from '~/store/userSlice/user.slice';
-import { cleanup, renderWithProviders, screen } from 'app/mocks';
-import { createMockRcrainfoSite } from '~/mocks/fixtures';
-import { mockUserEndpoints } from 'app/mocks/handlers';
-import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
+import { createMockRcrainfoSite } from '~/mocks/fixtures';
+import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
+import { HaztrakProfileResponse } from '~/store/userSlice/user.slice';
 import { HandlerSearchForm } from './HandlerSearchForm';
 
 const mockRcraSite1Id = 'VATEST111111111';
@@ -21,6 +21,7 @@ const mockProfile: HaztrakProfileResponse = {
   sites: [],
   org: {
     name: 'my org',
+    slug: 'my-org',
     rcrainfoIntegrated: true,
     id: '1234',
   },

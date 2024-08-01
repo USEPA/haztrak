@@ -1,6 +1,6 @@
-import { HaztrakProfileOrg, HaztrakUser, RcrainfoProfile, RcrainfoProfileSite } from '~/store';
-import { HaztrakProfileResponse } from '~/store/userSlice/user.slice';
 import { createMockSite } from '~/mocks/fixtures/mockHandler';
+import { HaztrakUser, Organization, RcrainfoProfile, RcrainfoProfileSite } from '~/store';
+import { HaztrakProfileResponse } from '~/store/userSlice/user.slice';
 
 export const DEFAULT_HAZTRAK_USER: HaztrakUser = {
   username: 'testuser1',
@@ -36,10 +36,11 @@ export function createMockRcrainfoProfileResponse(
   };
 }
 
-export function createMockOrg(overWrites?: Partial<HaztrakProfileOrg>): HaztrakProfileOrg {
+export function createMockOrg(overWrites?: Partial<Organization>): Organization {
   return {
     name: 'mockOrg',
     id: 'mockOrgId',
+    slug: 'mock-org',
     rcrainfoIntegrated: true,
     ...overWrites,
   };

@@ -1,9 +1,9 @@
 # Builder
-FROM python:3.12.1-alpine3.18 as builder
+FROM python:3.12.1-alpine3.18 AS builder
 LABEL maintainer="graham.david@epa.gov"
 ENV APP_DIRECTORY=/app/
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 RUN apk add libffi-dev gcc libc-dev curl
 WORKDIR $APP_DIRECTORY
 COPY requirements.txt ./
@@ -17,7 +17,7 @@ ENV VIRTUAL_ENV="/opt/venv"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # local
-FROM builder as dev
+FROM builder AS dev
 EXPOSE 8000
 RUN python manage.py makemigrations && \
     python manage.py migrate && \
@@ -26,6 +26,6 @@ RUN python manage.py makemigrations && \
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 # Production
-FROM builder as production
+FROM builder AS production
 EXPOSE 8000
 CMD  ./run.sh

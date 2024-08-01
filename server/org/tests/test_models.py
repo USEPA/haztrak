@@ -25,6 +25,13 @@ class TestOrgModel:
         assert api_id == mock_api_id
         assert api_key == mock_api_key
 
+    def test_get_org_by_slug(self, org_factory):
+        org = org_factory()
+        my_slug = org.slug
+        returned_org = Org.objects.get_by_slug(my_slug)
+        assert my_slug == returned_org.slug
+        assert isinstance(returned_org, Org)
+
     def test_rcrainfo_integrated_false_without_credentials(
         self, org_factory, rcrainfo_profile_factory, user_factory, profile_factory
     ):
