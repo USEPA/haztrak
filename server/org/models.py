@@ -36,6 +36,7 @@ class Org(models.Model):
         verbose_name = "Organization"
         verbose_name_plural = "Organizations"
         ordering = ["name"]
+        indexes = [models.Index(fields=["slug"], name="org_slug_idx")]
 
     id = models.UUIDField(
         unique=True,
