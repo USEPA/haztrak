@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { Dashboard } from '~/routes/Dashboard/Dashboard';
+import { Dashboard } from './Dashboard';
 import { setupServer } from 'msw/node';
 import React, { createElement } from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';

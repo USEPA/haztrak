@@ -1,13 +1,13 @@
 import { ErrorPage } from '~/routes/ErrorPage/ErrorPage';
-import { Login } from '~/routes/Login';
+import { Login } from 'app/routes/login';
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
-const Dashboard = React.lazy(() => import('~/routes/Dashboard'));
-const Profile = React.lazy(() => import('~/routes/Profile'));
+const Dashboard = React.lazy(() => import('app/routes/dashboard'));
+const Profile = React.lazy(() => import('app/routes/profile'));
 const SiteList = React.lazy(() => import('~/routes/SiteList'));
 const SiteDetails = React.lazy(() => import('~/routes/SiteDetails'));
-const Help = React.lazy(() => import('~/routes/About'));
+const Help = React.lazy(() => import('app/routes/about'));
 
 export const router = createBrowserRouter([
   {
@@ -81,7 +81,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/register',
-    lazy: () => import('./routes/RegisterHero'),
+    lazy: () => import('./routes/register'),
   },
   {
     path: '*',
