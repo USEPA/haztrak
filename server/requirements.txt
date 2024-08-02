@@ -8,13 +8,13 @@ gunicorn==22.0.0
 emanifest==4.0.3
 psycopg[binary]==3.2.1
 pytz==2024.1
-sqlparse==0.5.0
+sqlparse==0.5.1
 tzdata==2024.1
 whitenoise==6.6.0
 celery==5.4.0
-redis==5.0.7
+redis==5.0.8
 drf-spectacular==0.27.2
 django-health-check==3.18.3
-django-allauth==0.63.3
+django-allauth==64.0.0
 dj-rest-auth==6.0.0
 django-guardian==2.4.0
