@@ -69,31 +69,29 @@ class TestSiteListView:
 class TestSiteDetailsApi:
     """Tests the site details endpoint"""
 
-    def test_returns_site_by_id(self, user_factory, site_factory, perm_factory):
-        # Arrange
-        user = user_factory(username="username1")
+    @pytest.fixture
+    def setup_user_site_perm(self, user_factory, site_factory, perm_factory):
+        user = user_factory()
         site = site_factory()
         perm_factory(user, ["org.view_site"], site)
         request = APIRequestFactory()
         request = request.get(reverse("org:site:details", args=[site.rcra_site.epa_id]))
         force_authenticate(request, user)
+        return user, site, request
+
+    def test_returns_site_by_id(self, setup_user_site_perm):
+        # Arrange
+        user, site, request = setup_user_site_perm
         # Act
         response = SiteDetailsView.as_view()(request, epa_id=site.rcra_site.epa_id)
         # Assert
         assert response.status_code == status.HTTP_200_OK
         assert response.data["handler"]["epaSiteId"] == site.rcra_site.epa_id
 
-    def test_non_user_sites_not_returned(
-        self, user_factory, site_factory, org_factory, perm_factory
-    ):
+    def test_non_user_sites_not_returned(self, site_factory, org_factory, setup_user_site_perm):
         # Arrange
-        user = user_factory()
-        site = site_factory()
+        user, site, request = setup_user_site_perm
         other_site = site_factory()
-        perm_factory(user, ["org.view_site"], site)
-        request = APIRequestFactory()
-        request = request.get(reverse("org:site:details", args=[site.rcra_site.epa_id]))
-        force_authenticate(request, user)
         # Act
         response = SiteDetailsView.as_view()(request, epa_id=other_site.rcra_site.epa_id)
         # Assert
@@ -106,15 +104,17 @@ class TestOrgSitesListView:
         user_factory,
         site_factory,
         org_factory,
+        perm_factory,
     ):
         # Arrange
         user = user_factory()
         org = org_factory()
-        site_factory(org=org)
+        site = site_factory(org=org)
+        perm_factory(user, ["org.view_site"], site)
         client = APIClient()
         client.force_authenticate(user=user)
         # Act
-        response = client.get(reverse("org:sites", args=[org.id]))
+        response = client.get(reverse("org:sites", args=[org.slug]))
         # Assert
         assert response.headers["Content-Type"] == "application/json"
         assert response.status_code == status.HTTP_200_OK

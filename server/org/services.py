@@ -55,9 +55,9 @@ def update_emanifest_sync_date(site: Site, last_sync_date: Optional[datetime] = 
     site.save()
 
 
-def filter_sites_by_org(org_id: str) -> [Site]:
+def filter_sites_by_org(org_slug: str) -> QuerySet[Site]:
     """Returns a list of Sites associated with an Org."""
-    sites: QuerySet = Site.objects.filter(org_id=org_id).select_related("rcra_site")
+    sites: QuerySet = Site.objects.filter(org__slug=org_slug).select_related("rcra_site")
     return sites
 
 
@@ -71,15 +71,14 @@ def get_site_by_epa_id(epa_id: str) -> Site:
     return Site.objects.get_by_epa_id(epa_id)
 
 
-def find_sites_by_user(user: settings.AUTH_USER_MODEL) -> [Site]:
+def find_sites_by_user(user: settings.AUTH_USER_MODEL) -> QuerySet[Site]:
     """Returns a list of Sites associated with a user."""
     return Site.objects.filter_by_user(user)
 
 
-def filter_sites_by_username(username: str) -> [Site]:
+def filter_sites_by_username(username: str) -> QuerySet[Site]:
     """Returns a list of Sites associated with a user."""
-    sites: QuerySet = Site.objects.filter_by_username(username)
-    return sites
+    return Site.objects.filter_by_username(username)
 
 
 def filter_sites_by_username_and_epa_id(username: str, epa_ids: [str]) -> [Site]:
