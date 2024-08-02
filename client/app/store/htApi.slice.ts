@@ -117,11 +117,11 @@ export const haztrakApi = createApi({
       providesTags: ['code'],
     }),
     getOrgSites: build.query<HaztrakSite[], string>({
-      query: (id) => ({ url: `org/${id}/sites`, method: 'get' }),
+      query: (id) => ({ url: `orgs/${id}/sites`, method: 'get' }),
       providesTags: ['site'],
     }),
     getOrg: build.query<Organization, string>({
-      query: (orgSlug) => ({ url: `org/${orgSlug}`, method: 'get' }),
+      query: (orgSlug) => ({ url: `orgs/${orgSlug}`, method: 'get' }),
       providesTags: ['org'],
     }),
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type

@@ -1,10 +1,7 @@
-import logging
-
-from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 
+from org.filters import ObjectPermissionsFilter
 from org.models import Org, Site
 from org.permissions import OrgObjectPermissions, SiteObjectPermissions
 from org.serializers import OrgSerializer, SiteSerializer
@@ -14,8 +11,6 @@ from org.services import (
     get_org_by_slug,
     get_site_by_epa_id,
 )
-
-logger = logging.getLogger(__name__)
 
 
 class OrgDetailsView(RetrieveAPIView):
@@ -31,22 +26,18 @@ class OrgDetailsView(RetrieveAPIView):
         self.check_object_permissions(self.request, org)
         return org
 
-    def retrieve(self, request, *args, **kwargs):
-        org = self.get_object()
-        serializer = OrgSerializer(org)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
-
 
 class SiteListView(ListAPIView):
     """that returns all haztrak sites that the user has access to."""
 
     serializer_class = SiteSerializer
     queryset = Site.objects.all()
+    filter_backends = [ObjectPermissionsFilter]
 
-    def list(self, request, *args, **kwargs):
-        sites = find_sites_by_user(request.user)
-        data = self.serializer_class(sites, many=True).data
-        return Response(data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        if "org_slug" in self.kwargs:
+            return filter_sites_by_org(self.kwargs["org_slug"])
+        return find_sites_by_user(self.request.user)
 
 
 class SiteDetailsView(RetrieveAPIView):
@@ -58,17 +49,6 @@ class SiteDetailsView(RetrieveAPIView):
     permission_classes = [SiteObjectPermissions, IsAuthenticated]
 
     def get_object(self):
-        print(f"Checking permissions for user {self.request.user} ")
         site = get_site_by_epa_id(epa_id=self.kwargs["epa_id"])
         self.check_object_permissions(self.request, site)
         return site
-
-
-class OrgSitesListView(ListAPIView):
-    """Retrieve a list of sites filtered by organization."""
-
-    queryset = Site.objects.all()
-    serializer_class = SiteSerializer
-
-    def get_queryset(self):
-        return filter_sites_by_org(self.kwargs["org_id"])
