@@ -27,6 +27,14 @@ class OrgDetailsView(RetrieveAPIView):
         return org
 
 
+class OrgListView(ListAPIView):
+    """that returns all haztrak organization that the user has access to."""
+
+    serializer_class = OrgSerializer
+    queryset = Org.objects.all()
+    filter_backends = [ObjectPermissionsFilter]
+
+
 class SiteListView(ListAPIView):
     """that returns all haztrak sites that the user has access to."""
 

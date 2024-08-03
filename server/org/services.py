@@ -57,8 +57,7 @@ def update_emanifest_sync_date(site: Site, last_sync_date: Optional[datetime] = 
 
 def filter_sites_by_org(org_slug: str) -> QuerySet[Site]:
     """Returns a list of Sites associated with an Org."""
-    sites: QuerySet = Site.objects.filter(org__slug=org_slug).select_related("rcra_site")
-    return sites
+    return Site.objects.filter(org__slug=org_slug).select_related("rcra_site")
 
 
 def get_user_site(username: str, epa_id: str) -> Site:
