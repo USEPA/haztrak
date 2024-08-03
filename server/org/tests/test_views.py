@@ -6,7 +6,7 @@ from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
 from org.models import Org
-from org.views import OrgDetailsView, SiteDetailsView
+from org.views import OrgDetailsView, OrgListView, SiteDetailsView
 
 
 class TestOrgDetailsView:
@@ -96,6 +96,39 @@ class TestSiteDetailsApi:
         response = SiteDetailsView.as_view()(request, epa_id=other_site.rcra_site.epa_id)
         # Assert
         assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+class TestOrgListView:
+    @pytest.fixture
+    def setup_user_org_perm(self, user_factory, org_factory, perm_factory):
+        user = user_factory()
+        org = org_factory()
+        perm_factory(user, ["org.view_org"], org)
+        request = APIRequestFactory()
+        request = request.get(reverse("org:list"))
+        force_authenticate(request, user)
+        return user, org, request
+
+    def test_returns_user_orgs(self, setup_user_org_perm):
+        # Arrange
+        user, org, request = setup_user_org_perm
+        # Act
+        response = OrgListView.as_view()(request)
+        # Assert
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data[0]["slug"] == org.slug
+
+    def test_filters_orgs(self, setup_user_org_perm, org_factory):
+        # Arrange
+        user, org, request = setup_user_org_perm
+        other_org = org_factory()
+        # Act
+        response = OrgListView.as_view()(request)
+        org_slugs = [i["slug"] for i in response.data]
+        # Assert
+        assert response.status_code == status.HTTP_200_OK
+        assert org.slug in org_slugs
+        assert other_org.slug not in org_slugs
 
 
 class TestOrgSitesListView:

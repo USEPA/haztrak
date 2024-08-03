@@ -36,3 +36,13 @@
       - - view_siteuserobjectpermission
         - org
         - siteuserobjectpermission
+- model: org.orguserobjectpermission
+  pk: 1
+  fields:
+    permission:
+      - view_org
+      - org
+      - org
+    user:
+      - testuser1
+    content_object: efb9e104-7f61-4365-a9af-9d7b55c854c4
