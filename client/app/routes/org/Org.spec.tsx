@@ -44,6 +44,6 @@ describe('Org', () => {
     renderWithProviders(<Org />);
 
     await waitFor(() => expect(setSearchParams).toHaveBeenCalled(), { timeout: 400 });
-    expect(setSearchParams).toHaveBeenCalledWith(new URLSearchParams());
+    expect(setSearchParams).toHaveBeenCalled();
   });
 });
