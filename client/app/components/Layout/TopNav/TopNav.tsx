@@ -3,10 +3,11 @@ import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/fr
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavContext, NavContextProps } from '~/components/Layout/Root';
 import React, { useContext } from 'react';
-import { Button, Dropdown } from 'react-bootstrap';
+import { Button, Col, Dropdown, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { removeCredentials, selectAuthenticated, useLogoutMutation } from '~/store';
+import { OrgSelect } from '~/components/Org/OrgSelect';
 
 export function TopNav() {
   const { showSidebar, setShowSidebar } = useContext<NavContextProps>(NavContext);
@@ -31,25 +32,32 @@ export function TopNav() {
   return (
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex">
       <div className="flex-grow-1">
-        <Button
-          aria-label="toggleSidebarNavigation"
-          aria-hidden={false}
-          id="sidebarToggle"
-          onClick={toggleSidebar}
-          variant="dark"
-          className="mx-3 rounded-circle btn-hover-dark"
-        >
-          <FontAwesomeIcon icon={faBars} />
-        </Button>
-        <Link to="/" className="navbar-brand ps-3 pe-5">
-          <img
-            src={logo}
-            alt="haztrak logo, hazardous waste tracking made easy."
-            width={125}
-            height={'auto'}
-            className="my-3"
-          />
-        </Link>
+        <Row className="align-items-center">
+          <Col xs={12} md={5}>
+            <Button
+              aria-label="toggleSidebarNavigation"
+              aria-hidden={false}
+              id="sidebarToggle"
+              onClick={toggleSidebar}
+              variant="dark"
+              className="mx-3 rounded-circle btn-hover-dark"
+            >
+              <FontAwesomeIcon icon={faBars} />
+            </Button>
+            <Link to="/" className="p-3 ">
+              <img
+                src={logo}
+                alt="haztrak logo, hazardous waste tracking made easy."
+                width={125}
+                height={'auto'}
+                className="my-3"
+              />
+            </Link>
+          </Col>
+          <Col md={5} className="me-5 d-none d-md-block">
+            <OrgSelect />
+          </Col>
+        </Row>
       </div>
       <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4 btn-hover-dark rounded-circle">
         <li className="nav-item dropdown">
