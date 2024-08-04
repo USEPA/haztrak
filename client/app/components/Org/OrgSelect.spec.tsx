@@ -19,4 +19,9 @@ describe('OrgSelect Component', () => {
     renderWithProviders(<OrgSelect />);
     expect(screen.getByRole('combobox')).toBeInTheDocument();
   });
+  it('renders no options while loading', () => {
+    renderWithProviders(<OrgSelect />);
+    const select = screen.getByRole('combobox');
+    expect(select).toHaveTextContent('Loading...');
+  });
 });
