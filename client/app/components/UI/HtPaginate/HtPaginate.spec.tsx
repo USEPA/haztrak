@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { HtPaginate } from '~/components/UI';
 import React from 'react';
 import { cleanup, render, screen } from 'app/mocks';

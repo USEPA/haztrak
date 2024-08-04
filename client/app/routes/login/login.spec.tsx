@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import React from 'react';
 import { renderWithProviders, screen } from 'app/mocks';
 import { Login } from 'app/routes/login';

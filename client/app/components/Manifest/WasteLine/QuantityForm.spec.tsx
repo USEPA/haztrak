@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { QuantityForm } from '~/components/Manifest/WasteLine/QuantityForm';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';

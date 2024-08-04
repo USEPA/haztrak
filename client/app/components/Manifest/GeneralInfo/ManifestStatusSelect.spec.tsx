@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { ManifestStatusSelect } from '~/components/Manifest/GeneralInfo/ManifestStatusSelect';
 import { http, HttpResponse } from 'msw';

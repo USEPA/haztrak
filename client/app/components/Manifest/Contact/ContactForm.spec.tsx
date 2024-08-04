@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';
 import { ContactForm } from './ContactForm';

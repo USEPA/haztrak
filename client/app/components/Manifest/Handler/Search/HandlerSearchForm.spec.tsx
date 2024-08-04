@@ -4,7 +4,7 @@ import { mockUserEndpoints } from 'app/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import '@testing-library/jest-dom';
+
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { createMockRcrainfoSite } from '~/mocks/fixtures';
 import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';

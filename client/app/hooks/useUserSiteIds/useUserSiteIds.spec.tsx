@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { cleanup, waitFor } from '@testing-library/react';
 import { useUserSiteIds } from '~/hooks';
 import { http, HttpResponse } from 'msw';

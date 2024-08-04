@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { ManifestContext } from '~/components/Manifest/ManifestForm';
 import { Handler, RcraSiteType } from '~/components/Manifest/manifestSchema';
 import { QuickSignBtn } from '~/components/Manifest/QuickerSign/index';

@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { RcraSiteDetails } from '~/components/RcraSite';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';

@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { useAppSelector } from '~/store';
 import reducer, {
   ManifestSlice,

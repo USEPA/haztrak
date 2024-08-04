@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { HtTooltip } from '~/components/UI';
 import React from 'react';

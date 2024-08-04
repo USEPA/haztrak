@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { Dashboard } from './Dashboard';
 import { setupServer } from 'msw/node';
 import React, { createElement } from 'react';
