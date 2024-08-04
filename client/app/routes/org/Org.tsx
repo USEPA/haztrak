@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
-import { LoaderFunction, Outlet, useSearchParams } from 'react-router-dom';
-import { rootStore as store, useGetOrgsQuery } from '~/store';
+import React from 'react';
+import { LoaderFunction, Outlet } from 'react-router-dom';
+import { rootStore as store } from '~/store';
 import { haztrakApi } from '~/store/htApi.slice';
+import { useOrg } from '~/hooks/useOrg/useOrg';
 
 export const orgsLoader: LoaderFunction = async () => {
   const p = store.dispatch(haztrakApi.endpoints.getOrgs.initiate());
@@ -17,23 +18,7 @@ export const orgsLoader: LoaderFunction = async () => {
 };
 
 export const Org = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { data: orgs } = useGetOrgsQuery();
-  useEffect(() => {
-    const orgSearchParam = searchParams.get('org');
-
-    if (orgSearchParam && orgs) {
-      if (!orgs.find((org) => org.slug === orgSearchParam)) {
-        searchParams.delete('org');
-        setSearchParams(searchParams);
-      }
-    }
-
-    if (!orgSearchParam && orgs) {
-      searchParams.set('org', orgs[0].slug);
-      setSearchParams(searchParams);
-    }
-  }, [searchParams, setSearchParams, orgs]);
+  useOrg();
 
   return <Outlet />;
 };

@@ -1,25 +1,33 @@
 import Select, { SingleValue } from 'react-select';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetOrgsQuery } from '~/store';
-import { useSearchParams } from 'react-router-dom';
+import { useOrg } from '~/hooks/useOrg/useOrg';
 
 export const OrgSelect = () => {
   const { isLoading, data: orgs } = useGetOrgsQuery();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { orgId, setOrgId } = useOrg();
   const [currentOrg, setCurrentOrg] = useState<
     SingleValue<{
       label: string;
       value: string;
     }>
   >({
-    value: searchParams.get('org') ?? '',
-    label: orgs?.find((org) => org.slug === searchParams.get('org'))?.name ?? '',
+    value: orgId ?? '',
+    label: orgs?.find((org) => org.slug === orgId)?.name ?? '',
   });
+
+  useEffect(() => {
+    if (orgId && orgs) {
+      setCurrentOrg({
+        value: orgId,
+        label: orgs.find((org) => org.slug === orgId)?.name ?? '',
+      });
+    }
+  }, [orgId, orgs, setCurrentOrg]);
 
   const onChange = (option: SingleValue<{ label: string; value: string }>) => {
     if (!option) return;
-    searchParams.set('org', option.value);
-    setSearchParams(searchParams);
+    setOrgId(option.value);
     setCurrentOrg(option);
   };
 
