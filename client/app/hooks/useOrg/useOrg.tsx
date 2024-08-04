@@ -26,8 +26,10 @@ export const useOrg = () => {
     // If an orgId is set, and we have the users orgs, check if the orgId is valid, remove otherwise
     if (orgIdSearchParam && orgs) {
       if (!orgs.find((org) => org.slug === orgSlug)) {
-        searchParams.delete('org');
+        const defaultOrg = orgs[0].slug;
+        searchParams.set('org', defaultOrg);
         setSearchParams(searchParams);
+        setOrgSlugState(defaultOrg);
       }
     }
 
