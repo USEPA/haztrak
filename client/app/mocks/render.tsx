@@ -1,4 +1,4 @@
-import { render, RenderOptions } from '@testing-library/react';
+import { render, renderHook, RenderHookResult, RenderOptions } from '@testing-library/react';
 import React, { PropsWithChildren, ReactElement } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import { Provider } from 'react-redux';
@@ -49,4 +49,26 @@ export function renderWithProviders(
   }
 
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+}
+
+export function renderHookWithProviders<T>(
+  hook: () => T,
+  {
+    preloadedState = {},
+    store = setupStore(preloadedState),
+    useFormProps = {},
+  }: ExtendedRenderOptions = {}
+): RenderHookResult<T, unknown> {
+  function Wrapper({ children }: PropsWithChildren<NonNullable<unknown>>): ReactElement {
+    const formMethods = useForm(useFormProps);
+    return (
+      <Provider store={store}>
+        <MemoryRouter>
+          <FormProvider {...formMethods}>{children}</FormProvider>
+        </MemoryRouter>
+      </Provider>
+    );
+  }
+
+  return { ...renderHook(hook, { wrapper: Wrapper }) };
 }

@@ -1,4 +1,2 @@
-import { renderWithProviders } from '~/mocks/render';
-
-export { renderWithProviders };
+export { renderWithProviders, renderHookWithProviders } from '~/mocks/render';
 export * from '@testing-library/react';

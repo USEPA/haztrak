@@ -8,7 +8,7 @@ import { mockSiteEndpoints } from '~/mocks/handlers';
 const server = setupServer(...mockSiteEndpoints);
 afterEach(() => cleanup());
 beforeAll(() => server.listen());
-afterAll(() => server.close()); // Disable API mocking after the tests are done.
+afterAll(() => server.close());
 
 describe('OrgSelect Component', () => {
   it('renders', () => {
