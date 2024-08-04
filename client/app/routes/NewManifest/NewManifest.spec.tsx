@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { NewManifest } from '~/routes/NewManifest/NewManifest';
 import { http, HttpResponse } from 'msw';

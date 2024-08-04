@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';
 import { createMockHandler } from '~/mocks/fixtures';
 import { afterEach, describe, expect, test } from 'vitest';

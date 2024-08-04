@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { Sidebar } from '~/components/Layout/Sidebar/Sidebar';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';

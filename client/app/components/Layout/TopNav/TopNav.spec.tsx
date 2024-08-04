@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { TopNav } from '~/components/Layout/TopNav/TopNav';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';

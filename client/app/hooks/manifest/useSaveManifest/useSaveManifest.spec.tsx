@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Manifest } from '~/components/Manifest';

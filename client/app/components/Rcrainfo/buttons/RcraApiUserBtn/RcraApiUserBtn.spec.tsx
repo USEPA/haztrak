@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { RcraApiUserBtn } from '~/components/Rcrainfo/buttons/RcraApiUserBtn/RcraApiUserBtn';
 import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';

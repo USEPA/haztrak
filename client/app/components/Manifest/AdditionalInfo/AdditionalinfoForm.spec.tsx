@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { fireEvent } from '@testing-library/react';
 import { AdditionalInfoForm } from '~/components/Manifest/AdditionalInfo';
 import React from 'react';

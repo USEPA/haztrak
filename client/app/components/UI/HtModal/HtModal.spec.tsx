@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { HtModal } from '~/components/UI';
 import React from 'react';
 import { cleanup, render, screen } from 'app/mocks';

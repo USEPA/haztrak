@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import React from 'react';

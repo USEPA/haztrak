@@ -1,4 +1,4 @@
-import { RegisterHero } from '~/routes/RegisterHero/RegisterHero';
+import { RegisterHero } from '~/routes/register/RegisterHero';
 
 export { RegisterHero as Component };
 export default RegisterHero;

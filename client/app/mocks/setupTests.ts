@@ -1,5 +1,6 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/matchers';
+import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
 global.ResizeObserver = vi.fn().mockImplementation(() => ({

@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { waitFor } from '@testing-library/react';
 import { setupServer } from 'msw/node';
 import { useEffect, useState } from 'react';

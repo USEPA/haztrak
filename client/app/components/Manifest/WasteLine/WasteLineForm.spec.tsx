@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 import React from 'react';

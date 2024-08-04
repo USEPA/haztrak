@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { fireEvent } from '@testing-library/react';
 import { MtnDetails, MtnTable } from '~/components/Mtn';
 import React from 'react';

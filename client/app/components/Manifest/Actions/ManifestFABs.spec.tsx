@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { ManifestFABs } from '~/components/Manifest/Actions/ManifestFABs';
 import { ManifestContext } from '~/components/Manifest/ManifestForm';
 import { ManifestStatus } from '~/components/Manifest/manifestSchema';
