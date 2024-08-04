@@ -2,7 +2,7 @@ import { ErrorPage } from '~/routes/ErrorPage/ErrorPage';
 import { Login } from '~/routes/login';
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { orgLoader } from '~/routes/org';
+import { orgsLoader } from '~/routes/org';
 
 const Dashboard = React.lazy(() => import('~/routes/dashboard'));
 const Profile = React.lazy(() => import('~/routes/profile'));
@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
       {
         path: '',
         element: <Org />,
-        loader: orgLoader,
+        loader: orgsLoader,
         children: [
           {
             path: '',
