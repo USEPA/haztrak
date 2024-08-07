@@ -3,7 +3,7 @@ import { rcraSite } from '~/components/RcraSite';
 
 const haztrakSiteSchema = z.object({
   name: z.string(),
-  handler: rcraSite,
+  handler: rcraSite, // ToDo: rename attribute to rcraSite
 });
 
 /**

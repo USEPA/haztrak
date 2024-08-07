@@ -11,11 +11,11 @@ import { AuthSuccessResponse } from '~/store/userSlice/user.slice';
 const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
 export const mockUserEndpoints = [
   /** GET User */
-  http.get(`${API_BASE_URL}/api/user`, () => {
+  http.get(`${API_BASE_URL}/api/auth/user/`, () => {
     return HttpResponse.json({ ...createMockHaztrakUser() }, { status: 200 });
   }),
   /** Update User */
-  http.put(`${API_BASE_URL}/api/user`, (info) => {
+  http.put(`${API_BASE_URL}/api/auth/user/`, (info) => {
     const user: HaztrakUser = { ...createMockHaztrakUser() };
     return HttpResponse.json({ ...user, ...info.request.body }, { status: 200 });
   }),
@@ -24,8 +24,14 @@ export const mockUserEndpoints = [
     return HttpResponse.json({ ...createMockProfileResponse() }, { status: 200 });
   }),
   /** Login */
-  http.post(`${API_BASE_URL}/api/user/login`, () => {
-    const body: AuthSuccessResponse = { key: 'mockToken' };
+  http.post(`${API_BASE_URL}/api/user/login/`, () => {
+    const body: AuthSuccessResponse = {
+      access: 'mockToken',
+      user: createMockHaztrakUser(),
+      access_expiration: 'dateToDo',
+      refresh_expiration: 'dateToDo',
+      refresh: 'mockRefreshToken',
+    };
     return HttpResponse.json(
       {
         ...body,

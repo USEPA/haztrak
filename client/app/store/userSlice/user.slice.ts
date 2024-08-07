@@ -95,7 +95,7 @@ export const userApi = haztrakApi.injectEndpoints({
     }),
     logout: build.mutation({
       query: () => ({
-        url: 'user/logout',
+        url: 'user/logout/',
         method: 'POST',
       }),
       invalidatesTags: ['auth'],
@@ -110,7 +110,7 @@ export const userApi = haztrakApi.injectEndpoints({
     }),
     updateUser: build.mutation<HaztrakUser, HaztrakUser>({
       query: (data) => ({
-        url: 'user',
+        url: 'auth/user/',
         method: 'PUT',
         data: data,
       }),
