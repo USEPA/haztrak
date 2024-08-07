@@ -60,6 +60,7 @@ services:
     volumes:
       - ./server:/app
     environment:
+      DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}
       CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
       CELERY_LOG_LEVEL: ${CELERY_LOG_LEVEL}
@@ -82,6 +83,7 @@ services:
     volumes:
       - ./server:/app
     environment:
+      DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}
       CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
       CELERY_LOG_LEVEL: ${CELERY_LOG_LEVEL}
