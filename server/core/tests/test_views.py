@@ -21,7 +21,7 @@ class TestUserViews:
     def test_returns_user_details(self, factory, user):
         c = Client()
         c.force_login(user)
-        response = c.get(reverse("core:user:details"))
+        response = c.get(reverse("rest_user_details"))
         data: dict = response.json()
         assert response.status_code == 200
         assert user.username in data.values()

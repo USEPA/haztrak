@@ -17,7 +17,7 @@ htApi.interceptors.request.use(
     config.headers = config.headers ?? {};
     const token = rootStore.getState().auth.token;
     if (token) {
-      config.headers['Authorization'] = `Token ${token}`;
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },

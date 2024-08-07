@@ -12,4 +12,6 @@ django-stubs-ext==5.0.4
 Faker==26.1.0
 coverage==7.5.4
 pytest-xdist==3.6.1
+mypy==1.11.1
+mypy-extensions==1.0.0
 -r requirements.txt

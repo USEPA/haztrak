@@ -63,8 +63,12 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface LoginResponse {
-  key: string;
+export interface AuthSuccessResponse {
+  access: string;
+  refresh: string;
+  user: HaztrakUser;
+  access_expiration: string;
+  refresh_expiration: string;
 }
 
 export interface HaztrakProfileResponse {
@@ -81,9 +85,9 @@ type RcrainfoProfileResponse = RcrainfoProfile<RcrainfoProfileSite[]>;
 export const userApi = haztrakApi.injectEndpoints({
   endpoints: (build) => ({
     // Note: build.query<ReturnType, ArgType>
-    login: build.mutation<LoginResponse, LoginRequest>({
+    login: build.mutation<AuthSuccessResponse, LoginRequest>({
       query: (data) => ({
-        url: 'user/login',
+        url: 'auth/login/',
         method: 'POST',
         data: data,
       }),
@@ -91,7 +95,7 @@ export const userApi = haztrakApi.injectEndpoints({
     }),
     logout: build.mutation({
       query: () => ({
-        url: 'user/logout',
+        url: 'user/logout/',
         method: 'POST',
       }),
       invalidatesTags: ['auth'],
@@ -99,14 +103,14 @@ export const userApi = haztrakApi.injectEndpoints({
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     getUser: build.query<HaztrakUser, void>({
       query: () => ({
-        url: 'user',
+        url: 'auth/user/',
         method: 'GET',
       }),
       providesTags: ['user'],
     }),
     updateUser: build.mutation<HaztrakUser, HaztrakUser>({
       query: (data) => ({
-        url: 'user',
+        url: 'auth/user/',
         method: 'PUT',
         data: data,
       }),

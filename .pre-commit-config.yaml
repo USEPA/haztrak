@@ -10,6 +10,7 @@ ci:
   submodules: false
 
 repos:
+  # Pre-commit hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: "v4.5.0"
     hooks:
@@ -20,20 +21,25 @@ repos:
       - id: end-of-file-fixer
         # https://regex101.com/r/cDOFR1/1
         exclude: (?x)^(\.idea\/.*|\.vscode\/.*)$
+  # Ruff
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.1.11"
+    rev: v0.5.6
     hooks:
       - id: ruff
-        args: [--fix, --exit-non-zero-on-fix]
+        args: [--fix, --exit-non-zero-on-fix, --config, ./server/pyproject.toml]
+      - id: ruff-format
+        args: [--config, ./server/pyproject.toml]
+  # Check django migrations
   - repo: local
     hooks:
       - id: pre-commit-django-migrations
         name: Check django migrations
-        entry: python server/manage.py makemigrations --check
+        entry: env DJANGO_SETTINGS_MODULE=haztrak.settings.dev python server/manage.py makemigrations --check
         language: system
         types:
           - python
         pass_filenames: false
+  # Eslint
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: "v9.8.0"
     hooks:
@@ -41,6 +47,7 @@ repos:
         files: ^client/.*\.[jt]sx?$
         args: [-c=client/eslint.config.js]
         types: [file]
+  # Prettier
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v3.1.0"
     hooks:
@@ -48,6 +55,7 @@ repos:
         exclude: infra/haztrak/
         # https://regex101.com/r/mVcK66/1
         files: ^(client/.*\.[jt]sx?|.*\.md|.*\.yaml)$
+  # PyUpgrade
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.15.0
     hooks:

@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 
 # Globals
-HAZTRAK_VERSION = "0.7.0"
+HAZTRAK_VERSION = "0.7.2"
 
 # Environment variable mappings
 CACHE_URL = "HT_CACHE_URL"
@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "allauth",
     "allauth.account",
+    "allauth.socialaccount",
     "dj_rest_auth",
+    "dj_rest_auth.registration",
     "corsheaders",
     "django_extensions",
     "health_check",
@@ -134,7 +136,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
@@ -224,7 +226,13 @@ LOGGING = {
     },
 }
 
-REST_AUTH = {"USER_DETAILS_SERIALIZER": "core.serializers.TrakUserSerializer"}
+REST_AUTH = {
+    "USER_DETAILS_SERIALIZER": "core.serializers.TrakUserSerializer",
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "_auth",
+    "JWT_AUTH_REFRESH_COOKIE": "_refresh",
+    "JWT_AUTH_RETURN_EXPIRATION": True,
+}
 
 # Guardian
 # GUARDIAN_USER_OBJ_PERMS_MODEL = "core.UserPermission"
