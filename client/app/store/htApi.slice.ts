@@ -131,11 +131,11 @@ export const haztrakApi = createApi({
     }),
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     getUserHaztrakSites: build.query<HaztrakSite[], void>({
-      query: () => ({ url: 'site', method: 'get' }),
+      query: () => ({ url: 'sites', method: 'get' }),
       providesTags: ['site'],
     }),
     getUserHaztrakSite: build.query<HaztrakSite, string>({
-      query: (epaId) => ({ url: `site/${epaId}`, method: 'get' }),
+      query: (epaId) => ({ url: `sites/${epaId}`, method: 'get' }),
       providesTags: ['site'],
     }),
     getMTN: build.query<MtnDetails[], string | undefined>({

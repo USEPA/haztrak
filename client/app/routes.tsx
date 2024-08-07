@@ -10,6 +10,7 @@ const SiteList = React.lazy(() => import('~/routes/SiteList'));
 const SiteDetails = React.lazy(() => import('~/routes/SiteDetails'));
 const Help = React.lazy(() => import('~/routes/about'));
 const Org = React.lazy(() => import('~/routes/org'));
+const PrivateRoute = React.lazy(() => import('~/routes/PrivateRoute'));
 
 export const router = createBrowserRouter([
   {
@@ -21,74 +22,80 @@ export const router = createBrowserRouter([
     lazy: () => import('./routes/register'),
   },
   {
-    path: '/',
-    lazy: () => import('./components/Layout'),
+    path: '',
+    element: <PrivateRoute />,
     children: [
       {
-        path: '',
-        element: <Org />,
-        loader: orgsLoader,
+        path: '/',
+        lazy: () => import('./components/Layout'),
         children: [
           {
             path: '',
-            element: <Dashboard />,
-          },
-          {
-            path: '/profile',
-            element: <Profile />,
-          },
-          {
-            path: '/site',
+            element: <Org />,
+            loader: orgsLoader,
             children: [
               {
                 path: '',
-                element: <SiteList />,
+                element: <Dashboard />,
               },
               {
-                path: ':siteId',
-                element: <SiteDetails />,
+                path: '/profile',
+                element: <Profile />,
               },
               {
-                path: ':siteId/manifest',
+                path: '/site',
                 children: [
                   {
                     path: '',
-                    lazy: () => import('./routes/ManifestList'),
+                    element: <SiteList />,
                   },
                   {
-                    path: 'new',
-                    lazy: () => import('./routes/NewManifest'),
+                    path: ':siteId',
+                    element: <SiteDetails />,
                   },
                   {
-                    path: ':mtn/:action',
-                    lazy: () => import('./routes/ManifestDetails'),
+                    path: ':siteId/manifest',
+                    children: [
+                      {
+                        path: '',
+                        lazy: () => import('./routes/ManifestList'),
+                      },
+                      {
+                        path: 'new',
+                        lazy: () => import('./routes/NewManifest'),
+                      },
+                      {
+                        path: ':mtn/:action',
+                        lazy: () => import('./routes/ManifestDetails'),
+                      },
+                    ],
                   },
                 ],
               },
             ],
           },
+          {
+            path: '/manifest',
+            children: [
+              {
+                path: '',
+                lazy: () => import('./routes/ManifestList'),
+              },
+              {
+                path: 'new',
+                lazy: () => import('./routes/NewManifest'),
+              },
+              {
+                path: ':mtn/:action',
+                lazy: () => import('./routes/ManifestDetails'),
+              },
+            ],
+          },
+          {
+            path: '/about',
+            element: <Help />,
+          },
         ],
-      },
-      {
-        path: '/manifest',
-        children: [
-          {
-            path: '',
-            lazy: () => import('./routes/ManifestList'),
-          },
-          {
-            path: 'new',
-            lazy: () => import('./routes/NewManifest'),
-          },
-          {
-            path: ':mtn/:action',
-            lazy: () => import('./routes/ManifestDetails'),
-          },
-        ],
-      },
-      {
-        path: '/about',
-        element: <Help />,
       },
     ],
   },

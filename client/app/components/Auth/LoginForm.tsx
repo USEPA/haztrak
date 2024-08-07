@@ -42,6 +42,7 @@ export function LoginForm() {
     try {
       const response = await login({ username, password }).unwrap();
       if (response) {
+        // ToDo: we should subscribe to authentication as server state, not use a localStorage token
         dispatch(setCredentials({ token: response.access }));
       } else {
         setLoginError('something went wrong');

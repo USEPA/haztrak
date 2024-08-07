@@ -103,7 +103,7 @@ export const userApi = haztrakApi.injectEndpoints({
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     getUser: build.query<HaztrakUser, void>({
       query: () => ({
-        url: 'user',
+        url: 'auth/user/',
         method: 'GET',
       }),
       providesTags: ['user'],

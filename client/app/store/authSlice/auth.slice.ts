@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface HaztrakUser {
+  id?: string;
   username: string;
   email?: string;
   firstName?: string;
   lastName?: string;
-  isLoading?: boolean;
-  error?: string;
+  isLoading?: boolean; // ToDO: remove this
+  error?: string; // ToDO: remove this
 }
 
 /**
