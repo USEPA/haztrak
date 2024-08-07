@@ -231,6 +231,7 @@ REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_COOKIE": "_auth",
     "JWT_AUTH_REFRESH_COOKIE": "_refresh",
+    "JWT_AUTH_RETURN_EXPIRATION": True,
 }
 
 # Guardian
