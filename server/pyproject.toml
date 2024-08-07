@@ -75,5 +75,5 @@ warn_unreachable = true
 warn_no_return = true
 
 [tool.django-stubs]
-django_settings_module = "haztrak.settings.test"
+django_settings_module = ".haztrak.settings.test"
 strict_settings = false
