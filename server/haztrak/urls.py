@@ -23,7 +23,10 @@ admin.site.site_header = "Haztrak Admin"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # Browsable API authentication
     re_path(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")),
+    path("dj-rest-auth/", include("dj_rest_auth.urls")),
     path(
         "api/",
         include(

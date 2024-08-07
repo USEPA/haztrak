@@ -15,6 +15,6 @@ celery==5.4.0
 redis==5.0.8
 drf-spectacular==0.27.2
 django-health-check==3.18.3
-django-allauth==64.0.0
-dj-rest-auth==6.0.0
+dj-rest-auth[with_social]==6.0.0
 django-guardian==2.4.0
+django-allauth==0.61.1
