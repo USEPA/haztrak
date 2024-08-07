@@ -63,8 +63,12 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface LoginResponse {
-  key: string;
+export interface AuthSuccessResponse {
+  access: string;
+  refresh: string;
+  user: HaztrakUser;
+  access_expiration: string;
+  refresh_expiration: string;
 }
 
 export interface HaztrakProfileResponse {
@@ -81,9 +85,9 @@ type RcrainfoProfileResponse = RcrainfoProfile<RcrainfoProfileSite[]>;
 export const userApi = haztrakApi.injectEndpoints({
   endpoints: (build) => ({
     // Note: build.query<ReturnType, ArgType>
-    login: build.mutation<LoginResponse, LoginRequest>({
+    login: build.mutation<AuthSuccessResponse, LoginRequest>({
       query: (data) => ({
-        url: 'user/login',
+        url: 'auth/login/',
         method: 'POST',
         data: data,
       }),

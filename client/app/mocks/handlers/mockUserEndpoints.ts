@@ -1,11 +1,11 @@
 import { http, HttpResponse } from 'msw';
-import { HaztrakUser } from '~/store/authSlice/auth.slice';
-import { LoginResponse } from '~/store/userSlice/user.slice';
 import { createMockHaztrakUser } from '~/mocks/fixtures';
 import {
   createMockProfileResponse,
   createMockRcrainfoProfileResponse,
 } from '~/mocks/fixtures/mockUser';
+import { HaztrakUser } from '~/store/authSlice/auth.slice';
+import { AuthSuccessResponse } from '~/store/userSlice/user.slice';
 
 /** mock Rest API*/
 const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
@@ -25,7 +25,7 @@ export const mockUserEndpoints = [
   }),
   /** Login */
   http.post(`${API_BASE_URL}/api/user/login`, () => {
-    const body: LoginResponse = { key: 'mockToken' };
+    const body: AuthSuccessResponse = { key: 'mockToken' };
     return HttpResponse.json(
       {
         ...body,

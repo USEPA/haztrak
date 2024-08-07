@@ -1,7 +1,7 @@
-import { ErrorPage } from '~/routes/ErrorPage/ErrorPage';
-import { Login } from '~/routes/login';
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
+import { ErrorPage } from '~/routes/ErrorPage/ErrorPage';
+import { Login } from '~/routes/login';
 import { orgsLoader } from '~/routes/org';
 
 const Dashboard = React.lazy(() => import('~/routes/dashboard'));
@@ -12,6 +12,14 @@ const Help = React.lazy(() => import('~/routes/about'));
 const Org = React.lazy(() => import('~/routes/org'));
 
 export const router = createBrowserRouter([
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/register',
+    lazy: () => import('./routes/register'),
+  },
   {
     path: '/',
     lazy: () => import('./components/Layout'),
@@ -83,14 +91,6 @@ export const router = createBrowserRouter([
         element: <Help />,
       },
     ],
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/register',
-    lazy: () => import('./routes/register'),
   },
   {
     path: '*',
