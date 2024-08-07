@@ -132,6 +132,21 @@ services:
       VITE_GITHUB_URL: ${VITE_GITHUB_URL}
     command: sh -c "cd /app; npm install; npm start"
 
+  proxy:
+    image: traefik:v3.0
+    container_name: proxy
+    ports:
+      - "10000:10000"
+    volumes:
+      - ./traefik.toml:/etc/traefik/traefik.toml
+
+  mail:
+    container_name: mail
+    image: schickling/mailcatcher
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+
 volumes:
   rdb:
   imdb:
