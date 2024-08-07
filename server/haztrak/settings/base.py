@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 
 # Globals
-HAZTRAK_VERSION = "0.7.0"
+HAZTRAK_VERSION = "0.7.2"
 
 # Environment variable mappings
 CACHE_URL = "HT_CACHE_URL"
@@ -136,7 +136,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
@@ -226,7 +226,12 @@ LOGGING = {
     },
 }
 
-REST_AUTH = {"USER_DETAILS_SERIALIZER": "core.serializers.TrakUserSerializer"}
+REST_AUTH = {
+    "USER_DETAILS_SERIALIZER": "core.serializers.TrakUserSerializer",
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "_auth",
+    "JWT_AUTH_REFRESH_COOKIE": "_refresh",
+}
 
 # Guardian
 # GUARDIAN_USER_OBJ_PERMS_MODEL = "core.UserPermission"

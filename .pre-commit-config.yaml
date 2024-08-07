@@ -29,7 +29,7 @@ repos:
     hooks:
       - id: pre-commit-django-migrations
         name: Check django migrations
-        entry: python server/manage.py makemigrations --check
+        entry: export DJANGO_SETTINGS_MODULE="haztrak.settings.dev" && python server/manage.py makemigrations --check
         language: system
         types:
           - python
