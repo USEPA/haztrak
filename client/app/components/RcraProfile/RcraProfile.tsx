@@ -7,7 +7,7 @@ import { SyncRcrainfoProfileBtn } from '~/components/RcraProfile/SyncRcrainfoPro
 import { HtForm, HtSpinner } from '~/components/UI';
 import { useProgressTracker } from '~/hooks';
 import { RcrainfoProfileState, useAppDispatch, useUpdateRcrainfoProfileMutation } from '~/store';
-import { userApi } from '~/store/userSlice/user.slice';
+import { userApi } from '~/store/userApi/userApi';
 
 interface ProfileViewProps {
   profile: RcrainfoProfileState;

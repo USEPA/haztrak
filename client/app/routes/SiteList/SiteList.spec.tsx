@@ -1,10 +1,10 @@
+import { renderWithProviders, screen } from 'app/mocks';
+import { mockSiteEndpoints, mockUserEndpoints } from 'app/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { renderWithProviders, screen } from 'app/mocks';
-import { createMockHandler, createMockSite } from '~/mocks/fixtures/mockHandler';
-import { mockSiteEndpoints, mockUserEndpoints } from 'app/mocks/handlers';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
+import { createMockHandler, createMockSite } from '~/mocks/fixtures/mockHandler';
 import { SiteList } from './SiteList';
 
 const mockHandler1 = createMockHandler({ epaSiteId: 'VAT987654321' });
@@ -15,9 +15,8 @@ const mockSites = [
 ];
 const server = setupServer(...mockUserEndpoints, ...mockSiteEndpoints);
 
-// pre-/post-test hooks
 beforeAll(() => server.listen());
-afterAll(() => server.close()); // Disable API mocking after the tests are done.
+afterAll(() => server.close());
 
 describe('SiteList component', () => {
   test('renders', () => {

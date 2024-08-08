@@ -5,7 +5,7 @@ import {
   createMockRcrainfoProfileResponse,
 } from '~/mocks/fixtures/mockUser';
 import { HaztrakUser } from '~/store/authSlice/auth.slice';
-import { AuthSuccessResponse } from '~/store/userSlice/user.slice';
+import { AuthSuccessResponse } from '~/store/userApi/userApi';
 
 /** mock Rest API*/
 const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
@@ -24,7 +24,7 @@ export const mockUserEndpoints = [
     return HttpResponse.json({ ...createMockProfileResponse() }, { status: 200 });
   }),
   /** Login */
-  http.post(`${API_BASE_URL}/api/user/login/`, () => {
+  http.post(`${API_BASE_URL}/api/auth/login/`, () => {
     const body: AuthSuccessResponse = {
       access: 'mockToken',
       user: createMockHaztrakUser(),
@@ -38,6 +38,10 @@ export const mockUserEndpoints = [
       },
       { status: 200 }
     );
+  }),
+  /** Logout */
+  http.post(`${API_BASE_URL}/api/auth/logout/`, () => {
+    return HttpResponse.json({ detail: 'Successfully logged out.' }, { status: 200 });
   }),
   /** GET RCRAInfo profile */
   http.get(`${API_BASE_URL}/api/rcrainfo-profile/:username`, (info) => {

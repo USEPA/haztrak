@@ -8,7 +8,7 @@ describe('useAuth', () => {
     const mockUser = createMockHaztrakUser();
 
     const { result } = renderHookWithProviders(() => useAuth(), {
-      preloadedState: { auth: { user: mockUser } },
+      preloadedState: { auth: { user: mockUser, token: null } },
     });
 
     expect(result.current.user?.username).toEqual(mockUser.username);

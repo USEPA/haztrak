@@ -7,7 +7,7 @@ import { Code } from '~/components/Manifest/WasteLine/wasteLineSchema';
 import { MtnDetails } from '~/components/Mtn';
 import { RcraSite } from '~/components/RcraSite';
 import { htApi } from '~/services';
-import { Organization } from '~/store/userSlice/user.slice';
+import { Organization } from '~/store/userApi/userApi';
 
 export interface TaskResponse {
   taskId: string;

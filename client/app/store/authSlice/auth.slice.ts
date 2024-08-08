@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '~/store';
-import { userApi } from '~/store/userSlice/user.slice';
+import { userApi } from '~/store/userApi/userApi';
 
 export interface HaztrakUser {
   id?: string;
