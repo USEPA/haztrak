@@ -1,26 +1,24 @@
 import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
 import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavContext, NavContextProps } from '~/components/Layout/Root';
 import React, { useContext } from 'react';
 import { Button, Col, Dropdown, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { removeCredentials, selectAuthenticated, useLogoutMutation } from '~/store';
+import { Link } from 'react-router-dom';
+import { NavContext, NavContextProps } from '~/components/Layout/Root';
 import { OrgSelect } from '~/components/Org/OrgSelect';
+import { removeCredentials, selectAuthenticated, useLogoutMutation } from '~/store';
 
 export function TopNav() {
   const { showSidebar, setShowSidebar } = useContext<NavContextProps>(NavContext);
   const isAuthenticated = useSelector(selectAuthenticated);
   const dispatch = useDispatch();
-  const navigation = useNavigate();
   const [logout] = useLogoutMutation();
 
   if (!isAuthenticated) return null;
 
   const handleLogout = () => {
     dispatch(removeCredentials());
-    navigation('/login');
     logout(undefined);
   };
 
