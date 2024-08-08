@@ -43,21 +43,18 @@ export const htApiBaseQuery =
     // Meta
   > =>
   async ({ url, method, data, params }) => {
-    try {
-      const response = await htApi({ url: baseUrl + url, method, data, params });
-      return { data: response.data };
-    } catch (axiosError) {
-      const err = axiosError as AxiosError;
-      if (err.response?.status === 401) {
-        console.log('Unauthorized');
-      }
-      return {
-        error: {
-          statusText: err.response?.statusText,
-          data: err.response?.data || err.message,
-        } as HtApiError,
-      };
-    }
+    return htApi({ url: baseUrl + url, method, data, params })
+      .then((response) => {
+        return { data: response.data };
+      })
+      .catch((err: AxiosError) => {
+        return {
+          error: {
+            statusText: err.response?.statusText,
+            data: err.response?.data || err.message,
+          } as HtApiError,
+        };
+      });
   };
 
 export interface TaskStatus {

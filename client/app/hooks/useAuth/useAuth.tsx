@@ -1,7 +1,6 @@
-import { selectCurrentUser, useAppSelector, useGetUserQuery, useLoginMutation } from '~/store';
+import { selectCurrentUser, useAppSelector, useLoginMutation } from '~/store';
 
 export const useAuth = () => {
-  useGetUserQuery();
   const user = useAppSelector(selectCurrentUser);
   const [login, loginState] = useLoginMutation();
 
