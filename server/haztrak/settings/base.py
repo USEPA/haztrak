@@ -236,7 +236,7 @@ LOGGING = {
 REST_AUTH = {
     "USER_DETAILS_SERIALIZER": "core.serializers.TrakUserSerializer",
     "USE_JWT": True,
-    "JWT_AUTH_COOKIE": "_secure_ht",
+    "JWT_AUTH_COOKIE": "_auth",
     "JWT_AUTH_RETURN_EXPIRATION": True,
 }
 

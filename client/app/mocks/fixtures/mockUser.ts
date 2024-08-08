@@ -1,6 +1,6 @@
 import { createMockSite } from '~/mocks/fixtures/mockHandler';
 import { HaztrakUser, Organization, RcrainfoProfile, RcrainfoProfileSite } from '~/store';
-import { HaztrakProfileResponse } from '~/store/userSlice/user.slice';
+import { HaztrakProfileResponse } from '~/store/userApi/userApi';
 
 export const DEFAULT_HAZTRAK_USER: HaztrakUser = {
   username: 'testuser1',

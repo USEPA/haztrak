@@ -1,10 +1,10 @@
-import { Dashboard } from './Dashboard';
-import { setupServer } from 'msw/node';
-import React, { createElement } from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';
 import { mockUserEndpoints } from 'app/mocks/handlers';
-import { mockSiteEndpoints } from '~/mocks/handlers/mockSiteEndpoints';
+import { setupServer } from 'msw/node';
+import React, { createElement } from 'react';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
+import { mockSiteEndpoints } from '~/mocks/handlers/mockSiteEndpoints';
+import { Dashboard } from './Dashboard';
 
 const USERNAME = 'testuser1';
 
@@ -32,10 +32,8 @@ describe('Home', () => {
     renderWithProviders(<Dashboard />, {
       preloadedState: {
         auth: {
-          user: { username: USERNAME, isLoading: false },
+          user: { username: USERNAME },
           token: 'fake_token',
-          loading: false,
-          error: undefined,
         },
       },
     });

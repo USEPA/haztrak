@@ -1,12 +1,12 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtForm, HtSpinner } from '~/components/UI';
 import React, { createRef, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { HaztrakUser, ProfileSlice, useUpdateUserMutation } from '~/store';
 import { z } from 'zod';
+import { HtForm, HtSpinner } from '~/components/UI';
+import { HaztrakUser, ProfileSlice, useUpdateUserMutation } from '~/store';
 
 interface UserProfileProps {
   user: HaztrakUser;
@@ -21,7 +21,7 @@ const haztrakUserForm = z.object({
 
 type HaztrakUserForm = z.infer<typeof haztrakUserForm>;
 
-export function UserInfoForm({ user, profile }: UserProfileProps) {
+export function UserInfoForm({ user }: UserProfileProps) {
   const [editable, setEditable] = useState(false);
   const [updateUser] = useUpdateUserMutation();
   const fileRef = createRef<HTMLInputElement>();
@@ -38,7 +38,7 @@ export function UserInfoForm({ user, profile }: UserProfileProps) {
     updateUser({ ...user, ...data });
   };
 
-  if (user?.isLoading || profile?.loading) return <HtSpinner center />;
+  if (!user) return <HtSpinner center />;
 
   return (
     <HtForm onSubmit={handleSubmit(onSubmit)}>

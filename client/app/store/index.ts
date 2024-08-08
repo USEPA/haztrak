@@ -1,6 +1,6 @@
 // Haztrak API - RTK Query
 import { haztrakApi } from '~/store/htApi.slice';
-import { userApi } from '~/store/userSlice/user.slice';
+import { userApi } from '~/store/userApi/userApi';
 import type { AppDispatch, AppStore, RootState } from './rootStore';
 
 // Root Store
@@ -73,4 +73,4 @@ export type {
   Organization,
   RcrainfoProfile,
   RcrainfoProfileSite,
-} from './userSlice/user.slice';
+} from './userApi/userApi';

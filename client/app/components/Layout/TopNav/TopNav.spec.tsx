@@ -1,7 +1,7 @@
-import { TopNav } from '~/components/Layout/TopNav/TopNav';
-import React from 'react';
 import { cleanup, renderWithProviders, screen } from 'app/mocks';
+import React from 'react';
 import { afterEach, describe, expect, test } from 'vitest';
+import { TopNav } from '~/components/Layout/TopNav/TopNav';
 
 afterEach(() => {
   cleanup();
@@ -13,9 +13,8 @@ describe('TopNav', () => {
     renderWithProviders(<TopNav />, {
       preloadedState: {
         auth: {
-          user: { username: username, isLoading: false },
+          user: { username: username },
           token: 'fakeToken',
-          loading: false,
         },
       },
     });

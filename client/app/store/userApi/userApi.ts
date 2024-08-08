@@ -8,8 +8,6 @@ export interface ProfileSlice {
   rcrainfoProfile?: RcrainfoProfile<Record<string, RcrainfoProfileSite>>;
   sites?: Record<string, HaztrakProfileSite>;
   org?: Organization | null;
-  loading?: boolean;
-  error?: string;
 }
 
 export interface Organization {
@@ -124,22 +122,6 @@ export const userApi = haztrakApi.injectEndpoints({
         method: 'GET',
       }),
       providesTags: ['profile'],
-      transformResponse: (response: HaztrakProfileResponse) => {
-        const sites = response.sites.reduce((obj, site) => {
-          return {
-            ...obj,
-            [site.site.handler.epaSiteId]: {
-              ...site.site,
-              permissions: { eManifest: site.eManifest },
-            },
-          };
-        }, {});
-        return {
-          user: response.user,
-          org: response.org,
-          sites: sites,
-        };
-      },
     }),
     getRcrainfoProfile: build.query<RcrainfoProfileState, string>({
       query: (username) => ({
