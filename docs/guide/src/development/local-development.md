@@ -41,11 +41,8 @@ Dockerfile's build target
 that we've specified in
 the [docker-compose.yaml](https://github.com/USEPA/haztrak/blob/main/docker-compose.yaml) file._
 
-After all containers are successfully running (you can inspect with `docker ps`), visit one of the following
-
-- [localhost:3000](http://localhost:3000) to visit the browser client (React.js application)
-- [localhost:8000/admin](http://localhost:8000/admin) to login to the admin interface
-- The database will be exposed on port `5432` and Redis will be exposed on port `6379` of your local machine.
+After all containers are successfully running (you can inspect with `docker ps`),
+visit [localhost:8080](http://localhost:8080)
 
 ## Fixtures (logging in)
 
@@ -99,7 +96,8 @@ Haztrak includes a couple configs to help ensure contributions use a consistent
 style guide. Most popular IDEs have a plugin to support these configs.
 
 - pre-commit
-  - [pre-commit](https://pre-commit.com/) hooks are set to run a number of linting and formatting checks before commits on any branch is accepted.
+  - [pre-commit](https://pre-commit.com/) hooks are set to run a number of linting and formatting checks before
+    commits on any branch is accepted.
   ```shell
    pip install -r server/requirements_dev.txt
    pre-commit install
@@ -117,7 +115,8 @@ style guide. Most popular IDEs have a plugin to support these configs.
     and [.prettierignore](/.prettierignore)
 - [Black](https://black.readthedocs.io/en/stable/#)
   - Black is a Python formatter from the
-    [Python Software Foundation](https://www.python.org/psf-landing/). It's very opinionated and largely unconfigurable.
+    [Python Software Foundation](https://www.python.org/psf-landing/). It's very opinionated and largely
+    unconfigurable.
 - [Ruff](https://docs.astral.sh/ruff/)
   - ruff is a Python linter and (recently) formatter. It provides a fast and pleasant developer experience.
 - [MyPy](https://mypy-lang.org/)
