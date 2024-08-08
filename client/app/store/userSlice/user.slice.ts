@@ -91,14 +91,15 @@ export const userApi = haztrakApi.injectEndpoints({
         method: 'POST',
         data: data,
       }),
-      invalidatesTags: ['auth'],
+      invalidatesTags: ['user'],
     }),
-    logout: build.mutation({
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    logout: build.mutation<void, void>({
       query: () => ({
-        url: 'user/logout/',
+        url: 'auth/logout/',
         method: 'POST',
       }),
-      invalidatesTags: ['auth'],
+      invalidatesTags: ['user'],
     }),
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     getUser: build.query<HaztrakUser, void>({

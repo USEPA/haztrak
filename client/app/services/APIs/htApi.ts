@@ -9,6 +9,9 @@ export const htApi = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
+  xsrfCookieName: 'csrftoken',
+  xsrfHeaderName: 'X-CSRFTOKEN',
+  withCredentials: true,
 });
 
 /**interceptor to apply auth token from redux store*/

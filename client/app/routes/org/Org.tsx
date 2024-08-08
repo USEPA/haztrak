@@ -1,8 +1,8 @@
 import React from 'react';
-import { LoaderFunction, Outlet } from 'react-router-dom';
+import { LoaderFunction, Outlet, redirect } from 'react-router-dom';
+import { useOrg } from '~/hooks/useOrg/useOrg';
 import { rootStore as store } from '~/store';
 import { haztrakApi } from '~/store/htApi.slice';
-import { useOrg } from '~/hooks/useOrg/useOrg';
 
 export const orgsLoader: LoaderFunction = async () => {
   const p = store.dispatch(haztrakApi.endpoints.getOrgs.initiate());
@@ -11,7 +11,8 @@ export const orgsLoader: LoaderFunction = async () => {
     return await p.unwrap();
   } catch (_error) {
     console.error('Error fetching orgs');
-    throw Error('Error fetching orgs');
+    return redirect('/login');
+    // throw Error('Error fetching orgs');
   } finally {
     p.unsubscribe();
   }
