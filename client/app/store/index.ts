@@ -40,13 +40,7 @@ export const {
 } = userApi;
 
 // Authentication Slice
-export {
-  selectUser,
-  selectUserName,
-  setCredentials,
-  selectAuthenticated,
-  removeCredentials,
-} from '~/store/authSlice/auth.slice';
+export { selectCurrentUser } from '~/store/authSlice/auth.slice';
 export type { HaztrakUser } from '~/store/authSlice/auth.slice';
 
 // Notification Slice

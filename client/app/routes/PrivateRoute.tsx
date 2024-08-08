@@ -1,14 +1,13 @@
 import React, { ReactElement } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useGetUserQuery } from '~/store';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from '~/hooks/useAuth/useAuth';
 
 /** Redirect to the login if user is not authenticated*/
 export default function PrivateRoute(): ReactElement {
-  const { data: user, isLoading, error } = useGetUserQuery();
-  if ((!user && !isLoading) || error) {
-    return <Navigate to="/login" />;
-  }
-  return <>{!isLoading && <Outlet />}</>;
+  const location = useLocation();
+  const auth = useAuth();
+
+  return auth.user ? <Outlet /> : <Navigate to="/login" state={{ from: location }} />;
 }
 
 export { PrivateRoute as Component };

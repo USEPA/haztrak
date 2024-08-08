@@ -1,22 +1,22 @@
 import { faFileSignature, faPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Handler, RcraSiteType } from '~/components/Manifest/manifestSchema';
-import { Transporter } from '~/components/Manifest/Transporter';
-import { HtForm } from '~/components/UI';
-import { useProgressTracker } from '~/hooks';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, ListGroup, Row, Stack } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { z } from 'zod';
+import { Handler, RcraSiteType } from '~/components/Manifest/manifestSchema';
+import { Transporter } from '~/components/Manifest/Transporter';
+import { HtForm } from '~/components/UI';
+import { useProgressTracker } from '~/hooks';
 import {
   addTask,
-  selectUserName,
+  selectCurrentUser,
   updateTask,
   useAppDispatch,
   useAppSelector,
   useSignEManifestMutation,
 } from '~/store';
-import { z } from 'zod';
 
 const siteType = z.enum(['Transporter', 'Generator', 'Tsdf', 'Broker']);
 /**
@@ -57,13 +57,13 @@ interface QuickerSignProps {
  */
 export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSignProps) {
   const dispatch = useAppDispatch();
-  const userName = useAppSelector(selectUserName);
+  const user = useAppSelector(selectCurrentUser);
   const [signManifest, { data, error: ApiError }] = useSignEManifestMutation();
   const [taskId, setTaskId] = useState<string | undefined>(undefined);
   useProgressTracker({ taskId: taskId });
   const { register, handleSubmit, setValue } = useForm<QuickerSignature>({
     defaultValues: {
-      printedSignatureName: userName,
+      printedSignatureName: user?.username,
       printedSignatureDate: new Date().toISOString().slice(0, -8),
     },
   });

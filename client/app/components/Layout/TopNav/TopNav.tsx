@@ -3,30 +3,23 @@ import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/fr
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext } from 'react';
 import { Button, Col, Dropdown, Row } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { NavContext, NavContextProps } from '~/components/Layout/Root';
 import { OrgSelect } from '~/components/Org/OrgSelect';
-import { removeCredentials, selectAuthenticated, useLogoutMutation } from '~/store';
+import { useLogoutMutation } from '~/store';
 
 export function TopNav() {
   const { showSidebar, setShowSidebar } = useContext<NavContextProps>(NavContext);
-  const isAuthenticated = useSelector(selectAuthenticated);
-  const dispatch = useDispatch();
   const [logout] = useLogoutMutation();
 
-  if (!isAuthenticated) return null;
-
   const handleLogout = () => {
-    dispatch(removeCredentials());
-    logout(undefined);
+    logout();
   };
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
 
-  // noinspection JSValidateTypes
   return (
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex">
       <div className="flex-grow-1">

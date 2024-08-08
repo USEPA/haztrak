@@ -5,13 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { HtForm, HtSpinner } from '~/components/UI';
-import {
-  selectAuthenticated,
-  setCredentials,
-  useAppDispatch,
-  useAppSelector,
-  useLoginMutation,
-} from '~/store';
+import { useAuth } from '~/hooks/useAuth/useAuth';
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Username Required').min(8),
@@ -21,11 +15,12 @@ const loginSchema = z.object({
 type LoginSchema = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
-  const isAuthenticated = useAppSelector(selectAuthenticated);
-  const [login, { error, isLoading }] = useLoginMutation();
+  const {
+    user,
+    login: { login, isLoading, error },
+  } = useAuth();
   const [loginError, setLoginError] = useState<string | undefined>(undefined);
-  const navigation = useNavigate();
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -33,23 +28,13 @@ export function LoginForm() {
   } = useForm<LoginSchema>({ resolver: zodResolver(loginSchema) });
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigation('/');
+    if (user) {
+      navigate('/');
     }
-  }, [isAuthenticated]);
+  }, [user]);
 
   async function onSubmit({ username, password }: LoginSchema) {
-    try {
-      const response = await login({ username, password }).unwrap();
-      if (response) {
-        // ToDo: we should subscribe to authentication as server state, not use a localStorage token
-        dispatch(setCredentials({ token: response.access }));
-      } else {
-        setLoginError('something went wrong');
-      }
-    } catch (_error) {
-      setLoginError('unable to log in with the provided credentials');
-    }
+    login({ username, password });
   }
 
   useEffect(() => {

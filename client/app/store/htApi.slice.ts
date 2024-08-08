@@ -48,6 +48,9 @@ export const htApiBaseQuery =
       return { data: response.data };
     } catch (axiosError) {
       const err = axiosError as AxiosError;
+      if (err.response?.status === 401) {
+        console.log('Unauthorized');
+      }
       return {
         error: {
           statusText: err.response?.statusText,
