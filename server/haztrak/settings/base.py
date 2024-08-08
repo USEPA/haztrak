@@ -78,6 +78,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# Security
+SESSION_COOKIE_AGE = 60 * 30  # 30 minutes
+
 # Cross Origin Resource Sharing (CORS)
 CORS_ALLOW_CREDENTIALS = True
 
