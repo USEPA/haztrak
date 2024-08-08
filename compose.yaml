@@ -136,7 +136,7 @@ services:
     image: traefik:v3.0
     container_name: proxy
     ports:
-      - "10000:10000"
+      - "8080:8080"
     volumes:
       - ./traefik.toml:/etc/traefik/traefik.toml
 

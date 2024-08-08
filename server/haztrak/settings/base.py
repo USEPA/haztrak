@@ -3,6 +3,7 @@ Haztrak project settings.
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 
 # Globals
@@ -15,6 +16,9 @@ TEST_DB_NAME_ENV = "HT_TEST_DB_NAME"
 HT_LOG_LEVEL = os.getenv("HT_LOG_LEVEL", "INFO")
 HT_TRAK_LOG_LEVEL = os.getenv("HT_TRAK_LOG_LEVEL", HT_LOG_LEVEL)
 HT_CORE_LOG_LEVEL = os.getenv("HT_CORE_LOG_LEVEL", HT_LOG_LEVEL)
+HT_SIGNING_KEY = os.getenv(
+    "HT_SIGNING_KEY", "0dd3f4e68730bedfb07e6bc2e8f00a56c4db2d4a4b37e64ac0a83b8c97ec55dd"
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -234,9 +238,13 @@ REST_AUTH = {
     "JWT_AUTH_RETURN_EXPIRATION": True,
 }
 
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "SIGNING_KEY": HT_SIGNING_KEY,
+}
+
 # Guardian
-# GUARDIAN_USER_OBJ_PERMS_MODEL = "core.UserPermission"
-# GUARDIAN_GROUP_OBJ_PERMS_MODEL = "core.GroupPermission"
 GUARDIAN_RAISE_403 = True
 GUARDIAN_MONKEY_PATCH = False
 
