@@ -1,13 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SyncRcrainfoProfileBtn } from '~/components/RcraProfile/SyncRcrainfoProfileBtn';
-import { HtForm, HtSpinner } from '~/components/UI';
-import { useProgressTracker } from '~/hooks';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { SyncRcrainfoProfileBtn } from '~/components/RcraProfile/SyncRcrainfoProfileBtn';
+import { HtForm, HtSpinner } from '~/components/UI';
+import { useProgressTracker } from '~/hooks';
 import { RcrainfoProfileState, useAppDispatch, useUpdateRcrainfoProfileMutation } from '~/store';
 import { userApi } from '~/store/userSlice/user.slice';
-import { z } from 'zod';
 
 interface ProfileViewProps {
   profile: RcrainfoProfileState;
@@ -49,7 +49,6 @@ export function RcraProfile({ profile }: ProfileViewProps) {
 
   /** submitting the RcrainfoProfile form (RCRAInfo API ID, Key, username, etc.)*/
   const onSubmit = (data: RcraProfileForm) => {
-    console.log('submitting form');
     setProfileLoading(!profileLoading);
     setEditable(!editable);
     updateRcrainfoProfile({ username: profile.user, data: data });

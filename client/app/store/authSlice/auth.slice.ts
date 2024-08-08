@@ -12,13 +12,13 @@ export interface HaztrakUser {
 
 /** The Redux stored information on the current haztrak user*/
 export interface AuthSlice {
-  user?: HaztrakUser;
-  token?: string;
+  user: HaztrakUser | null;
+  token: string | null;
 }
 
 const initialState: AuthSlice = {
-  user: undefined,
-  token: undefined,
+  user: null,
+  token: null,
 };
 
 const slice = createSlice({
@@ -34,8 +34,14 @@ const slice = createSlice({
       state.user = payload;
     });
     builder.addMatcher(userApi.endpoints.logout.matchFulfilled, (state) => {
-      state.user = undefined;
-      state.token = undefined;
+      state.user = null;
+      state.token = null;
+    });
+    builder.addMatcher(userApi.endpoints.getUser.matchRejected, (state, { payload }) => {
+      if (payload?.status === 401) {
+        state.user = null;
+        state.token = null;
+      }
     });
   },
 });
