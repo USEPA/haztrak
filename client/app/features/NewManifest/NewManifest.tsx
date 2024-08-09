@@ -1,4 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Col, Container, Form } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { HaztrakSite } from '~/components/HaztrakSite';
 import { Manifest, ManifestForm } from '~/components/Manifest';
 import { RcraSiteType } from '~/components/Manifest/manifestSchema';
 import { SiteSelect, SiteTypeSelect } from '~/components/Manifest/SiteSelect';
@@ -6,11 +11,7 @@ import { RcraSite } from '~/components/RcraSite';
 import { HtCard, HtSpinner } from '~/components/UI';
 import { useTitle } from '~/hooks';
 import { useReadOnly } from '~/hooks/manifest';
-import React, { useEffect, useMemo, useState } from 'react';
-import { Col, Container, Form } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { useGetProfileQuery } from '~/store';
+import { useGetUserHaztrakSitesQuery } from '~/store';
 
 /**
  * NewManifest component allows a user to create a new electronic manifest.
@@ -41,17 +42,16 @@ export function NewManifest() {
 
   const selectBySiteId = useMemo(() => {
     return createSelector(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (res: any) => res.data,
       (_res, siteId) => siteId,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (data: any, siteId) => {
-        return data?.sites[siteId]?.handler ?? undefined;
+      (data: HaztrakSite[], siteId) => {
+        const site = data?.find((site) => site.handler.epaSiteId === siteId) ?? undefined;
+        return site?.handler;
       }
     );
   }, []);
 
-  const { rcraSite, isLoading } = useGetProfileQuery(undefined, {
+  const { rcraSite, isLoading } = useGetUserHaztrakSitesQuery(undefined, {
     selectFromResult: (result) => ({
       ...result,
       rcraSite: selectBySiteId(result, siteId),
@@ -74,7 +74,6 @@ export function NewManifest() {
 
   if (isLoading && siteId) return <HtSpinner center />;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSiteChange = (site: any) => {
     updateSiteSelection(site);
   };
