@@ -1,16 +1,16 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { ErrorPage } from '~/routes/ErrorPage/ErrorPage';
-import { Login } from '~/routes/login';
-import { orgsLoader } from '~/routes/org';
+import { ErrorPage } from '~/features/ErrorPage/ErrorPage';
+import { Login } from '~/features/login';
+import { orgsLoader } from '~/features/org';
 
-const Dashboard = React.lazy(() => import('~/routes/dashboard'));
-const Profile = React.lazy(() => import('~/routes/profile'));
-const SiteList = React.lazy(() => import('~/routes/SiteList'));
-const SiteDetails = React.lazy(() => import('~/routes/SiteDetails'));
-const Help = React.lazy(() => import('~/routes/about'));
-const Org = React.lazy(() => import('~/routes/org'));
-const PrivateRoute = React.lazy(() => import('~/routes/PrivateRoute'));
+const Dashboard = React.lazy(() => import('~/features/dashboard'));
+const Profile = React.lazy(() => import('~/features/profile'));
+const SiteList = React.lazy(() => import('~/features/SiteList'));
+const SiteDetails = React.lazy(() => import('~/features/SiteDetails'));
+const Help = React.lazy(() => import('~/features/about'));
+const Org = React.lazy(() => import('~/features/org'));
+const PrivateRoute = React.lazy(() => import('~/features/PrivateRoute'));
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/register',
-    lazy: () => import('./routes/register'),
+    lazy: () => import('~/features/register'),
   },
   {
     path: '',
@@ -58,15 +58,15 @@ export const router = createBrowserRouter([
                     children: [
                       {
                         path: '',
-                        lazy: () => import('./routes/ManifestList'),
+                        lazy: () => import('~/features/ManifestList'),
                       },
                       {
                         path: 'new',
-                        lazy: () => import('./routes/NewManifest'),
+                        lazy: () => import('~/features/NewManifest'),
                       },
                       {
                         path: ':mtn/:action',
-                        lazy: () => import('./routes/ManifestDetails'),
+                        lazy: () => import('~/features/ManifestDetails'),
                       },
                     ],
                   },
@@ -79,15 +79,15 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: '',
-                lazy: () => import('./routes/ManifestList'),
+                lazy: () => import('~/features/ManifestList'),
               },
               {
                 path: 'new',
-                lazy: () => import('./routes/NewManifest'),
+                lazy: () => import('~/features/NewManifest'),
               },
               {
                 path: ':mtn/:action',
-                lazy: () => import('./routes/ManifestDetails'),
+                lazy: () => import('~/features/ManifestDetails'),
               },
             ],
           },

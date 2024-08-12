@@ -1,4 +1,4 @@
-import { SiteDetails } from '~/routes/SiteDetails/SiteDetails';
+import { SiteDetails } from '~/features/SiteDetails/SiteDetails';
 
 export { SiteDetails as Component };
 export default SiteDetails;

@@ -1,13 +1,13 @@
 import userEvent from '@testing-library/user-event';
-import { NewManifest } from '~/routes/NewManifest/NewManifest';
+import { cleanup, renderWithProviders, screen } from 'app/mocks';
+import { mockSiteEndpoints, mockUserEndpoints } from 'app/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'app/mocks';
-import { createMockSite } from '~/mocks/fixtures';
-import { mockSiteEndpoints, mockUserEndpoints } from 'app/mocks/handlers';
-import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
+import { NewManifest } from '~/features/NewManifest/NewManifest';
+import { createMockSite } from '~/mocks/fixtures';
+import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
 
 const mockSites = [createMockSite(), createMockSite()];
 const server = setupServer(...mockUserEndpoints, ...mockSiteEndpoints);
