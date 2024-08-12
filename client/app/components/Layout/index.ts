@@ -1,1 +1,4 @@
-export { Root as Component } from './Root';
+import { Root } from './Root';
+
+export { Root as Component };
+export default Root;

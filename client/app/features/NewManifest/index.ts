@@ -1,1 +1,4 @@
-export { NewManifest as Component } from './NewManifest';
+import { NewManifest } from './NewManifest';
+
+export { NewManifest as Component };
+export default NewManifest;

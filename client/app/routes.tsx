@@ -4,13 +4,18 @@ import { ErrorPage } from '~/features/ErrorPage/ErrorPage';
 import { Login } from '~/features/login';
 import { orgsLoader } from '~/features/org';
 
-const Dashboard = React.lazy(() => import('~/features/dashboard'));
-const Profile = React.lazy(() => import('~/features/profile'));
-const SiteList = React.lazy(() => import('~/features/SiteList'));
-const SiteDetails = React.lazy(() => import('~/features/SiteDetails'));
-const Help = React.lazy(() => import('~/features/about'));
-const Org = React.lazy(() => import('~/features/org'));
-const PrivateRoute = React.lazy(() => import('~/features/PrivateRoute'));
+const Dashboard = () => import('~/features/dashboard');
+const Profile = () => import('~/features/profile');
+const SiteList = () => import('~/features/SiteList');
+const SiteDetails = () => import('~/features/SiteDetails');
+const Help = () => import('~/features/about');
+const Org = () => import('~/features/org');
+const PrivateRoute = () => import('~/features/PrivateRoute');
+const RegisterHero = () => import('~/features/register');
+const ManifestList = () => import('~/features/ManifestList');
+const ManifestDetails = () => import('~/features/ManifestDetails');
+const NewManifest = () => import('~/features/NewManifest');
+const Layout = () => import('./components/Layout');
 
 export const router = createBrowserRouter([
   {
@@ -19,54 +24,54 @@ export const router = createBrowserRouter([
   },
   {
     path: '/register',
-    lazy: () => import('~/features/register'),
+    lazy: RegisterHero,
   },
   {
     path: '',
-    element: <PrivateRoute />,
+    lazy: PrivateRoute,
     children: [
       {
         path: '/',
-        lazy: () => import('./components/Layout'),
+        lazy: Layout,
         children: [
           {
             path: '',
-            element: <Org />,
+            lazy: Org,
             loader: orgsLoader,
             children: [
               {
                 path: '',
-                element: <Dashboard />,
+                lazy: Dashboard,
               },
               {
                 path: '/profile',
-                element: <Profile />,
+                lazy: Profile,
               },
               {
                 path: '/site',
                 children: [
                   {
                     path: '',
-                    element: <SiteList />,
+                    lazy: SiteList,
                   },
                   {
                     path: ':siteId',
-                    element: <SiteDetails />,
+                    lazy: SiteDetails,
                   },
                   {
                     path: ':siteId/manifest',
                     children: [
                       {
                         path: '',
-                        lazy: () => import('~/features/ManifestList'),
+                        lazy: ManifestList,
                       },
                       {
                         path: 'new',
-                        lazy: () => import('~/features/NewManifest'),
+                        lazy: NewManifest,
                       },
                       {
                         path: ':mtn/:action',
-                        lazy: () => import('~/features/ManifestDetails'),
+                        lazy: ManifestDetails,
                       },
                     ],
                   },
@@ -79,21 +84,21 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: '',
-                lazy: () => import('~/features/ManifestList'),
+                lazy: ManifestList,
               },
               {
                 path: 'new',
-                lazy: () => import('~/features/NewManifest'),
+                lazy: NewManifest,
               },
               {
                 path: ':mtn/:action',
-                lazy: () => import('~/features/ManifestDetails'),
+                lazy: ManifestDetails,
               },
             ],
           },
           {
             path: '/about',
-            element: <Help />,
+            lazy: Help,
           },
         ],
       },

@@ -5,7 +5,7 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
-import { NewManifest } from '~/features/NewManifest/NewManifest';
+import NewManifest from '~/features/NewManifest';
 import { createMockSite } from '~/mocks/fixtures';
 import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
 

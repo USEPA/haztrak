@@ -1,3 +1,4 @@
-import { ManifestDetails as Component } from './ManifestDetails';
+import { ManifestDetails } from './ManifestDetails';
 
-export { Component };
+export { ManifestDetails as Component };
+export default ManifestDetails;

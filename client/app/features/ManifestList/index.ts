@@ -1,3 +1,4 @@
-import { ManifestList as Component } from './ManifestList';
+import { ManifestList } from './ManifestList';
 
-export { Component };
+export { ManifestList as Component };
+export default ManifestList;
