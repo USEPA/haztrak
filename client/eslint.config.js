@@ -3,6 +3,7 @@ import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tsEslint from 'typescript-eslint';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import tailwind from 'eslint-plugin-tailwindcss';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default [
@@ -13,6 +14,14 @@ export default [
   ...tsEslint.configs.strict,
   ...tsEslint.configs.stylistic,
   eslintPluginPrettierRecommended,
+  ...tailwind.configs['flat/recommended'],
+  {
+    name: 'tailwind-migration',
+    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
+    rules: {
+      'tailwindcss/no-custom-classname': 0,
+    },
+  },
   {
     name: 'ignore-outputs',
     ignores: ['**/build/', '**/dist/', '**/node_modules/', '**/.next/'],
@@ -37,7 +46,7 @@ export default [
     name: 'ts-migration-relax',
     files: ['**/*.{ts,tsx}'],
     rules: {
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-empty-interface': 'off',
       '@typescript-eslint/no-empty-function': 'off',
     },
