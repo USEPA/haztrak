@@ -1,4 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import React, { createContext, useEffect, useState } from 'react';
+import { Container, Stack } from 'react-bootstrap';
+import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import {
   ManifestCancelBtn,
   ManifestEditBtn,
@@ -16,11 +21,6 @@ import { WasteLineSection } from '~/components/Manifest/WasteLine/WasteLineSecti
 import { HtCard, HtForm } from '~/components/UI';
 import { useUserSiteIds } from '~/hooks';
 import { useManifestStatus, useReadOnly, useSaveManifest } from '~/hooks/manifest';
-import React, { createContext, useEffect, useState } from 'react';
-import { Container, Stack } from 'react-bootstrap';
-import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { manifest } from '~/services';
 import { HandlerSearchModal } from './Handler';
 import { Manifest, manifestSchema, SiteType } from './manifestSchema';
@@ -188,7 +188,7 @@ export function ManifestForm({
 
   const { userSiteIds } = useUserSiteIds();
   const nextSigner = manifest.getNextSigner(manifestData);
-  const signAble = userSiteIds.some((site) => site.epaSiteId === nextSigner?.epaSiteId || '');
+  const signAble = userSiteIds.some((siteEpaId) => siteEpaId === nextSigner?.epaSiteId || '');
   const isDraft = manifestData?.manifestTrackingNumber === undefined;
 
   return (

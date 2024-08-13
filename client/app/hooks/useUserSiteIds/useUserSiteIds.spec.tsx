@@ -15,8 +15,8 @@ function TestComponent() {
   return (
     <>
       {isLoading && <p>Loading...</p>}
-      {userSiteIds.map((site, index) => (
-        <p key={index}>{site.epaSiteId}</p>
+      {userSiteIds.map((epaSiteId, index) => (
+        <p key={index}>{epaSiteId}</p>
       ))}
     </>
   );

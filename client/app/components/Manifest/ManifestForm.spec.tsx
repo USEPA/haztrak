@@ -1,13 +1,13 @@
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { cleanup, renderWithProviders } from 'app/mocks';
-import { mockUserEndpoints, mockWasteEndpoints } from 'app/mocks/handlers';
+import { mockSiteEndpoints, mockUserEndpoints, mockWasteEndpoints } from 'app/mocks/handlers';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { ManifestForm } from '~/components/Manifest';
 
-const server = setupServer(...mockUserEndpoints, ...mockWasteEndpoints);
+const server = setupServer(...mockUserEndpoints, ...mockWasteEndpoints, ...mockSiteEndpoints);
 afterEach(() => cleanup());
 beforeAll(() => server.listen());
 afterAll(() => server.close());

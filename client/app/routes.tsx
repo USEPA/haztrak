@@ -1,16 +1,21 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { ErrorPage } from '~/routes/ErrorPage/ErrorPage';
-import { Login } from '~/routes/login';
-import { orgsLoader } from '~/routes/org';
+import { ErrorPage } from '~/features/ErrorPage/ErrorPage';
+import { Login } from '~/features/login';
+import { orgsLoader } from '~/features/org';
 
-const Dashboard = React.lazy(() => import('~/routes/dashboard'));
-const Profile = React.lazy(() => import('~/routes/profile'));
-const SiteList = React.lazy(() => import('~/routes/SiteList'));
-const SiteDetails = React.lazy(() => import('~/routes/SiteDetails'));
-const Help = React.lazy(() => import('~/routes/about'));
-const Org = React.lazy(() => import('~/routes/org'));
-const PrivateRoute = React.lazy(() => import('~/routes/PrivateRoute'));
+const Dashboard = () => import('~/features/dashboard');
+const Profile = () => import('~/features/profile');
+const SiteList = () => import('~/features/SiteList');
+const SiteDetails = () => import('~/features/SiteDetails');
+const Help = () => import('~/features/about');
+const Org = () => import('~/features/org');
+const PrivateRoute = () => import('~/features/PrivateRoute');
+const RegisterHero = () => import('~/features/register');
+const ManifestList = () => import('~/features/ManifestList');
+const ManifestDetails = () => import('~/features/ManifestDetails');
+const NewManifest = () => import('~/features/NewManifest');
+const Layout = () => import('./components/Layout');
 
 export const router = createBrowserRouter([
   {
@@ -19,54 +24,54 @@ export const router = createBrowserRouter([
   },
   {
     path: '/register',
-    lazy: () => import('./routes/register'),
+    lazy: RegisterHero,
   },
   {
     path: '',
-    element: <PrivateRoute />,
+    lazy: PrivateRoute,
     children: [
       {
         path: '/',
-        lazy: () => import('./components/Layout'),
+        lazy: Layout,
         children: [
           {
             path: '',
-            element: <Org />,
+            lazy: Org,
             loader: orgsLoader,
             children: [
               {
                 path: '',
-                element: <Dashboard />,
+                lazy: Dashboard,
               },
               {
                 path: '/profile',
-                element: <Profile />,
+                lazy: Profile,
               },
               {
                 path: '/site',
                 children: [
                   {
                     path: '',
-                    element: <SiteList />,
+                    lazy: SiteList,
                   },
                   {
                     path: ':siteId',
-                    element: <SiteDetails />,
+                    lazy: SiteDetails,
                   },
                   {
                     path: ':siteId/manifest',
                     children: [
                       {
                         path: '',
-                        lazy: () => import('./routes/ManifestList'),
+                        lazy: ManifestList,
                       },
                       {
                         path: 'new',
-                        lazy: () => import('./routes/NewManifest'),
+                        lazy: NewManifest,
                       },
                       {
                         path: ':mtn/:action',
-                        lazy: () => import('./routes/ManifestDetails'),
+                        lazy: ManifestDetails,
                       },
                     ],
                   },
@@ -79,21 +84,21 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: '',
-                lazy: () => import('./routes/ManifestList'),
+                lazy: ManifestList,
               },
               {
                 path: 'new',
-                lazy: () => import('./routes/NewManifest'),
+                lazy: NewManifest,
               },
               {
                 path: ':mtn/:action',
-                lazy: () => import('./routes/ManifestDetails'),
+                lazy: ManifestDetails,
               },
             ],
           },
           {
             path: '/about',
-            element: <Help />,
+            lazy: Help,
           },
         ],
       },
