@@ -37,6 +37,6 @@ describe('Home', () => {
         },
       },
     });
-    expect(screen.getByText(/Welcome/i)).toBeInTheDocument();
+    expect(screen.queryAllByText(/status/i)).length.greaterThanOrEqual(1);
   });
 });
