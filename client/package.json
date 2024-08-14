@@ -29,6 +29,9 @@
     "@tanstack/react-table": "^8.19.2",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.427.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.3.1",
@@ -39,6 +42,8 @@
     "react-toastify": "^10.0.5",
     "recharts": "^2.13.0-alpha.4",
     "sass": "^1.77.6",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0",
     "zod": "^3.23.8"
   },
