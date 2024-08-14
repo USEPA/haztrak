@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { HtForm, HtSpinner } from 'app/components/legacyUi';
 import React, { useEffect, useState } from 'react';
 import { FloatingLabel, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import { HtForm, HtSpinner } from '~/components/UI';
 import { useAuth } from '~/hooks/useAuth/useAuth';
 
 const loginSchema = z.object({

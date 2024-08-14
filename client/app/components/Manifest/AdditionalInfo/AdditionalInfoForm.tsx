@@ -1,12 +1,12 @@
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Manifest } from '~/components/Manifest';
-import { WasteLine } from '~/components/Manifest/WasteLine';
-import { HtForm } from '~/components/UI';
-import { useReadOnly } from '~/hooks/manifest';
+import { HtForm } from 'app/components/legacyUi';
 import React from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { Manifest } from '~/components/Manifest';
+import { WasteLine } from '~/components/Manifest/WasteLine';
+import { useReadOnly } from '~/hooks/manifest';
 
 export function AdditionalInfoForm() {
   const { register, control } = useFormContext<Manifest | WasteLine>();

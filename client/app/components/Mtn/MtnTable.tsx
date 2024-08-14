@@ -16,14 +16,14 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { MtnRowActions } from '~/components/Mtn/MtnRowActions';
-import { MtnSearchField } from '~/components/Mtn/MtnSearchField/MtnSearchField';
-import { MtnStatusField, StatusOption } from '~/components/Mtn/MtnStatusField/MtnStatusField';
-import { HtPageBtns, HtPageControls } from '~/components/UI';
+import { HtPageBtns, HtPageControls } from 'app/components/legacyUi';
 import React, { ChangeEvent, useState } from 'react';
 import { Button, Col, Table } from 'react-bootstrap';
 import { Link, useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
+import { MtnRowActions } from '~/components/Mtn/MtnRowActions';
+import { MtnSearchField } from '~/components/Mtn/MtnSearchField/MtnSearchField';
+import { MtnStatusField, StatusOption } from '~/components/Mtn/MtnStatusField/MtnStatusField';
 
 const mtnDetailsSchema = z.object({
   manifestTrackingNumber: z.string(),

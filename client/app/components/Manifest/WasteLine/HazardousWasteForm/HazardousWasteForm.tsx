@@ -1,12 +1,12 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { ManifestContext, ManifestContextType } from '~/components/Manifest/ManifestForm';
-import { StateWasteCodeSelect } from '~/components/Manifest/WasteLine/HazardousWasteForm/StateWasteCodeSelect';
-import { Code, WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
-import { HtForm } from '~/components/UI';
+import { HtForm } from 'app/components/legacyUi';
 import React, { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { components, StylesConfig } from 'react-select';
+import { ManifestContext, ManifestContextType } from '~/components/Manifest/ManifestForm';
+import { StateWasteCodeSelect } from '~/components/Manifest/WasteLine/HazardousWasteForm/StateWasteCodeSelect';
+import { Code, WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
 import { useGetFedWasteCodesQuery } from '~/store';
 
 interface HazardousWasteFormProps {
@@ -56,7 +56,6 @@ export function HazardousWasteForm({ epaWaste }: HazardousWasteFormProps) {
    * https://stackoverflow.com/questions/52482985/react-select-show-different-text-label-for-drop-down-and-control
    */
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const MultiValue = (props: any) => (
     <components.MultiValue {...props}>{props.data.code}</components.MultiValue>
   );

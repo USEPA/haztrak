@@ -1,10 +1,10 @@
-import { UserOrg } from '~/components/Org';
-import { RcraProfile } from '~/components/RcraProfile';
-import { HtCard, HtSpinner } from '~/components/UI';
-import { UserInfoForm } from '~/components/User';
-import { useTitle } from '~/hooks';
+import { HtCard, HtSpinner } from 'app/components/legacyUi';
 import React, { ReactElement } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import { UserOrg } from '~/components/Org';
+import { RcraProfile } from '~/components/RcraProfile';
+import { UserInfoForm } from '~/components/User';
+import { useTitle } from '~/hooks';
 import { useGetProfileQuery, useGetRcrainfoProfileQuery, useGetUserQuery } from '~/store';
 
 /**

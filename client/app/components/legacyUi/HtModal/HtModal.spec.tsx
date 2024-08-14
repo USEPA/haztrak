@@ -1,6 +1,6 @@
-import { HtModal } from '~/components/UI';
-import React from 'react';
+import { HtModal } from 'app/components/legacyUi';
 import { cleanup, render, screen } from 'app/mocks';
+import React from 'react';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 afterEach(() => {

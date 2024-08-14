@@ -1,10 +1,10 @@
-import { Manifest } from '~/components/Manifest';
-import { AddressForm } from '~/components/Manifest/Address';
-import { HtForm } from '~/components/UI';
-import { useReadOnly } from '~/hooks/manifest';
+import { HtForm } from 'app/components/legacyUi';
 import { ReactElement, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
+import { Manifest } from '~/components/Manifest';
+import { AddressForm } from '~/components/Manifest/Address';
+import { useReadOnly } from '~/hooks/manifest';
 
 /**
  * A form for the generator section of a manifest.

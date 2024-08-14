@@ -1,9 +1,9 @@
-import { Manifest, ManifestStatus } from '~/components/Manifest/manifestSchema';
-import { HtForm, InfoIconTooltip } from '~/components/UI';
-import { useManifestStatus } from '~/hooks/manifest';
+import { HtForm, InfoIconTooltip } from 'app/components/legacyUi';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { SingleValue } from 'react-select';
+import { Manifest, ManifestStatus } from '~/components/Manifest/manifestSchema';
+import { useManifestStatus } from '~/hooks/manifest';
 import { manifest } from '~/services';
 import { useGetProfileQuery } from '~/store';
 

@@ -1,8 +1,8 @@
-import { Manifest } from '~/components/Manifest';
-import { HtForm } from '~/components/UI';
+import { HtForm } from 'app/components/legacyUi';
 import React, { useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
+import { Manifest } from '~/components/Manifest';
 
 interface ContactFormProps {
   handlerType: 'generator' | 'designatedFacility';

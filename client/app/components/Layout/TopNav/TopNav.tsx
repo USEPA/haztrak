@@ -6,7 +6,7 @@ import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { NavContext, NavContextProps } from '~/components/Layout/Root';
 import { OrgSelect } from '~/components/Org/OrgSelect';
-import { Button } from '~/components/ui/Button/Button';
+import { Button } from '~/components/ui';
 import { useLogoutMutation } from '~/store';
 
 export function TopNav() {

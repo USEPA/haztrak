@@ -1,8 +1,8 @@
-import { RcraSiteType } from '~/components/Manifest/manifestSchema';
-import { HtForm } from '~/components/UI';
+import { HtForm } from 'app/components/legacyUi';
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { Control, Controller } from 'react-hook-form';
+import { RcraSiteType } from '~/components/Manifest/manifestSchema';
 
 interface SiteTypeSelectProps {
   siteType?: RcraSiteType;

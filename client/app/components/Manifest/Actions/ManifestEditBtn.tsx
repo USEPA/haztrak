@@ -1,11 +1,11 @@
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ManifestContext } from '~/components/Manifest/ManifestForm';
-import { HtButton } from '~/components/UI';
-import { useReadOnly } from '~/hooks/manifest';
+import { HtButton } from 'app/components/legacyUi';
 import React, { useContext } from 'react';
 import { ButtonProps } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { ManifestContext } from '~/components/Manifest/ManifestForm';
+import { useReadOnly } from '~/hooks/manifest';
 
 interface ManifestEditBtnProps extends ButtonProps {}
 

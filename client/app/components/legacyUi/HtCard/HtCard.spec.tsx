@@ -1,6 +1,6 @@
-import { HtCard } from '~/components/UI';
-import React from 'react';
+import { HtCard } from 'app/components/legacyUi';
 import { cleanup, render, screen } from 'app/mocks';
+import React from 'react';
 import { afterEach, describe, expect, test } from 'vitest';
 
 afterEach(() => {

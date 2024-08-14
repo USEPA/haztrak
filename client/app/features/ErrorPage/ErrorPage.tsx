@@ -1,8 +1,8 @@
-import { Error404 } from '~/components/Error';
-import { HtCard } from '~/components/UI';
+import { HtCard } from 'app/components/legacyUi';
 import React, { ReactElement } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { Error404 } from '~/components/Error';
 
 interface ErrorPageProps {
   code?: number;

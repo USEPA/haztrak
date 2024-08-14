@@ -1,14 +1,14 @@
 import { ErrorMessage } from '@hookform/error-message';
+import { HtForm } from 'app/components/legacyUi';
+import React from 'react';
+import { Col, Form, Row } from 'react-bootstrap';
+import { Controller, useFormContext } from 'react-hook-form';
+import Select from 'react-select';
 import {
   ContainerType,
   QuantityUOM,
   WasteLine,
 } from '~/components/Manifest/WasteLine/wasteLineSchema';
-import { HtForm } from '~/components/UI';
-import React from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
-import { Controller, useFormContext } from 'react-hook-form';
-import Select from 'react-select';
 
 const unitsOfMeasurements: QuantityUOM[] = [
   { code: 'P', description: 'Pounds' },

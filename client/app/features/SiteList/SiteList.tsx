@@ -1,9 +1,9 @@
-import { SiteListGroup } from '~/components/HaztrakSite';
-import { HtCard, HtSpinner } from '~/components/UI';
-import { useTitle } from '~/hooks';
+import { HtCard, HtSpinner } from 'app/components/legacyUi';
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { SiteListGroup } from '~/components/HaztrakSite';
+import { useTitle } from '~/hooks';
 import { useGetUserHaztrakSitesQuery } from '~/store';
 
 /** Returns a table displaying the Haztrak sites a user has access to.*/
