@@ -31,6 +31,7 @@ export function TopNav() {
           id="sidebarToggle"
           onClick={toggleSidebar}
           rounded
+          variant={null}
           className="tw-border-none tw-bg-transparent tw-text-white hover:tw-bg-gray-700"
         >
           <FontAwesomeIcon icon={faBars} />
