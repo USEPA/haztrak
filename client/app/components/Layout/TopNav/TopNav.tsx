@@ -2,7 +2,7 @@ import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-ba
 import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext } from 'react';
-import { Button, Col, Dropdown, Row } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { NavContext, NavContextProps } from '~/components/Layout/Root';
 import { OrgSelect } from '~/components/Org/OrgSelect';
@@ -21,58 +21,56 @@ export function TopNav() {
   };
 
   return (
-    <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex">
-      <div className="flex-grow-1">
-        <Row className="align-items-center">
-          <Col xs={12} md={5}>
-            <Button
-              aria-label="toggleSidebarNavigation"
-              aria-hidden={false}
-              id="sidebarToggle"
-              onClick={toggleSidebar}
-              variant="dark"
-              className="mx-3 rounded-circle btn-hover-dark"
-            >
-              <FontAwesomeIcon icon={faBars} />
-            </Button>
-            <Link to="/" className="p-3 ">
-              <img
-                src={logo}
-                alt="haztrak logo, hazardous waste tracking made easy."
-                width={125}
-                height={'auto'}
-                className="my-3"
-              />
-            </Link>
-          </Col>
-          <Col md={5} className="me-5 d-none d-md-block">
-            <OrgSelect />
-          </Col>
-        </Row>
+    <nav className="tw-flex tw-items-center tw-justify-between tw-bg-primary tw-px-4">
+      <div className="tw-flex tw-items-center">
+        <button
+          aria-label="toggleSidebarNavigation"
+          aria-hidden={false}
+          id="sidebarToggle"
+          onClick={toggleSidebar}
+          className="hover:bg-gray-700 tw-rounded-full tw-border-none tw-bg-transparent tw-text-white"
+        >
+          <FontAwesomeIcon icon={faBars} />
+        </button>
+        <Link to="/" className="tw-px-3">
+          <img
+            src={logo}
+            alt="haztrak logo, hazardous waste tracking made easy."
+            width={125}
+            height={'auto'}
+            className="tw-my-3"
+          />
+        </Link>
       </div>
-      <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4 btn-hover-dark rounded-circle">
-        <li className="nav-item dropdown">
+      <div className="tw-hidden tw-max-w-64 tw-grow md:tw-block">
+        <OrgSelect />
+      </div>
+      <ul className="tw-flex tw-items-center tw-space-x-4">
+        <li className="tw-relative">
           <Dropdown>
             <Dropdown.Toggle
               aria-label="userProfileDropDown"
               aria-hidden={false}
               id="navbarDropdown"
-              className="nav-link bg-transparent btn-dark btn-outline-none"
+              className="tw-border-none tw-bg-transparent tw-text-white"
             >
               <FontAwesomeIcon icon={faUser} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item as={Link} to="settings/">
-                <FontAwesomeIcon icon={faGear} className="pe-2 text-primary" />
+                <FontAwesomeIcon icon={faGear} className="tw-pe-2 tw-text-primary" />
                 Settings
               </Dropdown.Item>
               <Dropdown.Item as={Link} to="profile/">
-                <FontAwesomeIcon icon={faUser} className="pe-2 text-primary" />
+                <FontAwesomeIcon icon={faUser} className="tw-pe-2 tw-text-primary" />
                 Profile
               </Dropdown.Item>
-              <hr className="dropdown-divider" />
+              <hr className="tw-border-gray-700" />
               <Dropdown.Item onClick={handleLogout}>
-                <FontAwesomeIcon icon={faArrowRightFromBracket} className="pe-2 text-danger" />
+                <FontAwesomeIcon
+                  icon={faArrowRightFromBracket}
+                  className="tw-text-danger tw-pe-2"
+                />
                 Logout
               </Dropdown.Item>
             </Dropdown.Menu>
