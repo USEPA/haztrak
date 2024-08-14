@@ -6,6 +6,7 @@ import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { NavContext, NavContextProps } from '~/components/Layout/Root';
 import { OrgSelect } from '~/components/Org/OrgSelect';
+import { Button } from '~/components/ui/Button/Button';
 import { useLogoutMutation } from '~/store';
 
 export function TopNav() {
@@ -23,15 +24,17 @@ export function TopNav() {
   return (
     <nav className="tw-flex tw-items-center tw-justify-between tw-bg-primary tw-px-4">
       <div className="tw-flex tw-items-center">
-        <button
+        <Button
+          size="icon"
           aria-label="toggleSidebarNavigation"
           aria-hidden={false}
           id="sidebarToggle"
           onClick={toggleSidebar}
-          className="hover:bg-gray-700 tw-rounded-full tw-border-none tw-bg-transparent tw-text-white"
+          rounded
+          className="tw-border-none tw-bg-transparent tw-text-white hover:tw-bg-gray-700"
         >
           <FontAwesomeIcon icon={faBars} />
-        </button>
+        </Button>
         <Link to="/" className="tw-px-3">
           <img
             src={logo}
