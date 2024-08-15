@@ -60,6 +60,7 @@ export default defineConfig({
         '**/public/**',
         '**/*.d.ts',
         '**/index.ts',
+        '**/*.config.*',
       ],
     },
     globals: true,
