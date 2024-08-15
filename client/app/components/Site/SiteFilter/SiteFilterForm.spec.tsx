@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { cleanup, renderWithProviders } from 'app/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures/mockHandler';
-import { SiteFilterForm } from '~/components/HaztrakSite/SiteFilter/SiteFilterForm';
+import { SiteFilterForm } from '~/components/Site/SiteFilter/SiteFilterForm';
 import { useSearchParams } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 

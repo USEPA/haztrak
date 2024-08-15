@@ -1,8 +1,8 @@
 import React from 'react';
-import { HaztrakSite } from '~/components/HaztrakSite/haztrakSiteSchema';
+import { HaztrakSite } from '~/components/Site/siteSchema';
 import { ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { SiteListItemActions } from '~/components/HaztrakSite/SiteListItem/SiteListItemActions';
+import { SiteListItemActions } from '~/components/Site/SiteListItem/SiteListItemActions';
 
 interface SiteListItemProps {
   site: HaztrakSite;

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { rcraSite } from '~/components/RcraSite';
 
-const haztrakSiteSchema = z.object({
+export const siteSchema = z.object({
   name: z.string(),
   handler: rcraSite, // ToDo: rename attribute to rcraSite
 });
@@ -12,4 +12,4 @@ const haztrakSiteSchema = z.object({
  *  directly and can be extended as needed. For example, Haztrak users are given permission to
  *  haztrak sites, not RCRA sites.
  */
-export type HaztrakSite = z.infer<typeof haztrakSiteSchema>;
+export type HaztrakSite = z.infer<typeof siteSchema>;

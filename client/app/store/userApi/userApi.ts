@@ -1,4 +1,4 @@
-import { HaztrakSite } from '~/components/HaztrakSite';
+import { HaztrakSite } from 'app/components/Site';
 import { HaztrakUser } from '~/store/authSlice/auth.slice';
 import { haztrakApi, TaskResponse } from '~/store/htApi.slice';
 

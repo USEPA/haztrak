@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import React from 'react';
 import { cleanup, renderWithProviders } from 'app/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
-import { SiteListGroup } from '~/components/HaztrakSite/SiteListGroup/SiteListGroup';
+import { SiteListGroup } from '~/components/Site/SiteListGroup/SiteListGroup';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures/mockHandler';
 
 afterEach(() => {
