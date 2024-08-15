@@ -10,3 +10,14 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from './DropDown/dropdown-menu';
+
+export {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from 'app/components/ui/Sheet/Sheet';

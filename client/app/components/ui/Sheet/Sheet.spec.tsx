@@ -10,7 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from './sheet';
+} from 'app/components/ui/Sheet/Sheet';
 
 describe('Sheet component', () => {
   it('renders SheetTrigger and opens SheetContent on click', async () => {
