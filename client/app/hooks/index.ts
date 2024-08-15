@@ -3,3 +3,4 @@ export { useProgressTracker } from './useProgressTracker/useProgressTracker';
 export { useTitle } from './useTitle/useTitle';
 export { useUserSiteIds } from './useUserSiteIds/useUserSiteIds';
 export { useDebounce } from './useDebounce/useDebounce';
+export { useAuth } from './useAuth/useAuth';

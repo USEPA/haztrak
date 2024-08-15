@@ -12,7 +12,7 @@ describe('Button component', () => {
   it('renders with outline variant', () => {
     render(<Button variant="outline">Outline</Button>);
     const button = screen.getByRole('button', { name: /outline/i });
-    expect(button).toHaveClass('tw-border tw-border-input tw-bg-background');
+    expect(button).toHaveClass('tw-border tw-border-input');
   });
 
   it('renders with secondary variant', () => {

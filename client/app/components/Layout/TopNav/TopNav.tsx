@@ -1,12 +1,20 @@
 import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
-import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
+import { LogOut } from 'lucide-react';
 import React, { useContext } from 'react';
-import { Dropdown } from 'react-bootstrap';
+import { LuMenu, LuUser } from 'react-icons/lu';
+import { RiArrowDropDownFill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import { NavContext, NavContextProps } from '~/components/Layout/Root';
 import { OrgSelect } from '~/components/Org/OrgSelect';
 import { Button } from '~/components/ui';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '~/components/ui/DropDown/dropdown-menu';
+
 import { useLogoutMutation } from '~/store';
 
 export function TopNav() {
@@ -22,7 +30,7 @@ export function TopNav() {
   };
 
   return (
-    <nav className="tw-flex tw-items-center tw-justify-between tw-bg-primary tw-px-4">
+    <nav className="tw-flex tw-items-center tw-justify-between tw-bg-primary tw-px-5">
       <div className="tw-flex tw-items-center">
         <Button
           size="icon"
@@ -34,7 +42,7 @@ export function TopNav() {
           variant={null}
           className="tw-border-none tw-bg-transparent tw-text-white hover:tw-bg-gray-700"
         >
-          <FontAwesomeIcon icon={faBars} />
+          <LuMenu size={32} strokeWidth={2} />
         </Button>
         <Link to="/" className="tw-px-3">
           <img
@@ -49,38 +57,30 @@ export function TopNav() {
       <div className="tw-hidden tw-max-w-64 tw-grow md:tw-block">
         <OrgSelect />
       </div>
-      <ul className="tw-flex tw-items-center tw-space-x-4">
-        <li className="tw-relative">
-          <Dropdown>
-            <Dropdown.Toggle
-              aria-label="userProfileDropDown"
-              aria-hidden={false}
-              id="navbarDropdown"
-              className="tw-border-none tw-bg-transparent tw-text-white"
-            >
-              <FontAwesomeIcon icon={faUser} />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item as={Link} to="settings/">
-                <FontAwesomeIcon icon={faGear} className="tw-pe-2 tw-text-primary" />
-                Settings
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} to="profile/">
-                <FontAwesomeIcon icon={faUser} className="tw-pe-2 tw-text-primary" />
-                Profile
-              </Dropdown.Item>
-              <hr className="tw-border-gray-700" />
-              <Dropdown.Item onClick={handleLogout}>
-                <FontAwesomeIcon
-                  icon={faArrowRightFromBracket}
-                  className="tw-text-danger tw-pe-2"
-                />
-                Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </li>
-      </ul>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            className="tw-border-0 tw-text-white hover:tw-bg-transparent hover:tw-text-accent"
+          >
+            <RiArrowDropDownFill size={24} />
+            <LuUser size={32} />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="tw-me-5 tw-w-56">
+          <DropdownMenuItem asChild>
+            <Link to={'./profile'} relative="path">
+              <LuUser className="tw-mr-2 tw-h-4 tw-w-4 tw-text-primary" />
+              <span>Profile</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleLogout}>
+            <LogOut className="tw-mr-2 tw-h-4 tw-w-4 tw-text-destructive" />
+            <span>Log out</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </nav>
   );
 }
