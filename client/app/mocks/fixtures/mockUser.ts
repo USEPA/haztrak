@@ -1,6 +1,7 @@
 import { createMockSite } from '~/mocks/fixtures/mockHandler';
 import { HaztrakUser, Organization, RcrainfoProfile, RcrainfoProfileSite } from '~/store';
 import { HaztrakProfileResponse } from '~/store/userApi/userApi';
+import { TaskResponse } from '~/store/htApi.slice';
 
 export const DEFAULT_HAZTRAK_USER: HaztrakUser = {
   username: 'testuser1',
@@ -53,6 +54,13 @@ export function createMockProfileResponse(
     user: DEFAULT_HAZTRAK_USER.username,
     org: createMockOrg(),
     sites: [{ site: createMockSite(), eManifest: 'signer' }],
+    ...overWrites,
+  };
+}
+
+export function createMockServerTask(overWrites?: Partial<TaskResponse>): TaskResponse {
+  return {
+    taskId: '123',
     ...overWrites,
   };
 }

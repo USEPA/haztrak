@@ -15,6 +15,7 @@ export function HtSpinner({ className, size, center, ...props }: HtSpinnerProps)
   const spinner = (
     <FontAwesomeIcon
       icon={faGear}
+      data-testid="spinner"
       className={`${defaultCLasses} ${className}`}
       spin
       size={size ?? '6x'}
