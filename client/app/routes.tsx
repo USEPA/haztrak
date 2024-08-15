@@ -10,7 +10,7 @@ const SiteList = () => import('~/features/SiteList');
 const SiteDetails = () => import('~/features/SiteDetails');
 const About = () => import('~/features/about');
 const Org = () => import('~/features/org');
-const PrivateRoute = () => import('~/features/PrivateRoute');
+const PrivateRoute = () => import('~/features/PrivateRoute/PrivateRoute');
 const RegisterHero = () => import('~/features/register');
 const ManifestList = () => import('~/features/ManifestList');
 const ManifestDetails = () => import('~/features/ManifestDetails');
