@@ -26,6 +26,7 @@
     "@hookform/resolvers": "^3.7.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
+    "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@reduxjs/toolkit": "^2.2.6",
     "@tanstack/match-sorter-utils": "^8.15.1",
