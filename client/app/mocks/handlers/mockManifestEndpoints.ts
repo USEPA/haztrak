@@ -9,6 +9,32 @@ const generateRandomMTN = (): string => {
 };
 
 export const mockManifestEndpoints = [
+  /** mock GET Manifests*/
+  http.get(`${API_BASE_URL}/api/manifest`, () => {
+    return HttpResponse.json(
+      [
+        createMockManifest({ manifestTrackingNumber: '123456789ELC' }),
+        createMockManifest({ manifestTrackingNumber: '987654321ELC' }),
+      ],
+      {
+        status: 200,
+      }
+    );
+  }),
+  /** mock GET Manifests By Site*/
+  http.get(`${API_BASE_URL}/api/manifest/:siteId`, (info) => {
+    const { siteId } = info.params;
+    if (typeof siteId !== 'string') return HttpResponse.json(null, { status: 400 });
+    return HttpResponse.json(
+      [
+        createMockManifest({ manifestTrackingNumber: '123456789ELC' }),
+        createMockManifest({ manifestTrackingNumber: '987654321ELC' }),
+      ],
+      {
+        status: 200,
+      }
+    );
+  }),
   /** mock GET Manifest*/
   http.get(`${API_BASE_URL}/api/manifest/:mtn`, (info) => {
     const { mtn } = info.params;
