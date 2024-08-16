@@ -23,6 +23,10 @@ export function Profile(): ReactElement {
     return <HtSpinner center />;
   }
 
+  if (!profile || !user) {
+    return <div>Error loading profile</div>;
+  }
+
   return (
     <>
       <Container fluid className="py-2">

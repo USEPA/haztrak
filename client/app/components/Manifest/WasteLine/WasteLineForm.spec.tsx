@@ -7,9 +7,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { WasteLineForm } from './WasteLineForm';
 
 const server = setupServer(...mockUserEndpoints, ...mockWasteEndpoints);
-afterEach(() => {
-  cleanup();
-});
+afterEach(() => cleanup());
 beforeAll(() => server.listen());
 afterAll(() => server.close());
 
