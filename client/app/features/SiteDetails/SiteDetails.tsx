@@ -18,8 +18,8 @@ export function SiteDetails(): ReactElement {
   const { data, isLoading, error } = useGetUserHaztrakSiteQuery(siteId ? siteId : '');
   const navigate = useNavigate();
 
-  if (error) throw error;
   if (isLoading) return <HtSpinner center />;
+  if (error) throw new Error(error.message);
   if (data)
     return (
       <Container>

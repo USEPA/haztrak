@@ -3,7 +3,6 @@ import { createMockOrg } from '~/mocks/fixtures/mockUser';
 import { createMockHandler, createMockSite } from '../fixtures';
 
 export const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
-const mockEpaId = createMockHandler().epaSiteId;
 const mockSites = [createMockSite(), createMockSite()];
 const mockOrgs = [
   createMockOrg(),
@@ -20,8 +19,19 @@ export const mockSiteEndpoints = [
     return HttpResponse.json(mockSites, { status: 200 });
   }),
   /** Site Details*/
-  http.get(`${API_BASE_URL}/api/sites/${mockEpaId}`, () => {
-    return HttpResponse.json(mockSites[0], { status: 200 });
+  http.get(`${API_BASE_URL}/api/sites/:siteId`, (info) => {
+    const { siteId } = info.params;
+    if (typeof siteId !== 'string')
+      return HttpResponse.json({ message: 'Invalid site ID' }, { status: 400 });
+    return HttpResponse.json(
+      createMockSite({
+        handler: {
+          ...createMockHandler(),
+          epaSiteId: siteId,
+        },
+      }),
+      { status: 200 }
+    );
   }),
   /** Org list*/
   http.get(`${API_BASE_URL}/api/orgs`, () => {
