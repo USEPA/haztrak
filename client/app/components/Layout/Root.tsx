@@ -23,7 +23,7 @@ export function Root() {
       <div>
         <TopNav />
         <Sidebar />
-        <Container fluid>
+        <Container fluid className="tw-mt-20">
           <ErrorBoundary>
             <Suspense fallback={<HtSpinner center className="my-auto" />}>
               <Outlet />
