@@ -1,6 +1,6 @@
-import { Handler, RcraSiteType } from '~/components/Manifest/manifestSchema';
-import { HtModal } from '~/components/UI';
+import { HtModal } from 'app/components/legacyUi';
 import React from 'react';
+import { Handler, RcraSiteType } from '~/components/Manifest/manifestSchema';
 import { QuickerSignForm } from './QuickerSignForm';
 
 interface QuickerSignModalProps {

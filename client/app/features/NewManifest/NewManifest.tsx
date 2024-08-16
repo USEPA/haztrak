@@ -1,14 +1,14 @@
 import { createSelector } from '@reduxjs/toolkit';
+import { HtCard, HtSpinner } from 'app/components/legacyUi';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Col, Container, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { HaztrakSite } from '~/components/HaztrakSite';
+import { HaztrakSite } from 'app/components/Site';
 import { Manifest, ManifestForm } from '~/components/Manifest';
 import { RcraSiteType } from '~/components/Manifest/manifestSchema';
 import { SiteSelect, SiteTypeSelect } from '~/components/Manifest/SiteSelect';
 import { RcraSite } from '~/components/RcraSite';
-import { HtCard, HtSpinner } from '~/components/UI';
 import { useTitle } from '~/hooks';
 import { useReadOnly } from '~/hooks/manifest';
 import { useGetUserHaztrakSitesQuery } from '~/store';

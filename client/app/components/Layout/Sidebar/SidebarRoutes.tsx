@@ -1,17 +1,13 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import {
-  faCircleQuestion,
-  faFileLines,
-  faLocationDot,
-  faNetworkWired,
-  faRecycle,
-  faTachometerAlt,
-} from '@fortawesome/free-solid-svg-icons';
+import { LuFactory, LuFileCode2, LuHelpCircle } from 'react-icons/lu';
+import { IconType } from 'react-icons';
+import { TbBinaryTree } from 'react-icons/tb';
+import { RiGovernmentFill } from 'react-icons/ri';
+import { IoIosDocument } from 'react-icons/io';
+import { FaGithub } from 'react-icons/fa';
 
 export interface Route {
   id: string;
-  icon: IconProp;
+  icon: IconType;
   text: string;
   url: string;
   description?: string;
@@ -21,14 +17,14 @@ export interface Route {
 export interface RoutesSection {
   name: string;
   id: string;
-  icon?: IconProp;
+  icon?: IconType;
   routes: Route[];
 }
 
 export const routes: (Route | RoutesSection)[] = [
   {
     id: 'Dashboard',
-    icon: faTachometerAlt,
+    icon: TbBinaryTree,
     text: 'Dashboard',
     url: '/',
   },
@@ -38,13 +34,13 @@ export const routes: (Route | RoutesSection)[] = [
     routes: [
       {
         id: 'mySites',
-        icon: faLocationDot,
+        icon: LuFactory,
         text: 'My Sites',
         url: '/site',
       },
       {
         id: 'rcraInfo',
-        icon: faRecycle,
+        icon: RiGovernmentFill,
         text: 'RCRAInfo',
         url: import.meta.env.DEV ? 'https://rcrainfopreprod.epa.gov' : 'https://rcrainfo.epa.gov',
         description: 'RCRAInfo',
@@ -58,7 +54,7 @@ export const routes: (Route | RoutesSection)[] = [
     routes: [
       {
         id: 'My Manifests',
-        icon: faFileLines,
+        icon: IoIosDocument,
         text: 'My Manifests',
         url: '/manifest',
         description: 'All hazardous waste manifest',
@@ -71,14 +67,14 @@ export const routes: (Route | RoutesSection)[] = [
     routes: [
       {
         id: 'About',
-        icon: faCircleQuestion,
+        icon: LuHelpCircle,
         text: 'About',
         url: '/about',
         description: 'About Haztrak',
       },
       {
         id: 'openApi',
-        icon: faNetworkWired,
+        icon: LuFileCode2,
         text: 'OpenAPI Docs',
         url: `${import.meta.env.VITE_HT_API_URL}/api/schema/swagger-ui`,
         description: 'API Documentation',
@@ -86,7 +82,7 @@ export const routes: (Route | RoutesSection)[] = [
       },
       {
         id: 'reportAnIssue',
-        icon: faGithub,
+        icon: FaGithub,
         text: 'Report an Issue',
         url: `${import.meta.env.VITE_GITHUB_URL}/issues`,
         description: 'API Documentation',

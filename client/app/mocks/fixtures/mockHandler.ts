@@ -1,4 +1,4 @@
-import { HaztrakSite } from '~/components/HaztrakSite';
+import { HaztrakSite } from 'app/components/Site';
 import { Handler } from '~/components/Manifest';
 import { Transporter } from '~/components/Manifest/Transporter';
 import { RcraAddress, RcraSite } from '~/components/RcraSite';

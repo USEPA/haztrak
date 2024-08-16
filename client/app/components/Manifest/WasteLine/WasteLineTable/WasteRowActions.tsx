@@ -59,7 +59,7 @@ function WasteRowActions({
         toggleWLModal();
       },
       disabled: false,
-      label: `remove waste line ${index}`,
+      label: `edit waste line ${index}`,
     },
     {
       text: open ? 'Close' : 'Details',

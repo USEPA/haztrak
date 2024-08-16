@@ -1,10 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useEffect, useState } from 'react';
+import { HtForm, HtSpinner } from 'app/components/legacyUi';
+import React from 'react';
 import { FloatingLabel, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import { HtForm, HtSpinner } from '~/components/UI';
 import { useAuth } from '~/hooks/useAuth/useAuth';
 
 const loginSchema = z.object({
@@ -16,32 +15,17 @@ type LoginSchema = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
   const {
-    user,
     login: { login, isLoading, error },
   } = useAuth();
-  const [loginError, setLoginError] = useState<string | undefined>(undefined);
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginSchema>({ resolver: zodResolver(loginSchema) });
 
-  useEffect(() => {
-    if (user) {
-      navigate('/');
-    }
-  }, [user]);
-
   async function onSubmit({ username, password }: LoginSchema) {
     login({ username, password });
   }
-
-  useEffect(() => {
-    if (error) {
-      setLoginError('Error logging in');
-    }
-  }, [error]);
 
   return (
     <HtForm onSubmit={handleSubmit(onSubmit)}>
@@ -71,7 +55,7 @@ export function LoginForm() {
         <span>Login </span>
         {isLoading && <HtSpinner size="lg" className="text-reset" />}
       </button>
-      {loginError && <div className="alert alert-danger mt-3 mb-0">{loginError}</div>}
+      {error && <div className="alert alert-danger mt-3 mb-0">{error.message}</div>}
     </HtForm>
   );
 }

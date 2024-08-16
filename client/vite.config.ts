@@ -60,6 +60,8 @@ export default defineConfig({
         '**/public/**',
         '**/*.d.ts',
         '**/index.ts',
+        '**/*.config.*',
+        '**/components/Charts/ManifestStatusPieChart/ManifestStatusPieChart.tsx',
       ],
     },
     globals: true,

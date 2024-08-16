@@ -1,12 +1,12 @@
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ManifestContext } from '~/components/Manifest/ManifestForm';
-import { Manifest } from '~/components/Manifest/manifestSchema';
-import { HtButton } from '~/components/UI';
-import { useReadOnly } from '~/hooks/manifest';
+import { HtButton } from 'app/components/legacyUi';
 import React, { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { ManifestContext } from '~/components/Manifest/ManifestForm';
+import { Manifest } from '~/components/Manifest/manifestSchema';
+import { useReadOnly } from '~/hooks/manifest';
 
 export function ManifestCancelBtn() {
   const form = useFormContext<Manifest>();

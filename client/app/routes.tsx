@@ -8,7 +8,7 @@ const Dashboard = () => import('~/features/dashboard');
 const Profile = () => import('~/features/profile');
 const SiteList = () => import('~/features/SiteList');
 const SiteDetails = () => import('~/features/SiteDetails');
-const Help = () => import('~/features/about');
+const About = () => import('~/features/about');
 const Org = () => import('~/features/org');
 const PrivateRoute = () => import('~/features/PrivateRoute');
 const RegisterHero = () => import('~/features/register');
@@ -19,19 +19,11 @@ const Layout = () => import('./components/Layout');
 
 export const router = createBrowserRouter([
   {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/register',
-    lazy: RegisterHero,
-  },
-  {
-    path: '',
+    path: '/',
     lazy: PrivateRoute,
     children: [
       {
-        path: '/',
+        path: '',
         lazy: Layout,
         children: [
           {
@@ -44,11 +36,11 @@ export const router = createBrowserRouter([
                 lazy: Dashboard,
               },
               {
-                path: '/profile',
+                path: 'profile',
                 lazy: Profile,
               },
               {
-                path: '/site',
+                path: 'site',
                 children: [
                   {
                     path: '',
@@ -80,7 +72,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: '/manifest',
+            path: 'manifest',
             children: [
               {
                 path: '',
@@ -96,13 +88,21 @@ export const router = createBrowserRouter([
               },
             ],
           },
-          {
-            path: '/about',
-            lazy: Help,
-          },
         ],
       },
     ],
+  },
+  {
+    path: 'login',
+    element: <Login />,
+  },
+  {
+    path: 'register',
+    lazy: RegisterHero,
+  },
+  {
+    path: 'about',
+    lazy: About,
   },
   {
     path: '*',

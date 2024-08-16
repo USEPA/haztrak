@@ -1,15 +1,15 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { ContactForm, PhoneForm } from '~/components/Manifest/Contact';
-import { Handler, Manifest } from '~/components/Manifest/manifestSchema';
-import { QuickSignBtn } from '~/components/Manifest/QuickerSign';
-import { RcraSiteDetails } from '~/components/RcraSite';
-import { HtButton, HtSpinner } from '~/components/UI';
-import { useReadOnly } from '~/hooks/manifest';
-import { useHandlerSearchConfig } from '~/hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
+import { HtButton, HtSpinner } from 'app/components/legacyUi';
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Col, Stack } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
+import { ContactForm, PhoneForm } from '~/components/Manifest/Contact';
+import { Handler, Manifest } from '~/components/Manifest/manifestSchema';
+import { QuickSignBtn } from '~/components/Manifest/QuickerSign';
+import { RcraSiteDetails } from '~/components/RcraSite';
+import { useReadOnly } from '~/hooks/manifest';
+import { useHandlerSearchConfig } from '~/hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
 import { useGetRcrainfoSiteQuery } from '~/store';
 import { GeneratorForm } from './GeneratorForm';
 

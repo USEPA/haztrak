@@ -2,13 +2,14 @@ import { render, renderHook, RenderHookResult, RenderOptions } from '@testing-li
 import React, { PropsWithChildren, ReactElement } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, MemoryRouterProps } from 'react-router-dom';
 import { AppStore, RootState, setupStore } from '~/store';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: Partial<RootState>;
   store?: AppStore;
   useFormProps?: UseFormProps;
+  routerProps?: MemoryRouterProps;
 }
 
 /**
@@ -34,6 +35,7 @@ export function renderWithProviders(
     preloadedState = {}, // an object with partial slices of our redux state
     store = setupStore(preloadedState), // Automatically create a store instance if no store was passed in
     useFormProps = {}, // react-hook-form useForm function options
+    routerProps,
     ...renderOptions // react-testing library function options
   }: ExtendedRenderOptions = {} // default to empty object
 ) {
@@ -41,7 +43,7 @@ export function renderWithProviders(
     const formMethods = useForm(useFormProps);
     return (
       <Provider store={store}>
-        <MemoryRouter>
+        <MemoryRouter {...routerProps}>
           <FormProvider {...formMethods}>{children}</FormProvider>
         </MemoryRouter>
       </Provider>

@@ -3,6 +3,7 @@ import { createMockHaztrakUser } from '~/mocks/fixtures';
 import {
   createMockProfileResponse,
   createMockRcrainfoProfileResponse,
+  createMockServerTask,
 } from '~/mocks/fixtures/mockUser';
 import { HaztrakUser } from '~/store/authSlice/auth.slice';
 import { AuthSuccessResponse } from '~/store/userApi/userApi';
@@ -50,6 +51,33 @@ export const mockUserEndpoints = [
       return HttpResponse.json({}, { status: 404 });
     }
     const rcrainfoProfile = createMockRcrainfoProfileResponse({ user: username });
+    return HttpResponse.json(
+      {
+        ...rcrainfoProfile,
+      },
+      { status: 200 }
+    );
+  }),
+  /** POST RCRAInfo profile Sync*/
+  http.post(`${API_BASE_URL}/api/rcrainfo-profile/sync`, () => {
+    const mockTask = createMockServerTask();
+    return HttpResponse.json(
+      {
+        ...mockTask,
+      },
+      { status: 200 }
+    );
+  }),
+  /** PUT RCRAInfo profile */
+  http.put(`${API_BASE_URL}/api/rcrainfo-profile/:username`, (info) => {
+    const { username } = info.params;
+    if (typeof username !== 'string') {
+      return HttpResponse.json({}, { status: 404 });
+    }
+    const rcrainfoProfile = createMockRcrainfoProfileResponse({
+      user: username,
+      ...info.request.body,
+    });
     return HttpResponse.json(
       {
         ...rcrainfoProfile,

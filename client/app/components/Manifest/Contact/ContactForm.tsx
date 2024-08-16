@@ -1,10 +1,10 @@
-import { Manifest } from '~/components/Manifest';
-import { PhoneForm } from '~/components/Manifest/Contact/PhoneForm';
-import { HtForm } from '~/components/UI';
-import { useReadOnly } from '~/hooks/manifest';
+import { HtForm } from 'app/components/legacyUi';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
+import { Manifest } from '~/components/Manifest';
+import { PhoneForm } from '~/components/Manifest/Contact/PhoneForm';
+import { useReadOnly } from '~/hooks/manifest';
 
 interface ContactFormProps {
   handlerType: 'generator' | 'designatedFacility';

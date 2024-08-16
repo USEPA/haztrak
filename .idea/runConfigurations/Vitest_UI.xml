@@ -4,7 +4,7 @@
     <node-interpreter value="project" />
     <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
     <working-dir value="$PROJECT_DIR$/client" />
-    <vitest-options value="--ui" />
+    <vitest-options value="--ui --coverage.enabled=true" />
     <envs>
       <env name="VITE_HT_API_URL" value="http://localhost:8000" />
       <env name="VITE_HT_ENV" value="DEV" />

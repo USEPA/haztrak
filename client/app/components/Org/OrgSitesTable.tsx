@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Table } from 'react-bootstrap';
-import { HaztrakSite } from '~/components/HaztrakSite';
+import { HaztrakSite } from 'app/components/Site';
 import { Organization, useGetOrgSitesQuery } from '~/store';
 
 interface OrgSitesProps {

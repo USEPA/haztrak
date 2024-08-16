@@ -1,13 +1,12 @@
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HtSpinner } from '~/components/UI';
+import { HtSpinner } from 'app/components/legacyUi';
 import React from 'react';
 import { Badge } from 'react-bootstrap';
 
 interface RcrainfoInfoStatusProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   error: any;
   isFetching: boolean;
   rcraInfoIntegrated: boolean;

@@ -1,9 +1,8 @@
+import { HtSpinner } from 'app/components/legacyUi';
+import { useParams } from 'react-router-dom';
 import { ManifestForm } from '~/components/Manifest';
-import { HtSpinner } from '~/components/UI';
 import { useTitle } from '~/hooks';
 import { useReadOnly } from '~/hooks/manifest';
-import React from 'react';
-import { useParams } from 'react-router-dom';
 import { useGetManifestQuery } from '~/store';
 
 export function ManifestDetails() {

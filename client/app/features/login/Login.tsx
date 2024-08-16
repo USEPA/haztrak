@@ -1,8 +1,9 @@
 import logo from '/assets/img/haztrak-logos/low-resolution/svg/haztrak-low-resolution-logo-black-on-transparent-background.svg';
-import { LoginForm } from '~/components/Auth';
-import { useTitle } from '~/hooks';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { LoginForm } from '~/components/Auth';
+import { useAuth, useTitle } from '~/hooks';
 
 /**
  * Haztrak Login component, redirects if user is already logged in
@@ -10,6 +11,15 @@ import { Container } from 'react-bootstrap';
  */
 export function Login(): ReactElement {
   useTitle('Login');
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (user) {
+      navigate(location.state?.from ? location.state.from : '/', { replace: true });
+    }
+  }, [user]);
 
   return (
     <Container fluid className="bg-light vh-100 align-items-center py-5 d-flex">

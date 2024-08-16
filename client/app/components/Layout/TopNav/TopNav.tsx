@@ -1,11 +1,20 @@
 import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
-import { faArrowRightFromBracket, faBars, faGear, faUser } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
+import { LogOut } from 'lucide-react';
 import React, { useContext } from 'react';
-import { Button, Col, Dropdown, Row } from 'react-bootstrap';
+import { LuMenu, LuUser } from 'react-icons/lu';
+import { RiArrowDropDownFill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import { NavContext, NavContextProps } from '~/components/Layout/Root';
 import { OrgSelect } from '~/components/Org/OrgSelect';
+import { Button } from '~/components/ui';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '~/components/ui/DropDown/dropdown-menu';
+
 import { useLogoutMutation } from '~/store';
 
 export function TopNav() {
@@ -21,64 +30,57 @@ export function TopNav() {
   };
 
   return (
-    <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark d-flex">
-      <div className="flex-grow-1">
-        <Row className="align-items-center">
-          <Col xs={12} md={5}>
-            <Button
-              aria-label="toggleSidebarNavigation"
-              aria-hidden={false}
-              id="sidebarToggle"
-              onClick={toggleSidebar}
-              variant="dark"
-              className="mx-3 rounded-circle btn-hover-dark"
-            >
-              <FontAwesomeIcon icon={faBars} />
-            </Button>
-            <Link to="/" className="p-3 ">
-              <img
-                src={logo}
-                alt="haztrak logo, hazardous waste tracking made easy."
-                width={125}
-                height={'auto'}
-                className="my-3"
-              />
-            </Link>
-          </Col>
-          <Col md={5} className="me-5 d-none d-md-block">
-            <OrgSelect />
-          </Col>
-        </Row>
+    <nav className="tw-flex tw-items-center tw-justify-between tw-bg-primary tw-px-5">
+      <div className="tw-flex tw-items-center">
+        <Button
+          size="icon"
+          aria-label="toggleSidebarNavigation"
+          aria-hidden={false}
+          id="sidebarToggle"
+          onClick={toggleSidebar}
+          rounded
+          variant={null}
+          className="tw-border-none tw-bg-transparent tw-text-white hover:tw-bg-gray-700"
+        >
+          <LuMenu size={32} strokeWidth={2} />
+        </Button>
+        <Link to="/" className="tw-px-3">
+          <img
+            src={logo}
+            alt="haztrak logo, hazardous waste tracking made easy."
+            width={125}
+            height={'auto'}
+            className="tw-my-3"
+          />
+        </Link>
       </div>
-      <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4 btn-hover-dark rounded-circle">
-        <li className="nav-item dropdown">
-          <Dropdown>
-            <Dropdown.Toggle
-              aria-label="userProfileDropDown"
-              aria-hidden={false}
-              id="navbarDropdown"
-              className="nav-link bg-transparent btn-dark btn-outline-none"
-            >
-              <FontAwesomeIcon icon={faUser} />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item as={Link} to="settings/">
-                <FontAwesomeIcon icon={faGear} className="pe-2 text-primary" />
-                Settings
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} to="profile/">
-                <FontAwesomeIcon icon={faUser} className="pe-2 text-primary" />
-                Profile
-              </Dropdown.Item>
-              <hr className="dropdown-divider" />
-              <Dropdown.Item onClick={handleLogout}>
-                <FontAwesomeIcon icon={faArrowRightFromBracket} className="pe-2 text-danger" />
-                Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </li>
-      </ul>
+      <div className="tw-hidden tw-max-w-64 tw-grow md:tw-block">
+        <OrgSelect />
+      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            className="tw-border-0 tw-text-white hover:tw-bg-transparent hover:tw-text-accent"
+          >
+            <RiArrowDropDownFill size={24} />
+            <LuUser size={32} />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="tw-me-5 tw-w-56">
+          <DropdownMenuItem asChild>
+            <Link to={'./profile'} relative="path">
+              <LuUser className="tw-mr-2 tw-h-4 tw-w-4 tw-text-primary" />
+              <span>Profile</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleLogout}>
+            <LogOut className="tw-mr-2 tw-h-4 tw-w-4 tw-text-destructive" />
+            <span>Log out</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </nav>
   );
 }

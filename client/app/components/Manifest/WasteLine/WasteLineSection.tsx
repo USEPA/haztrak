@@ -1,12 +1,12 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { Manifest } from '~/components/Manifest/manifestSchema';
-import { WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
-import { WasteLineTable } from '~/components/Manifest/WasteLine/WasteLineTable';
-import { HtButton } from '~/components/UI';
-import { useReadOnly } from '~/hooks/manifest';
+import { HtButton } from 'app/components/legacyUi';
 import React from 'react';
 import { Alert } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { Manifest } from '~/components/Manifest/manifestSchema';
+import { WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
+import { WasteLineTable } from '~/components/Manifest/WasteLine/WasteLineTable';
+import { useReadOnly } from '~/hooks/manifest';
 
 interface WasteLineSectionProps {
   toggleWlFormShow: () => void;
