@@ -3,7 +3,6 @@ import { http, HttpResponse } from 'msw';
 import { createMockManifest } from '../fixtures';
 
 export const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
-const mockMTN = createMockManifest().manifestTrackingNumber;
 
 const generateRandomMTN = (): string => {
   return Math.floor(100000000 + Math.random() * 900000000).toString();
@@ -11,8 +10,10 @@ const generateRandomMTN = (): string => {
 
 export const mockManifestEndpoints = [
   /** mock GET Manifest*/
-  http.get(`${API_BASE_URL}/api/manifest/${mockMTN}`, () => {
-    return HttpResponse.json(createMockManifest(), { status: 200 });
+  http.get(`${API_BASE_URL}/api/manifest/:mtn`, (info) => {
+    const { mtn } = info.params;
+    if (typeof mtn !== 'string') return HttpResponse.json(null, { status: 400 });
+    return HttpResponse.json(createMockManifest({ manifestTrackingNumber: mtn }), { status: 200 });
   }),
   /** Mock create local Manifests*/
   http.post(`${API_BASE_URL}/api/manifest`, async (info) => {
