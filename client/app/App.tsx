@@ -1,5 +1,5 @@
 import { HtSpinner } from 'app/components/legacyUi';
-import React, { ReactElement, Suspense } from 'react';
+import { ReactElement, Suspense } from 'react';
 import { Container } from 'react-bootstrap';
 import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';

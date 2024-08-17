@@ -17,7 +17,7 @@ const data: Entry[] = [
   { name: 'Pending', value: 40, searchParam: 'pending' },
   { name: 'Scheduled', value: 39, searchParam: 'scheduled' },
   { name: 'In Transit', value: 33, searchParam: 'intransit' },
-  { name: 'Ready for TSDF Signature', value: 21, searchParam: 'readyforsignature' },
+  { name: 'Ready Signature', value: 21, searchParam: 'readyforsignature' },
 ];
 
 const inactiveAlpha = '1';
@@ -54,7 +54,6 @@ const calculateCoordinates = (
   };
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderCustomLabel = (props: any): ReactElement | null => {
   const { cx, cy, midAngle, outerRadius, value, hover, activeIndex, index } = props;
   const { sin, cos } = calculateTrig(midAngle);
@@ -84,7 +83,6 @@ const renderCustomLabel = (props: any): ReactElement | null => {
   return activeIndex !== index ? labelElement : null;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderOuterRing = (props: any): ReactElement => {
   const { cx, cy, midAngle, outerRadius, startAngle, endAngle, fill, payload, percent } = props;
   const { sin, cos } = calculateTrig(midAngle);
@@ -147,7 +145,7 @@ const renderOuterRing = (props: any): ReactElement => {
 };
 
 /** Render the currently focused pie slice*/
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 const renderActiveShape = (props: any): ReactElement => {
   const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, onClick } = props;
   const { sin, cos } = calculateTrig(midAngle);
@@ -173,62 +171,38 @@ const renderActiveShape = (props: any): ReactElement => {
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderLegend = (props: any): ReactElement => {
   const { payload, handleMouseEnter, handleMouseLeave, handleClick } = props;
 
   return (
-    <div
-      className="recharts-legend-wrapper"
-      style={{ position: 'absolute', width: '626px', height: '36px', left: '5px', bottom: '5px' }}
-    >
-      <ul
-        className="recharts-default-legend"
-        style={{ padding: '0px', margin: '10px', textAlign: 'center' }}
-      >
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
-        {payload.map((entry: any, index: number) => {
-          const dataEntry = data.find((d) => d.name === entry.value);
-          const activeAlphaColor = entry.color.slice(
-            entry.color.lastIndexOf(' ') + 1,
-            entry.color.length - 1
-          );
-          const activeLegend = activeAlphaColor === activeAlpha;
-          const baseStyle = { color: entry.color, paddingBottom: '2px' };
-          const spanStyle = activeLegend ? { ...baseStyle, borderBottom: `2px solid` } : baseStyle;
+    <div className="tw-relative tw-flex tw-flex-wrap tw-justify-center">
+      {payload.map((entry: any, index: number) => {
+        const dataEntry = data.find((d) => d.name === entry.value);
+        const activeAlphaColor = entry.color.slice(
+          entry.color.lastIndexOf(' ') + 1,
+          entry.color.length - 1
+        );
+        const activeLegend = activeAlphaColor === activeAlpha;
+        const baseStyle = { color: entry.color, paddingBottom: '2px' };
+        const spanStyle = activeLegend ? { ...baseStyle, borderBottom: `2px solid` } : baseStyle;
 
-          return (
-            <button
-              key={`item-${index}`}
-              onMouseEnter={() => handleMouseEnter(null, index)}
-              onMouseLeave={handleMouseLeave}
-              onClick={handleClick(dataEntry)}
-              className={`recharts-legend-item legend-item-${index}`}
-              style={{ display: 'inline-block', marginRight: '10px' }}
-            >
-              <svg
-                className="recharts-surface"
-                width="14"
-                height="14"
-                style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }}
-                viewBox="0 0 32 32"
-              >
-                <title></title>
-                <desc></desc>
-                <path
-                  stroke="none"
-                  fill={entry.color}
-                  d="M0,4h32v24h-32z"
-                  className="recharts-legend-icon"
-                />
-              </svg>
-              <span className="recharts-legend-item-text" style={spanStyle}>
-                {entry.value}
-              </span>
-            </button>
-          );
-        })}
-      </ul>
+        return (
+          <button
+            key={`item-${index}`}
+            onMouseEnter={() => handleMouseEnter(null, index)}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleClick(dataEntry)}
+            className="tw-me-4 tw-inline-block"
+          >
+            <svg className="tw-me-4 tw-inline-block tw-h-4  tw-align-middle" viewBox="0 0 32 32">
+              <title></title>
+              <desc></desc>
+              <path stroke="none" fill={entry.color} d="M0,4h32v24h-32z" />
+            </svg>
+            <span style={spanStyle}>{entry.value}</span>
+          </button>
+        );
+      })}
     </div>
   );
 };
@@ -239,7 +213,6 @@ export function ManifestStatusPieChart() {
   const navigate = useNavigate();
 
   const handleMouseEnter = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (_: any, index: number) => {
       setAnimationIsActive(false); // stop animation if impatient user
       setActiveIndex(index);
@@ -252,7 +225,6 @@ export function ManifestStatusPieChart() {
     setActiveIndex(-1);
   }, [setActiveIndex]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderLabel = (props: any) => {
     return renderCustomLabel({ ...props, hover: false, activeIndex: activeIndex });
   };
@@ -268,7 +240,6 @@ export function ManifestStatusPieChart() {
     <ResponsiveContainer minWidth={100} minHeight={300} height={'10%'}>
       <PieChart width={400} height={400}>
         <Legend
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           content={(props: any) =>
             renderLegend({ ...props, handleMouseEnter, handleMouseLeave, handleClick })
           }
