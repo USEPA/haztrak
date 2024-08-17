@@ -21,3 +21,5 @@ export {
   SheetTitle,
   SheetTrigger,
 } from 'app/components/ui/Sheet/Sheet';
+
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './Card/Card';

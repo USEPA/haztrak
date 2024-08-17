@@ -1,10 +1,9 @@
-import { HtCard } from 'app/components/legacyUi';
-import React from 'react';
+import { Card, CardContent } from '~/components/ui';
 
 export function HaztrakLicense() {
   return (
-    <HtCard className="shadow-lg mx-5 my-3 bg-white p-2">
-      <HtCard.Body>
+    <Card className="shadow-lg mx-5 my-3 bg-white p-2">
+      <CardContent>
         <div className="d-flex flex-column text-muted">
           <p className="text-start">MIT License</p>
           <p className="text-start">Copyright (c) 2022 U.S. Environmental Protection Agency</p>
@@ -29,7 +28,7 @@ export function HaztrakLicense() {
             OTHER DEALINGS IN THE SOFTWARE.
           </p>
         </div>
-      </HtCard.Body>
-    </HtCard>
+      </CardContent>
+    </Card>
   );
 }
