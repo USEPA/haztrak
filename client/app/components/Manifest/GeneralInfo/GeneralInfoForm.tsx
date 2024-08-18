@@ -1,4 +1,4 @@
-import { HtForm, InfoIconTooltip } from 'app/components/legacyUi';
+import { HtForm, InfoIconTooltip } from '~/components/legacyUi';
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';

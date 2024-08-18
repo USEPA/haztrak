@@ -1,6 +1,6 @@
 import { faFileSignature, faPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HtForm } from 'app/components/legacyUi';
+import { HtForm } from '~/components/legacyUi';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, ListGroup, Row, Stack } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';

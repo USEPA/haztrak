@@ -1,4 +1,4 @@
-import { HtModal } from 'app/components/legacyUi';
+import { HtModal } from '~/components/legacyUi';
 import React from 'react';
 import { Handler, RcraSiteType } from '~/components/Manifest/manifestSchema';
 import { QuickerSignForm } from './QuickerSignForm';

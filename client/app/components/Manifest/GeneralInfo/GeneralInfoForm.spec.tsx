@@ -1,5 +1,5 @@
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'app/mocks';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
 import { GeneralInfoForm } from './GeneralInfoForm';
 

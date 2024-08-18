@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { HtTooltip } from 'app/components/legacyUi';
+import { HtTooltip } from './HtTooltip';
 import React from 'react';
 import { afterEach, describe, expect, test } from 'vitest';
 

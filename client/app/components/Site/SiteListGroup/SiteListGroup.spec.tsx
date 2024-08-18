@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import React from 'react';
-import { cleanup, renderWithProviders } from 'app/mocks';
+import { cleanup, renderWithProviders } from '~/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
 import { SiteListGroup } from '~/components/Site/SiteListGroup/SiteListGroup';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures/mockHandler';
@@ -9,10 +9,11 @@ afterEach(() => {
   cleanup();
 });
 
-const mySite2Handler = createMockHandler({ epaSiteId: 'TXD0192837465' });
-
 const mySite1 = createMockSite();
-const mySite2 = createMockSite({ name: 'My Second Site', handler: mySite2Handler });
+const mySite2 = createMockSite({
+  name: 'My Second Site',
+  handler: createMockHandler({ epaSiteId: 'TXD0192837465' }),
+});
 
 const mockSites = [mySite1, mySite2];
 

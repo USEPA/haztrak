@@ -16,7 +16,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { HtPageBtns, HtPageControls } from 'app/components/legacyUi';
+import { HtPageBtns, HtPageControls } from '~/components/legacyUi';
 import React, { ChangeEvent, useState } from 'react';
 import { Button, Col, Table } from 'react-bootstrap';
 import { Link, useSearchParams } from 'react-router-dom';

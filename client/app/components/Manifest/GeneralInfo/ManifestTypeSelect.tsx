@@ -1,4 +1,4 @@
-import { HtForm } from 'app/components/legacyUi';
+import { HtForm } from '~/components/legacyUi';
 import React, { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { SingleValue } from 'react-select';

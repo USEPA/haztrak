@@ -1,4 +1,4 @@
-import { HtCard } from 'app/components/legacyUi';
+import { HtCard } from '~/components/legacyUi';
 import React, { ReactElement } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';

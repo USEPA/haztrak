@@ -4,9 +4,9 @@ import { UserInfoForm } from '~/components/User/UserInfoForm';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { HaztrakUser, ProfileSlice } from '~/store';
-import { renderWithProviders, screen } from 'app/mocks';
+import { renderWithProviders, screen } from '~/mocks';
 import { createMockHaztrakUser } from '~/mocks/fixtures';
-import { mockUserEndpoints } from 'app/mocks/handlers';
+import { mockUserEndpoints } from '~/mocks/handlers';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 
 const server = setupServer(...mockUserEndpoints);

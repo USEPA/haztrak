@@ -1,5 +1,5 @@
-import { cleanup, renderWithProviders, screen } from 'app/mocks';
-import { mockUserEndpoints } from 'app/mocks/handlers';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
+import { mockUserEndpoints } from '~/mocks/handlers';
 import { setupServer } from 'msw/node';
 import React, { createElement } from 'react';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';

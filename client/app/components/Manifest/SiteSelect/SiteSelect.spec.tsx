@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { SiteSelect } from '~/components/Manifest/SiteSelect/SiteSelect';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { renderWithProviders } from 'app/mocks';
+import { renderWithProviders } from '~/mocks';
 import { describe, expect, test } from 'vitest';
 
 function TestComponent() {

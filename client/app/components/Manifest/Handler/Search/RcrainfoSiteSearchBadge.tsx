@@ -1,6 +1,6 @@
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HtSpinner } from 'app/components/legacyUi';
+import { HtSpinner } from '~/components/legacyUi';
 import React from 'react';
 import { Badge } from 'react-bootstrap';
 

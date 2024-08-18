@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, waitFor } from '@testing-library/react';
 import React, { useState } from 'react';
-import { render, screen } from 'app/mocks';
+import { render, screen } from '~/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
 import { usePagination } from './usePagination';
 

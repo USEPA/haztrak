@@ -1,5 +1,5 @@
-import { HtPaginate } from 'app/components/legacyUi';
-import { cleanup, render, screen } from 'app/mocks';
+import { HtPaginate } from './HtPaginate';
+import { cleanup, render, screen } from '~/mocks';
 import React from 'react';
 import { afterEach, describe, expect, test } from 'vitest';
 

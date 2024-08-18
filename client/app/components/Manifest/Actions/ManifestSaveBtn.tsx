@@ -1,6 +1,6 @@
 import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HtButton } from 'app/components/legacyUi';
+import { HtButton } from '~/components/legacyUi';
 import React from 'react';
 import { ButtonProps } from 'react-bootstrap';
 import { useReadOnly } from '~/hooks/manifest';

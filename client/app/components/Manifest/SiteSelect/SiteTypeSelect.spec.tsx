@@ -3,12 +3,12 @@ import { RcraSiteType } from '~/components/Manifest/manifestSchema';
 import { SiteTypeSelect } from '~/components/Manifest/SiteSelect/SiteTypeSelect';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { renderWithProviders } from 'app/mocks';
+import { renderWithProviders } from '~/mocks';
 import { describe, expect, test } from 'vitest';
 
 function TestComponent({ siteType }: { siteType?: RcraSiteType }) {
   const [mockSiteType, setMockSiteType] = useState();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   const handleChange = (siteType: any) => setMockSiteType(siteType);
   const { control } = useForm();
   return (

@@ -1,6 +1,6 @@
 import { cleanup, waitFor } from '@testing-library/react';
-import { renderWithProviders, screen } from 'app/mocks';
-import { mockUserEndpoints, mockWasteEndpoints } from 'app/mocks/handlers';
+import { renderWithProviders, screen } from '~/mocks';
+import { mockUserEndpoints, mockWasteEndpoints } from '~/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';

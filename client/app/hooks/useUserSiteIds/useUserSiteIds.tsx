@@ -1,4 +1,4 @@
-import { HaztrakSite } from 'app/components/Site';
+import { HaztrakSite } from '~/components/Site';
 import { useGetUserHaztrakSitesQuery } from '~/store';
 
 /**

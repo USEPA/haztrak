@@ -1,6 +1,6 @@
 import { RcraSiteDetails } from '~/components/RcraSite';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'app/mocks';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { createMockMTNHandler } from '~/mocks/fixtures';
 import { afterEach, describe, expect, test } from 'vitest';
 

@@ -1,6 +1,6 @@
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HtButton } from 'app/components/legacyUi';
+import { HtButton } from '~/components/legacyUi';
 import React, { useContext } from 'react';
 import { ButtonProps } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';

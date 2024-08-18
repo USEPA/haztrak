@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtCard, HtForm } from 'app/components/legacyUi';
+import { HtCard, HtForm } from '~/components/legacyUi';
 import React, { useContext, useState } from 'react';
 import { Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
 import { Controller, FormProvider, UseFieldArrayReturn, useForm } from 'react-hook-form';

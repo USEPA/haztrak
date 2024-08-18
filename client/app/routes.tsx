@@ -10,11 +10,11 @@ const SiteList = () => import('~/features/siteList');
 const SiteDetails = () => import('~/features/siteDetails');
 const About = () => import('~/features/about');
 const Org = () => import('~/features/org');
-const PrivateRoute = () => import('app/features/privateRoute');
+const PrivateRoute = () => import('~/features/privateRoute');
 const RegisterHero = () => import('~/features/register');
-const ManifestList = () => import('app/features/manifestList');
-const ManifestDetails = () => import('app/features/manifestDetails');
-const NewManifest = () => import('app/features/newManifest');
+const ManifestList = () => import('~/features/manifestList');
+const ManifestDetails = () => import('~/features/manifestDetails');
+const NewManifest = () => import('~/features/newManifest');
 const Layout = () => import('./components/Layout');
 
 export const router = createBrowserRouter([

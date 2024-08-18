@@ -3,10 +3,10 @@ import { ManifestStatusSelect } from '~/components/Manifest/GeneralInfo/Manifest
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'app/mocks';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures';
 import { createMockProfileResponse } from '~/mocks/fixtures/mockUser';
-import { mockUserEndpoints } from 'app/mocks/handlers';
+import { mockUserEndpoints } from '~/mocks/handlers';
 import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 

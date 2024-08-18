@@ -1,4 +1,4 @@
-import { renderWithProviders, screen } from 'app/mocks';
+import { renderWithProviders, screen } from '~/mocks';
 import React from 'react';
 import { describe, expect, test } from 'vitest';
 import { Login } from '~/features/login';

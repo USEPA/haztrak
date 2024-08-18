@@ -1,4 +1,4 @@
-import { HtModal } from 'app/components/legacyUi';
+import { HtModal } from '~/components/legacyUi';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';

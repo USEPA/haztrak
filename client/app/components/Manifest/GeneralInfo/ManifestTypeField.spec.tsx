@@ -2,9 +2,9 @@ import userEvent from '@testing-library/user-event';
 import { ManifestTypeSelect } from '~/components/Manifest/GeneralInfo/ManifestTypeSelect';
 import { setupServer } from 'msw/node';
 import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'app/mocks';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { createMockHandler } from '~/mocks/fixtures';
-import { mockUserEndpoints } from 'app/mocks/handlers';
+import { mockUserEndpoints } from '~/mocks/handlers';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 const server = setupServer(...mockUserEndpoints);

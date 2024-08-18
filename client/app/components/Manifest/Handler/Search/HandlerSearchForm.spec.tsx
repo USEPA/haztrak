@@ -1,6 +1,6 @@
 import userEvent from '@testing-library/user-event';
-import { cleanup, renderWithProviders, screen } from 'app/mocks';
-import { mockUserEndpoints } from 'app/mocks/handlers';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
+import { mockUserEndpoints } from '~/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React from 'react';

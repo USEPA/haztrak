@@ -1,7 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { cleanup, renderWithProviders } from 'app/mocks';
-import { mockSiteEndpoints, mockUserEndpoints, mockWasteEndpoints } from 'app/mocks/handlers';
+import { cleanup, renderWithProviders } from '~/mocks';
+import { mockSiteEndpoints, mockUserEndpoints, mockWasteEndpoints } from '~/mocks/handlers';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';

@@ -1,4 +1,4 @@
-import { HtSpinner } from 'app/components/legacyUi';
+import { HtSpinner } from '~/components/legacyUi';
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { addAlert, useAppDispatch, useGetTaskStatusQuery } from '~/store';

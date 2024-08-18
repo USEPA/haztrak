@@ -1,4 +1,4 @@
-import { HtForm } from 'app/components/legacyUi';
+import { HtForm } from '~/components/legacyUi';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import {

@@ -1,8 +1,7 @@
-import { HtCard, HtSpinner } from 'app/components/legacyUi';
-import React from 'react';
+import { HtCard, HtSpinner } from '~/components/legacyUi';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { SiteListGroup } from 'app/components/Site';
+import { SiteListGroup } from '~/components/Site';
 import { useTitle } from '~/hooks';
 import { useGetUserHaztrakSitesQuery } from '~/store';
 
