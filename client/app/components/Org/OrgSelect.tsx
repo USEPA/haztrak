@@ -32,14 +32,15 @@ export const OrgSelect = () => {
   };
 
   return (
-    <div data-testid="org-select">
+    <div data-testid="org-select" className="tw-min-w-full">
       <Select
         value={currentOrg}
         isLoading={isLoading}
         options={orgs?.map((org) => ({ label: org.name, value: org.slug }))}
         onChange={onChange}
         classNames={{
-          control: () => 'form-control p-0',
+          control: () => 'border border-gray-300 rounded-md',
+          container: () => 'tw-min-w-full',
         }}
       />
     </div>

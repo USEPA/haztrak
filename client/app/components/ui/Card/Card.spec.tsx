@@ -32,7 +32,7 @@ describe('CardTitle Component', () => {
   it('renders correctly with default props', () => {
     const { container } = render(<CardTitle />);
     expect(container.firstChild).toHaveClass(
-      'tw-text-2xl tw-font-semibold tw-leading-none tw-tracking-tight'
+      'tw-text-xl tw-font-semibold tw-leading-none tw-tracking-tight'
     );
   });
 

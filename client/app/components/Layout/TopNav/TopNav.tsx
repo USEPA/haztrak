@@ -56,7 +56,7 @@ export function TopNav() {
           </Link>
         </div>
         <div
-          className="tw-hidden tw-max-w-64 tw-grow tw-items-center md:tw-flex"
+          className="tw-hidden tw-max-w-64 tw-grow tw-items-center tw-justify-center md:tw-flex"
           id="centerNavSection"
         >
           <OrgSelect />

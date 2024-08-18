@@ -32,7 +32,7 @@ const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HT
     // eslint-disable-next-line jsx-a11y/heading-has-content
     <h3
       ref={ref}
-      className={cn('tw-text-2xl tw-font-semibold tw-leading-none tw-tracking-tight', className)}
+      className={cn('tw-text-xl tw-font-semibold tw-leading-none tw-tracking-tight', className)}
       {...props}
     />
   )

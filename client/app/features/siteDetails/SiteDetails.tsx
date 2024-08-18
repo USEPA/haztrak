@@ -1,10 +1,10 @@
-import { HtCard, HtSpinner } from '~/components/legacyUi';
-import React, { ReactElement } from 'react';
-import { Button, Container, Stack } from 'react-bootstrap';
+import { HtSpinner } from '~/components/legacyUi';
+import { ReactElement } from 'react';
 import { LoaderFunction, redirect, useNavigate, useParams } from 'react-router-dom';
 import { RcraSiteDetails } from '~/components/RcraSite/RcraSiteDetails';
 import { rootStore as store, useGetUserHaztrakSiteQuery } from '~/store';
 import { haztrakApi } from '~/store/htApi.slice';
+import { Button, Card, CardContent, CardHeader } from '~/components/ui';
 
 export const siteDetailsLoader: LoaderFunction = async ({ params }) => {
   const { siteId } = params;
@@ -38,20 +38,24 @@ export function SiteDetails(): ReactElement {
   if (error) throw new Error(error.message);
   if (data)
     return (
-      <Container>
-        <Stack className="my-3" gap={2}>
-          <div className="pe-0 d-flex flex-row-reverse">
-            <Button variant="primary" onClick={() => navigate(`/site/${siteId}/manifest`)}>
+      <div className="tw-container">
+        <div className="my-3 tw-flex tw-flex-col tw-space-y-2">
+          <h2 className="tw-text-start tw-text-2xl tw-font-bold">Site Details</h2>
+          <div className="tw-flex tw-flex-row-reverse tw-pe-0">
+            <Button variant="secondary" onClick={() => navigate(`/site/${siteId}/manifest`)}>
               View Manifest
             </Button>
           </div>
-          <HtCard title={siteId}>
-            <HtCard.Body>
+          <Card className="tw-drop-shadow-2xl">
+            <CardHeader>
+              <h2 className="tw-text-xl tw-font-bold">{data.name}</h2>
+            </CardHeader>
+            <CardContent className="tw-p-5">
               <RcraSiteDetails handler={data.handler} />
-            </HtCard.Body>
-          </HtCard>
-        </Stack>
-      </Container>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     );
   else return <div>Something went wrong</div>;
 }
