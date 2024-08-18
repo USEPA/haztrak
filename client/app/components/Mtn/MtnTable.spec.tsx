@@ -1,6 +1,6 @@
 import { fireEvent } from '@testing-library/react';
 import { MtnDetails, MtnTable } from '~/components/Mtn';
-import React from 'react';
+
 import { renderWithProviders, screen } from '~/mocks';
 import { describe, expect, test } from 'vitest';
 

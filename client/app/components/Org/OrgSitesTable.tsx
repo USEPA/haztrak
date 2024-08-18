@@ -1,4 +1,3 @@
-import React from 'react';
 import { Row, Table } from 'react-bootstrap';
 import { HaztrakSite } from '~/components/Site';
 import { Organization, useGetOrgSitesQuery } from '~/store';

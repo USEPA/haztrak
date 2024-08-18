@@ -2,7 +2,7 @@ import { cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserInfoForm } from '~/components/User/UserInfoForm';
 import { setupServer } from 'msw/node';
-import React from 'react';
+
 import { HaztrakUser, ProfileSlice } from '~/store';
 import { renderWithProviders, screen } from '~/mocks';
 import { createMockHaztrakUser } from '~/mocks/fixtures';

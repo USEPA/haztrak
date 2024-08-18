@@ -1,5 +1,5 @@
 import { HtForm, InfoIconTooltip } from '~/components/legacyUi';
-import React from 'react';
+
 import { Controller, useFormContext } from 'react-hook-form';
 import Select, { SingleValue } from 'react-select';
 import { Manifest, ManifestStatus } from '~/components/Manifest/manifestSchema';

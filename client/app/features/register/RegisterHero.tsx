@@ -1,7 +1,7 @@
 import logo from '/assets/img/haztrak-logos/high-resolution/png/haztrak-high-resolution-logo-black-on-transparent-background.png';
 import { faFileLines, faPen, faSitemap } from '@fortawesome/free-solid-svg-icons';
 import { FeatureDescription } from '~/components/legacyUi';
-import React from 'react';
+
 import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 

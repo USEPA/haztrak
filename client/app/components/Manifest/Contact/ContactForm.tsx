@@ -1,5 +1,5 @@
 import { HtForm } from '~/components/legacyUi';
-import React from 'react';
+
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 import { Manifest } from '~/components/Manifest';

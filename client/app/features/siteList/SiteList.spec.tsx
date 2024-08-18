@@ -2,7 +2,7 @@ import { renderWithProviders, screen } from '~/mocks';
 import { mockSiteEndpoints, mockUserEndpoints } from '~/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import React from 'react';
+
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures/mockHandler';
 import { SiteList } from './SiteList';

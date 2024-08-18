@@ -1,5 +1,5 @@
 import { HtForm, InfoIconTooltip } from '~/components/legacyUi';
-import React from 'react';
+
 import { Col, Form, Row } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 import { ManifestStatusSelect } from '~/components/Manifest/GeneralInfo/ManifestStatusSelect';

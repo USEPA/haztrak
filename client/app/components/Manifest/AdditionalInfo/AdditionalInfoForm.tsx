@@ -1,7 +1,7 @@
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { HtForm } from '~/components/legacyUi';
-import React from 'react';
+
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Manifest } from '~/components/Manifest';

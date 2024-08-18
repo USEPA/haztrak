@@ -19,6 +19,7 @@
       "~/*": ["./app/*"]
     },
     "noEmit": true,
+    "emitDeclarationOnly": false,
     "incremental": true
   }
 }

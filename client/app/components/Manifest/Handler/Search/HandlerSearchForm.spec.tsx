@@ -3,7 +3,6 @@ import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { mockUserEndpoints } from '~/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import React from 'react';
 
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { createMockRcrainfoSite } from '~/mocks/fixtures';

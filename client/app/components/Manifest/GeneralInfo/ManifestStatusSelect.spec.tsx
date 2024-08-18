@@ -2,7 +2,7 @@ import userEvent from '@testing-library/user-event';
 import { ManifestStatusSelect } from '~/components/Manifest/GeneralInfo/ManifestStatusSelect';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import React from 'react';
+
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures';
 import { createMockProfileResponse } from '~/mocks/fixtures/mockUser';

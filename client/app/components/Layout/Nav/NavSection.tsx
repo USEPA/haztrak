@@ -1,6 +1,6 @@
 import { NavItem } from '~/components/Layout/Nav/NavItem';
 import { RoutesSection } from '~/components/Layout/Sidebar/SidebarRoutes';
-import React from 'react';
+
 import { Separator } from '~/components/ui/Separator/Separator';
 
 interface SidebarSectionProps {

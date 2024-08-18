@@ -1,6 +1,6 @@
 import { fireEvent } from '@testing-library/react';
 import { AdditionalInfoForm } from '~/components/Manifest/AdditionalInfo';
-import React from 'react';
+
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
 

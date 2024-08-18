@@ -2,7 +2,7 @@ import { ManifestFABs } from '~/components/Manifest/Actions/ManifestFABs';
 import { ManifestContext } from '~/components/Manifest/ManifestForm';
 import { ManifestStatus } from '~/components/Manifest/manifestSchema';
 import { useReadOnly } from '~/hooks/manifest';
-import React from 'react';
+
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
 

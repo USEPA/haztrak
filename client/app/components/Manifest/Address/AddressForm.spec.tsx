@@ -1,4 +1,3 @@
-import React from 'react';
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { AddressForm } from './AddressForm';
 import { afterEach, describe, test, expect } from 'vitest';

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup } from '@testing-library/react';
-import React from 'react';
+
 import { renderWithProviders, screen } from '~/mocks';
 import { useManifestStatus } from './useManifestStatus';
 import userEvent from '@testing-library/user-event';

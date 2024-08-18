@@ -3,7 +3,7 @@ import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { mockSiteEndpoints, mockUserEndpoints } from '~/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import React from 'react';
+
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import NewManifest from '~/features/newManifest';
 import { createMockSite } from '~/mocks/fixtures';

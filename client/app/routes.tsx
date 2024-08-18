@@ -1,4 +1,3 @@
-import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { ErrorPage } from '~/features/errorPage/ErrorPage';
 import { Login } from '~/features/login';

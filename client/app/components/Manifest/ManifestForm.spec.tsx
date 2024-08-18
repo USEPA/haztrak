@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { cleanup, renderWithProviders } from '~/mocks';
 import { mockSiteEndpoints, mockUserEndpoints, mockWasteEndpoints } from '~/mocks/handlers';
 import { setupServer } from 'msw/node';
-import React from 'react';
+
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { ManifestForm } from '~/components/Manifest';
 

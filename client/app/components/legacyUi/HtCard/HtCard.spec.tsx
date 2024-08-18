@@ -1,6 +1,6 @@
 import { HtCard } from './HtCard';
 import { cleanup, render, screen } from '~/mocks';
-import React from 'react';
+
 import { afterEach, describe, expect, test } from 'vitest';
 
 afterEach(() => {

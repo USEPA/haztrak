@@ -1,8 +1,8 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { rootStore } from '~/store';
 import App from './App';
+import React from 'react';
 
 // Start mock service worker in development mode
 async function enableMocking() {

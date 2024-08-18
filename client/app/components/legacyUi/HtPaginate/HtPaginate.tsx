@@ -1,5 +1,5 @@
 import { usePagination } from '~/hooks';
-import React from 'react';
+
 import { Pagination } from 'react-bootstrap';
 
 /**
@@ -15,7 +15,6 @@ interface usePaginationProps {
 }
 
 interface HtPaginateProps extends usePaginationProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onPageChange: any;
 }
 

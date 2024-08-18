@@ -2,7 +2,7 @@ import { cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Manifest } from '~/components/Manifest';
 import { setupServer } from 'msw/node';
-import React from 'react';
+
 import { renderWithProviders, screen } from '~/mocks';
 import { createMockManifest } from '~/mocks/fixtures';
 import { mockManifestEndpoints } from '~/mocks/handlers';

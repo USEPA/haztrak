@@ -1,5 +1,3 @@
-import React from 'react';
-
 /** A section title for the textual content such as About and help content*/
 export function SectionTitle({
   title,

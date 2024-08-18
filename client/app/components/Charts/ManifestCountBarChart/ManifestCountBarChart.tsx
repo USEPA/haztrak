@@ -73,17 +73,13 @@ const data = [
   },
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const monthTickFormatter = (tick: any) => {
   const date = new Date(tick);
 
   return date.getMonth() + 1;
 };
 
-const renderQuarterTick = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  tickProps: any
-): ReactElement<SVGElement> => {
+const renderQuarterTick = (tickProps: any): ReactElement<SVGElement> => {
   const { x, y, payload } = tickProps;
   const { value, offset } = payload;
   const date = new Date(value);

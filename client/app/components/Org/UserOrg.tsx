@@ -1,7 +1,7 @@
 import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SiteAccess } from '~/components/User/SiteAccess';
-import React from 'react';
+
 import { Col, Row, Tab, Tabs } from 'react-bootstrap';
 import { ProfileSlice } from '~/store';
 import { OrgSitesTable } from './OrgSitesTable';

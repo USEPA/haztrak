@@ -1,5 +1,4 @@
 import robotRedX from '/assets/img/robot/robot-bad-sign.jpg';
-import React from 'react';
 
 export function Error404() {
   return (

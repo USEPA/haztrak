@@ -1,6 +1,6 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { HtForm } from '~/components/legacyUi';
-import React from 'react';
+
 import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';

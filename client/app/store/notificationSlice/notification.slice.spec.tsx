@@ -1,4 +1,3 @@
-import React from 'react';
 import { addAlert, HaztrakAlert, removeAlert, useAppSelector } from '~/store';
 import { renderWithProviders, screen } from '~/mocks';
 import { describe, expect, test } from 'vitest';

@@ -1,6 +1,6 @@
 import { HtModal } from './HtModal';
 import { cleanup, render, screen } from '~/mocks';
-import React from 'react';
+
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 afterEach(() => {

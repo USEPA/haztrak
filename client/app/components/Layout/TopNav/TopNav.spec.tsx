@@ -1,5 +1,5 @@
 import { cleanup, renderWithProviders, screen } from '~/mocks';
-import React from 'react';
+
 import { afterEach, describe, expect, test } from 'vitest';
 import { TopNav } from '~/components/Layout/TopNav/TopNav';
 

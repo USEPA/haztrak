@@ -4,7 +4,7 @@ import { Button, ButtonProps } from 'react-bootstrap';
 interface HtFloatingActionBtnProps extends ButtonProps {
   position?: 'bottom-left' | 'bottom-right';
   extended?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   component?: any;
 }
 

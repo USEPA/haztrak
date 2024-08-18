@@ -7,7 +7,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Table } from '@tanstack/react-table';
 import { usePagination } from '~/hooks';
-import React from 'react';
+
 import { Pagination } from 'react-bootstrap';
 
 interface HtPageBtnsProps<T> {

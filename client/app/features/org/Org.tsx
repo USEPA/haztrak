@@ -1,4 +1,3 @@
-import React from 'react';
 import { LoaderFunction, Outlet, redirect } from 'react-router-dom';
 import { useOrg } from '~/hooks/useOrg/useOrg';
 import { rootStore as store } from '~/store';

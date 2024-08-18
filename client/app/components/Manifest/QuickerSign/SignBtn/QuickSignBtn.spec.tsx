@@ -2,7 +2,7 @@ import { ManifestContext } from '~/components/Manifest/ManifestForm';
 import { Handler, RcraSiteType } from '~/components/Manifest/manifestSchema';
 import { QuickSignBtn } from '~/components/Manifest/QuickerSign/index';
 import { setupServer } from 'msw/node';
-import React from 'react';
+
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { createMockMTNHandler } from '~/mocks/fixtures';
 import { mockUserEndpoints } from '~/mocks/handlers';

@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import { Transporter } from '~/components/Manifest';
 import { setupServer } from 'msw/node';
-import React from 'react';
+
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { createMockTransporter } from '~/mocks/fixtures';
 import { mockUserEndpoints } from '~/mocks/handlers';
