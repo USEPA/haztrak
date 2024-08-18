@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { ErrorPage } from '~/features/errorPage/ErrorPage';
 import { Login } from '~/features/login';
-import { orgsLoader } from '~/features/org';
 
 const Dashboard = () => import('~/features/dashboard');
 const Profile = () => import('~/features/profile');
@@ -28,7 +27,6 @@ export const router = createBrowserRouter([
           {
             path: '',
             lazy: Org,
-            loader: orgsLoader,
             children: [
               {
                 path: '',

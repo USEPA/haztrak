@@ -11,7 +11,6 @@ export const orgsLoader: LoaderFunction = async () => {
   } catch (_error) {
     console.error('Error fetching orgs');
     return redirect('/login');
-    // throw Error('Error fetching orgs');
   } finally {
     p.unsubscribe();
   }

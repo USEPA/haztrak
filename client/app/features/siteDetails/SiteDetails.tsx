@@ -1,9 +1,25 @@
 import { HtCard, HtSpinner } from '~/components/legacyUi';
 import React, { ReactElement } from 'react';
 import { Button, Container, Stack } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
+import { LoaderFunction, redirect, useNavigate, useParams } from 'react-router-dom';
 import { RcraSiteDetails } from '~/components/RcraSite/RcraSiteDetails';
-import { useGetUserHaztrakSiteQuery } from '~/store';
+import { rootStore as store, useGetUserHaztrakSiteQuery } from '~/store';
+import { haztrakApi } from '~/store/htApi.slice';
+
+export const siteDetailsLoader: LoaderFunction = async ({ params }) => {
+  const { siteId } = params;
+  if (!siteId) return null;
+  const p = store.dispatch(haztrakApi.endpoints.getUserHaztrakSite.initiate(siteId));
+
+  try {
+    return await p.unwrap();
+  } catch (_error) {
+    console.error('Error fetching orgs');
+    return redirect('/login');
+  } finally {
+    p.unsubscribe();
+  }
+};
 
 /**
  * GET and Display details of the Haztrak site including RCRA site details.
