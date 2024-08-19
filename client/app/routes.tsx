@@ -7,7 +7,6 @@ const Profile = () => import('~/features/profile');
 const SiteList = () => import('~/features/siteList');
 const SiteDetails = () => import('~/features/siteDetails');
 const About = () => import('~/features/about');
-const Org = () => import('~/features/org');
 const PrivateRoute = () => import('~/features/privateRoute');
 const RegisterHero = () => import('~/features/register');
 const ManifestList = () => import('~/features/manifestList');
@@ -26,43 +25,37 @@ export const router = createBrowserRouter([
         children: [
           {
             path: '',
-            lazy: Org,
+            lazy: Dashboard,
+          },
+          {
+            path: 'profile',
+            lazy: Profile,
+          },
+          {
+            path: 'site',
             children: [
               {
                 path: '',
-                lazy: Dashboard,
+                lazy: SiteList,
               },
               {
-                path: 'profile',
-                lazy: Profile,
+                path: ':siteId',
+                lazy: SiteDetails,
               },
               {
-                path: 'site',
+                path: ':siteId/manifest',
                 children: [
                   {
                     path: '',
-                    lazy: SiteList,
+                    lazy: ManifestList,
                   },
                   {
-                    path: ':siteId',
-                    lazy: SiteDetails,
+                    path: 'new',
+                    lazy: NewManifest,
                   },
                   {
-                    path: ':siteId/manifest',
-                    children: [
-                      {
-                        path: '',
-                        lazy: ManifestList,
-                      },
-                      {
-                        path: 'new',
-                        lazy: NewManifest,
-                      },
-                      {
-                        path: ':mtn/:action',
-                        lazy: ManifestDetails,
-                      },
-                    ],
+                    path: ':mtn/:action',
+                    lazy: ManifestDetails,
                   },
                 ],
               },
