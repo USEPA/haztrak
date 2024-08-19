@@ -56,7 +56,7 @@ export function UserInfoForm({ user }: UserProfileProps) {
                 onClick={() => fileRef.current?.click()}
                 className="bg-secondary rounded-circle border-0 shadow"
               >
-                <FaUser size="5x" className="m-3" />
+                <FaUser size={32} className="m-3" />
               </Button>
             </div>
             <div className="d-flex justify-content-center">

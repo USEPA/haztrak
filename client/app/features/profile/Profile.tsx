@@ -1,8 +1,9 @@
-import { HtCard, HtSpinner } from '~/components/legacyUi';
 import React, { ReactElement } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import { HtCard } from '~/components/legacyUi';
 import { UserOrg } from '~/components/Org';
 import { RcraProfile } from '~/components/RcraProfile';
+import { Spinner } from '~/components/ui';
 import { UserInfoForm } from '~/components/User';
 import { useTitle } from '~/hooks';
 import { useGetProfileQuery, useGetRcrainfoProfileQuery, useGetUserQuery } from '~/store';
@@ -20,7 +21,7 @@ export function Profile(): ReactElement {
   useTitle('Profile');
 
   if (isLoading || !user || !profile) {
-    return <HtSpinner center />;
+    return <Spinner size="lg" />;
   }
 
   if (!profile || !user) {
@@ -30,9 +31,7 @@ export function Profile(): ReactElement {
   return (
     <>
       <Container fluid className="py-2">
-        <Row className="d-flex justify-content-start">
-          <h1 className="fw-bold">Profile</h1>
-        </Row>
+        <h1 className="tw-text-2xl tw-font-bold">Profile</h1>
         <Row className="my-3">
           <Col xs={12} lg={6} className="my-3">
             <HtCard title="User Information" className="h-100 my-2">

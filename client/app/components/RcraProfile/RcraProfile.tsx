@@ -1,10 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtForm, HtSpinner } from '~/components/legacyUi';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { HtForm, HtSpinner } from '~/components/legacyUi';
 import { SyncRcrainfoProfileBtn } from '~/components/RcraProfile/SyncRcrainfoProfileBtn';
+import { Spinner } from '~/components/ui';
 import { useProgressTracker } from '~/hooks';
 import { RcrainfoProfileState, useAppDispatch, useUpdateRcrainfoProfileMutation } from '~/store';
 import { userApi } from '~/store/userApi/userApi';
@@ -54,7 +55,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
     updateRcrainfoProfile({ username: profile.user, data: data });
   };
 
-  if (profile.isLoading) return <HtSpinner center />;
+  if (profile.isLoading) return <Spinner size="xl" />;
 
   return (
     <>

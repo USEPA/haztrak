@@ -23,3 +23,5 @@ export {
 } from '~/components/ui/Sheet/Sheet';
 
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './Card/Card';
+
+export { Spinner } from './Spinner/Spinner';

@@ -1,9 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtForm, HtSpinner } from '~/components/legacyUi';
 
 import { FloatingLabel, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { HtForm } from '~/components/legacyUi';
+import { Spinner } from '~/components/ui/Spinner/Spinner';
 import { useAuth } from '~/hooks/useAuth/useAuth';
 
 const loginSchema = z.object({
@@ -51,10 +52,12 @@ export function LoginForm() {
         </FloatingLabel>
         <div className="invalid-feedback">{errors.password?.message}</div>
       </HtForm.Group>
-      <button type="submit" disabled={isSubmitting} className="btn btn-primary m-2">
-        <span>Login </span>
-        {isLoading && <HtSpinner size="lg" className="text-reset" />}
-      </button>
+      <div className="tw-flex tw-items-center tw-gap-5">
+        <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+          <span>Login </span>
+        </button>
+        <Spinner show={isLoading} size="sm" />
+      </div>
       {error && <div className="alert alert-danger mt-3 mb-0">{error.message}</div>}
     </HtForm>
   );
