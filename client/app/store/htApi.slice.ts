@@ -1,6 +1,6 @@
 import { BaseQueryFn, createApi } from '@reduxjs/toolkit/query/react';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { HaztrakSite } from 'app/components/Site';
+import { HaztrakSite } from '~/components/Site';
 import { Manifest } from '~/components/Manifest';
 import { QuickerSignature } from '~/components/Manifest/QuickerSign';
 import { Code } from '~/components/Manifest/WasteLine/wasteLineSchema';

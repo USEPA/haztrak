@@ -1,20 +1,18 @@
-import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { ErrorPage } from '~/features/ErrorPage/ErrorPage';
+import { ErrorPage } from '~/features/errorPage/ErrorPage';
 import { Login } from '~/features/login';
-import { orgsLoader } from '~/features/org';
 
 const Dashboard = () => import('~/features/dashboard');
 const Profile = () => import('~/features/profile');
-const SiteList = () => import('~/features/SiteList');
-const SiteDetails = () => import('~/features/SiteDetails');
+const SiteList = () => import('~/features/siteList');
+const SiteDetails = () => import('~/features/siteDetails');
 const About = () => import('~/features/about');
 const Org = () => import('~/features/org');
-const PrivateRoute = () => import('~/features/PrivateRoute');
+const PrivateRoute = () => import('~/features/privateRoute');
 const RegisterHero = () => import('~/features/register');
-const ManifestList = () => import('~/features/ManifestList');
-const ManifestDetails = () => import('~/features/ManifestDetails');
-const NewManifest = () => import('~/features/NewManifest');
+const ManifestList = () => import('~/features/manifestList');
+const ManifestDetails = () => import('~/features/manifestDetails');
+const NewManifest = () => import('~/features/newManifest');
 const Layout = () => import('./components/Layout');
 
 export const router = createBrowserRouter([
@@ -29,7 +27,6 @@ export const router = createBrowserRouter([
           {
             path: '',
             lazy: Org,
-            loader: orgsLoader,
             children: [
               {
                 path: '',

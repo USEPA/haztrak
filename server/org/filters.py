@@ -14,7 +14,6 @@ class ObjectPermissionsFilter(BaseFilterBackend):
     }
 
     def filter_queryset(self, request, queryset, view):
-        print("filter_queryset")
         user = request.user
         permission = self.perm_format % {
             "app_label": queryset.model._meta.app_label,

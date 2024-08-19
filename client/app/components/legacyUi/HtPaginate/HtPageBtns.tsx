@@ -1,14 +1,9 @@
-import {
-  faBackwardFast,
-  faCaretLeft,
-  faCaretRight,
-  faForwardFast,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Table } from '@tanstack/react-table';
-import { usePagination } from '~/hooks';
-import React from 'react';
+
 import { Pagination } from 'react-bootstrap';
+import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
+import { FaBackwardFast, FaForwardFast } from 'react-icons/fa6';
+import { usePagination } from '~/hooks';
 
 interface HtPageBtnsProps<T> {
   table: Table<T>;
@@ -41,10 +36,10 @@ export function HtPageBtns<T>({ table }: HtPageBtnsProps<T>) {
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
-            <FontAwesomeIcon icon={faBackwardFast} size={'lg'} />
+            <FaBackwardFast size={'lg'} />
           </Pagination.First>
           <Pagination.Prev onClick={table.previousPage} disabled={!table.getCanPreviousPage()}>
-            <FontAwesomeIcon icon={faCaretLeft} size={'lg'} />
+            <FaCaretLeft size={'lg'} />
           </Pagination.Prev>
 
           {paginationRange.map((pageNumber, index) => {
@@ -63,13 +58,13 @@ export function HtPageBtns<T>({ table }: HtPageBtnsProps<T>) {
             );
           })}
           <Pagination.Next onClick={table.nextPage} disabled={!table.getCanNextPage()}>
-            <FontAwesomeIcon icon={faCaretRight} size={'lg'} />
+            <FaCaretRight size="lg" />
           </Pagination.Next>
           <Pagination.Last
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
-            <FontAwesomeIcon icon={faForwardFast} size={'lg'} />
+            <FaForwardFast size="lg" />
           </Pagination.Last>
         </Pagination>
       </div>

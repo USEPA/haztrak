@@ -1,4 +1,4 @@
-import { FloatingActionBtn } from 'app/components/legacyUi';
+import { FloatingActionBtn } from '~/components/legacyUi';
 import React, { ReactElement, useContext } from 'react';
 import { ManifestEditBtn } from '~/components/Manifest/Actions/ManifestEditBtn';
 import { ManifestSaveBtn } from '~/components/Manifest/Actions/ManifestSaveBtn';

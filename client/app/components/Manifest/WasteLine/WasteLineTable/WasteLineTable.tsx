@@ -1,14 +1,14 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { faAngleRight, faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useContext, useState } from 'react';
+import { Accordion, Button, Card, Col, Row, useAccordionButton } from 'react-bootstrap';
+import { UseFieldArrayReturn } from 'react-hook-form';
+import { FaAngleRight, FaCheckCircle } from 'react-icons/fa';
+import { FaCircleXmark } from 'react-icons/fa6';
 import { Manifest } from '~/components/Manifest';
 import { ManifestContext, ManifestContextType } from '~/components/Manifest/ManifestForm';
 import { WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
 import { WasteRowActions } from '~/components/Manifest/WasteLine/WasteLineTable/WasteRowActions';
 import { useReadOnly } from '~/hooks/manifest';
-import React, { useContext, useState } from 'react';
-import { Accordion, Button, Card, Col, Row, useAccordionButton } from 'react-bootstrap';
-import { UseFieldArrayReturn } from 'react-hook-form';
 
 interface WasteLineTableProps {
   wastes: WasteLine[];
@@ -44,9 +44,10 @@ const CustomToggle = ({ eventKey }: any) => {
       className="bg-transparent border-0 text-dark me-2"
       title="more info"
     >
-      <FontAwesomeIcon
-        icon={faAngleRight}
-        className={`sb-sidenav-collapse-arrow ${open ? 'rotate-90' : ''} `}
+      <FaAngleRight
+        className={` sb-sidenav-collapse-arrow tw-transform tw-transition-all ${
+          open ? 'tw-rotate-90' : ''
+        } `}
       />
     </Button>
   );
@@ -76,7 +77,7 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTa
                 </Col>
                 <Col className="d-flex justify-content-end align-items-center" xs={2}>
                   {readOnly ? (
-                    <CustomToggle eventKey={waste.lineNumber.toString()}></CustomToggle>
+                    <CustomToggle eventKey={waste.lineNumber.toString()} />
                   ) : (
                     <WasteRowActions
                       wasteForm={wasteForm}
@@ -101,9 +102,9 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTa
                       <small className="fw-bold">Federal Waste</small>
                       <p>
                         {waste.epaWaste ? (
-                          <FontAwesomeIcon icon={faCheckCircle} className="text-success" />
+                          <FaCheckCircle className="test-success" />
                         ) : (
-                          <FontAwesomeIcon icon={faCircleXmark} className="text-danger" />
+                          <FaCircleXmark className="text-danger" />
                         )}
                       </p>
                     </Col>
@@ -111,9 +112,9 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTa
                       <small className="fw-bold">DOT Haz Material</small>
                       <p>
                         {waste.dotHazardous ? (
-                          <FontAwesomeIcon icon={faCheckCircle} className="text-success" />
+                          <FaCheckCircle className="test-success" />
                         ) : (
-                          <FontAwesomeIcon icon={faCircleXmark} className="text-danger" />
+                          <FaCircleXmark className="text-danger" />
                         )}
                       </p>
                     </Col>
@@ -121,9 +122,9 @@ export function WasteLineTable({ wastes, toggleWLModal, wasteForm }: WasteLineTa
                       <small className="fw-bold">PCB Waste</small>
                       <p>
                         {waste.pcb ? (
-                          <FontAwesomeIcon icon={faCheckCircle} className="text-success" />
+                          <FaCheckCircle className="test-success" />
                         ) : (
-                          <FontAwesomeIcon icon={faCircleXmark} className="text-danger" />
+                          <FaCircleXmark className="text-danger" />
                         )}
                       </p>
                     </Col>

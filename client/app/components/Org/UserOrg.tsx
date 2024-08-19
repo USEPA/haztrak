@@ -1,8 +1,7 @@
-import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SiteAccess } from '~/components/User/SiteAccess';
-import React from 'react';
 import { Col, Row, Tab, Tabs } from 'react-bootstrap';
+import { FaCheck } from 'react-icons/fa';
+import { FaX } from 'react-icons/fa6';
+import { SiteAccess } from '~/components/User/SiteAccess';
 import { ProfileSlice } from '~/store';
 import { OrgSitesTable } from './OrgSitesTable';
 
@@ -31,11 +30,11 @@ export function UserOrg({ profile }: UserOrgProps) {
           <p>
             {profile.org.rcrainfoIntegrated ? (
               <span>
-                Yes <FontAwesomeIcon icon={faCheck} className="text-success" />
+                Yes <FaCheck className="text-success" />
               </span>
             ) : (
               <span>
-                No <FontAwesomeIcon icon={faX} className="text-danger" />
+                No <FaX className="text-danger" />
               </span>
             )}
           </p>

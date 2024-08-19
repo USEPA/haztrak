@@ -1,15 +1,8 @@
-import {
-  faEllipsisVertical,
-  faEye,
-  faEyeSlash,
-  faPen,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Manifest } from '~/components/Manifest';
 import React, { MouseEventHandler, ReactElement, useState } from 'react';
 import { Col, Dropdown, Row, useAccordionButton } from 'react-bootstrap';
 import { UseFieldArrayReturn } from 'react-hook-form';
+import { FaEllipsisV, FaEye, FaEyeSlash, FaPen, FaTrash } from 'react-icons/fa';
+import { Manifest } from '~/components/Manifest';
 
 interface WasteRowActionProps {
   index: number;
@@ -44,7 +37,7 @@ function WasteRowActions({
   const actions: RowDropdownItems[] = [
     {
       text: 'Remove',
-      icon: <FontAwesomeIcon icon={faTrash} className="text-danger" />,
+      icon: <FaTrash className="tw-text-destructive" />,
       onClick: () => {
         wasteForm.remove(index);
       },
@@ -53,7 +46,7 @@ function WasteRowActions({
     },
     {
       text: 'Edit',
-      icon: <FontAwesomeIcon icon={faPen} className="text-primary" />,
+      icon: <FaPen className="tw-text-secondary" />,
       onClick: () => {
         setEditWasteLine(index);
         toggleWLModal();
@@ -63,7 +56,7 @@ function WasteRowActions({
     },
     {
       text: open ? 'Close' : 'Details',
-      icon: <FontAwesomeIcon icon={open ? faEyeSlash : faEye} className="text-info" />,
+      icon: open ? <FaEyeSlash /> : <FaEye />,
       onClick: (event) => {
         decoratedOnClick(event);
       },
@@ -79,7 +72,7 @@ function WasteRowActions({
           title={`transporter ${index + 1} actions`}
           className="bg-transparent border-0 text-dark no-caret justify-content-end"
         >
-          <FontAwesomeIcon icon={faEllipsisVertical} className="pe-2 shadow-none" />
+          <FaEllipsisV className="tw-pe-2 tw-shadow-none" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
           {actions.map((action, i) => {

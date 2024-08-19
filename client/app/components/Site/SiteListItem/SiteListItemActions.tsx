@@ -1,7 +1,7 @@
-import { faEllipsisVertical, faEye, faFileLines } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MouseEventHandler, ReactElement } from 'react';
 import { Col, Dropdown, Row } from 'react-bootstrap';
+import { FaEllipsisV, FaEye } from 'react-icons/fa';
+import { FaFileLines } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 
 interface SiteTableRowActionsProps {
@@ -27,7 +27,7 @@ export function SiteListItemActions({ siteId }: SiteTableRowActionsProps) {
   const actions: RowDropdownItems[] = [
     {
       text: 'View Site',
-      icon: <FontAwesomeIcon icon={faEye} className="text-primary" />,
+      icon: <FaEye className="text-primary" />,
       onClick: () => {
         navigate(`/site/${siteId}`);
       },
@@ -36,7 +36,7 @@ export function SiteListItemActions({ siteId }: SiteTableRowActionsProps) {
     },
     {
       text: 'View Manifests',
-      icon: <FontAwesomeIcon icon={faFileLines} className="text-primary" />,
+      icon: <FaFileLines className="text-primary" />,
       onClick: () => {
         navigate(`/site/${siteId}/manifest`);
       },
@@ -52,7 +52,7 @@ export function SiteListItemActions({ siteId }: SiteTableRowActionsProps) {
           title={`${siteId} actions`}
           className="bg-transparent border-0 text-dark no-caret justify-content-end"
         >
-          <FontAwesomeIcon icon={faEllipsisVertical} className="pe-2 shadow-none" />
+          <FaEllipsisV className="pe-2 shadow-none" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
           {actions.map((action, i) => {

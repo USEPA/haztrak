@@ -1,5 +1,5 @@
-import { HtForm } from 'app/components/legacyUi';
-import React from 'react';
+import { HtForm } from '~/components/legacyUi';
+
 import { Form } from 'react-bootstrap';
 import { Control, Controller } from 'react-hook-form';
 import { RcraSiteType } from '~/components/Manifest/manifestSchema';

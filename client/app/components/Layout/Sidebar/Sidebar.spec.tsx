@@ -1,6 +1,6 @@
 import { Sidebar } from '~/components/Layout/Sidebar/Sidebar';
-import React from 'react';
-import { cleanup, renderWithProviders, screen } from 'app/mocks';
+
+import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
 
 afterEach(() => {

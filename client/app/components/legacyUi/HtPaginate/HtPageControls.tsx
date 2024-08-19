@@ -1,5 +1,5 @@
 import { Table } from '@tanstack/react-table';
-import React from 'react';
+
 import { Col, Form, Row } from 'react-bootstrap';
 
 interface HtPageBtnsProps<T> {

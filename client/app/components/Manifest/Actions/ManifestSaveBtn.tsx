@@ -1,8 +1,6 @@
-import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HtButton } from 'app/components/legacyUi';
-import React from 'react';
 import { ButtonProps } from 'react-bootstrap';
+import { FaFloppyDisk } from 'react-icons/fa6';
+import { HtButton } from '~/components/legacyUi';
 import { useReadOnly } from '~/hooks/manifest';
 
 interface ManifestSaveBtnProps extends ButtonProps {}
@@ -13,7 +11,7 @@ export function ManifestSaveBtn({ children: _unused, ...props }: ManifestSaveBtn
   return (
     <HtButton variant="success" type="submit" name="save" {...props}>
       <span>Save </span>
-      <FontAwesomeIcon icon={faFloppyDisk} />
+      <FaFloppyDisk />
     </HtButton>
   );
 }

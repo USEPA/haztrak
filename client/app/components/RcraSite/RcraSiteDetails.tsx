@@ -1,9 +1,8 @@
-import { faCircleCheck, faCircleXmark, faSignature } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Col, Row } from 'react-bootstrap';
+import { FaSignature } from 'react-icons/fa';
+import { FaCircleCheck, FaCircleXmark } from 'react-icons/fa6';
 import { Handler } from '~/components/Manifest';
 import { AddressListGroup, RcraSite } from '~/components/RcraSite';
-import React from 'react';
-import { Col, Row } from 'react-bootstrap';
 
 interface RcraSiteDetailsProps {
   handler?: Handler | RcraSite;
@@ -27,7 +26,7 @@ export function RcraSiteDetails({ handler }: RcraSiteDetailsProps) {
         <Col className="d-flex justify-content-end">
           {'signed' in handler && handler.signed && (
             <p className="text-right">
-              signed <FontAwesomeIcon icon={faSignature} className="text-success" size="xl" />
+              signed <FaSignature className="text-success" size="xl" />
             </p>
           )}
         </Col>
@@ -42,18 +41,18 @@ export function RcraSiteDetails({ handler }: RcraSiteDetailsProps) {
             <p className="fw-bold">
               Can e-Sign:{' '}
               {handler.canEsign ? (
-                <FontAwesomeIcon icon={faCircleCheck} className="text-success align-text-bottom" />
+                <FaCircleCheck className="text-success align-text-bottom" />
               ) : (
-                <FontAwesomeIcon icon={faCircleXmark} className="text-danger align-text-bottom" />
+                <FaCircleXmark className="text-danger align-text-bottom" />
               )}
             </p>
           </div>
           <p className="fw-bold">
             Has registered e-Manifest user:{' '}
             {handler.hasRegisteredEmanifestUser ? (
-              <FontAwesomeIcon icon={faCircleCheck} className="text-success align-text-bottom" />
+              <FaCircleCheck className="text-success align-text-bottom" />
             ) : (
-              <FontAwesomeIcon icon={faCircleXmark} className="text-danger align-text-bottom" />
+              <FaCircleXmark className="text-danger align-text-bottom" />
             )}
           </p>
         </Col>

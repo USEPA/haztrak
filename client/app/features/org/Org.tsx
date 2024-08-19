@@ -1,4 +1,3 @@
-import React from 'react';
 import { LoaderFunction, Outlet, redirect } from 'react-router-dom';
 import { useOrg } from '~/hooks/useOrg/useOrg';
 import { rootStore as store } from '~/store';
@@ -12,7 +11,6 @@ export const orgsLoader: LoaderFunction = async () => {
   } catch (_error) {
     console.error('Error fetching orgs');
     return redirect('/login');
-    // throw Error('Error fetching orgs');
   } finally {
     p.unsubscribe();
   }

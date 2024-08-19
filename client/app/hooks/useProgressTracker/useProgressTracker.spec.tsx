@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import React, { useState } from 'react';
-import { renderWithProviders, screen, waitFor, cleanup } from 'app/mocks';
+import { renderWithProviders, screen, waitFor, cleanup } from '~/mocks';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { useProgressTracker } from '~/hooks/useProgressTracker/useProgressTracker';
 import userEvent from '@testing-library/user-event';

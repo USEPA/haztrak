@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
   --bs-card-cap-padding-y: 0;
   --haztrak-info: #33cccc;
@@ -104,7 +105,8 @@ $info: #009999;
   }
 }
 
-body {
+html, body {
+  height: 100%;
   margin: 0;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);

@@ -1,4 +1,4 @@
-import { HtSpinner } from 'app/components/legacyUi';
+import { HtSpinner } from '~/components/legacyUi';
 import React, { createContext, Dispatch, SetStateAction, Suspense, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { Outlet } from 'react-router-dom';
@@ -23,7 +23,7 @@ export function Root() {
       <div>
         <TopNav />
         <Sidebar />
-        <Container fluid>
+        <Container fluid className="tw-mt-20">
           <ErrorBoundary>
             <Suspense fallback={<HtSpinner center className="my-auto" />}>
               <Outlet />

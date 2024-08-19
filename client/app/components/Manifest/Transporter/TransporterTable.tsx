@@ -1,14 +1,13 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { faAngleRight, faCheck, faSignature } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from 'react';
+import { Accordion, Button, Card, Col, Row, Table, useAccordionButton } from 'react-bootstrap';
+import { UseFieldArrayReturn } from 'react-hook-form';
+import { FaAngleRight, FaCheck, FaSignature } from 'react-icons/fa';
+import { v4 as uuidv4 } from 'uuid';
 import { Transporter } from '~/components/Manifest';
 import { Manifest } from '~/components/Manifest/manifestSchema';
 import { QuickSignBtn } from '~/components/Manifest/QuickerSign';
 import { useReadOnly } from '~/hooks/manifest';
-import React, { useState } from 'react';
-import { Accordion, Button, Card, Col, Row, Table, useAccordionButton } from 'react-bootstrap';
-import { UseFieldArrayReturn } from 'react-hook-form';
-import { v4 as uuidv4 } from 'uuid';
 import { TransporterRowActions } from './TransporterRowActions';
 
 interface TransporterTableProps {
@@ -17,7 +16,6 @@ interface TransporterTableProps {
   setupSign: () => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function CustomToggle({ eventKey }: any) {
   const [open, setOpen] = useState(false);
   const decoratedOnClick = useAccordionButton(eventKey, () => setOpen(!open));
@@ -28,10 +26,7 @@ function CustomToggle({ eventKey }: any) {
       className="bg-transparent border-0 text-dark"
       title="more info"
     >
-      <FontAwesomeIcon
-        icon={faAngleRight}
-        className={`sb-sidenav-collapse-arrow ${open ? 'rotate-90' : ''} `}
-      />
+      <FaAngleRight className={`sb-sidenav-collapse-arrow ${open ? 'rotate-90' : ''} `} />
     </Button>
   );
 }
@@ -71,7 +66,7 @@ function TransporterTable({ transporters, arrayFieldMethods, setupSign }: Transp
                       disabled={transporter.signed}
                     />
                   ) : transporter.signed ? (
-                    <FontAwesomeIcon icon={faSignature} />
+                    <FaSignature />
                   ) : (
                     <></>
                   )}
@@ -105,7 +100,7 @@ function TransporterTable({ transporters, arrayFieldMethods, setupSign }: Transp
                         <td>{transporter.epaSiteId}</td>
                         <td>{transporter.contact.phone?.number}</td>
                         <td className="text-success text-center">
-                          {transporter ? <FontAwesomeIcon icon={faCheck} /> : 'no'}
+                          {transporter ? <FaCheck /> : 'no'}
                         </td>
                       </tr>
                     </tbody>

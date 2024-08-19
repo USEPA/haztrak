@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import React, { useState } from 'react';
-import { cleanup, renderWithProviders } from 'app/mocks';
+import { cleanup, renderWithProviders } from '~/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures/mockHandler';
 import { SiteFilterForm } from '~/components/Site/SiteFilter/SiteFilterForm';

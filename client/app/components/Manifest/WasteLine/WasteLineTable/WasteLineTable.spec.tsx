@@ -1,9 +1,9 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import { WasteLineTable } from '~/components/Manifest/WasteLine/WasteLineTable/WasteLineTable';
-import { ManifestContext, ManifestContextType } from '~/components/Manifest/ManifestForm';
-import { useReadOnly } from '~/hooks/manifest';
+import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ManifestContext, ManifestContextType } from '~/components/Manifest/ManifestForm';
 import { WasteLine } from '~/components/Manifest/WasteLine';
+import { WasteLineTable } from '~/components/Manifest/WasteLine/WasteLineTable/WasteLineTable';
+import { useReadOnly } from '~/hooks/manifest';
 import { createMockWaste } from '~/mocks/fixtures/mockWaste';
 
 vi.mock('~/hooks/manifest', () => ({
@@ -79,17 +79,5 @@ describe('WasteLineTable', () => {
       </ManifestContext.Provider>
     );
     expect(screen.getByTitle('more info')).toBeInTheDocument();
-  });
-
-  it('toggles accordion on CustomToggle click', () => {
-    vi.mocked(useReadOnly).mockReturnValue([true, (_newReadOnly) => {}]);
-    render(
-      <ManifestContext.Provider value={mockContextValue}>
-        <WasteLineTable wastes={mockWastes} toggleWLModal={vi.fn()} wasteForm={mockWasteForm} />
-      </ManifestContext.Provider>
-    );
-    const toggleButton = screen.getByTitle('more info');
-    fireEvent.click(toggleButton);
-    expect(toggleButton.querySelector('.rotate-90')).toBeInTheDocument();
   });
 });

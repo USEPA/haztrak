@@ -1,11 +1,10 @@
-import { faFileSignature, faPen } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HtForm } from 'app/components/legacyUi';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, ListGroup, Row, Stack } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { FaFileSignature, FaPen } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
+import { HtForm } from '~/components/legacyUi';
 import { Handler, RcraSiteType } from '~/components/Manifest/manifestSchema';
 import { Transporter } from '~/components/Manifest/Transporter';
 import { useProgressTracker } from '~/hooks';
@@ -160,7 +159,7 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
               {mtn.map((value) => {
                 return (
                   <ListGroup.Item key={value}>
-                    <FontAwesomeIcon icon={faFileSignature} className="text-success" />
+                    <FaFileSignature className="text-success" />
                     {` ${value}`}
                   </ListGroup.Item>
                 );
@@ -173,7 +172,7 @@ export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: Quic
             </Button>
             <Button variant="success" type="submit">
               <span>Submit Signature </span>
-              <FontAwesomeIcon icon={faPen} />
+              <FaPen />
             </Button>
           </Stack>
         </Container>

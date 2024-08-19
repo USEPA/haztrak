@@ -1,4 +1,4 @@
-import { HtSpinner } from 'app/components/legacyUi';
+import { HtSpinner } from '~/components/legacyUi';
 import { useParams } from 'react-router-dom';
 import { ManifestForm } from '~/components/Manifest';
 import { useTitle } from '~/hooks';

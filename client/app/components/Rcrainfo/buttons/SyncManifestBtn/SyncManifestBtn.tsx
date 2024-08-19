@@ -1,8 +1,7 @@
-import { faSync } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import { FaSync } from 'react-icons/fa';
 import { RcraApiUserBtn } from '~/components/Rcrainfo/buttons/RcraApiUserBtn/RcraApiUserBtn';
 import { useProgressTracker } from '~/hooks';
-import React, { useEffect, useState } from 'react';
 import { addTask, updateTask, useAppDispatch, useSyncEManifestMutation } from '~/store';
 
 interface SyncManifestProps {
@@ -65,7 +64,7 @@ export function SyncManifestBtn({
       }}
     >
       {`Sync Manifest `}
-      <FontAwesomeIcon icon={faSync} spin={syncInProgress} />
+      <FaSync className={syncInProgress ? 'tw-spin' : ''} />
     </RcraApiUserBtn>
   );
 }

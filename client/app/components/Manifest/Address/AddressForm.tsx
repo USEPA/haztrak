@@ -1,5 +1,4 @@
 import { GeneratorAddress } from '~/components/Manifest/Address/GeneratorAddress';
-import React from 'react';
 
 interface Props {
   addressType: 'siteAddress' | 'mailingAddress';

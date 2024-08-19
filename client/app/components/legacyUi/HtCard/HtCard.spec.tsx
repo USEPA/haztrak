@@ -1,6 +1,6 @@
-import { HtCard } from 'app/components/legacyUi';
-import { cleanup, render, screen } from 'app/mocks';
-import React from 'react';
+import { HtCard } from './HtCard';
+import { cleanup, render, screen } from '~/mocks';
+
 import { afterEach, describe, expect, test } from 'vitest';
 
 afterEach(() => {
@@ -17,7 +17,6 @@ describe('HtCard', () => {
         </HtCard.Body>
       </HtCard>
     );
-    // debug(undefined, Infinity);
     expect(screen.getByText('Hello, world')).toBeInTheDocument();
   });
 });

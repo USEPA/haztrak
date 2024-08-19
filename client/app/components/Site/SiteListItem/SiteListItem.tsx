@@ -1,4 +1,3 @@
-import React from 'react';
 import { HaztrakSite } from '~/components/Site/siteSchema';
 import { ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';

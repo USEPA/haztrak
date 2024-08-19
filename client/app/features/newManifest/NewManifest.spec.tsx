@@ -1,11 +1,11 @@
 import userEvent from '@testing-library/user-event';
-import { cleanup, renderWithProviders, screen } from 'app/mocks';
-import { mockSiteEndpoints, mockUserEndpoints } from 'app/mocks/handlers';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
+import { mockSiteEndpoints, mockUserEndpoints } from '~/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import React from 'react';
+
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
-import NewManifest from '~/features/NewManifest';
+import NewManifest from '~/features/newManifest';
 import { createMockSite } from '~/mocks/fixtures';
 import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
 

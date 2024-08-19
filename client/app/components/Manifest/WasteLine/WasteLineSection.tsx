@@ -1,6 +1,6 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { HtButton } from 'app/components/legacyUi';
-import React from 'react';
+import { HtButton } from '~/components/legacyUi';
+
 import { Alert } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Manifest } from '~/components/Manifest/manifestSchema';

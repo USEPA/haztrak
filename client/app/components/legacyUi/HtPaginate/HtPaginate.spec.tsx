@@ -1,6 +1,6 @@
-import { HtPaginate } from 'app/components/legacyUi';
-import { cleanup, render, screen } from 'app/mocks';
-import React from 'react';
+import { HtPaginate } from './HtPaginate';
+import { cleanup, render, screen } from '~/mocks';
+
 import { afterEach, describe, expect, test } from 'vitest';
 
 afterEach(() => {

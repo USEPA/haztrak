@@ -1,4 +1,4 @@
-import { HtCard } from 'app/components/legacyUi';
+import { HtCard } from '~/components/legacyUi';
 import React, { ReactElement } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import {

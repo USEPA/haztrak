@@ -1,4 +1,4 @@
-import { HtCard, HtSpinner } from 'app/components/legacyUi';
+import { HtCard, HtSpinner } from '~/components/legacyUi';
 import React, { ReactElement, useState } from 'react';
 import { Container, Row, Stack } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';

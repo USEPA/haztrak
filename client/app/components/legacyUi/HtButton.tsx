@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, ButtonProps } from 'react-bootstrap';
 
 interface HtButtonProps extends ButtonProps {

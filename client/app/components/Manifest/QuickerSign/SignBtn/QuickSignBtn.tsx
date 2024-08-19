@@ -1,11 +1,10 @@
-import { faFeather } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { createSelector } from '@reduxjs/toolkit';
+import React, { useContext, useMemo } from 'react';
+import { ButtonProps } from 'react-bootstrap';
+import { FaFeather } from 'react-icons/fa';
 import { ManifestContext } from '~/components/Manifest/ManifestForm';
 import { Handler } from '~/components/Manifest/manifestSchema';
 import { RcraApiUserBtn } from '~/components/Rcrainfo';
-import React, { useContext, useMemo } from 'react';
-import { ButtonProps } from 'react-bootstrap';
 import { ProfileSlice, useGetProfileQuery } from '~/store';
 
 interface QuickSignBtnProps extends ButtonProps {
@@ -46,7 +45,7 @@ export function QuickSignBtn({ mtnHandler, iconOnly = false, ...props }: QuickSi
   return (
     <RcraApiUserBtn {...props}>
       {iconOnly ? '' : 'Sign '}
-      <FontAwesomeIcon icon={faFeather} />
+      <FaFeather />
     </RcraApiUserBtn>
   );
 }

@@ -1,5 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { HtForm } from 'app/components/legacyUi';
+import { HtForm } from '~/components/legacyUi';
 import React, { useContext } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, FieldError, FieldErrorsImpl, Merge, useFormContext } from 'react-hook-form';

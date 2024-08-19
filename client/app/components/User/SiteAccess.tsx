@@ -1,4 +1,3 @@
-import React from 'react';
 import { Row, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { HaztrakProfileSite } from '~/store';

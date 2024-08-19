@@ -1,20 +1,18 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { ReactElement } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface FeatureDescriptionProps {
   title: string;
   children: ReactElement;
-  icon: IconProp;
+  iconElement: ReactElement;
 }
 
-export function FeatureDescription({ title, children, icon }: FeatureDescriptionProps) {
+export function FeatureDescription({ title, children, iconElement }: FeatureDescriptionProps) {
   return (
-    <div className="col">
-      <div className="bg-primary bg-gradient d-inline-flex align-items-start p-3 rounded-3 mb-2">
-        <FontAwesomeIcon icon={icon} className="text-light" size="2xl" />
+    <div className="tw-py-3 sm:tw-w-full md:tw-w-1/3 lg:tw-w-1/2">
+      <div className="bg-primary bg-gradient tw-mb-2 tw-inline-flex tw-items-start tw-rounded-lg tw-p-6">
+        <iconElement.type className="tw-text-white" size={24} {...iconElement.props} />
       </div>
-      <h2>{title}</h2>
+      <h2 className="tw-text-2xl tw-font-bold">{title}</h2>
       {children}
     </div>
   );

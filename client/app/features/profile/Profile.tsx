@@ -1,4 +1,4 @@
-import { HtCard, HtSpinner } from 'app/components/legacyUi';
+import { HtCard, HtSpinner } from '~/components/legacyUi';
 import React, { ReactElement } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { UserOrg } from '~/components/Org';

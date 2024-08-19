@@ -1,6 +1,5 @@
-import { Org } from './Org';
+import { Org, orgsLoader } from './Org';
 
-export { orgsLoader } from './Org';
-
+export { orgsLoader as loader };
 export { Org as Component };
 export default Org;
