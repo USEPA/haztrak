@@ -1,11 +1,10 @@
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtForm, HtSpinner } from '~/components/legacyUi';
 import React, { createRef, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { FaUser } from 'react-icons/fa';
 import { z } from 'zod';
+import { HtForm, HtSpinner } from '~/components/legacyUi';
 import { HaztrakUser, ProfileSlice, useUpdateUserMutation } from '~/store';
 
 interface UserProfileProps {
@@ -57,7 +56,7 @@ export function UserInfoForm({ user }: UserProfileProps) {
                 onClick={() => fileRef.current?.click()}
                 className="bg-secondary rounded-circle border-0 shadow"
               >
-                <FontAwesomeIcon icon={faUser} size="5x" className="m-3" />
+                <FaUser size="5x" className="m-3" />
               </Button>
             </div>
             <div className="d-flex justify-content-center">

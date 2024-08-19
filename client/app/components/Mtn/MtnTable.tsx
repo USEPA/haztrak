@@ -1,5 +1,3 @@
-import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { rankItem } from '@tanstack/match-sorter-utils';
 import {
   CellContext,
@@ -16,11 +14,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { HtPageBtns, HtPageControls } from '~/components/legacyUi';
 import React, { ChangeEvent, useState } from 'react';
 import { Button, Col, Table } from 'react-bootstrap';
+import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
 import { Link, useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
+import { HtPageBtns, HtPageControls } from '~/components/legacyUi';
 import { MtnRowActions } from '~/components/Mtn/MtnRowActions';
 import { MtnSearchField } from '~/components/Mtn/MtnSearchField/MtnSearchField';
 import { MtnStatusField, StatusOption } from '~/components/Mtn/MtnStatusField/MtnStatusField';
@@ -182,21 +181,21 @@ export function MtnTable({ manifests }: MtnTableProps) {
                           asc: (
                             <>
                               {' '}
-                              <FontAwesomeIcon icon={faSortUp} className="text-info" />
+                              <FaSortUp className="text-info" />
                             </>
                           ),
                           // Column sort icon when descending order
                           desc: (
                             <>
                               {' '}
-                              <FontAwesomeIcon icon={faSortDown} className="text-info" />
+                              <FaSortDown className="text-info" />
                             </>
                           ),
                         }[header.column.getIsSorted() as string] ?? (
                           <>
                             {' '}
                             {/* Default column sort icon when not sorting by this column*/}
-                            <FontAwesomeIcon icon={faSort} className="text-info" />
+                            <FaSort className="text-info" />
                           </>
                         )}
                       </Button>

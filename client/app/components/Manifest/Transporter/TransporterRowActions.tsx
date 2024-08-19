@@ -1,15 +1,8 @@
-import {
-  faArrowDown,
-  faArrowUp,
-  faEllipsisVertical,
-  faEye,
-  faEyeSlash,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MouseEventHandler, ReactElement, useState } from 'react';
 import { Col, Dropdown, Row, useAccordionButton } from 'react-bootstrap';
 import { UseFieldArrayRemove, UseFieldArraySwap } from 'react-hook-form';
+import { FaArrowDown, FaArrowUp, FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa';
+import { FaEllipsisVertical } from 'react-icons/fa6';
 
 interface TranRowActionProps {
   index: number;
@@ -47,9 +40,7 @@ export function TransporterRowActions({
   const actions: RowDropdownItems[] = [
     {
       text: 'Move up',
-      icon: (
-        <FontAwesomeIcon icon={faArrowUp} className={isFirst ? 'text-secondary' : 'text-primary'} />
-      ),
+      icon: <FaArrowUp className={isFirst ? 'text-secondary' : 'text-primary'} />,
       onClick: () => {
         swapTransporter(index, index - 1);
       },
@@ -58,12 +49,7 @@ export function TransporterRowActions({
     },
     {
       text: 'Move Down',
-      icon: (
-        <FontAwesomeIcon
-          icon={faArrowDown}
-          className={isLast ? 'text-secondary' : 'text-primary'}
-        />
-      ),
+      icon: <FaArrowDown className={isLast ? 'text-secondary' : 'text-primary'} />,
       onClick: () => {
         swapTransporter(index, index + 1);
       },
@@ -72,7 +58,7 @@ export function TransporterRowActions({
     },
     {
       text: 'Remove',
-      icon: <FontAwesomeIcon icon={faTrash} className="text-danger" />,
+      icon: <FaTrash className="text-danger" />,
       onClick: () => {
         removeTransporter(index);
       },
@@ -81,7 +67,7 @@ export function TransporterRowActions({
     },
     {
       text: open ? 'Close' : 'Details',
-      icon: <FontAwesomeIcon icon={open ? faEyeSlash : faEye} className="text-info" />,
+      icon: open ? <FaEyeSlash /> : <FaEye />,
       onClick: (event) => {
         decoratedOnClick(event);
       },
@@ -97,7 +83,7 @@ export function TransporterRowActions({
           title={`transporter ${index + 1} actions`}
           className="bg-transparent border-0 text-dark no-caret justify-content-end"
         >
-          <FontAwesomeIcon icon={faEllipsisVertical} className="pe-2 shadow-none" />
+          <FaEllipsisVertical className="pe-2 shadow-none" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
           {actions.map((action, i) => {

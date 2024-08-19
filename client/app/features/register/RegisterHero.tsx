@@ -1,13 +1,14 @@
 import logo from '/assets/img/haztrak-logos/high-resolution/png/haztrak-high-resolution-logo-black-on-transparent-background.png';
-import { faFileLines, faPen, faSitemap } from '@fortawesome/free-solid-svg-icons';
-import { FeatureDescription } from '~/components/legacyUi';
 
 import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
+import { FaPen, FaSitemap } from 'react-icons/fa';
+import { FaFileLines } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
+import { FeatureDescription } from '~/components/legacyUi';
 
 export function RegisterHero() {
   return (
-    <Container fluid className="text-center px-4 py-5 bg-light vh-100">
+    <Container fluid className="text-center px-4 py-5 bg-light tw-h-full">
       <img
         src={logo}
         alt="haztrak logo, hazardous waste tracking made easy."
@@ -36,7 +37,7 @@ export function RegisterHero() {
       </Col>
       <Row className="my-5 text-start pt-5" lg={3} xs={1}>
         <Col>
-          <FeatureDescription title="Manifest" icon={faFileLines}>
+          <FeatureDescription title="Manifest" iconElement={<FaFileLines />}>
             <p>
               Leverage the power of integration with EPA while creating, updating, or deleting
               electronic hazardous waste manifests to accurately capture the waste shipment.
@@ -44,7 +45,7 @@ export function RegisterHero() {
           </FeatureDescription>
         </Col>
         <Col>
-          <FeatureDescription title="e-Sign" icon={faPen}>
+          <FeatureDescription title="e-Sign" iconElement={<FaPen />}>
             <p>
               Sign your electronic manifests to signify custody exchange without ever logging into
               EPA's e-Manifest system.
@@ -52,7 +53,7 @@ export function RegisterHero() {
           </FeatureDescription>
         </Col>
         <Col>
-          <FeatureDescription title="Manage" icon={faSitemap}>
+          <FeatureDescription title="Manage" iconElement={<FaSitemap />}>
             <p>
               Organize sites to match company structure and give personnel the access and tools to
               get the job done with ease.

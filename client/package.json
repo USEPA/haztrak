@@ -18,10 +18,6 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
-    "@fortawesome/fontawesome-svg-core": "^6.5.2",
-    "@fortawesome/free-brands-svg-icons": "^6.5.2",
-    "@fortawesome/free-solid-svg-icons": "^6.5.2",
-    "@fortawesome/react-fontawesome": "^0.2.2",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.7.0",
     "@radix-ui/react-dialog": "^1.1.1",

@@ -1,9 +1,8 @@
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HtButton } from '~/components/legacyUi';
 import React, { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { HtButton } from '~/components/legacyUi';
 import { ManifestContext } from '~/components/Manifest/ManifestForm';
 import { Manifest } from '~/components/Manifest/manifestSchema';
 import { useReadOnly } from '~/hooks/manifest';
@@ -29,7 +28,7 @@ export function ManifestCancelBtn() {
       }}
     >
       <span>Cancel </span>
-      <FontAwesomeIcon icon={faTrash} />
+      <FaTrash />
     </HtButton>
   );
 }

@@ -1,9 +1,8 @@
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HtButton } from '~/components/legacyUi';
 import React, { useContext } from 'react';
 import { ButtonProps } from 'react-bootstrap';
+import { FaPenToSquare } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
+import { HtButton } from '~/components/legacyUi';
 import { ManifestContext } from '~/components/Manifest/ManifestForm';
 import { useReadOnly } from '~/hooks/manifest';
 
@@ -23,7 +22,7 @@ export function ManifestEditBtn({ children: _unused, ...props }: ManifestEditBtn
   return (
     <HtButton {...props} variant="info" type="button" name="edit" onClick={handleClick}>
       <span>Edit </span>
-      <FontAwesomeIcon icon={faPenToSquare} />
+      <FaPenToSquare />
     </HtButton>
   );
 }

@@ -1,9 +1,7 @@
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HtForm } from '~/components/legacyUi';
-
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { FaTimesCircle } from 'react-icons/fa';
+import { HtForm } from '~/components/legacyUi';
 import { Manifest } from '~/components/Manifest';
 import { WasteLine } from '~/components/Manifest/WasteLine';
 import { useReadOnly } from '~/hooks/manifest';
@@ -104,7 +102,7 @@ export function AdditionalInfoForm() {
                       remove(index);
                     }}
                   >
-                    <FontAwesomeIcon icon={faTimesCircle} className="fa-lg text-danger" />
+                    <FaTimesCircle className="fa-lg text-danger" />
                   </Button>
                 </Col>
               </Row>

@@ -1,24 +1,18 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faGear } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 import React, { ReactElement } from 'react';
 import { Container } from 'react-bootstrap';
+import { IconBaseProps } from 'react-icons';
+import { FaGear } from 'react-icons/fa6';
 
-interface HtSpinnerProps extends Omit<FontAwesomeIconProps, 'icon'> {
+interface HtSpinnerProps extends IconBaseProps {
   center?: boolean;
-  icon?: IconProp;
 }
 
 export function HtSpinner({ className, size, center, ...props }: HtSpinnerProps): ReactElement {
-  const defaultCLasses = 'bg-transparent text-muted';
-
   const spinner = (
-    <FontAwesomeIcon
-      icon={faGear}
+    <FaGear
       data-testid="spinner"
-      className={`${defaultCLasses} ${className}`}
-      spin
-      size={size ?? '6x'}
+      className={`text-muted tw-bg-transparent ${className} tw-animate-spin`}
+      size={size ?? 20}
       {...props}
     />
   );

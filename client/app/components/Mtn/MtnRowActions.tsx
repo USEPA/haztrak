@@ -1,7 +1,6 @@
-import { faEllipsisVertical, faEye, faPen } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MouseEventHandler, ReactElement } from 'react';
 import { Col, Dropdown, Row } from 'react-bootstrap';
+import { FaEllipsisV, FaEye, FaPen } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 interface MtnRowActionsProps {
@@ -22,7 +21,7 @@ export function MtnRowActions({ mtn }: MtnRowActionsProps) {
   const actions: RowDropdownItems[] = [
     {
       text: 'View ',
-      icon: <FontAwesomeIcon icon={faEye} className="text-primary" />,
+      icon: <FaEye className="tw-text-secondary" />,
       onClick: () => {
         navigate(`./${mtn}/view`);
       },
@@ -31,7 +30,7 @@ export function MtnRowActions({ mtn }: MtnRowActionsProps) {
     },
     {
       text: 'Edit',
-      icon: <FontAwesomeIcon icon={faPen} className="text-primary" />,
+      icon: <FaPen className="tw-text-secondary" />,
       onClick: () => {
         navigate(`./${mtn}/edit`);
       },
@@ -47,7 +46,7 @@ export function MtnRowActions({ mtn }: MtnRowActionsProps) {
           title={`${mtn} actions`}
           className="bg-transparent border-0 text-dark no-caret justify-content-end"
         >
-          <FontAwesomeIcon icon={faEllipsisVertical} className="pe-2 shadow-none" />
+          <FaEllipsisV className="tw-pe-2 tw-shadow-none" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
           {actions.map((action, i) => {

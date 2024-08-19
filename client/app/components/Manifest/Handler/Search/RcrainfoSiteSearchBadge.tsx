@@ -1,8 +1,7 @@
-import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HtSpinner } from '~/components/legacyUi';
-
 import { Badge } from 'react-bootstrap';
+import { FaCheck } from 'react-icons/fa';
+import { FaXmark } from 'react-icons/fa6';
+import { HtSpinner } from '~/components/legacyUi';
 
 interface RcrainfoInfoStatusProps {
   data: any;
@@ -41,15 +40,7 @@ export function RcrainfoSiteSearchBadge({
     <div className="my-2">
       <Badge className="p-2" bg={bg} text={text} pill>
         <span>{message}</span>
-        {isFetching ? (
-          <HtSpinner size="lg" />
-        ) : error ? (
-          <FontAwesomeIcon icon={faXmark} />
-        ) : data ? (
-          <FontAwesomeIcon icon={faCheck} />
-        ) : (
-          <></>
-        )}
+        {isFetching ? <HtSpinner size="lg" /> : error ? <FaXmark /> : data ? <FaCheck /> : <></>}
       </Badge>
     </div>
   );
