@@ -1,10 +1,11 @@
-import { HtCard, HtSpinner } from '~/components/legacyUi';
 import React, { ReactElement, useState } from 'react';
 import { Container, Row, Stack } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import { HtCard } from '~/components/legacyUi';
 import { NewManifestBtn } from '~/components/Manifest';
 import { MtnTable } from '~/components/Mtn';
 import { SyncManifestBtn } from '~/components/Rcrainfo';
+import { Spinner } from '~/components/ui';
 import { useTitle } from '~/hooks';
 import { useGetMTNQuery } from '~/store';
 
@@ -40,7 +41,7 @@ export function ManifestList(): ReactElement {
         <HtCard>
           <HtCard.Body>
             {isLoading ? (
-              <HtSpinner center />
+              <Spinner />
             ) : data ? (
               <MtnTable manifests={data} pageSize={pageSize} />
             ) : (

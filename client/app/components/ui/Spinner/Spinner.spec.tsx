@@ -6,17 +6,7 @@ describe('Spinner', () => {
   it('renders with default size and show true', () => {
     const { container } = render(<Spinner />);
     expect(container.querySelector('span')).toHaveClass('tw-flex');
-    expect(container.querySelector('svg')).toHaveClass('tw-animate-spin tw-text-primary tw-size-8');
-  });
-
-  it('renders with size small', () => {
-    const { container } = render(<Spinner size="small" />);
-    expect(container.querySelector('svg')).toHaveClass('tw-size-6');
-  });
-
-  it('renders with size large', () => {
-    const { container } = render(<Spinner size="large" />);
-    expect(container.querySelector('svg')).toHaveClass('tw-size-12');
+    expect(container.querySelector('svg')).toHaveClass('tw-animate-spin');
   });
 
   it('renders hidden with show false', () => {

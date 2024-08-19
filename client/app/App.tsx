@@ -1,4 +1,3 @@
-import { HtSpinner } from '~/components/legacyUi';
 import { ReactElement, Suspense } from 'react';
 import { Container } from 'react-bootstrap';
 import { RouterProvider } from 'react-router-dom';
@@ -9,10 +8,11 @@ import { Notifications } from '~/components/Notifications/Notifications';
 import { router } from '~/routes';
 import './App.scss';
 import './globals.css';
+import { Spinner } from './components/ui';
 
 const GlobalSpinner = () => (
   <Container fluid className="d-flex justify-content-center align-items-center vh-100">
-    <HtSpinner size="6x" className="my-auto" />
+    <Spinner size="sm" className="my-auto" />
   </Container>
 );
 

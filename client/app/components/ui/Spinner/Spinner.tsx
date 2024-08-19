@@ -39,7 +39,7 @@ interface SpinnerContentProps
 export function Spinner({ size, show, children, className }: SpinnerContentProps) {
   return (
     <span className={spinnerVariants({ show })}>
-      <FaGear className={cn(loaderVariants({ size }), className)} />
+      <FaGear className={cn(loaderVariants({ size }), className)} data-testid="spinner" />
       {children}
     </span>
   );

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { HtForm, HtSpinner } from '~/components/legacyUi';
+import { HtForm } from '~/components/legacyUi';
 import { SyncRcrainfoProfileBtn } from '~/components/RcraProfile/SyncRcrainfoProfileBtn';
 import { Spinner } from '~/components/ui';
 import { useProgressTracker } from '~/hooks';
@@ -131,7 +131,7 @@ export function RcraProfile({ profile }: ProfileViewProps) {
       <Container>
         <h4>RCRAInfo Sites</h4>
         {inProgress ? (
-          <HtSpinner center />
+          <Spinner />
         ) : (
           <Table striped bordered hover responsive>
             <thead>

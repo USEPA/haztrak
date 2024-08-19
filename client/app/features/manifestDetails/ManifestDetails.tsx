@@ -1,6 +1,6 @@
-import { HtSpinner } from '~/components/legacyUi';
 import { useParams } from 'react-router-dom';
 import { ManifestForm } from '~/components/Manifest';
+import { Spinner } from '~/components/ui';
 import { useTitle } from '~/hooks';
 import { useReadOnly } from '~/hooks/manifest';
 import { useGetManifestQuery } from '~/store';
@@ -23,7 +23,7 @@ export function ManifestDetails() {
   }
 
   return isLoading ? (
-    <HtSpinner center />
+    <Spinner />
   ) : data ? (
     <ManifestForm manifestData={data} readOnly={readOnly} manifestingSiteID={siteId} mtn={mtn} />
   ) : (

@@ -2,7 +2,7 @@ import React, { createContext, Dispatch, SetStateAction, Suspense, useState } fr
 import { Container } from 'react-bootstrap';
 import { LoaderFunction, Outlet } from 'react-router-dom';
 import { ErrorBoundary } from '~/components/Error';
-import { HtSpinner } from '~/components/legacyUi';
+import { Spinner } from '~/components/ui';
 import { rootStore as store } from '~/store';
 import { haztrakApi } from '~/store/htApi.slice';
 import { Sidebar } from './Sidebar/Sidebar';
@@ -36,7 +36,7 @@ export function Root() {
         <Sidebar />
         <Container fluid className="tw-mt-20">
           <ErrorBoundary>
-            <Suspense fallback={<HtSpinner center className="my-auto" />}>
+            <Suspense fallback={<Spinner className="my-auto" />}>
               <Outlet />
             </Suspense>
           </ErrorBoundary>

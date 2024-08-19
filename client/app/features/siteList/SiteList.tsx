@@ -1,7 +1,8 @@
-import { HtCard, HtSpinner } from '~/components/legacyUi';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { HtCard } from '~/components/legacyUi';
 import { SiteListGroup } from '~/components/Site';
+import { Spinner } from '~/components/ui';
 import { useTitle } from '~/hooks';
 import { useGetUserHaztrakSitesQuery } from '~/store';
 
@@ -10,7 +11,7 @@ export function SiteList() {
   useTitle('Sites');
   const { data, isLoading } = useGetUserHaztrakSitesQuery(); // ToDO global error handling
 
-  if (isLoading) return <HtSpinner center size="6x" />;
+  if (isLoading) return <Spinner size="sm" />;
 
   return (
     <Container className="my-3">
