@@ -1,8 +1,7 @@
-import { HtCard } from '~/components/legacyUi';
 import React, { ReactElement } from 'react';
-import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Error404 } from '~/components/Error';
+import { Button, Card, CardContent, CardFooter, CardHeader } from '~/components/ui';
 
 interface ErrorPageProps {
   code?: number;
@@ -21,15 +20,16 @@ const renderErrorMessage = (code: number | undefined): ReactElement => {
 export const ErrorPage = ({ code }: ErrorPageProps) => {
   const navigate = useNavigate();
   return (
-    <Container>
-      <HtCard>
-        <HtCard.Body className="d-grid justify-content-center">
-          {renderErrorMessage(code)}
-        </HtCard.Body>
-        <HtCard.Footer>
-          <Button onClick={() => navigate(-1)}>Return</Button>
-        </HtCard.Footer>
-      </HtCard>
-    </Container>
+    <div className="tw-container tw-p-8">
+      <Card>
+        <CardHeader />
+        <CardContent className="tw-grid tw-justify-center">{renderErrorMessage(code)}</CardContent>
+        <CardFooter>
+          <Button variant="secondary" onClick={() => navigate(-1)}>
+            Return
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
   );
 };
