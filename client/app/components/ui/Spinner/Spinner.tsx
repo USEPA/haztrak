@@ -1,5 +1,5 @@
 import { cva, VariantProps } from 'class-variance-authority';
-import React from 'react';
+import * as React from 'react';
 import { FaGear } from 'react-icons/fa6';
 import { cn } from '~/lib/utils';
 
@@ -34,13 +34,30 @@ interface SpinnerContentProps
     VariantProps<typeof loaderVariants> {
   className?: string;
   children?: React.ReactNode;
+  asChild?: boolean;
 }
 
-export function Spinner({ size, show, children, className }: SpinnerContentProps) {
-  return (
-    <span className={spinnerVariants({ show })}>
-      <FaGear className={cn(loaderVariants({ size }), className)} data-testid="spinner" />
-      {children}
-    </span>
-  );
-}
+type SpinnerElement = React.ElementRef<'span'>;
+
+const Spinner = React.forwardRef<SpinnerElement, SpinnerContentProps>(
+  ({ size, show, children, className, asChild, ...props }, ref) => {
+    return (
+      <span ref={ref} className={cn(spinnerVariants({ show }), className)} {...props}>
+        {asChild && children ? (
+          React.cloneElement(children as React.ReactElement, {
+            className: cn(loaderVariants({ size }), children),
+          })
+        ) : (
+          <>
+            <FaGear className={cn(loaderVariants({ size }), className)} data-testid="spinner" />
+            {children}
+          </>
+        )}
+      </span>
+    );
+  }
+);
+
+Spinner.displayName = 'Spinner';
+
+export { Spinner };

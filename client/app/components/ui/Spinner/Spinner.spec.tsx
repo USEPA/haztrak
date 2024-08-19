@@ -23,4 +23,19 @@ describe('Spinner', () => {
     const { getByText } = render(<Spinner>Loading...</Spinner>);
     expect(getByText('Loading...')).toBeInTheDocument();
   });
+
+  it('renders asChild when true', () => {
+    const { container } = render(
+      <Spinner asChild>
+        <div>Child Element</div>
+      </Spinner>
+    );
+    expect(container.querySelector('div')).toHaveClass('tw-animate-spin');
+    expect(container.querySelector('div')).toHaveTextContent('Child Element');
+  });
+
+  it('renders with additional props', () => {
+    const { container } = render(<Spinner data-testid="spinner-test" />);
+    expect(container.querySelector('span')).toHaveAttribute('data-testid', 'spinner-test');
+  });
 });
