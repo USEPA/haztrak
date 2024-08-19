@@ -12,7 +12,7 @@ const RegisterHero = () => import('~/features/register');
 const ManifestList = () => import('~/features/manifestList');
 const ManifestDetails = () => import('~/features/manifestDetails');
 const NewManifest = () => import('~/features/newManifest');
-const Layout = () => import('./components/Layout');
+const Layout = () => import('~/features/layout');
 
 export const router = createBrowserRouter([
   {

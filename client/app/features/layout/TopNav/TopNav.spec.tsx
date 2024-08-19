@@ -1,7 +1,6 @@
-import { cleanup, renderWithProviders, screen } from '~/mocks';
-
 import { afterEach, describe, expect, test } from 'vitest';
-import { TopNav } from '~/components/Layout/TopNav/TopNav';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
+import { TopNav } from './TopNav';
 
 afterEach(() => {
   cleanup();
