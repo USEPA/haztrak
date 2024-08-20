@@ -1,10 +1,10 @@
-import colors from 'tailwindcss/colors';
-import { NavContext, NavContextProps } from '~/components/Layout/Root';
-import { Route } from '~/components/Layout/Sidebar/SidebarRoutes';
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { LuExternalLink } from 'react-icons/lu';
+import { Link } from 'react-router-dom';
+import colors from 'tailwindcss/colors';
 import { Button } from '~/components/ui';
+import { NavContext, NavContextProps } from '~/features/layout/Root';
+import { Route } from '~/features/layout/Sidebar/SidebarRoutes';
 
 interface NavItemProps {
   route: Route;

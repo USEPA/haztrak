@@ -1,12 +1,13 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { HtButton, HtSpinner } from '~/components/legacyUi';
 import React, { useEffect } from 'react';
 import { Alert, Col } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
+import { HtButton } from '~/components/legacyUi';
 import { Handler, Manifest } from '~/components/Manifest/manifestSchema';
 import { QuickSignBtn } from '~/components/Manifest/QuickerSign';
 import { RcraSiteDetails } from '~/components/RcraSite/RcraSiteDetails';
+import { Spinner } from '~/components/ui';
 import { useReadOnly } from '~/hooks/manifest';
 import { useHandlerSearchConfig } from '~/hooks/manifest/useOpenHandlerSearch/useHandlerSearchConfig';
 import { useGetRcrainfoSiteQuery } from '~/store';
@@ -37,7 +38,7 @@ export function TsdfSection({ signAble, setupSign }: TsdfSectionProps) {
   }, [data]);
 
   if (isLoading) {
-    return <HtSpinner size="xl" center className="m-5" />;
+    return <Spinner size="xl" className="tw-m-5" />;
   }
 
   if (error) {

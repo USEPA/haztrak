@@ -1,7 +1,7 @@
-import { Sidebar } from '~/components/Layout/Sidebar/Sidebar';
+import { afterEach, describe, expect, test } from 'vitest';
 
 import { cleanup, renderWithProviders, screen } from '~/mocks';
-import { afterEach, describe, expect, test } from 'vitest';
+import { Sidebar } from './Sidebar';
 
 afterEach(() => {
   cleanup();

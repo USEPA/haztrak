@@ -5,7 +5,6 @@ import React, { useContext } from 'react';
 import { LuMenu, LuUser } from 'react-icons/lu';
 import { RiArrowDropDownFill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
-import { NavContext, NavContextProps } from '~/components/Layout/Root';
 import { OrgSelect } from '~/components/Org/OrgSelect';
 import { Button } from '~/components/ui';
 import {
@@ -14,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '~/components/ui/DropDown/dropdown-menu';
+import { NavContext, NavContextProps } from '~/features/layout/Root';
 
 import { useLogoutMutation } from '~/store';
 

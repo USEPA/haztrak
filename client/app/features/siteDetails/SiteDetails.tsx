@@ -1,10 +1,9 @@
-import { HtSpinner } from '~/components/legacyUi';
 import { ReactElement } from 'react';
 import { LoaderFunction, redirect, useNavigate, useParams } from 'react-router-dom';
 import { RcraSiteDetails } from '~/components/RcraSite/RcraSiteDetails';
+import { Button, Card, CardContent, CardHeader, Spinner } from '~/components/ui';
 import { rootStore as store, useGetUserHaztrakSiteQuery } from '~/store';
 import { haztrakApi } from '~/store/htApi.slice';
-import { Button, Card, CardContent, CardHeader } from '~/components/ui';
 
 export const siteDetailsLoader: LoaderFunction = async ({ params }) => {
   const { siteId } = params;
@@ -34,7 +33,7 @@ export function SiteDetails(): ReactElement {
   const { data, isLoading, error } = useGetUserHaztrakSiteQuery(siteId ? siteId : '');
   const navigate = useNavigate();
 
-  if (isLoading) return <HtSpinner center />;
+  if (isLoading) return <Spinner />;
   if (error) throw new Error(error.message);
   if (data)
     return (

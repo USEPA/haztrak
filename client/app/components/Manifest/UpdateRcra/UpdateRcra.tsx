@@ -1,6 +1,6 @@
-import { HtSpinner } from '~/components/legacyUi';
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
+import { Spinner } from '~/components/ui';
 import { addAlert, useAppDispatch, useGetTaskStatusQuery } from '~/store';
 
 interface UpdateRcraProps {
@@ -47,7 +47,7 @@ export function UpdateRcra({ taskId }: UpdateRcraProps) {
   } else {
     return (
       <div className="overlay-spinner">
-        <HtSpinner center className="text-light" />
+        <Spinner className="text-light" />
       </div>
     );
   }

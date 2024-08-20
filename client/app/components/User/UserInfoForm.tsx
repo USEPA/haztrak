@@ -4,7 +4,8 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { FaUser } from 'react-icons/fa';
 import { z } from 'zod';
-import { HtForm, HtSpinner } from '~/components/legacyUi';
+import { HtForm } from '~/components/legacyUi';
+import { Spinner } from '~/components/ui';
 import { HaztrakUser, ProfileSlice, useUpdateUserMutation } from '~/store';
 
 interface UserProfileProps {
@@ -37,7 +38,7 @@ export function UserInfoForm({ user }: UserProfileProps) {
     updateUser({ ...user, ...data });
   };
 
-  if (!user) return <HtSpinner center />;
+  if (!user) return <Spinner />;
 
   return (
     <HtForm onSubmit={handleSubmit(onSubmit)}>
@@ -56,7 +57,7 @@ export function UserInfoForm({ user }: UserProfileProps) {
                 onClick={() => fileRef.current?.click()}
                 className="bg-secondary rounded-circle border-0 shadow"
               >
-                <FaUser size="5x" className="m-3" />
+                <FaUser size={32} className="m-3" />
               </Button>
             </div>
             <div className="d-flex justify-content-center">

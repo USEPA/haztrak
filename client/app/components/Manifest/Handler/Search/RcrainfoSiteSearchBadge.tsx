@@ -1,7 +1,7 @@
 import { Badge } from 'react-bootstrap';
 import { FaCheck } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
-import { HtSpinner } from '~/components/legacyUi';
+import { Spinner } from '~/components/ui';
 
 interface RcrainfoInfoStatusProps {
   data: any;
@@ -40,7 +40,7 @@ export function RcrainfoSiteSearchBadge({
     <div className="my-2">
       <Badge className="p-2" bg={bg} text={text} pill>
         <span>{message}</span>
-        {isFetching ? <HtSpinner size="lg" /> : error ? <FaXmark /> : data ? <FaCheck /> : <></>}
+        {isFetching ? <Spinner size="md" /> : error ? <FaXmark /> : data ? <FaCheck /> : <></>}
       </Badge>
     </div>
   );
