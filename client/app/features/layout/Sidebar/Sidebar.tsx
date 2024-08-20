@@ -1,6 +1,7 @@
 import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/png/logo-black-crop.png';
 import React, { ReactElement, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { OrgSelect } from '~/components/Org/OrgSelect';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '~/components/ui';
 import { NavContext, NavContextProps } from '~/features/layout/Root';
 import { NavItem } from './Nav/NavItem';
@@ -13,7 +14,7 @@ export function Sidebar(): ReactElement | null {
 
   return (
     <Sheet open={showSidebar} onOpenChange={setShowSidebar}>
-      <SheetContent side="left">
+      <SheetContent side="left" className="tw-flex tw-flex-col tw-items-start">
         <SheetHeader>
           <SheetTitle asChild>
             <Link to="/" className="tw-flex tw-justify-center">
@@ -27,6 +28,9 @@ export function Sidebar(): ReactElement | null {
             </Link>
           </SheetTitle>
         </SheetHeader>
+        <div className="tw-mx-auto tw-flex tw-w-full tw-items-center tw-justify-center md:tw-hidden">
+          <OrgSelect />
+        </div>
         <nav>
           {routes.map((route) => {
             if (typeof route === 'object' && 'routes' in route) {
