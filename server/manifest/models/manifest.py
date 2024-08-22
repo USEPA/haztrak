@@ -3,15 +3,14 @@ import re
 from abc import ABC, abstractmethod
 from typing import List, Literal, Optional
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q, QuerySet
 from django.utils.translation import gettext_lazy as _
-
-from handler.models import Handler, Transporter
 from rcrasite.models import RcraSiteType, RcraStates
 from wasteline.models import WasteLine
+
+from .handler import Handler, Transporter
 
 logger = logging.getLogger(__name__)
 
@@ -247,13 +246,13 @@ class Manifest(models.Model):
         blank=True,
     )
     generator = models.ForeignKey(
-        settings.TRAK_HANDLER_MODEL,
+        "Handler",
         on_delete=models.PROTECT,
         related_name="generator",
     )
     # transporters - one-to-many relationship, a manifest can have many transporters
     tsdf = models.ForeignKey(
-        settings.TRAK_HANDLER_MODEL,
+        "Handler",
         verbose_name="designated facility",
         on_delete=models.PROTECT,
         related_name="designated_facility",

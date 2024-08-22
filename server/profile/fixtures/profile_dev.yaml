@@ -1,0 +1,44 @@
+- model: profile.rcrainfoprofile
+  pk: d74f904a-7843-4a60-862c-3b94b6051359
+  fields:
+    rcra_username: dpgraham4401
+    phone_number: null
+    email: orgadmin@generator.com
+- model: profile.rcrainfoprofile
+  pk: 1fd27bec-8743-4eb3-a44c-fd063ea62021
+  fields:
+    rcra_username: ""
+    phone_number: null
+    email: superadmin@gmail.com
+- model: profile.rcrainfoprofile
+  pk: 192c73f4-24f1-4f21-8239-dee2da43c547
+  fields:
+    rcra_username: emanifestpyuser1
+    phone_number: null
+    email: testuser1@haztrak.net
+- model: profile.profile
+  pk: c65dbee9-b6bf-400e-93e0-90a749cc2939
+  fields:
+    user: 8062d496-15f1-485d-961c-a8e5fa118dde
+    rcrainfo_profile: d74f904a-7843-4a60-862c-3b94b6051359
+- model: profile.profile
+  pk: 186642a9-7b5f-4bcb-b328-0fdf8b43f191
+  fields:
+    user: a0ba4966-aa53-44c8-be1a-0a0d2d6b6acd
+    rcrainfo_profile: 1fd27bec-8743-4eb3-a44c-fd063ea62021
+- model: profile.profile
+  pk: 87e355dd-1898-4a0a-81c3-1e9ac8473143
+  fields:
+    user: 4ac96f68-42cf-47ea-bffb-f24d423dbc35
+    rcrainfo_profile: 192c73f4-24f1-4f21-8239-dee2da43c547
+- model: profile.rcrainfositeaccess
+  pk: 1
+  fields:
+    site: 1
+    profile: 192c73f4-24f1-4f21-8239-dee2da43c547
+    site_manager: true
+    annual_report: Certifier
+    biennial_report: Certifier
+    e_manifest: Certifier
+    my_rcra_id: Certifier
+    wiets: Certifier

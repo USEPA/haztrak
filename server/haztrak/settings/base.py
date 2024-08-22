@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     "django_celery_results",
     "django_celery_beat",
     "drf_spectacular",
-    "handler",
     "rcrasite",
     "core",
     "manifest",
@@ -263,4 +262,3 @@ TRAK_RCRAINFO_SITE_MODEL = "rcrasite.RcraSite"
 TRAK_MANIFEST_MODEL = "manifest.Manifest"
 TRAK_SITE_MODEL = "org.Site"
 TRAK_WASTELINE_MODEL = "wasteline.Wasteline"
-TRAK_HANDLER_MODEL = "handler.Handler"

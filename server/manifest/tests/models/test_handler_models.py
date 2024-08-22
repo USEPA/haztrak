@@ -1,6 +1,6 @@
 import pytest
 
-from handler.models import Handler
+from manifest.models import Handler
 
 
 @pytest.mark.django_db
