@@ -58,7 +58,7 @@
     state: VA
     country: US
     zip: "22202"
-- model: handler.manifestphone
+- model: manifest.manifestphone
   pk: 1
   fields:
     number: 321-321-3214
