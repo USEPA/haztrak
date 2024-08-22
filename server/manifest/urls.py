@@ -41,7 +41,7 @@ urlpatterns = [
                 # Manifest Tracking Numbers
                 path("/mtn", include(mtn_patterns)),
                 # Manifests
-                path("/", include(manifest_router.urls)),
+                path("", include(manifest_router.urls)),
             ]
         ),
     ),

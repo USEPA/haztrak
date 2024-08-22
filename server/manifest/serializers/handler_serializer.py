@@ -2,7 +2,6 @@ from typing import Dict
 
 from rcrasite.serializers import RcraSiteSerializer
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
 from manifest.models import Handler, ManifestPhone, Transporter
 
@@ -95,11 +94,3 @@ class TransporterSerializer(HandlerSerializer):
             "electronicSignaturesInfo",
             "signed",
         ]
-
-    def to_internal_value(self, data):
-        """Move fields related to rcra_site to an internal rcra_site dictionary."""
-        try:
-            internal = super().to_internal_value(data)
-            return internal
-        except ValidationError as exc:
-            raise exc

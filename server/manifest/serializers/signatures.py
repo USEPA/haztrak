@@ -6,29 +6,7 @@ from rcrasite.serializers import RcraPhoneSerializer
 from rest_framework import serializers
 
 from manifest.models import ESignature, PaperSignature, QuickerSign, Signer
-
-
-class HandlerBaseSerializer(serializers.ModelSerializer):
-    # ToDo: remove
-
-    def __str__(self):
-        return f"{self.__class__.__name__}"
-
-    def __repr__(self):
-        return f"<{self.__class__.__name__}({self.data})>"
-
-    def to_representation(self, instance):
-        """
-        Remove empty fields when serializing
-        """
-        data = super().to_representation(instance)
-        for field in self.fields:
-            try:
-                if data[field] is None:
-                    data.pop(field)
-            except KeyError:
-                pass
-        return data
+from manifest.serializers.mixins import RemoveEmptyFieldsMixin
 
 
 class QuickerSignSerializer(serializers.Serializer):
@@ -94,7 +72,7 @@ class QuickerSignSerializer(serializers.Serializer):
         ]
 
 
-class SignerSerializer(HandlerBaseSerializer):
+class SignerSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
     """Serializer for EPA Signer Object"""
 
     userId = serializers.CharField(
@@ -147,7 +125,7 @@ class SignerSerializer(HandlerBaseSerializer):
         ]
 
 
-class ESignatureSerializer(HandlerBaseSerializer):
+class ESignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
     """Serializer for Electronic Signature on manifest"""
 
     signer = SignerSerializer(
@@ -192,7 +170,7 @@ class ESignatureSerializer(HandlerBaseSerializer):
         ]
 
 
-class PaperSignatureSerializer(HandlerBaseSerializer):
+class PaperSignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
     """
     Serializer for Paper Signature on manifest which indicates the change
     of custody with paper manifests

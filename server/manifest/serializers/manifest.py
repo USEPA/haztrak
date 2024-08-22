@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, override
+from typing import Dict
 
 from rcrasite.models import RcraStates
 from rest_framework import serializers
@@ -18,33 +18,12 @@ from manifest.serializers import (
     TransporterSerializer,
 )
 
+from .mixins import RemoveEmptyFieldsMixin
+
 logger = logging.getLogger(__name__)
 
 
-class ManifestBaseSerializer(serializers.ModelSerializer):
-    def remove_empty_fields(self, data):
-        """Remove empty fields when serializing"""
-        for field in self.fields:
-            try:
-                if data[field] is None:
-                    data.pop(field)
-            except KeyError:
-                pass
-        return data
-
-    @override
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        return self.remove_empty_fields(data)
-
-    def __str__(self):
-        return f"{self.__class__.__name__}"
-
-    def __repr__(self):
-        return f"<{self.__class__.__name__}({self.data})>"
-
-
-class AdditionalInfoSerializer(ManifestBaseSerializer):
+class AdditionalInfoSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
     originalManifestTrackingNumbers = serializers.JSONField(
         allow_null=True,
         required=False,
@@ -84,7 +63,7 @@ class AdditionalInfoSerializer(ManifestBaseSerializer):
         )
 
 
-class ManifestSerializer(ManifestBaseSerializer):
+class ManifestSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
     """Manifest serializer"""
 
     createdDate = serializers.DateTimeField(
@@ -276,7 +255,7 @@ class ManifestSerializer(ManifestBaseSerializer):
         ]
 
 
-class PortOfEntrySerializer(ManifestBaseSerializer):
+class PortOfEntrySerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
     """
     Serializer for Port Of Entry
     """
