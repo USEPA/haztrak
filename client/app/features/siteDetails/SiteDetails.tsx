@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { LoaderFunction, redirect, useNavigate, useParams } from 'react-router-dom';
+import { LoaderFunction, useNavigate, useParams } from 'react-router-dom';
 import { RcraSiteDetails } from '~/components/RcraSite/RcraSiteDetails';
 import { Button, Card, CardContent, CardHeader, Spinner } from '~/components/ui';
 import { rootStore as store, useGetUserHaztrakSiteQuery } from '~/store';
@@ -13,8 +13,7 @@ export const siteDetailsLoader: LoaderFunction = async ({ params }) => {
   try {
     return await p.unwrap();
   } catch (_error) {
-    console.error('Error fetching orgs');
-    return redirect('/login');
+    return null;
   } finally {
     p.unsubscribe();
   }

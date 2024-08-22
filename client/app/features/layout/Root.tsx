@@ -23,7 +23,7 @@ export const rootLoader: LoaderFunction = async () => {
 
   return query
     .unwrap()
-    .catch((_err) => console.error('Error fetching orgs'))
+    .catch((_err) => null)
     .finally(() => query.unsubscribe());
 };
 
