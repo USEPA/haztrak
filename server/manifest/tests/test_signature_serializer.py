@@ -1,4 +1,5 @@
 import pytest
+
 from manifest.models import Signer
 from manifest.serializers import ESignatureSerializer
 

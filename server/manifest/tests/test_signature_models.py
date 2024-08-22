@@ -2,6 +2,7 @@ from datetime import UTC, datetime
 
 import pytest
 from django.db import IntegrityError
+
 from manifest.models import PaperSignature
 
 
