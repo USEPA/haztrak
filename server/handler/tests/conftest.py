@@ -3,15 +3,14 @@ from typing import Optional
 
 import pytest
 from faker import Faker
-
-from handler.models import (
+from manifest.models import (
     ESignature,
     Handler,
+    Manifest,
     PaperSignature,
     Signer,
     Transporter,
 )
-from manifest.models import Manifest
 from rcrasite.models import RcraSite
 
 

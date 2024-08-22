@@ -1,3 +1,5 @@
+from .contact import ManifestPhone
+from .handler import Handler, Transporter
 from .manifest import (
     AdditionalInfo,
     Manifest,
@@ -6,3 +8,4 @@ from .manifest import (
     manifest_factory,
     validate_mtn,
 )
+from .signature import ESignature, PaperSignature, QuickerSign, Signer

@@ -1,17 +1,15 @@
+from core.admin import HiddenListView
 from django.contrib import admin
 from django.db.models import Q, QuerySet
 from django.urls import reverse
 from django.utils.html import format_html, urlencode
-
-from core.admin import HiddenListView
-
-from .models import (
+from manifest.models import (
     ESignature,
     Handler,
+    ManifestPhone,
     Signer,
     Transporter,
 )
-from .models.contact import ManifestPhone
 
 
 class IsApiUser(admin.SimpleListFilter):

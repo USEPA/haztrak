@@ -2,7 +2,6 @@ import logging
 from datetime import datetime, timezone
 from typing import List, Literal, Optional
 
-from django.conf import settings
 from django.db import models
 
 logger = logging.getLogger(__name__)
@@ -103,7 +102,7 @@ class ESignature(models.Model):
     objects = ESignatureManager()
 
     manifest_handler = models.ForeignKey(
-        settings.TRAK_HANDLER_MODEL,
+        "Handler",
         related_name="e_signatures",
         on_delete=models.CASCADE,
     )

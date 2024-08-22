@@ -7,10 +7,9 @@ import pytest
 from django.db import IntegrityError
 from faker import Faker
 from faker.providers import BaseProvider
-
-from handler.models import Handler, PaperSignature, Transporter
-from manifest.models import Manifest
 from rcrasite.models import RcraSite, RcraSiteType
+
+from manifest.models import Handler, Manifest, PaperSignature, Transporter
 
 
 class MtnProvider(BaseProvider):

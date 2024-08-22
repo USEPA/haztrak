@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.db.models import Q, QuerySet
-
-from handler.models import Transporter
-from manifest.models import Manifest
 from wasteline.admin import WasteLineInline
+
+from manifest.models import Manifest
+
+from .models import Transporter
 
 
 class IsDraftMtn(admin.SimpleListFilter):

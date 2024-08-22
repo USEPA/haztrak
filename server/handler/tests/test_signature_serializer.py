@@ -1,7 +1,6 @@
 import pytest
+from manifest.models import Signer
 from manifest.serializers import ESignatureSerializer
-
-from handler.models import Signer
 
 
 @pytest.fixture

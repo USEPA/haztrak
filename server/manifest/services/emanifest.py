@@ -6,10 +6,9 @@ from core.services import RcraClient, get_rcra_client
 from django.db import transaction
 from django.db.models import QuerySet
 from emanifest import RcrainfoResponse
-from handler.models import QuickerSign
 from requests import RequestException
 
-from manifest.models import Manifest
+from manifest.models import Manifest, QuickerSign
 from manifest.serializers import ManifestSerializer, QuickerSignSerializer
 from manifest.services.emanifest_search import EmanifestSearch
 from manifest.tasks import pull_manifest, sign_manifest
