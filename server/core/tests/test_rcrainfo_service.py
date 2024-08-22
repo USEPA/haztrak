@@ -1,12 +1,12 @@
 from datetime import UTC, datetime
 
 import emanifest
+from handler.models import QuickerSign
+from manifest.serializers import QuickerSignSerializer
 from responses import matchers
 from rest_framework import status
 
 from core.services import RcraClient, get_rcra_client
-from handler.models import QuickerSign
-from handler.serializers import QuickerSignSerializer
 
 
 class TestRcrainfoService:

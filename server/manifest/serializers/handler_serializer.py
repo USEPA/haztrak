@@ -1,10 +1,9 @@
 from typing import Dict
 
-from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
-
 from handler.models import Handler, ManifestPhone, Transporter
 from rcrasite.serializers import RcraSiteSerializer
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from .signatures import ESignatureSerializer, PaperSignatureSerializer
 

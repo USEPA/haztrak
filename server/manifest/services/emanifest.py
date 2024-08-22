@@ -2,16 +2,15 @@ import logging
 from datetime import datetime
 from typing import List, Literal, NotRequired, Optional, TypedDict
 
+from core.services import RcraClient, get_rcra_client
 from django.db import transaction
 from django.db.models import QuerySet
 from emanifest import RcrainfoResponse
+from handler.models import QuickerSign
 from requests import RequestException
 
-from core.services import RcraClient, get_rcra_client
-from handler.models import QuickerSign
-from handler.serializers import QuickerSignSerializer
 from manifest.models import Manifest
-from manifest.serializers import ManifestSerializer
+from manifest.serializers import ManifestSerializer, QuickerSignSerializer
 from manifest.services.emanifest_search import EmanifestSearch
 from manifest.tasks import pull_manifest, sign_manifest
 

@@ -2,12 +2,32 @@ import datetime
 from datetime import timezone
 from typing import Dict
 
-from rest_framework import serializers
-
 from handler.models import ESignature, PaperSignature, QuickerSign, Signer
 from rcrasite.serializers import RcraPhoneSerializer
+from rest_framework import serializers
 
-from .base_serializer import HandlerBaseSerializer
+
+class HandlerBaseSerializer(serializers.ModelSerializer):
+    # ToDo: remove
+
+    def __str__(self):
+        return f"{self.__class__.__name__}"
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__}({self.data})>"
+
+    def to_representation(self, instance):
+        """
+        Remove empty fields when serializing
+        """
+        data = super().to_representation(instance)
+        for field in self.fields:
+            try:
+                if data[field] is None:
+                    data.pop(field)
+            except KeyError:
+                pass
+        return data
 
 
 class QuickerSignSerializer(serializers.Serializer):

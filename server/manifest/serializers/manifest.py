@@ -1,10 +1,6 @@
 import logging
 from typing import Dict, override
 
-from handler.serializers import (
-    HandlerSerializer,
-    TransporterSerializer,
-)
 from rcrasite.models import RcraStates
 from rest_framework import serializers
 from wasteline.serializers import (
@@ -16,6 +12,10 @@ from manifest.models import (
     Manifest,
     PortOfEntry,
     draft_mtn,
+)
+from manifest.serializers import (
+    HandlerSerializer,
+    TransporterSerializer,
 )
 
 logger = logging.getLogger(__name__)
