@@ -10,7 +10,7 @@ from manifest.views import (  # type: ignore
 )
 
 manifest_router = SimpleRouter(trailing_slash=False)
-manifest_router.register("", ManifestViewSet, basename="manifest")
+manifest_router.register("manifest", ManifestViewSet)
 
 emanifest_patterns = (
     [
@@ -32,17 +32,10 @@ mtn_patterns = (
 
 app_name = "manifest"
 urlpatterns = [
-    path(
-        "manifest",
-        include(
-            [
-                # e-Manifest
-                path("/emanifest", include(emanifest_patterns)),
-                # Manifest Tracking Numbers
-                path("/mtn", include(mtn_patterns)),
-                # Manifests
-                path("", include(manifest_router.urls)),
-            ]
-        ),
-    ),
+    # e-Manifest
+    path("manifest/emanifest", include(emanifest_patterns)),
+    # Manifest Tracking Numbers
+    path("manifest/mtn", include(mtn_patterns)),
+    # Manifests
+    path("", include(manifest_router.urls)),
 ]
