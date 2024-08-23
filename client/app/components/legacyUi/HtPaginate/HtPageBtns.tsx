@@ -36,10 +36,10 @@ export function HtPageBtns<T>({ table }: HtPageBtnsProps<T>) {
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
-            <FaBackwardFast size={'lg'} />
+            <FaBackwardFast size={16} />
           </Pagination.First>
           <Pagination.Prev onClick={table.previousPage} disabled={!table.getCanPreviousPage()}>
-            <FaCaretLeft size={'lg'} />
+            <FaCaretLeft size={16} />
           </Pagination.Prev>
 
           {paginationRange.map((pageNumber, index) => {
@@ -58,13 +58,13 @@ export function HtPageBtns<T>({ table }: HtPageBtnsProps<T>) {
             );
           })}
           <Pagination.Next onClick={table.nextPage} disabled={!table.getCanNextPage()}>
-            <FaCaretRight size="lg" />
+            <FaCaretRight size={16} />
           </Pagination.Next>
           <Pagination.Last
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
-            <FaForwardFast size="lg" />
+            <FaForwardFast size={16} />
           </Pagination.Last>
         </Pagination>
       </div>

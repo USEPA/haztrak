@@ -11,7 +11,7 @@ export function ManifestSaveBtn({ children: _unused, ...props }: ManifestSaveBtn
   return (
     <HtButton variant="success" type="submit" name="save" {...props}>
       <span>Save </span>
-      <FaFloppyDisk />
+      <FaFloppyDisk className="tw-inline" />
     </HtButton>
   );
 }
