@@ -2,11 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React, { createRef, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { FaUser } from 'react-icons/fa';
 import { z } from 'zod';
 import { HtForm } from '~/components/legacyUi';
-import { Spinner } from '~/components/ui';
+import { Avatar, AvatarFallback, AvatarImage, Spinner } from '~/components/ui';
 import { HaztrakUser, ProfileSlice, useUpdateUserMutation } from '~/store';
+import { FaUser } from 'react-icons/fa';
 
 interface UserProfileProps {
   user: HaztrakUser;
@@ -53,12 +53,15 @@ export function UserInfoForm({ user }: UserProfileProps) {
         <Row>
           <Col>
             <div className="avatar-container d-flex justify-content-center">
-              <Button
-                onClick={() => fileRef.current?.click()}
-                className="bg-secondary rounded-circle border-0 shadow"
-              >
-                <FaUser size={32} className="m-3" />
-              </Button>
+              <button onClick={() => fileRef.current?.click()}>
+                <Avatar className="tw-h-40 tw-w-40">
+                  {/* ToDo: pipe dream, we currently do not use avatar iamges */}
+                  <AvatarImage src="" alt="avatar" />
+                  <AvatarFallback>
+                    <FaUser size={80} />
+                  </AvatarFallback>
+                </Avatar>
+              </button>
             </div>
             <div className="d-flex justify-content-center">
               <h2>{user.username}</h2>

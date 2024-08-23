@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { forwardRef, ReactElement, Ref } from 'react';
 import { OverlayTrigger, Tooltip, TooltipProps } from 'react-bootstrap';
 import { FaInfoCircle } from 'react-icons/fa';
 
@@ -9,14 +9,14 @@ interface HtToolTipProps extends TooltipProps {
   children: ReactElement;
 }
 
-export function HtTooltip(props: HtToolTipProps): ReactElement {
+export const HtTooltip = forwardRef<Ref<any>, HtToolTipProps>((props, _ref) => {
   const { children, text, ...rest } = props;
   return (
     <OverlayTrigger {...rest} delay={{ show: 250, hide: 400 }} overlay={<Tooltip>{text}</Tooltip>}>
       {children}
     </OverlayTrigger>
   );
-}
+});
 
 interface InfoTooltipProps {
   message: string;
@@ -30,7 +30,7 @@ interface InfoTooltipProps {
 export function InfoIconTooltip({ message }: InfoTooltipProps) {
   return (
     <HtTooltip text={message}>
-      <FaInfoCircle size={'2xs'} className={'pb-1 text-muted'} />
+      <FaInfoCircle size={12} className="text-muted tw-inline tw-align-top " />
     </HtTooltip>
   );
 }

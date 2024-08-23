@@ -25,3 +25,5 @@ export {
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './Card/Card';
 
 export { Spinner } from './Spinner/Spinner';
+
+export { Avatar, AvatarImage, AvatarFallback } from './Avatar/Avatar';

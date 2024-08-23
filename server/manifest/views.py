@@ -29,7 +29,7 @@ class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins
     allowed_methods = ["GET", "POST", "PUT"]
     queryset = Manifest.objects.all()
     serializer_class = ManifestSerializer
-    lookup_regex = "[0-9]{9}[a-zA-Z]{3}"
+    lookup_value_regex = "[0-9]{9}[a-zA-Z]{3}"
 
     @extend_schema(request=ManifestSerializer)
     def create(self, request: Request) -> Response:

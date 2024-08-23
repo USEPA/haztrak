@@ -63,8 +63,8 @@ export function SyncManifestBtn({
         if (siteId) syncSiteManifest(siteId);
       }}
     >
-      {`Sync Manifest `}
-      <FaSync className={syncInProgress ? 'tw-spin' : ''} />
+      <span>Sync Manifest </span>
+      <FaSync className={syncInProgress ? 'tw-spin tw-inline' : 'tw-inline'} />
     </RcraApiUserBtn>
   );
 }
