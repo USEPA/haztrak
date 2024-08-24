@@ -1,6 +1,7 @@
 import uuid
 from profile.models import RcrainfoProfile
 
+from core.models import TrakUser
 from django.conf import settings
 from django.core.validators import MinLengthValidator
 from django.db import models
@@ -8,8 +9,6 @@ from django.db.models import QuerySet
 from django_extensions.db.fields import AutoSlugField
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import get_objects_for_user
-
-from core.models import TrakUser
 
 
 class OrgManager(models.Manager):
@@ -170,7 +169,7 @@ class Site(models.Model):
     )
     rcra_site = models.OneToOneField(
         verbose_name="rcra_site",
-        to=settings.TRAK_RCRAINFO_SITE_MODEL,
+        to="rcrasite.RcraSite",
         on_delete=models.CASCADE,
     )
     last_rcrainfo_manifest_sync = models.DateTimeField(
@@ -182,6 +181,10 @@ class Site(models.Model):
         Org,
         on_delete=models.CASCADE,
     )
+
+    @property
+    def epa_id(self):
+        return self.rcra_site.epa_id
 
     @property
     def admin_has_rcrainfo_api_credentials(self) -> bool:

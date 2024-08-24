@@ -3,6 +3,7 @@ import uuid
 from unittest.mock import patch
 
 import pytest
+from django.core.exceptions import ObjectDoesNotExist
 
 from org.models import Site
 from org.services import (
@@ -59,7 +60,7 @@ class TestGetUserSite:
     def test_raises_error_when_site_not_found(self, site_class_factory):
         with patch("org.services.Site.objects.get_by_username_and_epa_id") as mock_query:
             mock_query.side_effect = Site.DoesNotExist
-            with pytest.raises(Site.DoesNotExist):
+            with pytest.raises(ObjectDoesNotExist):
                 get_user_site(username="test", epa_id="test")
 
 
