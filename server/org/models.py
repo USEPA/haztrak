@@ -147,7 +147,7 @@ class SiteManager(QuerySet):
         """Get a site by RCRAInfo EPA ID number. Throws Site.DoesNotExist if not found."""
         return self.filter_by_epa_id(epa_id).get()
 
-    def filter_by_org(self: models.Manager, org: settings.TRAK_ORG_MODEL) -> QuerySet:
+    def filter_by_org(self: models.Manager, org: "Org") -> QuerySet:
         """Get a list of sites by organization"""
         return self.filter(org=org)
 
