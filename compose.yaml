@@ -38,12 +38,6 @@ services:
       python manage.py migrate &&
       python manage.py loaddata core_dev.yaml rcrasite_dev.yaml org_dev.yaml profile_dev.yaml &&
       python manage.py runserver 0.0.0.0:8000"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/api/health/startup-probe/"]
-      interval: 30s
-      timeout: 20s
-      retries: 5
-      start_period: 10s
     depends_on:
       db:
         condition: service_healthy
@@ -75,9 +69,6 @@ services:
       HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
     command: python manage.py celery_worker
-  #    depends_on:
-  #      trak:
-  #        condition: service_healthy
 
   celery-beat:
     restart: unless-stopped
@@ -98,9 +89,6 @@ services:
       HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
     command: python manage.py celery_beat
-  #    depends_on:
-  #      trak:
-  #        condition: service_healthy
 
   db:
     restart: unless-stopped
