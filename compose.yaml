@@ -38,13 +38,12 @@ services:
       python manage.py migrate &&
       python manage.py loaddata core_dev.yaml rcrasite_dev.yaml org_dev.yaml profile_dev.yaml &&
       python manage.py runserver 0.0.0.0:8000"
-    #    healthcheck:
-    #      test:
-    #        [ "CMD", "curl", "-f", "http://localhost/api/health/startup-probe/" ]
-    #      interval: 30s
-    #      timeout: 20s
-    #      retries: 5
-    #      start_period: 10s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/health/startup-probe/"]
+      interval: 30s
+      timeout: 20s
+      retries: 5
+      start_period: 10s
     depends_on:
       db:
         condition: service_healthy
@@ -153,7 +152,6 @@ services:
       - "8080:8080"
       - "80:80"
     volumes:
-      #      - ./traefik.toml:/etc/traefik/traefik.toml
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   mail:
