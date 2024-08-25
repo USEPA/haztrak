@@ -1,7 +1,7 @@
 import React from 'react';
-import { LuCopy } from 'react-icons/lu';
 import { LoaderFunction } from 'react-router-dom';
-import { Button, Card, CardContent, CardHeader, Spinner } from '~/components/ui';
+import { CopyButton } from '~/components/CopyButton/CopyButton';
+import { Card, CardContent, CardHeader, Spinner } from '~/components/ui';
 import { useOrg } from '~/hooks/useOrg/useOrg';
 import { rootStore as store } from '~/store';
 import { haztrakApi } from '~/store/htApi.slice';
@@ -32,16 +32,9 @@ export const OrgDetails = () => {
       <Card className="tw-max-w-screen-lg tw-grow">
         <CardHeader id="hero" className="tw-block tw-flex-initial">
           <h2 className="tw-text-lg tw-font-bold">{org.name}</h2>
-          <Button
-            variant="link"
-            className="tw-ml-0 tw-w-auto tw-self-start"
-            onClick={() => {
-              navigator.clipboard.writeText(org.slug);
-            }}
-          >
-            <p className="tw-mt-0 tw-font-mono tw-text-xs">{org.slug}</p>
-            <LuCopy className="tw-ml-2 tw-h-4 tw-w-4" />
-          </Button>
+          <CopyButton copyText={org.slug} className="tw-ml-0 tw-w-auto tw-self-start">
+            <span>{org.slug}</span>
+          </CopyButton>
         </CardHeader>
         <CardContent></CardContent>
       </Card>
