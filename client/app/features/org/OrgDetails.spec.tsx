@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import OrgDetails from './OrgDetails';
+import { OrgDetails } from './OrgDetails';
 
 describe('OrgDetails Component', () => {
   it('renders the organization details heading', () => {

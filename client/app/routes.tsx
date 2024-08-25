@@ -13,6 +13,7 @@ const ManifestList = () => import('~/features/manifestList');
 const ManifestDetails = () => import('~/features/manifestDetails');
 const NewManifest = () => import('~/features/newManifest');
 const Layout = () => import('~/features/layout');
+const Org = () => import('~/features/org');
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
         path: '',
         lazy: Layout,
         children: [
+          {
+            path: 'organization',
+            lazy: Org,
+          },
           {
             path: '',
             lazy: Dashboard,

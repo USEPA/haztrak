@@ -4,6 +4,7 @@ import { LogOut } from 'lucide-react';
 import React, { useContext } from 'react';
 import { LuMenu, LuUser } from 'react-icons/lu';
 import { RiArrowDropDownFill } from 'react-icons/ri';
+import { TbBinaryTree } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import { OrgSelect } from '~/components/Org/OrgSelect';
 import { Button } from '~/components/ui';
@@ -77,6 +78,12 @@ export function TopNav() {
                 <Link to={'./profile'} relative="path">
                   <LuUser className="tw-mr-2 tw-h-4 tw-w-4 tw-text-primary" />
                   <span>Profile</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to={'./organization'} relative="path">
+                  <TbBinaryTree className="tw-mr-2 tw-h-4 tw-w-4 tw-text-primary" />
+                  <span>Organization</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
