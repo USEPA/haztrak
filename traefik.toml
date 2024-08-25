@@ -19,10 +19,9 @@ watch = true
 
 [entryPoints]
 [entryPoints.web]
-address = ":8080"
+address = ":80"
 
 [http.routers]
-
 [http.routers.django]
 service = "django"
 rule = "PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`)"
