@@ -11,7 +11,7 @@ services:
       - ./server:/app
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
-      HT_HOST: "localhost"
+      HT_HOST: ${HT_HOST}
       HT_SECRET_KEY: ${HT_SECRET_KEY}
       HT_DEBUG: ${HT_DEBUG}
       HT_LOG_LEVEL: ${HT_LOG_LEVEL}
@@ -29,7 +29,7 @@ services:
       HT_DB_PORT: ${HT_DB_PORT}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.trak.rule=Host(`localhost`)"
+      - "traefik.http.routers.trak.rule=Host(`${HT_HOST}`)"
       - "traefik.http.routers.trak.rule=PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`)"
       - "traefik.http.routers.trak.entrypoints=web"
     command: |
@@ -123,7 +123,7 @@ services:
       VITE_GITHUB_URL: ${VITE_GITHUB_URL}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.client.rule=Host(`localhost`)"
+      - "traefik.http.routers.client.rule=Host(`${HT_HOST}`)"
       - "traefik.http.routers.client.entrypoints=web"
     command: sh -c "cd /app; npm install; npm start"
 
