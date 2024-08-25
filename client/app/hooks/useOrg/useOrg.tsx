@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useGetOrgsQuery } from '~/store';
+import { useGetOrgQuery, useGetOrgsQuery } from '~/store';
 
 export const useOrg = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: orgs } = useGetOrgsQuery();
   const [orgSlug, setOrgSlug] = useState<string | null>(searchParams.get('org'));
+  // @ts-expect-error - query is skipped if orgSlug is null
+  const orgQuery = useGetOrgQuery(orgSlug, { skip: !orgSlug });
 
   const setOrgSlugState = useCallback(
     (slug: string | null) => {
@@ -45,5 +47,5 @@ export const useOrg = () => {
     }
   }, [searchParams, setSearchParams, orgs, orgSlug]);
 
-  return { orgId: orgSlug, setOrgId: setOrgSlugState };
+  return { orgId: orgSlug, setOrgId: setOrgSlugState, org: { ...orgQuery } };
 };
