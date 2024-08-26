@@ -31,7 +31,7 @@ export function Root() {
     <NavContext.Provider value={{ showSidebar, setShowSidebar }}>
       <TopNav />
       <Sidebar />
-      <main>
+      <main className="tw-mx-8 tw-mt-20">
         <Suspense fallback={<Spinner className="my-auto" />}>
           <Outlet />
         </Suspense>

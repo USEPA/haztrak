@@ -9,7 +9,7 @@ const mockOrg = createMockOrg();
 describe('OrgDetails Component', () => {
   it('renders the organization details heading', () => {
     renderWithProviders(<OrgDetails org={mockOrg} />);
-    const headingElement = screen.getByText(/Organization Details/i);
+    const headingElement = screen.getByText(mockOrg.name);
     expect(headingElement).toBeInTheDocument();
   });
 

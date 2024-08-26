@@ -1,6 +1,7 @@
 import React from 'react';
 import { LoaderFunction } from 'react-router-dom';
-import { Spinner } from '~/components/ui';
+import { Card, CardContent, CardHeader, Spinner } from '~/components/ui';
+import { OrgDetails } from '~/features/org/components/OrgDetails';
 import { useOrg } from '~/hooks/useOrg/useOrg';
 import { rootStore as store } from '~/store';
 import { haztrakApi } from '~/store/htApi.slice';
@@ -26,8 +27,13 @@ export const Org = () => {
   if (!org) return <div>Organization not found</div>;
 
   return (
-    <div className="tw-flex-col ">
-      <h1 className="tw-text-2xl tw-font-bold">Organization Details</h1>
+    <div className="tw-flex tw-justify-center">
+      <Card className="tw-max-w-screen-lg tw-grow">
+        <CardHeader id="hero" className="tw-block tw-flex-initial">
+          <OrgDetails org={org} />
+        </CardHeader>
+        <CardContent></CardContent>
+      </Card>
     </div>
   );
 };
