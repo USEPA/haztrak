@@ -1,9 +1,9 @@
-import { LuFactory, LuFileCode2, LuHelpCircle } from 'react-icons/lu';
 import { IconType } from 'react-icons';
-import { TbBinaryTree } from 'react-icons/tb';
-import { RiGovernmentFill } from 'react-icons/ri';
-import { IoIosDocument } from 'react-icons/io';
 import { FaGithub } from 'react-icons/fa';
+import { IoIosDocument } from 'react-icons/io';
+import { LuFactory, LuFileCode2, LuHelpCircle, LuLayoutDashboard } from 'react-icons/lu';
+import { RiGovernmentFill } from 'react-icons/ri';
+import { TbBinaryTree } from 'react-icons/tb';
 
 export interface Route {
   id: string;
@@ -24,7 +24,7 @@ export interface RoutesSection {
 export const routes: (Route | RoutesSection)[] = [
   {
     id: 'Dashboard',
-    icon: TbBinaryTree,
+    icon: LuLayoutDashboard,
     text: 'Dashboard',
     url: '/',
   },
@@ -32,6 +32,12 @@ export const routes: (Route | RoutesSection)[] = [
     name: 'Site',
     id: 'sitesSection',
     routes: [
+      {
+        id: 'Organization',
+        icon: TbBinaryTree,
+        text: 'Organization',
+        url: '/organization',
+      },
       {
         id: 'mySites',
         icon: LuFactory,
