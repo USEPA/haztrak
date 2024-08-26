@@ -1,6 +1,8 @@
-import React, { createContext, Dispatch, SetStateAction, Suspense, useState } from 'react';
+import React, { createContext, Dispatch, SetStateAction, useState } from 'react';
 import { LoaderFunction, Outlet } from 'react-router-dom';
-import { Spinner } from '~/components/ui';
+import { ToastContainer } from 'react-toastify';
+import { ErrorBoundary } from '~/components/Error';
+import { Notifications } from '~/components/Notifications/Notifications';
 import { rootStore as store } from '~/store';
 import { haztrakApi } from '~/store/htApi.slice';
 import { Sidebar } from './Sidebar/Sidebar';
@@ -32,9 +34,19 @@ export function Root() {
       <TopNav />
       <Sidebar />
       <main className="tw-mx-8 tw-mt-20">
-        <Suspense fallback={<Spinner size="xl" className="my-auto" />}>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+          limit={3}
+        />
+        <Notifications />
+        <ErrorBoundary>
           <Outlet />
-        </Suspense>
+        </ErrorBoundary>
       </main>
     </NavContext.Provider>
   );
