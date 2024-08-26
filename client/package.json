@@ -43,7 +43,6 @@
     "react-select": "^5.8.0",
     "react-toastify": "^10.0.5",
     "recharts": "^2.13.0-alpha.4",
-    "sass": "^1.77.6",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0",

@@ -6,9 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ErrorBoundary } from '~/components/Error';
 import { Notifications } from '~/components/Notifications/Notifications';
 import { router } from '~/routes';
-// import './App.scss';
-import './globals.css';
 import { Spinner } from './components/ui';
+import './globals.css';
 
 const GlobalSpinner = () => (
   <Container fluid className="d-flex justify-content-center align-items-center vh-100">
