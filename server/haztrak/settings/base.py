@@ -256,9 +256,3 @@ HEALTH_CHECK = {
         "liveness-probe": ["DatabaseBackend"],
     },
 }
-
-TRAK_ORG_MODEL = "org.Org"
-TRAK_RCRAINFO_SITE_MODEL = "rcrasite.RcraSite"
-TRAK_MANIFEST_MODEL = "manifest.Manifest"
-TRAK_SITE_MODEL = "org.Site"
-TRAK_WASTELINE_MODEL = "wasteline.Wasteline"

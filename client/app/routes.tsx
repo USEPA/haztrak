@@ -1,61 +1,54 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { ErrorPage } from '~/features/errorPage/ErrorPage';
 import { Login } from '~/features/login';
-
-const Dashboard = () => import('~/features/dashboard');
-const Profile = () => import('~/features/profile');
-const SiteList = () => import('~/features/siteList');
-const SiteDetails = () => import('~/features/siteDetails');
-const About = () => import('~/features/about');
-const PrivateRoute = () => import('~/features/privateRoute');
-const RegisterHero = () => import('~/features/register');
-const ManifestList = () => import('~/features/manifestList');
-const ManifestDetails = () => import('~/features/manifestDetails');
-const NewManifest = () => import('~/features/newManifest');
-const Layout = () => import('~/features/layout');
+import { Component as PrivateRoute } from '~/features/privateRoute';
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    lazy: PrivateRoute,
+    element: <PrivateRoute />,
     children: [
       {
         path: '',
-        lazy: Layout,
+        lazy: () => import('~/features/layout'),
         children: [
           {
+            path: 'organization',
+            lazy: () => import('~/features/org'),
+          },
+          {
             path: '',
-            lazy: Dashboard,
+            lazy: () => import('~/features/dashboard'),
           },
           {
             path: 'profile',
-            lazy: Profile,
+            lazy: () => import('~/features/profile'),
           },
           {
             path: 'site',
             children: [
               {
                 path: '',
-                lazy: SiteList,
+                lazy: () => import('~/features/siteList'),
               },
               {
                 path: ':siteId',
-                lazy: SiteDetails,
+                lazy: () => import('~/features/siteDetails'),
               },
               {
                 path: ':siteId/manifest',
                 children: [
                   {
                     path: '',
-                    lazy: ManifestList,
+                    lazy: () => import('~/features/manifestList'),
                   },
                   {
                     path: 'new',
-                    lazy: NewManifest,
+                    lazy: () => import('~/features/newManifest'),
                   },
                   {
                     path: ':mtn/:action',
-                    lazy: ManifestDetails,
+                    lazy: () => import('~/features/manifestDetails'),
                   },
                 ],
               },
@@ -66,15 +59,15 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: '',
-                lazy: ManifestList,
+                lazy: () => import('~/features/manifestList'),
               },
               {
                 path: 'new',
-                lazy: NewManifest,
+                lazy: () => import('~/features/newManifest'),
               },
               {
                 path: ':mtn/:action',
-                lazy: ManifestDetails,
+                lazy: () => import('~/features/manifestDetails'),
               },
             ],
           },
@@ -88,11 +81,11 @@ export const router = createBrowserRouter([
   },
   {
     path: 'register',
-    lazy: RegisterHero,
+    lazy: () => import('~/features/register'),
   },
   {
     path: 'about',
-    lazy: About,
+    lazy: () => import('~/features/about'),
   },
   {
     path: '*',

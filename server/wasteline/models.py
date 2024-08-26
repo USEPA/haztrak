@@ -1,7 +1,6 @@
 import logging
 from typing import Optional
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -34,7 +33,7 @@ class WasteLine(models.Model):
     objects = WasteLineManager()
 
     manifest = models.ForeignKey(
-        settings.TRAK_MANIFEST_MODEL,
+        "manifest.Manifest",
         related_name="wastes",
         on_delete=models.CASCADE,
     )

@@ -26,6 +26,7 @@ export const {
   useGetManifestQuery,
   useGetRcrainfoSiteQuery,
   useGetOrgsQuery,
+  useGetOrgQuery,
 } = haztrakApi;
 
 export const {

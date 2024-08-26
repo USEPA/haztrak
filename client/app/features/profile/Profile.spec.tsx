@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react';
 import { setupServer } from 'msw/node';
-import { Profile } from './Profile';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { mockUserEndpoints, mockWasteEndpoints } from '~/mocks/handlers';
 import { cleanup, renderWithProviders } from '~/mocks';
+import { mockUserEndpoints, mockWasteEndpoints } from '~/mocks/handlers';
+import { Profile } from './Profile';
 
 const server = setupServer(...mockUserEndpoints, ...mockWasteEndpoints);
 afterEach(() => cleanup());
@@ -20,7 +20,6 @@ describe('Profile', () => {
     renderWithProviders(<Profile />);
     expect(await screen.findByText('Profile')).toBeInTheDocument();
     expect(await screen.findByText('User Information')).toBeInTheDocument();
-    expect(await screen.findByText('My Organization')).toBeInTheDocument();
     expect(await screen.findByText('RCRAInfo Profile')).toBeInTheDocument();
   });
 });

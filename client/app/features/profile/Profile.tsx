@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { HtCard } from '~/components/legacyUi';
-import { UserOrg } from '~/components/Org';
 import { RcraProfile } from '~/components/RcraProfile';
 import { Spinner } from '~/components/ui';
 import { UserInfoForm } from '~/components/User';
@@ -32,22 +31,17 @@ export function Profile(): ReactElement {
     <>
       <Container fluid className="py-2">
         <h1 className="tw-text-2xl tw-font-bold">Profile</h1>
-        <Row className="my-3">
-          <Col xs={12} lg={6} className="my-3">
+        <Row className="my-3 tw-flex tw-justify-center">
+          <Col xs={12} md={10} lg={8} className="my-3">
             <HtCard title="User Information" className="h-100 my-2">
               <HtCard.Body>
                 <UserInfoForm user={user} profile={profile} />
               </HtCard.Body>
             </HtCard>
           </Col>
-          <Col xs={12} lg={6} className="my-3">
-            <HtCard title="My Organization" className="h-100 my-2">
-              <HtCard.Body>{profile && <UserOrg profile={profile} />}</HtCard.Body>
-            </HtCard>
-          </Col>
         </Row>
-        <Row>
-          <Col>
+        <Row className="tw-flex tw-justify-center">
+          <Col xs={12} md={10} lg={8}>
             <HtCard title="RCRAInfo Profile">
               <HtCard.Body>
                 {rcrainfoProfile && <RcraProfile profile={rcrainfoProfile} />}

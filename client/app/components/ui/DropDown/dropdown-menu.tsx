@@ -1,10 +1,9 @@
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
+import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
 import { Check, ChevronRight, Circle } from 'lucide-react';
 import * as React from 'react';
 
 import { cn } from '~/lib/utils';
-
-const DropdownMenu = DropdownMenuPrimitive.Root;
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
 
@@ -15,6 +14,12 @@ const DropdownMenuPortal = DropdownMenuPrimitive.Portal;
 const DropdownMenuSub = DropdownMenuPrimitive.Sub;
 
 const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup;
+
+const DropdownMenu: React.FC<DropdownMenuProps> = ({ children, ...props }) => (
+  <DropdownMenuPrimitive.Root modal={false} {...props}>
+    {children}
+  </DropdownMenuPrimitive.Root>
+);
 
 const DropdownMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,

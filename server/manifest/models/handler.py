@@ -1,7 +1,6 @@
 import logging
 from typing import Dict, Optional
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from rcrasite.models import RcraSite
@@ -58,7 +57,7 @@ class Handler(models.Model):
     objects = HandlerManager()
 
     rcra_site = models.ForeignKey(
-        settings.TRAK_RCRAINFO_SITE_MODEL,
+        "rcrasite.RcraSite",
         on_delete=models.CASCADE,
         help_text="Hazardous waste rcra_site associated with the manifest",
     )
@@ -132,7 +131,7 @@ class Transporter(Handler):
     objects = TransporterManager()
 
     manifest = models.ForeignKey(
-        settings.TRAK_MANIFEST_MODEL,
+        "manifest.Manifest",
         related_name="transporters",
         on_delete=models.CASCADE,
     )

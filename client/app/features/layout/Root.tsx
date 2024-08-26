@@ -1,8 +1,8 @@
-import React, { createContext, Dispatch, SetStateAction, Suspense, useState } from 'react';
-import { Container } from 'react-bootstrap';
+import React, { createContext, Dispatch, SetStateAction, useState } from 'react';
 import { LoaderFunction, Outlet } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import { ErrorBoundary } from '~/components/Error';
-import { Spinner } from '~/components/ui';
+import { Notifications } from '~/components/Notifications/Notifications';
 import { rootStore as store } from '~/store';
 import { haztrakApi } from '~/store/htApi.slice';
 import { Sidebar } from './Sidebar/Sidebar';
@@ -31,17 +31,23 @@ export function Root() {
   const [showSidebar, setShowSidebar] = useState(false);
   return (
     <NavContext.Provider value={{ showSidebar, setShowSidebar }}>
-      <div>
-        <TopNav />
-        <Sidebar />
-        <Container fluid className="tw-mt-20">
-          <ErrorBoundary>
-            <Suspense fallback={<Spinner className="my-auto" />}>
-              <Outlet />
-            </Suspense>
-          </ErrorBoundary>
-        </Container>
-      </div>
+      <TopNav />
+      <Sidebar />
+      <main className="tw-mx-8 tw-mt-20">
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+          limit={3}
+        />
+        <Notifications />
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
+      </main>
     </NavContext.Provider>
   );
 }

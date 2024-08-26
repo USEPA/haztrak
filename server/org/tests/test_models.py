@@ -71,6 +71,11 @@ class TestSiteModel:
         haztrak_site = site_factory()
         assert isinstance(haztrak_site, Site)
 
+    def test_returns_rcrasite_epa_id(self, site_factory, rcra_site_factory):
+        rcra_site = rcra_site_factory()
+        site = site_factory(rcra_site=rcra_site)
+        assert site.epa_id == rcra_site.epa_id
+
     def test_returns_true_if_admin_has_provided_api_credentials(
         self,
         site_factory,
