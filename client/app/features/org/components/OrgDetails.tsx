@@ -10,7 +10,6 @@ interface OrgDetailsProps {
 export const OrgDetails = ({ org }: OrgDetailsProps) => {
   return (
     <div className="tw-flex-col ">
-      <h1 className="tw-text-2xl tw-font-bold">Organization Details</h1>
       <Card className="tw-max-w-screen-lg tw-grow">
         <CardHeader id="hero" className="tw-block tw-flex-initial">
           <h2 className="tw-text-lg tw-font-bold">{org.name}</h2>

@@ -1,7 +1,5 @@
 import React, { createContext, Dispatch, SetStateAction, Suspense, useState } from 'react';
-import { Container } from 'react-bootstrap';
 import { LoaderFunction, Outlet } from 'react-router-dom';
-import { ErrorBoundary } from '~/components/Error';
 import { Spinner } from '~/components/ui';
 import { rootStore as store } from '~/store';
 import { haztrakApi } from '~/store/htApi.slice';
@@ -31,17 +29,13 @@ export function Root() {
   const [showSidebar, setShowSidebar] = useState(false);
   return (
     <NavContext.Provider value={{ showSidebar, setShowSidebar }}>
-      <div>
-        <TopNav />
-        <Sidebar />
-        <Container fluid className="tw-mt-20">
-          <ErrorBoundary>
-            <Suspense fallback={<Spinner className="my-auto" />}>
-              <Outlet />
-            </Suspense>
-          </ErrorBoundary>
-        </Container>
-      </div>
+      <TopNav />
+      <Sidebar />
+      <main>
+        <Suspense fallback={<Spinner className="my-auto" />}>
+          <Outlet />
+        </Suspense>
+      </main>
     </NavContext.Provider>
   );
 }
