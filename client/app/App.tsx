@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ErrorBoundary } from '~/components/Error';
 import { Notifications } from '~/components/Notifications/Notifications';
 import { router } from '~/routes';
-import './App.scss';
+// import './App.scss';
 import './globals.css';
 import { Spinner } from './components/ui';
 
