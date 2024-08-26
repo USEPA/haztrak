@@ -32,7 +32,7 @@ export function Root() {
       <TopNav />
       <Sidebar />
       <main className="tw-mx-8 tw-mt-20">
-        <Suspense fallback={<Spinner className="my-auto" />}>
+        <Suspense fallback={<Spinner size="xl" className="my-auto" />}>
           <Outlet />
         </Suspense>
       </main>
