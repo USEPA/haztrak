@@ -3,11 +3,10 @@ import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
 import { LogOut } from 'lucide-react';
 import React, { useContext } from 'react';
 import { LuMenu, LuUser } from 'react-icons/lu';
-import { RiArrowDropDownFill } from 'react-icons/ri';
 import { TbBinaryTree } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import { OrgSelect } from '~/components/Org/OrgSelect';
-import { Button } from '~/components/ui';
+import { Avatar, AvatarFallback, AvatarImage, Button } from '~/components/ui';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,11 +15,13 @@ import {
 } from '~/components/ui/DropDown/dropdown-menu';
 import { NavContext, NavContextProps } from '~/features/layout/Root';
 
-import { useLogoutMutation } from '~/store';
+import { useGetProfileQuery, useLogoutMutation } from '~/store';
+import { FaUser } from 'react-icons/fa';
 
 export function TopNav() {
   const { showSidebar, setShowSidebar } = useContext<NavContextProps>(NavContext);
   const [logout] = useLogoutMutation();
+  const { data: profile } = useGetProfileQuery();
 
   const handleLogout = () => {
     logout();
@@ -69,8 +70,12 @@ export function TopNav() {
                 variant="outline"
                 className="tw-border-0 tw-text-white hover:tw-bg-transparent hover:tw-text-accent"
               >
-                <RiArrowDropDownFill size={24} />
-                <LuUser size={32} />
+                <Avatar>
+                  <AvatarImage src={profile?.avatar} alt="avatar" />
+                  <AvatarFallback>
+                    <FaUser size={16} className="tw-text-black" />
+                  </AvatarFallback>
+                </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="tw-me-5 tw-w-56">

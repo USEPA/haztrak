@@ -4,10 +4,11 @@ import { haztrakApi, TaskResponse } from '~/store/htApi.slice';
 
 /**The user's RCRAInfo account data stored in the Redux store*/
 export interface ProfileSlice {
-  user: string | undefined;
+  user: HaztrakUser;
   rcrainfoProfile?: RcrainfoProfile<Record<string, RcrainfoProfileSite>>;
   sites?: Record<string, HaztrakProfileSite>;
   org?: Organization | null;
+  avatar?: string;
 }
 
 export interface Organization {
