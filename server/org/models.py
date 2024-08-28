@@ -1,5 +1,6 @@
 import uuid
 from profile.models import RcrainfoProfile
+from typing import TYPE_CHECKING
 
 from core.models import TrakUser
 from django.conf import settings
@@ -9,6 +10,9 @@ from django.db.models import QuerySet
 from django_extensions.db.fields import AutoSlugField
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import get_objects_for_user
+
+if TYPE_CHECKING:
+    from django.contrib.auth.models import User
 
 
 class OrgManager(models.Manager):
@@ -54,7 +58,7 @@ class Org(models.Model):
         null=False,
         blank=False,
     )
-    admin = models.ForeignKey(
+    admin: "User" = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
@@ -117,9 +121,7 @@ class SiteManager(QuerySet):
             accept_global_perms=False,
         )
 
-    def get_by_user_and_epa_id(
-        self: models.Manager, user: settings.AUTH_USER_MODEL, epa_id: str
-    ) -> QuerySet:
+    def get_by_user_and_epa_id(self: models.Manager, user: "User", epa_id: str) -> QuerySet:
         """Get a site by EPA ID number that a user has access to"""
         combined_filter: QuerySet = self.filter_by_user(user) & self.filter_by_epa_id(epa_id)
         return combined_filter.get()
@@ -131,7 +133,7 @@ class SiteManager(QuerySet):
         )
         return combined_filter.get()
 
-    def filter_by_user(self: models.Manager, user: settings.AUTH_USER_MODEL) -> QuerySet:
+    def filter_by_user(self: models.Manager, user: "User") -> QuerySet:
         """filter a list of sites a user has access to (by user object)"""
         return get_objects_for_user(user, "view_site", self.model, accept_global_perms=False)
 
