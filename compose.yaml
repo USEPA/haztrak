@@ -30,7 +30,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.trak.rule=Host(`${HT_HOST}`)"
-      - "traefik.http.routers.trak.rule=PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`)"
+      - "traefik.http.routers.trak.rule=PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`)"
       - "traefik.http.routers.trak.entrypoints=web"
     command: |
       sh -c "
