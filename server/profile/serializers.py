@@ -1,5 +1,6 @@
 from profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 
+from core.serializers import TrakUserSerializer
 from manifest.serializers.mixins import RemoveEmptyFieldsMixin
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -144,12 +145,8 @@ class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     """Serializer for a user's profile"""
 
-    user = serializers.StringRelatedField(
-        required=False,
-    )
-    avatar = serializers.ImageField(
-        required=False,
-    )
+    user = TrakUserSerializer(read_only=True)
+    avatar = serializers.ImageField(required=False)
 
     class Meta:
         model = Profile
