@@ -22,6 +22,8 @@ class ProfileDetailsView(RetrieveAPIView):
     serializer_class = ProfileSerializer
 
     def get_object(self):
+        if self.request.user.is_anonymous:
+            raise PermissionError("You must be logged in to view this page")
         return get_user_profile(user=self.request.user)
 
 

@@ -147,11 +147,15 @@ class ProfileSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(
         required=False,
     )
+    avatar = serializers.ImageField(
+        required=False,
+    )
 
     class Meta:
         model = Profile
         fields = [
             "user",
+            "avatar",
         ]
 
 
