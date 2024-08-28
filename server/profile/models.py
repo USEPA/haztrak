@@ -46,6 +46,11 @@ class Profile(models.Model):
         null=True,
         blank=True,
     )
+    avatar = models.ImageField(
+        upload_to="users/%Y/%m/%d/",
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return f"{self.user.username}"
