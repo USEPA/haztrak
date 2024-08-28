@@ -5,3 +5,4 @@ static/
 test_db-journal
 **/*coverage.json
 /htmlcov/
+media
