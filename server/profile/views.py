@@ -11,8 +11,20 @@ from rest_framework.generics import (
     RetrieveAPIView,
     RetrieveUpdateAPIView,
 )
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
+
+
+class ProfileViewSet(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
+    """ViewSet for the Profile model"""
+
+    lookup_field = "user__id"
+    lookup_url_kwarg = "user_id"
+
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
 
 
 class ProfileDetailsView(RetrieveAPIView):

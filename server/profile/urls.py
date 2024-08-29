@@ -1,10 +1,15 @@
 from django.urls import include, path
+from rest_framework.routers import SimpleRouter
 
 from .views import (
     ProfileDetailsView,
+    ProfileViewSet,
     RcrainfoProfileRetrieveUpdateView,
     RcrainfoProfileSyncView,
 )
+
+profile_router = SimpleRouter(trailing_slash=False)
+profile_router.register("profile", ProfileViewSet)
 
 rcrainfo_profile_patterns = (
     [
@@ -20,4 +25,5 @@ app_name = "profile"
 urlpatterns = [
     path("my-profile", ProfileDetailsView.as_view(), name="my-profile"),
     path("rcrainfo-profile", include(rcrainfo_profile_patterns)),
+    path("", include(profile_router.urls)),
 ]

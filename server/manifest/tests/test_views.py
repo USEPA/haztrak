@@ -10,7 +10,7 @@ from manifest.views import ElectronicManifestSignView, ManifestViewSet, MtnListV
 
 
 class TestManifestCRUD:
-    """Tests the for the Manifest ModelViewSet"""
+    """Tests the for the Manifest views"""
 
     @pytest.fixture
     def factory(self):

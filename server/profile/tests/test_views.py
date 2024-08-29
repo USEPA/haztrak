@@ -1,9 +1,49 @@
+import http
+from profile.serializers import ProfileSerializer
 from profile.views import ProfileDetailsView, RcrainfoProfileRetrieveUpdateView
 
 import pytest
 from rest_framework import status
 from rest_framework.reverse import reverse
-from rest_framework.test import APIRequestFactory, force_authenticate
+from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
+
+
+class TestProfileViewSet:
+    @pytest.fixture
+    def api_client(self):
+        return APIClient()
+
+    @pytest.fixture
+    def profile(self, db, profile_factory, user_factory):
+        user = user_factory(username="testuser", password="password")
+        user_profile = profile_factory(user=user)
+        return user_profile
+
+    def test_retrieves_profile_details(self, api_client, profile):
+        api_client.login(username="testuser", password="password")
+        url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.id})
+        response = api_client.get(url)
+        assert response.status_code == 200
+        assert response.data == ProfileSerializer(profile).data
+
+    # def test_updates_profile(self, api_client, profile):
+    #     api_client.login(username="testuser", password="password")
+    #     url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.id})
+    #     profile.avatar = "new_avatar"
+    #     response = api_client.put(url, ProfileSerializer(profile).data)
+    #     print(response.data)
+    #     # assert response.data == ProfileSerializer(user_profile).data
+
+    def test_returns_401_for_anonymous_user(self, api_client, profile):
+        url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.pk})
+        response = api_client.get(url)
+        assert response.status_code == http.HTTPStatus.UNAUTHORIZED
+
+    def test_returns_401_for_anonymous_user_on_update(self, api_client, profile):
+        url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.pk})
+        data = {"field_name": "new_value"}  # Replace with actual fields
+        response = api_client.put(url, data)
+        assert response.status_code == http.HTTPStatus.UNAUTHORIZED
 
 
 class TestRcrainfoProfileRetrieveUpdateView:
