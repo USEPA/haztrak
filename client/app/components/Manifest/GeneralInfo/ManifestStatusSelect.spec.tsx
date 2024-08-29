@@ -1,14 +1,14 @@
 import userEvent from '@testing-library/user-event';
-import { ManifestStatusSelect } from '~/components/Manifest/GeneralInfo/ManifestStatusSelect';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
+import { ManifestStatusSelect } from '~/components/Manifest/GeneralInfo/ManifestStatusSelect';
 
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures';
 import { createMockProfileResponse } from '~/mocks/fixtures/mockUser';
 import { mockUserEndpoints } from '~/mocks/handlers';
 import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
-import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 const server = setupServer(...mockUserEndpoints);
 afterEach(() => cleanup());
@@ -58,7 +58,7 @@ describe('Manifest Status Field', () => {
       }),
     });
     server.use(
-      http.get(`${API_BASE_URL}/api/profile`, () => {
+      http.get(`${API_BASE_URL}/api/my-profile`, () => {
         return HttpResponse.json(
           {
             ...createMockProfileResponse({
@@ -96,7 +96,7 @@ describe('Manifest Status Field', () => {
       }),
     });
     server.use(
-      http.get(`${API_BASE_URL}/api/profile`, () => {
+      http.get(`${API_BASE_URL}/api/my-profile`, () => {
         return HttpResponse.json(
           {
             ...createMockProfileResponse({
@@ -130,7 +130,7 @@ describe('Manifest Status Field', () => {
       }),
     });
     server.use(
-      http.get(`${API_BASE_URL}/api/profile`, () => {
+      http.get(`${API_BASE_URL}/api/my-profile`, () => {
         return HttpResponse.json(
           {
             ...createMockProfileResponse({

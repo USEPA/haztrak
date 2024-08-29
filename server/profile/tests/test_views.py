@@ -109,7 +109,7 @@ class TestProfileDetailsView:
     def request_factory(self, user_factory):
         user = user_factory()
         factory = APIRequestFactory()
-        request = factory.get(reverse("profile:details"))
+        request = factory.get(reverse("profile:my-profile"))
         force_authenticate(request, user)
         return request, user
 
@@ -123,7 +123,7 @@ class TestProfileDetailsView:
     def test_returns_401_when_unauthenticated(self, profile_factory, user_factory):
         user = user_factory()
         factory = APIRequestFactory()
-        request = factory.get(reverse("profile:details"))
+        request = factory.get(reverse("profile:my-profile"))
         profile_factory(user=user)
         response = ProfileDetailsView.as_view()(request)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED

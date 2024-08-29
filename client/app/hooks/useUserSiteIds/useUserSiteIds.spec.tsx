@@ -1,13 +1,13 @@
 import { cleanup, waitFor } from '@testing-library/react';
-import { renderWithProviders, screen } from '~/mocks';
-import { mockUserEndpoints, mockWasteEndpoints } from '~/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { useUserSiteIds } from '~/hooks';
+import { renderWithProviders, screen } from '~/mocks';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures';
 import { createMockProfileResponse } from '~/mocks/fixtures/mockUser';
+import { mockUserEndpoints, mockWasteEndpoints } from '~/mocks/handlers';
 import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
 
 function TestComponent() {
@@ -45,7 +45,7 @@ describe('useUserSiteId hook', () => {
       }),
     });
     server.use(
-      http.get(`${API_BASE_URL}/api/profile`, () => {
+      http.get(`${API_BASE_URL}/api/my-profile`, () => {
         return HttpResponse.json(
           {
             ...createMockProfileResponse({

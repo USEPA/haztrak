@@ -4,9 +4,9 @@ import { HtCard } from '~/components/legacyUi';
 import { RcraProfile } from '~/components/RcraProfile';
 import { Spinner } from '~/components/ui';
 import { UserInfoForm } from '~/components/User';
+import { AvatarForm } from '~/features/profile/components/AvatarForm';
 import { useTitle } from '~/hooks';
 import { useGetProfileQuery, useGetRcrainfoProfileQuery, useGetUserQuery } from '~/store';
-import { AvatarForm } from '~/features/profile/components/AvatarForm';
 
 /**
  * Display user profile, including their Haztrak information, their organization,

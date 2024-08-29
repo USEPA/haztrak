@@ -119,7 +119,7 @@ export const userApi = haztrakApi.injectEndpoints({
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     getProfile: build.query<ProfileSlice, void>({
       query: () => ({
-        url: 'profile',
+        url: 'my-profile',
         method: 'GET',
       }),
       providesTags: ['profile'],

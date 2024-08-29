@@ -18,6 +18,6 @@ rcrainfo_profile_patterns = (
 
 app_name = "profile"
 urlpatterns = [
-    path("profile", ProfileDetailsView.as_view(), name="details"),
+    path("my-profile", ProfileDetailsView.as_view(), name="my-profile"),
     path("rcrainfo-profile", include(rcrainfo_profile_patterns)),
 ]
