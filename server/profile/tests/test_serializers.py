@@ -15,7 +15,7 @@ class TestTrakProfileSerializer:
         user = user_factory(username=my_username)
         profile = profile_factory(user=user)
         serializer = ProfileSerializer(profile)
-        assert serializer.data["user"] == my_username
+        assert serializer.data["user"]["username"] == my_username
 
 
 class TestRcraSitePermissionSerializer:

@@ -15,8 +15,9 @@ export function AvatarForm({ avatar }: AvatarFormProps) {
 
   const { handleSubmit } = useForm<{ avatar?: string }>({ values: { avatar } });
 
-  const onSubmit = () => {
+  const onSubmit = (data: any) => {
     setEditable(!editable);
+    console.log('data', data);
   };
 
   return (
