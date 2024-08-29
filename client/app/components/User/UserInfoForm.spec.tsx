@@ -25,7 +25,7 @@ describe('UserProfile', () => {
     const myUsername = 'myUsername';
     const user: HaztrakUser = createMockHaztrakUser({ username: myUsername, firstName: 'David' });
     const profile: ProfileSlice = {
-      user: myUsername,
+      user,
     };
     renderWithProviders(<UserInfoForm user={user} profile={profile} />, {});
     expect(screen.getByRole('textbox', { name: 'First Name' })).toHaveValue(user.firstName);
@@ -36,7 +36,7 @@ describe('UserProfile', () => {
     const newEmail = 'newMockEmail@mail.com';
     const user: HaztrakUser = createMockHaztrakUser({ email: 'oldEmail@gmail.com' });
     const profile: ProfileSlice = {
-      user: 'test',
+      user,
     };
     renderWithProviders(<UserInfoForm user={user} profile={profile} />, {});
     const editButton = screen.getByRole('button', { name: 'Edit' });
