@@ -34,6 +34,7 @@ export const {
   useLogoutMutation,
   useGetUserQuery,
   useGetProfileQuery,
+  useUpdateProfileMutation,
   useGetRcrainfoProfileQuery,
   useUpdateUserMutation,
   useUpdateRcrainfoProfileMutation,
