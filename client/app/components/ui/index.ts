@@ -40,3 +40,5 @@ export {
 } from './Form/form';
 
 export { Label } from './Form/label';
+
+export { Input } from './Input/input';
