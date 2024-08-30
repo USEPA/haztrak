@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { AvatarForm } from './AvatarForm';
 import { describe, expect, it } from 'vitest';
+import { AvatarForm } from './AvatarForm';
 
 describe('AvatarForm Component', () => {
   it('avatar image is a button', () => {
