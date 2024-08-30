@@ -50,28 +50,31 @@ export function AvatarForm({ avatar }: AvatarFormProps) {
             <FormItem>
               <FormLabel />
               <FormControl>
-                <>
-                  <Input
-                    id="picture"
-                    type="file"
-                    accept="image/png,image/jpeg"
-                    aria-label="Profile Picture"
-                    ref={fileRef}
-                    onChange={handleUploadedFile}
-                  />
-                </>
+                <div className="tw-flex tw-justify-center">
+                  <button onClick={() => fileRef.current?.click()}>
+                    <Input
+                      id="picture"
+                      type="file"
+                      accept="image/png,image/jpeg"
+                      aria-label="Profile Picture"
+                      ref={fileRef}
+                      onChange={handleUploadedFile}
+                      className="tw-hidden"
+                    />
+                    <Avatar className="tw-h-40 tw-w-40">
+                      <AvatarImage src={preview} alt="avatar" />
+                      <AvatarFallback>
+                        <FaUser size={80} />
+                      </AvatarFallback>
+                    </Avatar>
+                  </button>
+                </div>
               </FormControl>
               <FormDescription />
               <FormMessage />
             </FormItem>
           )}
         />
-        <Avatar className="tw-h-40 tw-w-40">
-          <AvatarImage src={preview} alt="avatar" />
-          <AvatarFallback>
-            <FaUser size={80} />
-          </AvatarFallback>
-        </Avatar>
         {/*<FormField label="Picture">*/}
         {/*  <Controller*/}
         {/*    control={control}*/}
