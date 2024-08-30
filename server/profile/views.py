@@ -12,6 +12,7 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView,
 )
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -22,7 +23,8 @@ class ProfileViewSet(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
 
     lookup_field = "user__id"
     lookup_url_kwarg = "user_id"
-
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+    # permission_classes = []
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 

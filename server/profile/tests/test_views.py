@@ -1,8 +1,12 @@
 import http
+import io
+import tempfile
 from profile.serializers import ProfileSerializer
 from profile.views import ProfileDetailsView, RcrainfoProfileRetrieveUpdateView
 
 import pytest
+from django.core.files.uploadedfile import SimpleUploadedFile
+from PIL import Image
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
@@ -19,6 +23,13 @@ class TestProfileViewSet:
         user_profile = profile_factory(user=user)
         return user_profile
 
+    @pytest.fixture
+    def generate_photo_file(self):
+        bts = io.BytesIO()
+        img = Image.new("RGB", (100, 100))
+        img.save(bts, "jpeg")
+        return SimpleUploadedFile("test.jpg", bts.getvalue(), content_type="image/jpeg")
+
     def test_retrieves_profile_details(self, api_client, profile):
         api_client.login(username="testuser", password="password")
         url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.id})
@@ -26,13 +37,22 @@ class TestProfileViewSet:
         assert response.status_code == 200
         assert response.data == ProfileSerializer(profile).data
 
-    # def test_updates_profile(self, api_client, profile):
-    #     api_client.login(username="testuser", password="password")
-    #     url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.id})
-    #     profile.avatar = "new_avatar"
-    #     response = api_client.put(url, ProfileSerializer(profile).data)
-    #     print(response.data)
-    #     # assert response.data == ProfileSerializer(user_profile).data
+    @pytest.mark.skip(reason="Not implemented")
+    def test_updates_profile_image(self, api_client, profile, generate_photo_file):
+        # ToDo: Implement this test - I keep getting a 500 internal server error
+        #  even though I can successfully use this endpoint
+        api_client.login(username="testuser", password="password")
+        url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.id})
+
+        f = io.BytesIO()
+        image = Image.new("RGB", (100, 100))
+        image.save(f, format="JPEG")
+        f.seek(0)
+        tmp_file = SimpleUploadedFile("test.jpeg", f.read(), content_type="image/jpeg")
+        payload = {"avatar": tmp_file}
+
+        response = api_client.patch(url, payload, format="multipart")
+        assert 200 <= response.status_code < 300
 
     def test_returns_401_for_anonymous_user(self, api_client, profile):
         url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.pk})

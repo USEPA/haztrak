@@ -146,7 +146,6 @@ class ProfileSerializer(serializers.ModelSerializer):
     """Serializer for a user's profile"""
 
     user = TrakUserSerializer(read_only=True)
-    avatar = serializers.ImageField(required=False)
 
     class Meta:
         model = Profile
