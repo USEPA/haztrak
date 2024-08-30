@@ -20,8 +20,8 @@ from rest_framework.viewsets import GenericViewSet
 class ProfileViewSet(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
     """ViewSet for the Profile model"""
 
-    lookup_field = "user__username"
-    lookup_url_kwarg = "username"
+    lookup_field = "user__id"
+    lookup_url_kwarg = "user_id"
 
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
