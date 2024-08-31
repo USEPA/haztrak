@@ -13,6 +13,8 @@ import {
   FormMessage,
   Input,
 } from '~/components/ui';
+import { useAuth } from '~/hooks';
+import { useUpdateProfileMutation } from '~/store';
 
 interface AvatarFormProps {
   avatar?: string;
@@ -20,7 +22,9 @@ interface AvatarFormProps {
 
 export function AvatarForm({ avatar }: AvatarFormProps) {
   const [preview, setPreview] = useState(avatar);
+  const { user } = useAuth();
   const fileRef = createRef<HTMLInputElement>();
+  const [updateProfile] = useUpdateProfileMutation();
 
   const form = useForm<{ avatar?: string }>({ values: { avatar } });
 
@@ -31,6 +35,8 @@ export function AvatarForm({ avatar }: AvatarFormProps) {
     const file = event.currentTarget.files[0];
     const urlImage = URL.createObjectURL(file);
     setPreview(urlImage);
+    // @ts-expect-error - TODO: fix this
+    updateProfile({ id: user?.id, profile: { avatar: urlImage } });
   };
 
   const onSubmit = (data: any) => {
