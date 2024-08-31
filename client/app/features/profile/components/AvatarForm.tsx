@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { FaUser } from 'react-icons/fa';
@@ -13,7 +13,7 @@ interface AvatarFormProps {
 export function AvatarForm({ avatar }: AvatarFormProps) {
   const [preview, setPreview] = useState<string | undefined>(avatar);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const { user } = useAuth();
 
   const onSubmit = (data: any) => {
@@ -28,7 +28,16 @@ export function AvatarForm({ avatar }: AvatarFormProps) {
       .catch((err) => console.log(err));
   };
 
-  const registerProps = register('avatar');
+  const registerProps = register('avatar', {
+    required: true,
+  });
+
+  // When the avatar is changed, submit the form
+  useEffect(() => {
+    watch((data) => {
+      onSubmit(data);
+    });
+  }, [watch]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -51,7 +60,6 @@ export function AvatarForm({ avatar }: AvatarFormProps) {
           </Avatar>
         </button>
       </div>
-      <button type="submit">Submit</button>
     </form>
   );
 }
