@@ -19,7 +19,6 @@ export function AvatarForm({ avatar }: AvatarFormProps) {
   const onSubmit = (data: any) => {
     const formData = new FormData();
     formData.append('avatar', data.avatar[0]);
-    console.log('data ', formData);
     htApi
       .patch(`/profile/${user?.id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },

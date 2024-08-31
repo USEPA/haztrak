@@ -1,10 +1,11 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import { renderWithProviders } from '~/mocks';
 import { AvatarForm } from './AvatarForm';
 
 describe('AvatarForm Component', () => {
   it('avatar image is a button', () => {
-    render(<AvatarForm />);
+    renderWithProviders(<AvatarForm />);
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 });
