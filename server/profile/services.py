@@ -2,16 +2,17 @@
 
 from profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 from profile.serializers import RcrainfoSitePermissionsSerializer
-from typing import Optional
-
-from django.conf import settings
-from django.db import transaction
+from typing import TYPE_CHECKING, Optional
 
 from core.models import TrakUser
 from core.services import RcraClient, get_rcra_client
+from django.db import transaction
 from org.services import SiteServiceError
 from rcrasite.models import RcraSite
 from rcrasite.services import RcraSiteService
+
+if TYPE_CHECKING:
+    from django.contrib.auth.models import User
 
 
 @transaction.atomic
@@ -25,12 +26,12 @@ def get_or_create_profile(*, username: str) -> tuple[Profile, bool]:
     return profile, created
 
 
-def get_user_profile(*, user: settings.AUTH_USER_MODEL) -> Profile:
+def get_user_profile(*, user: "User") -> Profile:
     """Retrieve a user's Profile"""
     return Profile.objects.get_profile_by_user(user=user)
 
 
-def get_user_rcrainfo_profile(*, user: settings.AUTH_USER_MODEL) -> RcrainfoProfile:
+def get_user_rcrainfo_profile(*, user: "User") -> RcrainfoProfile:
     """Retrieve a user's locally stored RCRAInfo Profile"""
     return RcrainfoProfile.objects.get_by_trak_username(user.username)
 

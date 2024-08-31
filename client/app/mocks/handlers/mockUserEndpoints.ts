@@ -21,7 +21,7 @@ export const mockUserEndpoints = [
     return HttpResponse.json({ ...user, ...info.request.body }, { status: 200 });
   }),
   /** GET Profile */
-  http.get(`${API_BASE_URL}/api/profile`, () => {
+  http.get(`${API_BASE_URL}/api/my-profile`, () => {
     return HttpResponse.json({ ...createMockProfileResponse() }, { status: 200 });
   }),
   /** Login */

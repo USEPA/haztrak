@@ -1,31 +1,12 @@
-from profile.models import RcrainfoSiteAccess
+from profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 
+from core.serializers import TrakUserSerializer
+from manifest.serializers.mixins import RemoveEmptyFieldsMixin
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 
-class RcraSiteBaseSerializer(serializers.ModelSerializer):
-    def __str__(self):
-        return f"{self.__class__.__name__}"
-
-    def __repr__(self):
-        return f"<{self.__class__.__name__}({self.data})>"
-
-    def to_representation(self, instance):
-        """
-        Remove empty fields when serializing
-        """
-        data = super().to_representation(instance)
-        for field in self.fields:
-            try:
-                if data[field] is None:
-                    data.pop(field)
-            except KeyError:
-                pass
-        return data
-
-
-class RcraSitePermissionSerializer(RcraSiteBaseSerializer):
+class RcraSitePermissionSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
     """
     We use this internally because it's easier to handle, using consistent naming,
     Haztrak has a separate serializer for user permissions from RCRAInfo.
@@ -158,4 +139,68 @@ class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
             "eManifest",
             "WIETS",
             "myRCRAid",
+        ]
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    """Serializer for a user's profile"""
+
+    user = TrakUserSerializer(read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = [
+            "user",
+            "avatar",
+        ]
+
+
+class RcrainfoProfileSerializer(serializers.ModelSerializer):
+    """Model serializer for marshalling/unmarshalling a user's RcrainfoProfile"""
+
+    user = serializers.StringRelatedField(
+        source="haztrak_profile",
+    )
+    rcraSites = RcraSitePermissionSerializer(
+        source="permissions",
+        required=False,
+        many=True,
+    )
+    phoneNumber = serializers.CharField(
+        source="phone_number",
+        required=False,
+    )
+    rcraAPIID = serializers.CharField(
+        source="rcra_api_id",
+        required=False,
+        allow_null=True,
+        allow_blank=True,
+    )
+    rcraAPIKey = serializers.CharField(
+        source="rcra_api_key",
+        required=False,
+        write_only=True,
+        allow_blank=True,
+        allow_null=True,
+    )
+    rcraUsername = serializers.CharField(
+        source="rcra_username",
+        required=False,
+    )
+    apiUser = serializers.BooleanField(
+        source="has_rcrainfo_api_id_key",
+        required=False,
+        allow_null=False,
+    )
+
+    class Meta:
+        model = RcrainfoProfile
+        fields = [
+            "user",
+            "rcraAPIID",
+            "rcraAPIKey",
+            "rcraUsername",
+            "rcraSites",
+            "phoneNumber",
+            "apiUser",
         ]

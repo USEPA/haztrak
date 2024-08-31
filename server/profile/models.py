@@ -1,14 +1,18 @@
 import uuid
+from typing import TYPE_CHECKING
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
+if TYPE_CHECKING:
+    from django.contrib.auth.models import User
+
 
 class ProfileManager(models.QuerySet):
     """Query manager for the TrakProfile model."""
 
-    def get_profile_by_user(self, user: settings.AUTH_USER_MODEL) -> "Profile":
+    def get_profile_by_user(self, user: "User") -> "Profile":
         return self.get(user=user)
 
 
@@ -30,7 +34,7 @@ class Profile(models.Model):
         editable=False,
         default=uuid.uuid4,
     )
-    user = models.OneToOneField(
+    user: "User" = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="haztrak_profile",
@@ -42,11 +46,11 @@ class Profile(models.Model):
         null=True,
         blank=True,
     )
-
-    @property
-    def rcrainfo_integrated_org(self) -> bool:
-        """Returns true if the user's organization is integrated with RCRAInfo"""
-        return self.user.org_permissions.org.is_rcrainfo_integrated()
+    avatar = models.ImageField(
+        upload_to="users/%Y/%m/%d/",
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return f"{self.user.username}"

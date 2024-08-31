@@ -1,13 +1,15 @@
 from datetime import UTC, datetime
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from django.db import transaction
 from django.db.models import QuerySet
-
-from haztrak import settings
 from manifest.services import TaskResponse
 from manifest.tasks import sync_site_manifests
+
 from org.models import Org, Site
+
+if TYPE_CHECKING:
+    from django.contrib.auth.models import User
 
 
 def get_org_by_id(org_id: str) -> Org:
@@ -70,7 +72,7 @@ def get_site_by_epa_id(epa_id: str) -> Site:
     return Site.objects.get_by_epa_id(epa_id)
 
 
-def find_sites_by_user(user: settings.AUTH_USER_MODEL) -> QuerySet[Site]:
+def find_sites_by_user(user: "User") -> QuerySet[Site]:
     """Returns a list of Sites associated with a user."""
     return Site.objects.filter_by_user(user)
 

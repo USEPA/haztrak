@@ -1,5 +1,6 @@
 import { manifest } from '~/services/manifest/manifest';
 import {
+  createMockHaztrakUser,
   createMockManifest,
   createMockMTNHandler,
   createMockSite,
@@ -84,7 +85,7 @@ describe('manifest.getNextSigner', () => {
     });
     const mockHaztrakSite = createMockSite();
     const profile: ProfileSlice = {
-      user: 'testuser1',
+      user: createMockHaztrakUser({ id: 'testuser1' }),
       sites: {
         [mockHaztrakSite.handler.epaSiteId]: {
           ...mockHaztrakSite,
@@ -98,7 +99,7 @@ describe('manifest.getNextSigner', () => {
   test('getStatusOptions includes Scheduled if user has access to the TSDF', () => {
     const mockHaztrakSite = createMockSite();
     const profile: ProfileSlice = {
-      user: 'testuser1',
+      user: createMockHaztrakUser({ id: 'testuser1' }),
       sites: {
         [mockHaztrakSite.handler.epaSiteId]: {
           ...mockHaztrakSite,

@@ -7,10 +7,8 @@ import tailwind from 'eslint-plugin-tailwindcss';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default [
-  // ToDo: eslint-plugin-react-hooks does not yet support eslint > 9 and this config
   pluginJs.configs.recommended,
   jsxA11y.flatConfigs.recommended,
-  // ...tseslint.configs.recommended, // recommended config is overridden by strict/stylistic
   ...tsEslint.configs.strict,
   ...tsEslint.configs.stylistic,
   eslintPluginPrettierRecommended,

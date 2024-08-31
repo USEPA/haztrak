@@ -4,6 +4,7 @@ import { ProfileSlice } from '~/store';
 import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, it } from 'vitest';
 import { renderWithProviders } from '~/mocks';
+import { createMockHaztrakUser } from '~/mocks/fixtures';
 
 const mockProfileWithOrg: ProfileSlice = {
   org: {
@@ -13,13 +14,13 @@ const mockProfileWithOrg: ProfileSlice = {
     id: uuidv4(),
   },
   sites: {},
-  user: 'testuser1',
+  user: createMockHaztrakUser(),
 };
 
 const mockProfileWithoutOrg: ProfileSlice = {
   org: null,
   sites: {},
-  user: 'testuser1',
+  user: createMockHaztrakUser(),
 };
 
 const mockProfileWithNonIntegratedOrg: ProfileSlice = {
@@ -30,7 +31,7 @@ const mockProfileWithNonIntegratedOrg: ProfileSlice = {
     id: uuidv4(),
   },
   sites: {},
-  user: 'testuser1',
+  user: createMockHaztrakUser(),
 };
 
 describe('UserOrg Component', () => {

@@ -27,3 +27,18 @@ export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 export { Spinner } from './Spinner/Spinner';
 
 export { Avatar, AvatarImage, AvatarFallback } from './Avatar/Avatar';
+
+export {
+  Form,
+  FormControl,
+  FormItem,
+  FormDescription,
+  FormField,
+  useFormField,
+  FormLabel,
+  FormMessage,
+} from './Form/form';
+
+export { Label } from './Form/label';
+
+export { Input } from './Input/input';
