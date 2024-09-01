@@ -34,11 +34,11 @@ export const {
   useLogoutMutation,
   useGetUserQuery,
   useGetProfileQuery,
-  useUpdateProfileMutation,
   useGetRcrainfoProfileQuery,
   useUpdateUserMutation,
   useUpdateRcrainfoProfileMutation,
   useSyncRcrainfoProfileMutation,
+  useUpdateAvatarMutation,
 } = userApi;
 
 // Authentication Slice

@@ -124,7 +124,7 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       invalidatesTags: ['profile'],
     }),
-    updateAvatar: build.mutation<ProfileSlice, { id: string; avatar: FormData }>({
+    updateAvatar: build.mutation<{ avatar: string }, { id: string; avatar: FormData }>({
       query: ({ id, avatar }) => ({
         url: `profile/${id}`,
         method: 'PATCH',
