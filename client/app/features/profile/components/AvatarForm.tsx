@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { FaUser } from 'react-icons/fa';
 import { Avatar, AvatarFallback, AvatarImage, Input } from '~/components/ui';
 import { useAuth } from '~/hooks';
-import { htApi } from '~/services';
+import { useUpdateAvatarMutation } from '~/store';
 
 interface AvatarFormProps {
   avatar?: string;
@@ -14,22 +14,16 @@ export function AvatarForm({ avatar }: AvatarFormProps) {
   const [preview, setPreview] = useState<string | undefined>(avatar);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
+  const [updateAvatar, { data, isSuccess }] = useUpdateAvatarMutation();
   const { user } = useAuth();
 
   const onSubmit = (data: any) => {
     const formData = new FormData();
     formData.append('avatar', data.avatar[0]);
-    htApi
-      .patch(`/profile/${user?.id}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
-      .then((res) => setPreview(res.data.avatar))
-      .catch((err) => console.log(err));
+    if (user?.id) {
+      updateAvatar({ id: user?.id, avatar: formData });
+    }
   };
-
-  const registerProps = register('avatar', {
-    required: true,
-  });
 
   // When the avatar is changed, submit the form
   useEffect(() => {
@@ -37,6 +31,17 @@ export function AvatarForm({ avatar }: AvatarFormProps) {
       onSubmit(data);
     });
   }, [watch]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setPreview(data?.avatar);
+    }
+  }, [isSuccess, data]);
+
+  // create the props for the avatar input
+  const registerProps = register('avatar', {
+    required: true,
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

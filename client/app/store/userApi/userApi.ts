@@ -124,6 +124,17 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       invalidatesTags: ['profile'],
     }),
+    updateAvatar: build.mutation<{ avatar: string }, { id: string; avatar: FormData }>({
+      query: ({ id, avatar }) => ({
+        url: `profile/${id}`,
+        method: 'PATCH',
+        data: avatar,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }),
+      invalidatesTags: ['profile'],
+    }),
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     getProfile: build.query<ProfileSlice, void>({
       query: () => ({
