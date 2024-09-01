@@ -18,6 +18,7 @@ export interface HtApiQueryArgs {
   method: AxiosRequestConfig['method'];
   data?: AxiosRequestConfig['data'];
   params?: AxiosRequestConfig['params'];
+  headers?: AxiosRequestConfig['headers'];
 }
 
 export interface HtApiError extends AxiosError {
@@ -42,8 +43,8 @@ export const htApiBaseQuery =
     HtApiError
     // Meta
   > =>
-  async ({ url, method, data, params }) => {
-    return htApi({ url: baseUrl + url, method, data, params })
+  async ({ url, method, data, params, headers }) => {
+    return htApi({ url: baseUrl + url, method, data, params, headers })
       .then((response) => {
         return { data: response.data };
       })
