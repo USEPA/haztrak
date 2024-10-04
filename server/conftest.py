@@ -10,16 +10,14 @@ from typing import Any, Dict, Literal, Optional, Required, TypedDict
 import pytest
 import pytest_mock
 import responses
+from core.models import (
+    TrakUser,
+)
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from faker import Faker
 from faker.providers import BaseProvider
 from guardian.shortcuts import assign_perm
-from rest_framework.test import APIClient
-
-from core.models import (
-    TrakUser,
-)
 from org.models import Org, Site
 from rcrasite.models import (
     Address,
@@ -27,6 +25,7 @@ from rcrasite.models import (
     RcraPhone,
     RcraSite,
 )
+from rest_framework.test import APIClient
 
 
 class SiteIDProvider(BaseProvider):

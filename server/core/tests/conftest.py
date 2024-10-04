@@ -3,7 +3,6 @@ from typing import Dict, List, Optional
 
 import pytest
 from faker import Faker
-
 from rcrasite.models import RcraSiteType
 
 

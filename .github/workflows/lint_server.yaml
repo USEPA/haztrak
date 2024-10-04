@@ -1,0 +1,31 @@
+name: Lint Python files
+on:
+  pull_request:
+    paths:
+      - "server/**"
+      - ".github/workflows/*"
+  push:
+    paths:
+      - "server/**"
+      - ".github/workflows/*"
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements_dev.txt
+      - name: Lint Python files
+        run: |
+          ruff check . -e
+      - name: Format Python files
+        run: |
+          ruff format . --check

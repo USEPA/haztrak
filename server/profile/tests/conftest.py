@@ -2,9 +2,8 @@ from profile.models import RcrainfoProfile, RcrainfoSiteAccess
 from typing import Optional
 
 import pytest
-from faker import Faker
-
 from conftest import SiteIDProvider
+from faker import Faker
 
 
 @pytest.fixture
