@@ -5,7 +5,6 @@ from typing import Literal, Optional
 import emanifest
 from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse
-
 from org.models import Org
 from wasteline.models import WasteCode
 

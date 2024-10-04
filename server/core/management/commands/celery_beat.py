@@ -7,7 +7,6 @@ import sys
 from django.core.management.base import BaseCommand
 from django.utils import autoreload
 from django_celery_beat.models import CrontabSchedule, IntervalSchedule, PeriodicTask
-
 from wasteline.tasks import pull_federal_codes
 
 CELERY_LOG_LEVEL = os.getenv("CELERY_LOG_LEVEL", "INFO")
