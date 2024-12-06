@@ -1,4 +1,4 @@
-Django==5.1.1
+Django==5.1.4
 django-celery-results==2.5.1
 django-cors-headers==4.4.0
 django-extensions==3.2.3
