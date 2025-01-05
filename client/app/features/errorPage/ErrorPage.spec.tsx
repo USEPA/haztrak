@@ -5,7 +5,7 @@ import { renderWithProviders } from '~/mocks';
 import { ErrorPage } from './ErrorPage';
 
 vi.mock('react-router-dom', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('react-router-dom')>()),
+  ...(await importOriginal<typeof import('react-router')>()),
   useNavigate: vi.fn(),
 }));
 
