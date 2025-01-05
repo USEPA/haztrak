@@ -8,7 +8,12 @@ import './globals.css';
 function App(): ReactElement {
   return (
     <AppProvider>
-      <RouterProvider router={router} />
+      <RouterProvider
+        future={{
+          v7_startTransition: true,
+        }}
+        router={router}
+      />
     </AppProvider>
   );
 }
