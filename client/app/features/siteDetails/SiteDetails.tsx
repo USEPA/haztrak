@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { LoaderFunction, useNavigate, useParams } from 'react-router-dom';
+import { LoaderFunction, useNavigate, useParams } from 'react-router';
 import { RcraSiteDetails } from '~/components/RcraSite/RcraSiteDetails';
 import { Button, Card, CardContent, CardHeader, Spinner } from '~/components/ui';
 import { rootStore as store, useGetUserHaztrakSiteQuery } from '~/store';

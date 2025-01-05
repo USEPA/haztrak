@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { renderWithProviders } from '~/mocks';
 import { ErrorPage } from './ErrorPage';

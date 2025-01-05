@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { Error404 } from '~/components/Error';
 import { Button, Card, CardContent, CardFooter, CardHeader } from '~/components/ui';
 

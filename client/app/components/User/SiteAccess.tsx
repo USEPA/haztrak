@@ -1,5 +1,5 @@
 import { Row, Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { HaztrakProfileSite } from '~/store';
 
 interface SiteAccessProps {

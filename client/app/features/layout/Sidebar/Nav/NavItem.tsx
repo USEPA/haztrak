@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { LuExternalLink } from 'react-icons/lu';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import colors from 'tailwindcss/colors';
 import { Button } from '~/components/ui';
 import { NavContext, NavContextProps } from '~/features/layout/Root';

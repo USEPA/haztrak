@@ -8,7 +8,7 @@ import {
   useForm,
   useFormContext,
 } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import Select from 'react-select';
 import { RcrainfoSiteSearchBadge } from '~/components/Manifest/Handler/Search/RcrainfoSiteSearchBadge';
 import { ManifestContext, ManifestContextType } from '~/components/Manifest/ManifestForm';

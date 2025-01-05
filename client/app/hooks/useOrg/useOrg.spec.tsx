@@ -1,5 +1,5 @@
 import { useOrg } from './useOrg';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { afterAll, afterEach, beforeAll, describe, expect, it, Mock, vi } from 'vitest';
 import { setupServer } from 'msw/node';
 import { mockSiteEndpoints } from '~/mocks/handlers';

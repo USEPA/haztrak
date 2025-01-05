@@ -2,7 +2,7 @@ import React, { MouseEventHandler, ReactElement } from 'react';
 import { Col, Dropdown, Row } from 'react-bootstrap';
 import { FaEllipsisV, FaEye } from 'react-icons/fa';
 import { FaFileLines } from 'react-icons/fa6';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 interface SiteTableRowActionsProps {
   siteId: string;

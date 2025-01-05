@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FaTrash } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { HtButton } from '~/components/legacyUi';
 import { ManifestContext } from '~/components/Manifest/ManifestForm';
 import { Manifest } from '~/components/Manifest/manifestSchema';

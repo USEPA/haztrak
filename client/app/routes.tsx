@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router';
 import { ErrorPage } from '~/features/errorPage/ErrorPage';
 import { Login } from '~/features/login';
 import { Component as PrivateRoute } from '~/features/privateRoute';

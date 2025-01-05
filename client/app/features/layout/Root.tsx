@@ -1,5 +1,5 @@
 import React, { createContext, Dispatch, SetStateAction, useState } from 'react';
-import { LoaderFunction, Outlet } from 'react-router-dom';
+import { LoaderFunction, Outlet } from 'react-router';
 import { ToastContainer } from 'react-toastify';
 import { ErrorBoundary } from '~/components/Error';
 import { Notifications } from '~/components/Notifications/Notifications';
