@@ -3,7 +3,7 @@ import logo from '/assets/img/haztrak-logos/high-resolution/png/haztrak-high-res
 import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
 import { FaPen, FaSitemap } from 'react-icons/fa';
 import { FaFileLines } from 'react-icons/fa6';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { FeatureDescription } from '~/components/legacyUi';
 
 export function RegisterHero() {

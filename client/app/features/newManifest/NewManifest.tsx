@@ -2,7 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Col, Container, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router';
 import { HtCard } from '~/components/legacyUi';
 import { Manifest, ManifestForm } from '~/components/Manifest';
 import { RcraSiteType } from '~/components/Manifest/manifestSchema';

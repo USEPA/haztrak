@@ -2,7 +2,7 @@ import { render, renderHook, RenderHookResult, RenderOptions } from '@testing-li
 import React, { PropsWithChildren, ReactElement } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import { Provider } from 'react-redux';
-import { MemoryRouter, MemoryRouterProps } from 'react-router-dom';
+import { MemoryRouter, MemoryRouterProps } from 'react-router';
 import { AppStore, RootState, setupStore } from '~/store';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {

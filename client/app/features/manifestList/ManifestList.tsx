@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { Container, Row, Stack } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { HtCard } from '~/components/legacyUi';
 import { NewManifestBtn } from '~/components/Manifest';
 import { MtnTable } from '~/components/Mtn';

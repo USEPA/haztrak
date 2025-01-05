@@ -4,7 +4,7 @@ import { LogOut } from 'lucide-react';
 import React, { useContext } from 'react';
 import { LuMenu, LuUser } from 'react-icons/lu';
 import { TbBinaryTree } from 'react-icons/tb';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { OrgSelect } from '~/components/Org/OrgSelect';
 import { Avatar, AvatarFallback, AvatarImage, Button } from '~/components/ui';
 import {

@@ -2,7 +2,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import React, { useEffect } from 'react';
 import { Alert, Col } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { HtButton } from '~/components/legacyUi';
 import { Handler, Manifest } from '~/components/Manifest/manifestSchema';
 import { QuickSignBtn } from '~/components/Manifest/QuickerSign';

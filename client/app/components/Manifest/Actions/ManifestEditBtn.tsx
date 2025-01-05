@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ButtonProps } from 'react-bootstrap';
 import { FaPenToSquare } from 'react-icons/fa6';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { HtButton } from '~/components/legacyUi';
 import { ManifestContext } from '~/components/Manifest/ManifestForm';
 import { useReadOnly } from '~/hooks/manifest';

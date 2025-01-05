@@ -1,5 +1,5 @@
 import React from 'react';
-import { LoaderFunction } from 'react-router-dom';
+import { LoaderFunction } from 'react-router';
 import { Card, CardContent, CardHeader, Spinner } from '~/components/ui';
 import { OrgDetails } from '~/features/org/components/OrgDetails';
 import { useOrg } from '~/hooks/useOrg/useOrg';

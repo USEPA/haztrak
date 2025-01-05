@@ -4,7 +4,7 @@ import { cleanup, renderWithProviders } from '~/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures/mockHandler';
 import { SiteFilterForm } from '~/components/Site/SiteFilter/SiteFilterForm';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import userEvent from '@testing-library/user-event';
 
 afterEach(() => {

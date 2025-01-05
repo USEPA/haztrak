@@ -1,6 +1,6 @@
 import { HaztrakSite } from '~/components/Site/siteSchema';
 import { ListGroup } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { SiteListItemActions } from '~/components/Site/SiteListItem/SiteListItemActions';
 
 interface SiteListItemProps {

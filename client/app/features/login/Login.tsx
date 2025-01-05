@@ -1,7 +1,7 @@
 import logo from '/assets/img/haztrak-logos/low-resolution/svg/haztrak-low-resolution-logo-black-on-transparent-background.svg';
 import React, { ReactElement, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 import { LoginForm } from '~/components/Auth';
 import { useAuth, useTitle } from '~/hooks';
 

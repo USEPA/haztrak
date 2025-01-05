@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router';
 import { useAuth } from '~/hooks';
 
 /** Redirect to the login if user is not authenticated*/

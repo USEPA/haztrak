@@ -17,7 +17,7 @@ import {
 import React, { ChangeEvent, useState } from 'react';
 import { Button, Col, Table } from 'react-bootstrap';
 import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router';
 import { z } from 'zod';
 import { HtPageBtns, HtPageControls } from '~/components/legacyUi';
 import { MtnRowActions } from '~/components/Mtn/MtnRowActions';

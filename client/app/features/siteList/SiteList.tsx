@@ -1,5 +1,5 @@
 import { Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { HtCard } from '~/components/legacyUi';
 import { SiteListGroup } from '~/components/Site';
 import { Spinner } from '~/components/ui';

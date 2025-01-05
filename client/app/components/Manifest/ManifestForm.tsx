@@ -3,7 +3,7 @@ import { HtCard, HtForm } from '~/components/legacyUi';
 import React, { createContext, useEffect, useState } from 'react';
 import { Container, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import {
   ManifestCancelBtn,

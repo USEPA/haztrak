@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { ManifestForm } from '~/components/Manifest';
 import { Spinner } from '~/components/ui';
 import { useTitle } from '~/hooks';

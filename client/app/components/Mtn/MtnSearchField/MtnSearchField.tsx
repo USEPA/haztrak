@@ -1,6 +1,6 @@
 import React, { ChangeEventHandler } from 'react';
 import { Form } from 'react-bootstrap';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 interface MtnSearchFieldProps {
   value: string;

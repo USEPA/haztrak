@@ -2,7 +2,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Col, Stack } from 'react-bootstrap';
 import { useFormContext } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { HtButton } from '~/components/legacyUi';
 import { ContactForm, PhoneForm } from '~/components/Manifest/Contact';
 import { Handler, Manifest } from '~/components/Manifest/manifestSchema';

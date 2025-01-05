@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, ReactElement } from 'react';
 import { Col, Dropdown, Row } from 'react-bootstrap';
 import { FaEllipsisV, FaEye, FaPen } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 interface MtnRowActionsProps {
   mtn: string;

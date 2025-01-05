@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { useAuth } from '~/hooks';
 import { PrivateRoute } from './PrivateRoute';
