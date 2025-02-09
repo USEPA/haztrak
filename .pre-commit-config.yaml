@@ -41,7 +41,7 @@ repos:
         pass_filenames: false
   # Eslint
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: "v9.8.0"
+    rev: "v9.20.0"
     hooks:
       - id: eslint
         files: ^client/.*\.[jt]sx?$

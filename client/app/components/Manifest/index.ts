@@ -2,7 +2,6 @@ import { ManifestForm } from './ManifestForm';
 import {
   Handler,
   Manifest,
-  RejectionInfo,
   Signer,
   siteType,
   Transporter,
@@ -11,4 +10,4 @@ import {
 
 export { NewManifestBtn } from './NewManifestBtn';
 export { ManifestForm, siteType, transporterSchema };
-export type { Manifest, Handler, Signer, RejectionInfo, Transporter };
+export type { Manifest, Handler, Signer, Transporter };

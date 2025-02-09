@@ -1,7 +1,7 @@
 import { createMockSite } from '~/mocks/fixtures/mockHandler';
 import { HaztrakUser, Organization, RcrainfoProfile, RcrainfoProfileSite } from '~/store';
-import { HaztrakProfileResponse } from '~/store/userApi/userApi';
 import { TaskResponse } from '~/store/htApi.slice';
+import { HaztrakProfileResponse } from '~/store/userApi/userApi';
 
 export const DEFAULT_HAZTRAK_USER: HaztrakUser = {
   username: 'testuser1',
@@ -17,7 +17,7 @@ export function createMockHaztrakUser(overWrites?: Partial<HaztrakUser>): Haztra
   };
 }
 
-interface RcrainfoProfileResponse extends RcrainfoProfile<RcrainfoProfileSite[]> {}
+type RcrainfoProfileResponse = RcrainfoProfile<RcrainfoProfileSite[]>;
 
 const DEFAULT_RCRAINFO_PROFILE_RESPONSE: RcrainfoProfileResponse = {
   user: 'testuser1',

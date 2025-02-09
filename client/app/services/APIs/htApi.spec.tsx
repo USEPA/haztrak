@@ -1,9 +1,8 @@
-import { describe, expect, it, vi } from 'vitest';
 import { AxiosResponse } from 'axios';
+import { describe, expect, it, vi } from 'vitest';
 import { returnOnSuccess } from '~/services/APIs/htApi';
-import { undefined } from 'zod';
 
-vi.mock('react-router-dom', () => ({
+vi.mock('react-router', () => ({
   redirect: vi.fn(),
 }));
 

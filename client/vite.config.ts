@@ -10,7 +10,7 @@ import { dependencies } from './package.json';
 function renderChunks(deps: Record<string, string>) {
   const chunks = {};
   Object.keys(deps).forEach((key) => {
-    if (['react', 'react-router-dom', 'react-dom'].includes(key)) return;
+    if (['react', 'react-router', 'react-dom'].includes(key)) return;
     // @ts-expect-error - error with vite-plugin-eslint
     chunks[key] = [key];
   });
@@ -31,7 +31,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-router-dom', 'react-dom'],
+          vendor: ['react', 'react-router', 'react-dom'],
           ...renderChunks(dependencies),
         },
       },

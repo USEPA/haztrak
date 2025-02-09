@@ -1,7 +1,7 @@
 import { Button, ButtonProps } from 'react-bootstrap';
 import { useGetProfileQuery } from '~/store';
 
-interface HtApiUserBtnProps extends ButtonProps {}
+type HtApiUserBtnProps = ButtonProps;
 
 /**
  * A button that is disabled if the user Organization is not set up to interface with
