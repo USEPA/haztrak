@@ -1,22 +1,18 @@
-name: 'React Client Tests'
+name: "React Client Tests"
 # This workflow is responsible for running the Haztrak react client tests.
 
 on:
   pull_request:
-    branches: ['main']
+    branches: ["main"]
     paths:
-      - 'client/**'
-      - '.github/workflows/test_client.yaml'
-  push:
-    paths:
-      - 'client/**'
-      - '.github/workflows/test_client.yaml'
+      - "client/**"
+      - ".github/workflows/test_client.yaml"
   workflow_call:
   workflow_dispatch:
 
 jobs:
   run_client_tests:
-    name: 'Run Client Tests'
+    name: "Run Client Tests"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -25,20 +21,20 @@ jobs:
       matrix:
         node-version: [18, 20]
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v3
 
-      - name: 'Setup Node'
+      - name: "Setup Node"
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
 
-      - name: 'Install Dependencies'
+      - name: "Install Dependencies"
         run: npm ci
 
-      - name: 'Configure env'
+      - name: "Configure env"
         run: |
           mv ../configs/.env.test .env
           echo "VITE_HT_ENV=TEST" >> .env
@@ -46,10 +42,10 @@ jobs:
       - name: Test Node.js-${{ matrix.node-version }}
         run: npm test
         env:
-          VITE_HT_ENV: 'TEST'
+          VITE_HT_ENV: "TEST"
 
   test_client_build:
-    name: 'Test Build Client'
+    name: "Test Build Client"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -58,18 +54,18 @@ jobs:
       matrix:
         node-version: [18, 20]
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v3
 
-      - name: 'Setup Node'
+      - name: "Setup Node"
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
 
-      - name: 'Install Dependencies'
+      - name: "Install Dependencies"
         run: npm ci
 
-      - name: 'Build Client'
+      - name: "Build Client"
         run: npm run build
