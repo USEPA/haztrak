@@ -6,7 +6,7 @@ import { HtButton } from '~/components/legacyUi';
 import { ManifestContext } from '~/components/Manifest/ManifestForm';
 import { useReadOnly } from '~/hooks/manifest';
 
-interface ManifestEditBtnProps extends ButtonProps {}
+type ManifestEditBtnProps = ButtonProps;
 
 export function ManifestEditBtn({ children: _unused, ...props }: ManifestEditBtnProps) {
   const navigate = useNavigate();

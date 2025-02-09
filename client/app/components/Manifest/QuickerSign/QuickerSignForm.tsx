@@ -21,7 +21,7 @@ const siteType = z.enum(['Transporter', 'Generator', 'Tsdf', 'Broker']);
 /**
  * The EPA Quicker Sign schema
  */
-const quickerSignatureSchema = z.object({
+const _quickerSignatureSchema = z.object({
   siteId: z.string(),
   siteType: siteType,
   transporterOrder: z.number().optional(),
@@ -30,13 +30,13 @@ const quickerSignatureSchema = z.object({
   manifestTrackingNumbers: z.string().array(),
 });
 
-const quickerSignDataSchema = z.object({
+const _quickerSignDataSchema = z.object({
   handler: z.any(),
   siteType: z.enum(['Generator', 'Transporter', 'Tsdf']),
 });
 
-export type QuickerSignData = z.infer<typeof quickerSignDataSchema>;
-export type QuickerSignature = z.infer<typeof quickerSignatureSchema>;
+export type QuickerSignData = z.infer<typeof _quickerSignDataSchema>;
+export type QuickerSignature = z.infer<typeof _quickerSignatureSchema>;
 
 interface QuickerSignProps {
   mtn: string[];

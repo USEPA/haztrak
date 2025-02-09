@@ -3,7 +3,7 @@ import { FaFloppyDisk } from 'react-icons/fa6';
 import { HtButton } from '~/components/legacyUi';
 import { useReadOnly } from '~/hooks/manifest';
 
-interface ManifestSaveBtnProps extends ButtonProps {}
+type ManifestSaveBtnProps = ButtonProps;
 
 export function ManifestSaveBtn({ children: _unused, ...props }: ManifestSaveBtnProps) {
   const [readOnly] = useReadOnly();

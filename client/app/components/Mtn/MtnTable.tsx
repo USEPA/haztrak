@@ -24,7 +24,7 @@ import { MtnRowActions } from '~/components/Mtn/MtnRowActions';
 import { MtnSearchField } from '~/components/Mtn/MtnSearchField/MtnSearchField';
 import { MtnStatusField, StatusOption } from '~/components/Mtn/MtnStatusField/MtnStatusField';
 
-const mtnDetailsSchema = z.object({
+const _mtnDetailsSchema = z.object({
   manifestTrackingNumber: z.string(),
   signatureStatus: z.boolean(),
   submissionType: z.enum(['FullElectronic', 'DataImage5Copy', 'Hybrid', 'Image', 'NotSelected']),
@@ -43,7 +43,7 @@ const mtnDetailsSchema = z.object({
  * Select details about a manifest for display, navigation, and analysis.
  * Often used in composite types (arrays).
  */
-export type MtnDetails = z.infer<typeof mtnDetailsSchema>;
+export type MtnDetails = z.infer<typeof _mtnDetailsSchema>;
 
 interface MtnTableProps {
   manifests: MtnDetails[];

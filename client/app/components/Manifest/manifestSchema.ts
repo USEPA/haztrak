@@ -1,6 +1,6 @@
+import { z } from 'zod';
 import { additionalInfoSchema } from '~/components/Manifest/AdditionalInfo/additionalInfoSchema';
 import { rcraPhoneSchema, rcraSite } from '~/components/RcraSite';
-import { z } from 'zod';
 
 export const siteType = z.enum(['generator', 'designatedFacility', 'transporter']);
 /** Used to specify whether a handler is a generator, transporter, designated receiving facility.*/
@@ -147,16 +147,6 @@ export const manifestSchema = z
     { path: ['transporters'], message: 'A manifest requires at least 1 transporters' }
   );
 
-const rejectionInfoSchema = z.object({
-  rejectionType: z.enum(['FullRejection', 'PartialRejection']),
-  alternateDesignatedFacilityType: z.enum(['Generator', 'Tsdf']),
-  // generatorPaperSignature: ???
-  // generatorElectronicSignature: ???
-  alternateDesignatedFacility: rcraSite, // ToDo this should be a handler
-  newManifestTrackingNumber: z.string(),
-  rejectionComments: z.string(),
-});
-
 /**
  * The Manifest, also known as hazardous waste manifest, is a key component of the
  * United States Environmental Protection Agency's (US EPA) hazardous waste tracking
@@ -164,4 +154,3 @@ const rejectionInfoSchema = z.object({
  * instructions for handling, and custody exchange data (signatures).
  */
 export type Manifest = z.infer<typeof manifestSchema>;
-export type RejectionInfo = z.infer<typeof rejectionInfoSchema>;
