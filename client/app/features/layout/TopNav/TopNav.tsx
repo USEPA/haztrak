@@ -81,19 +81,19 @@ export function TopNav() {
             <DropdownMenuContent className="tw-me-5 tw-w-56">
               <DropdownMenuItem asChild>
                 <Link to={'./profile'} relative="path">
-                  <LuUser className="tw-mr-2 tw-h-4 tw-w-4 tw-text-primary" />
+                  <LuUser className="tw-mr-2 tw-size-4 tw-text-primary" />
                   <span>Profile</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to={'./organization'} relative="path">
-                  <TbBinaryTree className="tw-mr-2 tw-h-4 tw-w-4 tw-text-primary" />
+                  <TbBinaryTree className="tw-mr-2 tw-size-4 tw-text-primary" />
                   <span>Organization</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
-                <LogOut className="tw-mr-2 tw-h-4 tw-w-4 tw-text-destructive" />
+                <LogOut className="tw-mr-2 tw-size-4 tw-text-destructive" />
                 <span>Log out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>

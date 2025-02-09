@@ -26,7 +26,7 @@ export const CopyButton = React.forwardRef<HTMLButtonElement, CopyButtonProps>(
     return (
       <Button variant="link" ref={ref} {...props} onClick={onClick}>
         {children}
-        <LuCopy className="tw-ml-2 tw-h-4 tw-w-4" />
+        <LuCopy className="tw-ml-2 tw-size-4" />
       </Button>
     );
   }

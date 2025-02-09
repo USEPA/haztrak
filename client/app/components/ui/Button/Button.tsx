@@ -21,7 +21,7 @@ const buttonVariants = cva(
         default: 'tw-h-10',
         sm: 'tw-h-9 tw-px-3',
         lg: 'tw-h-11 tw-px-8',
-        icon: 'tw-h-10 tw-w-10',
+        icon: 'tw-size-10',
       },
       rounded: {
         false: 'tw-rounded-md',

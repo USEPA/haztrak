@@ -1,13 +1,12 @@
+import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 import { ManifestContext } from '~/components/Manifest/ManifestForm';
 import { Handler, RcraSiteType } from '~/components/Manifest/manifestSchema';
-import { QuickSignBtn } from '~/components/Manifest/QuickerSign/index';
-import { setupServer } from 'msw/node';
+import { QuickSignBtn } from '~/components/Manifest/QuickerSign';
 
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { createMockMTNHandler } from '~/mocks/fixtures';
 import { mockUserEndpoints } from '~/mocks/handlers';
-import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
-import { undefined } from 'zod';
 
 const server = setupServer(...mockUserEndpoints);
 afterEach(() => cleanup());
