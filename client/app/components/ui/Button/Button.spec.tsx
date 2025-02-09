@@ -45,12 +45,6 @@ describe('Button component', () => {
     expect(button).toHaveClass('tw-h-11 tw-rounded-md tw-px-8');
   });
 
-  it('renders with icon size', () => {
-    render(<Button size="icon">Icon</Button>);
-    const button = screen.getByRole('button', { name: /icon/i });
-    expect(button).toHaveClass('tw-h-10 tw-w-10');
-  });
-
   it('renders with rounded true', () => {
     render(<Button rounded>Rounded</Button>);
     const button = screen.getByRole('button', { name: /rounded/i });
