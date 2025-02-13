@@ -1,9 +1,9 @@
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { mockUserEndpoints, mockWasteEndpoints } from '~/mocks/handlers';
-import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { WasteLineForm } from './WasteLineForm';
 
 const server = setupServer(...mockUserEndpoints, ...mockWasteEndpoints);

@@ -5,8 +5,8 @@ import { UseFieldArrayReturn } from 'react-hook-form';
 import { FaAngleRight, FaCheck, FaSignature } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
 import { Transporter } from '~/components/Manifest';
-import { Manifest } from '~/components/Manifest/manifestSchema';
 import { QuickSignBtn } from '~/components/Manifest/QuickerSign';
+import { Manifest } from '~/components/Manifest/manifestSchema';
 import { useReadOnly } from '~/hooks/manifest';
 import { TransporterRowActions } from './TransporterRowActions';
 

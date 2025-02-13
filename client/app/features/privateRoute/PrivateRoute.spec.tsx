@@ -2,8 +2,8 @@ import { screen } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { useAuth } from '~/hooks';
-import { PrivateRoute } from './PrivateRoute';
 import { renderWithProviders } from '~/mocks';
+import { PrivateRoute } from './PrivateRoute';
 
 vi.mock('~/hooks');
 

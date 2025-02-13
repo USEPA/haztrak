@@ -1,6 +1,6 @@
-import { ErrorBoundary } from '~/components/Error';
 import React, { ReactElement } from 'react';
 import { Card, CardHeaderProps, CardProps, Container } from 'react-bootstrap';
+import { ErrorBoundary } from '~/components/Error';
 
 interface HeaderProps extends CardHeaderProps {
   title?: string;

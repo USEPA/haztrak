@@ -1,10 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { FloatingLabel, Form } from 'react-bootstrap';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HaztrakSite } from '~/components/Site/siteSchema';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { FloatingLabel, Form } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router';
+import { z } from 'zod';
+import { HaztrakSite } from '~/components/Site/siteSchema';
 
 interface SiteFilterFormProps {
   sites: HaztrakSite[];

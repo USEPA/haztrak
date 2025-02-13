@@ -1,5 +1,5 @@
-import { HtPaginate } from './HtPaginate';
 import { cleanup, render, screen } from '~/mocks';
+import { HtPaginate } from './HtPaginate';
 
 import { afterEach, describe, expect, test } from 'vitest';
 

@@ -1,7 +1,7 @@
 import { QuantityForm } from '~/components/Manifest/WasteLine/QuantityForm';
 
-import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
 
 afterEach(() => cleanup());
 

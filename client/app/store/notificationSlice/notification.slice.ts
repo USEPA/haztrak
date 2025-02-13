@@ -1,7 +1,7 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { RootState } from '~/store/rootStore';
 import { v4 as uuidv4 } from 'uuid';
+import { RootState } from '~/store/rootStore';
 
 export interface LongRunningTask {
   status: 'PENDING' | 'STARTED' | 'SUCCESS' | 'FAILURE' | 'NOT FOUND';

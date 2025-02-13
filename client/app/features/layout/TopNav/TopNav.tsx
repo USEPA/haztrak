@@ -1,4 +1,3 @@
-import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
 import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
 import { LogOut } from 'lucide-react';
 import React, { useContext } from 'react';
@@ -14,9 +13,10 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/DropDown/dropdown-menu';
 import { NavContext, NavContextProps } from '~/features/layout/Root';
+import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/svg/logo-no-background.svg';
 
-import { useGetProfileQuery, useLogoutMutation } from '~/store';
 import { FaUser } from 'react-icons/fa';
+import { useGetProfileQuery, useLogoutMutation } from '~/store';
 
 export function TopNav() {
   const { showSidebar, setShowSidebar } = useContext<NavContextProps>(NavContext);

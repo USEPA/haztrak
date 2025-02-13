@@ -1,14 +1,14 @@
-import { manifest } from '~/services/manifest/manifest';
+import { describe, expect, test } from 'vitest';
+import { ManifestStatus } from '~/components/Manifest/manifestSchema';
 import {
   createMockHaztrakUser,
-  createMockManifest,
   createMockMTNHandler,
+  createMockManifest,
   createMockSite,
   createMockTransporter,
 } from '~/mocks/fixtures';
-import { describe, expect, test } from 'vitest';
+import { manifest } from '~/services/manifest/manifest';
 import { ProfileSlice } from '~/store';
-import { ManifestStatus } from '~/components/Manifest/manifestSchema';
 
 describe('manifest.getNextSigner', () => {
   test('returns the the generator if scheduled and no generator signature present', () => {

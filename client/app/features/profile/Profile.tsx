@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { HtCard } from '~/components/legacyUi';
 import { RcraProfile } from '~/components/RcraProfile';
-import { Spinner } from '~/components/ui';
 import { UserInfoForm } from '~/components/User';
+import { HtCard } from '~/components/legacyUi';
+import { Spinner } from '~/components/ui';
 import { AvatarForm } from '~/features/profile/components/AvatarForm';
 import { useTitle } from '~/hooks';
 import { useGetProfileQuery, useGetRcrainfoProfileQuery, useGetUserQuery } from '~/store';

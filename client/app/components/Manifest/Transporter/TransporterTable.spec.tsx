@@ -1,11 +1,11 @@
 import userEvent from '@testing-library/user-event';
-import { Transporter } from '~/components/Manifest';
 import { setupServer } from 'msw/node';
+import { Transporter } from '~/components/Manifest';
 
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { createMockTransporter } from '~/mocks/fixtures';
 import { mockUserEndpoints } from '~/mocks/handlers';
-import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { TransporterTable } from './index';
 
 const HANDLER_ID_1 = 'siteId1';

@@ -1,6 +1,6 @@
+import * as path from 'path';
 /// <reference types="vitest" />
 import viteReact from '@vitejs/plugin-react';
-import * as path from 'path';
 import { defineConfig } from 'vite';
 // @ts-expect-error - error with vite-plugin-eslint
 import eslint from 'vite-plugin-eslint';

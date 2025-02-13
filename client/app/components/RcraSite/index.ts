@@ -1,13 +1,13 @@
-import { RcraSiteDetails } from './RcraSiteDetails';
 import { AddressListGroup } from './AddressListGroup';
+import { RcraSiteDetails } from './RcraSiteDetails';
 import {
   RcraAddress,
-  rcraContactSchema,
   RcraLocality,
+  RcraSite,
+  rcraContactSchema,
   rcraLocalitySchema,
   rcraPhoneSchema,
   rcraSite,
-  RcraSite,
 } from './rcraSiteSchema';
 
 export {

@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
-import { SyncRcrainfoProfileBtn } from '~/components/RcraProfile/SyncRcrainfoProfileBtn';
-import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import { cleanup, renderWithProviders } from '~/mocks';
 import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { SyncRcrainfoProfileBtn } from '~/components/RcraProfile/SyncRcrainfoProfileBtn';
+import { cleanup, renderWithProviders } from '~/mocks';
 import { mockUserEndpoints } from '~/mocks/handlers';
 
 const server = setupServer(...mockUserEndpoints);

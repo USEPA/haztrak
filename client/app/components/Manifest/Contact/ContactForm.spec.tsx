@@ -1,6 +1,6 @@
+import { afterEach, describe, expect, test } from 'vitest';
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { ContactForm } from './ContactForm';
-import { afterEach, describe, test, expect } from 'vitest';
 
 afterEach(() => {
   cleanup();

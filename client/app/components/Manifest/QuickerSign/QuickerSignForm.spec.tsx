@@ -1,8 +1,8 @@
 import { QuickerSignForm } from '~/components/Manifest/QuickerSign';
 
+import { afterEach, describe, expect, test } from 'vitest';
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { createMockMTNHandler } from '~/mocks/fixtures';
-import { afterEach, describe, expect, test } from 'vitest';
 
 afterEach(() => {
   cleanup();

@@ -1,6 +1,6 @@
-import { addAlert, HaztrakAlert, removeAlert, useAppSelector } from '~/store';
-import { renderWithProviders, screen } from '~/mocks';
 import { describe, expect, test } from 'vitest';
+import { renderWithProviders, screen } from '~/mocks';
+import { HaztrakAlert, addAlert, removeAlert, useAppSelector } from '~/store';
 import reducer, { selectAllAlerts } from './notification.slice';
 
 function TestComponent() {

@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
-import { RegisterHero } from './RegisterHero';
 import { describe, expect, it } from 'vitest';
 import { renderWithProviders } from '~/mocks';
+import { RegisterHero } from './RegisterHero';
 
 describe('RegisterHero Component', () => {
   it('renders the logo with correct alt text', () => {

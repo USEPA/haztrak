@@ -1,7 +1,7 @@
 import { RcraApiUserBtn } from '~/components/Rcrainfo/buttons/RcraApiUserBtn/RcraApiUserBtn';
 
-import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { afterEach, describe, expect, test, vi } from 'vitest';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
 
 afterEach(() => {
   cleanup();

@@ -1,7 +1,7 @@
 /**htApi.ts - service for making requests to the Haztrak API*/
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { rootStore } from '~/store';
 import { redirect } from 'react-router';
+import { rootStore } from '~/store';
 
 /** An Axios instance with an interceptor to automatically apply authentication headers*/
 export const htApi = axios.create({

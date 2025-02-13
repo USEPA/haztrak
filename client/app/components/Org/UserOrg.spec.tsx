@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react';
-import { UserOrg } from '~/components/Org/UserOrg';
-import { ProfileSlice } from '~/store';
 import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, it } from 'vitest';
+import { UserOrg } from '~/components/Org/UserOrg';
 import { renderWithProviders } from '~/mocks';
 import { createMockHaztrakUser } from '~/mocks/fixtures';
+import { ProfileSlice } from '~/store';
 
 const mockProfileWithOrg: ProfileSlice = {
   org: {

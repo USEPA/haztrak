@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { siteSchema } from './siteSchema';
 import { rcraSite } from '~/components/RcraSite';
+import { siteSchema } from './siteSchema';
 
 describe('siteSchema', () => {
   it('throws an error if name is missing', () => {

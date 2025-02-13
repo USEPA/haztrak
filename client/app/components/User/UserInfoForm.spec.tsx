@@ -1,13 +1,13 @@
 import { cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { UserInfoForm } from '~/components/User/UserInfoForm';
 import { setupServer } from 'msw/node';
+import { UserInfoForm } from '~/components/User/UserInfoForm';
 
-import { HaztrakUser, ProfileSlice } from '~/store';
+import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 import { renderWithProviders, screen } from '~/mocks';
 import { createMockHaztrakUser } from '~/mocks/fixtures';
 import { mockUserEndpoints } from '~/mocks/handlers';
-import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
+import { HaztrakUser, ProfileSlice } from '~/store';
 
 const server = setupServer(...mockUserEndpoints);
 

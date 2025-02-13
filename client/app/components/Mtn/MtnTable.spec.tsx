@@ -1,8 +1,8 @@
 import { fireEvent } from '@testing-library/react';
 import { MtnDetails, MtnTable } from '~/components/Mtn';
 
-import { renderWithProviders, screen } from '~/mocks';
 import { describe, expect, test } from 'vitest';
+import { renderWithProviders, screen } from '~/mocks';
 
 const DEFAULT_MTN_DETAILS: MtnDetails = {
   manifestTrackingNumber: '123456789ELC',

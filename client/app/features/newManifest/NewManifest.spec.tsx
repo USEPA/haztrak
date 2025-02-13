@@ -1,8 +1,8 @@
 import userEvent from '@testing-library/user-event';
-import { cleanup, renderWithProviders, screen } from '~/mocks';
-import { mockSiteEndpoints, mockUserEndpoints } from '~/mocks/handlers';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
+import { mockSiteEndpoints, mockUserEndpoints } from '~/mocks/handlers';
 
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import NewManifest from '~/features/newManifest';

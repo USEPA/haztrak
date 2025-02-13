@@ -1,8 +1,8 @@
+import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { useAuth } from '~/hooks/useAuth/useAuth';
 import { cleanup, renderHookWithProviders } from '~/mocks';
 import { createMockHaztrakUser } from '~/mocks/fixtures';
-import { setupServer } from 'msw/node';
 import { mockUserEndpoints } from '~/mocks/handlers';
 
 const server = setupServer(...mockUserEndpoints);

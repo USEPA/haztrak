@@ -1,10 +1,10 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { RcraProfile } from './RcraProfile';
-import { RcrainfoProfileState } from '~/store';
+import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { cleanup, renderWithProviders } from '~/mocks';
-import { setupServer } from 'msw/node';
 import { mockUserEndpoints } from '~/mocks/handlers';
+import { RcrainfoProfileState } from '~/store';
+import { RcraProfile } from './RcraProfile';
 
 const mockProfile: RcrainfoProfileState = {
   user: 'testUser',
