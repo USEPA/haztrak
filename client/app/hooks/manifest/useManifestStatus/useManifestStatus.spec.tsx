@@ -1,10 +1,10 @@
-import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup } from '@testing-library/react';
+import { afterEach, describe, expect, it } from 'vitest';
 
-import { renderWithProviders, screen } from '~/mocks';
-import { useManifestStatus } from './useManifestStatus';
 import userEvent from '@testing-library/user-event';
 import { ManifestStatus } from '~/components/Manifest/manifestSchema';
+import { renderWithProviders, screen } from '~/mocks';
+import { useManifestStatus } from './useManifestStatus';
 
 const TestChildComponent = () => {
   const [status] = useManifestStatus();

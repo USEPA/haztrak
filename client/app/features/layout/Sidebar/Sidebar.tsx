@@ -1,9 +1,9 @@
-import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/png/logo-black-crop.png';
 import React, { ReactElement, useContext } from 'react';
 import { Link } from 'react-router';
 import { OrgSelect } from '~/components/Org/OrgSelect';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '~/components/ui';
 import { NavContext, NavContextProps } from '~/features/layout/Root';
+import logo from '/assets/img/haztrak-logos/haztrak-logo-zip-file/png/logo-black-crop.png';
 import { NavItem } from './Nav/NavItem';
 import { NavSection } from './Nav/NavSection';
 import { routes } from './SidebarRoutes';

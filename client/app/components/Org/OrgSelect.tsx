@@ -1,7 +1,7 @@
-import Select, { SingleValue } from 'react-select';
 import React, { useEffect, useState } from 'react';
-import { useGetOrgsQuery } from '~/store';
+import Select, { SingleValue } from 'react-select';
 import { useOrg } from '~/hooks/useOrg/useOrg';
+import { useGetOrgsQuery } from '~/store';
 
 export const OrgSelect = () => {
   const { isLoading, data: orgs } = useGetOrgsQuery();

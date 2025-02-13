@@ -3,9 +3,9 @@ import { HtButton } from '~/components/legacyUi';
 
 import { Alert } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Manifest } from '~/components/Manifest/manifestSchema';
-import { WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
 import { WasteLineTable } from '~/components/Manifest/WasteLine/WasteLineTable';
+import { WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
+import { Manifest } from '~/components/Manifest/manifestSchema';
 import { useReadOnly } from '~/hooks/manifest';
 
 interface WasteLineSectionProps {

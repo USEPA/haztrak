@@ -1,8 +1,8 @@
-import { describe, expect, afterEach, it } from 'vitest';
 import { cleanup, fireEvent } from '@testing-library/react';
+import { afterEach, describe, expect, it } from 'vitest';
 
-import { render, screen } from '~/mocks';
 import { useTitle } from '~/hooks';
+import { render, screen } from '~/mocks';
 
 const originalPageTitle = 'originalPageTitle';
 const newPageTitle = 'newPageTitle';

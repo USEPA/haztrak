@@ -1,9 +1,9 @@
-import { HaztrakSite } from '~/components/Site';
 import { Handler } from '~/components/Manifest';
 import { Transporter } from '~/components/Manifest/Transporter';
 import { RcraAddress, RcraSite } from '~/components/RcraSite';
-import { RcrainfoSitePermissions } from '~/store';
 import { RcraContact } from '~/components/RcraSite/rcraSiteSchema';
+import { HaztrakSite } from '~/components/Site';
+import { RcrainfoSitePermissions } from '~/store';
 
 /**
  * A api handler object for tests

@@ -1,8 +1,8 @@
 import { cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { renderWithProviders, screen } from '~/mocks';
 import { afterEach, describe, expect, it } from 'vitest';
+import { renderWithProviders, screen } from '~/mocks';
 import { useReadOnly } from './useReadOnly';
 
 const TestChildComponent = () => {

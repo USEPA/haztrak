@@ -1,4 +1,3 @@
-import { HtCard } from '~/components/legacyUi';
 import React, { ReactElement } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import {
@@ -6,6 +5,7 @@ import {
   ManifestCountBarChart,
   ManifestStatusPieChart,
 } from '~/components/Charts';
+import { HtCard } from '~/components/legacyUi';
 import { useTitle } from '~/hooks';
 
 /** Dashboard page for logged-in user*/

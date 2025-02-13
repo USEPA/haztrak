@@ -1,7 +1,7 @@
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router';
-import { HtCard } from '~/components/legacyUi';
 import { SiteListGroup } from '~/components/Site';
+import { HtCard } from '~/components/legacyUi';
 import { Spinner } from '~/components/ui';
 import { useTitle } from '~/hooks';
 import { useGetUserHaztrakSitesQuery } from '~/store';

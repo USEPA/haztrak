@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import { WasteRowActions } from '~/components/Manifest/WasteLine/WasteLineTable/WasteRowActions';
-import { describe, expect, it, vi } from 'vitest';
-import { UseFieldArrayReturn } from 'react-hook-form';
-import { Manifest } from '~/components/Manifest';
 import userEvent from '@testing-library/user-event';
+import { UseFieldArrayReturn } from 'react-hook-form';
+import { describe, expect, it, vi } from 'vitest';
+import { Manifest } from '~/components/Manifest';
+import { WasteRowActions } from '~/components/Manifest/WasteLine/WasteLineTable/WasteRowActions';
 
 describe('WasteRowActions', () => {
   // @ts-expect-error - mock object

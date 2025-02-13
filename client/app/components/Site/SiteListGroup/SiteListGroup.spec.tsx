@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 
-import { cleanup, renderWithProviders } from '~/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
 import { SiteListGroup } from '~/components/Site/SiteListGroup/SiteListGroup';
+import { cleanup, renderWithProviders } from '~/mocks';
 import { createMockHandler, createMockSite } from '~/mocks/fixtures/mockHandler';
 
 afterEach(() => {

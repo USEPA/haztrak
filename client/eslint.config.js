@@ -1,10 +1,10 @@
-import reactPlugin from 'eslint-plugin-react'; // https://github.com/jsx-eslint/eslint-plugin-react?tab=readme-ov-file#configuration
-import globals from 'globals';
 import pluginJs from '@eslint/js';
-import tsEslint from 'typescript-eslint';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
-import tailwind from 'eslint-plugin-tailwindcss';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import reactPlugin from 'eslint-plugin-react'; // https://github.com/jsx-eslint/eslint-plugin-react?tab=readme-ov-file#configuration
+import tailwind from 'eslint-plugin-tailwindcss';
+import globals from 'globals';
+import tsEslint from 'typescript-eslint';
 
 export default [
   pluginJs.configs.recommended,

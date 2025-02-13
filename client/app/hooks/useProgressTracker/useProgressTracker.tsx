@@ -1,9 +1,9 @@
 import { ThunkAction, UnknownAction } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import {
+  TaskStatus,
   selectTask,
   selectTaskCompletion,
-  TaskStatus,
   updateTask,
   useAppDispatch,
   useAppSelector,

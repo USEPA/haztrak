@@ -3,8 +3,8 @@ import {
   Handler,
   Manifest,
   Signer,
-  siteType,
   Transporter,
+  siteType,
   transporterSchema,
 } from './manifestSchema';
 

@@ -1,4 +1,4 @@
-import { cva, VariantProps } from 'class-variance-authority';
+import { VariantProps, cva } from 'class-variance-authority';
 import * as React from 'react';
 import { FaGear } from 'react-icons/fa6';
 import { cn } from '~/lib/utils';

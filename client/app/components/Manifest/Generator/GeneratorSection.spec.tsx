@@ -1,6 +1,6 @@
+import { afterEach, describe, expect, test } from 'vitest';
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { createMockHandler } from '~/mocks/fixtures';
-import { afterEach, describe, expect, test } from 'vitest';
 import { GeneratorSection } from './GeneratorSection';
 
 afterEach(() => cleanup());

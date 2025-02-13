@@ -1,11 +1,11 @@
 import { screen } from '@testing-library/react';
-import React, { useState } from 'react';
-import { cleanup, renderWithProviders } from '~/mocks';
-import { afterEach, describe, expect, test } from 'vitest';
-import { createMockHandler, createMockSite } from '~/mocks/fixtures/mockHandler';
-import { SiteFilterForm } from '~/components/Site/SiteFilter/SiteFilterForm';
-import { useSearchParams } from 'react-router';
 import userEvent from '@testing-library/user-event';
+import React, { useState } from 'react';
+import { useSearchParams } from 'react-router';
+import { afterEach, describe, expect, test } from 'vitest';
+import { SiteFilterForm } from '~/components/Site/SiteFilter/SiteFilterForm';
+import { cleanup, renderWithProviders } from '~/mocks';
+import { createMockHandler, createMockSite } from '~/mocks/fixtures/mockHandler';
 
 afterEach(() => {
   cleanup();

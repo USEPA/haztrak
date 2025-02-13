@@ -6,8 +6,8 @@ import { FaAngleRight, FaCheckCircle } from 'react-icons/fa';
 import { FaCircleXmark } from 'react-icons/fa6';
 import { Manifest } from '~/components/Manifest';
 import { ManifestContext, ManifestContextType } from '~/components/Manifest/ManifestForm';
-import { WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
 import { WasteRowActions } from '~/components/Manifest/WasteLine/WasteLineTable/WasteRowActions';
+import { WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
 import { useReadOnly } from '~/hooks/manifest';
 
 interface WasteLineTableProps {

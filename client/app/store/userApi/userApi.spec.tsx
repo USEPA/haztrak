@@ -1,10 +1,10 @@
 import { waitFor } from '@testing-library/react';
 import { setupServer } from 'msw/node';
 import { useEffect, useState } from 'react';
-import { useGetUserQuery, useUpdateUserMutation } from '~/store';
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { mockUserEndpoints } from '~/mocks/handlers';
-import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
+import { useGetUserQuery, useUpdateUserMutation } from '~/store';
 
 const server = setupServer(...mockUserEndpoints);
 afterEach(() => {

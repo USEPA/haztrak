@@ -1,8 +1,8 @@
 import { fireEvent } from '@testing-library/react';
 import { siteType } from '~/components/Manifest/manifestSchema';
 
-import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { afterEach, describe, expect, test } from 'vitest';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { GeneratorForm } from './GeneratorForm';
 
 afterEach(() => {

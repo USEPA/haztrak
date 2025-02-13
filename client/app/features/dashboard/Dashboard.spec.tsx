@@ -1,8 +1,8 @@
-import { cleanup, renderWithProviders, screen } from '~/mocks';
-import { mockUserEndpoints } from '~/mocks/handlers';
 import { setupServer } from 'msw/node';
 import React, { createElement } from 'react';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
+import { cleanup, renderWithProviders, screen } from '~/mocks';
+import { mockUserEndpoints } from '~/mocks/handlers';
 import { mockSiteEndpoints } from '~/mocks/handlers/mockSiteEndpoints';
 import { Dashboard } from './Dashboard';
 

@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HtCard, HtForm } from '~/components/legacyUi';
 import React, { createContext, useEffect, useState } from 'react';
 import { Container, Stack } from 'react-bootstrap';
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
@@ -17,15 +16,16 @@ import { GeneratorSection } from '~/components/Manifest/Generator';
 import { TransporterSection } from '~/components/Manifest/Transporter/TransporterSection';
 import { TsdfSection } from '~/components/Manifest/Tsdf';
 import { UpdateRcra } from '~/components/Manifest/UpdateRcra/UpdateRcra';
-import { WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
 import { WasteLineSection } from '~/components/Manifest/WasteLine/WasteLineSection';
+import { WasteLine } from '~/components/Manifest/WasteLine/wasteLineSchema';
+import { HtCard, HtForm } from '~/components/legacyUi';
 import { useUserSiteIds } from '~/hooks';
 import { useManifestStatus, useReadOnly, useSaveManifest } from '~/hooks/manifest';
 import { manifest } from '~/services';
 import { HandlerSearchModal } from './Handler';
-import { Manifest, manifestSchema, SiteType } from './manifestSchema';
 import { QuickerSignData, QuickerSignModal } from './QuickerSign';
 import { EditWasteModal } from './WasteLine';
+import { Manifest, SiteType, manifestSchema } from './manifestSchema';
 
 const defaultValues: Manifest = {
   transporters: [],

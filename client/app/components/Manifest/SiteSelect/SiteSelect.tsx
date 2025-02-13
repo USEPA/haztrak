@@ -1,10 +1,10 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { HtForm } from '~/components/legacyUi';
 import React, { useMemo } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import Select from 'react-select';
-import { HaztrakSite } from '~/components/Site';
 import { RcraSite } from '~/components/RcraSite';
+import { HaztrakSite } from '~/components/Site';
+import { HtForm } from '~/components/legacyUi';
 import { useGetUserHaztrakSitesQuery } from '~/store';
 
 interface SiteSelectProps<T> {

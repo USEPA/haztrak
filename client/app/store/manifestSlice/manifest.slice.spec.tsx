@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+import { renderWithProviders, screen } from '~/mocks';
 import { useAppSelector } from '~/store';
 import reducer, {
   ManifestSlice,
@@ -6,8 +8,6 @@ import reducer, {
   setManifestReadOnly,
   setManifestStatus,
 } from '~/store/manifestSlice/manifest.slice';
-import { renderWithProviders, screen } from '~/mocks';
-import { describe, expect, test } from 'vitest';
 
 const TestComponent = () => {
   const readOnly = useAppSelector(selectManifestReadOnly);

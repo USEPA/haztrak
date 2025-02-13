@@ -1,12 +1,12 @@
 import { cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Manifest } from '~/components/Manifest';
 import { setupServer } from 'msw/node';
+import { Manifest } from '~/components/Manifest';
 
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { renderWithProviders, screen } from '~/mocks';
 import { createMockManifest } from '~/mocks/fixtures';
 import { mockManifestEndpoints } from '~/mocks/handlers';
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { useSaveManifest } from './useSaveManifest';
 
 const TestComponent = ({ manifest }: { manifest?: Manifest }) => {

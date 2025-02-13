@@ -1,9 +1,9 @@
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FaTimesCircle } from 'react-icons/fa';
-import { HtForm } from '~/components/legacyUi';
 import { Manifest } from '~/components/Manifest';
 import { WasteLine } from '~/components/Manifest/WasteLine';
+import { HtForm } from '~/components/legacyUi';
 import { useReadOnly } from '~/hooks/manifest';
 
 export function AdditionalInfoForm() {

@@ -1,10 +1,10 @@
-import { HaztrakSite } from '~/components/Site/siteSchema';
-import { Col, Container, ListGroup, Row } from 'react-bootstrap';
-import { SiteListItem } from '~/components/Site/SiteListItem/SiteListItem';
-import { SiteFilterForm } from '~/components/Site/SiteFilter/SiteFilterForm';
-import React, { useState } from 'react';
-import winkingRobot from '/assets/img/robot/robot-wink.jpg';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import React, { useState } from 'react';
+import { Col, Container, ListGroup, Row } from 'react-bootstrap';
+import { SiteFilterForm } from '~/components/Site/SiteFilter/SiteFilterForm';
+import { SiteListItem } from '~/components/Site/SiteListItem/SiteListItem';
+import { HaztrakSite } from '~/components/Site/siteSchema';
+import winkingRobot from '/assets/img/robot/robot-wink.jpg';
 
 interface SiteListGroupProps {
   sites: HaztrakSite[];

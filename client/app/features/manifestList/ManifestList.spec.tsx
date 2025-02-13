@@ -1,13 +1,13 @@
 import { screen, waitFor } from '@testing-library/react';
+import { http, HttpResponse, delay } from 'msw';
 import { setupServer } from 'msw/node';
-import { ManifestList } from './ManifestList';
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import { mockManifestEndpoints, mockUserEndpoints } from '~/mocks/handlers';
 import { Manifest } from '~/components/Manifest';
-import { delay, http, HttpResponse } from 'msw';
-import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
 import { renderWithProviders } from '~/mocks';
 import { createMockManifest } from '~/mocks/fixtures';
+import { mockManifestEndpoints, mockUserEndpoints } from '~/mocks/handlers';
+import { API_BASE_URL } from '~/mocks/handlers/mockSiteEndpoints';
+import { ManifestList } from './ManifestList';
 
 const server = setupServer(...mockManifestEndpoints, ...mockUserEndpoints);
 
