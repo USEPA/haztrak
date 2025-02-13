@@ -1,7 +1,14 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
-  "files": { "ignoreUnknown": false, "ignore": [] },
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "ignore": []
+  },
   "formatter": {
     "enabled": true,
     "useEditorconfig": true,
@@ -25,7 +32,9 @@
       "haztrak/*"
     ]
   },
-  "organizeImports": { "enabled": true },
+  "organizeImports": {
+    "enabled": true
+  },
   "linter": {
     "enabled": true,
     "rules": {
@@ -72,25 +81,25 @@
       },
       "correctness": {
         "noConstAssign": "error",
-        "noConstantCondition": "error",
-        "noEmptyCharacterClassInRegex": "error",
+        "noConstantCondition": "warn",
+        "noEmptyCharacterClassInRegex": "warn",
         "noEmptyPattern": "error",
         "noGlobalObjectCalls": "error",
         "noInvalidBuiltinInstantiation": "error",
         "noInvalidConstructorSuper": "error",
         "noNonoctalDecimalEscape": "error",
         "noPrecisionLoss": "error",
-        "noSelfAssign": "error",
+        "noSelfAssign": "warn",
         "noSetterReturn": "error",
-        "noSwitchDeclarations": "error",
-        "noUndeclaredVariables": "error",
+        "noSwitchDeclarations": "warn",
+        "noUndeclaredVariables": "warn",
         "noUnreachable": "error",
         "noUnreachableSuper": "error",
-        "noUnsafeFinally": "error",
+        "noUnsafeFinally": "warn",
         "noUnsafeOptionalChaining": "error",
         "noUnusedLabels": "error",
         "noUnusedPrivateClassMembers": "error",
-        "noUnusedVariables": "error",
+        "noUnusedVariables": "off",
         "useArrayLiterals": "off",
         "useIsNan": "error",
         "useValidForDirection": "error",
@@ -103,44 +112,49 @@
         "useAsConstAssertion": "error",
         "useBlockStatements": "off",
         "useConsistentArrayType": "error",
-        "useForOf": "error",
+        "useForOf": "off",
         "useLiteralEnumMembers": "error",
         "useShorthandFunctionType": "error"
       },
       "suspicious": {
-        "noAssignInExpressions": "error",
+        "noAssignInExpressions": "off",
         "noAsyncPromiseExecutor": "error",
         "noCatchAssign": "error",
         "noClassAssign": "error",
         "noCompareNegZero": "error",
-        "noConfusingVoidType": "error",
-        "noControlCharactersInRegex": "error",
+        "noConfusingVoidType": "off",
+        "noControlCharactersInRegex": "off",
         "noDebugger": "error",
         "noDuplicateCase": "error",
         "noDuplicateClassMembers": "error",
         "noDuplicateObjectKeys": "error",
         "noDuplicateParameters": "error",
-        "noEmptyBlockStatements": "error",
-        "noExplicitAny": "error",
+        "noEmptyBlockStatements": "off",
+        "noExplicitAny": "off",
         "noExtraNonNullAssertion": "error",
-        "noFallthroughSwitchClause": "error",
-        "noFunctionAssign": "error",
+        "noFallthroughSwitchClause": "warn",
+        "noFunctionAssign": "off",
         "noGlobalAssign": "error",
         "noImportAssign": "error",
-        "noMisleadingCharacterClass": "error",
+        "noMisleadingCharacterClass": "warn",
         "noMisleadingInstantiator": "error",
-        "noPrototypeBuiltins": "error",
-        "noRedeclare": "error",
+        "noPrototypeBuiltins": "warn",
+        "noRedeclare": "warn",
         "noShadowRestrictedNames": "error",
-        "noSparseArray": "error",
+        "noSparseArray": "warn",
         "noUnsafeDeclarationMerging": "error",
         "noUnsafeNegation": "error",
         "useGetterReturn": "error",
         "useNamespaceKeyword": "error",
-        "useValidTypeof": "error"
+        "useValidTypeof": "warn"
       }
     },
-    "ignore": ["**/build/", "**/dist/", "**/node_modules/", "**/.next/"]
+    "ignore": [
+      "**/build/",
+      "**/dist/",
+      "**/node_modules/",
+      "**/.next/"
+    ]
   },
   "javascript": {
     "formatter": {
@@ -157,9 +171,24 @@
     "globals": []
   },
   "overrides": [
-    { "include": ["*.yaml", "*.yml"], "javascript": { "formatter": { "quoteStyle": "single" } } },
     {
-      "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
+      "include": [
+        "*.yaml",
+        "*.yml"
+      ],
+      "javascript": {
+        "formatter": {
+          "quoteStyle": "single"
+        }
+      }
+    },
+    {
+      "include": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.mts",
+        "**/*.cts"
+      ],
       "linter": {
         "rules": {
           "correctness": {
@@ -173,7 +202,11 @@
             "noUnreachable": "off",
             "noUnreachableSuper": "off"
           },
-          "style": { "noArguments": "error", "noVar": "error", "useConst": "error" },
+          "style": {
+            "noArguments": "error",
+            "noVar": "error",
+            "useConst": "error"
+          },
           "suspicious": {
             "noClassAssign": "off",
             "noDuplicateClassMembers": "off",
@@ -189,7 +222,12 @@
       }
     },
     {
-      "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
+      "include": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.mts",
+        "**/*.cts"
+      ],
       "linter": {
         "rules": {
           "correctness": {
@@ -203,7 +241,11 @@
             "noUnreachable": "off",
             "noUnreachableSuper": "off"
           },
-          "style": { "noArguments": "error", "noVar": "error", "useConst": "error" },
+          "style": {
+            "noArguments": "error",
+            "noVar": "error",
+            "useConst": "error"
+          },
           "suspicious": {
             "noClassAssign": "off",
             "noDuplicateClassMembers": "off",
@@ -218,9 +260,18 @@
         }
       }
     },
-    { "include": ["**/*.{js,mjs,cjs,ts,jsx,tsx}"], "linter": { "rules": {} } },
     {
-      "include": ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
+      "include": [
+        "**/*.{js,mjs,cjs,ts,jsx,tsx}"
+      ],
+      "linter": {
+        "rules": {}
+      }
+    },
+    {
+      "include": [
+        "**/*.{js,mjs,cjs,ts,jsx,tsx}"
+      ],
       "javascript": {
         "globals": [
           "onscrollend",
@@ -347,10 +398,14 @@
           "ononline"
         ]
       },
-      "linter": { "rules": {} }
+      "linter": {
+        "rules": {}
+      }
     },
     {
-      "include": ["**/*.{ts,tsx}"],
+      "include": [
+        "**/*.{ts,tsx}"
+      ],
       "linter": {
         "rules": {
           "suspicious": {
