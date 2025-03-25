@@ -17,7 +17,8 @@ class ProfileManager(models.QuerySet):
 
 
 class Profile(models.Model):
-    """User information outside the scope of the User model.
+    """
+    User information outside the scope of the User model.
     Contains a one-to-one relationship with the User model.
     """
 
@@ -65,7 +66,8 @@ class RcrainfoProfileManager(models.Manager):
 
 
 class RcrainfoProfile(models.Model):
-    """Contains a user's RcrainfoProfile information, such as username, and API credentials.
+    """
+    Contains a user's RcrainfoProfile information, such as username, and API credentials.
     Has a one-to-one relationship with the User model.
     """
 

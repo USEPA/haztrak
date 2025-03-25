@@ -3,7 +3,8 @@ from rest_framework.filters import BaseFilterBackend
 
 
 class ObjectPermissionsFilter(BaseFilterBackend):
-    """A filter backend that limits results to those where the requesting user
+    """
+    A filter backend that limits results to those where the requesting user
     has read object level permissions.
     """
 

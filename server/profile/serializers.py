@@ -2,14 +2,16 @@
 
 from profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 
-from core.serializers import TrakUserSerializer
-from manifest.serializers.mixins import RemoveEmptyFieldsMixin
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
+from core.serializers import TrakUserSerializer
+from manifest.serializers.mixins import RemoveEmptyFieldsMixin
+
 
 class RcraSitePermissionSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
-    """We use this internally because it's easier to handle,
+    """
+    We use this internally because it's easier to handle,
 
     Using consistent naming,Haztrak has a separate serializer for user permissions from RCRAInfo.
     """
@@ -85,7 +87,8 @@ class RcraPermissionField(serializers.Field):
 
 
 class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
-    """RcraSitePermissions model serializer specifically for reading a user's site permissions
+    """
+    RcraSitePermissions model serializer specifically for reading a user's site permissions
     from RCRAInfo. It's not used for serializing, only deserializing permissions from RCRAinfo.
     """
 

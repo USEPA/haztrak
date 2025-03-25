@@ -15,7 +15,8 @@ class TestHandlerService:
         self.epa_id = self.handler_json.get("epaSiteId", "handler001")
 
     def test_rcrainfo_returns_true_when_instance(self):
-        """The e-Manifest PyPI package RcrainfoClient uses a __bool__ method we need to override
+        """
+        The e-Manifest PyPI package RcrainfoClient uses a __bool__ method we need to override
         in order for self.rcrainfo = rcrainfo or RcraClient(...) to work.
         """
         # Arrange

@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 
 
 class RcraProfileTasks(Task):
-    """RcraProfileTasks acts as app base Celery class.
+    """
+    RcraProfileTasks acts as app base Celery class.
 
     Encapsulates all logic related to a user's RCRAInfo profile.
     """
@@ -21,7 +22,8 @@ class RcraProfileTasks(Task):
 
 @shared_task(name="sync profile", base=RcraProfileTasks, bind=True, acks_late=True)
 def sync_user_rcrainfo_sites(self: RcraProfileTasks, username: str) -> None:
-    """Task to pull a user's RCRAInfo profile.
+    """
+    Task to pull a user's RCRAInfo profile.
 
     This task initiates a call to the RcraProfileService to and update that information in Haztrak.
     """

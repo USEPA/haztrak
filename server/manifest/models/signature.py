@@ -87,7 +87,8 @@ class ESignatureManager(models.Manager):
     """ESignature Model database querying interface."""
 
     def save(self, **e_signature_data):
-        """Create Contact instance in database, create related phone instance if applicable,
+        """
+        Create Contact instance in database, create related phone instance if applicable,
         and return the new instance.
         """
         if "signer" in e_signature_data:
@@ -149,7 +150,8 @@ class ESignature(models.Model):
 
 
 class PaperSignature(models.Model):
-    """Contains printed name of the rcra_site Signee and
+    """
+    Contains printed name of the rcra_site Signee and
     Date of Signature for paper manifests.
     """
 
@@ -166,7 +168,8 @@ class PaperSignature(models.Model):
 
 
 class QuickerSign:
-    """Quicker Sign is the python object representation of the EPA's Quicker Sign schema
+    """
+    Quicker Sign is the python object representation of the EPA's Quicker Sign schema
     This is not a django model, however for the time being we do not have a better location.
     """
 

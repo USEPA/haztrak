@@ -5,7 +5,7 @@ import random
 import string
 from enum import Enum
 from profile.models import Profile, RcrainfoProfile
-from typing import Any, Dict, Literal, Optional, Required, TypedDict
+from typing import Any, Literal, Required, TypedDict
 
 import pytest
 import pytest_mock
@@ -17,9 +17,7 @@ from faker.providers import BaseProvider
 from guardian.shortcuts import assign_perm
 from rest_framework.test import APIClient
 
-from core.models import (
-    TrakUser,
-)
+from core.models import TrakUser
 from org.models import Org, Site
 from rcrasite.models import (
     Address,
@@ -312,7 +310,8 @@ def api_client_factory(db, user_factory):
 
 @pytest.fixture
 def mock_responses():
-    """Fixture for mocking external http request responses
+    """
+    Fixture for mocking external http request responses
     see Responses docs
     https://github.com/getsentry/responses#responses-as-a-pytest-fixture.
     """
@@ -331,7 +330,8 @@ def mock_emanifest_auth_response(request, mock_responses):
 
 @pytest.fixture
 def mocker(mocker: pytest_mock.MockerFixture):
-    """Wrapper fixture pytest-mock's mocker fixture for easy type annotations
+    """
+    Wrapper fixture pytest-mock's mocker fixture for easy type annotations
     https://github.com/pytest-dev/pytest-mock.
     """
     return mocker

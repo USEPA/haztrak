@@ -6,7 +6,6 @@ from profile.services import get_user_profile
 from typing import TYPE_CHECKING
 
 from celery.exceptions import CeleryError
-from rcrasite.tasks import sync_user_rcrainfo_sites
 from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
@@ -18,6 +17,8 @@ from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
+
+from rcrasite.tasks import sync_user_rcrainfo_sites
 
 if TYPE_CHECKING:
     from celery.result import AsyncResult as CeleryTask
@@ -48,7 +49,8 @@ class ProfileDetailsView(RetrieveAPIView):
 
 
 class RcrainfoProfileRetrieveUpdateView(RetrieveUpdateAPIView):
-    """Responsible for Create/Update operations related to the user RcrainfoProfile.
+    """
+    Responsible for Create/Update operations related to the user RcrainfoProfile.
 
     Maintains a user's RCRAInfo profile data. This info is necessary for
     actions that interface with RCRAInfo.

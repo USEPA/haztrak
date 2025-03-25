@@ -1,11 +1,7 @@
 import logging
 from typing import Dict
 
-from rcrasite.models import RcraStates
 from rest_framework import serializers
-from wasteline.serializers import (
-    WasteLineSerializer,
-)
 
 from manifest.models import (
     AdditionalInfo,
@@ -16,6 +12,10 @@ from manifest.models import (
 from manifest.serializers import (
     HandlerSerializer,
     TransporterSerializer,
+)
+from rcrasite.models import RcraStates
+from wasteline.serializers import (
+    WasteLineSerializer,
 )
 
 from .mixins import RemoveEmptyFieldsMixin

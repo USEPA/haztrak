@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 
 
 class RcraClient(RcrainfoClient):
-    """RcraClient is our IO interface RCRAInfo.
+    """
+    RcraClient is our IO interface RCRAInfo.
 
     Used for communicating with the EPA RCRAInfo web services.
     """
@@ -65,14 +66,16 @@ class RcraClient(RcrainfoClient):
         self,
         rcrainfo_username: str | None = None,
     ) -> RcrainfoResponse:
-        """Retrieve a user's site permissions from RCRAInfo, It expects the
+        """
+        Retrieve a user's site permissions from RCRAInfo, It expects the
         haztrak user to have their unique RCRAInfo user and API credentials in their
         RcrainfoProfile.
         """
         return self.search_users(userId=rcrainfo_username)
 
     def sync_federal_waste_codes(self):
-        """Pull all federal waste codes from RCRAInfo and save.
+        """
+        Pull all federal waste codes from RCRAInfo and save.
 
         We only create waste codes, they are not removed if a waste code was eliminated in the regs
         """
@@ -85,14 +88,16 @@ class RcraClient(RcrainfoClient):
                 WasteCode.federal.update(code_type=WasteCode.CodeType.FEDERAL, **federal_code)
 
     def sign_manifest(self, **sign_data):
-        """Utilizes RcraInfo's Quicker Sign endpoint to electronically sign manifest(s)
+        """
+        Utilizes RcraInfo's Quicker Sign endpoint to electronically sign manifest(s)
         we override the e-Manifest package's sign_manifest function to validate inputs.
         """
         sign_data = {k: v for k, v in sign_data.items() if v is not None}
         return super().sign_manifest(**sign_data)
 
     def __bool__(self):
-        """This Overrides the RcrainfoClient bool
+        """
+        This Overrides the RcrainfoClient bool
         we use this to test a RcraClient instance is not None.
         """
         return True

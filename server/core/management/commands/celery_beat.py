@@ -29,7 +29,8 @@ class Command(BaseCommand):
     """Command for periodic tasks."""
 
     def handle(self, *args, **options):
-        """See HackSoftware's explanation here.
+        """
+        See HackSoftware's explanation here.
 
         https://github.com/HackSoftware/Django-Styleguide#periodic-tasks
         I'm not crazy about this implementation, but it will do for our POC.

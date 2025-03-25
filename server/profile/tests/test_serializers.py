@@ -41,7 +41,8 @@ class TestRcraSitePermissionSerializer:
 
 
 class TestRcrainfoSitePermissionSerializer:
-    """Test suite is for Haztrak's serializer for communication with RCRAInfo site perms.
+    """
+    Test suite is for Haztrak's serializer for communication with RCRAInfo site perms.
 
     We don't use EPaPermissionSerializer to communicate internally, so
     currently we don't serialize, only deserialize

@@ -45,7 +45,8 @@ def query_rcra_sites(
 
 
 class RcraSiteService:
-    """RcraSiteService houses the (high-level) rcra_site subdomain specific business logic.
+    """
+    RcraSiteService houses the (high-level) rcra_site subdomain specific business logic.
 
     RcraSiteService's public interface needs to be controlled strictly, public method
     directly relate to use cases.
@@ -61,7 +62,8 @@ class RcraSiteService:
         return self._update_or_create_rcra_site_from_json(rcra_site_data=rcra_site_data)
 
     def get_or_pull_rcra_site(self, site_id: str) -> RcraSite:
-        """Retrieve a site from the database or pull it from RCRAInfo.
+        """
+        Retrieve a site from the database or pull it from RCRAInfo.
 
         Or Pull it from RCRAInfo.This may be trying to do too much.
         """

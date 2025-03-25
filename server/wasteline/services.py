@@ -4,7 +4,8 @@ from wasteline.models import DotLookup, WasteCode
 
 
 def filter_dot_shipping_names(query: str | None) -> list[str]:
-    """Get a list of DOT Shipping Names (e.g., 'Acetone').
+    """
+    Get a list of DOT Shipping Names (e.g., 'Acetone').
 
     optionally filtered by a query parameter.
     """

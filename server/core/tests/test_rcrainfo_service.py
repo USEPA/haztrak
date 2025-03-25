@@ -91,7 +91,8 @@ class TestQuickerSign:
         profile_factory,
         quicker_sign_response_factory,
     ):
-        """Test that our sign_manifest method maps arguments to a JSON representation
+        """
+        Test that our sign_manifest method maps arguments to a JSON representation
         that's recognized by RCRAInfo.
         """
         testuser1 = user_factory()

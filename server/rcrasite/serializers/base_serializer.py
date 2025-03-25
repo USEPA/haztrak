@@ -4,7 +4,8 @@ from rest_framework import serializers
 
 
 class SitesBaseSerializer(serializers.ModelSerializer):
-    """The app base serializers class.
+    """
+    The app base serializers class.
 
     Used to share functionality across Sites app serializers universally.
     """

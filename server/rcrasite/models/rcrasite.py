@@ -29,7 +29,8 @@ class RcraSiteManager(models.Manager):
         return self.get(epa_id__iexact=epa_id)
 
     def save(self, instance: Optional["RcraSite"], **handler_data) -> "RcraSite":
-        """Create an RcraSite and its related fields.
+        """
+        Create an RcraSite and its related fields.
 
         Keyword Args:
             contact (dict): Contact data in (ordered)dict format

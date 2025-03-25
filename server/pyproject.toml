@@ -90,6 +90,7 @@ exclude = [
 
 [tool.ruff.lint]
 select = ["ALL"]
+extend-select = ["I"]
 ignore = [
     "ANN", # type annotations
     "FBT", # boolean trap
@@ -101,7 +102,10 @@ ignore = [
     "D107",
     "RUF012",
     "FIX002",
-    "DJ001"
+    "DJ001",
+    "D203",
+    "D212",
+    "COM812",
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -112,9 +116,20 @@ ignore = [
 "**/__init__.py" = ["D104"]
 "**/models.py" = ["COM819"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["haztrak"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["ninja.Query", "ninja.Depends", "ninja.File"]
+
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = ["pydantic.validator", "pydantic.root_validator"]
+
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "haztrak.settings.test"
-
 
 [tool.mypy]
 plugins = [

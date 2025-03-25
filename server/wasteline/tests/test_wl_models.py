@@ -10,7 +10,8 @@ from wasteline.models import DotLookup, DotLookupType, WasteCode
 
 @pytest.mark.django_db
 class TestWasteCodesModel:
-    """Test WasteCode model.
+    """
+    Test WasteCode model.
 
     Something to keep in mind is we use django data
     migrations to populate the database with initial waste codes.

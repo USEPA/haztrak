@@ -12,7 +12,8 @@ from .base_serializer import SitesBaseSerializer
 
 @extend_schema_field(OpenApiTypes.OBJECT)
 class LocalityField(serializers.ChoiceField):
-    """Locality is defined, in RCRAInfo.
+    """
+    Locality is defined, in RCRAInfo.
 
     Used as an object used to describe region (state, nation)
     {

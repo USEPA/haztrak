@@ -95,7 +95,8 @@ class TaskService:
 
     @staticmethod
     def _get_cached_status(task_id: str) -> dict | None:
-        """Gets the status of a long-running celery task from our key-value store
+        """
+        Gets the status of a long-running celery task from our key-value store
         if not found or error, returns None
         :param task_id:
         :return dict None:
@@ -118,7 +119,8 @@ class TaskService:
             return None
 
     def update_task_status(self, status: str, results: dict | None = None) -> object | None:
-        """Updates the status of a long-running celery task in our key-value store
+        """
+        Updates the status of a long-running celery task in our key-value store
         returns an error or None.
         """
         if results:

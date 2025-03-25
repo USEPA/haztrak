@@ -20,7 +20,8 @@ class TestManifestModel:
             assert re.match(r"\d{9}DFT", result)
 
     def test_draft_mtn_uses_nine_number_three_letter_format(self):
-        """Ensure our default MTN for draft manifests follows the
+        """
+        Ensure our default MTN for draft manifests follows the
         same format as EPA uniform hazardous waste (e.g., 123456789ELC).
         """
         new_mtn = draft_mtn()

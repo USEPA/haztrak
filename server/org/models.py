@@ -4,7 +4,6 @@ import uuid
 from profile.models import RcrainfoProfile
 from typing import TYPE_CHECKING, Self
 
-from core.models import TrakUser
 from django.conf import settings
 from django.core.validators import MinLengthValidator
 from django.db import models
@@ -12,6 +11,8 @@ from django.db.models import QuerySet
 from django_extensions.db.fields import AutoSlugField
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import get_objects_for_user
+
+from core.models import TrakUser
 
 if TYPE_CHECKING:
     from django.contrib.auth.models import User
@@ -200,7 +201,8 @@ class Site(models.Model):
         ordering = ["rcra_site__epa_id"]
 
     def __str__(self):
-        """Human-readable representation.
+        """
+        Human-readable representation.
 
         Used in StringRelated fields in serializer classes.
         """

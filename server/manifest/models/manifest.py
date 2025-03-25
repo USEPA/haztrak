@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q, QuerySet
 from django.utils.translation import gettext_lazy as _
+
 from rcrasite.models import RcraSiteType, RcraStates
 from wasteline.models import WasteLine
 
@@ -368,7 +369,8 @@ class Manifest(models.Model):
 
 
 class AdditionalInfo(models.Model):
-    """Entity containing Additional Information. Relevant to Both Manifest and individual WastesLines.
+    """
+    Entity containing Additional Information. Relevant to Both Manifest and individual WastesLines.
     Shipment rejection related info is stored in this object.
     """
 

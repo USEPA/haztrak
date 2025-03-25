@@ -4,9 +4,10 @@ from profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 from profile.serializers import RcrainfoSitePermissionsSerializer
 from typing import TYPE_CHECKING
 
+from django.db import transaction
+
 from core.models import TrakUser
 from core.services import RcraClient, get_rcra_client
-from django.db import transaction
 from org.services import SiteServiceError
 from rcrasite.models import RcraSite
 from rcrasite.services import RcraSiteService
@@ -66,7 +67,8 @@ class RcraProfileService:
         self.rcrainfo = rcrainfo or get_rcra_client(username=username)
 
     def update_rcrainfo_profile(self, *, rcrainfo_username: str | None = None) -> None:
-        """High level function makes several requests to RCRAInfo to pull.
+        """
+        High level function makes several requests to RCRAInfo to pull.
 
         1. A user's rcrainfo site permissions, it creates a RcraSitePermissions for each
         2. For each rcra site permission, it pulls the rcra_site details, and creates or updates

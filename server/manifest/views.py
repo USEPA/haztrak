@@ -104,7 +104,8 @@ class ElectronicManifestSignView(GenericAPIView):
     queryset = None
 
     def post(self, request: Request) -> Response:
-        """Accepts a Quicker Sign JSON object in the request body,
+        """
+        Accepts a Quicker Sign JSON object in the request body,
         parses the request data, and passes data to a celery async task.
         """
         quicker_serializer = self.serializer_class(data=request.data)
@@ -126,7 +127,8 @@ class ElectronicManifestSignView(GenericAPIView):
     ),
 )
 class SiteManifestSyncView(APIView):
-    """Pull a site's manifests that are out of sync with RCRAInfo.
+    """
+    Pull a site's manifests that are out of sync with RCRAInfo.
     It returns the task id of the long-running background task which can be used to poll
     for status.
     """

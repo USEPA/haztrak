@@ -101,7 +101,8 @@ class RcraPhoneNumber(models.CharField):
 
 
 class RcraPhone(models.Model):
-    """RCRAInfo phone model.
+    """
+    RCRAInfo phone model.
 
     stores phones in ###-###-#### format along with up to 6 digit extension.
     """
@@ -185,7 +186,8 @@ class ContactManager(models.Manager):
     """Contact Model database querying interface."""
 
     def save(self, **contact_data) -> models.QuerySet:
-        """Create Contact instance.
+        """
+        Create Contact instance.
 
         Create related phone instance if applicable,and return the new instance.
         """
@@ -200,7 +202,8 @@ class ContactManager(models.Manager):
 
 
 class Contact(models.Model):
-    """RCRAInfo contact info.
+    """
+    RCRAInfo contact info.
 
     Including personnel information such as name, email, company, includes a phone related field.
     """
