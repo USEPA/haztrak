@@ -18,5 +18,5 @@ django-health-check==3.18.3
 dj-rest-auth[with_social]==6.0.0
 django-guardian==2.4.0
 django-allauth==0.61.1
-djangorestframework-simplejwt==5.3.1
+djangorestframework-simplejwt==5.5.0
 pillow==11.1.0
