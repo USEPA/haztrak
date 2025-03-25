@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class Signer(models.Model):
-    """EPA manifest signer definition"""
+    """EPA manifest signer definition."""
 
     class Meta:
         ordering = ["first_name"]
@@ -80,7 +80,7 @@ class Signer(models.Model):
 
 
 class ESignatureManager(models.Manager):
-    """ESignature Model database querying interface"""
+    """ESignature Model database querying interface."""
 
     def save(self, **e_signature_data):
         """Create Contact instance in database, create related phone instance if applicable,
@@ -92,7 +92,7 @@ class ESignatureManager(models.Manager):
 
 
 class ESignature(models.Model):
-    """EPA electronic signature"""
+    """EPA electronic signature."""
 
     class Meta:
         verbose_name = "e-Signature"
@@ -161,7 +161,7 @@ class PaperSignature(models.Model):
 
 class QuickerSign:
     """Quicker Sign is the python object representation of the EPA's Quicker Sign schema
-    This is not a django model, however for the time being we do not have a better location
+    This is not a django model, however for the time being we do not have a better location.
     """
 
     def __init__(
@@ -189,6 +189,7 @@ class QuickerSign:
             except ValueError:
                 self.printed_date: datetime = datetime.utcnow().replace(tzinfo=UTC)
         else:
+            msg = f"printed_date must be string or datetime, received {type(printed_date)}"
             raise TypeError(
-                f"printed_date must be string or datetime, received {type(printed_date)}",
+                msg,
             )

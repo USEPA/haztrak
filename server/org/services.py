@@ -13,17 +13,17 @@ if TYPE_CHECKING:
 
 
 def get_org_by_id(org_id: str) -> Org:
-    """Returns an Organization instance or raise a 404"""
+    """Returns an Organization instance or raise a 404."""
     return Org.objects.get(id=org_id)
 
 
 def get_org_by_slug(org_slug: str) -> Org:
-    """Returns an Organization instance or raise a 404"""
+    """Returns an Organization instance or raise a 404."""
     return Org.objects.get_by_slug(org_slug)
 
 
 def get_org_rcrainfo_api_credentials(org_id: str) -> tuple[str, str] | None:
-    """Returns a tuple of (rcrainfo_api_id, rcrainfo_api_key)"""
+    """Returns a tuple of (rcrainfo_api_id, rcrainfo_api_key)."""
     try:
         org = get_org_by_id(org_id)
         if org.is_rcrainfo_integrated:
@@ -33,7 +33,7 @@ def get_org_rcrainfo_api_credentials(org_id: str) -> tuple[str, str] | None:
 
 
 def get_rcrainfo_api_credentials_by_user(user_id: str) -> tuple[str, str] | None:
-    """Returns a tuple of (rcrainfo_api_id, rcrainfo_api_key) corresponding to the user's org"""
+    """Returns a tuple of (rcrainfo_api_id, rcrainfo_api_key) corresponding to the user's org."""
     try:
         org = Org.objects.get(user_id=user_id)
         if org.is_rcrainfo_integrated:
@@ -94,6 +94,6 @@ def sync_site_manifest_with_rcrainfo(
     username: str,
     site_id: str | None = None,
 ) -> TaskResponse:
-    """Launch a batch processing task to sync a site's manifests from RCRAInfo"""
+    """Launch a batch processing task to sync a site's manifests from RCRAInfo."""
     task = sync_site_manifests.delay(site_id=site_id, username=username)
     return {"taskId": task.id}

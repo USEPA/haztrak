@@ -12,7 +12,7 @@ def e_signature_serializer(db, haztrak_json) -> ESignatureSerializer:
 
 
 class TestESignatureSerializer:
-    """Test suite for e-Manifest electronic signatures serialization to/from JSON"""
+    """Test suite for e-Manifest electronic signatures serialization to/from JSON."""
 
     @pytest.fixture(autouse=True)
     def _setup(self, haztrak_json):

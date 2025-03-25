@@ -5,10 +5,10 @@ import pytest
 
 @pytest.mark.django_db
 class TestRcrainfoProfileModel:
-    """Test related to the RcrainfoProfile model and its API"""
+    """Test related to the RcrainfoProfile model and its API."""
 
     def test_rcra_profile_factory(self, rcrainfo_profile_factory):
-        """Simply check the model saves given our factory's defaults"""
+        """Simply check the model saves given our factory's defaults."""
         rcra_profile = rcrainfo_profile_factory()
         assert isinstance(rcra_profile, RcrainfoProfile)
 
@@ -20,7 +20,7 @@ class TestRcrainfoProfileModel:
         rcra_api_id,
         rcra_api_key,
     ):
-        """If any of the three are None, the user should not be considered an API user"""
+        """If any of the three are None, the user should not be considered an API user."""
         # Arrange
         expected = True
         if rcra_api_id is None or rcra_api_key is None:

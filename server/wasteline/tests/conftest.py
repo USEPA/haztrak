@@ -9,7 +9,7 @@ from wasteline.models import DotLookup, DotLookupType, WasteCode, WasteLine
 
 @pytest.fixture
 def dot_lookup_factory(db, faker: Faker):
-    """Abstract factory for Haztrak DotLookup model"""
+    """Abstract factory for Haztrak DotLookup model."""
 
     def create_dot_option(
         value: str | None = None,
@@ -25,7 +25,7 @@ def dot_lookup_factory(db, faker: Faker):
 
 @pytest.fixture
 def waste_code_factory(db):
-    """Abstract factory for waste codes"""
+    """Abstract factory for waste codes."""
 
     def create_waste_code(
         code: str | None = "D001",
@@ -53,7 +53,7 @@ def waste_code_factory(db):
 
 @pytest.fixture
 def waste_line_factory(db):
-    """Abstract factory for Haztrak DotLookup model"""
+    """Abstract factory for Haztrak DotLookup model."""
 
     def create_waste_line(
         manifest: Manifest = None,
@@ -64,6 +64,7 @@ def waste_line_factory(db):
         pcb: bool | None = False,
         epa_waste: bool | None = True,
     ) -> WasteLine:
+        """Create a waste line."""
         return WasteLine.objects.create(
             manifest=manifest,
             dot_hazardous=dot_hazardous,

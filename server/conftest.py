@@ -38,7 +38,7 @@ class SiteIDProvider(BaseProvider):
 
 @pytest.fixture
 def haztrak_json():
-    """Fixture with JSON data"""
+    """Fixture with JSON data."""
     json_dir = os.path.dirname(os.path.abspath(__file__)) + "/fixtures/json"
 
     def read_file(path: str) -> dict:
@@ -66,7 +66,7 @@ class UserFactoryPermissions(TypedDict, total=False):
 
 @pytest.fixture
 def user_factory(db, faker):
-    """Abstract factory for Django's User model"""
+    """Abstract factory for Django's User model."""
 
     def create_user(
         username: str | None = None,
@@ -95,7 +95,7 @@ def user_factory(db, faker):
 
 @pytest.fixture
 def perm_factory(db):
-    """Abstract factory for creating permissions for a user"""
+    """Abstract factory for creating permissions for a user."""
 
     def create_permissions(
         user: TrakUser,
@@ -117,7 +117,7 @@ def perm_factory(db):
 
 @pytest.fixture
 def rcrainfo_profile_factory(db, user_factory, faker: Faker):
-    """Abstract factory for Haztrak RcrainfoProfile model"""
+    """Abstract factory for Haztrak RcrainfoProfile model."""
 
     def create_profile(
         rcra_api_id: str | None = str(faker.uuid4()),
@@ -135,7 +135,7 @@ def rcrainfo_profile_factory(db, user_factory, faker: Faker):
 
 @pytest.fixture
 def profile_factory(db, user_factory, rcrainfo_profile_factory, org_factory):
-    """Abstract factory for Haztrak RcrainfoProfile model"""
+    """Abstract factory for Haztrak RcrainfoProfile model."""
 
     def create_profile(
         user: User | None = None,
@@ -151,7 +151,7 @@ def profile_factory(db, user_factory, rcrainfo_profile_factory, org_factory):
 
 @pytest.fixture
 def address_factory(db, faker: Faker):
-    """Abstract factory for Haztrak Address model"""
+    """Abstract factory for Haztrak Address model."""
 
     def create_address(
         address1: str | None = None,
@@ -171,7 +171,7 @@ def address_factory(db, faker: Faker):
 
 @pytest.fixture
 def rcra_phone_factory(db, faker: Faker):
-    """Abstract factory for Haztrak ManifestPhone model"""
+    """Abstract factory for Haztrak ManifestPhone model."""
 
     def create_site_phone(
         number: str | None = "202-505-5500",
@@ -187,7 +187,7 @@ def rcra_phone_factory(db, faker: Faker):
 
 @pytest.fixture
 def contact_factory(db, rcra_phone_factory, faker: Faker):
-    """Abstract factory for Haztrak Contact model"""
+    """Abstract factory for Haztrak Contact model."""
 
     def create_contact(
         first_name: str | None = None,
@@ -196,21 +196,20 @@ def contact_factory(db, rcra_phone_factory, faker: Faker):
         email: str | None = None,
         phone: RcraPhone | None = None,
     ) -> Contact:
-        contact = Contact.objects.create(
+        return Contact.objects.create(
             first_name=first_name or faker.first_name(),
             middle_initial=middle_initial or faker.pystr(max_chars=1),
             last_name=last_name or faker.last_name(),
             email=email or faker.email(),
             phone=phone or rcra_phone_factory(),
         )
-        return contact
 
     return create_contact
 
 
 @pytest.fixture
 def rcra_site_factory(db, address_factory, contact_factory):
-    """Abstract factory for Haztrak RcraSite model"""
+    """Abstract factory for Haztrak RcraSite model."""
 
     def create_rcra_site(
         epa_id: str | None = None,
@@ -257,7 +256,7 @@ def validated_data_factory():
 
 @pytest.fixture
 def org_factory(db, rcrainfo_profile_factory, user_factory, faker):
-    """Abstract factory for Haztrak Org model"""
+    """Abstract factory for Haztrak Org model."""
 
     def create_org(
         org_id: str | None = None,
@@ -275,7 +274,7 @@ def org_factory(db, rcrainfo_profile_factory, user_factory, faker):
 
 @pytest.fixture
 def site_factory(db, rcra_site_factory, org_factory, faker):
-    """Abstract factory for Haztrak Site model"""
+    """Abstract factory for Haztrak Site model."""
 
     def create_site(
         rcra_site: RcraSite | None = None,
@@ -296,7 +295,7 @@ def site_factory(db, rcra_site_factory, org_factory, faker):
 
 @pytest.fixture
 def api_client_factory(db, user_factory):
-    """Abstract factory for DRF APIClient testing class"""
+    """Abstract factory for DRF APIClient testing class."""
 
     def create_client(
         user: User | None = None,
@@ -314,7 +313,7 @@ def api_client_factory(db, user_factory):
 def mock_responses():
     """Fixture for mocking external http request responses
     see Responses docs
-    https://github.com/getsentry/responses#responses-as-a-pytest-fixture
+    https://github.com/getsentry/responses#responses-as-a-pytest-fixture.
     """
     with responses.RequestsMock() as mock_responses:
         yield mock_responses
@@ -332,7 +331,7 @@ def mock_emanifest_auth_response(request, mock_responses):
 @pytest.fixture
 def mocker(mocker: pytest_mock.MockerFixture):
     """Wrapper fixture pytest-mock's mocker fixture for easy type annotations
-    https://github.com/pytest-dev/pytest-mock
+    https://github.com/pytest-dev/pytest-mock.
     """
     return mocker
 
@@ -346,7 +345,7 @@ def user_with_org_factory(
     profile_factory,
     perm_factory,
 ):
-    """Fixture for creating a user with an org that has set up RCRAInfo integration"""
+    """Fixture for creating a user with an org that has set up RCRAInfo integration."""
 
     def create_fixtures(
         user: User | None = None,
@@ -384,7 +383,7 @@ def use_local_mem_cache_backend(settings):
 
 @pytest.fixture
 def cache_factory(settings):
-    """Abstract factory for Haztrak Contact model"""
+    """Abstract factory for Haztrak Contact model."""
 
     def create_cache(location):
         settings.CACHES = {

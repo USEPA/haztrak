@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.CreateModelMixin):
-    """Local CRUD operations for HazTrak manifests"""
+    """Local CRUD operations for HazTrak manifests."""
 
     lookup_field = "mtn"
     allowed_methods = ["GET", "POST", "PUT"]

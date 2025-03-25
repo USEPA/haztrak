@@ -8,7 +8,7 @@ from org.models import Org, Site
 
 @pytest.fixture
 def site_class_factory(faker):
-    """Abstract factory for Site class"""
+    """Abstract factory for Site class."""
 
     def create_site(
         rcra_site: RcraSite | None = None,

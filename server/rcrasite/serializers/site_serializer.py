@@ -1,3 +1,5 @@
+"""Serializers for the RcraSite model."""
+
 from rest_framework import serializers
 
 from rcrasite.models import RcraSite, RcraSiteType
@@ -7,7 +9,7 @@ from .base_serializer import SitesBaseSerializer
 
 
 class RcraSiteSerializer(SitesBaseSerializer):
-    """RcraSite model serializer for JSON marshalling/unmarshalling"""
+    """RcraSite model serializer for JSON marshalling/unmarshalling."""
 
     epaSiteId = serializers.CharField(
         source="epa_id",
@@ -62,12 +64,16 @@ class RcraSiteSerializer(SitesBaseSerializer):
     )
 
     def update(self, instance, validated_data):
+        """Update an existing RcraSite instance."""
         return self.Meta.model.objects.save(instance, **validated_data)
 
     def create(self, validated_data):
+        """Create a new RcraSite instance."""
         return self.Meta.model.objects.save(None, **validated_data)
 
     class Meta:
+        """Metaclass."""
+
         model = RcraSite
         fields = [
             "epaSiteId",
@@ -87,6 +93,8 @@ class RcraSiteSerializer(SitesBaseSerializer):
 
 
 class RcraSiteSearchSerializer(serializers.Serializer):
+    """Serializer for RCRAInfo site search results."""
+
     epaId = serializers.CharField(required=False, source="epa_id")
     siteName = serializers.CharField(required=False, source="name")
     siteType = serializers.ChoiceField(

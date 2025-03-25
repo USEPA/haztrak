@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 
 class OrgManager(models.Manager):
-    """Organization Repository manager"""
+    """Organization Repository manager."""
 
     def get_by_username(self, username: str) -> "Org":
         user = TrakUser.objects.get(username=username)
@@ -34,7 +34,7 @@ class OrgManager(models.Manager):
 
 
 class Org(models.Model):
-    """Haztrak Organization"""
+    """Haztrak Organization."""
 
     objects = OrgManager()
 
@@ -70,7 +70,7 @@ class Org(models.Model):
 
     @property
     def rcrainfo_api_id_key(self) -> tuple[str, str] | None:
-        """Returns the RcraInfo API credentials for the admin user"""
+        """Returns the RcraInfo API credentials for the admin user."""
         try:
             rcrainfo_profile = RcrainfoProfile.objects.get(haztrak_profile__user=self.admin)
             return rcrainfo_profile.rcra_api_id, rcrainfo_profile.rcra_api_key
@@ -79,7 +79,7 @@ class Org(models.Model):
 
     @property
     def is_rcrainfo_integrated(self) -> bool:
-        """Returns True if the admin user has RcraInfo API credentials"""
+        """Returns True if the admin user has RcraInfo API credentials."""
         if RcrainfoProfile.objects.filter(haztrak_profile__user=self.admin).exists():
             return RcrainfoProfile.objects.get(
                 haztrak_profile__user=self.admin,
@@ -112,10 +112,10 @@ class OrgGroupObjectPermission(GroupObjectPermissionBase):
 
 
 class SiteManager(QuerySet):
-    """Query interface for the Site model"""
+    """Query interface for the Site model."""
 
     def filter_by_username(self: models.Manager, username: str) -> QuerySet:
-        """Filter a list of sites a user has access to (by username)"""
+        """Filter a list of sites a user has access to (by username)."""
         return get_objects_for_user(
             TrakUser.objects.get(username=username),
             "view_site",
@@ -124,27 +124,27 @@ class SiteManager(QuerySet):
         )
 
     def get_by_user_and_epa_id(self: models.Manager, user: "User", epa_id: str) -> QuerySet:
-        """Get a site by EPA ID number that a user has access to"""
+        """Get a site by EPA ID number that a user has access to."""
         combined_filter: QuerySet = self.filter_by_user(user) & self.filter_by_epa_id(epa_id)
         return combined_filter.get()
 
     def get_by_username_and_epa_id(self: models.Manager, username: str, epa_id: str) -> QuerySet:
-        """Get a site by EPA ID number that a user has access to"""
+        """Get a site by EPA ID number that a user has access to."""
         combined_filter: QuerySet = self.filter_by_username(username) & self.filter_by_epa_id(
             epa_id,
         )
         return combined_filter.get()
 
     def filter_by_user(self: models.Manager, user: "User") -> QuerySet:
-        """Filter a list of sites a user has access to (by user object)"""
+        """Filter a list of sites a user has access to (by user object)."""
         return get_objects_for_user(user, "view_site", self.model, accept_global_perms=False)
 
     def filter_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:
-        """Filter a sites by EPA ID number"""
+        """Filter a sites by EPA ID number."""
         return self.filter(rcra_site__epa_id=epa_id)
 
     def filter_by_epa_ids(self: models.Manager, epa_ids: [str]) -> QuerySet:
-        """Filter a sites by EPA ID number"""
+        """Filter a sites by EPA ID number."""
         return self.filter(rcra_site__epa_id__in=epa_ids)
 
     def get_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:
@@ -152,7 +152,7 @@ class SiteManager(QuerySet):
         return self.filter_by_epa_id(epa_id).get()
 
     def filter_by_org(self: models.Manager, org: "Org") -> QuerySet:
-        """Get a list of sites by organization"""
+        """Get a list of sites by organization."""
         return self.filter(org=org)
 
 
@@ -192,11 +192,11 @@ class Site(models.Model):
 
     @property
     def admin_has_rcrainfo_api_credentials(self) -> bool:
-        """Returns True if the admin user has RcraInfo API credentials"""
+        """Returns True if the admin user has RcraInfo API credentials."""
         return self.org.is_rcrainfo_integrated
 
     def __str__(self):
-        """Used in StringRelated fields in serializer classes"""
+        """Used in StringRelated fields in serializer classes."""
         return f"{self.rcra_site.epa_id}"
 
 

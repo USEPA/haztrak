@@ -115,46 +115,52 @@ class EmanifestSearch:
 
     def add_state_code(self, state: str):
         if not self._valid_state_code(state):
-            raise ValueError("Invalid State code")
+            msg = "Invalid State code"
+            raise ValueError(msg)
         self.state_code = state
         return self
 
     def add_site_id(self, site_id: str):
         if not self._valid_site_id(site_id):
-            raise ValueError("Invalid Site ID")
+            msg = "Invalid Site ID"
+            raise ValueError(msg)
         self.site_id = site_id
         return self
 
     def add_status(self, status: EmanifestStatus):
         if not self._emanifest_status(status):
-            raise ValueError("Invalid Status")
+            msg = "Invalid Status"
+            raise ValueError(msg)
         self.status = status
         return self
 
     def add_site_type(self, site_type: SiteType):
         if not self._emanifest_site_type(site_type):
-            raise ValueError("Invalid Site Type")
+            msg = "Invalid Site Type"
+            raise ValueError(msg)
         self.site_type = site_type
         return self
 
     def add_date_type(self, date_type: DateType):
         if not self._emanifest_date_type(date_type):
-            raise ValueError("Invalid Date Type")
+            msg = "Invalid Date Type"
+            raise ValueError(msg)
         self.date_type = date_type
         return self
 
     def add_correction_request_status(self, correction_request_status: CorrectionRequestStatus):
         if not self._emanifest_correction_request_status(correction_request_status):
-            raise ValueError("Invalid Correction Request Status")
+            msg = "Invalid Correction Request Status"
+            raise ValueError(msg)
         self.correction_request_status = correction_request_status
         return self
 
-    def add_start_date(self, start_date: datetime = None):
+    def add_start_date(self, start_date: datetime | None = None):
         """Start of date range for manifest search. Default to three years ago."""
         self.start_date = self._date_or_three_years_past(start_date)
         return self
 
-    def add_end_date(self, end_date: datetime = None):
+    def add_end_date(self, end_date: datetime | None = None):
         """End of date range for manifest search. Default to now."""
         self.end_date = self._date_or_now(end_date)
         return self

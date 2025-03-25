@@ -9,7 +9,7 @@ from core.services.task_service import get_task_status, launch_example_task
 
 
 class LaunchExampleTaskView(APIView):
-    """Launches an example long-running background task"""
+    """Launches an example long-running background task."""
 
     permission_classes = [permissions.AllowAny]
 
@@ -25,7 +25,7 @@ class LaunchExampleTaskView(APIView):
 
 
 class TaskStatusView(APIView):
-    """retrieve the status of long-running tasks"""
+    """retrieve the status of long-running tasks."""
 
     queryset = TaskResult.objects.all()
 

@@ -10,7 +10,7 @@ from manifest.serializers.mixins import RemoveEmptyFieldsMixin
 
 
 class QuickerSignSerializer(serializers.Serializer):
-    """Serializer for EPA Quicker Sign objects"""
+    """Serializer for EPA Quicker Sign objects."""
 
     manifestTrackingNumbers = serializers.ListField(
         source="mtn",
@@ -73,7 +73,7 @@ class QuickerSignSerializer(serializers.Serializer):
 
 
 class SignerSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
-    """Serializer for EPA Signer Object"""
+    """Serializer for EPA Signer Object."""
 
     userId = serializers.CharField(
         source="rcra_user_id",
@@ -126,7 +126,7 @@ class SignerSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
 
 
 class ESignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
-    """Serializer for Electronic Signature on manifest"""
+    """Serializer for Electronic Signature on manifest."""
 
     signer = SignerSerializer(
         required=False,
@@ -172,7 +172,7 @@ class ESignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
 
 class PaperSignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
     """Serializer for Paper Signature on manifest which indicates the change
-    of custody with paper manifests
+    of custody with paper manifests.
     """
 
     printedName = serializers.CharField(

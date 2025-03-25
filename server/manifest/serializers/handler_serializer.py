@@ -9,7 +9,7 @@ from .signatures import ESignatureSerializer, PaperSignatureSerializer
 
 
 class ManifestPhoneSerializer(serializers.ModelSerializer):
-    """Serializer for phone numbers on manifest"""
+    """Serializer for phone numbers on manifest."""
 
     number = serializers.CharField(
         required=True,
@@ -25,7 +25,7 @@ class ManifestPhoneSerializer(serializers.ModelSerializer):
 
 
 class HandlerSerializer(RcraSiteSerializer):
-    """Serializer for RcraSite on manifest"""
+    """Serializer for RcraSite on manifest."""
 
     rcra_site = RcraSiteSerializer()
     electronicSignaturesInfo = ESignatureSerializer(
@@ -81,7 +81,7 @@ class HandlerSerializer(RcraSiteSerializer):
 
 
 class TransporterSerializer(HandlerSerializer):
-    """Transporter model serializer for JSON marshalling/unmarshalling"""
+    """Transporter model serializer for JSON marshalling/unmarshalling."""
 
     class Meta:
         model = Transporter

@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 class RemoveEmptyFieldsMixin(serializers.Serializer):
     def remove_empty_fields(self, data):
-        """Remove empty fields when serializing"""
+        """Remove empty fields when serializing."""
         for field in self.fields:
             try:
                 if data[field] is None:

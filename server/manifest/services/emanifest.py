@@ -1,11 +1,9 @@
 import logging
 from datetime import datetime
-from typing import List, Literal, NotRequired, Optional, TypedDict
+from typing import TYPE_CHECKING, List, Literal, NotRequired, Optional, TypedDict
 
 from core.services import RcraClient, get_rcra_client
 from django.db import transaction
-from django.db.models import QuerySet
-from emanifest import RcrainfoResponse
 from requests import RequestException
 
 from manifest.models import Manifest, QuickerSign
@@ -13,11 +11,15 @@ from manifest.serializers import ManifestSerializer, QuickerSignSerializer
 from manifest.services.emanifest_search import EmanifestSearch
 from manifest.tasks import pull_manifest, sign_manifest
 
+if TYPE_CHECKING:
+    from django.db.models import QuerySet
+    from emanifest import RcrainfoResponse
+
 logger = logging.getLogger(__name__)
 
 
 class QuickerSignData(TypedDict):
-    """Type definition for the data required to sign a manifest"""
+    """Type definition for the data required to sign a manifest."""
 
     mtn: list[str]
     site_id: str
@@ -28,7 +30,7 @@ class QuickerSignData(TypedDict):
 
 
 class SearchManifestData(TypedDict, total=False):
-    """Type definition for the data required to search for manifests"""
+    """Type definition for the data required to search for manifests."""
 
     site_id: str | None
     start_date: datetime | None
@@ -40,21 +42,21 @@ class SearchManifestData(TypedDict, total=False):
 
 
 class TaskResponse(TypedDict):
-    """Type definition for the response returned from starting a task"""
+    """Type definition for the response returned from starting a task."""
 
     taskId: str
 
 
 class EManifestError(Exception):
-    """Base class for EManifest exceptions"""
+    """Base class for EManifest exceptions."""
 
-    def __init__(self, message: str = None, *args):
+    def __init__(self, message: str | None = None, *args):
         self.message = message
         super().__init__(*args)
 
 
 class PullManifestsResult(TypedDict):
-    """Type definition for the results returned from pulling manifests from RCRAInfo"""
+    """Type definition for the results returned from pulling manifests from RCRAInfo."""
 
     success: list[str]
     error: list[str]
@@ -69,11 +71,11 @@ class EManifest:
 
     @property
     def is_available(self) -> bool:
-        """Check if e-Manifest is available"""
+        """Check if e-Manifest is available."""
         return self.rcrainfo.has_rcrainfo_credentials
 
     def pull(self, tracking_numbers: list[str]) -> PullManifestsResult:
-        """Retrieve manifests from e-Manifest and save to database"""
+        """Retrieve manifests from e-Manifest and save to database."""
         results: PullManifestsResult = {"success": [], "error": []}
         logger.info(f"pulling manifests {tracking_numbers}")
         for mtn in tracking_numbers:
@@ -112,7 +114,7 @@ class EManifest:
         return results
 
     def save(self, manifest: dict) -> dict:
-        """Save manifest to e-Manifest"""
+        """Save manifest to e-Manifest."""
         logger.info(f"start save manifest to rcrainfo with arguments {manifest}")
         create_resp: RcrainfoResponse = self.rcrainfo.save_manifest(manifest)
         try:
@@ -125,10 +127,11 @@ class EManifest:
                 return create_resp.json()
             raise EManifestError(message=f"error creating manifest: {create_resp.json()}")
         except KeyError:
-            logger.error(
+            logger.exception(
                 f"error retrieving manifestTrackingNumber from response: {create_resp.json()}",
             )
-            raise EManifestError("malformed payload")
+            msg = "malformed payload"
+            raise EManifestError(msg)
 
     @staticmethod
     def _filter_mtn(
@@ -143,7 +146,7 @@ class EManifest:
         return [manifest.mtn for manifest in filtered_mtn]
 
     def _retrieve_manifest(self, mtn: str):
-        """Retrieve a manifest from RCRAInfo"""
+        """Retrieve a manifest from RCRAInfo."""
         logger.info(f"retrieving manifest from RCRAInfo {mtn}")
         response = self.rcrainfo.get_manifest(mtn)
         if response.ok:
@@ -154,7 +157,7 @@ class EManifest:
 
     @transaction.atomic
     def _save_manifest_json_to_db(self, manifest_json: dict) -> Manifest:
-        """Save manifest to Haztrak database"""
+        """Save manifest to Haztrak database."""
         logger.info("saving manifest to DB")
         manifest_query: QuerySet = Manifest.objects.filter(
             mtn=manifest_json["manifestTrackingNumber"],
@@ -171,7 +174,7 @@ class EManifest:
 
 
 def get_updated_mtn(site_id: str, last_sync_date: datetime, rcra_client) -> list[str]:
-    """Use the last sync date for a site to get a list of updated MTNs from RCRAInfo"""
+    """Use the last sync date for a site to get a list of updated MTNs from RCRAInfo."""
     logger.info(f"retrieving updated MTN for site {site_id}")
     response = (
         EmanifestSearch(rcra_client)
@@ -193,7 +196,7 @@ def sync_manifests(
     last_sync_date: datetime,
     rcra_client: RcraClient,
 ) -> PullManifestsResult:
-    """Pull manifests and update the last sync date for a site"""
+    """Pull manifests and update the last sync date for a site."""
     updated_mtn = get_updated_mtn(
         site_id=site_id,
         last_sync_date=last_sync_date,

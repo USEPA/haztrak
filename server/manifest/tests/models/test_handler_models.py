@@ -5,10 +5,10 @@ from manifest.models import Handler
 
 @pytest.mark.django_db
 class TestHandlerModel:
-    """Test related to the Manifest Handler model and its API"""
+    """Test related to the Manifest Handler model and its API."""
 
     def test_manifest_handler_saves(self, manifest_handler_factory) -> None:
-        """Simply check the model saves given our factory's defaults"""
+        """Simply check the model saves given our factory's defaults."""
         assert type(manifest_handler_factory()) is Handler
 
     def test_is_signed_with_both_signatures_types(

@@ -18,18 +18,18 @@ class RcraSiteType(models.TextChoices):
 
 
 class RcraSiteManager(models.Manager):
-    """RcraSite Model database querying interface"""
+    """RcraSite Model database querying interface."""
 
     def __init__(self):
         self.handler_data = None
         super().__init__()
 
     def get_by_epa_id(self, epa_id: str) -> "RcraSite":
-        """Return an RcraSite object by its epa_id"""
+        """Return an RcraSite object by its epa_id."""
         return self.get(epa_id__iexact=epa_id)
 
     def save(self, instance: Optional["RcraSite"], **handler_data) -> "RcraSite":
-        """Create an RcraSite and its related fields
+        """Create an RcraSite and its related fields.
 
         Keyword Args:
             contact (dict): Contact data in (ordered)dict format
@@ -60,7 +60,7 @@ class RcraSiteManager(models.Manager):
             logger.warning(f"error while creating {self.model.__class__.__name__}{exc}")
 
     def get_emergency_phone(self) -> RcraPhone | None:
-        """Check if emergency phone is present and create an RcraPhone row"""
+        """Check if emergency phone is present and create an RcraPhone row."""
         try:
             emergency_phone_data = self.handler_data.pop("emergency_phone")
             if emergency_phone_data is not None:
@@ -70,26 +70,19 @@ class RcraSiteManager(models.Manager):
             return None
 
     def get_address(self, key) -> Address:
-        """Remove Address data and create if necessary"""
+        """Remove Address data and create if necessary."""
         try:
             address = self.handler_data.pop(key)
             if isinstance(address, Address):
                 return address
-            return Address.objects.create(**address)
+            return Address.objects.create(**address)  # type: ignore
         except KeyError as exc:
             logger.warning(exc)
-            raise ValidationError(exc)
+            raise ValidationError(exc) from exc
 
 
 class RcraSite(models.Model):
-    """RCRAInfo Site model (see 'Handler' which wraps this model with manifest specific data)"""
-
-    class Meta:
-        verbose_name = "RCRAInfo Site"
-        verbose_name_plural = "RCRAInfo Sites"
-        ordering = ["epa_id"]
-
-    objects = RcraSiteManager()
+    """RCRAInfo Site model (see 'Handler' which wraps this model with manifest specific data)."""
 
     site_type = models.CharField(
         max_length=20,
@@ -157,11 +150,23 @@ class RcraSite(models.Model):
         default=False,
     )
 
+    objects = RcraSiteManager()
+
+    class Meta:
+        """Metaclass."""
+
+        verbose_name = "RCRAInfo Site"
+        verbose_name_plural = "RCRAInfo Sites"
+        ordering = ["epa_id"]
+
     def __str__(self):
+        """Human-readable representation."""
         return f"{self.epa_id}"
 
 
 class Role(models.TextChoices):
+    """Possible roles for a user."""
+
     INDUSTRY = "IN", _("Industry")
     PPC = "PP", _("Ppc")
     EPA = "EP", _("Epa")

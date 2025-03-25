@@ -23,7 +23,7 @@ class TestHandlerService:
         assert rcrainfo  # should return true
 
     def test_pulls_site_details_from_rcrainfo(self, mock_responses):
-        """Test pulling a rcra_site's information from rcrainfo"""
+        """Test pulling a rcra_site's information from rcrainfo."""
         # Arrange
         rcrainfo = RcraClient(auto_renew=False)
         handler_service = RcraSiteService(username=self.user.username, rcrainfo=rcrainfo)

@@ -14,12 +14,13 @@ logger = logging.getLogger(__name__)
 
 @transaction.atomic
 def update_manifest(*, username: str, mtn: str, data: dict) -> Manifest:
-    """Update a manifest in the Haztrak database"""
+    """Update a manifest in the Haztrak database."""
     try:
         original_manifest = Manifest.objects.get(mtn=mtn)
         return Manifest.objects.save(original_manifest, **data)
     except Manifest.DoesNotExist:
-        raise EManifestError(f"manifest {mtn} does not exist")
+        msg = f"manifest {mtn} does not exist"
+        raise EManifestError(msg)
 
 
 def get_manifests(
@@ -28,7 +29,7 @@ def get_manifests(
     epa_id: str | None = None,
     site_type: Literal["Generator", "Tsdf", "Transporter"] | None = None,
 ) -> QuerySet[Manifest]:
-    """Get a list of manifest tracking numbers and select details for a users site"""
+    """Get a list of manifest tracking numbers and select details for a users site."""
     sites: QuerySet[Site] = Site.objects.filter_by_username(username).values("rcra_site__epa_id")
     if epa_id:
         sites = sites.filter(rcra_site__epa_id__iexact=epa_id)
@@ -42,15 +43,16 @@ def get_manifests(
 
 
 def save_emanifest(*, data: dict, username: str) -> TaskResponse:
-    """Save a manifest to e-Manifest/RCRAInfo"""
+    """Save a manifest to e-Manifest/RCRAInfo."""
     emanifest = EManifest(username=username)
     if emanifest.is_available:
         task = save_to_emanifest_task.delay(manifest_data=data, username=username)
         return TaskResponse(taskId=task.id)
-    raise EManifestError("e-Manifest is not available")
+    msg = "e-Manifest is not available"
+    raise EManifestError(msg)
 
 
 @transaction.atomic
 def create_manifest(*, username: str, data: dict) -> Manifest:
-    """Save a manifest to Haztrak database and/or e-Manifest/RCRAInfo"""
+    """Save a manifest to Haztrak database and/or e-Manifest/RCRAInfo."""
     return Manifest.objects.save(None, **data)

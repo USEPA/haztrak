@@ -20,8 +20,7 @@ class TestProfileViewSet:
     @pytest.fixture
     def profile(self, db, profile_factory, user_factory):
         user = user_factory(username="testuser", password="password")
-        user_profile = profile_factory(user=user)
-        return user_profile
+        return profile_factory(user=user)
 
     @pytest.fixture
     def generate_photo_file(self):
@@ -195,7 +194,7 @@ class TestProfileDetailsView:
         profile_factory(user=user)
         response = ProfileDetailsView.as_view()(request)
         assert response.status_code == status.HTTP_200_OK
-        assert "user" in response.data.keys()
+        assert "user" in response.data
 
     def test_returns_401_when_unauthenticated(self, profile_factory, user_factory):
         user = user_factory()

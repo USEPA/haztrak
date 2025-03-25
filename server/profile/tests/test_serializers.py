@@ -60,7 +60,7 @@ class TestRcrainfoSitePermissionSerializer:
     ) -> None:
         if not epa_permission_serializer.is_valid():
             # if something is wrong with the serializer fixture, fail
-            assert False
+            raise AssertionError
         rcrainfo_site_access = RcrainfoSiteAccess.objects.create(
             **epa_permission_serializer.validated_data,
             profile=rcrainfo_profile_factory(),

@@ -14,7 +14,7 @@ class LocalityField(serializers.ChoiceField):
     {
       "code": "TX",
       "name": "Texas"
-    }
+    }.
     """
 
     def to_representation(self, obj):
@@ -24,11 +24,12 @@ class LocalityField(serializers.ChoiceField):
         try:
             return data["code"]
         except KeyError:
-            raise ValidationError(f'"code" field is required, provided: {data}')
+            msg = f'"code" field is required, provided: {data}'
+            raise ValidationError(msg)
 
 
 class AddressSerializer(SitesBaseSerializer):
-    """Address model serializer for JSON representation"""
+    """Address model serializer for JSON representation."""
 
     streetNumber = serializers.CharField(
         source="street_number",

@@ -17,7 +17,7 @@ from .models import TrakUser
 class HiddenListView(admin.ModelAdmin):
     """For instances where we want the Admin to be able to edit/add/delete in place model instances
     for models used by this ModelAdmin,
-    but having a list view offer's not and just clutters the admin side navigation
+    but having a list view offer's not and just clutters the admin side navigation.
     """
 
     def has_module_permission(self, request):
@@ -49,7 +49,7 @@ class RcraProfileAdmin(admin.ModelAdmin):
     inlines = [RcraSitePermissionInline]
 
     def get_model_perms(self, request):
-        """Hide from the Side Navigation"""
+        """Hide from the Side Navigation."""
         return {}
 
     def related_user(self, user):

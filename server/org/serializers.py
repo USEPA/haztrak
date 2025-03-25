@@ -6,7 +6,7 @@ from org.models import Org, Site
 
 
 class OrgSerializer(ModelSerializer):
-    """Haztrak Organization Model Serializer"""
+    """Haztrak Organization Model Serializer."""
 
     id = serializers.CharField(
         required=False,
@@ -33,7 +33,7 @@ class OrgSerializer(ModelSerializer):
 
 
 class SiteSerializer(ModelSerializer):
-    """Haztrak Site model serializer for JSON marshalling/unmarshalling"""
+    """Haztrak Site model serializer for JSON marshalling/unmarshalling."""
 
     name = serializers.CharField(
         required=False,

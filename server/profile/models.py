@@ -18,7 +18,7 @@ class ProfileManager(models.QuerySet):
 
 class Profile(models.Model):
     """User information outside the scope of the User model.
-    Contains a one-to-one relationship with the User model
+    Contains a one-to-one relationship with the User model.
     """
 
     objects = ProfileManager.as_manager()
@@ -104,12 +104,12 @@ class RcrainfoProfile(models.Model):
 
     @property
     def has_rcrainfo_api_id_key(self) -> bool:
-        """Returns true if the use has Rcrainfo API credentials"""
+        """Returns true if the use has Rcrainfo API credentials."""
         return self.rcra_api_id is not None and self.rcra_api_key is not None
 
 
 class RcrainfoSiteAccess(models.Model):
-    """Permissions a user has in their RCRAInfo account"""
+    """Permissions a user has in their RCRAInfo account."""
 
     CERTIFIER = "Certifier"
     PREPARER = "Preparer"
@@ -166,6 +166,7 @@ class RcrainfoSiteAccess(models.Model):
             fields = ["annual_report", "biennial_report", "e_manifest", "my_rcra_id", "wiets"]
             for field_name in fields:
                 if getattr(self, field_name) != "Certifier":
+                    msg = f"If Site Manager, '{field_name}' field must be set to 'Certifier'."
                     raise ValidationError(
-                        f"If Site Manager, '{field_name}' field must be set to 'Certifier'.",
+                        msg,
                     )

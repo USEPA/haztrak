@@ -8,7 +8,7 @@ from faker import Faker
 
 @pytest.fixture
 def rcrainfo_site_access_factory(db, rcra_site_factory, rcrainfo_profile_factory):
-    """Abstract factory for crating model representing user's access to a site in RCRAInfo"""
+    """Abstract factory for crating model representing user's access to a site in RCRAInfo."""
 
     def create_permission(
         site: str | None = None,

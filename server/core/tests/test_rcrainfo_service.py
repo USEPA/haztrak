@@ -10,7 +10,7 @@ from core.services import RcraClient, get_rcra_client
 
 
 class TestRcrainfoService:
-    """Tests the for the RcraClient class"""
+    """Tests the for the RcraClient class."""
 
     def test_inits_to_correct_environment(self):
         rcrainfo = RcraClient(rcrainfo_env="preprod")
@@ -75,7 +75,7 @@ class TestRcrainfoService:
 
 
 class TestQuickerSign:
-    """Test Suite for the RCRAInfo Quicker Sign feature"""
+    """Test Suite for the RCRAInfo Quicker Sign feature."""
 
     mtn = ["123456789ELC", "987654321ELC"]
     printed_name = "David Graham"
@@ -92,7 +92,7 @@ class TestQuickerSign:
         quicker_sign_response_factory,
     ):
         """Test that our sign_manifest method maps arguments to a JSON representation
-        that's recognized by RCRAInfo
+        that's recognized by RCRAInfo.
         """
         testuser1 = user_factory()
         rcra_profile = rcrainfo_profile_factory()

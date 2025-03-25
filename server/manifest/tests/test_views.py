@@ -10,7 +10,7 @@ from manifest.views import ElectronicManifestSignView, ManifestViewSet, MtnListV
 
 
 class TestManifestCRUD:
-    """Tests the for the Manifest views"""
+    """Tests the for the Manifest views."""
 
     @pytest.fixture
     def factory(self):
@@ -40,7 +40,7 @@ class TestManifestCRUD:
 
 
 class TestSignManifestVIew:
-    """Quicker Sign endpoint test suite"""
+    """Quicker Sign endpoint test suite."""
 
     factory = APIRequestFactory()
     mtn = ["123456789ELC", "987654321ELC"]

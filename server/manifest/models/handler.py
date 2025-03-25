@@ -1,5 +1,7 @@
+"""Model definitions for entities listed as handlers of hazardous waste on the manifest."""
+
 import logging
-from typing import Dict, Optional
+from typing import Optional
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -12,9 +14,10 @@ logger = logging.getLogger(__name__)
 
 
 class HandlerManager(models.Manager):
-    """model manager and query interface for Handler model."""
+    """model manager and query interface for a Handler model."""
 
     def save(self, instance: Optional["Handler"], **handler_data) -> "Handler":
+        """Save the handler instance to the database."""
         paper_signature = handler_data.pop("paper_signature", None)
         e_signatures = handler_data.pop("e_signatures", [])
         if paper_signature is not None:
@@ -34,28 +37,27 @@ class HandlerManager(models.Manager):
                 paper_signature=paper_signature,
                 **handler_data,
             )
-            logger.debug(f"Handler created {manifest_handler}")
+            msg = f"Handler created {manifest_handler}"
+            logger.debug(msg)
             for e_signature_data in e_signatures:
                 e_sig = ESignature.objects.save(
                     manifest_handler=manifest_handler,
                     **e_signature_data,
                 )
-                logger.debug(f"ESignature created {e_sig}")
+                msg = f"ESignature created {e_sig}"
+                logger.debug(msg)
             return manifest_handler
         except KeyError as exc:
-            raise ValidationError(f"KeyError while creating rcra_site {exc}")
+            msg = f"KeyError while creating rcra_site {exc}"
+            raise ValidationError(msg) from exc
         except ValidationError as exc:
-            logger.warning(f"ValidationError while creating rcra_site {exc}")
-            raise exc
+            msg = f"ValidationError while creating rcra_site {exc}"
+            logger.warning(msg)
+            raise
 
 
 class Handler(models.Model):
     """Handler corresponds to a RCRAInfo site that is listed on a manifest."""
-
-    class Meta:
-        ordering = ["rcra_site"]
-
-    objects = HandlerManager()
 
     rcra_site = models.ForeignKey(
         "rcrasite.RcraSite",
@@ -77,9 +79,20 @@ class Handler(models.Model):
         help_text="The signature associated with hazardous waste custody exchange",
     )
 
+    objects = HandlerManager()
+
+    class Meta:
+        """Metaclass."""
+
+        ordering = ["rcra_site"]
+
+    def __str__(self):
+        """Human-readable representation."""
+        return f"{self.rcra_site.epa_id}"
+
     @property
     def signed(self) -> bool:
-        """Returns True if one of the signature types is present"""
+        """Returns True if one of the signature types is present."""
         e_signature_exists = ESignature.objects.filter(
             manifest_handler=self,
             sign_date__isnull=False,
@@ -87,15 +100,12 @@ class Handler(models.Model):
         paper_signature_exists = self.paper_signature is not None
         return paper_signature_exists or e_signature_exists
 
-    def __str__(self):
-        return f"{self.rcra_site.epa_id}"
-
 
 class TransporterManager(HandlerManager):
-    """Transporter Model database querying interface"""
+    """Transporter Model database querying interface."""
 
-    def save(self, instance: Optional["Transporter"], **data: dict) -> "Transporter":
-        """Create a Transporter from a manifest instance and rcra_site dict"""
+    def save(self, instance: Optional["Transporter"], **data: dict) -> "Transporter | None":
+        """Create a Transporter from a manifest instance and rcra_site dict."""
         e_signatures = data.pop("e_signatures", [])
         if data.get("paper_signature") is not None:
             data["paper_signature"] = PaperSignature.objects.create(**data.pop("paper_signature"))
@@ -112,25 +122,25 @@ class TransporterManager(HandlerManager):
                 rcra_site=rcra_site,
                 defaults=data,
             )
-            logger.debug(f"Handler created {transporter}")
+            msg = f"Handler created {transporter}"
+            logger.debug(msg)
             for e_signature_data in e_signatures:
                 e_sig = ESignature.objects.save(manifest_handler=transporter, **e_signature_data)
-                logger.debug(f"ESignature created {e_sig}")
-            return transporter
+                msg = f"ESignature created {e_sig}"
+                logger.debug(msg)
         except KeyError as exc:
-            logger.warning(f"KeyError while creating rcra_site {exc}")
+            msg = f"KeyError while creating rcra_site {exc}"
+            logger.warning(msg)
         except ValidationError as exc:
-            logger.warning(f"ValidationError while creating rcra_site {exc}")
-            raise exc
+            msg = f"ValidationError while creating rcra_site {exc}"
+            logger.warning(msg)
+            raise
+        else:
+            return transporter
 
 
 class Transporter(Handler):
     """Model definition for entities listed as transporters of hazardous waste on the manifest."""
-
-    class Meta:
-        ordering = ["manifest__mtn"]
-
-    objects = TransporterManager()
 
     manifest = models.ForeignKey(
         "manifest.Manifest",
@@ -139,5 +149,13 @@ class Transporter(Handler):
     )
     order = models.PositiveIntegerField()
 
+    objects = TransporterManager()
+
+    class Meta:
+        """Metaclass."""
+
+        ordering = ["manifest__mtn"]
+
     def __str__(self):
+        """Human-readable representation."""
         return f"{self.rcra_site.epa_id}"

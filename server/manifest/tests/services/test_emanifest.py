@@ -30,7 +30,7 @@ class TestEManifestService:
         manifest_100033134elc_rcra_response,
         mocker: pytest_mock.MockerFixture,
     ):
-        """Test retrieves a manifest from RCRAInfo"""
+        """Test retrieves a manifest from RCRAInfo."""
         rcrainfo = RcraClient(auto_renew=False)
         emanifest = EManifest(username=self.user.username, rcrainfo=rcrainfo)
         results = emanifest.pull(tracking_numbers=[self.tracking_number])

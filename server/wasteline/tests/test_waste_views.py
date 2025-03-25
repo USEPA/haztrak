@@ -1,6 +1,7 @@
+from typing import TYPE_CHECKING
+
 import pytest
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
 
@@ -13,9 +14,12 @@ from wasteline.views import (
     StateWasteCodesView,
 )
 
+if TYPE_CHECKING:
+    from rest_framework.response import Response
+
 
 class TestWasteCodeLookupViews:
-    """Tests the for the Waste Code views"""
+    """Tests the for the Waste Code views."""
 
     @pytest.fixture
     def factory(self):
@@ -79,7 +83,7 @@ class TestWasteCodeLookupViews:
 
 
 class TestDOTLookupViews:
-    """Tests the for the Waste Code views"""
+    """Tests the for the Waste Code views."""
 
     @pytest.fixture
     def factory(self):

@@ -21,7 +21,7 @@ from manifest.models import (
 
 @pytest.fixture
 def manifest_handler_factory(db, rcra_site_factory, paper_signature_factory):
-    """Abstract factory for Haztrak Handler model"""
+    """Abstract factory for Haztrak Handler model."""
 
     def create_manifest_handler(
         rcra_site: RcraSite | None = None,
@@ -37,7 +37,7 @@ def manifest_handler_factory(db, rcra_site_factory, paper_signature_factory):
 
 @pytest.fixture
 def manifest_transporter_factory(db, rcra_site_factory, paper_signature_factory):
-    """Abstract factory for Haztrak Handler model"""
+    """Abstract factory for Haztrak Handler model."""
 
     def create_manifest_handler(
         rcra_site: RcraSite | None = None,
@@ -57,7 +57,7 @@ def manifest_transporter_factory(db, rcra_site_factory, paper_signature_factory)
 
 @pytest.fixture
 def paper_signature_factory(db, faker: Faker):
-    """Abstract factory for Paper Signature"""
+    """Abstract factory for Paper Signature."""
 
     def create_signature(
         printed_name: str | None = None,
@@ -73,7 +73,7 @@ def paper_signature_factory(db, faker: Faker):
 
 @pytest.fixture
 def e_signature_factory(db, signer_factory, manifest_handler_factory, faker: Faker):
-    """Abstract factory for Haztrak Handler model"""
+    """Abstract factory for Haztrak Handler model."""
 
     def create_e_signature(
         signer: Signer | None = None,
@@ -93,7 +93,7 @@ def e_signature_factory(db, signer_factory, manifest_handler_factory, faker: Fak
 
 @pytest.fixture
 def signer_factory(db, faker: Faker):
-    """Abstract factory for Haztrak Signer model"""
+    """Abstract factory for Haztrak Signer model."""
 
     def creat_signer(
         first_name: str | None = None,
@@ -129,7 +129,7 @@ class MtnProvider(BaseProvider):
 
 @pytest.fixture
 def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
-    """Abstract factory for hazardous waste Manifest model"""
+    """Abstract factory for hazardous waste Manifest model."""
 
     def create_manifest(
         mtn: str | None = None,

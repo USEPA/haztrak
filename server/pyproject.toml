@@ -42,6 +42,27 @@ dependencies = [
     "pillow==11.1.0",
 ]
 
+[dependency-groups]
+dev = [
+    "celery-types==0.22.0",
+    "coverage==7.5.4",
+    "django-stubs==5.0.4",
+    "django-stubs-ext==5.0.4",
+    "djangorestframework-stubs==3.15.0",
+    "faker==26.1.0",
+    "mypy==1.15.0",
+    "mypy-extensions==1.0.0",
+    "pre-commit==4.2.0",
+    "pytest==8.3.4",
+    "pytest-cov==6.0.0",
+    "pytest-django==4.8.0",
+    "pytest-mock==3.14.0",
+    "pytest-env==1.1.5",
+    "pytest-xdist==3.6.1",
+    "responses==0.25.3",
+    "ruff==0.9.9",
+]
+
 [project.urls]
 issues = "https://github.com/USEPA/haztrak/issues"
 documentation = "https://usepa.github.io/haztrak/"
@@ -72,9 +93,24 @@ select = ["ALL"]
 ignore = [
     "ANN", # type annotations
     "FBT", # boolean trap
+    "ARG", # no unused arguments
     "CPY", # copyright notices
     "F401",
+    "COM812",
+    "E721",
+    "D107",
+    "RUF012",
+    "FIX002",
+    "DJ001"
 ]
+
+[tool.ruff.lint.per-file-ignores]
+"**/migrations/**.py" = ["D100", "D101", "D102", "D103", "E501", "RUF012"]
+"**/tests/**/*.py" = ["S101", "E501", "PLR0917", "ISC001", "D100", "D101", "D102", "PLR0913", "PLR2004"]
+"**/*serializer*.py" = ["N815"]
+"**/views.py" = ["N815"]
+"**/__init__.py" = ["D104"]
+"**/models.py" = ["COM819"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "haztrak.settings.test"
@@ -122,24 +158,3 @@ warn_no_return = true
 [tool.django-stubs]
 django_settings_module = ".haztrak.settings.test"
 strict_settings = false
-
-[dependency-groups]
-dev = [
-    "celery-types==0.22.0",
-    "coverage==7.5.4",
-    "django-stubs==5.0.4",
-    "django-stubs-ext==5.0.4",
-    "djangorestframework-stubs==3.15.0",
-    "faker==26.1.0",
-    "mypy==1.15.0",
-    "mypy-extensions==1.0.0",
-    "pre-commit==4.2.0",
-    "pytest==8.3.4",
-    "pytest-cov==6.0.0",
-    "pytest-django==4.8.0",
-    "pytest-mock==3.14.0",
-    "pytest-env==1.1.5",
-    "pytest-xdist==3.6.1",
-    "responses==0.25.3",
-    "ruff==0.9.9",
-]

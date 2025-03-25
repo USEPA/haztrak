@@ -1,17 +1,25 @@
+"""Serializers for the WasteLine model."""
+
+from typing import ClassVar
+
 from rest_framework import serializers
 
 from wasteline.models import DotLookup, WasteCode, WasteLine
 
 
 class WasteBaseSerializer(serializers.ModelSerializer):
+    """Base WasteLine model serializer for interfacing with RCRAInfo."""
+
     def __str__(self):
+        """Human-readable representation of the WasteBaseSerializer."""
         return f"{self.__class__.__name__}"
 
     def __repr__(self):
+        """Machine representation of the WasteBaseSerializer."""
         return f"<{self.__class__.__name__}({self.data})>"
 
     def to_representation(self, instance):
-        """Remove empty fields when serializing"""
+        """Remove empty fields when serializing."""
         data = super().to_representation(instance)
         for field in self.fields:
             try:
@@ -23,7 +31,7 @@ class WasteBaseSerializer(serializers.ModelSerializer):
 
 
 class WasteLineSerializer(WasteBaseSerializer):
-    """Waste Line model serializer for interfacing with RCRAInfo"""
+    """Waste Line model serializer for interfacing with RCRAInfo."""
 
     lineNumber = serializers.IntegerField(
         source="line_number",
@@ -65,8 +73,10 @@ class WasteLineSerializer(WasteBaseSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = WasteLine
-        fields = [
+        fields: ClassVar = [
             "lineNumber",
             "dotHazardous",
             "dotInformation",
@@ -82,23 +92,25 @@ class WasteLineSerializer(WasteBaseSerializer):
         ]
 
     def __str__(self):
+        """Human-readable representation of the WasteLine."""
         return f"{self.data}"
 
 
 class WasteCodeSerializer(serializers.ModelSerializer):
-    """Serializer for Federal and State waste codes"""
+    """Serializer for Federal and State waste codes."""
 
     class Meta:
+        """Metaclass."""
+
         model = WasteCode
-        fields = [
-            "code",
-            "description",
-        ]
+        fields: ClassVar = ["code", "description"]
 
 
 class DotOptionSerializer(serializers.ModelSerializer):
-    """Serializer for DOT options"""
+    """Serializer for DOT options."""
 
     class Meta:
+        """Metaclass."""
+
         model = DotLookup
-        fields = ["value"]
+        fields: ClassVar = ["value"]

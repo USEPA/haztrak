@@ -77,12 +77,13 @@ class RcraPermissionField(serializers.Field):
             # if 'Active' or 'InActive' is passed, convert it to True or False
             return {"Active": True, "InActive": False}.get(passed_value, passed_value)
         except KeyError as exc:
-            raise ValidationError(f"malformed JSON: {exc}")
+            msg = f"malformed JSON: {exc}"
+            raise ValidationError(msg)
 
 
 class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
     """RcraSitePermissions model serializer specifically for reading a user's site permissions
-    from RCRAInfo. It's not used for serializing, only deserializing permissions from RCRAinfo
+    from RCRAInfo. It's not used for serializing, only deserializing permissions from RCRAinfo.
     """
 
     rcrainfo_modules = [
@@ -125,7 +126,8 @@ class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
                 data[rcrainfo_module] = i
             return super().to_internal_value(data)
         except KeyError as exc:
-            raise ValidationError(f"malformed JSON: {exc}")
+            msg = f"malformed JSON: {exc}"
+            raise ValidationError(msg)
 
     class Meta:
         model = RcrainfoSiteAccess
@@ -141,7 +143,7 @@ class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    """Serializer for a user's profile"""
+    """Serializer for a user's profile."""
 
     user = TrakUserSerializer(read_only=True)
 
@@ -154,7 +156,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class RcrainfoProfileSerializer(serializers.ModelSerializer):
-    """Model serializer for marshalling/unmarshalling a user's RcrainfoProfile"""
+    """Model serializer for marshalling/unmarshalling a user's RcrainfoProfile."""
 
     user = serializers.StringRelatedField(
         source="haztrak_profile",

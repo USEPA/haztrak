@@ -7,7 +7,7 @@ from rcrasite.models import RcraSiteType
 
 @pytest.fixture
 def quicker_sign_response_factory(faker: Faker):
-    """Factory for creating dynamic quicker sign response data"""
+    """Factory for creating dynamic quicker sign response data."""
 
     def create_quicker_sign(
         mtn: list[str],

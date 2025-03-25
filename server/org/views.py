@@ -14,7 +14,7 @@ from org.services import (
 
 
 class OrgDetailsView(RetrieveAPIView):
-    """Retrieve details for a given Org"""
+    """Retrieve details for a given Org."""
 
     serializer_class = OrgSerializer
     queryset = Org.objects.all()

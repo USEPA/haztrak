@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 @shared_task(name="pull manifest", bind=True, acks_late=True)
 def pull_manifest(self: Task, *, mtn: list[str], username: str) -> dict:
-    """This task initiates a call to the EManifest to pull a manifest by MTN"""
+    """This task initiates a call to the EManifest to pull a manifest by MTN."""
     from core.services import TaskService
 
     from manifest.services import EManifest
@@ -24,11 +24,11 @@ def pull_manifest(self: Task, *, mtn: list[str], username: str) -> dict:
         return results
     except (ConnectionError, TimeoutError):
         task_status.update_task_status(status="FAILURE")
-        raise Reject()
+        raise Reject
     except Exception as exc:
         task_status.update_task_status(status="FAILURE")
         self.update_state(state=states.FAILURE, meta={"unknown error": str(exc)})
-        raise Ignore()
+        raise Ignore
 
 
 @shared_task(name="sign manifests", bind=True, acks_late=True)
@@ -38,7 +38,7 @@ def sign_manifest(
     username: str,
     **signature_data: dict,
 ) -> dict:
-    """A task to Quicker Sign manifest, by MTN, in RCRAInfo"""
+    """A task to Quicker Sign manifest, by MTN, in RCRAInfo."""
     from manifest.services import EManifest
 
     try:
@@ -48,12 +48,12 @@ def sign_manifest(
         raise Reject(exc)  # To Do: add retry logic
     except Exception as exc:
         self.update_state(state=states.FAILURE, meta={"unknown error": f"{exc}"})
-        raise Ignore()
+        raise Ignore
 
 
 @shared_task(name="sync site manifests", bind=True)
 def sync_site_manifests(self, *, site_id: str, username: str):
-    """Asynchronous task to sync an EPA site's manifests"""
+    """Asynchronous task to sync an EPA site's manifests."""
     from org.services import get_user_site, update_emanifest_sync_date
 
     from manifest.services.emanifest import sync_manifests
@@ -69,16 +69,16 @@ def sync_site_manifests(self, *, site_id: str, username: str):
         update_emanifest_sync_date(site=site)
         return results
     except Exception as exc:
-        logger.error(f"failed to sync {site_id} manifest")
+        logger.exception(f"failed to sync {site_id} manifest")
         self.update_state(state=states.FAILURE, meta={f"error: {exc}"})
-        raise Ignore()
+        raise Ignore
 
 
 @shared_task(name="save RCRAInfo manifests", bind=True)
 def save_to_emanifest(self, *, manifest_data: dict, username: str):
     """Asynchronous task to use the RCRAInfo web services to create an electronic (RCRA) manifest
     it accepts a Python dict of the manifest data to be submitted as JSON, and the username of the
-    user who is creating the manifest
+    user who is creating the manifest.
     """
     from core.services import TaskService
 
@@ -92,12 +92,13 @@ def save_to_emanifest(self, *, manifest_data: dict, username: str):
         if new_manifest:
             task_status.update_task_status(status="SUCCESS", results=new_manifest)
             return new_manifest
-        raise EManifestError("error creating manifest")
+        msg = "error creating manifest"
+        raise EManifestError(msg)
     except EManifestError as exc:
-        logger.error(f"failed to create manifest ({manifest_data}): {exc.message}")
+        logger.exception(f"failed to create manifest ({manifest_data}): {exc.message}")
         task_status.update_task_status(status="FAILURE", results=exc.message)
         return {"error": exc.message}
     except Exception as exc:
-        logger.error("error: ", exc)
+        logger.exception("error: ", exc)
         task_status.update_task_status(status="FAILURE", results={"result": str(exc)})
         return {"error": f"Internal Error: {exc}"}

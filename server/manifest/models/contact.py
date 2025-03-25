@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class ManifestPhoneNumber(models.CharField):
-    """RCRAInfo's representation of a phone"""
+    """RCRAInfo's representation of a phone."""
 
     def validate(self, value, model_instance):
         if not match(r"^\d{3}-\d{3}-\d{4}$", value):
@@ -17,7 +17,7 @@ class ManifestPhoneNumber(models.CharField):
 
 
 class ManifestPhone(models.Model):
-    """RCRAInfo representation of phone numbers on a manifest"""
+    """RCRAInfo representation of phone numbers on a manifest."""
 
     class Meta:
         ordering = ["number"]

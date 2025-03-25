@@ -67,7 +67,7 @@ class TestSiteListView:
 
 
 class TestSiteDetailsApi:
-    """Tests the site details endpoint"""
+    """Tests the site details endpoint."""
 
     @pytest.fixture
     def setup_user_site_perm(self, user_factory, site_factory, perm_factory):

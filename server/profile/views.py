@@ -1,9 +1,9 @@
 from profile.models import Profile, RcrainfoProfile
 from profile.serializers import ProfileSerializer, RcrainfoProfileSerializer
 from profile.services import get_user_profile
+from typing import TYPE_CHECKING
 
 from celery.exceptions import CeleryError
-from celery.result import AsyncResult as CeleryTask
 from rcrasite.tasks import sync_user_rcrainfo_sites
 from rest_framework import status
 from rest_framework.generics import (
@@ -17,9 +17,12 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+if TYPE_CHECKING:
+    from celery.result import AsyncResult as CeleryTask
+
 
 class ProfileViewSet(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
-    """ViewSet for the Profile model"""
+    """ViewSet for the Profile model."""
 
     lookup_field = "user__id"
     lookup_url_kwarg = "user_id"
@@ -30,14 +33,15 @@ class ProfileViewSet(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
 
 
 class ProfileDetailsView(RetrieveAPIView):
-    """Displays a user's HaztrakProfile"""
+    """Displays a user's HaztrakProfile."""
 
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
     def get_object(self):
         if self.request.user.is_anonymous:
-            raise PermissionError("You must be logged in to view this page")
+            msg = "You must be logged in to view this page"
+            raise PermissionError(msg)
         return get_user_profile(user=self.request.user)
 
 

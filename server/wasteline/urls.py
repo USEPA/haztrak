@@ -1,6 +1,8 @@
+"""URLs for the wasteline app."""
+
 from django.urls import include, path
 
-from wasteline.views import (  # type: ignore
+from wasteline.views import (
     DotHazardClassView,
     DotIdNumberView,
     DotShippingNameView,

@@ -1,3 +1,5 @@
+"""Views for the rcrasite app."""
+
 import logging
 
 from django.core.exceptions import ValidationError
@@ -21,7 +23,7 @@ logger = logging.getLogger(__name__)
     description="Retrieve details on a rcra_site stored in the Haztrak database",
 )
 class RcraSiteDetailsView(RetrieveAPIView):
-    """Retrieve details on a RCRAInfo Site known to haztrak by their EPA ID number"""
+    """Retrieve details on a RCRAInfo Site known to haztrak by their EPA ID number."""
 
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
@@ -29,15 +31,17 @@ class RcraSiteDetailsView(RetrieveAPIView):
 
     @method_decorator(cache_page(60 * 15))
     def get(self, request, *args, **kwargs):
+        """Retrieve a site by their EPA ID."""
         return super().get(request, *args, **kwargs)
 
     def get_object(self):
+        """Get the site by their EPA ID."""
         try:
             return RcraSite.objects.get_by_epa_id(self.kwargs[self.lookup_url_kwarg])
-        except KeyError:
+        except KeyError as exc:
             raise ValidationError(
                 {"detail": "The EPA ID parameter is required to retrieve a site"},
-            )
+            ) from exc
 
 
 @extend_schema(
@@ -52,12 +56,13 @@ class RcraSiteDetailsView(RetrieveAPIView):
     ),
 )
 class RcraSiteSearchView(APIView):
-    """Search for locally saved hazardous waste sites ("Generators", "Transporters", "TSDF")"""
+    """Search for locally saved hazardous waste sites ("Generators", "Transporters", "TSDF")."""
 
     queryset = RcraSite.objects.all()
     serializer_class = RcraSiteSerializer
 
     def get(self, request, *args, **kwargs):
+        """Search for hazardous waste sites."""
         query_params = request.query_params
         serializer = RcraSiteSearchSerializer(data=query_params)
         serializer.is_valid(raise_exception=True)
@@ -95,6 +100,8 @@ class HandlerSearchView(APIView):
     """Search and return a list of Hazardous waste handlers from RCRAInfo."""
 
     class HandlerSearchSerializer(serializers.Serializer):
+        """Serializer for the HandlerSearchView."""
+
         siteId = serializers.CharField(
             required=True,
             min_length=2,
@@ -110,6 +117,7 @@ class HandlerSearchView(APIView):
         )
 
     def post(self, request: Request) -> Response:
+        """Search for handlers by siteId and site."""
         serializer = self.HandlerSearchSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         sites = RcraSiteService(username=request.user.username)
