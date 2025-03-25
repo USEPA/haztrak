@@ -46,6 +46,8 @@ class AddressSerializer(SitesBaseSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = Address
         fields = [
             "streetNumber",

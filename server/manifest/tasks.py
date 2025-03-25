@@ -3,6 +3,7 @@ from typing import Dict, List
 
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
+
 from core.services import get_rcra_client
 
 logger = logging.getLogger(__name__)
@@ -12,7 +13,6 @@ logger = logging.getLogger(__name__)
 def pull_manifest(self: Task, *, mtn: list[str], username: str) -> dict:
     """This task initiates a call to the EManifest to pull a manifest by MTN."""
     from core.services import TaskService
-
     from manifest.services import EManifest
 
     logger.info(f"start task {self.name}, manifest {mtn}")
@@ -54,9 +54,8 @@ def sign_manifest(
 @shared_task(name="sync site manifests", bind=True)
 def sync_site_manifests(self, *, site_id: str, username: str):
     """Asynchronous task to sync an EPA site's manifests."""
-    from org.services import get_user_site, update_emanifest_sync_date
-
     from manifest.services.emanifest import sync_manifests
+    from org.services import get_user_site, update_emanifest_sync_date
 
     try:
         client = get_rcra_client(username=username)
@@ -81,7 +80,6 @@ def save_to_emanifest(self, *, manifest_data: dict, username: str):
     user who is creating the manifest.
     """
     from core.services import TaskService
-
     from manifest.services import EManifest, EManifestError
 
     logger.info(f"start task: {self.name}")

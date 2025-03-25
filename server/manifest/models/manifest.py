@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q, QuerySet
 from django.utils.translation import gettext_lazy as _
+
 from rcrasite.models import RcraSiteType, RcraStates
 from wasteline.models import WasteLine
 

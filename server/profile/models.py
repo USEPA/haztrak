@@ -24,6 +24,8 @@ class Profile(models.Model):
     objects = ProfileManager.as_manager()
 
     class Meta:
+        """Metaclass."""
+
         verbose_name = "Haztrak Profile"
         ordering = ["user__username"]
         default_related_name = "haztrak_profile"
@@ -70,6 +72,8 @@ class RcrainfoProfile(models.Model):
     objects = RcrainfoProfileManager()
 
     class Meta:
+        """Metaclass."""
+
         ordering = ["rcra_username"]
 
     id = models.UUIDField(
@@ -122,6 +126,8 @@ class RcrainfoSiteAccess(models.Model):
     ]
 
     class Meta:
+        """Metaclass."""
+
         verbose_name = "RCRAInfo Permission"
         verbose_name_plural = "RCRAInfo Permissions"
         ordering = ["site"]

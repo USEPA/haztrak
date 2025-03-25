@@ -1,3 +1,5 @@
+"""Core models."""
+
 import uuid
 
 from django.contrib.auth.models import AbstractUser, Group
@@ -11,6 +13,8 @@ class TrakUser(GuardianUserMixin, AbstractUser):
     """Haztrak abstract user model. It simply inherits from Django's AbstractUser model."""
 
     class Meta:
+        """Metaclass."""
+
         verbose_name = "User"
         verbose_name_plural = "Users"
         ordering = ["username"]

@@ -1,4 +1,5 @@
 import pytest
+
 from core.services import RcraClient
 from rcrasite.models import RcraSite
 from rcrasite.services import RcraSiteService

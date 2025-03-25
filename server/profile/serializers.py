@@ -1,9 +1,10 @@
 from profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 
-from core.serializers import TrakUserSerializer
-from manifest.serializers.mixins import RemoveEmptyFieldsMixin
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+
+from core.serializers import TrakUserSerializer
+from manifest.serializers.mixins import RemoveEmptyFieldsMixin
 
 
 class RcraSitePermissionSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):

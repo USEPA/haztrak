@@ -2,8 +2,9 @@
 
 from typing import Literal
 
-from core.services import RcraClient
 from emanifest import RcrainfoResponse
+
+from core.services import RcraClient
 
 SiteType = Literal["Generator", "Tsdf", "Transporter", "Broker"]
 

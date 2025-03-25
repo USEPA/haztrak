@@ -4,9 +4,10 @@ from profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 from profile.serializers import RcrainfoSitePermissionsSerializer
 from typing import TYPE_CHECKING, Optional
 
+from django.db import transaction
+
 from core.models import TrakUser
 from core.services import RcraClient, get_rcra_client
-from django.db import transaction
 from org.services import SiteServiceError
 from rcrasite.models import RcraSite
 from rcrasite.services import RcraSiteService

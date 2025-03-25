@@ -5,6 +5,7 @@ from typing import Optional
 
 from django.core.exceptions import ValidationError
 from django.db import models
+
 from rcrasite.models import RcraSite
 
 from .contact import ManifestPhone

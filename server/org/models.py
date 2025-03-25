@@ -1,6 +1,8 @@
+"""Organization and Site models."""
+
 import uuid
 from profile.models import RcrainfoProfile
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 
 from core.models import TrakUser
 from django.conf import settings
@@ -19,8 +21,9 @@ class OrgManager(models.Manager):
     """Organization Repository manager."""
 
     def get_by_username(self, username: str) -> "Org":
+        """Get the organization for a user."""
         user = TrakUser.objects.get(username=username)
-        # TODO: Currently we are assuming the use only has one org
+        # TODO(David): Currently we are assuming the use only has one org  # noqa: TD003
         orgs: QuerySet[Org] = get_objects_for_user(
             user,
             "view_org",
@@ -30,19 +33,12 @@ class OrgManager(models.Manager):
         return orgs.first()
 
     def get_by_slug(self, slug: str) -> "Org":
+        """Get an organization by slug."""
         return self.model.objects.get(slug=slug)
 
 
 class Org(models.Model):
     """Haztrak Organization."""
-
-    objects = OrgManager()
-
-    class Meta:
-        verbose_name = "Organization"
-        verbose_name_plural = "Organizations"
-        ordering = ["name"]
-        indexes = [models.Index(fields=["slug"], name="org_slug_idx")]
 
     id = models.UUIDField(
         unique=True,
@@ -68,6 +64,20 @@ class Org(models.Model):
         blank=True,
     )
 
+    objects = OrgManager()
+
+    class Meta:
+        """Metaclass."""
+
+        verbose_name = "Organization"
+        verbose_name_plural = "Organizations"
+        ordering = ["name"]
+        indexes = [models.Index(fields=["slug"], name="org_slug_idx")]
+
+    def __str__(self):
+        """Human-readable representation."""
+        return f"{self.name}"
+
     @property
     def rcrainfo_api_id_key(self) -> tuple[str, str] | None:
         """Returns the RcraInfo API credentials for the admin user."""
@@ -86,14 +96,13 @@ class Org(models.Model):
             ).has_rcrainfo_api_id_key
         return False
 
-    def __str__(self):
-        return f"{self.name}"
-
 
 class OrgUserObjectPermission(UserObjectPermissionBase):
     """Org object level permission."""
 
     class Meta(UserObjectPermissionBase.Meta):
+        """Metaclass."""
+
         verbose_name = "Org Permission"
         verbose_name_plural = "Org Permissions"
 
@@ -105,6 +114,8 @@ class OrgGroupObjectPermission(GroupObjectPermissionBase):
     """Org object level Group."""
 
     class Meta(GroupObjectPermissionBase.Meta):
+        """Metaclass."""
+
         verbose_name = "Org Role"
         verbose_name_plural = "Org Roles"
 
@@ -114,7 +125,7 @@ class OrgGroupObjectPermission(GroupObjectPermissionBase):
 class SiteManager(QuerySet):
     """Query interface for the Site model."""
 
-    def filter_by_username(self: models.Manager, username: str) -> QuerySet:
+    def filter_by_username(self, username: str) -> QuerySet:
         """Filter a list of sites a user has access to (by username)."""
         return get_objects_for_user(
             TrakUser.objects.get(username=username),
@@ -123,48 +134,41 @@ class SiteManager(QuerySet):
             accept_global_perms=False,
         )
 
-    def get_by_user_and_epa_id(self: models.Manager, user: "User", epa_id: str) -> QuerySet:
+    def get_by_user_and_epa_id(self, user: "User", epa_id: str) -> QuerySet:
         """Get a site by EPA ID number that a user has access to."""
         combined_filter: QuerySet = self.filter_by_user(user) & self.filter_by_epa_id(epa_id)
         return combined_filter.get()
 
-    def get_by_username_and_epa_id(self: models.Manager, username: str, epa_id: str) -> QuerySet:
+    def get_by_username_and_epa_id(self, username: str, epa_id: str) -> QuerySet:
         """Get a site by EPA ID number that a user has access to."""
         combined_filter: QuerySet = self.filter_by_username(username) & self.filter_by_epa_id(
             epa_id,
         )
         return combined_filter.get()
 
-    def filter_by_user(self: models.Manager, user: "User") -> QuerySet:
+    def filter_by_user(self, user: "User") -> QuerySet:
         """Filter a list of sites a user has access to (by user object)."""
         return get_objects_for_user(user, "view_site", self.model, accept_global_perms=False)
 
-    def filter_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:
+    def filter_by_epa_id(self, epa_id: str) -> QuerySet:
         """Filter a sites by EPA ID number."""
         return self.filter(rcra_site__epa_id=epa_id)
 
-    def filter_by_epa_ids(self: models.Manager, epa_ids: [str]) -> QuerySet:
+    def filter_by_epa_ids(self, epa_ids: [str]) -> QuerySet:
         """Filter a sites by EPA ID number."""
         return self.filter(rcra_site__epa_id__in=epa_ids)
 
-    def get_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:
+    def get_by_epa_id(self, epa_id: str) -> QuerySet:
         """Get a site by RCRAInfo EPA ID number. Throws Site.DoesNotExist if not found."""
         return self.filter_by_epa_id(epa_id).get()
 
-    def filter_by_org(self: models.Manager, org: "Org") -> QuerySet:
+    def filter_by_org(self, org: "Org") -> QuerySet:
         """Get a list of sites by organization."""
         return self.filter(org=org)
 
 
 class Site(models.Model):
     """The site entity represents a physical location that is a part of an organization."""
-
-    objects = SiteManager.as_manager()
-
-    class Meta:
-        verbose_name = "Site"
-        verbose_name_plural = "Sites"
-        ordering = ["rcra_site__epa_id"]
 
     name = models.CharField(
         verbose_name="site alias",
@@ -186,8 +190,25 @@ class Site(models.Model):
         on_delete=models.CASCADE,
     )
 
+    objects = SiteManager.as_manager()
+
+    class Meta:
+        """Metaclass."""
+
+        verbose_name = "Site"
+        verbose_name_plural = "Sites"
+        ordering = ["rcra_site__epa_id"]
+
+    def __str__(self):
+        """Human-readable representation.
+
+        Used in StringRelated fields in serializer classes.
+        """
+        return f"{self.rcra_site.epa_id}"
+
     @property
     def epa_id(self):
+        """EPA ID number of the site."""
         return self.rcra_site.epa_id
 
     @property
@@ -195,15 +216,13 @@ class Site(models.Model):
         """Returns True if the admin user has RcraInfo API credentials."""
         return self.org.is_rcrainfo_integrated
 
-    def __str__(self):
-        """Used in StringRelated fields in serializer classes."""
-        return f"{self.rcra_site.epa_id}"
-
 
 class SiteUserObjectPermission(UserObjectPermissionBase):
     """Site object level permission."""
 
     class Meta(UserObjectPermissionBase.Meta):
+        """Metaclass."""
+
         verbose_name = "Site Permission"
         verbose_name_plural = "Site Permissions"
 
@@ -214,6 +233,8 @@ class SiteGroupObjectPermission(GroupObjectPermissionBase):
     """Site object level Group."""
 
     class Meta(GroupObjectPermissionBase.Meta):
+        """Metaclass."""
+
         verbose_name = "Site Role"
         verbose_name_plural = "Site Roles"
 

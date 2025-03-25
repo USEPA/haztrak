@@ -2,10 +2,10 @@ import logging
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Literal, NotRequired, Optional, TypedDict
 
-from core.services import RcraClient, get_rcra_client
 from django.db import transaction
 from requests import RequestException
 
+from core.services import RcraClient, get_rcra_client
 from manifest.models import Manifest, QuickerSign
 from manifest.serializers import ManifestSerializer, QuickerSignSerializer
 from manifest.services.emanifest_search import EmanifestSearch

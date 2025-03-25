@@ -7,7 +7,6 @@ import pytest
 from django.db import IntegrityError
 from faker import Faker
 from faker.providers import BaseProvider
-from rcrasite.models import RcraSite, RcraSiteType
 
 from manifest.models import (
     ESignature,
@@ -17,6 +16,7 @@ from manifest.models import (
     Signer,
     Transporter,
 )
+from rcrasite.models import RcraSite, RcraSiteType
 
 
 @pytest.fixture

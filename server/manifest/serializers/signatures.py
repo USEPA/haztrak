@@ -2,11 +2,11 @@ import datetime
 from datetime import timezone
 from typing import Dict
 
-from rcrasite.serializers import RcraPhoneSerializer
 from rest_framework import serializers
 
 from manifest.models import ESignature, PaperSignature, QuickerSign, Signer
 from manifest.serializers.mixins import RemoveEmptyFieldsMixin
+from rcrasite.serializers import RcraPhoneSerializer
 
 
 class QuickerSignSerializer(serializers.Serializer):

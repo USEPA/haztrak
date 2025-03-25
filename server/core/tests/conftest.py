@@ -2,6 +2,7 @@ from datetime import UTC, datetime
 
 import pytest
 from faker import Faker
+
 from rcrasite.models import RcraSiteType
 
 

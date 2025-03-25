@@ -1,8 +1,8 @@
 import pytest
-from wasteline.models import WasteLine
 
 from manifest.models import AdditionalInfo, Manifest
 from manifest.serializers import ManifestSerializer
+from wasteline.models import WasteLine
 
 
 @pytest.fixture

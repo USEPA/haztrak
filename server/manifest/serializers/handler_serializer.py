@@ -1,9 +1,9 @@
 from typing import Dict
 
-from rcrasite.serializers import RcraSiteSerializer
 from rest_framework import serializers
 
 from manifest.models import Handler, ManifestPhone, Transporter
+from rcrasite.serializers import RcraSiteSerializer
 
 from .signatures import ESignatureSerializer, PaperSignatureSerializer
 
