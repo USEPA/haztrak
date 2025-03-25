@@ -1,7 +1,7 @@
 import logging
 import re
 from abc import ABC, abstractmethod
-from typing import List, Literal, Optional
+from typing import Literal, Optional
 
 from django.core.exceptions import ValidationError
 from django.db import models
