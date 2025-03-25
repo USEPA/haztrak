@@ -1,8 +1,9 @@
+"""Fixtures for quicker sign response data."""
+
 from datetime import UTC, datetime
 
 import pytest
 from faker import Faker
-
 from rcrasite.models import RcraSiteType
 
 
@@ -15,8 +16,7 @@ def quicker_sign_response_factory(faker: Faker):
         site_id: str,
         site_type: RcraSiteType | None = RcraSiteType.GENERATOR,
         printed_name: str | None = None,
-        sign_date: datetime | None = datetime.utcnow().replace(tzinfo=UTC),
-        transporter_order: int | None = None,
+        sign_date: datetime | None = datetime.utcnow().replace(tzinfo=UTC),  # noqa: B008, DTZ003
     ) -> dict:
         sign_date_iso = sign_date.isoformat(timespec="milliseconds")
         return {

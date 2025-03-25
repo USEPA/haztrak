@@ -1,5 +1,4 @@
 import pytest
-
 from core.services import RcraClient
 from rcrasite.models import RcraSite
 from rcrasite.services import RcraSiteService
@@ -15,7 +14,8 @@ class TestHandlerService:
         self.epa_id = self.handler_json.get("epaSiteId", "handler001")
 
     def test_rcrainfo_returns_true_when_instance(self):
-        """
+        """Test the __bool__ method of the RcraClient.
+
         The e-Manifest PyPI package RcrainfoClient uses a __bool__ method we need to override
         in order for self.rcrainfo = rcrainfo or RcraClient(...) to work.
         """

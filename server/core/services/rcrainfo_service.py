@@ -1,3 +1,5 @@
+"""RCRAInfo Service Module."""
+
 import logging
 from profile.models import RcrainfoProfile
 from typing import Literal
@@ -5,7 +7,6 @@ from typing import Literal
 import emanifest
 from django.db import IntegrityError
 from emanifest import RcrainfoClient, RcrainfoResponse
-
 from org.models import Org
 from wasteline.models import WasteCode
 
@@ -33,7 +34,7 @@ class RcraClient(RcrainfoClient):
         self.profile: RcrainfoProfile | None = rcra_profile
         self.api_id: str | None = api_id
         self.api_key: str | None = api_key
-        self.rcrainfo_env: str = rcrainfo_env or "preprod"
+        self.rcrainfo_env = rcrainfo_env or "preprod"
         base_url = (
             emanifest.RCRAINFO_PROD if self.rcrainfo_env == "prod" else emanifest.RCRAINFO_PREPROD
         )
@@ -48,6 +49,7 @@ class RcraClient(RcrainfoClient):
             return self.api_id is not None and self.api_key is not None
 
     def __repr__(self):
+        """Machine representation."""
         return f"<{self.__class__.__name__}rcrainfo_env='{self.rcrainfo_env}')>"
 
     def retrieve_id(self, api_id=None) -> str:
@@ -66,7 +68,8 @@ class RcraClient(RcrainfoClient):
         self,
         rcrainfo_username: str | None = None,
     ) -> RcrainfoResponse:
-        """
+        """Get a user's site permissions from RCRAInfo.
+
         Retrieve a user's site permissions from RCRAInfo, It expects the
         haztrak user to have their unique RCRAInfo user and API credentials in their
         RcrainfoProfile.
@@ -88,7 +91,8 @@ class RcraClient(RcrainfoClient):
                 WasteCode.federal.update(code_type=WasteCode.CodeType.FEDERAL, **federal_code)
 
     def sign_manifest(self, **sign_data):
-        """
+        """Sign the manifest using the Quicker Sign endpoint.
+
         Utilizes RcraInfo's Quicker Sign endpoint to electronically sign manifest(s)
         we override the e-Manifest package's sign_manifest function to validate inputs.
         """
@@ -96,7 +100,8 @@ class RcraClient(RcrainfoClient):
         return super().sign_manifest(**sign_data)
 
     def __bool__(self):
-        """
+        """Whether the RcraClient instance is not None.
+
         This Overrides the RcrainfoClient bool
         we use this to test a RcraClient instance is not None.
         """
@@ -129,11 +134,9 @@ def get_rcra_client(
             rcrainfo_env=rcrainfo_env,
             **kwargs,
         )
-    except Org.DoesNotExist:
+    except Org.DoesNotExist as exc:
         msg = (
             "If not using an organization with RCRAInfo credentials, "
             "you must provide api_id and api_key"
         )
-        raise ValueError(
-            msg,
-        )
+        raise ValueError(msg) from exc

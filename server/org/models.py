@@ -4,6 +4,7 @@ import uuid
 from profile.models import RcrainfoProfile
 from typing import TYPE_CHECKING, Self
 
+from core.models import TrakUser
 from django.conf import settings
 from django.core.validators import MinLengthValidator
 from django.db import models
@@ -11,8 +12,6 @@ from django.db.models import QuerySet
 from django_extensions.db.fields import AutoSlugField
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import get_objects_for_user
-
-from core.models import TrakUser
 
 if TYPE_CHECKING:
     from django.contrib.auth.models import User
@@ -24,7 +23,7 @@ class OrgManager(models.Manager):
     def get_by_username(self, username: str) -> "Org":
         """Get the organization for a user."""
         user = TrakUser.objects.get(username=username)
-        # TODO(David): Currently we are assuming the use only has one org  # noqa: TD003
+        # TODO(David): Currently we are assuming the use only has one org
         orgs: QuerySet[Org] = get_objects_for_user(
             user,
             "view_org",
@@ -84,9 +83,10 @@ class Org(models.Model):
         """Returns the RcraInfo API credentials for the admin user."""
         try:
             rcrainfo_profile = RcrainfoProfile.objects.get(haztrak_profile__user=self.admin)
-            return rcrainfo_profile.rcra_api_id, rcrainfo_profile.rcra_api_key
         except RcrainfoProfile.DoesNotExist:
             return None
+        else:
+            return rcrainfo_profile.rcra_api_id, rcrainfo_profile.rcra_api_key
 
     @property
     def is_rcrainfo_integrated(self) -> bool:

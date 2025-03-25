@@ -1,6 +1,8 @@
+"""Signature models for the manifest app."""
+
 import logging
-from datetime import UTC, datetime, timezone
-from typing import List, Literal, Optional
+from datetime import UTC, datetime
+from typing import Literal
 
 from django.db import models
 
@@ -9,11 +11,6 @@ logger = logging.getLogger(__name__)
 
 class Signer(models.Model):
     """EPA manifest signer definition."""
-
-    class Meta:
-        """Metaclass."""
-
-        ordering = ["first_name"]
 
     class Role(models.TextChoices):
         """Signer Role choices."""
@@ -24,6 +21,8 @@ class Signer(models.Model):
         STATE = "State"
 
     class ContactType(models.TextChoices):
+        """Signer Contact Type choices."""
+
         EMAIL = "email"
         VOICE = "voice"
         TEXT = "text"
@@ -75,11 +74,17 @@ class Signer(models.Model):
         null=True,
     )
 
+    class Meta:
+        """Metaclass."""
+
+        ordering = ["first_name"]
+
     def __str__(self):
+        """Human-readable representation."""
         return (
-            f"{(lambda i: i or '')(self.first_name)}, "
-            f"{(lambda i: i or '')(self.middle_initial)} "
-            f"{(lambda i: i or '')(self.last_name)}"
+            f"{(lambda i: i or '')(self.first_name)}, "  # noqa: PLC3002
+            f"{(lambda i: i or '')(self.middle_initial)} "  # noqa: PLC3002
+            f"{(lambda i: i or '')(self.last_name)}"  # noqa: PLC3002
         )
 
 
@@ -87,8 +92,9 @@ class ESignatureManager(models.Manager):
     """ESignature Model database querying interface."""
 
     def save(self, **e_signature_data):
-        """
-        Create Contact instance in database, create related phone instance if applicable,
+        """Electronic signature save method.
+
+        Create Contact instance in a database, create related phone instance if applicable,
         and return the new instance.
         """
         if "signer" in e_signature_data:
@@ -98,14 +104,6 @@ class ESignatureManager(models.Manager):
 
 class ESignature(models.Model):
     """EPA electronic signature."""
-
-    class Meta:
-        """Metaclass."""
-
-        verbose_name = "e-Signature"
-        ordering = ["sign_date"]
-
-    objects = ESignatureManager()
 
     manifest_handler = models.ForeignKey(
         "Handler",
@@ -138,19 +136,29 @@ class ESignature(models.Model):
         null=True,
     )
 
+    objects = ESignatureManager()
+
+    class Meta:
+        """Metaclass."""
+
+        verbose_name = "e-Signature"
+        ordering = ["sign_date"]
+
     def __str__(self):
+        """Human-readable representation."""
         if self.signer is not None:
             return (
-                f"{(lambda i: i or '')(self.signer.first_name)}, "
-                f"{(lambda i: i or '')(self.signer.middle_initial)} "
-                f"{(lambda i: i or '')(self.signer.last_name)}"
+                f"{(lambda i: i or '')(self.signer.first_name)}, "  # noqa: PLC3002
+                f"{(lambda i: i or '')(self.signer.middle_initial)} "  # noqa: PLC3002
+                f"{(lambda i: i or '')(self.signer.last_name)}"  # noqa: PLC3002
                 f"e-signature on {self.sign_date}"
             )
         return f"e-signature on {self.sign_date}"
 
 
 class PaperSignature(models.Model):
-    """
+    """Paper Signature Model.
+
     Contains printed name of the rcra_site Signee and
     Date of Signature for paper manifests.
     """
@@ -161,25 +169,28 @@ class PaperSignature(models.Model):
     sign_date = models.DateTimeField()
 
     def __str__(self):
+        """Human-readable representation."""
         return f"{self.printed_name} ({self.sign_date.strftime('%Y-%m-%d %H:%M:%S')})"
 
     def __hash__(self):
+        """Hash method."""
         return hash((self.printed_name, self.sign_date))
 
 
 class QuickerSign:
-    """
+    """Quicker Sign object.
+
     Quicker Sign is the python object representation of the EPA's Quicker Sign schema
     This is not a django model, however for the time being we do not have a better location.
     """
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         mtn: list[str],
         printed_name: str,
         site_type: Literal["Generator", "Tsdf", "Transporter"],
         site_id: str,
-        printed_date: datetime | str | None = datetime.utcnow().replace(tzinfo=UTC),
+        printed_date: datetime | str | None = datetime.utcnow().replace(tzinfo=UTC),  # noqa: DTZ003, B008
         transporter_order: int | None = None,
     ):
         self.mtn = mtn
@@ -196,7 +207,7 @@ class QuickerSign:
                 self.printed_date: datetime = datetime.fromisoformat(printed_date)
             # If error, default to current time
             except ValueError:
-                self.printed_date: datetime = datetime.utcnow().replace(tzinfo=UTC)
+                self.printed_date: datetime = datetime.utcnow().replace(tzinfo=UTC)  # noqa: DTZ003
         else:
             msg = f"printed_date must be string or datetime, received {type(printed_date)}"
             raise TypeError(

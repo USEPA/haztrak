@@ -1,12 +1,8 @@
+"""Views for the manifest app."""
+
 import logging
 
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
-from rest_framework import mixins, serializers, status, viewsets
-from rest_framework.generics import GenericAPIView, ListAPIView
-from rest_framework.request import Request
-from rest_framework.response import Response
-from rest_framework.views import APIView
-
 from manifest.models import Manifest
 from manifest.serializers import ManifestSerializer, MtnSerializer, QuickerSignSerializer
 from manifest.services import (
@@ -18,6 +14,11 @@ from manifest.services import (
     update_manifest,
 )
 from org.services import sync_site_manifest_with_rcrainfo
+from rest_framework import mixins, serializers, status, viewsets
+from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +78,7 @@ class ElectronicManifestSaveView(GenericAPIView):
     http_method_names = ["post"]
 
     def post(self, request: Request) -> Response:
+        """Electronic Manifest Save View."""
         manifest_serializer = self.serializer_class(data=request.data)
         manifest_serializer.is_valid(raise_exception=True)
         data = save_emanifest(username=str(request.user), data=manifest_serializer.data)
@@ -90,6 +92,7 @@ class MtnListView(ListAPIView):
     queryset = Manifest.objects.all()
 
     def get_queryset(self):
+        """Get a list of manifest tracking numbers."""
         return get_manifests(
             username=str(self.request.user),
             epa_id=self.kwargs.get("epa_id", None),
@@ -104,7 +107,8 @@ class ElectronicManifestSignView(GenericAPIView):
     queryset = None
 
     def post(self, request: Request) -> Response:
-        """
+        """Electronic Manifest Sign View.
+
         Accepts a Quicker Sign JSON object in the request body,
         parses the request data, and passes data to a celery async task.
         """
@@ -127,16 +131,20 @@ class ElectronicManifestSignView(GenericAPIView):
     ),
 )
 class SiteManifestSyncView(APIView):
-    """
+    """Sync a site's manifests with RCRAInfo.
+
     Pull a site's manifests that are out of sync with RCRAInfo.
     It returns the task id of the long-running background task which can be used to poll
     for status.
     """
 
     class SyncSiteManifestSerializer(serializers.Serializer):
+        """Serializer for the site manifest sync request."""
+
         siteId = serializers.CharField(source="site_id")
 
     def post(self, request: Request) -> Response:
+        """Sync a site's manifests with RCRAInfo."""
         serializer = self.SyncSiteManifestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = sync_site_manifest_with_rcrainfo(

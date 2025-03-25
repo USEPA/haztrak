@@ -1,3 +1,5 @@
+"""Utility functions for the core app."""
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.http import Http404
@@ -9,6 +11,8 @@ from rest_framework.views import exception_handler as drf_exception_handler
 
 
 class InternalServer500(APIException):
+    """Internal Server Error."""
+
     status_code = 500
     default_detail = "Internal Server Error"
     default_code = "internal_server_error"

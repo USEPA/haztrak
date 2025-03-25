@@ -1,3 +1,5 @@
+"""Celery tasks."""
+
 import logging
 import time
 
@@ -9,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 @shared_task(bind=True, name="example task")
 def example_task(self: Task):
+    """Example task."""
     cache.set(
         self.request.id,
         {"status": "STARTED", "taskName": self.name, "taskId": self.request.id},

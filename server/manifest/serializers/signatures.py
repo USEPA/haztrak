@@ -1,12 +1,11 @@
-import datetime
-from datetime import timezone
-from typing import Dict
+"""Serializers for manifest signatures."""
 
-from rest_framework import serializers
+import datetime
 
 from manifest.models import ESignature, PaperSignature, QuickerSign, Signer
 from manifest.serializers.mixins import RemoveEmptyFieldsMixin
 from rcrasite.serializers import RcraPhoneSerializer
+from rest_framework import serializers
 
 
 class QuickerSignSerializer(serializers.Serializer):
@@ -38,9 +37,11 @@ class QuickerSignSerializer(serializers.Serializer):
     )
 
     def to_internal_value(self, data: dict):
+        """Convert dictionary to QuickerSign object."""
         return super().to_internal_value(data)
 
     def to_representation(self, instance: dict | QuickerSign):
+        """Convert QuickerSign object to a dictionary."""
         data = super().to_representation(instance)
         if isinstance(instance, dict):
             data["printedSignatureDate"] = instance["printed_date"].isoformat(
@@ -55,9 +56,11 @@ class QuickerSignSerializer(serializers.Serializer):
         return data
 
     def update(self, instance, validated_data):
+        """Update a QuickerSign object."""
         return self.Meta.model(**validated_data)
 
     def create(self, validated_data):
+        """Create a new QuickerSign object."""
         return self.Meta.model(**validated_data)
 
     class Meta:
@@ -157,9 +160,11 @@ class ESignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
     )
 
     def update(self, instance, validated_data):
+        """Update an ESignature object."""
         return super().update(instance, validated_data)
 
     def create(self, validated_data: dict):
+        """Create a new ESignature object."""
         return self.Meta.model.objects.save(**validated_data)
 
     class Meta:
@@ -177,9 +182,9 @@ class ESignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
 
 
 class PaperSignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
-    """
-    Serializer for Paper Signature on manifest which indicates the change
-    of custody with paper manifests.
+    """Serializer for Paper Signature on manifest.
+
+    Indicates the change of custody with paper manifests.
     """
 
     printedName = serializers.CharField(
@@ -192,9 +197,11 @@ class PaperSignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializ
     )
 
     def update(self, instance, validated_data: dict):
+        """Update a PaperSignature object."""
         return super().update(instance, **validated_data)
 
     def create(self, validated_data: dict):
+        """Create a new PaperSignature object."""
         return super().create(**validated_data)
 
     class Meta:

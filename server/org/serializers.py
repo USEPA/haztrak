@@ -1,8 +1,9 @@
-from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer
+"""Organization and Site model serializers for JSON marshalling/unmarshalling."""
 
 from org.models import Org, Site
 from rcrasite.serializers import RcraSiteSerializer
+from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
 
 
 class OrgSerializer(ModelSerializer):

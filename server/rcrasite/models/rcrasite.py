@@ -1,16 +1,19 @@
+"""Models for RCRAInfo site data."""
+
 import logging
 from typing import Optional, Union
 
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
 from rcrasite.models import Address, Contact, RcraPhone
 
 logger = logging.getLogger(__name__)
 
 
 class RcraSiteType(models.TextChoices):
+    """Possible site types for an RcraSite."""
+
     GENERATOR = "Generator"
     TRANSPORTER = "Transporter"
     TSDF = "Tsdf"
@@ -29,16 +32,7 @@ class RcraSiteManager(models.Manager):
         return self.get(epa_id__iexact=epa_id)
 
     def save(self, instance: Optional["RcraSite"], **handler_data) -> "RcraSite":
-        """
-        Create an RcraSite and its related fields.
-
-        Keyword Args:
-            contact (dict): Contact data in (ordered)dict format
-            site_address (dict): Site address data dict
-            mail_address (dict): mailing address data dict
-            emergency_phone (dict): optional Phone dict
-
-        """
+        """Create an RcraSite and its related fields."""
         try:
             epa_id = handler_data.get("epa_id")
             if self.model.objects.filter(epa_id=epa_id).exists():
@@ -56,9 +50,11 @@ class RcraSiteManager(models.Manager):
                 contact=new_contact,
                 defaults=self.handler_data,
             )
-            return rcra_site
         except KeyError as exc:
-            logger.warning(f"error while creating {self.model.__class__.__name__}{exc}")
+            msg = f"Missing required data for {self.model.__class__.__name__}: {exc}"
+            logger.warning(msg)
+        else:
+            return rcra_site
 
     def get_emergency_phone(self) -> RcraPhone | None:
         """Check if emergency phone is present and create an RcraPhone row."""

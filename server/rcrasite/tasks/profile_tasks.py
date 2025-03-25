@@ -31,7 +31,7 @@ def sync_user_rcrainfo_sites(self: RcraProfileTasks, username: str) -> None:
         rcra_profile = RcraProfileService(username=username)
         rcra_profile.update_rcrainfo_profile()
     except (ConnectionError, RequestException, TimeoutError) as exc:
-        # TODO(David): retry if network error, see celery docs   # noqa: TD003
+        # TODO(David): retry if network error, see celery docs
         raise Reject from exc
     except RcraProfileServiceError as exc:
         self.update_state(state=states.FAILURE, meta={"error": f"{exc!s}"})

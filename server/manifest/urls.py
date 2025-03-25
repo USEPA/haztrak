@@ -1,13 +1,14 @@
-from django.urls import include, path
-from rest_framework.routers import SimpleRouter
+"""URLs for the manifest app."""
 
-from manifest.views import (  # type: ignore
+from django.urls import include, path
+from manifest.views import (
     ElectronicManifestSaveView,
     ElectronicManifestSignView,
     ManifestViewSet,
     MtnListView,
     SiteManifestSyncView,
 )
+from rest_framework.routers import SimpleRouter
 
 manifest_router = SimpleRouter(trailing_slash=False)
 manifest_router.register("manifest", ManifestViewSet)

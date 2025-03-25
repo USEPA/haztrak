@@ -1,12 +1,11 @@
 from datetime import UTC, datetime
 
 import emanifest
-from responses import matchers
-from rest_framework import status
-
 from core.services import RcraClient, get_rcra_client
 from manifest.models import QuickerSign
 from manifest.serializers import QuickerSignSerializer
+from responses import matchers
+from rest_framework import status
 
 
 class TestRcrainfoService:
@@ -91,9 +90,9 @@ class TestQuickerSign:
         profile_factory,
         quicker_sign_response_factory,
     ):
-        """
-        Test that our sign_manifest method maps arguments to a JSON representation
-        that's recognized by RCRAInfo.
+        """Test that our sign_manifest method maps arguments to a JSON representation.
+
+        Recognized by RCRAInfo.
         """
         testuser1 = user_factory()
         rcra_profile = rcrainfo_profile_factory()

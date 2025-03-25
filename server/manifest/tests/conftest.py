@@ -7,7 +7,6 @@ import pytest
 from django.db import IntegrityError
 from faker import Faker
 from faker.providers import BaseProvider
-
 from manifest.models import (
     ESignature,
     Handler,
@@ -118,7 +117,7 @@ def signer_factory(db, faker: Faker):
 class MtnProvider(BaseProvider):
     SUFFIXES = ["ELC", "JJK", "FLE"]
     STATUSES = ["NotAssigned", "Pending", "Scheduled", "InTransit", "ReadyForSignature"]
-    NUMBERS = ["".join(random.choices(string.digits, k=9)) for _ in range(100)]
+    NUMBERS = ["".join(random.choices(string.digits, k=9)) for _ in range(100)]  # noqa: S311
 
     def mtn(self):
         return f"{self.random_element(self.NUMBERS)}{self.random_element(self.SUFFIXES)}"

@@ -2,7 +2,6 @@ import json
 from datetime import UTC, datetime
 
 import pytest
-
 from core.services import RcraClient
 from manifest.services.emanifest_search import EmanifestSearch
 
@@ -43,28 +42,34 @@ class TestEmanifestSearchClass:
                 assert request_body["siteId"] == "VATESTGEN001"
 
     class TestBuildSearchWithStateCode:
+        """Tests."""
+
         def test_add_state_code(self):
             search = EmanifestSearch().add_state_code("CA")
             assert search.state_code == "CA"
 
         def test_state_code_only_accepts_two_letters(self):
-            with pytest.raises(ValueError):
+            with pytest.raises(ValueError):  # noqa: PT011
                 EmanifestSearch().add_state_code("California")
 
         def test_state_code_alphabetical(self):
-            with pytest.raises(ValueError):
+            with pytest.raises(ValueError):  # noqa: PT011
                 EmanifestSearch().add_state_code("12")
 
     class TestBuildSearchWithStatus:
+        """Tests."""
+
         def test_add_status(self):
             search = EmanifestSearch().add_status("Pending")
             assert search.status == "Pending"
 
         def test_error_raised_with_invalid_status(self):
-            with pytest.raises(ValueError):
+            with pytest.raises(ValueError):  # noqa: PT011
                 EmanifestSearch().add_status("InvalidStatus")
 
     class TestBuildSearchWithSiteId:
+        """Tests."""
+
         def test_add_site_id(self):
             search = EmanifestSearch().add_site_id("test")
             assert search.site_id == "test"
@@ -72,49 +77,57 @@ class TestEmanifestSearchClass:
             assert search_2.site_id == "test123"
 
         def test_site_id_is_alphanumeric(self):
-            with pytest.raises(ValueError):
+            with pytest.raises(ValueError):  # noqa: PT011
                 EmanifestSearch().add_site_id("test!")
 
     class TestBuildSearchWithSiteType:
+        """Tests."""
+
         def test_add_site_type(self):
             search = EmanifestSearch().add_site_type("Generator")
             assert search.site_type == "Generator"
 
         def test_error_raised_with_invalid_site_type(self):
-            with pytest.raises(ValueError):
+            with pytest.raises(ValueError):  # noqa: PT011
                 EmanifestSearch().add_site_type("InvalidSiteType")
 
     class TestBuildSearchWithDateType:
+        """Tests."""
+
         def test_add_date_type(self):
             search = EmanifestSearch().add_date_type("CertifiedDate")
             assert search.date_type == "CertifiedDate"
 
         def test_raises_error_with_invalid_date_type(self):
-            with pytest.raises(ValueError):
+            with pytest.raises(ValueError):  # noqa: PT011
                 EmanifestSearch().add_date_type("InvalidDateType")
 
     class TestBuildSearchWithDates:
+        """Tests."""
+
         def test_add_start_date(self):
-            search = EmanifestSearch().add_start_date(datetime.now())
+            search = EmanifestSearch().add_start_date(datetime.now())  # noqa: DTZ005
             assert search.start_date is not None
 
         def test_add_end_date(self):
-            search = EmanifestSearch().add_end_date(datetime.now())
+            search = EmanifestSearch().add_end_date(datetime.now())  # noqa: DTZ005
             assert search.end_date is not None
 
         def test_add_end_date_defaults_to_now(self):
             now = datetime.now(UTC)
             search = EmanifestSearch().add_end_date()
-            end_date = datetime.strptime(search.end_date, RcraClient.datetime_format)
+            end_date = datetime.strptime(search.end_date, RcraClient.datetime_format)  # noqa: DTZ007
             assert end_date.day == now.day
             assert end_date.month == now.month
             assert end_date.year == now.year
 
     class TestBuildSearchWithCorrectionRequestStatus:
+        """Tests."""
+
         def test_add_correction_request_status(self):
             search = EmanifestSearch().add_correction_request_status("Sent")
             assert search.correction_request_status == "Sent"
 
         def test_error_raised_with_invalid_correction_request_status(self):
-            with pytest.raises(ValueError):
+            with pytest.raises(ValueError):  # noqa: PT011
                 EmanifestSearch().add_correction_request_status("InvalidStatus")

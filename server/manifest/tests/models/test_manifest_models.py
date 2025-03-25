@@ -3,7 +3,6 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from django.core.exceptions import ValidationError
-
 from manifest.models import Manifest, draft_mtn, manifest_factory, validate_mtn
 from manifest.serializers import HandlerSerializer
 from rcrasite.models import RcraSiteType
@@ -20,7 +19,8 @@ class TestManifestModel:
             assert re.match(r"\d{9}DFT", result)
 
     def test_draft_mtn_uses_nine_number_three_letter_format(self):
-        """
+        """Tests.
+
         Ensure our default MTN for draft manifests follows the
         same format as EPA uniform hazardous waste (e.g., 123456789ELC).
         """

@@ -26,4 +26,5 @@ class TrakUser(GuardianUserMixin, AbstractUser):
     )
 
     def has_perm(self, perm, obj=None):
+        """Check if user has permission."""
         return super().has_perm(perm, obj)

@@ -5,7 +5,6 @@ from typing import Optional
 
 from django.core.exceptions import ValidationError
 from django.db import models
-
 from rcrasite.models import RcraSite
 
 from .contact import ManifestPhone
@@ -47,7 +46,6 @@ class HandlerManager(models.Manager):
                 )
                 msg = f"ESignature created {e_sig}"
                 logger.debug(msg)
-            return manifest_handler
         except KeyError as exc:
             msg = f"KeyError while creating rcra_site {exc}"
             raise ValidationError(msg) from exc
@@ -55,6 +53,8 @@ class HandlerManager(models.Manager):
             msg = f"ValidationError while creating rcra_site {exc}"
             logger.warning(msg)
             raise
+        else:
+            return manifest_handler
 
 
 class Handler(models.Model):

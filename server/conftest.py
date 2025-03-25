@@ -1,3 +1,5 @@
+"""Fixtures for testing."""
+
 import datetime
 import json
 import os
@@ -10,14 +12,12 @@ from typing import Any, Literal, Required, TypedDict
 import pytest
 import pytest_mock
 import responses
+from core.models import TrakUser
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from faker import Faker
 from faker.providers import BaseProvider
 from guardian.shortcuts import assign_perm
-from rest_framework.test import APIClient
-
-from core.models import TrakUser
 from org.models import Org, Site
 from rcrasite.models import (
     Address,
@@ -25,23 +25,27 @@ from rcrasite.models import (
     RcraPhone,
     RcraSite,
 )
+from rest_framework.test import APIClient
 
 
 class SiteIDProvider(BaseProvider):
+    """Custom provider for generating site IDs."""
+
     PREFIXES = ["VAT", "VAD", "TXD", "TXR", "TND", "TNR", "LAD", "LAR", "CAD", "CAR", "MAD", "MAR"]
-    NUMBERS = ["".join(random.choices(string.digits, k=9)) for _ in range(100)]
+    NUMBERS = ["".join(random.choices(string.digits, k=9)) for _ in range(100)]  # noqa: S311
 
     def site_id(self):
+        """Generate a random site ID."""
         return f"{self.random_element(self.PREFIXES)}{self.random_element(self.NUMBERS)}"
 
 
 @pytest.fixture
 def haztrak_json():
     """Fixture with JSON data."""
-    json_dir = os.path.dirname(os.path.abspath(__file__)) + "/fixtures/json"
+    json_dir = os.path.dirname(os.path.abspath(__file__)) + "/fixtures/json"  # noqa: PTH120, PTH100
 
     def read_file(path: str) -> dict:
-        with open(path) as f:
+        with open(path) as f:  # noqa: PTH123
             return json.load(f)
 
     class Json(Enum):
@@ -59,6 +63,8 @@ def haztrak_json():
 
 
 class UserFactoryPermissions(TypedDict, total=False):
+    """Type definition for user factory permissions."""
+
     perms: Required[list[str] | str]
     objs: list[Any]
 
@@ -67,7 +73,7 @@ class UserFactoryPermissions(TypedDict, total=False):
 def user_factory(db, faker):
     """Abstract factory for Django's User model."""
 
-    def create_user(
+    def create_user(  # noqa: PLR0913
         username: str | None = None,
         first_name: str | None = None,
         last_name: str | None = None,
@@ -75,6 +81,7 @@ def user_factory(db, faker):
         password: str | None = None,
         permissions: list[UserFactoryPermissions] | None = None,
     ) -> TrakUser:
+        """Create a user with optional permissions."""
         user = TrakUser.objects.create_user(
             username=username or faker.user_name(),
             first_name=first_name or faker.first_name(),
@@ -138,8 +145,10 @@ def profile_factory(db, user_factory, rcrainfo_profile_factory, org_factory):
 
     def create_profile(
         user: User | None = None,
-        rcrainfo_profile: RcrainfoProfile | None = rcrainfo_profile_factory(),
+        rcrainfo_profile: RcrainfoProfile | None = None,
     ) -> Profile:
+        if rcrainfo_profile is None:
+            rcrainfo_profile = rcrainfo_profile_factory()
         return Profile.objects.create(
             user=user or user_factory(),
             rcrainfo_profile=rcrainfo_profile,
@@ -244,6 +253,8 @@ def rcra_site_factory(db, address_factory, contact_factory):
 
 @pytest.fixture
 def validated_data_factory():
+    """Abstract factory for creating validated data from a serializer."""
+
     def _create_data_dict(*, instance, serializer) -> dict:
         data = serializer(instance).data
         new_serializer = serializer(data=data)
@@ -310,8 +321,8 @@ def api_client_factory(db, user_factory):
 
 @pytest.fixture
 def mock_responses():
-    """
-    Fixture for mocking external http request responses
+    """Fixture for mocking external http request responses.
+
     see Responses docs
     https://github.com/getsentry/responses#responses-as-a-pytest-fixture.
     """
@@ -321,6 +332,7 @@ def mock_responses():
 
 @pytest.fixture
 def mock_emanifest_auth_response(request, mock_responses):
+    """Fixture for mocking the RCRAInfo authentication response."""
     api_id, api_key = request.param
     mock_responses.get(
         f"https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/auth/{api_id}/{api_key}",
@@ -330,15 +342,15 @@ def mock_emanifest_auth_response(request, mock_responses):
 
 @pytest.fixture
 def mocker(mocker: pytest_mock.MockerFixture):
-    """
-    Wrapper fixture pytest-mock's mocker fixture for easy type annotations
+    """Wrapper fixture pytest-mock's mocker fixture for easy type annotations.
+
     https://github.com/pytest-dev/pytest-mock.
     """
     return mocker
 
 
 @pytest.fixture
-def user_with_org_factory(
+def user_with_org_factory(  # noqa: PLR0913
     db,
     user_factory,
     org_factory,
@@ -375,6 +387,7 @@ def user_with_org_factory(
 
 @pytest.fixture(autouse=True)
 def use_local_mem_cache_backend(settings):
+    """Fixture to use the local memory cache backend for testing."""
     settings.CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.locmem.LocMemCache",

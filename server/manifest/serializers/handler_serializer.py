@@ -1,9 +1,8 @@
-from typing import Dict
-
-from rest_framework import serializers
+"""Serializers for Handler and Transporter models."""
 
 from manifest.models import Handler, ManifestPhone, Transporter
 from rcrasite.serializers import RcraSiteSerializer
+from rest_framework import serializers
 
 from .signatures import ESignatureSerializer, PaperSignatureSerializer
 
@@ -46,12 +45,15 @@ class HandlerSerializer(RcraSiteSerializer):
     signed = serializers.ReadOnlyField()
 
     def update(self, instance, validated_data: dict):
+        """Update an existing handler."""
         return self.Meta.model.objects.save(instance, **validated_data)
 
     def create(self, validated_data: dict):
+        """Create a new handler."""
         return self.Meta.model.objects.save(None, **validated_data)
 
     def to_representation(self, instance):
+        """Convert model instance to JSON."""
         representation = super().to_representation(instance)
         handler_rep = representation.pop("rcra_site")
         for key in handler_rep:
@@ -59,6 +61,7 @@ class HandlerSerializer(RcraSiteSerializer):
         return representation
 
     def to_internal_value(self, data: dict):
+        """Convert JSON data to internal value."""
         instance = {}
         if "electronicSignaturesInfo" in data:
             instance["electronicSignaturesInfo"] = data.pop("electronicSignaturesInfo")

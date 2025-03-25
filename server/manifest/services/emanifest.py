@@ -1,15 +1,16 @@
+"""Service module for interacting with the e-Manifest system."""
+
 import logging
 from datetime import datetime
-from typing import TYPE_CHECKING, List, Literal, NotRequired, Optional, TypedDict
-
-from django.db import transaction
-from requests import RequestException
+from typing import TYPE_CHECKING, Literal, NotRequired, TypedDict
 
 from core.services import RcraClient, get_rcra_client
+from django.db import transaction
 from manifest.models import Manifest, QuickerSign
 from manifest.serializers import ManifestSerializer, QuickerSignSerializer
 from manifest.services.emanifest_search import EmanifestSearch
 from manifest.tasks import pull_manifest, sign_manifest
+from requests import RequestException
 
 if TYPE_CHECKING:
     from django.db.models import QuerySet
@@ -101,6 +102,7 @@ class EManifest:
         return {"taskId": task.id}
 
     def submit_quick_signature(self, signature: dict) -> PullManifestsResult:
+        """Submit a quicker signature to RCRAInfo."""
         results: PullManifestsResult = {"success": [], "error": []}
         response = self.rcrainfo.sign_manifest(**signature)
         if response.ok:
@@ -126,12 +128,12 @@ class EManifest:
                 self.pull([create_resp.json()["manifestTrackingNumber"]])
                 return create_resp.json()
             raise EManifestError(message=f"error creating manifest: {create_resp.json()}")
-        except KeyError:
+        except KeyError as exc:
             logger.exception(
                 f"error retrieving manifestTrackingNumber from response: {create_resp.json()}",
             )
             msg = "malformed payload"
-            raise EManifestError(msg)
+            raise EManifestError(msg) from exc
 
     @staticmethod
     def _filter_mtn(

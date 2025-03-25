@@ -135,7 +135,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")  # noqa: PTH118
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 

@@ -1,9 +1,10 @@
+"""Service layer for Org and Site models."""
+
 from datetime import UTC, datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from django.db import transaction
 from django.db.models import QuerySet
-
 from manifest.services import TaskResponse
 from manifest.tasks import sync_site_manifests
 from org.models import Org, Site
@@ -43,6 +44,8 @@ def get_rcrainfo_api_credentials_by_user(user_id: str) -> tuple[str, str] | None
 
 
 class SiteServiceError(Exception):
+    """Custom exception for Site service errors."""
+
     def __init__(self, message: str):
         super().__init__(message)
 

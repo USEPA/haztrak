@@ -1,3 +1,5 @@
+"""Manifest model definition."""
+
 import logging
 import re
 from abc import ABC, abstractmethod
@@ -7,7 +9,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q, QuerySet
 from django.utils.translation import gettext_lazy as _
-
 from rcrasite.models import RcraSiteType, RcraStates
 from wasteline.models import WasteLine
 
@@ -36,13 +37,14 @@ class ManifestHandlerFilter(ABC):
 
     @abstractmethod
     def filter_by_epa_id(self, epa_id: str) -> QuerySet:
-        pass
+        """Filter manifests by handler epa_id."""
 
 
 class GeneratorFilter(ManifestHandlerFilter):
     """implementation for filtering manifests by generator."""
 
     def filter_by_epa_id(self, epa_id: str) -> Q:
+        """Filter manifests by generator epa_id."""
         return Q(generator__rcra_site__epa_id=epa_id)
 
 
@@ -50,6 +52,7 @@ class TransporterFilter(ManifestHandlerFilter):
     """implementation for filtering manifests by Transporter."""
 
     def filter_by_epa_id(self, epa_id: str) -> Q:
+        """Filter manifests by transporter epa_id."""
         return Q(transporters__rcra_site__epa_id=epa_id)
 
 
@@ -57,6 +60,7 @@ class TsdfFilter(ManifestHandlerFilter):
     """implementation for filtering manifests by receiving facility."""
 
     def filter_by_epa_id(self, epa_id: str) -> Q:
+        """Filter manifests by tsdf epa_id."""
         return Q(tsdf__rcra_site__epa_id=epa_id)
 
 
@@ -64,6 +68,7 @@ class AllHandlerFilter(ManifestHandlerFilter):
     """implementation for filtering manifests by all handlers types."""
 
     def filter_by_epa_id(self, epa_id: str) -> Q:
+        """Filter manifests by handler epa_id."""
         return Q(
             Q(generator__rcra_site__epa_id=epa_id)
             | Q(tsdf__rcra_site__epa_id=epa_id)
@@ -76,6 +81,7 @@ class HandlerFilterFactory:
 
     @staticmethod
     def get_filter(site_type: RcraSiteType | Literal["all"]):
+        """Factory method to create a ManifestHandlerFilter instance."""
         if site_type == RcraSiteType.GENERATOR:
             return GeneratorFilter()
         if site_type == RcraSiteType.TRANSPORTER:
@@ -135,9 +141,9 @@ class ManifestManager(models.Manager):
                 additional_info=additional_info,
                 **data,
             )
-        except KeyError as e:
-            msg = f"Missing required key {e}"
-            raise ValidationError(msg)
+        except KeyError as exc:
+            msg = f"Missing required key {exc}"
+            raise ValidationError(msg) from exc
 
     @staticmethod
     def update_manifest(instance, **data: dict):
@@ -162,30 +168,31 @@ def manifest_factory(mtn=None, generator=None, tsdf=None, **kwargs):
 class Manifest(models.Model):
     """Model definition the RCRA Uniform Hazardous Waste Manifest."""
 
-    class Meta:
-        """Metaclass."""
-
-        ordering = ["update_date", "mtn"]
-
-    objects = ManifestManager()
-
     class LockReason(models.TextChoices):
+        """Manifest lock reason choices."""
+
         ASYNC_SIGN = "ACS", _("AsyncSign")
         CHANGE_BILLER = "ECB", _("EpaChangeBiller")
         CORRECTION = "EPC", _("EpaCorrection")
 
     class OriginType(models.TextChoices):
+        """Manifest origin type choices."""
+
         WEB = "Web", _("Web")
         SERVICE = "Service", _("Service")
         MAIL = "Mail", _("Mail")
 
     class SubType(models.TextChoices):
+        """Submission type choices."""
+
         ELECTRONIC = "FullElectronic", _("Full Electronic")
         DATA_IMAGE = "DataImage5Copy", _("Data + Image")
         HYBRID = "Hybrid", _("Hybrid")
         IMAGE = "Image", _("Image")
 
     class Status(models.TextChoices):
+        """Manifest status choices."""
+
         NOT_ASSIGNED = "NotAssigned", _("Not Assigned")
         PENDING = "Pending", _("Pending")
         SCHEDULED = "Scheduled", _("Scheduled")
@@ -360,25 +367,29 @@ class Manifest(models.Model):
         blank=True,
     )
 
-    @property
-    def is_draft(self) -> bool:
-        return bool(self.mtn is None or self.mtn.endswith("DFT"))
-
-    def __str__(self):
-        return f"{self.mtn}"
-
-
-class AdditionalInfo(models.Model):
-    """
-    Entity containing Additional Information. Relevant to Both Manifest and individual WastesLines.
-    Shipment rejection related info is stored in this object.
-    """
+    objects = ManifestManager()
 
     class Meta:
         """Metaclass."""
 
-        verbose_name = "Additional Info"
-        verbose_name_plural = "Additional Info"
+        ordering = ["update_date", "mtn"]
+
+    def __str__(self):
+        """Human-readable representation."""
+        return f"{self.mtn}"
+
+    @property
+    def is_draft(self) -> bool:
+        """Check if the manifest is a draft."""
+        return bool(self.mtn is None or self.mtn.endswith("DFT"))
+
+
+class AdditionalInfo(models.Model):
+    """Entity containing Additional Information.
+
+    Relevant to Both Manifest and individual WastesLines.
+    Shipment rejection related info is stored in this object.
+    """
 
     class NewDestination(models.TextChoices):
         """Shipment destination choices upon rejection."""
@@ -417,18 +428,19 @@ class AdditionalInfo(models.Model):
         help_text="Special Handling Instructions",
     )
 
+    class Meta:
+        """Metaclass."""
+
+        verbose_name = "Additional Info"
+        verbose_name_plural = "Additional Info"
+
     def __str__(self):
+        """Human-readable representation."""
         return f"{self.original_mtn or 'Unknown'}"
 
 
 class PortOfEntry(models.Model):
     """location of where hazardous waste is imported or exported."""
-
-    class Meta:
-        """Metaclass."""
-
-        verbose_name = "Port of Entry"
-        verbose_name_plural = "Ports of Entry"
 
     state = models.CharField(
         choices=RcraStates.choices,
@@ -441,3 +453,13 @@ class PortOfEntry(models.Model):
         null=True,
         blank=True,
     )
+
+    class Meta:
+        """Metaclass."""
+
+        verbose_name = "Port of Entry"
+        verbose_name_plural = "Ports of Entry"
+
+    def __str__(self):
+        """Human-readable representation."""
+        return f"{self.city_port}, {self.state}"

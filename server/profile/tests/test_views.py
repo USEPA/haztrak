@@ -37,7 +37,7 @@ class TestProfileViewSet:
 
     @pytest.mark.skip(reason="Not implemented")
     def test_updates_profile_image(self, api_client, profile, generate_photo_file):
-        # TODO(David): Implement this test - I keep getting a 500 internal server error  # noqa: TD003
+        # TODO(David): Implement this test - I keep getting a 500 internal server error
         #  even though I can successfully use this endpoint
         api_client.login(username="testuser", password="password")  # noqa: S106
         url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.id})

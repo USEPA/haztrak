@@ -1,9 +1,9 @@
+"""Celery tasks for the manifest app."""
+
 import logging
-from typing import Dict, List
 
 from celery import Task, shared_task, states
 from celery.exceptions import Ignore, Reject
-
 from core.services import get_rcra_client
 
 logger = logging.getLogger(__name__)
@@ -15,20 +15,22 @@ def pull_manifest(self: Task, *, mtn: list[str], username: str) -> dict:
     from core.services import TaskService
     from manifest.services import EManifest
 
-    logger.info(f"start task {self.name}, manifest {mtn}")
+    msg = f"start task: {self.name}, manifest: {mtn}"
+    logger.info(msg)
     task_status = TaskService(task_id=self.request.id, task_name=self.name, status="STARTED")
     try:
         emanifest = EManifest(username=username)
         results = emanifest.pull(tracking_numbers=mtn)
         task_status.update_task_status(status="SUCCESS", results=results)
-        return results
-    except (ConnectionError, TimeoutError):
+    except (ConnectionError, TimeoutError) as exc:
         task_status.update_task_status(status="FAILURE")
-        raise Reject
+        raise Reject from exc
     except Exception as exc:
         task_status.update_task_status(status="FAILURE")
         self.update_state(state=states.FAILURE, meta={"unknown error": str(exc)})
-        raise Ignore
+        raise Ignore from exc
+    else:
+        return results
 
 
 @shared_task(name="sign manifests", bind=True, acks_late=True)
@@ -45,10 +47,10 @@ def sign_manifest(
         emanifest = EManifest(username=username)
         return emanifest.submit_quick_signature(signature_data)
     except (ConnectionError, TimeoutError) as exc:
-        raise Reject(exc)  # To Do: add retry logic
+        raise Reject(exc) from exc  # To Do: add retry logic
     except Exception as exc:
         self.update_state(state=states.FAILURE, meta={"unknown error": f"{exc}"})
-        raise Ignore
+        raise Ignore from exc
 
 
 @shared_task(name="sync site manifests", bind=True)
@@ -66,16 +68,19 @@ def sync_site_manifests(self, *, site_id: str, username: str):
             rcra_client=client,
         )
         update_emanifest_sync_date(site=site)
-        return results
     except Exception as exc:
-        logger.exception(f"failed to sync {site_id} manifest")
+        msg = f"failed to sync {site_id} manifest: {exc}"
+        logger.exception(msg)
         self.update_state(state=states.FAILURE, meta={f"error: {exc}"})
-        raise Ignore
+        raise Ignore from exc
+    else:
+        return results
 
 
 @shared_task(name="save RCRAInfo manifests", bind=True)
 def save_to_emanifest(self, *, manifest_data: dict, username: str):
-    """
+    """Save manifest data to the EManifest.
+
     Asynchronous task to use the RCRAInfo web services to create an electronic (RCRA) manifest
     it accepts a Python dict of the manifest data to be submitted as JSON, and the username of the
     user who is creating the manifest.
@@ -83,7 +88,8 @@ def save_to_emanifest(self, *, manifest_data: dict, username: str):
     from core.services import TaskService
     from manifest.services import EManifest, EManifestError
 
-    logger.info(f"start task: {self.name}")
+    msg = f"start task: {self.name}"
+    logger.info(msg)
     task_status = TaskService(task_id=self.request.id, task_name=self.name, status="STARTED")
     try:
         emanifest = EManifest(username=username)
@@ -92,12 +98,14 @@ def save_to_emanifest(self, *, manifest_data: dict, username: str):
             task_status.update_task_status(status="SUCCESS", results=new_manifest)
             return new_manifest
         msg = "error creating manifest"
-        raise EManifestError(msg)
+        raise EManifestError(msg)  # noqa: TRY301
     except EManifestError as exc:
-        logger.exception(f"failed to create manifest ({manifest_data}): {exc.message}")
+        msg = f"failed to create manifest ({manifest_data}): {exc.message}"
+        logger.exception(msg)
         task_status.update_task_status(status="FAILURE", results=exc.message)
         return {"error": exc.message}
     except Exception as exc:
-        logger.exception("error: ", exc)
+        msg = f"Internal Error: {exc}"
+        logger.exception(msg)
         task_status.update_task_status(status="FAILURE", results={"result": str(exc)})
         return {"error": f"Internal Error: {exc}"}

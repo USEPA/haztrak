@@ -1,7 +1,6 @@
-import logging
-from typing import Dict
+"""Serializers for Manifest models."""
 
-from rest_framework import serializers
+import logging
 
 from manifest.models import (
     AdditionalInfo,
@@ -14,6 +13,7 @@ from manifest.serializers import (
     TransporterSerializer,
 )
 from rcrasite.models import RcraStates
+from rest_framework import serializers
 from wasteline.serializers import (
     WasteLineSerializer,
 )
@@ -24,6 +24,8 @@ logger = logging.getLogger(__name__)
 
 
 class AdditionalInfoSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
+    """Additional Info serializer."""
+
     originalManifestTrackingNumbers = serializers.JSONField(
         allow_null=True,
         required=False,
@@ -188,12 +190,15 @@ class ManifestSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
     )
 
     def update(self, instance: Manifest, validated_data: dict) -> Manifest:
+        """Update an existing Manifest instance."""
         return self.Meta.model.objects.save(instance, **validated_data)
 
     def create(self, validated_data: dict) -> Manifest:
+        """Create a new Manifest instance."""
         return self.Meta.model.objects.save(None, **validated_data)
 
     def validate(self, data):
+        """Ensure that 'mtn' is not empty when 'status' is 'NotAssigned'."""
         if data["mtn"] == "" and data["status"] == "NotAssigned":
             data["mtn"] = draft_mtn()
         return super().validate(data)
@@ -210,9 +215,10 @@ class ManifestSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
         instance = super().to_internal_value(data)
         try:
             instance["import_flag"] = data.get("import")
-            return instance
         except KeyError:
             instance["import_flag"] = False
+            return instance
+        else:
             return instance
 
     class Meta:
@@ -296,6 +302,8 @@ class MtnSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = Manifest
         fields = [
             "manifestTrackingNumber",

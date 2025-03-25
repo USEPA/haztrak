@@ -1,3 +1,5 @@
+"""Emanifest search service."""
+
 from datetime import UTC, datetime, timedelta, timezone
 from typing import Literal, Optional, get_args
 
@@ -24,6 +26,8 @@ RCRAINFO_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
 
 class EmanifestSearch:
+    """Emanifest search class."""
+
     def __init__(self, rcra_client: RcraClient | None = None):
         self._rcra_client = rcra_client or RcraClient()
         self.state_code: str | None = None
@@ -37,6 +41,7 @@ class EmanifestSearch:
 
     @property
     def rcra_client(self):
+        """Return the RCRA client."""
         if not self._rcra_client:
             self._rcra_client = RcraClient()
         return self._rcra_client
@@ -51,11 +56,13 @@ class EmanifestSearch:
 
     @staticmethod
     def _valid_state_code(state_code) -> bool:
-        return len(state_code) == 2 and state_code.isalpha()
+        state_code_len = 2
+        return len(state_code) == state_code_len and state_code.isalpha()
 
     @staticmethod
     def _valid_site_id(site_id: str) -> bool:
-        return len(site_id) > 2 and site_id.isalnum()
+        state_code_len = 2
+        return len(site_id) > state_code_len and site_id.isalnum()
 
     @classmethod
     def _emanifest_status(cls, status) -> bool:
@@ -102,6 +109,7 @@ class EmanifestSearch:
         return str_date[:-8] + "Z"
 
     def build_search_args(self):
+        """Build the search parameters for the manifest search."""
         search_params = {
             "stateCode": self.state_code,
             "siteId": self.site_id,
@@ -114,6 +122,7 @@ class EmanifestSearch:
         return {k: v for k, v in search_params.items() if v is not None}
 
     def add_state_code(self, state: str):
+        """Add state code to search."""
         if not self._valid_state_code(state):
             msg = "Invalid State code"
             raise ValueError(msg)
@@ -121,6 +130,7 @@ class EmanifestSearch:
         return self
 
     def add_site_id(self, site_id: str):
+        """Add site ID to search."""
         if not self._valid_site_id(site_id):
             msg = "Invalid Site ID"
             raise ValueError(msg)
@@ -128,6 +138,7 @@ class EmanifestSearch:
         return self
 
     def add_status(self, status: EmanifestStatus):
+        """Add status to search."""
         if not self._emanifest_status(status):
             msg = "Invalid Status"
             raise ValueError(msg)
@@ -135,6 +146,7 @@ class EmanifestSearch:
         return self
 
     def add_site_type(self, site_type: SiteType):
+        """Add site type to search."""
         if not self._emanifest_site_type(site_type):
             msg = "Invalid Site Type"
             raise ValueError(msg)
@@ -142,6 +154,7 @@ class EmanifestSearch:
         return self
 
     def add_date_type(self, date_type: DateType):
+        """Add Date Type."""
         if not self._emanifest_date_type(date_type):
             msg = "Invalid Date Type"
             raise ValueError(msg)
@@ -149,6 +162,7 @@ class EmanifestSearch:
         return self
 
     def add_correction_request_status(self, correction_request_status: CorrectionRequestStatus):
+        """Correction Request Status."""
         if not self._emanifest_correction_request_status(correction_request_status):
             msg = "Invalid Correction Request Status"
             raise ValueError(msg)
@@ -166,8 +180,10 @@ class EmanifestSearch:
         return self
 
     def output(self):
+        """Return the current search parameters."""
         return self.build_search_args()
 
     def execute(self):
+        """Execute the search with the current search parameters."""
         search_args = self.build_search_args()
         return self._rcra_client.search_mtn(**search_args)

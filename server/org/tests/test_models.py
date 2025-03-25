@@ -1,6 +1,5 @@
 import pytest
 from django.db.models import QuerySet
-
 from org.models import Org, Site
 
 
@@ -69,6 +68,8 @@ class TestOrgModel:
         assert org.is_rcrainfo_integrated
 
     class TestGetUserOrg:
+        """Tests for the Org.objects.get_by_username method."""
+
         def test_get_user_org(self, user_factory, org_factory, perm_factory):
             user = user_factory()
             org = org_factory()
@@ -123,7 +124,7 @@ class TestSiteManager:
     def test_filter_sites_by_username(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
-        # TODO, our model managers should not be concerned with permissions
+        # TODO(David): our model managers should not be concerned with permissions
         perm_factory(user, ["org.view_site"], site)
         other_site = site_factory()
         sites = Site.objects.filter_by_username(user.username)
@@ -134,7 +135,7 @@ class TestSiteManager:
         user = user_factory()
         site = site_factory()
         other_site = site_factory()
-        # TODO, our model managers should not be concerned with permissions
+        # TODO(David): our model managers should not be concerned with permissions
         perm_factory(user, ["org.view_site"], site)
         sites = Site.objects.filter_by_user(user)
         assert site in sites
@@ -153,7 +154,7 @@ class TestSiteManager:
     def test_get_user_site(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
-        # TODO, our model managers should not be concerned with permissions
+        # TODO(David): our model managers should not be concerned with permissions
         perm_factory(user, ["org.view_site"], site)
         returned_site = Site.objects.get_by_user_and_epa_id(user, site.rcra_site.epa_id)
         assert isinstance(returned_site, Site)
@@ -171,7 +172,7 @@ class TestSiteManager:
     def test_get_by_username_and_epa_id(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
-        # TODO, our model managers should not be concerned with permissions
+        # TODO(David): our model managers should not be concerned with permissions
         perm_factory(user, ["org.view_site"], site)
         returned_site = Site.objects.get_by_username_and_epa_id(
             user.username,
@@ -189,7 +190,7 @@ class TestSiteManager:
     def test_combining_query_interfaces(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
-        # TODO, our model managers should not be concerned with permissions
+        # TODO(David): our model managers should not be concerned with permissions
         perm_factory(user, ["org.view_site"], site)
         returned_site = Site.objects.filter_by_username(user.username).get_by_epa_id(
             site.rcra_site.epa_id,

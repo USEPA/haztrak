@@ -4,7 +4,7 @@ from manifest.services import create_manifest, get_manifests
 
 
 class TestGetManifestService:
-    # TODO: fix transaction related to this test
+    # TODO(David): fix transaction related to this test
     def test_returns_manifests_from_all_user_sites_by_default(
         self,
         manifest_factory,
