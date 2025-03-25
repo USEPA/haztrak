@@ -1,15 +1,17 @@
-from profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
+"""Profile serializer."""
 
-from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
+from profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 
 from core.serializers import TrakUserSerializer
 from manifest.serializers.mixins import RemoveEmptyFieldsMixin
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 
 class RcraSitePermissionSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
-    """We use this internally because it's easier to handle, using consistent naming,
-    Haztrak has a separate serializer for user permissions from RCRAInfo.
+    """We use this internally because it's easier to handle,
+
+    Using consistent naming,Haztrak has a separate serializer for user permissions from RCRAInfo.
     """
 
     rcrainfo_modules = [
@@ -118,7 +120,7 @@ class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
     )
 
     def to_internal_value(self, data):
-        """This converts a RCRAInfo permissions into Haztrak's internal representation."""
+        """Converts a RCRAInfo permissions into Haztrak's internal representation."""
         try:
             data.pop("siteName")
             permissions = data.pop("permissions")
@@ -128,9 +130,11 @@ class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
             return super().to_internal_value(data)
         except KeyError as exc:
             msg = f"malformed JSON: {exc}"
-            raise ValidationError(msg)
+            raise ValidationError(msg) from exc
 
     class Meta:
+        """Metaclass."""
+
         model = RcrainfoSiteAccess
         fields = [
             "siteId",
@@ -149,6 +153,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     user = TrakUserSerializer(read_only=True)
 
     class Meta:
+        """Metaclass."""
+
         model = Profile
         fields = [
             "user",
@@ -195,6 +201,8 @@ class RcrainfoProfileSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = RcrainfoProfile
         fields = [
             "user",

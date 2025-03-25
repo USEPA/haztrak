@@ -1,9 +1,9 @@
 from typing import Dict
 
+from rcrasite.serializers import RcraSiteSerializer
 from rest_framework import serializers
 
 from manifest.models import Handler, ManifestPhone, Transporter
-from rcrasite.serializers import RcraSiteSerializer
 
 from .signatures import ESignatureSerializer, PaperSignatureSerializer
 
@@ -20,6 +20,8 @@ class ManifestPhoneSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = ManifestPhone
         fields = ["number", "extension"]
 
@@ -70,6 +72,8 @@ class HandlerSerializer(RcraSiteSerializer):
         return super().to_internal_value(instance)
 
     class Meta:
+        """Metaclass."""
+
         model = Handler
         fields = [
             "rcra_site",
@@ -84,6 +88,8 @@ class TransporterSerializer(HandlerSerializer):
     """Transporter model serializer for JSON marshalling/unmarshalling."""
 
     class Meta:
+        """Metaclass."""
+
         model = Transporter
         fields = [
             "rcra_site",

@@ -1,7 +1,11 @@
 import logging
 from typing import Dict
 
+from rcrasite.models import RcraStates
 from rest_framework import serializers
+from wasteline.serializers import (
+    WasteLineSerializer,
+)
 
 from manifest.models import (
     AdditionalInfo,
@@ -12,10 +16,6 @@ from manifest.models import (
 from manifest.serializers import (
     HandlerSerializer,
     TransporterSerializer,
-)
-from rcrasite.models import RcraStates
-from wasteline.serializers import (
-    WasteLineSerializer,
 )
 
 from .mixins import RemoveEmptyFieldsMixin
@@ -53,6 +53,8 @@ class AdditionalInfoSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializ
     )
 
     class Meta:
+        """Metaclass."""
+
         model = AdditionalInfo
         fields = (
             "originalManifestTrackingNumbers",
@@ -214,6 +216,8 @@ class ManifestSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
             return instance
 
     class Meta:
+        """Metaclass."""
+
         model = Manifest
         fields = [
             "createdDate",
@@ -267,6 +271,8 @@ class PortOfEntrySerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer)
     )
 
     class Meta:
+        """Metaclass."""
+
         model = PortOfEntry
         fields = ["state", "cityPort"]
 

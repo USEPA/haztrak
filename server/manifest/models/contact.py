@@ -20,6 +20,8 @@ class ManifestPhone(models.Model):
     """RCRAInfo representation of phone numbers on a manifest."""
 
     class Meta:
+        """Metaclass."""
+
         ordering = ["number"]
 
     number = ManifestPhoneNumber(

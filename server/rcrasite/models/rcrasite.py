@@ -75,7 +75,7 @@ class RcraSiteManager(models.Manager):
             address = self.handler_data.pop(key)
             if isinstance(address, Address):
                 return address
-            return Address.objects.create(**address)  # type: ignore
+            return Address.objects.create(**address)
         except KeyError as exc:
             logger.warning(exc)
             raise ValidationError(exc) from exc

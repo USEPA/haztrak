@@ -26,6 +26,8 @@ class TrakUserSerializer(ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = TrakUser
         fields = [
             "id",
@@ -62,6 +64,8 @@ class TaskResultSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = TaskResult
         fields = [
             "taskId",

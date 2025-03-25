@@ -2,11 +2,11 @@ import datetime
 from datetime import timezone
 from typing import Dict
 
+from rcrasite.serializers import RcraPhoneSerializer
 from rest_framework import serializers
 
 from manifest.models import ESignature, PaperSignature, QuickerSign, Signer
 from manifest.serializers.mixins import RemoveEmptyFieldsMixin
-from rcrasite.serializers import RcraPhoneSerializer
 
 
 class QuickerSignSerializer(serializers.Serializer):
@@ -61,6 +61,8 @@ class QuickerSignSerializer(serializers.Serializer):
         return self.Meta.model(**validated_data)
 
     class Meta:
+        """Metaclass."""
+
         model = QuickerSign
         fields = [
             "manifestTrackingNumbers",
@@ -111,6 +113,8 @@ class SignerSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = Signer
         fields = [
             "userId",
@@ -159,6 +163,8 @@ class ESignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
         return self.Meta.model.objects.save(**validated_data)
 
     class Meta:
+        """Metaclass."""
+
         model = ESignature
         fields = [
             "signer",
@@ -191,6 +197,8 @@ class PaperSignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializ
         return super().create(**validated_data)
 
     class Meta:
+        """Metaclass."""
+
         model = PaperSignature
         fields = [
             "printedName",

@@ -19,7 +19,7 @@ class TestTrakProfileSerializer:
 
 
 class TestRcraSitePermissionSerializer:
-    """This Test suite is for haztrak's internal record of user's RCRAInfo site permissions."""
+    """Test suite is for haztrak's internal record of user's RCRAInfo site permissions."""
 
     @pytest.fixture(autouse=True)
     def _permissions(self, rcrainfo_site_access_factory):
@@ -41,8 +41,7 @@ class TestRcraSitePermissionSerializer:
 
 
 class TestRcrainfoSitePermissionSerializer:
-    """This Test suite is for Haztrak's serializer for communication with
-    RCRAInfo for a user's site permissions.
+    """Test suite is for Haztrak's serializer for communication with RCRAInfo site perms.
 
     We don't use EPaPermissionSerializer to communicate internally, so
     currently we don't serialize, only deserialize

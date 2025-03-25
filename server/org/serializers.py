@@ -1,8 +1,8 @@
+from rcrasite.serializers import RcraSiteSerializer
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from org.models import Org, Site
-from rcrasite.serializers import RcraSiteSerializer
 
 
 class OrgSerializer(ModelSerializer):
@@ -23,6 +23,8 @@ class OrgSerializer(ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = Org
         fields = [
             "name",
@@ -43,5 +45,7 @@ class SiteSerializer(ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = Site
         fields = ["name", "handler"]

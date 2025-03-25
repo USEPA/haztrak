@@ -11,9 +11,13 @@ class Signer(models.Model):
     """EPA manifest signer definition."""
 
     class Meta:
+        """Metaclass."""
+
         ordering = ["first_name"]
 
     class Role(models.TextChoices):
+        """Signer Role choices."""
+
         INDUSTRY = "Industry"
         PPC = "PPC"
         EPA = "EPA"
@@ -95,6 +99,8 @@ class ESignature(models.Model):
     """EPA electronic signature."""
 
     class Meta:
+        """Metaclass."""
+
         verbose_name = "e-Signature"
         ordering = ["sign_date"]
 
