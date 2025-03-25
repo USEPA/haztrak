@@ -18,7 +18,7 @@ license = { text = "MIT" }
 requires-python = ">=3.12"
 
 dependencies = [
-    "Django==5.1.5",
+    "django==5.1.5",
     "django-celery-results==2.5.1",
     "django-cors-headers==4.4.0",
     "django-extensions==3.2.3",
@@ -35,7 +35,7 @@ dependencies = [
     "redis==5.1.0",
     "drf-spectacular==0.27.2",
     "django-health-check==3.18.3",
-    "dj-rest-auth[with_social]==6.0.0",
+    "dj-rest-auth[with-social]==6.0.0",
     "django-guardian==2.4.0",
     "django-allauth==0.61.1",
     "djangorestframework-simplejwt==5.3.1",
