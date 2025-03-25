@@ -33,7 +33,7 @@ urlpatterns = [
             [
                 path("code/", include(code_patterns)),
                 path("dot/", include(dot_patterns)),
-            ]
+            ],
         ),
     ),
 ]

@@ -23,7 +23,11 @@ class TestOrgServices:
         assert retrieved_org == created_org
 
     def test_get_organization_stored_rcrainfo_api_credentials(
-        self, org_factory, rcrainfo_profile_factory, user_factory, profile_factory
+        self,
+        org_factory,
+        rcrainfo_profile_factory,
+        user_factory,
+        profile_factory,
     ):
         my_org_uuid = uuid.uuid4()
         my_api_id = "my_api_id"
@@ -32,7 +36,8 @@ class TestOrgServices:
         profile_factory(
             user=admin_user,
             rcrainfo_profile=rcrainfo_profile_factory(
-                rcra_api_id=my_api_id, rcra_api_key=my_api_key
+                rcra_api_id=my_api_id,
+                rcra_api_key=my_api_key,
             ),
         )
         org_factory(org_id=my_org_uuid, admin=admin_user)

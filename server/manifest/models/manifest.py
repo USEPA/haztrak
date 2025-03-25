@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def draft_mtn():
-    """returns a timestamped draft MTN in lieu of an official MTN from e-Manifest"""
+    """Returns a timestamped draft MTN in lieu of an official MTN from e-Manifest"""
     mtn_count: int = Manifest.objects.all().count()
     return f"{str(mtn_count).zfill(9)}DFT"
 
@@ -66,7 +66,7 @@ class AllHandlerFilter(ManifestHandlerFilter):
         return Q(
             Q(generator__rcra_site__epa_id=epa_id)
             | Q(tsdf__rcra_site__epa_id=epa_id)
-            | Q(transporters__rcra_site__epa_id=epa_id)
+            | Q(transporters__rcra_site__epa_id=epa_id),
         )
 
 
@@ -77,25 +77,26 @@ class HandlerFilterFactory:
     def get_filter(site_type: RcraSiteType | Literal["all"]):
         if site_type == RcraSiteType.GENERATOR:
             return GeneratorFilter()
-        elif site_type == RcraSiteType.TRANSPORTER:
+        if site_type == RcraSiteType.TRANSPORTER:
             return TransporterFilter()
-        elif site_type == RcraSiteType.TSDF:
+        if site_type == RcraSiteType.TSDF:
             return TsdfFilter()
-        elif site_type == "all":
+        if site_type == "all":
             return AllHandlerFilter()
-        else:
-            raise ValueError(f"unrecognized site_type argument {site_type}")
+        raise ValueError(f"unrecognized site_type argument {site_type}")
 
 
 class ManifestManager(models.Manager):
     """Manifest repository manager"""
 
-    def filter_existing_mtn(self, mtn: List[str]) -> QuerySet:
+    def filter_existing_mtn(self, mtn: list[str]) -> QuerySet:
         """Filter non-existent manifest tracking numbers (MTN)."""
         return self.model.objects.filter(mtn__in=mtn)
 
     def filter_by_epa_id_and_site_type(
-        self, epa_ids: [str], site_type: RcraSiteType | Literal["all"] = "all"
+        self,
+        epa_ids: [str],
+        site_type: RcraSiteType | Literal["all"] = "all",
     ) -> QuerySet:
         """Filter manifests by site_id and site_type"""
         handler_filter = HandlerFilterFactory.get_filter(site_type)
@@ -366,8 +367,7 @@ class Manifest(models.Model):
 
 
 class AdditionalInfo(models.Model):
-    """
-    Entity containing Additional Information. Relevant to Both Manifest and individual WastesLines.
+    """Entity containing Additional Information. Relevant to Both Manifest and individual WastesLines.
     Shipment rejection related info is stored in this object.
     """
 

@@ -48,7 +48,7 @@ class SiteServiceError(Exception):
 
 
 @transaction.atomic
-def update_emanifest_sync_date(site: Site, last_sync_date: Optional[datetime] = None):
+def update_emanifest_sync_date(site: Site, last_sync_date: datetime | None = None):
     """Update the last sync date for a site. Defaults to now if no date is provided."""
     if last_sync_date is not None:
         site.last_rcrainfo_manifest_sync = last_sync_date
@@ -90,7 +90,9 @@ def filter_sites_by_username_and_epa_id(username: str, epa_ids: [str]) -> [Site]
 
 
 def sync_site_manifest_with_rcrainfo(
-    *, username: str, site_id: Optional[str] = None
+    *,
+    username: str,
+    site_id: str | None = None,
 ) -> TaskResponse:
     """Launch a batch processing task to sync a site's manifests from RCRAInfo"""
     task = sync_site_manifests.delay(site_id=site_id, username=username)

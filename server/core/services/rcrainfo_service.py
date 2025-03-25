@@ -12,8 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class RcraClient(RcrainfoClient):
-    """
-    RcraClient is our IO interface for communicating with the EPA RCRAInfo
+    """RcraClient is our IO interface for communicating with the EPA RCRAInfo
     web services.
     """
 
@@ -22,10 +21,10 @@ class RcraClient(RcrainfoClient):
     def __init__(
         self,
         *,
-        rcra_profile: Optional[RcrainfoProfile] = None,
-        api_id: Optional[str] = None,
-        api_key: Optional[str] = None,
-        rcrainfo_env: Optional[Literal["preprod"] | Literal["prod"]] = None,
+        rcra_profile: RcrainfoProfile | None = None,
+        api_id: str | None = None,
+        api_key: str | None = None,
+        rcrainfo_env: Literal["preprod", "prod"] | None = None,
         **kwargs,
     ):
         self.profile: RcrainfoProfile | None = rcra_profile
@@ -39,14 +38,14 @@ class RcraClient(RcrainfoClient):
 
     @property
     def has_rcrainfo_credentials(self) -> bool:
-        """returns boolean if the assigned API user has credentials"""
+        """Returns boolean if the assigned API user has credentials"""
         try:
             return self.profile.has_rcrainfo_api_id_key
         except AttributeError:
             return self.api_id is not None and self.api_key is not None
 
     def __repr__(self):
-        return f"<{self.__class__.__name__}" f"rcrainfo_env='{self.rcrainfo_env}')>"
+        return f"<{self.__class__.__name__}rcrainfo_env='{self.rcrainfo_env}')>"
 
     def retrieve_id(self, api_id=None) -> str:
         """Override RcrainfoClient method to retrieve API ID for authentication"""
@@ -61,18 +60,17 @@ class RcraClient(RcrainfoClient):
         return super().retrieve_key()
 
     def get_user_rcrainfo_profile(
-        self, rcrainfo_username: Optional[str] = None
+        self,
+        rcrainfo_username: str | None = None,
     ) -> RcrainfoResponse:
-        """
-        Retrieve a user's site permissions from RCRAInfo, It expects the
+        """Retrieve a user's site permissions from RCRAInfo, It expects the
         haztrak user to have their unique RCRAInfo user and API credentials in their
         RcrainfoProfile
         """
         return self.search_users(userId=rcrainfo_username)
 
     def sync_federal_waste_codes(self):
-        """
-        Pull all federal waste codes from RCRAInfo and save
+        """Pull all federal waste codes from RCRAInfo and save
 
         We only create waste codes, they are not removed if a waste code was eliminated in the regs
         """
@@ -83,19 +81,16 @@ class RcraClient(RcrainfoClient):
             except IntegrityError:
                 # If a waste code already exists
                 WasteCode.federal.update(code_type=WasteCode.CodeType.FEDERAL, **federal_code)
-                pass
 
     def sign_manifest(self, **sign_data):
-        """
-        Utilizes RcraInfo's Quicker Sign endpoint to electronically sign manifest(s)
+        """Utilizes RcraInfo's Quicker Sign endpoint to electronically sign manifest(s)
         we override the e-Manifest package's sign_manifest function to validate inputs.
         """
         sign_data = {k: v for k, v in sign_data.items() if v is not None}
         return super().sign_manifest(**sign_data)
 
     def __bool__(self):
-        """
-        This Overrides the RcrainfoClient bool
+        """This Overrides the RcrainfoClient bool
         we use this to test a RcraClient instance is not None
         """
         return True
@@ -103,10 +98,10 @@ class RcraClient(RcrainfoClient):
 
 def get_rcra_client(
     *,
-    username: Optional[str] = None,
-    api_id: Optional[str] = None,
-    api_key: Optional[str] = None,
-    rcrainfo_env: Optional[Literal["preprod"] | Literal["prod"]] = None,
+    username: str | None = None,
+    api_id: str | None = None,
+    api_key: str | None = None,
+    rcrainfo_env: Literal["preprod", "prod"] | None = None,
     **kwargs,
 ) -> RcraClient:
     """RcraClient Constructor for interacting with RCRAInfo web services"""
@@ -130,5 +125,5 @@ def get_rcra_client(
     except Org.DoesNotExist:
         raise ValueError(
             "If not using an organization with RCRAInfo credentials, "
-            "you must provide api_id and api_key"
+            "you must provide api_id and api_key",
         )

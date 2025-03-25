@@ -29,9 +29,7 @@ class TestRcraSiteView:
 
 
 class TestRcraSiteSearchView:
-    """
-    Tests for the RcraSite Search endpoint
-    """
+    """Tests for the RcraSite Search endpoint"""
 
     URL = reverse("rcrasite:search")
 
@@ -83,7 +81,9 @@ class TestRcraSiteSearchView:
             assert handler_data["siteType"] == RcraSiteType.TSDF
 
     def test_endpoint_returns_200_if_bad_query_params(
-        self, user_factory, rcra_site_factory
+        self,
+        user_factory,
+        rcra_site_factory,
     ) -> None:
         """Use APIClient to ensure our HTTP response meets spec"""
         # Arrange

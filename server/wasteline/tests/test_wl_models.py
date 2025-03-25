@@ -6,8 +6,7 @@ from wasteline.models import DotLookup, DotLookupType, WasteCode
 
 @pytest.mark.django_db
 class TestWasteCodesModel:
-    """
-    Test WasteCode model, something to keep in mind is we use django data
+    """Test WasteCode model, something to keep in mind is we use django data
     migrations to populate the database with initial waste codes.
     """
 
@@ -66,10 +65,14 @@ class TestWasteCodesModel:
 
     def test_filter_state_waste_codes_by_state_id(self, waste_code_factory) -> None:
         va_code = waste_code_factory(
-            code="b123", code_type=WasteCode.CodeType.STATE, state_id="VA"
+            code="b123",
+            code_type=WasteCode.CodeType.STATE,
+            state_id="VA",
         )
         tx_code = waste_code_factory(
-            code="c321", code_type=WasteCode.CodeType.STATE, state_id="TX"
+            code="c321",
+            code_type=WasteCode.CodeType.STATE,
+            state_id="TX",
         )
         filtered_codes = WasteCode.state.filter_by_state_id("VA")
         assert va_code in filtered_codes

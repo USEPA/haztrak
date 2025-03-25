@@ -15,11 +15,13 @@ class TestEmanifestSearchClass:
 
     @pytest.mark.parametrize("mock_emanifest_auth_response", [["foo", "foo"]], indirect=True)
     def test_execute_sends_a_request_to_rcrainfo(
-        self, mock_responses, mock_emanifest_auth_response
+        self,
+        mock_responses,
+        mock_emanifest_auth_response,
     ):
         stub_rcra_client = RcraClient(rcrainfo_env="preprod", api_key="foo", api_id="foo")
         mock_responses.post(
-            "https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/emanifest/search"
+            "https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/emanifest/search",
         )
         result = EmanifestSearch(stub_rcra_client).execute()
         assert result.status_code == 200
@@ -28,10 +30,10 @@ class TestEmanifestSearchClass:
     def test_search_builds_json(self, mock_responses, mock_emanifest_auth_response):
         stub_rcra_client = RcraClient(rcrainfo_env="preprod", api_key="foo", api_id="foo")
         mock_responses.post(
-            "https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/emanifest/search"
+            "https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/emanifest/search",
         )
         EmanifestSearch(stub_rcra_client).add_state_code("CA").add_site_type(
-            "Generator"
+            "Generator",
         ).add_site_id("VATESTGEN001").execute()
         for call in mock_responses.calls:
             if "emanifest/search" in call.request.url:
@@ -60,7 +62,7 @@ class TestEmanifestSearchClass:
 
         def test_error_raised_with_invalid_status(self):
             with pytest.raises(ValueError):
-                EmanifestSearch().add_status("InvalidStatus")  # noqa
+                EmanifestSearch().add_status("InvalidStatus")
 
     class TestBuildSearchWithSiteId:
         def test_add_site_id(self):
@@ -80,7 +82,7 @@ class TestEmanifestSearchClass:
 
         def test_error_raised_with_invalid_site_type(self):
             with pytest.raises(ValueError):
-                EmanifestSearch().add_site_type("InvalidSiteType")  # noqa
+                EmanifestSearch().add_site_type("InvalidSiteType")
 
     class TestBuildSearchWithDateType:
         def test_add_date_type(self):
@@ -89,7 +91,7 @@ class TestEmanifestSearchClass:
 
         def test_raises_error_with_invalid_date_type(self):
             with pytest.raises(ValueError):
-                EmanifestSearch().add_date_type("InvalidDateType")  # noqa
+                EmanifestSearch().add_date_type("InvalidDateType")
 
     class TestBuildSearchWithDates:
         def test_add_start_date(self):
@@ -115,4 +117,4 @@ class TestEmanifestSearchClass:
 
         def test_error_raised_with_invalid_correction_request_status(self):
             with pytest.raises(ValueError):
-                EmanifestSearch().add_correction_request_status("InvalidStatus")  # noqa
+                EmanifestSearch().add_correction_request_status("InvalidStatus")

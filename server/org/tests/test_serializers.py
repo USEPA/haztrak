@@ -3,7 +3,11 @@ from org.serializers import OrgSerializer
 
 class TestOrgSerializer:
     def test_rcrainfo_integrated_is_true(
-        self, org_factory, profile_factory, rcrainfo_profile_factory, user_factory
+        self,
+        org_factory,
+        profile_factory,
+        rcrainfo_profile_factory,
+        user_factory,
     ):
         admin = user_factory()
         rcra_profile = rcrainfo_profile_factory(
@@ -16,7 +20,11 @@ class TestOrgSerializer:
         assert serializer.data["rcrainfoIntegrated"] is True
 
     def test_rcrainfo_integrated_is_false(
-        self, org_factory, profile_factory, rcrainfo_profile_factory, user_factory
+        self,
+        org_factory,
+        profile_factory,
+        rcrainfo_profile_factory,
+        user_factory,
     ):
         admin = user_factory()
         rcra_profile = rcrainfo_profile_factory(

@@ -43,10 +43,10 @@ class HandlerSerializer(RcraSiteSerializer):
     )
     signed = serializers.ReadOnlyField()
 
-    def update(self, instance, validated_data: Dict):
+    def update(self, instance, validated_data: dict):
         return self.Meta.model.objects.save(instance, **validated_data)
 
-    def create(self, validated_data: Dict):
+    def create(self, validated_data: dict):
         return self.Meta.model.objects.save(None, **validated_data)
 
     def to_representation(self, instance):
@@ -56,7 +56,7 @@ class HandlerSerializer(RcraSiteSerializer):
             representation[key] = handler_rep[key]
         return representation
 
-    def to_internal_value(self, data: Dict):
+    def to_internal_value(self, data: dict):
         instance = {}
         if "electronicSignaturesInfo" in data:
             instance["electronicSignaturesInfo"] = data.pop("electronicSignaturesInfo")
@@ -81,9 +81,7 @@ class HandlerSerializer(RcraSiteSerializer):
 
 
 class TransporterSerializer(HandlerSerializer):
-    """
-    Transporter model serializer for JSON marshalling/unmarshalling
-    """
+    """Transporter model serializer for JSON marshalling/unmarshalling"""
 
     class Meta:
         model = Transporter

@@ -27,8 +27,7 @@ class WasteCodeAdmin(admin.ModelAdmin):
     def abbreviated_description(self, waste_code: WasteCode):
         if len(waste_code.description) > 35:
             return f"{waste_code.description[:32]}..."
-        else:
-            return f"{waste_code.description}"
+        return f"{waste_code.description}"
 
 
 class WasteLineInline(admin.TabularInline):

@@ -17,8 +17,7 @@ def get_task_status(task_id: str) -> ReturnDict:
     cache_data: dict | None = _get_cached_status(task_id)
     if cache_data is not None:
         return _parse_status(cache_data)
-    else:
-        return get_task_results(task_id)
+    return get_task_results(task_id)
 
 
 def get_task_results(task_id: str) -> ReturnDict:
@@ -56,12 +55,14 @@ def launch_example_task() -> str | None:
 
 
 class TaskService:
-    """
-    Service class for interacting with the Task model layer and celery tasks.
-    """
+    """Service class for interacting with the Task model layer and celery tasks."""
 
     def __init__(
-        self, task_id: str, task_name: str, status: str = "PENDING", result: Optional[dict] = None
+        self,
+        task_id: str,
+        task_name: str,
+        status: str = "PENDING",
+        result: dict | None = None,
     ):
         self.task_id = task_id
         self.task_name = task_name
@@ -70,20 +71,15 @@ class TaskService:
 
     @classmethod
     def get_task_status(cls, task_id) -> ReturnDict:
-        """
-        Gets the status of a long-running celery task from the cache (if present) or the database
-        """
+        """Gets the status of a long-running celery task from the cache (if present) or the database"""
         cache_data = cls._get_cached_status(task_id)
         if cache_data is not None:
             return cls._parse_status(cache_data)
-        else:
-            return cls.get_task_results(task_id)
+        return cls.get_task_results(task_id)
 
     @staticmethod
     def get_task_results(task_id: str) -> ReturnDict:
-        """
-        Gets the results of a long-running celery task stored in the database
-        """
+        """Gets the results of a long-running celery task stored in the database"""
         task_results = TaskResult.objects.get(task_id=task_id)
         task_serializer = TaskStatusSerializer(task_results)
         return task_serializer.data
@@ -97,8 +93,7 @@ class TaskService:
 
     @staticmethod
     def _get_cached_status(task_id: str) -> dict | None:
-        """
-        Gets the status of a long-running celery task from our key-value store
+        """Gets the status of a long-running celery task from our key-value store
         if not found or error, returns None
         :param task_id:
         :return dict None:
@@ -120,9 +115,8 @@ class TaskService:
         except KeyError:
             return None
 
-    def update_task_status(self, status: str, results: Optional[dict] = None) -> object | None:
-        """
-        Updates the status of a long-running celery task in our key-value store
+    def update_task_status(self, status: str, results: dict | None = None) -> object | None:
+        """Updates the status of a long-running celery task in our key-value store
         returns an error or None
         """
         if results:
@@ -134,7 +128,7 @@ class TaskService:
                     "status": status,
                     "taskName": self.task_name,
                     "result": self.result,
-                }
+                },
             )
             if task_serializer.is_valid():
                 logger.debug(f"task_serializer.data: {task_serializer.data}")

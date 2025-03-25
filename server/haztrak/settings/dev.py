@@ -22,7 +22,7 @@ DATABASES = {
         "PASSWORD": os.environ.get("HT_DB_PASSWORD", "password"),
         "HOST": os.environ.get("HT_DB_HOST", "localhost"),
         "PORT": os.environ.get("HT_DB_PORT", "5432"),
-    }
+    },
 }
 FIXTURE_DIRS = ["fixtures"]
 

@@ -7,11 +7,11 @@ SiteType = Literal["Generator", "Tsdf", "Transporter", "Broker"]
 
 
 class RcraSiteSearch:
-    def __init__(self, rcra_client: Optional[RcraClient] = None):
+    def __init__(self, rcra_client: RcraClient | None = None):
         self._rcra_client = rcra_client or RcraClient()
-        self._state: Optional[str] = None
-        self._epa_id: Optional[str] = None
-        self._site_type: Optional[str] = None
+        self._state: str | None = None
+        self._epa_id: str | None = None
+        self._site_type: str | None = None
 
     @property
     def rcra_client(self) -> RcraClient:

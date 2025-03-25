@@ -33,9 +33,7 @@ class OrgSerializer(ModelSerializer):
 
 
 class SiteSerializer(ModelSerializer):
-    """
-    Haztrak Site model serializer for JSON marshalling/unmarshalling
-    """
+    """Haztrak Site model serializer for JSON marshalling/unmarshalling"""
 
     name = serializers.CharField(
         required=False,

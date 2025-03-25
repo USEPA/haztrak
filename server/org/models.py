@@ -20,9 +20,12 @@ class OrgManager(models.Manager):
 
     def get_by_username(self, username: str) -> "Org":
         user = TrakUser.objects.get(username=username)
-        # ToDo: Currently we are assuming the use only has one org
-        orgs: QuerySet["Org"] = get_objects_for_user(
-            user, "view_org", self.model, accept_global_perms=False
+        # TODO: Currently we are assuming the use only has one org
+        orgs: QuerySet[Org] = get_objects_for_user(
+            user,
+            "view_org",
+            self.model,
+            accept_global_perms=False,
         )
         return orgs.first()
 
@@ -79,10 +82,9 @@ class Org(models.Model):
         """Returns True if the admin user has RcraInfo API credentials"""
         if RcrainfoProfile.objects.filter(haztrak_profile__user=self.admin).exists():
             return RcrainfoProfile.objects.get(
-                haztrak_profile__user=self.admin
+                haztrak_profile__user=self.admin,
             ).has_rcrainfo_api_id_key
-        else:
-            return False
+        return False
 
     def __str__(self):
         return f"{self.name}"
@@ -113,7 +115,7 @@ class SiteManager(QuerySet):
     """Query interface for the Site model"""
 
     def filter_by_username(self: models.Manager, username: str) -> QuerySet:
-        """filter a list of sites a user has access to (by username)"""
+        """Filter a list of sites a user has access to (by username)"""
         return get_objects_for_user(
             TrakUser.objects.get(username=username),
             "view_site",
@@ -129,20 +131,20 @@ class SiteManager(QuerySet):
     def get_by_username_and_epa_id(self: models.Manager, username: str, epa_id: str) -> QuerySet:
         """Get a site by EPA ID number that a user has access to"""
         combined_filter: QuerySet = self.filter_by_username(username) & self.filter_by_epa_id(
-            epa_id
+            epa_id,
         )
         return combined_filter.get()
 
     def filter_by_user(self: models.Manager, user: "User") -> QuerySet:
-        """filter a list of sites a user has access to (by user object)"""
+        """Filter a list of sites a user has access to (by user object)"""
         return get_objects_for_user(user, "view_site", self.model, accept_global_perms=False)
 
     def filter_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:
-        """filter a sites by EPA ID number"""
+        """Filter a sites by EPA ID number"""
         return self.filter(rcra_site__epa_id=epa_id)
 
     def filter_by_epa_ids(self: models.Manager, epa_ids: [str]) -> QuerySet:
-        """filter a sites by EPA ID number"""
+        """Filter a sites by EPA ID number"""
         return self.filter(rcra_site__epa_id__in=epa_ids)
 
     def get_by_epa_id(self: models.Manager, epa_id: str) -> QuerySet:

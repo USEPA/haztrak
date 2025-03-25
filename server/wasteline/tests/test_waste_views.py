@@ -42,7 +42,7 @@ class TestWasteCodeLookupViews:
 
     def test_state_returns_200(self, factory, user):
         state_id = "VA"
-        request = factory.get(f"{reverse("wasteline:code:state", args=[state_id])}")
+        request = factory.get(f"{reverse('wasteline:code:state', args=[state_id])}")
         force_authenticate(request, user)
         response: Response = StateWasteCodesView.as_view()(request, state_id=state_id)
         assert response.status_code == status.HTTP_200_OK
@@ -69,7 +69,7 @@ class TestWasteCodeLookupViews:
         )
         number_state_codes = WasteCode.state.filter(state_id=WasteCode.VA).count()
         state_id = "VA"
-        request = factory.get(f"{reverse("wasteline:code:state", args=[state_id])}")
+        request = factory.get(f"{reverse('wasteline:code:state', args=[state_id])}")
         force_authenticate(request, user)
         # Act
         response: Response = StateWasteCodesView.as_view()(request, state_id=state_id)

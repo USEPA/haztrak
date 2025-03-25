@@ -37,7 +37,8 @@ class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins
         manifest_serializer = self.serializer_class(data=request.data)
         manifest_serializer.is_valid(raise_exception=True)
         manifest = create_manifest(
-            username=str(request.user), data=manifest_serializer.validated_data
+            username=str(request.user),
+            data=manifest_serializer.validated_data,
         )
         data = ManifestSerializer(manifest).data
         return Response(data=data, status=status.HTTP_201_CREATED)
@@ -47,7 +48,9 @@ class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins
         manifest_serializer = self.serializer_class(data=request.data)
         manifest_serializer.is_valid(raise_exception=True)
         manifest = update_manifest(
-            username=str(request.user), mtn=mtn, data=manifest_serializer.validated_data
+            username=str(request.user),
+            mtn=mtn,
+            data=manifest_serializer.validated_data,
         )
         data = ManifestSerializer(manifest).data
         return Response(data=data, status=status.HTTP_200_OK)
@@ -57,7 +60,7 @@ class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins
             200: OpenApiResponse(
                 response=ManifestSerializer,
                 description="Manifest Details",
-            )
+            ),
         },
     )
     def retrieve(self, request, *args, **kwargs):
@@ -101,8 +104,7 @@ class ElectronicManifestSignView(GenericAPIView):
     queryset = None
 
     def post(self, request: Request) -> Response:
-        """
-        Accepts a Quicker Sign JSON object in the request body,
+        """Accepts a Quicker Sign JSON object in the request body,
         parses the request data, and passes data to a celery async task.
         """
         quicker_serializer = self.serializer_class(data=request.data)
@@ -115,15 +117,16 @@ class ElectronicManifestSignView(GenericAPIView):
 
 @extend_schema(
     request=inline_serializer(
-        "site_manifest_sync_request", fields={"siteId": serializers.CharField()}
+        "site_manifest_sync_request",
+        fields={"siteId": serializers.CharField()},
     ),
     responses=inline_serializer(
-        "site_manifest_sync_response", fields={"task": serializers.CharField()}
+        "site_manifest_sync_response",
+        fields={"task": serializers.CharField()},
     ),
 )
 class SiteManifestSyncView(APIView):
-    """
-    Pull a site's manifests that are out of sync with RCRAInfo.
+    """Pull a site's manifests that are out of sync with RCRAInfo.
     It returns the task id of the long-running background task which can be used to poll
     for status.
     """
@@ -135,6 +138,7 @@ class SiteManifestSyncView(APIView):
         serializer = self.SyncSiteManifestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = sync_site_manifest_with_rcrainfo(
-            username=request.user.username, **serializer.validated_data
+            username=request.user.username,
+            **serializer.validated_data,
         )
         return Response(data=data, status=status.HTTP_200_OK)

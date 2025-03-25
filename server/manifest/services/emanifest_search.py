@@ -24,16 +24,16 @@ RCRAINFO_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
 
 class EmanifestSearch:
-    def __init__(self, rcra_client: Optional[RcraClient] = None):
+    def __init__(self, rcra_client: RcraClient | None = None):
         self._rcra_client = rcra_client or RcraClient()
-        self.state_code: Optional[str] = None
-        self.site_id: Optional[str] = None
-        self.status: Optional[EmanifestStatus] = None
-        self.site_type: Optional[SiteType] = None
-        self.date_type: Optional[DateType] = None
-        self.start_date: Optional[datetime] = None
-        self.end_date: Optional[datetime] = None
-        self.correction_request_status: Optional[CorrectionRequestStatus] = None
+        self.state_code: str | None = None
+        self.site_id: str | None = None
+        self.status: EmanifestStatus | None = None
+        self.site_type: SiteType | None = None
+        self.date_type: DateType | None = None
+        self.start_date: datetime | None = None
+        self.end_date: datetime | None = None
+        self.correction_request_status: CorrectionRequestStatus | None = None
 
     @property
     def rcra_client(self):
@@ -73,9 +73,9 @@ class EmanifestSearch:
     def _emanifest_correction_request_status(cls, correction_request_status) -> bool:
         return cls.__validate_literal(correction_request_status, CorrectionRequestStatus)
 
-    def _date_or_three_years_past(self, start_date: Optional[datetime]) -> str:
+    def _date_or_three_years_past(self, start_date: datetime | None) -> str:
         date = (
-            start_date.replace(tzinfo=timezone.utc).strftime(self.rcra_client.datetime_format)
+            start_date.replace(tzinfo=UTC).strftime(self.rcra_client.datetime_format)
             if start_date
             else (
                 datetime.now(UTC)
@@ -83,15 +83,15 @@ class EmanifestSearch:
                     minutes=60  # 60 seconds/1minutes
                     * 24  # 24 hours/1day
                     * 30  # 30 days/1month
-                    * 36  # 36 months/3years = 3/years
+                    * 36,  # 36 months/3years = 3/years
                 )
             ).strftime(self.rcra_client.datetime_format)
         )
         return self.__format_rcrainfo_date_string(date)
 
-    def _date_or_now(self, end_date: Optional[datetime]) -> str:
+    def _date_or_now(self, end_date: datetime | None) -> str:
         date = (
-            end_date.replace(tzinfo=timezone.utc).strftime(self.rcra_client.datetime_format)
+            end_date.replace(tzinfo=UTC).strftime(self.rcra_client.datetime_format)
             if end_date
             else datetime.now(UTC).strftime(self.rcra_client.datetime_format)
         )

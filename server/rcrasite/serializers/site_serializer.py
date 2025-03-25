@@ -7,9 +7,7 @@ from .base_serializer import SitesBaseSerializer
 
 
 class RcraSiteSerializer(SitesBaseSerializer):
-    """
-    RcraSite model serializer for JSON marshalling/unmarshalling
-    """
+    """RcraSite model serializer for JSON marshalling/unmarshalling"""
 
     epaSiteId = serializers.CharField(
         source="epa_id",

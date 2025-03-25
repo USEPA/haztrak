@@ -16,7 +16,9 @@ class WasteLineManager(models.Manager):
             line_number = waste_data.pop("line_number", None)
             manifest = waste_data.pop("manifest", None)
             wl, created = WasteLine.objects.update_or_create(
-                manifest=manifest, line_number=line_number, defaults=waste_data
+                manifest=manifest,
+                line_number=line_number,
+                defaults=waste_data,
             )
             return wl
         except KeyError as e:

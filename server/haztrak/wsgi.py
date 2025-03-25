@@ -1,5 +1,4 @@
-"""
-WSGI config for haztrak project.
+"""WSGI config for haztrak project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

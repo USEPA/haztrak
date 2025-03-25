@@ -41,7 +41,7 @@ def haztrak_json():
     """Fixture with JSON data"""
     json_dir = os.path.dirname(os.path.abspath(__file__)) + "/fixtures/json"
 
-    def read_file(path: str) -> Dict:
+    def read_file(path: str) -> dict:
         with open(path) as f:
             return json.load(f)
 
@@ -69,12 +69,12 @@ def user_factory(db, faker):
     """Abstract factory for Django's User model"""
 
     def create_user(
-        username: Optional[str] = None,
-        first_name: Optional[str] = None,
-        last_name: Optional[str] = None,
-        email: Optional[str] = None,
-        password: Optional[str] = None,
-        permissions: Optional[list[UserFactoryPermissions]] = None,
+        username: str | None = None,
+        first_name: str | None = None,
+        last_name: str | None = None,
+        email: str | None = None,
+        password: str | None = None,
+        permissions: list[UserFactoryPermissions] | None = None,
     ) -> TrakUser:
         user = TrakUser.objects.create_user(
             username=username or faker.user_name(),
@@ -120,9 +120,9 @@ def rcrainfo_profile_factory(db, user_factory, faker: Faker):
     """Abstract factory for Haztrak RcrainfoProfile model"""
 
     def create_profile(
-        rcra_api_id: Optional[str] = str(faker.uuid4()),
-        rcra_api_key: Optional[str] = faker.pystr(min_chars=15),
-        rcra_username: Optional[str] = faker.pystr(min_chars=12),
+        rcra_api_id: str | None = str(faker.uuid4()),
+        rcra_api_key: str | None = faker.pystr(min_chars=15),
+        rcra_username: str | None = faker.pystr(min_chars=12),
     ) -> RcrainfoProfile:
         return RcrainfoProfile.objects.create(
             rcra_api_id=rcra_api_id,
@@ -138,8 +138,8 @@ def profile_factory(db, user_factory, rcrainfo_profile_factory, org_factory):
     """Abstract factory for Haztrak RcrainfoProfile model"""
 
     def create_profile(
-        user: Optional[User] = None,
-        rcrainfo_profile: Optional[RcrainfoProfile] = rcrainfo_profile_factory(),
+        user: User | None = None,
+        rcrainfo_profile: RcrainfoProfile | None = rcrainfo_profile_factory(),
     ) -> Profile:
         return Profile.objects.create(
             user=user or user_factory(),
@@ -154,10 +154,10 @@ def address_factory(db, faker: Faker):
     """Abstract factory for Haztrak Address model"""
 
     def create_address(
-        address1: Optional[str] = None,
-        street_number: Optional[str] = None,
-        country: Optional[str] = "US",
-        city: Optional[str] = None,
+        address1: str | None = None,
+        street_number: str | None = None,
+        country: str | None = "US",
+        city: str | None = None,
     ) -> Address:
         return Address.objects.create(
             address1=address1 or faker.street_name(),
@@ -174,8 +174,8 @@ def rcra_phone_factory(db, faker: Faker):
     """Abstract factory for Haztrak ManifestPhone model"""
 
     def create_site_phone(
-        number: Optional[str] = "202-505-5500",
-        extension: Optional[str] = "1234",
+        number: str | None = "202-505-5500",
+        extension: str | None = "1234",
     ) -> RcraPhone:
         return RcraPhone.objects.create(
             number=number,
@@ -190,11 +190,11 @@ def contact_factory(db, rcra_phone_factory, faker: Faker):
     """Abstract factory for Haztrak Contact model"""
 
     def create_contact(
-        first_name: Optional[str] = None,
-        middle_initial: Optional[str] = None,
-        last_name: Optional[str] = None,
-        email: Optional[str] = None,
-        phone: Optional[RcraPhone] = None,
+        first_name: str | None = None,
+        middle_initial: str | None = None,
+        last_name: str | None = None,
+        email: str | None = None,
+        phone: RcraPhone | None = None,
     ) -> Contact:
         contact = Contact.objects.create(
             first_name=first_name or faker.first_name(),
@@ -213,11 +213,11 @@ def rcra_site_factory(db, address_factory, contact_factory):
     """Abstract factory for Haztrak RcraSite model"""
 
     def create_rcra_site(
-        epa_id: Optional[str] = None,
-        name: Optional[str] = None,
-        site_type: Optional[Literal["Generator", "Transporter", "Tsdf"]] = "Generator",
-        site_address: Optional[Address] = None,
-        mail_address: Optional[Address] = None,
+        epa_id: str | None = None,
+        name: str | None = None,
+        site_type: Literal["Generator", "Transporter", "Tsdf"] | None = "Generator",
+        site_address: Address | None = None,
+        mail_address: Address | None = None,
     ) -> RcraSite:
         fake = Faker()
         fake.add_provider(SiteIDProvider)
@@ -246,7 +246,7 @@ def rcra_site_factory(db, address_factory, contact_factory):
 
 @pytest.fixture
 def validated_data_factory():
-    def _create_data_dict(*, instance, serializer) -> Dict:
+    def _create_data_dict(*, instance, serializer) -> dict:
         data = serializer(instance).data
         new_serializer = serializer(data=data)
         new_serializer.is_valid(raise_exception=True)
@@ -260,9 +260,9 @@ def org_factory(db, rcrainfo_profile_factory, user_factory, faker):
     """Abstract factory for Haztrak Org model"""
 
     def create_org(
-        org_id: Optional[str] = None,
-        name: Optional[str] = None,
-        admin: Optional[TrakUser] = None,
+        org_id: str | None = None,
+        name: str | None = None,
+        admin: TrakUser | None = None,
     ) -> Org:
         return Org.objects.create(
             id=org_id or faker.uuid4(),
@@ -278,10 +278,10 @@ def site_factory(db, rcra_site_factory, org_factory, faker):
     """Abstract factory for Haztrak Site model"""
 
     def create_site(
-        rcra_site: Optional[RcraSite] = None,
-        name: Optional[str] = None,
-        org: Optional[Org] = None,
-        last_rcrainfo_manifest_sync: Optional[datetime.datetime] = None,
+        rcra_site: RcraSite | None = None,
+        name: str | None = None,
+        org: Org | None = None,
+        last_rcrainfo_manifest_sync: datetime.datetime | None = None,
     ) -> Site:
         return Site.objects.create(
             rcra_site=rcra_site or rcra_site_factory(),
@@ -299,7 +299,7 @@ def api_client_factory(db, user_factory):
     """Abstract factory for DRF APIClient testing class"""
 
     def create_client(
-        user: Optional[User] = None,
+        user: User | None = None,
     ) -> APIClient:
         client = APIClient()
         client.force_authenticate(
@@ -312,8 +312,7 @@ def api_client_factory(db, user_factory):
 
 @pytest.fixture
 def mock_responses():
-    """
-    fixture for mocking external http request responses
+    """Fixture for mocking external http request responses
     see Responses docs
     https://github.com/getsentry/responses#responses-as-a-pytest-fixture
     """
@@ -321,7 +320,7 @@ def mock_responses():
         yield mock_responses
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_emanifest_auth_response(request, mock_responses):
     api_id, api_key = request.param
     mock_responses.get(
@@ -332,8 +331,7 @@ def mock_emanifest_auth_response(request, mock_responses):
 
 @pytest.fixture
 def mocker(mocker: pytest_mock.MockerFixture):
-    """
-    wrapper fixture pytest-mock's mocker fixture for easy type annotations
+    """Wrapper fixture pytest-mock's mocker fixture for easy type annotations
     https://github.com/pytest-dev/pytest-mock
     """
     return mocker
@@ -351,10 +349,10 @@ def user_with_org_factory(
     """Fixture for creating a user with an org that has set up RCRAInfo integration"""
 
     def create_fixtures(
-        user: Optional[User] = None,
-        org: Optional[Org] = None,
-        admin_rcrainfo_profile: Optional[RcrainfoProfile] = None,
-        is_rcrainfo_enabled: Optional[bool] = True,
+        user: User | None = None,
+        org: Org | None = None,
+        admin_rcrainfo_profile: RcrainfoProfile | None = None,
+        is_rcrainfo_enabled: bool | None = True,
     ):
         if is_rcrainfo_enabled:
             rcra_profile_data = {
@@ -380,7 +378,7 @@ def use_local_mem_cache_backend(settings):
     settings.CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        }
+        },
     }
 
 
@@ -393,7 +391,7 @@ def cache_factory(settings):
             "default": {
                 "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
                 "LOCATION": location,
-            }
+            },
         }
 
     return create_cache

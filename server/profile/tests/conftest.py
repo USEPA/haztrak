@@ -11,14 +11,14 @@ def rcrainfo_site_access_factory(db, rcra_site_factory, rcrainfo_profile_factory
     """Abstract factory for crating model representing user's access to a site in RCRAInfo"""
 
     def create_permission(
-        site: Optional[str] = None,
-        profile: Optional[RcrainfoProfile] = None,
-        site_manager: Optional[bool] = True,
-        annual_report: Optional[str] = "Certifier",
-        biennial_report: Optional[str] = "Certifier",
-        e_manifest: Optional[str] = "Certifier",
-        wiets: Optional[str] = "Certifier",
-        my_rcra_id: Optional[str] = "Certifier",
+        site: str | None = None,
+        profile: RcrainfoProfile | None = None,
+        site_manager: bool | None = True,
+        annual_report: str | None = "Certifier",
+        biennial_report: str | None = "Certifier",
+        e_manifest: str | None = "Certifier",
+        wiets: str | None = "Certifier",
+        my_rcra_id: str | None = "Certifier",
     ) -> RcrainfoSiteAccess:
         fake = Faker()
         fake.add_provider(SiteIDProvider)

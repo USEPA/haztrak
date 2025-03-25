@@ -62,9 +62,9 @@ class StateWasteCodesView(ListAPIView):
                 OpenApiExample(
                     "ID Numbers",
                     value="ID8000",
-                )
+                ),
             ],
-        )
+        ),
     },
 )
 class DotIdNumberView(APIView):
@@ -91,9 +91,9 @@ class DotIdNumberView(APIView):
                 OpenApiExample(
                     "Shipping Name",
                     value="1,1,12-Tetrafluoroethane",
-                )
+                ),
             ],
-        )
+        ),
     },
 )
 class DotShippingNameView(APIView):
@@ -120,9 +120,9 @@ class DotShippingNameView(APIView):
                 OpenApiExample(
                     "Query for 1.1A",
                     value="1.1A",
-                )
+                ),
             ],
-        )
+        ),
     },
 )
 class DotHazardClassView(APIView):

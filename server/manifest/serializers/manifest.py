@@ -185,10 +185,10 @@ class ManifestSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
         allow_null=True,
     )
 
-    def update(self, instance: Manifest, validated_data: Dict) -> Manifest:
+    def update(self, instance: Manifest, validated_data: dict) -> Manifest:
         return self.Meta.model.objects.save(instance, **validated_data)
 
-    def create(self, validated_data: Dict) -> Manifest:
+    def create(self, validated_data: dict) -> Manifest:
         return self.Meta.model.objects.save(None, **validated_data)
 
     def validate(self, data):
@@ -198,17 +198,13 @@ class ManifestSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
     def to_representation(self, instance) -> str:
-        """
-        Replace 'import_flag' with expected Python Keyword 'import' in JSON
-        """
+        """Replace 'import_flag' with expected Python Keyword 'import' in JSON"""
         data = super().to_representation(instance)
         data["import"] = instance.import_flag
         return data
 
     def to_internal_value(self, data):
-        """
-        Replace 'import_flag' with expected Python Keyword 'import' in JSON
-        """
+        """Replace 'import_flag' with expected Python Keyword 'import' in JSON"""
         instance = super().to_internal_value(data)
         try:
             instance["import_flag"] = data.get("import")
@@ -256,9 +252,7 @@ class ManifestSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
 
 
 class PortOfEntrySerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
-    """
-    Serializer for Port Of Entry
-    """
+    """Serializer for Port Of Entry"""
 
     state = serializers.ChoiceField(
         choices=RcraStates.choices,

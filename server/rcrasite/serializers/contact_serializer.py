@@ -6,9 +6,7 @@ from .base_serializer import SitesBaseSerializer
 
 
 class RcraPhoneSerializer(SitesBaseSerializer):
-    """
-    ManifestPhone model serializer for JSON marshalling/unmarshalling
-    """
+    """ManifestPhone model serializer for JSON marshalling/unmarshalling"""
 
     number = serializers.CharField()
     extension = serializers.CharField(
@@ -25,9 +23,7 @@ class RcraPhoneSerializer(SitesBaseSerializer):
 
 
 class ContactSerializer(SitesBaseSerializer):
-    """
-    Contact model serializer for JSON marshalling/unmarshalling
-    """
+    """Contact model serializer for JSON marshalling/unmarshalling"""
 
     firstName = serializers.CharField(
         source="first_name",

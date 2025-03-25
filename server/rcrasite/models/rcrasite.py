@@ -29,14 +29,14 @@ class RcraSiteManager(models.Manager):
         return self.get(epa_id__iexact=epa_id)
 
     def save(self, instance: Optional["RcraSite"], **handler_data) -> "RcraSite":
-        """
-        Create an RcraSite and its related fields
+        """Create an RcraSite and its related fields
 
         Keyword Args:
             contact (dict): Contact data in (ordered)dict format
             site_address (dict): Site address data dict
             mail_address (dict): mailing address data dict
             emergency_phone (dict): optional Phone dict
+
         """
         try:
             epa_id = handler_data.get("epa_id")
@@ -59,7 +59,7 @@ class RcraSiteManager(models.Manager):
         except KeyError as exc:
             logger.warning(f"error while creating {self.model.__class__.__name__}{exc}")
 
-    def get_emergency_phone(self) -> Union[RcraPhone, None]:
+    def get_emergency_phone(self) -> RcraPhone | None:
         """Check if emergency phone is present and create an RcraPhone row"""
         try:
             emergency_phone_data = self.handler_data.pop("emergency_phone")

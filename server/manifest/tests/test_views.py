@@ -56,7 +56,11 @@ class TestSignManifestVIew:
         mock_task.return_value = AsyncResult(self.mock_task_id)
 
     def test_returns_celery_task_id(
-        self, user_factory, profile_factory, org_factory, perm_factory
+        self,
+        user_factory,
+        profile_factory,
+        org_factory,
+        perm_factory,
     ):
         user = user_factory()
         org = org_factory()

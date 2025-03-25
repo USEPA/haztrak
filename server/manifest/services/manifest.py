@@ -25,8 +25,8 @@ def update_manifest(*, username: str, mtn: str, data: dict) -> Manifest:
 def get_manifests(
     *,
     username: str,
-    epa_id: Optional[str] = None,
-    site_type: Optional[Literal["Generator", "Tsdf", "Transporter"]] = None,
+    epa_id: str | None = None,
+    site_type: Literal["Generator", "Tsdf", "Transporter"] | None = None,
 ) -> QuerySet[Manifest]:
     """Get a list of manifest tracking numbers and select details for a users site"""
     sites: QuerySet[Site] = Site.objects.filter_by_username(username).values("rcra_site__epa_id")
@@ -34,12 +34,11 @@ def get_manifests(
         sites = sites.filter(rcra_site__epa_id__iexact=epa_id)
     if site_type:
         return Manifest.objects.filter(Q(**{f"{site_type.lower()}__rcra_site__epa_id__in": sites}))
-    else:
-        return Manifest.objects.filter(
-            Q(generator__rcra_site__epa_id__in=sites)
-            | Q(tsdf__rcra_site__epa_id__in=sites)
-            | Q(transporters__rcra_site__epa_id__in=sites)
-        )
+    return Manifest.objects.filter(
+        Q(generator__rcra_site__epa_id__in=sites)
+        | Q(tsdf__rcra_site__epa_id__in=sites)
+        | Q(transporters__rcra_site__epa_id__in=sites),
+    )
 
 
 def save_emanifest(*, data: dict, username: str) -> TaskResponse:
@@ -48,8 +47,7 @@ def save_emanifest(*, data: dict, username: str) -> TaskResponse:
     if emanifest.is_available:
         task = save_to_emanifest_task.delay(manifest_data=data, username=username)
         return TaskResponse(taskId=task.id)
-    else:
-        raise EManifestError("e-Manifest is not available")
+    raise EManifestError("e-Manifest is not available")
 
 
 @transaction.atomic

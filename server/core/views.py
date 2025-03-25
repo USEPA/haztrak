@@ -19,7 +19,8 @@ class LaunchExampleTaskView(APIView):
             return Response(data={"taskId": task_id}, status=status.HTTP_200_OK)
         except KeyError:
             return Response(
-                data={"error": "malformed payload"}, status=status.HTTP_400_BAD_REQUEST
+                data={"error": "malformed payload"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
 
@@ -34,7 +35,8 @@ class TaskStatusView(APIView):
             return Response(data=data, status=status.HTTP_200_OK)
         except KeyError:
             return Response(
-                data={"error": "malformed request"}, status=status.HTTP_400_BAD_REQUEST
+                data={"error": "malformed request"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
         except ValidationError:
             return Response(

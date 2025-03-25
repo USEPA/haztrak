@@ -36,7 +36,7 @@ class RcraSiteDetailsView(RetrieveAPIView):
             return RcraSite.objects.get_by_epa_id(self.kwargs[self.lookup_url_kwarg])
         except KeyError:
             raise ValidationError(
-                {"detail": "The EPA ID parameter is required to retrieve a site"}
+                {"detail": "The EPA ID parameter is required to retrieve a site"},
             )
 
 
@@ -86,7 +86,7 @@ handler_types = {
                     ("generator", "generator"),
                     ("transporter", "transporter"),
                     ("broker", "broker"),
-                ]
+                ],
             ),
         },
     ),

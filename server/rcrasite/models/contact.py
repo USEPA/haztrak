@@ -83,9 +83,7 @@ class RcraStates(models.TextChoices):
 
 
 class RcraPhoneNumber(models.CharField):
-    """
-    RcraPhoneNumber encapsulates RCRAInfo's representation of a phone (not including extensions)
-    """
+    """RcraPhoneNumber encapsulates RCRAInfo's representation of a phone (not including extensions)"""
 
     def validate(self, value, model_instance):
         if not match(r"^\d{3}-\d{3}-\d{4}$", value):
@@ -96,8 +94,7 @@ class RcraPhoneNumber(models.CharField):
 
 
 class RcraPhone(models.Model):
-    """
-    RCRAInfo phone model, stores phones in ###-###-#### format
+    """RCRAInfo phone model, stores phones in ###-###-#### format
     along with up to 6 digit extension.
     """
 
@@ -120,9 +117,7 @@ class RcraPhone(models.Model):
 
 
 class Address(models.Model):
-    """
-    Used to capture RCRAInfo address instances (mail, site).
-    """
+    """Used to capture RCRAInfo address instances (mail, site)."""
 
     class Meta:
         ordering = ["address1"]
@@ -176,8 +171,7 @@ class ContactManager(models.Manager):
     """Contact Model database querying interface"""
 
     def save(self, **contact_data) -> models.QuerySet:
-        """
-        Create Contact instance in database, create related phone instance if applicable,
+        """Create Contact instance in database, create related phone instance if applicable,
         and return the new instance.
         """
         if "phone" in contact_data:
@@ -191,8 +185,7 @@ class ContactManager(models.Manager):
 
 
 class Contact(models.Model):
-    """
-    RCRAInfo contact including personnel information such as name, email, company,
+    """RCRAInfo contact including personnel information such as name, email, company,
     includes a phone related field.
     """
 

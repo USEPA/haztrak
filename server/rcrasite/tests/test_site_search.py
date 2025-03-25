@@ -14,7 +14,9 @@ class TestRcraSiteSearchClass:
 
     @pytest.mark.parametrize("mock_emanifest_auth_response", [["foo", "foo"]], indirect=True)
     def test_execute_sends_a_request_to_rcrainfo(
-        self, mock_responses, mock_emanifest_auth_response
+        self,
+        mock_responses,
+        mock_emanifest_auth_response,
     ):
         stub_rcra_client = RcraClient(rcrainfo_env="preprod", api_key="foo", api_id="foo")
         mock_responses.post("https://rcrainfopreprod.epa.gov/rcrainfo/rest/api/v1/site-search")

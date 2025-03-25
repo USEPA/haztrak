@@ -22,7 +22,7 @@ class QuickerSignSerializer(serializers.Serializer):
     printedSignatureDate = serializers.DateTimeField(
         source="printed_date",
         required=False,
-        default_timezone=timezone.utc,
+        default_timezone=datetime.UTC,
         format=None,
         default=datetime.datetime.now(datetime.UTC),
     )
@@ -44,13 +44,13 @@ class QuickerSignSerializer(serializers.Serializer):
         data = super().to_representation(instance)
         if isinstance(instance, dict):
             data["printedSignatureDate"] = instance["printed_date"].isoformat(
-                timespec="milliseconds"
+                timespec="milliseconds",
             )
         elif isinstance(instance, QuickerSign):
             data["printedSignatureDate"] = instance.printed_date.isoformat(timespec="milliseconds")
         else:
             data["printedSignatureDate"] = datetime.datetime.now(datetime.UTC).isoformat(
-                timespec="milliseconds"
+                timespec="milliseconds",
             )
         return data
 
@@ -155,7 +155,7 @@ class ESignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
     def update(self, instance, validated_data):
         return super().update(instance, validated_data)
 
-    def create(self, validated_data: Dict):
+    def create(self, validated_data: dict):
         return self.Meta.model.objects.save(**validated_data)
 
     class Meta:
@@ -171,8 +171,7 @@ class ESignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
 
 
 class PaperSignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
-    """
-    Serializer for Paper Signature on manifest which indicates the change
+    """Serializer for Paper Signature on manifest which indicates the change
     of custody with paper manifests
     """
 
@@ -185,10 +184,10 @@ class PaperSignatureSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializ
         required=False,
     )
 
-    def update(self, instance, validated_data: Dict):
+    def update(self, instance, validated_data: dict):
         return super().update(instance, **validated_data)
 
-    def create(self, validated_data: Dict):
+    def create(self, validated_data: dict):
         return super().create(**validated_data)
 
     class Meta:

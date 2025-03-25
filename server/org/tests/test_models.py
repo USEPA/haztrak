@@ -10,7 +10,11 @@ class TestOrgModel:
         assert isinstance(org, Org)
 
     def test_getting_org_api_credentials(
-        self, org_factory, rcrainfo_profile_factory, user_factory, profile_factory
+        self,
+        org_factory,
+        rcrainfo_profile_factory,
+        user_factory,
+        profile_factory,
     ):
         # Arrange
         mock_api_id = "03048337-f790-4d18-b579-491d7c1fbb04"
@@ -33,7 +37,11 @@ class TestOrgModel:
         assert isinstance(returned_org, Org)
 
     def test_rcrainfo_integrated_false_without_credentials(
-        self, org_factory, rcrainfo_profile_factory, user_factory, profile_factory
+        self,
+        org_factory,
+        rcrainfo_profile_factory,
+        user_factory,
+        profile_factory,
     ):
         # Arrange
         admin = user_factory(username="admin")
@@ -44,7 +52,11 @@ class TestOrgModel:
         assert not org.is_rcrainfo_integrated
 
     def test_rcrainfo_integrated_true_with_credentials(
-        self, org_factory, rcrainfo_profile_factory, user_factory, profile_factory
+        self,
+        org_factory,
+        rcrainfo_profile_factory,
+        user_factory,
+        profile_factory,
     ):
         # Arrange
         mock_api_id = "03048337-f790-4d18-b579-491d7c1fbb04"
@@ -111,7 +123,7 @@ class TestSiteManager:
     def test_filter_sites_by_username(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
-        # ToDo, our model managers should not be concerned with permissions
+        # TODO, our model managers should not be concerned with permissions
         perm_factory(user, ["org.view_site"], site)
         other_site = site_factory()
         sites = Site.objects.filter_by_username(user.username)
@@ -122,7 +134,7 @@ class TestSiteManager:
         user = user_factory()
         site = site_factory()
         other_site = site_factory()
-        # ToDo, our model managers should not be concerned with permissions
+        # TODO, our model managers should not be concerned with permissions
         perm_factory(user, ["org.view_site"], site)
         sites = Site.objects.filter_by_user(user)
         assert site in sites
@@ -141,7 +153,7 @@ class TestSiteManager:
     def test_get_user_site(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
-        # ToDo, our model managers should not be concerned with permissions
+        # TODO, our model managers should not be concerned with permissions
         perm_factory(user, ["org.view_site"], site)
         returned_site = Site.objects.get_by_user_and_epa_id(user, site.rcra_site.epa_id)
         assert isinstance(returned_site, Site)
@@ -159,10 +171,11 @@ class TestSiteManager:
     def test_get_by_username_and_epa_id(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
-        # ToDo, our model managers should not be concerned with permissions
+        # TODO, our model managers should not be concerned with permissions
         perm_factory(user, ["org.view_site"], site)
         returned_site = Site.objects.get_by_username_and_epa_id(
-            user.username, site.rcra_site.epa_id
+            user.username,
+            site.rcra_site.epa_id,
         )
         assert isinstance(returned_site, Site)
         assert returned_site == site
@@ -176,10 +189,10 @@ class TestSiteManager:
     def test_combining_query_interfaces(self, site_factory, perm_factory, user_factory):
         user = user_factory()
         site = site_factory()
-        # ToDo, our model managers should not be concerned with permissions
+        # TODO, our model managers should not be concerned with permissions
         perm_factory(user, ["org.view_site"], site)
         returned_site = Site.objects.filter_by_username(user.username).get_by_epa_id(
-            site.rcra_site.epa_id
+            site.rcra_site.epa_id,
         )
         assert isinstance(returned_site, Site)
         assert returned_site == site

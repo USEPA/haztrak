@@ -28,7 +28,7 @@ class TestHandlerSerializer:
 
     def test_paper_manifest_handler_serializes(self, haztrak_json) -> None:
         manifest_handler_serializer = HandlerSerializer(
-            data=haztrak_json.PAPER_MANIFEST_HANDLER.value
+            data=haztrak_json.PAPER_MANIFEST_HANDLER.value,
         )
         assert manifest_handler_serializer.is_valid()
 

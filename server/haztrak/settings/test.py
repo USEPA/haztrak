@@ -21,7 +21,7 @@ DATABASES = {
         "TEST": {
             "NAME": "test_db",
         },
-    }
+    },
 }
 FIXTURE_DIRS = ["fixtures"]
 

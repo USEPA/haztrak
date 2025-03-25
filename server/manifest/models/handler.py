@@ -19,9 +19,9 @@ class HandlerManager(models.Manager):
         e_signatures = handler_data.pop("e_signatures", [])
         if paper_signature is not None:
             paper_signature = PaperSignature.objects.create(**paper_signature)
-        if handler_data.get("emergency_phone", None) is not None:
+        if handler_data.get("emergency_phone") is not None:
             handler_data["emergency_phone"] = ManifestPhone.objects.create(
-                **handler_data.pop("emergency_phone")
+                **handler_data.pop("emergency_phone"),
             )
         try:
             if RcraSite.objects.filter(epa_id=handler_data["rcra_site"]["epa_id"]).exists():
@@ -37,7 +37,8 @@ class HandlerManager(models.Manager):
             logger.debug(f"Handler created {manifest_handler}")
             for e_signature_data in e_signatures:
                 e_sig = ESignature.objects.save(
-                    manifest_handler=manifest_handler, **e_signature_data
+                    manifest_handler=manifest_handler,
+                    **e_signature_data,
                 )
                 logger.debug(f"ESignature created {e_sig}")
             return manifest_handler
@@ -80,7 +81,8 @@ class Handler(models.Model):
     def signed(self) -> bool:
         """Returns True if one of the signature types is present"""
         e_signature_exists = ESignature.objects.filter(
-            manifest_handler=self, sign_date__isnull=False
+            manifest_handler=self,
+            sign_date__isnull=False,
         ).exists()
         paper_signature_exists = self.paper_signature is not None
         return paper_signature_exists or e_signature_exists
@@ -92,10 +94,10 @@ class Handler(models.Model):
 class TransporterManager(HandlerManager):
     """Transporter Model database querying interface"""
 
-    def save(self, instance: Optional["Transporter"], **data: Dict) -> "Transporter":
+    def save(self, instance: Optional["Transporter"], **data: dict) -> "Transporter":
         """Create a Transporter from a manifest instance and rcra_site dict"""
         e_signatures = data.pop("e_signatures", [])
-        if data.get("paper_signature", None) is not None:
+        if data.get("paper_signature") is not None:
             data["paper_signature"] = PaperSignature.objects.create(**data.pop("paper_signature"))
         try:
             if RcraSite.objects.filter(epa_id=data["rcra_site"]["epa_id"]).exists():

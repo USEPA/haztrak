@@ -7,8 +7,7 @@ from rest_framework.exceptions import ValidationError
 
 
 class RcraSitePermissionSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
-    """
-    We use this internally because it's easier to handle, using consistent naming,
+    """We use this internally because it's easier to handle, using consistent naming,
     Haztrak has a separate serializer for user permissions from RCRAInfo.
     """
 
@@ -82,8 +81,7 @@ class RcraPermissionField(serializers.Field):
 
 
 class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
-    """
-    RcraSitePermissions model serializer specifically for reading a user's site permissions
+    """RcraSitePermissions model serializer specifically for reading a user's site permissions
     from RCRAInfo. It's not used for serializing, only deserializing permissions from RCRAinfo
     """
 

@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 @shared_task(name="pull_federal_code", bind=True)
-def pull_federal_codes(self, api_user: Optional[str] = None):
+def pull_federal_codes(self, api_user: str | None = None):
     from core.services import get_rcra_client
 
     logger.debug(f"start task {self.name}")

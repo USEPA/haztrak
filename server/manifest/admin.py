@@ -26,10 +26,9 @@ class IsDraftMtn(admin.SimpleListFilter):
     def queryset(self, request, queryset: QuerySet):
         if self.value() == "True":
             return queryset.filter(mtn__iendswith="DFT")
-        elif self.value() == "False":
+        if self.value() == "False":
             return queryset.filter(~Q(mtn__iendswith="DFT"))
-        else:
-            return queryset
+        return queryset
 
 
 @admin.register(Manifest)
@@ -41,7 +40,7 @@ class ManifestAdmin(admin.ModelAdmin):
 
     @admin.display(description="Transporters")
     def transporter_count(self, manifest):
-        # ToDo: this will result in additional DB hit for every Manifest in the list rendered.
+        # TODO: this will result in additional DB hit for every Manifest in the list rendered.
         return Transporter.objects.filter(manifest=manifest).count()
 
 
@@ -55,10 +54,9 @@ class IsApiUser(admin.SimpleListFilter):
     def queryset(self, request, queryset: QuerySet):
         if self.value() == "True":
             return queryset.filter(mtn__iendswith="DFT")
-        elif self.value() == "False":
+        if self.value() == "False":
             return queryset.filter(~Q(mtn__iendswith="DFT"))
-        else:
-            return queryset
+        return queryset
 
 
 @admin.register(Transporter)

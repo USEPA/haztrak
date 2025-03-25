@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from typing import List, Literal, Optional
 
 from django.db import models
@@ -83,8 +83,7 @@ class ESignatureManager(models.Manager):
     """ESignature Model database querying interface"""
 
     def save(self, **e_signature_data):
-        """
-        Create Contact instance in database, create related phone instance if applicable,
+        """Create Contact instance in database, create related phone instance if applicable,
         and return the new instance.
         """
         if "signer" in e_signature_data:
@@ -144,8 +143,7 @@ class ESignature(models.Model):
 
 
 class PaperSignature(models.Model):
-    """
-    Contains printed name of the rcra_site Signee and
+    """Contains printed name of the rcra_site Signee and
     Date of Signature for paper manifests.
     """
 
@@ -162,19 +160,18 @@ class PaperSignature(models.Model):
 
 
 class QuickerSign:
-    """
-    Quicker Sign is the python object representation of the EPA's Quicker Sign schema
+    """Quicker Sign is the python object representation of the EPA's Quicker Sign schema
     This is not a django model, however for the time being we do not have a better location
     """
 
     def __init__(
         self,
-        mtn: List[str],
+        mtn: list[str],
         printed_name: str,
         site_type: Literal["Generator", "Tsdf", "Transporter"],
         site_id: str,
-        printed_date: Optional[datetime | str] = datetime.utcnow().replace(tzinfo=timezone.utc),
-        transporter_order: Optional[int] = None,
+        printed_date: datetime | str | None = datetime.utcnow().replace(tzinfo=UTC),
+        transporter_order: int | None = None,
     ):
         self.mtn = mtn
         self.printed_name = printed_name
@@ -190,8 +187,8 @@ class QuickerSign:
                 self.printed_date: datetime = datetime.fromisoformat(printed_date)
             # If error, default to current time
             except ValueError:
-                self.printed_date: datetime = datetime.utcnow().replace(tzinfo=timezone.utc)
+                self.printed_date: datetime = datetime.utcnow().replace(tzinfo=UTC)
         else:
             raise TypeError(
-                f"printed_date must be string or datetime, received {type(printed_date)}"
+                f"printed_date must be string or datetime, received {type(printed_date)}",
             )

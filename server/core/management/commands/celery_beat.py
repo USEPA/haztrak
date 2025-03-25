@@ -25,8 +25,7 @@ def restart_celery_beat():
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        """
-        see HackSoftware's explanation here.
+        """See HackSoftware's explanation here.
         https://github.com/HackSoftware/Django-Styleguide#periodic-tasks
         I'm not crazy about this implementation, but it will do for our POC.
         Note, adding @transaction.atomic causes problems with docker-compose
@@ -51,7 +50,7 @@ class Command(BaseCommand):
         ]
 
         for periodic_task in periodic_tasks_data:
-            logger.info(f'Setting up {periodic_task["task"].name}')
+            logger.info(f"Setting up {periodic_task['task'].name}")
 
             cron = CrontabSchedule.objects.create(**periodic_task["cron"])
 

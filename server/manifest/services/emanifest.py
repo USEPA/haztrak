@@ -30,13 +30,13 @@ class QuickerSignData(TypedDict):
 class SearchManifestData(TypedDict, total=False):
     """Type definition for the data required to search for manifests"""
 
-    site_id: Optional[str]
-    start_date: Optional[datetime]
-    end_date: Optional[datetime]
-    status: Optional[str]
-    date_type: Optional[str]
-    state_code: Optional[str]
-    site_type: Optional[str]
+    site_id: str | None
+    start_date: datetime | None
+    end_date: datetime | None
+    status: str | None
+    date_type: str | None
+    state_code: str | None
+    site_type: str | None
 
 
 class TaskResponse(TypedDict):
@@ -56,14 +56,14 @@ class EManifestError(Exception):
 class PullManifestsResult(TypedDict):
     """Type definition for the results returned from pulling manifests from RCRAInfo"""
 
-    success: List[str]
-    error: List[str]
+    success: list[str]
+    error: list[str]
 
 
 class EManifest:
     """IO interface with the e-Manifest system."""
 
-    def __init__(self, *, username: Optional[str], rcrainfo: Optional[RcraClient] = None):
+    def __init__(self, *, username: str | None, rcrainfo: RcraClient | None = None):
         self.username = username
         self.rcrainfo = rcrainfo or get_rcra_client(username=username)
 
@@ -72,7 +72,7 @@ class EManifest:
         """Check if e-Manifest is available"""
         return self.rcrainfo.has_rcrainfo_credentials
 
-    def pull(self, tracking_numbers: List[str]) -> PullManifestsResult:
+    def pull(self, tracking_numbers: list[str]) -> PullManifestsResult:
         """Retrieve manifests from e-Manifest and save to database"""
         results: PullManifestsResult = {"success": [], "error": []}
         logger.info(f"pulling manifests {tracking_numbers}")
@@ -88,9 +88,11 @@ class EManifest:
         return results
 
     def sign(self, *, signature: QuickerSign) -> TaskResponse:
-        """validate and Launch an asynchronous task to electronically sign a manifest."""
+        """Validate and Launch an asynchronous task to electronically sign a manifest."""
         signature.mtn = self._filter_mtn(
-            mtn=signature.mtn, site_id=signature.site_id, site_type=signature.site_type
+            mtn=signature.mtn,
+            site_id=signature.site_id,
+            site_type=signature.site_type,
         )
         signature_serializer = QuickerSignSerializer(signature)
         task = sign_manifest.delay(username=self.username, **signature_serializer.data)
@@ -102,7 +104,8 @@ class EManifest:
         if response.ok:
             for manifest in response.json()["manifestReports"]:
                 pull_manifest.delay(
-                    mtn=[manifest["manifestTrackingNumber"]], username=self.username
+                    mtn=[manifest["manifestTrackingNumber"]],
+                    username=self.username,
                 )
         else:
             logger.warning(f"Error Quicker signing {response.status_code} {response.json()}")
@@ -116,20 +119,23 @@ class EManifest:
             if create_resp.ok:
                 logger.info(
                     f"successfully created manifest "
-                    f"{create_resp.json()['manifestTrackingNumber']} in RCRAInfo"
+                    f"{create_resp.json()['manifestTrackingNumber']} in RCRAInfo",
                 )
                 self.pull([create_resp.json()["manifestTrackingNumber"]])
                 return create_resp.json()
             raise EManifestError(message=f"error creating manifest: {create_resp.json()}")
         except KeyError:
             logger.error(
-                f"error retrieving manifestTrackingNumber from response: {create_resp.json()}"
+                f"error retrieving manifestTrackingNumber from response: {create_resp.json()}",
             )
             raise EManifestError("malformed payload")
 
     @staticmethod
     def _filter_mtn(
-        *, mtn: list[str], site_id: str, site_type: Literal["Generator", "Tsdf", "Transporter"]
+        *,
+        mtn: list[str],
+        site_id: str,
+        site_type: Literal["Generator", "Tsdf", "Transporter"],
     ) -> list[str]:
         handler_filter = Manifest.objects.filter_by_epa_id_and_site_type([site_id], site_type)
         existing_mtn = Manifest.objects.filter_existing_mtn(mtn=mtn)
@@ -143,16 +149,15 @@ class EManifest:
         if response.ok:
             logger.debug(f"manifest pulled {mtn}")
             return response.json()
-        else:
-            logger.warning(f"error retrieving manifest {mtn}")
-            raise RequestException(response.json())
+        logger.warning(f"error retrieving manifest {mtn}")
+        raise RequestException(response.json())
 
     @transaction.atomic
     def _save_manifest_json_to_db(self, manifest_json: dict) -> Manifest:
         """Save manifest to Haztrak database"""
         logger.info("saving manifest to DB")
         manifest_query: QuerySet = Manifest.objects.filter(
-            mtn=manifest_json["manifestTrackingNumber"]
+            mtn=manifest_json["manifestTrackingNumber"],
         )
         if manifest_query.exists():
             serializer = ManifestSerializer(manifest_query.get(), data=manifest_json)
@@ -183,7 +188,10 @@ def get_updated_mtn(site_id: str, last_sync_date: datetime, rcra_client) -> list
 
 @transaction.atomic
 def sync_manifests(
-    *, site_id: str, last_sync_date: datetime, rcra_client: RcraClient
+    *,
+    site_id: str,
+    last_sync_date: datetime,
+    rcra_client: RcraClient,
 ) -> PullManifestsResult:
     """Pull manifests and update the last sync date for a site"""
     updated_mtn = get_updated_mtn(

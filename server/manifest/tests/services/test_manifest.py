@@ -4,7 +4,7 @@ from manifest.services import create_manifest, get_manifests
 
 
 class TestGetManifestService:
-    # ToDo: fix transaction related to this test
+    # TODO: fix transaction related to this test
     def test_returns_manifests_from_all_user_sites_by_default(
         self,
         manifest_factory,
@@ -100,7 +100,9 @@ class TestGetManifestService:
             epa_id=vatesttsdf001.epa_id,
         )
         all_gen_manifests = get_manifests(
-            username=user.username, epa_id=vatesttsdf001.epa_id, site_type="Generator"
+            username=user.username,
+            epa_id=vatesttsdf001.epa_id,
+            site_type="Generator",
         )
         # Assert
         returned_gen_mtn = [i.mtn for i in all_gen_manifests]

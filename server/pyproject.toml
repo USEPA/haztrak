@@ -68,8 +68,13 @@ exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["F", "E", "W", "Q"]
-ignore = ["F401"]
+select = ["ALL"]
+ignore = [
+    "ANN", # type annotations
+    "FBT", # boolean trap
+    "CPY", # copyright notices
+    "F401",
+]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "haztrak.settings.test"

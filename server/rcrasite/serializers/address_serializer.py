@@ -10,8 +10,7 @@ from .base_serializer import SitesBaseSerializer
 
 @extend_schema_field(OpenApiTypes.OBJECT)
 class LocalityField(serializers.ChoiceField):
-    """
-    Locality is defined, in RCRAInfo, as an object used to describe region (state, nation)
+    """Locality is defined, in RCRAInfo, as an object used to describe region (state, nation)
     {
       "code": "TX",
       "name": "Texas"
@@ -29,9 +28,7 @@ class LocalityField(serializers.ChoiceField):
 
 
 class AddressSerializer(SitesBaseSerializer):
-    """
-    Address model serializer for JSON representation
-    """
+    """Address model serializer for JSON representation"""
 
     streetNumber = serializers.CharField(
         source="street_number",

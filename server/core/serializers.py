@@ -10,9 +10,7 @@ from core.models import (
 
 
 class TrakUserSerializer(ModelSerializer):
-    """
-    Model serializer for marshalling/unmarshalling a user's HaztrakUser
-    """
+    """Model serializer for marshalling/unmarshalling a user's HaztrakUser"""
 
     id = serializers.CharField(source="pk")
     username = serializers.CharField(
@@ -75,9 +73,7 @@ class TaskResultSerializer(serializers.ModelSerializer):
 
 
 class TaskStatusSerializer(serializers.Serializer):
-    """
-    Serializer for status or results of long-running celery tasks
-    """
+    """Serializer for status or results of long-running celery tasks"""
 
     taskId = serializers.CharField(
         source="task_id",

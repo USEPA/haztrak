@@ -24,8 +24,8 @@ def manifest_handler_factory(db, rcra_site_factory, paper_signature_factory):
     """Abstract factory for Haztrak Handler model"""
 
     def create_manifest_handler(
-        rcra_site: Optional[RcraSite] = None,
-        paper_signature: Optional[PaperSignature] = None,
+        rcra_site: RcraSite | None = None,
+        paper_signature: PaperSignature | None = None,
     ) -> Handler:
         return Handler.objects.create(
             rcra_site=rcra_site or rcra_site_factory(),
@@ -40,10 +40,10 @@ def manifest_transporter_factory(db, rcra_site_factory, paper_signature_factory)
     """Abstract factory for Haztrak Handler model"""
 
     def create_manifest_handler(
-        rcra_site: Optional[RcraSite] = None,
-        paper_signature: Optional[PaperSignature] = None,
+        rcra_site: RcraSite | None = None,
+        paper_signature: PaperSignature | None = None,
         manifest: Manifest = None,
-        order: Optional[int] = 1,
+        order: int | None = 1,
     ) -> Transporter:
         return Transporter.objects.create(
             manifest=manifest,
@@ -60,8 +60,8 @@ def paper_signature_factory(db, faker: Faker):
     """Abstract factory for Paper Signature"""
 
     def create_signature(
-        printed_name: Optional[str] = None,
-        sign_date: Optional[datetime] = None,
+        printed_name: str | None = None,
+        sign_date: datetime | None = None,
     ) -> PaperSignature:
         return PaperSignature.objects.create(
             printed_name=printed_name or faker.name(),
@@ -76,8 +76,8 @@ def e_signature_factory(db, signer_factory, manifest_handler_factory, faker: Fak
     """Abstract factory for Haztrak Handler model"""
 
     def create_e_signature(
-        signer: Optional[Signer] = None,
-        manifest_handler: Optional[Handler] = None,
+        signer: Signer | None = None,
+        manifest_handler: Handler | None = None,
     ) -> ESignature:
         return ESignature.objects.create(
             signer=signer or signer_factory(),
@@ -96,12 +96,12 @@ def signer_factory(db, faker: Faker):
     """Abstract factory for Haztrak Signer model"""
 
     def creat_signer(
-        first_name: Optional[str] = None,
-        middle_initial: Optional[str] = None,
-        last_name: Optional[str] = None,
-        signer_role: Optional[str] = "EP",
-        company_name: Optional[str] = None,
-        rcra_user_id: Optional[str] = None,
+        first_name: str | None = None,
+        middle_initial: str | None = None,
+        last_name: str | None = None,
+        signer_role: str | None = "EP",
+        company_name: str | None = None,
+        rcra_user_id: str | None = None,
     ) -> Signer:
         return Signer.objects.create(
             first_name=first_name or faker.first_name(),
@@ -132,10 +132,10 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
     """Abstract factory for hazardous waste Manifest model"""
 
     def create_manifest(
-        mtn: Optional[str] = None,
-        generator: Optional[Handler] = None,
-        tsdf: Optional[Handler] = None,
-        status: Optional[str] = None,
+        mtn: str | None = None,
+        generator: Handler | None = None,
+        tsdf: Handler | None = None,
+        status: str | None = None,
     ) -> Manifest:
         fake = Faker()
         fake.add_provider(MtnProvider)
@@ -148,11 +148,11 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
                     potential_ship_date=datetime.now(UTC),
                     generator=generator
                     or manifest_handler_factory(
-                        rcra_site=rcra_site_factory(site_type=RcraSiteType.GENERATOR)
+                        rcra_site=rcra_site_factory(site_type=RcraSiteType.GENERATOR),
                     ),
                     tsdf=tsdf
                     or manifest_handler_factory(
-                        rcra_site=rcra_site_factory(site_type=RcraSiteType.TSDF)
+                        rcra_site=rcra_site_factory(site_type=RcraSiteType.TSDF),
                     ),
                 )
             except IntegrityError:
@@ -163,11 +163,11 @@ def manifest_factory(db, manifest_handler_factory, rcra_site_factory):
                     potential_ship_date=datetime.now(UTC),
                     generator=generator
                     or manifest_handler_factory(
-                        rcra_site=rcra_site_factory(site_type=RcraSiteType.GENERATOR)
+                        rcra_site=rcra_site_factory(site_type=RcraSiteType.GENERATOR),
                     ),
                     tsdf=tsdf
                     or manifest_handler_factory(
-                        rcra_site=rcra_site_factory(site_type=RcraSiteType.TSDF)
+                        rcra_site=rcra_site_factory(site_type=RcraSiteType.TSDF),
                     ),
                 )
 

@@ -39,7 +39,7 @@ class TestProfileViewSet:
 
     @pytest.mark.skip(reason="Not implemented")
     def test_updates_profile_image(self, api_client, profile, generate_photo_file):
-        # ToDo: Implement this test - I keep getting a 500 internal server error
+        # TODO: Implement this test - I keep getting a 500 internal server error
         #  even though I can successfully use this endpoint
         api_client.login(username="testuser", password="password")
         url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.id})
@@ -74,13 +74,16 @@ class TestRcrainfoProfileRetrieveUpdateView:
     username_field = "rcraUsername"
 
     def test_returns_rcrainfo_profile_details(
-        self, rcrainfo_profile_factory, profile_factory, user_factory
+        self,
+        rcrainfo_profile_factory,
+        profile_factory,
+        user_factory,
     ):
         user = user_factory()
         rcrainfo_profile = rcrainfo_profile_factory()
         profile_factory(user=user, rcrainfo_profile=rcrainfo_profile)
         request = self.factory.get(
-            reverse("profile:rcrainfo:retrieve-update", args=[user.username])
+            reverse("profile:rcrainfo:retrieve-update", args=[user.username]),
         )
         force_authenticate(request, user)
         response = RcrainfoProfileRetrieveUpdateView.as_view()(request, username=user.username)
@@ -88,7 +91,10 @@ class TestRcrainfoProfileRetrieveUpdateView:
         assert response.data["rcraUsername"] == rcrainfo_profile.rcra_username
 
     def test_does_not_return_the_api_key_but_does_return_api_id(
-        self, rcrainfo_profile_factory, profile_factory, user_factory
+        self,
+        rcrainfo_profile_factory,
+        profile_factory,
+        user_factory,
     ):
         my_key = "my_key"
         my_id = "my_id"
@@ -96,7 +102,7 @@ class TestRcrainfoProfileRetrieveUpdateView:
         rcrainfo_profile = rcrainfo_profile_factory(rcra_api_key=my_key, rcra_api_id=my_id)
         profile_factory(user=user, rcrainfo_profile=rcrainfo_profile)
         request = self.factory.get(
-            reverse("profile:rcrainfo:retrieve-update", args=[user.username])
+            reverse("profile:rcrainfo:retrieve-update", args=[user.username]),
         )
         force_authenticate(request, user)
         response = RcrainfoProfileRetrieveUpdateView.as_view()(request, username=user.username)
@@ -104,7 +110,11 @@ class TestRcrainfoProfileRetrieveUpdateView:
         assert my_id in response.data.values()
 
     def test_returns_a_user_profile_in_json_representation(
-        self, user_factory, rcrainfo_profile_factory, profile_factory, api_client_factory
+        self,
+        user_factory,
+        rcrainfo_profile_factory,
+        profile_factory,
+        api_client_factory,
     ):
         user = user_factory()
         client = api_client_factory(user=user)
@@ -115,7 +125,10 @@ class TestRcrainfoProfileRetrieveUpdateView:
         assert response.status_code == status.HTTP_200_OK
 
     def test_rcrainfo_profile_updates(
-        self, rcrainfo_profile_factory, profile_factory, user_factory
+        self,
+        rcrainfo_profile_factory,
+        profile_factory,
+        user_factory,
     ):
         # Arrange
         user = user_factory()
@@ -138,7 +151,10 @@ class TestRcrainfoProfileRetrieveUpdateView:
         assert response.data[self.username_field] == user.username
 
     def test_update_does_not_return_api_key(
-        self, rcrainfo_profile_factory, user_factory, profile_factory
+        self,
+        rcrainfo_profile_factory,
+        user_factory,
+        profile_factory,
     ):
         # Arrange
         user = user_factory()
@@ -157,7 +173,8 @@ class TestRcrainfoProfileRetrieveUpdateView:
         force_authenticate(request, user)
         # Act
         response = RcrainfoProfileRetrieveUpdateView.as_view()(
-            request, username=profile.user.username
+            request,
+            username=profile.user.username,
         )
         # Assert
         assert self.key_field not in response.data

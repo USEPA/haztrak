@@ -42,8 +42,7 @@ class ProfileDetailsView(RetrieveAPIView):
 
 
 class RcrainfoProfileRetrieveUpdateView(RetrieveUpdateAPIView):
-    """
-    Responsible for Create/Update operations related to the user RcrainfoProfile,
+    """Responsible for Create/Update operations related to the user RcrainfoProfile,
     which maintains a user's RCRAInfo profile data. This info is necessary for
     actions that interface with RCRAInfo.
     """
@@ -58,8 +57,7 @@ class RcrainfoProfileRetrieveUpdateView(RetrieveUpdateAPIView):
 
 
 class RcrainfoProfileSyncView(CreateAPIView):
-    """
-    This endpoint launches a task to sync the logged-in user's RCRAInfo profile
+    """This endpoint launches a task to sync the logged-in user's RCRAInfo profile
     with their haztrak (Rcra)profile.
     """
 
@@ -72,5 +70,6 @@ class RcrainfoProfileSyncView(CreateAPIView):
             return self.response({"taskId": task.id})
         except CeleryError as exc:
             return self.response(
-                data={"error": str(exc)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                data={"error": str(exc)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )

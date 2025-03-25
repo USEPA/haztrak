@@ -11,9 +11,7 @@ class WasteBaseSerializer(serializers.ModelSerializer):
         return f"<{self.__class__.__name__}({self.data})>"
 
     def to_representation(self, instance):
-        """
-        Remove empty fields when serializing
-        """
+        """Remove empty fields when serializing"""
         data = super().to_representation(instance)
         for field in self.fields:
             try:

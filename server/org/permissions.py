@@ -14,5 +14,3 @@ class SiteObjectPermissions(DjangoObjectPermissions):
 
 class OrgObjectPermissions(DjangoObjectPermissions):
     """Object level permission for Org model."""
-
-    pass

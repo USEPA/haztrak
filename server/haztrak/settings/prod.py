@@ -18,7 +18,7 @@ DATABASES = {
         "PASSWORD": os.environ.get("HT_DB_PASSWORD"),
         "HOST": os.environ.get("HT_DB_HOST"),
         "PORT": os.environ.get("HT_DB_PORT", "5432"),
-    }
+    },
 }
 
 # Haztrak settings

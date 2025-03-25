@@ -9,11 +9,8 @@ logger = logging.getLogger(__name__)
 
 
 @shared_task(name="pull manifest", bind=True, acks_late=True)
-def pull_manifest(self: Task, *, mtn: List[str], username: str) -> dict:
-    """
-    This task initiates a call to the EManifest to pull a manifest by MTN
-    """
-
+def pull_manifest(self: Task, *, mtn: list[str], username: str) -> dict:
+    """This task initiates a call to the EManifest to pull a manifest by MTN"""
     from core.services import TaskService
 
     from manifest.services import EManifest
@@ -40,10 +37,8 @@ def sign_manifest(
     *,
     username: str,
     **signature_data: dict,
-) -> Dict:
-    """
-    a task to Quicker Sign manifest, by MTN, in RCRAInfo
-    """
+) -> dict:
+    """A task to Quicker Sign manifest, by MTN, in RCRAInfo"""
     from manifest.services import EManifest
 
     try:
@@ -58,8 +53,7 @@ def sign_manifest(
 
 @shared_task(name="sync site manifests", bind=True)
 def sync_site_manifests(self, *, site_id: str, username: str):
-    """asynchronous task to sync an EPA site's manifests"""
-
+    """Asynchronous task to sync an EPA site's manifests"""
     from org.services import get_user_site, update_emanifest_sync_date
 
     from manifest.services.emanifest import sync_manifests
@@ -68,7 +62,9 @@ def sync_site_manifests(self, *, site_id: str, username: str):
         client = get_rcra_client(username=username)
         site = get_user_site(username=username, epa_id=site_id)
         results = sync_manifests(
-            site_id=site_id, last_sync_date=site.last_rcrainfo_manifest_sync, rcra_client=client
+            site_id=site_id,
+            last_sync_date=site.last_rcrainfo_manifest_sync,
+            rcra_client=client,
         )
         update_emanifest_sync_date(site=site)
         return results
@@ -80,8 +76,7 @@ def sync_site_manifests(self, *, site_id: str, username: str):
 
 @shared_task(name="save RCRAInfo manifests", bind=True)
 def save_to_emanifest(self, *, manifest_data: dict, username: str):
-    """
-    asynchronous task to use the RCRAInfo web services to create an electronic (RCRA) manifest
+    """Asynchronous task to use the RCRAInfo web services to create an electronic (RCRA) manifest
     it accepts a Python dict of the manifest data to be submitted as JSON, and the username of the
     user who is creating the manifest
     """
