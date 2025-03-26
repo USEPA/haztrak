@@ -90,7 +90,6 @@ exclude = [
 
 [tool.ruff.lint]
 select = ["ALL"]
-extend-select = ["I"]
 ignore = [
     "ANN", # type annotations
     "FBT", # boolean trap
