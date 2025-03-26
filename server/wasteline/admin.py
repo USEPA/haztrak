@@ -1,7 +1,6 @@
 """Admin for wasteline app."""
 
 from django.contrib import admin
-
 from wasteline.models import DotLookup, WasteCode, WasteLine
 
 

@@ -4,7 +4,6 @@ from typing import ClassVar
 
 import pytest
 from django.db import IntegrityError
-
 from wasteline.models import DotLookup, DotLookupType, WasteCode
 
 

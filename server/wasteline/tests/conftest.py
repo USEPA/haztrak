@@ -2,7 +2,6 @@ from typing import Optional
 
 import pytest
 from faker import Faker
-
 from manifest.models import Manifest
 from wasteline.models import DotLookup, DotLookupType, WasteCode, WasteLine
 

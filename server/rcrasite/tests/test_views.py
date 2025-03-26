@@ -2,12 +2,11 @@ from typing import TYPE_CHECKING
 from unittest.mock import patch
 
 import pytest
+from rcrasite.models import RcraSiteType
+from rcrasite.views import HandlerSearchView, RcraSiteSearchView
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
-
-from rcrasite.models import RcraSiteType
-from rcrasite.views import HandlerSearchView, RcraSiteSearchView
 
 if TYPE_CHECKING:
     from rest_framework.response import Response

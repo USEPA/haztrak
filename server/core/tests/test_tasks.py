@@ -1,13 +1,12 @@
 from typing import TYPE_CHECKING
 
 import pytest
+from core.services.task_service import TaskService
+from core.views import TaskStatusView
 from django.core.cache import cache
 from django_celery_results.models import TaskResult
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
-
-from core.services.task_service import TaskService
-from core.views import TaskStatusView
 
 if TYPE_CHECKING:
     from rest_framework.response import Response

@@ -2,11 +2,10 @@ from unittest.mock import patch
 
 import pytest
 from celery.result import AsyncResult
+from manifest.views import ElectronicManifestSignView, ManifestViewSet, MtnListView
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
-
-from manifest.views import ElectronicManifestSignView, ManifestViewSet, MtnListView
 
 
 class TestManifestCRUD:

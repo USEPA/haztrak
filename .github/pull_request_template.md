@@ -1,11 +1,11 @@
 ## Description
 
-
 ## Issue ticket number and link
+
 <!-- Bonus points for using GitHub's keywords (e.g., closes #123)-->
 
-
 ## Checklist
+
 <!-- Help us by answering these questions where applicable. -->
 
 - [ ] I have added tests that prove my fix is effective or that my feature works

@@ -1,12 +1,11 @@
 from unittest.mock import patch
 
 import pytest
+from org.models import Org
+from org.views import OrgDetailsView, OrgListView, SiteDetailsView
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
-
-from org.models import Org
-from org.views import OrgDetailsView, OrgListView, SiteDetailsView
 
 
 class TestOrgDetailsView:

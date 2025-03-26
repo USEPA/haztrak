@@ -3,7 +3,6 @@
 from typing import ClassVar
 
 from rest_framework import serializers
-
 from wasteline.models import DotLookup, WasteCode, WasteLine
 
 

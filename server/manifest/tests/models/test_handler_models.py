@@ -1,5 +1,4 @@
 import pytest
-
 from manifest.models import Handler
 
 
