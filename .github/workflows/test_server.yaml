@@ -63,9 +63,6 @@ jobs:
       - name: "Install Python dependencies"
         run: uv sync --all-extras --dev
 
-      - name: "Activate virtual environment"
-        run: source .venv/bin/activate
-
       - name: "Run Tests"
         env:
           HT_SECRET_KEY: "django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d"
@@ -80,4 +77,4 @@ jobs:
           HT_DB_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           HT_DB_NAME: ${{ env.POSTGRES_DB }}
           HT_DB_PORT: ${{ job.services.postgres.ports[5432] }}
-        run: pytest -n auto
+        run: uv run pytest -n auto

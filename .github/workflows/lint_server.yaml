@@ -29,7 +29,7 @@ jobs:
         run: uv sync --all-extras --dev
 
       - name: "Lint Python"
-        run: ruff check . -e
+        run: uv run ruff check . -e
 
       - name: "Format Python"
-        run: ruff format . --check
+        run: uv run ruff format . --check
