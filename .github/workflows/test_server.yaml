@@ -28,6 +28,9 @@ jobs:
   run_server_tests:
     name: "Run Server Tests"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
 
     strategy:
       matrix:
@@ -55,7 +58,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           python-version: 3.12
-          pyproject-file: "/server/pyproject.toml"
+          pyproject-file: "./pyproject.toml"
 
       - name: "Activate virtual environment"
         run: source .venv/bin/activate
