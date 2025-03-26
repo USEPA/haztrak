@@ -55,6 +55,10 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           python-version: 3.12
+          pyproject-file: "/server/pyproject.toml"
+
+      - name: "Activate virtual environment"
+        run: source .venv/bin/activate
 
       - name: "Install Python dependencies"
         run: uv sync --all-extras --dev
