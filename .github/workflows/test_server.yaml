@@ -61,7 +61,7 @@ jobs:
           pyproject-file: "./pyproject.toml"
 
       - name: "Activate virtual environment"
-        run: source .venv/bin/activate
+        run: source ./server/.venv/bin/activate
 
       - name: "Install Python dependencies"
         run: uv sync --all-extras --dev
