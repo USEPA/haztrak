@@ -15,7 +15,53 @@ classifiers = [
 ]
 
 license = { text = "MIT" }
-requires-python = ">=3.12"
+requires-python = "==3.12.*"
+
+dependencies = [
+    "django==5.1.5",
+    "django-celery-results==2.5.1",
+    "django-cors-headers==4.4.0",
+    "django-extensions==3.2.3",
+    "django-celery-beat==2.7.0",
+    "djangorestframework==3.15.2",
+    "gunicorn==22.0.0",
+    "emanifest==4.0.3",
+    "psycopg[binary]==3.2.1",
+    "pytz==2024.2",
+    "sqlparse==0.5.1",
+    "tzdata==2024.2",
+    "whitenoise==6.8.2",
+    "celery==5.4.0",
+    "redis==5.1.0",
+    "drf-spectacular==0.27.2",
+    "django-health-check==3.18.3",
+    "dj-rest-auth[with-social]==6.0.0",
+    "django-guardian==2.4.0",
+    "django-allauth==0.61.1",
+    "djangorestframework-simplejwt==5.5.0",
+    "pillow==11.1.0",
+]
+
+[dependency-groups]
+dev = [
+    "celery-types==0.22.0",
+    "coverage==7.5.4",
+    "django-stubs==5.0.4",
+    "django-stubs-ext==5.0.4",
+    "djangorestframework-stubs==3.15.0",
+    "faker==26.1.0",
+    "mypy==1.15.0",
+    "mypy-extensions==1.0.0",
+    "pre-commit==4.2.0",
+    "pytest==8.3.4",
+    "pytest-cov==6.0.0",
+    "pytest-django==4.8.0",
+    "pytest-mock==3.14.0",
+    "pytest-env==1.1.5",
+    "pytest-xdist==3.6.1",
+    "responses==0.25.3",
+    "ruff==0.11.2",
+]
 
 [project.urls]
 issues = "https://github.com/USEPA/haztrak/issues"
@@ -43,12 +89,49 @@ exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["F", "E", "W", "Q"]
-ignore = ["F401"]
+select = ["ALL"]
+ignore = [
+    "ANN", # type annotations
+    "FBT", # boolean trap
+    "ARG", # no unused arguments
+    "CPY", # copyright notices
+    "F401",
+    "COM812",
+    "E721",
+    "D107",
+    "RUF012",
+    "FIX002",
+    "DJ001",
+    "D203",
+    "D212",
+    "COM812",
+    "TD003",
+    "G004",
+    "BLE001"
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/migrations/**.py" = ["D100", "D101", "D102", "D103", "E501", "RUF012"]
+"**/tests/**/*.py" = ["S101", "E501", "PLR0917", "ISC001", "D100", "D101", "D102", "PLR0913", "PLR2004"]
+"**/*serializer*.py" = ["N815"]
+"**/views.py" = ["N815"]
+"**/__init__.py" = ["D104"]
+"**/models.py" = ["COM819"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["haztrak"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["ninja.Query", "ninja.Depends", "ninja.File"]
+
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = ["pydantic.validator", "pydantic.root_validator"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "haztrak.settings.test"
-
 
 [tool.mypy]
 plugins = [

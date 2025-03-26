@@ -1,6 +1,4 @@
-"""
-Haztrak's Celery task queue settings
-"""
+"""Haztrak's Celery task queue settings."""
 
 import os
 

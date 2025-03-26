@@ -1,16 +1,15 @@
 from datetime import UTC, datetime
 
 import emanifest
+from core.services import RcraClient, get_rcra_client
 from manifest.models import QuickerSign
 from manifest.serializers import QuickerSignSerializer
 from responses import matchers
 from rest_framework import status
 
-from core.services import RcraClient, get_rcra_client
-
 
 class TestRcrainfoService:
-    """Tests the for the RcraClient class"""
+    """Tests the for the RcraClient class."""
 
     def test_inits_to_correct_environment(self):
         rcrainfo = RcraClient(rcrainfo_env="preprod")
@@ -29,7 +28,12 @@ class TestRcrainfoService:
         assert rcrainfo.retrieve_id() == admin_rcrainfo_profile.rcra_api_id
 
     def test_constructor_retrieves_org_api_credentials(
-        self, rcrainfo_profile_factory, user_factory, org_factory, profile_factory, perm_factory
+        self,
+        rcrainfo_profile_factory,
+        user_factory,
+        org_factory,
+        profile_factory,
+        perm_factory,
     ):
         # Arrange
         # Set up org with RCRAInfo API credentials
@@ -52,7 +56,11 @@ class TestRcrainfoService:
         assert rcrainfo.has_rcrainfo_credentials
 
     def test_constructor_uses_provided_api_credentials(
-        self, rcrainfo_profile_factory, user_factory, org_factory, profile_factory
+        self,
+        rcrainfo_profile_factory,
+        user_factory,
+        org_factory,
+        profile_factory,
     ):
         # Arrange
         mock_api_id = "my_mock_id"
@@ -66,7 +74,7 @@ class TestRcrainfoService:
 
 
 class TestQuickerSign:
-    """Test Suite for the RCRAInfo Quicker Sign feature"""
+    """Test Suite for the RCRAInfo Quicker Sign feature."""
 
     mtn = ["123456789ELC", "987654321ELC"]
     printed_name = "David Graham"
@@ -82,9 +90,9 @@ class TestQuickerSign:
         profile_factory,
         quicker_sign_response_factory,
     ):
-        """
-        Test that our sign_manifest method maps arguments to a JSON representation
-        that's recognized by RCRAInfo
+        """Test that our sign_manifest method maps arguments to a JSON representation.
+
+        Recognized by RCRAInfo.
         """
         testuser1 = user_factory()
         rcra_profile = rcrainfo_profile_factory()
@@ -102,8 +110,8 @@ class TestQuickerSign:
                         "siteType": self.site_type,
                         "manifestTrackingNumbers": self.mtn,
                         "siteId": self.site_id,
-                    }
-                )
+                    },
+                ),
             ],
             status=200,
         )

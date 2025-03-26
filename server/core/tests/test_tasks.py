@@ -1,16 +1,19 @@
+from typing import TYPE_CHECKING
+
 import pytest
+from core.services.task_service import TaskService
+from core.views import TaskStatusView
 from django.core.cache import cache
 from django_celery_results.models import TaskResult
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from core.services.task_service import TaskService
-from core.views import TaskStatusView
+if TYPE_CHECKING:
+    from rest_framework.response import Response
 
 
 class TestTaskStatusView:
-    """Tests the for the TaskStatusView"""
+    """Tests the for the TaskStatusView."""
 
     mock_task_id = "test_task_id"
     mock_task_name = "test_task_name"

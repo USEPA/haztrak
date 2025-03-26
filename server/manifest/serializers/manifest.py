@@ -1,11 +1,6 @@
-import logging
-from typing import Dict
+"""Serializers for Manifest models."""
 
-from rcrasite.models import RcraStates
-from rest_framework import serializers
-from wasteline.serializers import (
-    WasteLineSerializer,
-)
+import logging
 
 from manifest.models import (
     AdditionalInfo,
@@ -17,6 +12,11 @@ from manifest.serializers import (
     HandlerSerializer,
     TransporterSerializer,
 )
+from rcrasite.models import RcraStates
+from rest_framework import serializers
+from wasteline.serializers import (
+    WasteLineSerializer,
+)
 
 from .mixins import RemoveEmptyFieldsMixin
 
@@ -24,6 +24,8 @@ logger = logging.getLogger(__name__)
 
 
 class AdditionalInfoSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
+    """Additional Info serializer."""
+
     originalManifestTrackingNumbers = serializers.JSONField(
         allow_null=True,
         required=False,
@@ -53,6 +55,8 @@ class AdditionalInfoSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializ
     )
 
     class Meta:
+        """Metaclass."""
+
         model = AdditionalInfo
         fields = (
             "originalManifestTrackingNumbers",
@@ -64,7 +68,7 @@ class AdditionalInfoSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializ
 
 
 class ManifestSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
-    """Manifest serializer"""
+    """Manifest serializer."""
 
     createdDate = serializers.DateTimeField(
         source="created_date",
@@ -185,39 +189,41 @@ class ManifestSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
         allow_null=True,
     )
 
-    def update(self, instance: Manifest, validated_data: Dict) -> Manifest:
+    def update(self, instance: Manifest, validated_data: dict) -> Manifest:
+        """Update an existing Manifest instance."""
         return self.Meta.model.objects.save(instance, **validated_data)
 
-    def create(self, validated_data: Dict) -> Manifest:
+    def create(self, validated_data: dict) -> Manifest:
+        """Create a new Manifest instance."""
         return self.Meta.model.objects.save(None, **validated_data)
 
     def validate(self, data):
+        """Ensure that 'mtn' is not empty when 'status' is 'NotAssigned'."""
         if data["mtn"] == "" and data["status"] == "NotAssigned":
             data["mtn"] = draft_mtn()
         return super().validate(data)
 
     # https://www.django-rest-framework.org/api-guide/serializers/#overriding-serialization-and-deserialization-behavior
     def to_representation(self, instance) -> str:
-        """
-        Replace 'import_flag' with expected Python Keyword 'import' in JSON
-        """
+        """Replace 'import_flag' with expected Python Keyword 'import' in JSON."""
         data = super().to_representation(instance)
         data["import"] = instance.import_flag
         return data
 
     def to_internal_value(self, data):
-        """
-        Replace 'import_flag' with expected Python Keyword 'import' in JSON
-        """
+        """Replace 'import_flag' with expected Python Keyword 'import' in JSON."""
         instance = super().to_internal_value(data)
         try:
             instance["import_flag"] = data.get("import")
-            return instance
         except KeyError:
             instance["import_flag"] = False
             return instance
+        else:
+            return instance
 
     class Meta:
+        """Metaclass."""
+
         model = Manifest
         fields = [
             "createdDate",
@@ -256,9 +262,7 @@ class ManifestSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
 
 
 class PortOfEntrySerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
-    """
-    Serializer for Port Of Entry
-    """
+    """Serializer for Port Of Entry."""
 
     state = serializers.ChoiceField(
         choices=RcraStates.choices,
@@ -273,6 +277,8 @@ class PortOfEntrySerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer)
     )
 
     class Meta:
+        """Metaclass."""
+
         model = PortOfEntry
         fields = ["state", "cityPort"]
 
@@ -296,6 +302,8 @@ class MtnSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = Manifest
         fields = [
             "manifestTrackingNumber",

@@ -1,9 +1,9 @@
+from typing import TYPE_CHECKING
+
 import pytest
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
-
 from wasteline.models import DotLookupType, WasteCode
 from wasteline.views import (
     DotHazardClassView,
@@ -13,9 +13,12 @@ from wasteline.views import (
     StateWasteCodesView,
 )
 
+if TYPE_CHECKING:
+    from rest_framework.response import Response
+
 
 class TestWasteCodeLookupViews:
-    """Tests the for the Waste Code views"""
+    """Tests the for the Waste Code views."""
 
     @pytest.fixture
     def factory(self):
@@ -42,7 +45,7 @@ class TestWasteCodeLookupViews:
 
     def test_state_returns_200(self, factory, user):
         state_id = "VA"
-        request = factory.get(f"{reverse("wasteline:code:state", args=[state_id])}")
+        request = factory.get(f"{reverse('wasteline:code:state', args=[state_id])}")
         force_authenticate(request, user)
         response: Response = StateWasteCodesView.as_view()(request, state_id=state_id)
         assert response.status_code == status.HTTP_200_OK
@@ -69,7 +72,7 @@ class TestWasteCodeLookupViews:
         )
         number_state_codes = WasteCode.state.filter(state_id=WasteCode.VA).count()
         state_id = "VA"
-        request = factory.get(f"{reverse("wasteline:code:state", args=[state_id])}")
+        request = factory.get(f"{reverse('wasteline:code:state', args=[state_id])}")
         force_authenticate(request, user)
         # Act
         response: Response = StateWasteCodesView.as_view()(request, state_id=state_id)
@@ -79,7 +82,7 @@ class TestWasteCodeLookupViews:
 
 
 class TestDOTLookupViews:
-    """Tests the for the Waste Code views"""
+    """Tests the for the Waste Code views."""
 
     @pytest.fixture
     def factory(self):

@@ -2,16 +2,15 @@ from datetime import UTC, datetime
 
 import pytest
 from django.db import IntegrityError
-
 from manifest.models import PaperSignature
 
 
 @pytest.mark.django_db
 class TestPaperSignatureModel:
-    """Test related to the PaperSignature model and its API"""
+    """Test related to the PaperSignature model and its API."""
 
     def test_paper_signature_saves(self, paper_signature_factory):
-        """simply check the model saves given our factory's defaults"""
+        """Simply check the model saves given our factory's defaults."""
         paper_signature = paper_signature_factory()
         assert isinstance(paper_signature, PaperSignature)
 

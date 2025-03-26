@@ -1,9 +1,8 @@
 import pytest
 import pytest_mock
 from core.services import RcraClient, get_rcra_client
-from rest_framework import status
-
 from manifest.services import EManifest
+from rest_framework import status
 
 
 class TestEManifestService:
@@ -19,16 +18,18 @@ class TestEManifestService:
         rcrainfo = get_rcra_client(api_id="my_mock_id", api_key="my_mock_key")
         manifest_json = haztrak_json.MANIFEST.value
         mock_responses.get(
-            url=f'{rcrainfo.base_url}v1/emanifest/manifest/{manifest_json.get("manifestTrackingNumber")}',
+            url=f"{rcrainfo.base_url}v1/emanifest/manifest/{manifest_json.get('manifestTrackingNumber')}",
             content_type="application/json",
             json=manifest_json,
             status=status.HTTP_200_OK,
         )
 
     def test_pull_manifests(
-        self, manifest_100033134elc_rcra_response, mocker: pytest_mock.MockerFixture
+        self,
+        manifest_100033134elc_rcra_response,
+        mocker: pytest_mock.MockerFixture,
     ):
-        """Test retrieves a manifest from RCRAInfo"""
+        """Test retrieves a manifest from RCRAInfo."""
         rcrainfo = RcraClient(auto_renew=False)
         emanifest = EManifest(username=self.user.username, rcrainfo=rcrainfo)
         results = emanifest.pull(tracking_numbers=[self.tracking_number])

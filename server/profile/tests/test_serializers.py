@@ -19,7 +19,7 @@ class TestTrakProfileSerializer:
 
 
 class TestRcraSitePermissionSerializer:
-    """This Test suite is for haztrak's internal record of user's RCRAInfo site permissions."""
+    """Test suite is for haztrak's internal record of user's RCRAInfo site permissions."""
 
     @pytest.fixture(autouse=True)
     def _permissions(self, rcrainfo_site_access_factory):
@@ -42,8 +42,7 @@ class TestRcraSitePermissionSerializer:
 
 class TestRcrainfoSitePermissionSerializer:
     """
-    This Test suite is for Haztrak's serializer for communication with
-    RCRAInfo for a user's site permissions.
+    Test suite is for Haztrak's serializer for communication with RCRAInfo site perms.
 
     We don't use EPaPermissionSerializer to communicate internally, so
     currently we don't serialize, only deserialize
@@ -54,11 +53,14 @@ class TestRcrainfoSitePermissionSerializer:
         return RcrainfoSitePermissionsSerializer(data=haztrak_json.EPA_PERMISSION.value)
 
     def test_deserializes_epa_permissions(
-        self, epa_permission_serializer, rcrainfo_profile_factory, rcra_site_factory
+        self,
+        epa_permission_serializer,
+        rcrainfo_profile_factory,
+        rcra_site_factory,
     ) -> None:
         if not epa_permission_serializer.is_valid():
             # if something is wrong with the serializer fixture, fail
-            assert False
+            raise AssertionError
         rcrainfo_site_access = RcrainfoSiteAccess.objects.create(
             **epa_permission_serializer.validated_data,
             profile=rcrainfo_profile_factory(),

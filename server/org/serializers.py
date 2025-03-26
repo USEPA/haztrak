@@ -1,12 +1,13 @@
+"""Organization and Site model serializers for JSON marshalling/unmarshalling."""
+
+from org.models import Org, Site
 from rcrasite.serializers import RcraSiteSerializer
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from org.models import Org, Site
-
 
 class OrgSerializer(ModelSerializer):
-    """Haztrak Organization Model Serializer"""
+    """Haztrak Organization Model Serializer."""
 
     id = serializers.CharField(
         required=False,
@@ -23,6 +24,8 @@ class OrgSerializer(ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = Org
         fields = [
             "name",
@@ -33,9 +36,7 @@ class OrgSerializer(ModelSerializer):
 
 
 class SiteSerializer(ModelSerializer):
-    """
-    Haztrak Site model serializer for JSON marshalling/unmarshalling
-    """
+    """Haztrak Site model serializer for JSON marshalling/unmarshalling."""
 
     name = serializers.CharField(
         required=False,
@@ -45,5 +46,7 @@ class SiteSerializer(ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = Site
         fields = ["name", "handler"]

@@ -1,6 +1,4 @@
-"""
-Haztrak project settings.
-"""
+"""Haztrak project settings."""
 
 import os
 from datetime import timedelta
@@ -17,7 +15,8 @@ HT_LOG_LEVEL = os.getenv("HT_LOG_LEVEL", "INFO")
 HT_TRAK_LOG_LEVEL = os.getenv("HT_TRAK_LOG_LEVEL", HT_LOG_LEVEL)
 HT_CORE_LOG_LEVEL = os.getenv("HT_CORE_LOG_LEVEL", HT_LOG_LEVEL)
 HT_SIGNING_KEY = os.getenv(
-    "HT_SIGNING_KEY", "0dd3f4e68730bedfb07e6bc2e8f00a56c4db2d4a4b37e64ac0a83b8c97ec55dd"
+    "HT_SIGNING_KEY",
+    "0dd3f4e68730bedfb07e6bc2e8f00a56c4db2d4a4b37e64ac0a83b8c97ec55dd",
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -110,7 +109,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation" ".UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -136,7 +135,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")  # noqa: PTH118
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -197,7 +196,7 @@ LOGGING = {
     "formatters": {
         "superverbose": {
             "format": "%(levelname)s %(asctime)s %(module)s:%(lineno)d %(process)d "
-            "%(thread)d %(message)s"
+            "%(thread)d %(message)s",
         },
         "verbose": {"format": "%(levelname)s %(asctime)s %(module)s:%(lineno)d %(message)s"},
         "simple": {"format": "%(levelname)s %(message)s"},

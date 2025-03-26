@@ -1,5 +1,6 @@
-from django.urls import include, path
+"""URLs for the rcrasite app."""
 
+from django.urls import include, path
 from rcrasite.views import HandlerSearchView, RcraSiteDetailsView, RcraSiteSearchView
 
 rcrainfo_rcrasite_patterns = (

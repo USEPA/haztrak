@@ -1,3 +1,5 @@
+"""Profile models for the Haztrak application."""
+
 import uuid
 from typing import TYPE_CHECKING
 
@@ -13,21 +15,15 @@ class ProfileManager(models.QuerySet):
     """Query manager for the TrakProfile model."""
 
     def get_profile_by_user(self, user: "User") -> "Profile":
+        """Get a user Haztrak Profile by the user."""
         return self.get(user=user)
 
 
 class Profile(models.Model):
-    """
-    User information outside the scope of the User model.
-    Contains a one-to-one relationship with the User model
-    """
+    """User information outside the scope of the User model.
 
-    objects = ProfileManager.as_manager()
-
-    class Meta:
-        verbose_name = "Haztrak Profile"
-        ordering = ["user__username"]
-        default_related_name = "haztrak_profile"
+    Contains a one-to-one relationship with the User model.
+    """
 
     id = models.UUIDField(
         primary_key=True,
@@ -52,7 +48,17 @@ class Profile(models.Model):
         blank=True,
     )
 
+    objects = ProfileManager.as_manager()
+
+    class Meta:
+        """Metaclass."""
+
+        verbose_name = "Haztrak Profile"
+        ordering = ["user__username"]
+        default_related_name = "haztrak_profile"
+
     def __str__(self):
+        """Human-readable representation."""
         return f"{self.user.username}"
 
 
@@ -60,19 +66,16 @@ class RcrainfoProfileManager(models.Manager):
     """Query manager for the RcrainfoProfile model."""
 
     def get_by_trak_username(self, username: str) -> "RcrainfoProfile":
+        """Get a RcrainfoProfile by the user's Haztrak username."""
         return self.get(haztrak_profile__user__username=username)
 
 
 class RcrainfoProfile(models.Model):
-    """
+    """Rcrainfo profile information.
+
     Contains a user's RcrainfoProfile information, such as username, and API credentials.
     Has a one-to-one relationship with the User model.
     """
-
-    objects = RcrainfoProfileManager()
-
-    class Meta:
-        ordering = ["rcra_username"]
 
     id = models.UUIDField(
         primary_key=True,
@@ -101,17 +104,25 @@ class RcrainfoProfile(models.Model):
     )
     email = models.EmailField()
 
+    objects = RcrainfoProfileManager()
+
+    class Meta:
+        """Metaclass."""
+
+        ordering = ["rcra_username"]
+
     def __str__(self):
+        """Human-readable representation."""
         return f"{self.haztrak_profile.user.username}"
 
     @property
     def has_rcrainfo_api_id_key(self) -> bool:
-        """Returns true if the use has Rcrainfo API credentials"""
+        """Returns true if the use has Rcrainfo API credentials."""
         return self.rcra_api_id is not None and self.rcra_api_key is not None
 
 
 class RcrainfoSiteAccess(models.Model):
-    """Permissions a user has in their RCRAInfo account"""
+    """Permissions a user has in their RCRAInfo account."""
 
     CERTIFIER = "Certifier"
     PREPARER = "Preparer"
@@ -122,11 +133,6 @@ class RcrainfoSiteAccess(models.Model):
         (PREPARER, "Preparer"),
         (VIEWER, "Viewer"),
     ]
-
-    class Meta:
-        verbose_name = "RCRAInfo Permission"
-        verbose_name_plural = "RCRAInfo Permissions"
-        ordering = ["site"]
 
     site = models.CharField(
         max_length=12,
@@ -160,14 +166,24 @@ class RcrainfoSiteAccess(models.Model):
         choices=EPA_PERMISSION_LEVEL,
     )
 
+    class Meta:
+        """Metaclass."""
+
+        verbose_name = "RCRAInfo Permission"
+        verbose_name_plural = "RCRAInfo Permissions"
+        ordering = ["site"]
+
     def __str__(self):
+        """Human-readable representation."""
         return f"{self.site}"
 
     def clean(self):
+        """Validates the model instance."""
         if self.site_manager:
             fields = ["annual_report", "biennial_report", "e_manifest", "my_rcra_id", "wiets"]
             for field_name in fields:
                 if getattr(self, field_name) != "Certifier":
+                    msg = f"If Site Manager, '{field_name}' field must be set to 'Certifier'."
                     raise ValidationError(
-                        f"If Site Manager, '{field_name}' field must be set to 'Certifier'."
+                        msg,
                     )

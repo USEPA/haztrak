@@ -1,5 +1,4 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated
+"""Views for the org app."""
 
 from org.filters import ObjectPermissionsFilter
 from org.models import Org, Site
@@ -11,10 +10,12 @@ from org.services import (
     get_org_by_slug,
     get_site_by_epa_id,
 )
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
 
 
 class OrgDetailsView(RetrieveAPIView):
-    """Retrieve details for a given Org"""
+    """Retrieve details for a given Org."""
 
     serializer_class = OrgSerializer
     queryset = Org.objects.all()
@@ -22,6 +23,7 @@ class OrgDetailsView(RetrieveAPIView):
     permission_classes = [OrgObjectPermissions, IsAuthenticated]
 
     def get_object(self):
+        """Get organization."""
         org = get_org_by_slug(self.kwargs["org_slug"])
         self.check_object_permissions(self.request, org)
         return org
@@ -43,6 +45,7 @@ class SiteListView(ListAPIView):
     filter_backends = [ObjectPermissionsFilter]
 
     def get_queryset(self):
+        """Get org sites."""
         if "org_slug" in self.kwargs:
             return filter_sites_by_org(self.kwargs["org_slug"])
         return find_sites_by_user(self.request.user)
@@ -57,6 +60,7 @@ class SiteDetailsView(RetrieveAPIView):
     permission_classes = [SiteObjectPermissions, IsAuthenticated]
 
     def get_object(self):
+        """Get the object."""
         site = get_site_by_epa_id(epa_id=self.kwargs["epa_id"])
         self.check_object_permissions(self.request, site)
         return site

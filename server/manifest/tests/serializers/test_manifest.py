@@ -1,12 +1,14 @@
-import pytest
-from wasteline.models import WasteLine
+"""Tests for the ManifestSerializer class."""
 
+import pytest
 from manifest.models import AdditionalInfo, Manifest
 from manifest.serializers import ManifestSerializer
+from wasteline.models import WasteLine
 
 
 @pytest.fixture
 def manifest_10003114elc_serializer(db, haztrak_json) -> ManifestSerializer:
+    """Manifest serializer for manifest 10003114elc."""
     return ManifestSerializer(data=haztrak_json.MANIFEST.value)
 
 

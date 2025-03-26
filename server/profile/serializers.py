@@ -1,3 +1,5 @@
+"""Profile serializer."""
+
 from profile.models import Profile, RcrainfoProfile, RcrainfoSiteAccess
 
 from core.serializers import TrakUserSerializer
@@ -7,9 +9,10 @@ from rest_framework.exceptions import ValidationError
 
 
 class RcraSitePermissionSerializer(RemoveEmptyFieldsMixin, serializers.ModelSerializer):
-    """
-    We use this internally because it's easier to handle, using consistent naming,
-    Haztrak has a separate serializer for user permissions from RCRAInfo.
+    """RcrainfoSiteAccess model serializer.
+
+    We use this internally because it's easier to handle,
+    Using consistent naming,Haztrak has a separate serializer for user permissions from RCRAInfo.
     """
 
     rcrainfo_modules = [
@@ -45,6 +48,7 @@ class RcraSitePermissionSerializer(RemoveEmptyFieldsMixin, serializers.ModelSeri
     )
 
     def to_representation(self, instance):
+        """To JSON."""
         representation = super().to_representation(instance)
         representation["permissions"] = {}
         for module in self.rcrainfo_modules:
@@ -52,6 +56,8 @@ class RcraSitePermissionSerializer(RemoveEmptyFieldsMixin, serializers.ModelSeri
         return representation
 
     class Meta:
+        """Metaclass."""
+
         model = RcrainfoSiteAccess
         fields = [
             "epaSiteId",
@@ -68,23 +74,27 @@ class RcraPermissionField(serializers.Field):
     """Serializer for communicating with RCRAInfo, translates internal to RCRAInfo field names."""
 
     def to_representation(self, value):
+        """Convert to JSON."""
         value = "Active" if value else "InActive"
         # RcraInfo gives us an array of object with module and level keys
         return {"module": f"{self.field_name}", "level": value}
 
     def to_internal_value(self, data):
+        """Convert to Python."""
         try:
             passed_value = data["level"]
             # if 'Active' or 'InActive' is passed, convert it to True or False
             return {"Active": True, "InActive": False}.get(passed_value, passed_value)
         except KeyError as exc:
-            raise ValidationError(f"malformed JSON: {exc}")
+            msg = "malformed JSON"
+            raise ValidationError(msg) from exc
 
 
 class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
-    """
-    RcraSitePermissions model serializer specifically for reading a user's site permissions
-    from RCRAInfo. It's not used for serializing, only deserializing permissions from RCRAinfo
+    """RcraSitePermissions model serializer.
+
+    Specifically for reading a user's site permissions.from RCRAInfo.
+    It's not used for serializing, only deserializing permissions from RCRAinfo.
     """
 
     rcrainfo_modules = [
@@ -118,7 +128,7 @@ class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
     )
 
     def to_internal_value(self, data):
-        """This converts a RCRAInfo permissions into Haztrak's internal representation."""
+        """Converts a RCRAInfo permissions into Haztrak's internal representation."""
         try:
             data.pop("siteName")
             permissions = data.pop("permissions")
@@ -127,9 +137,12 @@ class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
                 data[rcrainfo_module] = i
             return super().to_internal_value(data)
         except KeyError as exc:
-            raise ValidationError(f"malformed JSON: {exc}")
+            msg = "malformed JSON"
+            raise ValidationError(msg) from exc
 
     class Meta:
+        """Metaclass."""
+
         model = RcrainfoSiteAccess
         fields = [
             "siteId",
@@ -143,11 +156,13 @@ class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    """Serializer for a user's profile"""
+    """Serializer for a user's profile."""
 
     user = TrakUserSerializer(read_only=True)
 
     class Meta:
+        """Metaclass."""
+
         model = Profile
         fields = [
             "user",
@@ -156,7 +171,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class RcrainfoProfileSerializer(serializers.ModelSerializer):
-    """Model serializer for marshalling/unmarshalling a user's RcrainfoProfile"""
+    """Model serializer for marshalling/unmarshalling a user's RcrainfoProfile."""
 
     user = serializers.StringRelatedField(
         source="haztrak_profile",
@@ -194,6 +209,8 @@ class RcrainfoProfileSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = RcrainfoProfile
         fields = [
             "user",

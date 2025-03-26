@@ -1,3 +1,5 @@
+"""URLs for the profile app."""
+
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
@@ -15,7 +17,9 @@ rcrainfo_profile_patterns = (
     [
         path("/sync", RcrainfoProfileSyncView.as_view(), name="sync"),
         path(
-            "/<str:username>", RcrainfoProfileRetrieveUpdateView.as_view(), name="retrieve-update"
+            "/<str:username>",
+            RcrainfoProfileRetrieveUpdateView.as_view(),
+            name="retrieve-update",
         ),
     ],
     "rcrainfo",

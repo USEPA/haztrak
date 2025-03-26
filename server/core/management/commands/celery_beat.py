@@ -1,3 +1,5 @@
+"""Command to setup periodic tasks."""
+
 import logging
 import os
 import shlex
@@ -14,22 +16,26 @@ logger = logging.getLogger(__name__)
 
 
 def restart_celery_beat():
+    """Restart Celery Beat."""
     celery_beat_cmd = f"celery -A haztrak beat -l {CELERY_LOG_LEVEL}"
     cmd = f'pkill -f "{celery_beat_cmd}"'
     if sys.platform == "win32":
         cmd = "taskkill /f /t /im celery.exe"
 
-    subprocess.call(shlex.split(cmd))
-    subprocess.call(shlex.split(f"{celery_beat_cmd}"))
+    subprocess.call(shlex.split(cmd))  # noqa: S603
+    subprocess.call(shlex.split(f"{celery_beat_cmd}"))  # noqa: S603
 
 
 class Command(BaseCommand):
+    """Command for periodic tasks."""
+
     def handle(self, *args, **options):
         """
-        see HackSoftware's explanation here.
+        See HackSoftware's explanation here.
+
         https://github.com/HackSoftware/Django-Styleguide#periodic-tasks
         I'm not crazy about this implementation, but it will do for our POC.
-        Note, adding @transaction.atomic causes problems with docker-compose
+        Note, adding @transaction.atomic causes problems with docker-compose.
         """
         IntervalSchedule.objects.all().delete()
         CrontabSchedule.objects.all().delete()
@@ -51,7 +57,7 @@ class Command(BaseCommand):
         ]
 
         for periodic_task in periodic_tasks_data:
-            logger.info(f'Setting up {periodic_task["task"].name}')
+            logger.info(f"Setting up {periodic_task['task'].name}")
 
             cron = CrontabSchedule.objects.create(**periodic_task["cron"])
 

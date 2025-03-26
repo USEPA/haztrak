@@ -1,6 +1,7 @@
+"""Admin interface for rcrasite app."""
+
 from core.admin import HiddenListView
 from django.contrib import admin
-
 from rcrasite.models import (
     Address,
     Contact,
@@ -10,6 +11,8 @@ from rcrasite.models import (
 
 @admin.register(RcraSite)
 class RcraSiteAdmin(admin.ModelAdmin):
+    """Admin interface for RcraSite model."""
+
     list_display = ["__str__", "site_type", "site_address", "mail_address"]
     list_filter = ["site_type"]
     search_fields = ["epa_id"]

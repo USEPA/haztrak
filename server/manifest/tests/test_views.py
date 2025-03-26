@@ -2,15 +2,14 @@ from unittest.mock import patch
 
 import pytest
 from celery.result import AsyncResult
+from manifest.views import ElectronicManifestSignView, ManifestViewSet, MtnListView
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from manifest.views import ElectronicManifestSignView, ManifestViewSet, MtnListView
-
 
 class TestManifestCRUD:
-    """Tests the for the Manifest views"""
+    """Tests the for the Manifest views."""
 
     @pytest.fixture
     def factory(self):
@@ -40,7 +39,7 @@ class TestManifestCRUD:
 
 
 class TestSignManifestVIew:
-    """Quicker Sign endpoint test suite"""
+    """Quicker Sign endpoint test suite."""
 
     factory = APIRequestFactory()
     mtn = ["123456789ELC", "987654321ELC"]
@@ -56,7 +55,11 @@ class TestSignManifestVIew:
         mock_task.return_value = AsyncResult(self.mock_task_id)
 
     def test_returns_celery_task_id(
-        self, user_factory, profile_factory, org_factory, perm_factory
+        self,
+        user_factory,
+        profile_factory,
+        org_factory,
+        perm_factory,
     ):
         user = user_factory()
         org = org_factory()

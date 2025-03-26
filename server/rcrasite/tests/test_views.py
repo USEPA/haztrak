@@ -1,17 +1,19 @@
+from typing import TYPE_CHECKING
 from unittest.mock import patch
 
 import pytest
+from rcrasite.models import RcraSiteType
+from rcrasite.views import HandlerSearchView, RcraSiteSearchView
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
-from rcrasite.models import RcraSiteType  # type: ignore
-from rcrasite.views import HandlerSearchView, RcraSiteSearchView  # type: ignore
+if TYPE_CHECKING:
+    from rest_framework.response import Response
 
 
 class TestRcraSiteView:
-    """Handler endpoints test suite"""
+    """Handler endpoints test suite."""
 
     @pytest.fixture
     def client(self, api_client_factory):
@@ -29,9 +31,7 @@ class TestRcraSiteView:
 
 
 class TestRcraSiteSearchView:
-    """
-    Tests for the RcraSite Search endpoint
-    """
+    """Tests for the RcraSite Search endpoint."""
 
     URL = reverse("rcrasite:search")
 
@@ -83,9 +83,11 @@ class TestRcraSiteSearchView:
             assert handler_data["siteType"] == RcraSiteType.TSDF
 
     def test_endpoint_returns_200_if_bad_query_params(
-        self, user_factory, rcra_site_factory
+        self,
+        user_factory,
+        rcra_site_factory,
     ) -> None:
-        """Use APIClient to ensure our HTTP response meets spec"""
+        """Use APIClient to ensure our HTTP response meets spec."""
         # Arrange
         client = APIClient()
         user = user_factory()
@@ -106,13 +108,16 @@ class TestRcraSiteSearchView:
 
 
 class TestHandlerSearchView:
+    """Tests for the Handler Search endpoint."""
+
     @pytest.fixture(autouse=True)
     def set_up(self):
         self.request_factory = APIRequestFactory()
 
     def test_valid_search_returns_200(self, user_factory):
-        with patch("rcrasite.views.RcraSiteService") as MockRcraSiteService:
-            mock_service = MockRcraSiteService.return_value
+        """Test."""
+        with patch("rcrasite.views.RcraSiteService") as mock_rcra_site_service:
+            mock_service = mock_rcra_site_service.return_value
             mock_service.search_rcrainfo_handlers.return_value = {"sites": []}
             user = user_factory()
             data = {"siteId": "VAT000000000", "siteType": "designatedFacility"}

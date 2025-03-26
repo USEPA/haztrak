@@ -1,16 +1,19 @@
+"""Models for RCRAInfo site data."""
+
 import logging
 from typing import Optional, Union
 
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
 from rcrasite.models import Address, Contact, RcraPhone
 
 logger = logging.getLogger(__name__)
 
 
 class RcraSiteType(models.TextChoices):
+    """Possible site types for an RcraSite."""
+
     GENERATOR = "Generator"
     TRANSPORTER = "Transporter"
     TSDF = "Tsdf"
@@ -18,26 +21,18 @@ class RcraSiteType(models.TextChoices):
 
 
 class RcraSiteManager(models.Manager):
-    """RcraSite Model database querying interface"""
+    """RcraSite Model database querying interface."""
 
     def __init__(self):
         self.handler_data = None
         super().__init__()
 
     def get_by_epa_id(self, epa_id: str) -> "RcraSite":
-        """Return an RcraSite object by its epa_id"""
+        """Return an RcraSite object by its epa_id."""
         return self.get(epa_id__iexact=epa_id)
 
     def save(self, instance: Optional["RcraSite"], **handler_data) -> "RcraSite":
-        """
-        Create an RcraSite and its related fields
-
-        Keyword Args:
-            contact (dict): Contact data in (ordered)dict format
-            site_address (dict): Site address data dict
-            mail_address (dict): mailing address data dict
-            emergency_phone (dict): optional Phone dict
-        """
+        """Create an RcraSite and its related fields."""
         try:
             epa_id = handler_data.get("epa_id")
             if self.model.objects.filter(epa_id=epa_id).exists():
@@ -55,12 +50,14 @@ class RcraSiteManager(models.Manager):
                 contact=new_contact,
                 defaults=self.handler_data,
             )
-            return rcra_site
         except KeyError as exc:
-            logger.warning(f"error while creating {self.model.__class__.__name__}{exc}")
+            msg = f"Missing required data for {self.model.__class__.__name__}: {exc}"
+            logger.warning(msg)
+        else:
+            return rcra_site
 
-    def get_emergency_phone(self) -> Union[RcraPhone, None]:
-        """Check if emergency phone is present and create an RcraPhone row"""
+    def get_emergency_phone(self) -> RcraPhone | None:
+        """Check if emergency phone is present and create an RcraPhone row."""
         try:
             emergency_phone_data = self.handler_data.pop("emergency_phone")
             if emergency_phone_data is not None:
@@ -70,7 +67,7 @@ class RcraSiteManager(models.Manager):
             return None
 
     def get_address(self, key) -> Address:
-        """Remove Address data and create if necessary"""
+        """Remove Address data and create if necessary."""
         try:
             address = self.handler_data.pop(key)
             if isinstance(address, Address):
@@ -78,18 +75,11 @@ class RcraSiteManager(models.Manager):
             return Address.objects.create(**address)
         except KeyError as exc:
             logger.warning(exc)
-            raise ValidationError(exc)
+            raise ValidationError(exc) from exc
 
 
 class RcraSite(models.Model):
-    """RCRAInfo Site model (see 'Handler' which wraps this model with manifest specific data)"""
-
-    class Meta:
-        verbose_name = "RCRAInfo Site"
-        verbose_name_plural = "RCRAInfo Sites"
-        ordering = ["epa_id"]
-
-    objects = RcraSiteManager()
+    """RCRAInfo Site model (see 'Handler' which wraps this model with manifest specific data)."""
 
     site_type = models.CharField(
         max_length=20,
@@ -157,11 +147,23 @@ class RcraSite(models.Model):
         default=False,
     )
 
+    objects = RcraSiteManager()
+
+    class Meta:
+        """Metaclass."""
+
+        verbose_name = "RCRAInfo Site"
+        verbose_name_plural = "RCRAInfo Sites"
+        ordering = ["epa_id"]
+
     def __str__(self):
+        """Human-readable representation."""
         return f"{self.epa_id}"
 
 
 class Role(models.TextChoices):
+    """Possible roles for a user."""
+
     INDUSTRY = "IN", _("Industry")
     PPC = "PP", _("Ppc")
     EPA = "EP", _("Epa")

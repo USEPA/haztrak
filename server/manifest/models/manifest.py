@@ -1,7 +1,9 @@
+"""Manifest model definition."""
+
 import logging
 import re
 from abc import ABC, abstractmethod
-from typing import List, Literal, Optional
+from typing import Literal, Optional
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -16,13 +18,13 @@ logger = logging.getLogger(__name__)
 
 
 def draft_mtn():
-    """returns a timestamped draft MTN in lieu of an official MTN from e-Manifest"""
+    """Returns a timestamped draft MTN in lieu of an official MTN from e-Manifest."""
     mtn_count: int = Manifest.objects.all().count()
     return f"{str(mtn_count).zfill(9)}DFT"
 
 
 def validate_mtn(value):
-    """Validate manifest tracking number format"""
+    """Validate manifest tracking number format."""
     if not re.match(r"[0-9]{9}[A-Z]{3}", value):
         raise ValidationError(
             _("%(value)s is not in valid MTN format: [0-9]{9}[A-Z]{3}"),
@@ -31,79 +33,86 @@ def validate_mtn(value):
 
 
 class ManifestHandlerFilter(ABC):
-    """Interface for filtering manifests by handler"""
+    """Interface for filtering manifests by handler."""
 
     @abstractmethod
     def filter_by_epa_id(self, epa_id: str) -> QuerySet:
-        pass
+        """Filter manifests by handler epa_id."""
 
 
 class GeneratorFilter(ManifestHandlerFilter):
-    """implementation for filtering manifests by generator"""
+    """implementation for filtering manifests by generator."""
 
     def filter_by_epa_id(self, epa_id: str) -> Q:
+        """Filter manifests by generator epa_id."""
         return Q(generator__rcra_site__epa_id=epa_id)
 
 
 class TransporterFilter(ManifestHandlerFilter):
-    """implementation for filtering manifests by Transporter"""
+    """implementation for filtering manifests by Transporter."""
 
     def filter_by_epa_id(self, epa_id: str) -> Q:
+        """Filter manifests by transporter epa_id."""
         return Q(transporters__rcra_site__epa_id=epa_id)
 
 
 class TsdfFilter(ManifestHandlerFilter):
-    """implementation for filtering manifests by receiving facility"""
+    """implementation for filtering manifests by receiving facility."""
 
     def filter_by_epa_id(self, epa_id: str) -> Q:
+        """Filter manifests by tsdf epa_id."""
         return Q(tsdf__rcra_site__epa_id=epa_id)
 
 
 class AllHandlerFilter(ManifestHandlerFilter):
-    """implementation for filtering manifests by all handlers types"""
+    """implementation for filtering manifests by all handlers types."""
 
     def filter_by_epa_id(self, epa_id: str) -> Q:
+        """Filter manifests by handler epa_id."""
         return Q(
             Q(generator__rcra_site__epa_id=epa_id)
             | Q(tsdf__rcra_site__epa_id=epa_id)
-            | Q(transporters__rcra_site__epa_id=epa_id)
+            | Q(transporters__rcra_site__epa_id=epa_id),
         )
 
 
 class HandlerFilterFactory:
-    """Abstract Factory for creating ManifestHandlerFilter instances based on site_type"""
+    """Abstract Factory for creating ManifestHandlerFilter instances based on site_type."""
 
     @staticmethod
     def get_filter(site_type: RcraSiteType | Literal["all"]):
+        """Factory method to create a ManifestHandlerFilter instance."""
         if site_type == RcraSiteType.GENERATOR:
             return GeneratorFilter()
-        elif site_type == RcraSiteType.TRANSPORTER:
+        if site_type == RcraSiteType.TRANSPORTER:
             return TransporterFilter()
-        elif site_type == RcraSiteType.TSDF:
+        if site_type == RcraSiteType.TSDF:
             return TsdfFilter()
-        elif site_type == "all":
+        if site_type == "all":
             return AllHandlerFilter()
-        else:
-            raise ValueError(f"unrecognized site_type argument {site_type}")
+        msg = f"unrecognized site_type argument {site_type}"
+        raise ValueError(msg)
 
 
 class ManifestManager(models.Manager):
-    """Manifest repository manager"""
+    """Manifest repository manager."""
 
-    def filter_existing_mtn(self, mtn: List[str]) -> QuerySet:
+    def filter_existing_mtn(self, mtn: list[str]) -> QuerySet:
         """Filter non-existent manifest tracking numbers (MTN)."""
         return self.model.objects.filter(mtn__in=mtn)
 
     def filter_by_epa_id_and_site_type(
-        self, epa_ids: [str], site_type: RcraSiteType | Literal["all"] = "all"
+        self,
+        epa_ids: [str],
+        site_type: RcraSiteType | Literal["all"] = "all",
     ) -> QuerySet:
-        """Filter manifests by site_id and site_type"""
+        """Filter manifests by site_id and site_type."""
         handler_filter = HandlerFilterFactory.get_filter(site_type)
         return self.filter(handler_filter.filter_by_epa_id(epa_ids))
 
     @classmethod
     def save(cls, instance: Optional["Manifest"], **manifest_data: dict) -> "Manifest":
-        """Update or Create a manifest with its related models instances"""
+        """Update or Create a manifest with its related models instances."""
         waste_data = manifest_data.pop("wastes", [])
         transporter_data = manifest_data.pop("transporters", [])
         if instance:
@@ -119,26 +128,26 @@ class ManifestManager(models.Manager):
 
     @staticmethod
     def create_manifest(**data: dict):
-        """Create a manifest instance with a dictionary of data"""
+        """Create a manifest instance with a dictionary of data."""
         try:
             additional_info: AdditionalInfo | None = None
             generator = Handler.objects.save(None, **data.pop("generator"))
             tsdf = Handler.objects.save(None, **data.pop("tsdf"))
             if "additional_info" in data:
                 additional_info = AdditionalInfo.objects.create(**data.pop("additional_info"))
-            manifest = Manifest.objects.create(
+            return Manifest.objects.create(
                 generator=generator,
                 tsdf=tsdf,
                 additional_info=additional_info,
                 **data,
             )
-            return manifest
-        except KeyError as e:
-            raise ValidationError(f"Missing required key {e}")
+        except KeyError as exc:
+            msg = f"Missing required key {exc}"
+            raise ValidationError(msg) from exc
 
     @staticmethod
     def update_manifest(instance, **data: dict):
-        """Update a manifest instance with a dictionary of data"""
+        """Update a manifest instance with a dictionary of data."""
         if "generator" in data:
             instance.generator = Handler.objects.save(instance.generator, **data.pop("generator"))
         if "tsdf" in data:
@@ -157,30 +166,33 @@ def manifest_factory(mtn=None, generator=None, tsdf=None, **kwargs):
 
 
 class Manifest(models.Model):
-    """Model definition the RCRA Uniform Hazardous Waste Manifest"""
-
-    class Meta:
-        ordering = ["update_date", "mtn"]
-
-    objects = ManifestManager()
+    """Model definition the RCRA Uniform Hazardous Waste Manifest."""
 
     class LockReason(models.TextChoices):
+        """Manifest lock reason choices."""
+
         ASYNC_SIGN = "ACS", _("AsyncSign")
         CHANGE_BILLER = "ECB", _("EpaChangeBiller")
         CORRECTION = "EPC", _("EpaCorrection")
 
     class OriginType(models.TextChoices):
+        """Manifest origin type choices."""
+
         WEB = "Web", _("Web")
         SERVICE = "Service", _("Service")
         MAIL = "Mail", _("Mail")
 
     class SubType(models.TextChoices):
+        """Submission type choices."""
+
         ELECTRONIC = "FullElectronic", _("Full Electronic")
         DATA_IMAGE = "DataImage5Copy", _("Data + Image")
         HYBRID = "Hybrid", _("Hybrid")
         IMAGE = "Image", _("Image")
 
     class Status(models.TextChoices):
+        """Manifest status choices."""
+
         NOT_ASSIGNED = "NotAssigned", _("Not Assigned")
         PENDING = "Pending", _("Pending")
         SCHEDULED = "Scheduled", _("Scheduled")
@@ -355,28 +367,32 @@ class Manifest(models.Model):
         blank=True,
     )
 
-    @property
-    def is_draft(self) -> bool:
-        if self.mtn is None or self.mtn.endswith("DFT"):
-            return True
-        return False
+    objects = ManifestManager()
+
+    class Meta:
+        """Metaclass."""
+
+        ordering = ["update_date", "mtn"]
 
     def __str__(self):
+        """Human-readable representation."""
         return f"{self.mtn}"
+
+    @property
+    def is_draft(self) -> bool:
+        """Check if the manifest is a draft."""
+        return bool(self.mtn is None or self.mtn.endswith("DFT"))
 
 
 class AdditionalInfo(models.Model):
-    """
-    Entity containing Additional Information. Relevant to Both Manifest and individual WastesLines.
+    """Entity containing Additional Information.
+
+    Relevant to Both Manifest and individual WastesLines.
     Shipment rejection related info is stored in this object.
     """
 
-    class Meta:
-        verbose_name = "Additional Info"
-        verbose_name_plural = "Additional Info"
-
     class NewDestination(models.TextChoices):
-        """Shipment destination choices upon rejection"""
+        """Shipment destination choices upon rejection."""
 
         GENERATOR = "GEN", _("Generator")
         TSDF = "TSD", _("Tsdf")
@@ -412,16 +428,19 @@ class AdditionalInfo(models.Model):
         help_text="Special Handling Instructions",
     )
 
+    class Meta:
+        """Metaclass."""
+
+        verbose_name = "Additional Info"
+        verbose_name_plural = "Additional Info"
+
     def __str__(self):
+        """Human-readable representation."""
         return f"{self.original_mtn or 'Unknown'}"
 
 
 class PortOfEntry(models.Model):
-    """location of where hazardous waste is imported or exported"""
-
-    class Meta:
-        verbose_name = "Port of Entry"
-        verbose_name_plural = "Ports of Entry"
+    """location of where hazardous waste is imported or exported."""
 
     state = models.CharField(
         choices=RcraStates.choices,
@@ -434,3 +453,13 @@ class PortOfEntry(models.Model):
         null=True,
         blank=True,
     )
+
+    class Meta:
+        """Metaclass."""
+
+        verbose_name = "Port of Entry"
+        verbose_name_plural = "Ports of Entry"
+
+    def __str__(self):
+        """Human-readable representation."""
+        return f"{self.city_port}, {self.state}"

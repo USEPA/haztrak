@@ -1,3 +1,5 @@
+"""Contact models for RCRAInfo data."""
+
 import logging
 from re import match
 
@@ -9,12 +11,16 @@ logger = logging.getLogger(__name__)
 
 
 class RcraCountries(models.TextChoices):
+    """RCRAInfo country abbreviations."""
+
     US = "US", _("United States")
     MX = "MX", _("Mexico")
     CA = "CA", _("Canada")
 
 
 class RcraStates(models.TextChoices):
+    """RCRAInfo state abbreviations."""
+
     AK = "AK", _("Alaska")
     AL = "AL", _("Alabama")
     AP = "AP", _("Armed Forces Pacific")
@@ -83,11 +89,10 @@ class RcraStates(models.TextChoices):
 
 
 class RcraPhoneNumber(models.CharField):
-    """
-    RcraPhoneNumber encapsulates RCRAInfo's representation of a phone (not including extensions)
-    """
+    """RcraPhoneNumber encapsulates RCRAInfo's representation of a phone."""
 
     def validate(self, value, model_instance):
+        """Ensure the phone number is in the format ###-###-####."""
         if not match(r"^\d{3}-\d{3}-\d{4}$", value):
             raise ValidationError(
                 _("%(value)s should be a phone with format ###-###-####"),
@@ -97,12 +102,10 @@ class RcraPhoneNumber(models.CharField):
 
 class RcraPhone(models.Model):
     """
-    RCRAInfo phone model, stores phones in ###-###-#### format
-    along with up to 6 digit extension.
-    """
+    RCRAInfo phone model.
 
-    class Meta:
-        ordering = ["number"]
+    stores phones in ###-###-#### format along with up to 6 digit extension.
+    """
 
     number = RcraPhoneNumber(
         max_length=12,
@@ -113,19 +116,20 @@ class RcraPhone(models.Model):
         blank=True,
     )
 
+    class Meta:
+        """Metaclass."""
+
+        ordering = ["number"]
+
     def __str__(self):
+        """Human-readable representation."""
         if self.extension:
             return f"{self.number} Ext. {self.extension}"
         return f"{self.number}"
 
 
 class Address(models.Model):
-    """
-    Used to capture RCRAInfo address instances (mail, site).
-    """
-
-    class Meta:
-        ordering = ["address1"]
+    """Used to capture RCRAInfo address instances (mail, site)."""
 
     street_number = models.CharField(
         max_length=12,
@@ -166,19 +170,26 @@ class Address(models.Model):
         max_length=5,
     )
 
+    class Meta:
+        """Metaclass."""
+
+        ordering = ["address1"]
+
     def __str__(self):
+        """Human-readable representation."""
         if self.street_number:
             return f"{self.street_number} {self.address1}"
         return f" {self.address1}"
 
 
 class ContactManager(models.Manager):
-    """Contact Model database querying interface"""
+    """Contact Model database querying interface."""
 
     def save(self, **contact_data) -> models.QuerySet:
         """
-        Create Contact instance in database, create related phone instance if applicable,
-        and return the new instance.
+        Create Contact instance.
+
+        Create related phone instance if applicable,and return the new instance.
         """
         if "phone" in contact_data:
             phone_data = contact_data.pop("phone")
@@ -192,14 +203,10 @@ class ContactManager(models.Manager):
 
 class Contact(models.Model):
     """
-    RCRAInfo contact including personnel information such as name, email, company,
-    includes a phone related field.
+    RCRAInfo contact info.
+
+    Including personnel information such as name, email, company, includes a phone related field.
     """
-
-    class Meta:
-        ordering = ["first_name"]
-
-    objects = ContactManager()
 
     first_name = models.CharField(
         max_length=38,
@@ -232,7 +239,15 @@ class Contact(models.Model):
         blank=True,
     )
 
+    objects = ContactManager()
+
+    class Meta:
+        """Metaclass."""
+
+        ordering = ["first_name"]
+
     def __str__(self):
+        """Human-readable representation."""
         try:
             first = self.first_name
             middle = self.middle_initial or ""

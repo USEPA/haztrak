@@ -1,3 +1,5 @@
+"""URLs for the org app."""
+
 from django.urls import include, path
 
 from .views import OrgDetailsView, OrgListView, SiteDetailsView, SiteListView

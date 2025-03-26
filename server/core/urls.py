@@ -1,3 +1,5 @@
+"""URLs for the core app."""
+
 from django.urls import include, path
 
 from .views import LaunchExampleTaskView, TaskStatusView

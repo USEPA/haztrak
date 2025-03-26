@@ -1,3 +1,5 @@
+"""Custom object level permissions for Site and Org models."""
+
 from rest_framework.permissions import DjangoObjectPermissions
 
 
@@ -14,5 +16,3 @@ class SiteObjectPermissions(DjangoObjectPermissions):
 
 class OrgObjectPermissions(DjangoObjectPermissions):
     """Object level permission for Org model."""
-
-    pass

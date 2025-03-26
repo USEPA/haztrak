@@ -1,12 +1,11 @@
-name: 'Dependency Review'
+name: "Dependency Review"
 # When a PR is made and the dependencies change, check for vulnerabilities and that the
 # licenses are permissive (not GPL).
 
 on:
   pull_request:
     paths:
-      - 'server/requirements*.txt'
-      - 'client/package*.json'
+      - "client/package*.json"
   workflow_dispatch:
 
 permissions:
@@ -15,14 +14,14 @@ permissions:
 
 jobs:
   dependency-review:
-    name: 'Review Dependencies'
+    name: "Review Dependencies"
     runs-on: ubuntu-latest
     if: github.repository == 'usepa/haztrak'
     steps:
-      - name: 'Checkout Repository'
+      - name: "Checkout Repository"
         uses: actions/checkout@v3
 
-      - name: 'Dependency Review'
+      - name: "Dependency Review"
         uses: actions/dependency-review-action@v3
         with:
           comment-summary-in-pr: true

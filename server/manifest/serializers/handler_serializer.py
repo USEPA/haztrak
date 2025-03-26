@@ -1,15 +1,14 @@
-from typing import Dict
-
-from rcrasite.serializers import RcraSiteSerializer
-from rest_framework import serializers
+"""Serializers for Handler and Transporter models."""
 
 from manifest.models import Handler, ManifestPhone, Transporter
+from rcrasite.serializers import RcraSiteSerializer
+from rest_framework import serializers
 
 from .signatures import ESignatureSerializer, PaperSignatureSerializer
 
 
 class ManifestPhoneSerializer(serializers.ModelSerializer):
-    """Serializer for phone numbers on manifest"""
+    """Serializer for phone numbers on manifest."""
 
     number = serializers.CharField(
         required=True,
@@ -20,12 +19,14 @@ class ManifestPhoneSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = ManifestPhone
         fields = ["number", "extension"]
 
 
 class HandlerSerializer(RcraSiteSerializer):
-    """Serializer for RcraSite on manifest"""
+    """Serializer for RcraSite on manifest."""
 
     rcra_site = RcraSiteSerializer()
     electronicSignaturesInfo = ESignatureSerializer(
@@ -43,20 +44,24 @@ class HandlerSerializer(RcraSiteSerializer):
     )
     signed = serializers.ReadOnlyField()
 
-    def update(self, instance, validated_data: Dict):
+    def update(self, instance, validated_data: dict):
+        """Update an existing handler."""
         return self.Meta.model.objects.save(instance, **validated_data)
 
-    def create(self, validated_data: Dict):
+    def create(self, validated_data: dict):
+        """Create a new handler."""
         return self.Meta.model.objects.save(None, **validated_data)
 
     def to_representation(self, instance):
+        """Convert model instance to JSON."""
         representation = super().to_representation(instance)
         handler_rep = representation.pop("rcra_site")
         for key in handler_rep:
             representation[key] = handler_rep[key]
         return representation
 
-    def to_internal_value(self, data: Dict):
+    def to_internal_value(self, data: dict):
+        """Convert JSON data to internal value."""
         instance = {}
         if "electronicSignaturesInfo" in data:
             instance["electronicSignaturesInfo"] = data.pop("electronicSignaturesInfo")
@@ -70,6 +75,8 @@ class HandlerSerializer(RcraSiteSerializer):
         return super().to_internal_value(instance)
 
     class Meta:
+        """Metaclass."""
+
         model = Handler
         fields = [
             "rcra_site",
@@ -81,11 +88,11 @@ class HandlerSerializer(RcraSiteSerializer):
 
 
 class TransporterSerializer(HandlerSerializer):
-    """
-    Transporter model serializer for JSON marshalling/unmarshalling
-    """
+    """Transporter model serializer for JSON marshalling/unmarshalling."""
 
     class Meta:
+        """Metaclass."""
+
         model = Transporter
         fields = [
             "rcra_site",

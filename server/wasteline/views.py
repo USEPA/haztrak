@@ -1,3 +1,5 @@
+"""Views for the Wasteline API."""
+
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import (
@@ -10,7 +12,6 @@ from rest_framework import serializers, status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from wasteline.models import DotLookup, WasteCode
 from wasteline.serializers import WasteCodeSerializer
 from wasteline.services import (
@@ -22,18 +23,19 @@ from wasteline.services import (
 
 
 class FederalWasteCodesView(ListAPIView):
-    """Retrieve a list EPA Federal waste codes"""
+    """Retrieve a list EPA Federal waste codes."""
 
     serializer_class = WasteCodeSerializer
     queryset = WasteCode.federal.all()
 
     @method_decorator(cache_page(60 * 15 * 24))
     def get(self, request, *args, **kwargs):
+        """Retrieve a list EPA Federal waste codes."""
         return super().get(request, *args, **kwargs)
 
 
 class StateWasteCodesView(ListAPIView):
-    """Retrieve a list state waste codes by state ID"""
+    """Retrieve a list state waste codes by state ID."""
 
     serializer_class = WasteCodeSerializer
     queryset = WasteCode.state.all()
@@ -41,6 +43,7 @@ class StateWasteCodesView(ListAPIView):
 
     @method_decorator(cache_page(60 * 15 * 24))
     def get(self, request, *args, **kwargs):
+        """Retrieve a list state waste codes by state ID."""
         try:
             state_id = self.kwargs["state_id"]
             state_code_data = get_state_waste_codes(state_id)
@@ -62,18 +65,19 @@ class StateWasteCodesView(ListAPIView):
                 OpenApiExample(
                     "ID Numbers",
                     value="ID8000",
-                )
+                ),
             ],
-        )
+        ),
     },
 )
 class DotIdNumberView(APIView):
-    """Return a list of DOT ID numbers, optionally filtered by a query parameter"""
+    """Return a list of DOT ID numbers, optionally filtered by a query parameter."""
 
     queryset = DotLookup.id_numbers.all()
 
     @method_decorator(cache_page(60 * 15 * 24))
     def get(self, request, *args, **kwargs):
+        """Return a list of DOT ID numbers, optionally filtered by a query parameter."""
         query = request.query_params.get("q", "")
         id_numbers = filter_dot_id_numbers(query)
         return Response(data=id_numbers, status=status.HTTP_200_OK)
@@ -91,18 +95,19 @@ class DotIdNumberView(APIView):
                 OpenApiExample(
                     "Shipping Name",
                     value="1,1,12-Tetrafluoroethane",
-                )
+                ),
             ],
-        )
+        ),
     },
 )
 class DotShippingNameView(APIView):
-    """Return a list of DOT Proper Shipping Names, optionally filtered by a query parameter"""
+    """Return a list of DOT Proper Shipping Names, optionally filtered by a query parameter."""
 
     queryset = DotLookup.shipping_names.all()
 
     @method_decorator(cache_page(60 * 15 * 24))
     def get(self, request, *args, **kwargs):
+        """Return a list of DOT Proper Shipping Names, optionally filtered by a query parameter."""
         query = request.query_params.get("q", "")
         shipping_names = filter_dot_shipping_names(query)
         return Response(data=shipping_names, status=status.HTTP_200_OK)
@@ -120,18 +125,19 @@ class DotShippingNameView(APIView):
                 OpenApiExample(
                     "Query for 1.1A",
                     value="1.1A",
-                )
+                ),
             ],
-        )
+        ),
     },
 )
 class DotHazardClassView(APIView):
-    """Return a list of DOT Hazard classes, optionally filtered by a query parameter"""
+    """Return a list of DOT Hazard classes, optionally filtered by a query parameter."""
 
     queryset = DotLookup.hazard_classes.all()
 
     @method_decorator(cache_page(60 * 15 * 24))
     def get(self, request, *args, **kwargs):
+        """Return a list of DOT Hazard classes, optionally filtered by a query parameter."""
         query = request.query_params.get("q", "")
         dot_classes = filter_dot_hazard_classes(query)
         return Response(data=dot_classes, status=status.HTTP_200_OK)

@@ -1,11 +1,12 @@
+"""Service layer for Org and Site models."""
+
 from datetime import UTC, datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from django.db import transaction
 from django.db.models import QuerySet
 from manifest.services import TaskResponse
 from manifest.tasks import sync_site_manifests
-
 from org.models import Org, Site
 
 if TYPE_CHECKING:
@@ -13,17 +14,17 @@ if TYPE_CHECKING:
 
 
 def get_org_by_id(org_id: str) -> Org:
-    """Returns an Organization instance or raise a 404"""
+    """Returns an Organization instance or raise a 404."""
     return Org.objects.get(id=org_id)
 
 
 def get_org_by_slug(org_slug: str) -> Org:
-    """Returns an Organization instance or raise a 404"""
+    """Returns an Organization instance or raise a 404."""
     return Org.objects.get_by_slug(org_slug)
 
 
 def get_org_rcrainfo_api_credentials(org_id: str) -> tuple[str, str] | None:
-    """Returns a tuple of (rcrainfo_api_id, rcrainfo_api_key)"""
+    """Returns a tuple of (rcrainfo_api_id, rcrainfo_api_key)."""
     try:
         org = get_org_by_id(org_id)
         if org.is_rcrainfo_integrated:
@@ -33,7 +34,7 @@ def get_org_rcrainfo_api_credentials(org_id: str) -> tuple[str, str] | None:
 
 
 def get_rcrainfo_api_credentials_by_user(user_id: str) -> tuple[str, str] | None:
-    """Returns a tuple of (rcrainfo_api_id, rcrainfo_api_key) corresponding to the user's org"""
+    """Returns a tuple of (rcrainfo_api_id, rcrainfo_api_key) corresponding to the user's org."""
     try:
         org = Org.objects.get(user_id=user_id)
         if org.is_rcrainfo_integrated:
@@ -43,12 +44,14 @@ def get_rcrainfo_api_credentials_by_user(user_id: str) -> tuple[str, str] | None
 
 
 class SiteServiceError(Exception):
+    """Custom exception for Site service errors."""
+
     def __init__(self, message: str):
         super().__init__(message)
 
 
 @transaction.atomic
-def update_emanifest_sync_date(site: Site, last_sync_date: Optional[datetime] = None):
+def update_emanifest_sync_date(site: Site, last_sync_date: datetime | None = None):
     """Update the last sync date for a site. Defaults to now if no date is provided."""
     if last_sync_date is not None:
         site.last_rcrainfo_manifest_sync = last_sync_date
@@ -90,8 +93,10 @@ def filter_sites_by_username_and_epa_id(username: str, epa_ids: [str]) -> [Site]
 
 
 def sync_site_manifest_with_rcrainfo(
-    *, username: str, site_id: Optional[str] = None
+    *,
+    username: str,
+    site_id: str | None = None,
 ) -> TaskResponse:
-    """Launch a batch processing task to sync a site's manifests from RCRAInfo"""
+    """Launch a batch processing task to sync a site's manifests from RCRAInfo."""
     task = sync_site_manifests.delay(site_id=site_id, username=username)
     return {"taskId": task.id}

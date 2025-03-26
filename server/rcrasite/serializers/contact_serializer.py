@@ -1,14 +1,13 @@
-from rest_framework import serializers
+"""Serializers for the Contact model."""
 
 from rcrasite.models import Contact
+from rest_framework import serializers
 
 from .base_serializer import SitesBaseSerializer
 
 
 class RcraPhoneSerializer(SitesBaseSerializer):
-    """
-    ManifestPhone model serializer for JSON marshalling/unmarshalling
-    """
+    """ManifestPhone model serializer for JSON marshalling/unmarshalling."""
 
     number = serializers.CharField()
     extension = serializers.CharField(
@@ -17,6 +16,8 @@ class RcraPhoneSerializer(SitesBaseSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = Contact
         fields = [
             "number",
@@ -25,9 +26,7 @@ class RcraPhoneSerializer(SitesBaseSerializer):
 
 
 class ContactSerializer(SitesBaseSerializer):
-    """
-    Contact model serializer for JSON marshalling/unmarshalling
-    """
+    """Contact model serializer for JSON marshalling/unmarshalling."""
 
     firstName = serializers.CharField(
         source="first_name",
@@ -53,6 +52,8 @@ class ContactSerializer(SitesBaseSerializer):
     )
 
     class Meta:
+        """Metaclass."""
+
         model = Contact
         fields = [
             "firstName",

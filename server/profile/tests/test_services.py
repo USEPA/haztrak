@@ -22,7 +22,10 @@ class TestRcrainfoProfileServices:
         assert returned_profile == rcrainfo_profile
 
     def test_get_or_create_retrieves_by_username(
-        self, rcrainfo_profile_factory, user_factory, profile_factory
+        self,
+        rcrainfo_profile_factory,
+        user_factory,
+        profile_factory,
     ):
         username = "my_username"
         mock_rcra_username = "my_rcra_username"

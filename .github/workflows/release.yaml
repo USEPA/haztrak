@@ -1,4 +1,4 @@
-name: 'Create Release'
+name: "Create Release"
 # This workflow runs when we create a release. It uses a custom reusable action to
 # build our docker images and push them to the GitHub Container Registry.
 # Before building images we run the unit tests to double-check that the images are working.
@@ -9,15 +9,15 @@ on:
 
 jobs:
   test_server:
-    name: 'Run Server Tests'
+    name: "Run Server Tests"
     uses: ./.github/workflows/test_server.yaml
 
   test_client:
-    name: 'Run Client Tests'
+    name: "Run Client Tests"
     uses: ./.github/workflows/test_client.yaml
 
   build_server:
-    name: 'Build Server Image'
+    name: "Build Server Image"
     needs: [test_server]
     uses: ./.github/workflows/build_image.yaml
     with:
@@ -25,7 +25,7 @@ jobs:
       image_name: haztrak-server
 
   build_client:
-    name: 'Build Client Image'
+    name: "Build Client Image"
     needs: [test_client]
     uses: ./.github/workflows/build_image.yaml
     with:

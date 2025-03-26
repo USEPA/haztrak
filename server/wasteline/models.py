@@ -1,5 +1,7 @@
+"""Models for hazardous waste listed on a uniform hazardous waste manifest."""
+
 import logging
-from typing import Optional
+from typing import ClassVar, Optional
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -9,28 +11,27 @@ logger = logging.getLogger(__name__)
 
 
 class WasteLineManager(models.Manager):
-    """Wasteline model query interface"""
+    """Wasteline model query interface."""
 
     def save(self, instance: Optional["WasteLine"], **waste_data: dict) -> "WasteLine":
+        """Save a WasteLine instance."""
         try:
             line_number = waste_data.pop("line_number", None)
             manifest = waste_data.pop("manifest", None)
             wl, created = WasteLine.objects.update_or_create(
-                manifest=manifest, line_number=line_number, defaults=waste_data
+                manifest=manifest,
+                line_number=line_number,
+                defaults=waste_data,
             )
+        except KeyError as exc:
+            msg = f"Missing required field: {exc}"
+            raise ValidationError(msg) from exc
+        else:
             return wl
-        except KeyError as e:
-            raise ValidationError(f"Missing required field: {e}")
 
 
 class WasteLine(models.Model):
     """Model definition for hazardous waste listed on a uniform hazardous waste manifest."""
-
-    class Meta:
-        ordering = ["manifest__mtn", "line_number"]
-        unique_together = ("manifest", "line_number")
-
-    objects = WasteLineManager()
 
     manifest = models.ForeignKey(
         "manifest.Manifest",
@@ -90,39 +91,45 @@ class WasteLine(models.Model):
         blank=True,
     )
 
+    objects = WasteLineManager()
+
+    class Meta:
+        """Metaclass."""
+
+        ordering: ClassVar = ["manifest__mtn", "line_number"]
+        unique_together = ("manifest", "line_number")
+
     def __str__(self):
+        """Human-readable representation of the WasteLine."""
         return f"{self.manifest} line {self.line_number}"
 
 
 class FederalWasteCodeManager(models.Manager):
-    """WasteCode model manager for dealing with Federal Waste Codes"""
+    """WasteCode model manager for dealing with Federal Waste Codes."""
 
     def get_queryset(self):
+        """Return only federal waste codes."""
         return super().get_queryset().filter(code_type=WasteCode.CodeType.FEDERAL)
 
 
 class StateWasteCodeManager(models.Manager):
-    """WasteCode model manager for dealing with State Waste Codes"""
+    """WasteCode model manager for dealing with State Waste Codes."""
 
     def filter_by_state_id(self, state_id: str) -> models.QuerySet:
-        """Get a list of state waste codes by state id"""
+        """Get a list of state waste codes by state id."""
         return self.filter(state_id=state_id)
 
     def get_queryset(self):
+        """Return only state waste codes."""
         return super().get_queryset().filter(code_type=WasteCode.CodeType.STATE)
 
 
 class WasteCode(models.Model):
-    """Manifest Federal and state waste codes"""
-
-    class Meta:
-        ordering = ["code"]
-
-    objects = models.Manager()
-    federal = FederalWasteCodeManager()
-    state = StateWasteCodeManager()
+    """Manifest Federal and state waste codes."""
 
     class CodeType(models.TextChoices):
+        """Waste code type."""
+
         STATE = "ST", _("State")
         FEDERAL = "FD", _("Federal")
 
@@ -182,7 +189,7 @@ class WasteCode(models.Model):
     WV = "WV"
     WY = "WY"
 
-    STATE_CHOICES = [
+    STATE_CHOICES: ClassVar = [
         (AK, "Alaska"),
         (AL, "Alabama"),
         (AP, "Armed Forces Pacific"),
@@ -259,11 +266,23 @@ class WasteCode(models.Model):
         choices=STATE_CHOICES,
     )
 
+    objects = models.Manager()
+    federal = FederalWasteCodeManager()
+    state = StateWasteCodeManager()
+
+    class Meta:
+        """Metaclass."""
+
+        ordering: ClassVar = ["code"]
+
     def __str__(self):
+        """Human-readable representation of the WasteCode."""
         return f"{self.code}"
 
 
 class DotLookupType(models.TextChoices):
+    """DOT Lookup value types."""
+
     ID = ("ID", _("Id"))  # DOT ID number
     GROUP = ("GROUP", _("Group"))  # DOT packing group
     NAME = ("NAME", _("Name"))  # DOT Proper shipping name
@@ -271,54 +290,57 @@ class DotLookupType(models.TextChoices):
 
 
 class DotLookupBaseManager(models.Manager):
+    """Base Model manager for DOT lookup options."""
+
     def filter_by_value(self, value: str) -> models.QuerySet:
+        """Filter by DOT Lookup Value."""
         return self.filter(value__icontains=value)
 
 
 class IdNumbers(DotLookupBaseManager):
-    """DOT Option model manager for dealing with DOT ID numbers"""
+    """DOT Option model manager for dealing with DOT ID numbers."""
 
     def get_queryset(self):
+        """Return only DOT ID number options."""
         return super().get_queryset().filter(value_type=DotLookupType.ID)
 
 
 class PackingGroups(DotLookupBaseManager):
-    """DOT Option model manager for dealing with DOT ID numbers"""
+    """DOT Option model manager for dealing with DOT ID numbers."""
 
     def get_queryset(self):
+        """Return only DOT Packing Group options."""
         return super().get_queryset().filter(value_type=DotLookupType.GROUP)
 
 
 class ShippingNames(DotLookupBaseManager):
-    """DOT Option model manager for dealing with DOT ID numbers"""
+    """DOT Option model manager for dealing with DOT ID numbers."""
 
     def filter_by_value(self, value: str) -> models.QuerySet:
+        """Filter by value."""
         return self.filter(value__icontains=value)
 
     def get_queryset(self):
+        """Return only DOT Proper Shipping Name options."""
         return super().get_queryset().filter(value_type=DotLookupType.NAME)
 
 
 class HazardClass(DotLookupBaseManager):
-    """DOT Option model manager for dealing with DOT ID numbers"""
+    """DOT Option model manager for dealing with DOT ID numbers."""
 
     def get_queryset(self):
+        """Return only DOT Hazard Class options."""
         return super().get_queryset().filter(value_type=DotLookupType.CLASS)
 
 
 class DotLookup(models.Model):
-    """data used to construct Department of Transportation (DOT) shipping descriptions"""
+    """data used to construct Department of Transportation (DOT) shipping descriptions."""
 
     objects = models.Manager()
     id_numbers = IdNumbers()
     packing_groups = PackingGroups()
     shipping_names = ShippingNames()
     hazard_classes = HazardClass()
-
-    class Meta:
-        ordering = ["value_type", "value"]
-        verbose_name = "DOT lookup"
-        verbose_name_plural = "DOT lookups"
 
     value = models.CharField(
         max_length=255,
@@ -329,5 +351,13 @@ class DotLookup(models.Model):
         choices=DotLookupType.choices,
     )
 
+    class Meta:
+        """Metaclass."""
+
+        ordering: ClassVar = ["value_type", "value"]
+        verbose_name = "DOT lookup"
+        verbose_name_plural = "DOT lookups"
+
     def __str__(self):
+        """Human-readable representation of the DOT lookup."""
         return f"{self.value_type}: {self.value}"

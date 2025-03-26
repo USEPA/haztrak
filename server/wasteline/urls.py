@@ -1,6 +1,7 @@
-from django.urls import include, path
+"""URLs for the wasteline app."""
 
-from wasteline.views import (  # type: ignore
+from django.urls import include, path
+from wasteline.views import (
     DotHazardClassView,
     DotIdNumberView,
     DotShippingNameView,
@@ -33,7 +34,7 @@ urlpatterns = [
             [
                 path("code/", include(code_patterns)),
                 path("dot/", include(dot_patterns)),
-            ]
+            ],
         ),
     ),
 ]

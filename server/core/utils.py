@@ -1,3 +1,5 @@
+"""Utility functions for the core app."""
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.http import Http404
@@ -9,6 +11,8 @@ from rest_framework.views import exception_handler as drf_exception_handler
 
 
 class InternalServer500(APIException):
+    """Internal Server Error."""
+
     status_code = 500
     default_detail = "Internal Server Error"
     default_code = "internal_server_error"
@@ -16,7 +20,8 @@ class InternalServer500(APIException):
 
 def exception_handler(exc, context):
     """
-    This maps exceptions that are not directly handled by our handler functions
+    This maps exceptions that are not directly handled by our handler functions.
+
     to DRF exceptions. For example, if a django ValidationError is raised,
     it will be mapped to a DRF ValidationError.
 
@@ -40,7 +45,8 @@ def exception_handler(exc, context):
         response.data["status_code"] = response.status_code
     else:
         response = Response(
-            {"detail": "Unhandled server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            {"detail": "Unhandled server error"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
         response.data["status_code"] = 500
 

@@ -1,9 +1,11 @@
+"""Settings for development environment."""
+
 import os
 
-from .base import *  # noqa: F403
+from .base import *  # noqa: F403, S105, RUF100
 
 # General
-SECRET_KEY = "django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d"
+SECRET_KEY = "django-insecure-%btjqoun@6ps$e@8bw$48s+!x1e4aiz&5p2nrf6cmiw4)jsx5d"  # noqa: S105
 DEBUG = True
 CORS_ORIGIN_WHITELIST = [os.getenv("HT_CORS_DOMAIN", "http://localhost")]
 
@@ -22,7 +24,7 @@ DATABASES = {
         "PASSWORD": os.environ.get("HT_DB_PASSWORD", "password"),
         "HOST": os.environ.get("HT_DB_HOST", "localhost"),
         "PORT": os.environ.get("HT_DB_PORT", "5432"),
-    }
+    },
 }
 FIXTURE_DIRS = ["fixtures"]
 
