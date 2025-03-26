@@ -86,7 +86,7 @@ class RcraPermissionField(serializers.Field):
             # if 'Active' or 'InActive' is passed, convert it to True or False
             return {"Active": True, "InActive": False}.get(passed_value, passed_value)
         except KeyError as exc:
-            msg = f"malformed JSON: {exc}"
+            msg = "malformed JSON"
             raise ValidationError(msg) from exc
 
 
@@ -137,7 +137,7 @@ class RcrainfoSitePermissionsSerializer(RcraSitePermissionSerializer):
                 data[rcrainfo_module] = i
             return super().to_internal_value(data)
         except KeyError as exc:
-            msg = f"malformed JSON: {exc}"
+            msg = "malformed JSON"
             raise ValidationError(msg) from exc
 
     class Meta:
