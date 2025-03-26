@@ -60,11 +60,11 @@ jobs:
           python-version: 3.12
           pyproject-file: "./pyproject.toml"
 
-      - name: "Activate virtual environment"
-        run: source ./server/.venv/bin/activate
-
       - name: "Install Python dependencies"
         run: uv sync --all-extras --dev
+
+      - name: "Activate virtual environment"
+        run: source .venv/bin/activate
 
       - name: "Run Tests"
         env:
