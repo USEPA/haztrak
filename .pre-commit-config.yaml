@@ -23,7 +23,7 @@ repos:
         exclude: (?x)^(\.idea\/.*|\.vscode\/.*)$
   # Ruff
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.9.9
+    rev: v0.11.2
     hooks:
       - id: ruff
         args: [--fix, --config, ./server/pyproject.toml]
