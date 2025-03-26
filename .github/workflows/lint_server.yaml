@@ -19,13 +19,20 @@ jobs:
         working-directory: ./server
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: "Install uv"
+        uses: astral-sh/setup-uv@v5
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-      - run: pip install -r requirements_dev.txt
-      - name: Lint Python files
-        run: |
-          ruff check . -e
-      - name: Format Python files
-        run: |
-          ruff format . --check
+          python-version-file: "pyproject.toml"
+
+      - name: "Install Python dependencies"
+        run: uv sync --all-extras --dev
+
+      - name: "Lint Python"
+        run: ruff check . -e
+
+      - name: "Format Python"
+        run: ruff format . --check
