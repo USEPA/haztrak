@@ -54,7 +54,6 @@ jobs:
       - name: "Install uv"
         uses: astral-sh/setup-uv@v5
         with:
-          pyproject-file: "./server/pyproject.toml"
           python-version: 3.12
 
       - name: "Install Python dependencies"
