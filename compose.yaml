@@ -7,8 +7,6 @@ services:
       context: ./server
     ports:
       - "8000:8000"
-    volumes:
-      - ./server:/app
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
       HT_HOST: ${HT_HOST}
@@ -32,12 +30,12 @@ services:
       - "traefik.http.routers.trak.rule=Host(`${HT_HOST}`)"
       - "traefik.http.routers.trak.rule=PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`)"
       - "traefik.http.routers.trak.entrypoints=web"
-    #    command: |
-    #      sh -c "
-    #      python manage.py makemigrations &&
-    #      python manage.py migrate &&
-    #      python manage.py loaddata core_dev.yaml rcrasite_dev.yaml org_dev.yaml profile_dev.yaml &&
-    #      python manage.py runserver 0.0.0.0:8000"
+    command: |
+      sh -c "
+      python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py loaddata core_dev.yaml rcrasite_dev.yaml org_dev.yaml profile_dev.yaml &&
+      python manage.py runserver 0.0.0.0:8000"
     depends_on:
       db:
         condition: service_healthy
@@ -54,8 +52,6 @@ services:
     restart: unless-stopped
     container_name: celery-worker
     image: haztrak-server
-    volumes:
-      - ./server:/app
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}
@@ -74,8 +70,6 @@ services:
     restart: unless-stopped
     container_name: celery-beat
     image: haztrak-server
-    volumes:
-      - ./server:/app
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}

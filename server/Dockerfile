@@ -1,38 +1,41 @@
 # Builder
-FROM python:3.12.9-alpine3.21 AS builder
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
 LABEL maintainer="graham.david@epa.gov"
-ENV APP_DIRECTORY=/app/
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-RUN apk add libffi-dev gcc libc-dev curl
-WORKDIR $APP_DIRECTORY
-#
-ADD https://astral.sh/uv/install.sh /uv-installer.sh
-RUN sh /uv-installer.sh && rm /uv-installer.sh
-ENV PATH="/root/.local/bin/:$PATH"
+#RUN apt get libffi-dev gcc libc-dev curl
 
-RUN mkdir $APP_DIRECTORY/static
-RUN mkdir $APP_DIRECTORY/media
-COPY . .
+WORKDIR /app
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-dev
+ADD . /app
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev
 
-RUN uv venv
-RUN uv sync --frozen
-ENV VIRTUAL_ENV="/app/.venv"
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+# Then, use a final image without uv
+FROM python:3.12-slim-bookworm
+COPY --from=builder --chown=app:app /app /app
 
-# local
-#FROM builder AS dev
-ENV VIRTUAL_ENV="/app/.venv"
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-RUN source $VIRTUAL_ENV/bin/activate
+# Place executables in the environment at the front of the path
+ENV PATH="/app/.venv/bin:$PATH"
+
+# Copy the application from the builder
+COPY --from=builder --chown=app:app /app /app
+
+# Place executables in the environment at the front of the path
+ENV PATH="/app/.venv/bin:$PATH"
+
+WORKDIR /app
+
 EXPOSE 8000
-RUN python manage.py makemigrations && \
-    python manage.py migrate && \
-    python manage.py collectstatic --noinput && \
-    python manage.py loaddata core_dev.yaml rcrasite_dev.yaml org_dev.yaml profile_dev.yaml
+RUN python manage.py migrate && \
+    python manage.py collectstatic --noinput
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
-# Production
+## Production
 #FROM builder AS production
 #EXPOSE 8000
 #CMD  ./run.sh
