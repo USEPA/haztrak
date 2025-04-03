@@ -11,7 +11,7 @@
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "testui": "vitest --ui",
-    "lint": "eslint .",
+    "lint": "biome check --fix .",
     "typecheck": "tsc --noEmit",
     "msw": "npx msw init public/ --save",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
@@ -91,7 +91,15 @@
     "workerDirectory": "public"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
