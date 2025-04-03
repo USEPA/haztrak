@@ -6,7 +6,7 @@ describe('Avatar component', () => {
   it('renders with default props', () => {
     const { container } = render(<Avatar />);
     expect(container.firstChild).toHaveClass(
-      'tw-relative tw-flex tw-h-10 tw-w-10 tw-shrink-0 tw-overflow-hidden tw-rounded-full'
+      'tw:relative tw:flex tw:h-10 tw:w-10 tw:shrink-0 tw:overflow-hidden tw:rounded-full'
     );
   });
 

@@ -2,8 +2,8 @@ import { Card, CardContent } from '~/components/ui';
 
 export function HaztrakLicense() {
   return (
-    <Card className="tw-shadow-ls tw-mx-5 tw-my-3 tw-bg-white tw-p-2">
-      <CardContent className="text-muted tw-space-y-2">
+    <Card className="tw:shadow-ls tw:mx-5 tw:my-3 tw:bg-white tw:p-2">
+      <CardContent className="text-muted tw:space-y-2">
         <p>MIT License</p>
         <p>Copyright (c) 2022 U.S. Environmental Protection Agency</p>
         <p>

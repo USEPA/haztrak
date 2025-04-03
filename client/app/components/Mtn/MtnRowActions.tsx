@@ -21,7 +21,7 @@ export function MtnRowActions({ mtn }: MtnRowActionsProps) {
   const actions: RowDropdownItems[] = [
     {
       text: 'View ',
-      icon: <FaEye className="tw-text-secondary" />,
+      icon: <FaEye className="tw:text-secondary" />,
       onClick: () => {
         navigate(`./${mtn}/view`);
       },
@@ -30,7 +30,7 @@ export function MtnRowActions({ mtn }: MtnRowActionsProps) {
     },
     {
       text: 'Edit',
-      icon: <FaPen className="tw-text-secondary" />,
+      icon: <FaPen className="tw:text-secondary" />,
       onClick: () => {
         navigate(`./${mtn}/edit`);
       },
@@ -46,7 +46,7 @@ export function MtnRowActions({ mtn }: MtnRowActionsProps) {
           title={`${mtn} actions`}
           className="bg-transparent border-0 text-dark no-caret justify-content-end"
         >
-          <FaEllipsisV className="tw-pe-2 tw-shadow-none" />
+          <FaEllipsisV className="tw:pe-2 tw:shadow-none" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
           {actions.map((action, i) => {

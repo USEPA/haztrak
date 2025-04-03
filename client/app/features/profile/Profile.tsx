@@ -31,8 +31,8 @@ export function Profile(): ReactElement {
   return (
     <>
       <Container fluid className="py-2">
-        <h1 className="tw-text-2xl tw-font-bold">Profile</h1>
-        <Row className="my-3 tw-flex tw-justify-center">
+        <h1 className="tw:text-2xl tw:font-bold">Profile</h1>
+        <Row className="my-3 tw:flex tw:justify-center">
           <Col xs={12} md={10} lg={8} className="my-3">
             <HtCard title="User Information" className="h-100 my-2">
               <HtCard.Body>
@@ -42,7 +42,7 @@ export function Profile(): ReactElement {
             </HtCard>
           </Col>
         </Row>
-        <Row className="tw-flex tw-justify-center">
+        <Row className="tw:flex tw:justify-center">
           <Col xs={12} md={10} lg={8}>
             <HtCard title="RCRAInfo Profile">
               <HtCard.Body>

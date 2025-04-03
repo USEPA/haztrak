@@ -32,7 +32,7 @@ export const OrgSelect = () => {
   };
 
   return (
-    <div data-testid="org-select" className="tw-min-w-full">
+    <div data-testid="org-select" className="tw:min-w-full">
       <Select
         value={currentOrg}
         isLoading={isLoading}
@@ -40,7 +40,7 @@ export const OrgSelect = () => {
         onChange={onChange}
         classNames={{
           control: () => 'border border-gray-300 rounded-md',
-          container: () => 'tw-min-w-full',
+          container: () => 'tw:min-w-full',
         }}
       />
     </div>

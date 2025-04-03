@@ -36,19 +36,19 @@ export function SiteDetails(): ReactElement {
   if (error) throw new Error(error.message);
   if (data)
     return (
-      <div className="tw-container">
-        <div className="my-3 tw-flex tw-flex-col tw-space-y-2">
-          <h2 className="tw-text-start tw-text-2xl tw-font-bold">Site Details</h2>
-          <div className="tw-flex tw-flex-row-reverse tw-pe-0">
+      <div className="tw:container">
+        <div className="my-3 tw:flex tw:flex-col tw:space-y-2">
+          <h2 className="tw:text-start tw:text-2xl tw:font-bold">Site Details</h2>
+          <div className="tw:flex tw:flex-row-reverse tw:pe-0">
             <Button variant="secondary" onClick={() => navigate(`/site/${siteId}/manifest`)}>
               View Manifest
             </Button>
           </div>
-          <Card className="tw-drop-shadow-2xl">
+          <Card className="tw:drop-shadow-2xl">
             <CardHeader>
-              <h2 className="tw-text-xl tw-font-bold">{data.name}</h2>
+              <h2 className="tw:text-xl tw:font-bold">{data.name}</h2>
             </CardHeader>
-            <CardContent className="tw-p-5">
+            <CardContent className="tw:p-5">
               <RcraSiteDetails handler={data.handler} />
             </CardContent>
           </Card>

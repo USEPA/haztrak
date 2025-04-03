@@ -8,9 +8,9 @@ interface SidebarSectionProps {
 
 export function NavSection({ section }: SidebarSectionProps) {
   return (
-    <div className="tw-mt-8">
+    <div className="tw:mt-8">
       <Separator />
-      <p className="tw-text-primary">{section.name}</p>
+      <p className="tw:text-primary">{section.name}</p>
       {section.routes.map((route) => {
         return (
           <div key={route.id}>

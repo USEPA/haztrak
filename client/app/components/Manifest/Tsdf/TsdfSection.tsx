@@ -38,7 +38,7 @@ export function TsdfSection({ signAble, setupSign }: TsdfSectionProps) {
   }, [data]);
 
   if (isLoading) {
-    return <Spinner size="xl" className="tw-m-5" />;
+    return <Spinner size="xl" className="tw:m-5" />;
   }
 
   if (error) {

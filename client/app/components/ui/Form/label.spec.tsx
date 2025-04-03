@@ -6,7 +6,7 @@ import { Label } from './label';
 describe('Label component', () => {
   it('renders correctly with default props', () => {
     const { container } = render(<Label>Test Label</Label>);
-    expect(container.firstChild).toHaveClass('tw-text-sm tw-font-medium tw-leading-none');
+    expect(container.firstChild).toHaveClass('tw:text-sm tw:font-medium tw:leading-none');
   });
 
   it('applies additional class names', () => {

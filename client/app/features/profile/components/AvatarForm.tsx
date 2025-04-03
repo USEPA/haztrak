@@ -52,11 +52,11 @@ export function AvatarForm({ avatar }: AvatarFormProps) {
           registerProps.ref(e);
           inputRef.current = e;
         }}
-        className="tw-hidden"
+        className="tw:hidden"
       />
-      <div className="tw-flex tw-justify-center">
+      <div className="tw:flex tw:justify-center">
         <button type="button" onClick={() => inputRef.current?.click()}>
-          <Avatar className="tw-size-40">
+          <Avatar className="tw:size-40">
             <AvatarImage src={preview} alt="avatar" />
             <AvatarFallback>
               <FaUser size={80} />

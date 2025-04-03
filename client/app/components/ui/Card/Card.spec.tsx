@@ -6,7 +6,7 @@ describe('Card Component', () => {
   it('renders correctly with default props', () => {
     const { container } = render(<Card />);
     expect(container.firstChild).toHaveClass(
-      'tw-rounded-lg tw-border tw-bg-card tw-text-card-foreground tw-shadow-sm'
+      'tw:rounded-lg tw:border tw:bg-card tw:text-card-foreground tw:shadow-sm'
     );
   });
 
@@ -19,7 +19,7 @@ describe('Card Component', () => {
 describe('CardHeader Component', () => {
   it('renders correctly with default props', () => {
     const { container } = render(<CardHeader />);
-    expect(container.firstChild).toHaveClass('tw-flex tw-flex-col tw-space-y-1.5 tw-p-6');
+    expect(container.firstChild).toHaveClass('tw:flex tw:flex-col tw:space-y-1.5 tw:p-6');
   });
 
   it('applies additional class names', () => {
@@ -32,7 +32,7 @@ describe('CardTitle Component', () => {
   it('renders correctly with default props', () => {
     const { container } = render(<CardTitle />);
     expect(container.firstChild).toHaveClass(
-      'tw-text-xl tw-font-semibold tw-leading-none tw-tracking-tight'
+      'tw:text-xl tw:font-semibold tw:leading-none tw:tracking-tight'
     );
   });
 
@@ -45,7 +45,7 @@ describe('CardTitle Component', () => {
 describe('CardDescription Component', () => {
   it('renders correctly with default props', () => {
     const { container } = render(<CardDescription />);
-    expect(container.firstChild).toHaveClass('tw-text-sm tw-text-muted-foreground');
+    expect(container.firstChild).toHaveClass('tw:text-sm tw:text-muted-foreground');
   });
 
   it('applies additional class names', () => {
@@ -57,7 +57,7 @@ describe('CardDescription Component', () => {
 describe('CardContent Component', () => {
   it('renders correctly with default props', () => {
     const { container } = render(<CardContent />);
-    expect(container.firstChild).toHaveClass('tw-p-6 tw-pt-0');
+    expect(container.firstChild).toHaveClass('tw:p-6 tw:pt-0');
   });
 
   it('applies additional class names', () => {
@@ -69,7 +69,7 @@ describe('CardContent Component', () => {
 describe('CardFooter Component', () => {
   it('renders correctly with default props', () => {
     const { container } = render(<CardFooter />);
-    expect(container.firstChild).toHaveClass('tw-flex tw-items-center tw-p-6 tw-pt-0');
+    expect(container.firstChild).toHaveClass('tw:flex tw:items-center tw:p-6 tw:pt-0');
   });
 
   it('applies additional class names', () => {

@@ -8,7 +8,7 @@ import { FeatureDescription } from '~/components/legacyUi';
 
 export function RegisterHero() {
   return (
-    <Container fluid className="text-center px-4 py-5 bg-light tw-h-full">
+    <Container fluid className="text-center px-4 py-5 bg-light tw:h-full">
       <img
         src={logo}
         alt="haztrak logo, hazardous waste tracking made easy."

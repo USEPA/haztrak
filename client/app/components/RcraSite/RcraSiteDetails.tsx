@@ -41,18 +41,18 @@ export function RcraSiteDetails({ handler }: RcraSiteDetailsProps) {
             <p className="fw-bold">
               <span>Can e-Sign: </span>
               {handler.canEsign ? (
-                <FaCircleCheck className="text-success align-text-bottom tw-inline" />
+                <FaCircleCheck className="text-success align-text-bottom tw:inline" />
               ) : (
-                <FaCircleXmark className="text-danger align-text-bottom tw-inline" />
+                <FaCircleXmark className="text-danger align-text-bottom tw:inline" />
               )}
             </p>
           </div>
           <p className="fw-bold">
             Has registered e-Manifest user:{' '}
             {handler.hasRegisteredEmanifestUser ? (
-              <FaCircleCheck className="text-success align-text-bottom tw-inline" />
+              <FaCircleCheck className="text-success align-text-bottom tw:inline" />
             ) : (
-              <FaCircleXmark className="text-danger align-text-bottom tw-inline" />
+              <FaCircleXmark className="text-danger align-text-bottom tw:inline" />
             )}
           </p>
         </Col>

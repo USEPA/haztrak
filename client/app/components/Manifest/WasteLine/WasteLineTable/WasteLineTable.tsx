@@ -45,8 +45,8 @@ const CustomToggle = ({ eventKey }: any) => {
       title="more info"
     >
       <FaAngleRight
-        className={` sb-sidenav-collapse-arrow tw-transform tw-transition-all ${
-          open ? 'tw-rotate-90' : ''
+        className={` sb-sidenav-collapse-arrow tw:transform tw:transition-all ${
+          open ? 'tw:rotate-90' : ''
         } `}
       />
     </Button>

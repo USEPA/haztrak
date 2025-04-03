@@ -52,7 +52,7 @@ export function LoginForm() {
         </FloatingLabel>
         <div className="invalid-feedback">{errors.password?.message}</div>
       </HtForm.Group>
-      <div className="tw-flex tw-items-center tw-gap-5">
+      <div className="tw:flex tw:items-center tw:gap-5">
         <button type="submit" disabled={isSubmitting} className="btn btn-primary">
           <span>Login </span>
         </button>

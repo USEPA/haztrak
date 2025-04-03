@@ -2,7 +2,6 @@ import pluginJs from '@eslint/js';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import reactPlugin from 'eslint-plugin-react'; // https://github.com/jsx-eslint/eslint-plugin-react?tab=readme-ov-file#configuration
-import tailwind from 'eslint-plugin-tailwindcss';
 import globals from 'globals';
 import tsEslint from 'typescript-eslint';
 
@@ -12,7 +11,6 @@ export default [
   ...tsEslint.configs.strict,
   ...tsEslint.configs.stylistic,
   eslintPluginPrettierRecommended,
-  ...tailwind.configs['flat/recommended'],
   {
     name: 'tailwind-migration',
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],

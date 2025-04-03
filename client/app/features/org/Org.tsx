@@ -27,9 +27,9 @@ export const Org = () => {
   if (!org) return <div>Organization not found</div>;
 
   return (
-    <div className="tw-flex tw-justify-center">
-      <Card className="tw-max-w-screen-lg tw-grow">
-        <CardHeader id="hero" className="tw-block tw-flex-initial">
+    <div className="tw:flex tw:justify-center">
+      <Card className="tw:max-w-(--breakpoint-lg) tw:grow">
+        <CardHeader id="hero" className="tw:block tw:flex-initial">
           <OrgDetails org={org} />
         </CardHeader>
         <CardContent></CardContent>
