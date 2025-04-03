@@ -7,7 +7,24 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": []
+    "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", "**/*.mjs", "**/*.cjs"],
+    "ignore": [
+      "**/node_modules",
+      "**/dist",
+      "**/globals.css",
+      "./server",
+      "**/build",
+      "**/.next",
+      "**/out",
+      "**/coverage",
+      "**/.vercel",
+      "**/.github",
+      "**/.idea",
+      "**/.vscode",
+      "**/.DS_Store",
+      "**/.gitignore",
+      "**/package-lock.json"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -149,12 +166,7 @@
         "useValidTypeof": "warn"
       }
     },
-    "ignore": [
-      "**/build/",
-      "**/dist/",
-      "**/node_modules/",
-      "**/.next/"
-    ]
+    "ignore": ["**/build/", "**/dist/", "**/node_modules/", "**/.next/"]
   },
   "javascript": {
     "formatter": {
@@ -172,10 +184,7 @@
   },
   "overrides": [
     {
-      "include": [
-        "*.yaml",
-        "*.yml"
-      ],
+      "include": ["*.yaml", "*.yml"],
       "javascript": {
         "formatter": {
           "quoteStyle": "single"
@@ -183,12 +192,7 @@
       }
     },
     {
-      "include": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.mts",
-        "**/*.cts"
-      ],
+      "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
       "linter": {
         "rules": {
           "correctness": {
@@ -222,12 +226,7 @@
       }
     },
     {
-      "include": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.mts",
-        "**/*.cts"
-      ],
+      "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
       "linter": {
         "rules": {
           "correctness": {
@@ -261,17 +260,13 @@
       }
     },
     {
-      "include": [
-        "**/*.{js,mjs,cjs,ts,jsx,tsx}"
-      ],
+      "include": ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
       "linter": {
         "rules": {}
       }
     },
     {
-      "include": [
-        "**/*.{js,mjs,cjs,ts,jsx,tsx}"
-      ],
+      "include": ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
       "javascript": {
         "globals": [
           "onscrollend",
@@ -403,9 +398,7 @@
       }
     },
     {
-      "include": [
-        "**/*.{ts,tsx}"
-      ],
+      "include": ["**/*.{ts,tsx}"],
       "linter": {
         "rules": {
           "suspicious": {

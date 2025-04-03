@@ -6,7 +6,7 @@ ci:
   autoupdate_branch: "pre-commit"
   autoupdate_commit_msg: "[pre-commit.ci] pre-commit autoupdate"
   autoupdate_schedule: quarterly
-  skip: []
+  skip: [ ]
   submodules: false
 
 repos:
@@ -26,9 +26,9 @@ repos:
     rev: v0.11.2
     hooks:
       - id: ruff
-        args: [--fix, --config, ./server/pyproject.toml]
+        args: [ --fix, --config, ./server/pyproject.toml ]
       - id: ruff-format
-        args: [--config, ./server/pyproject.toml]
+        args: [ --config, ./server/pyproject.toml ]
   # Check django migrations
   - repo: local
     hooks:
@@ -39,24 +39,16 @@ repos:
         types:
           - python
         pass_filenames: false
-  # Eslint
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: "v9.20.0"
+  - repo: https://github.com/biomejs/pre-commit
+    rev: v0.6.1
     hooks:
-      - id: eslint
-        files: ^client/.*\.[jt]sx?$
-        args: [-c=client/eslint.config.js]
-        types: [file]
-  # Prettier
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v3.1.0"
-    hooks:
-      - id: prettier
-        exclude: infra/haztrak/
-        # https://regex101.com/r/mVcK66/1
-        files: ^(client/.*\.[jt]sx?|.*\.md|.*\.yaml)$
+      - id: biome-check
   # PyUpgrade
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.15.0
     hooks:
       - id: pyupgrade
+  - repo: https://github.com/biomejs/pre-commit
+    rev: v0.6.1
+    hooks:
+      - id: biome-check
