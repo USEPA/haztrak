@@ -7,7 +7,24 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["**/node_modules", "**/dist", "**/globals.css"]
+    "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", "**/*.mjs", "**/*.cjs"],
+    "ignore": [
+      "**/node_modules",
+      "**/dist",
+      "**/globals.css",
+      "./server",
+      "**/build",
+      "**/.next",
+      "**/out",
+      "**/coverage",
+      "**/.vercel",
+      "**/.github",
+      "**/.idea",
+      "**/.vscode",
+      "**/.DS_Store",
+      "**/.gitignore",
+      "**/package-lock.json"
+    ]
   },
   "formatter": {
     "enabled": true,
