@@ -69,7 +69,7 @@ describe('Sheet component', () => {
     );
 
     await user.click(screen.getByText('Open Sheet'));
-    expect(screen.getByRole('dialog')).toHaveClass('tw-inset-y-0 tw-right-0');
+    expect(screen.getByRole('dialog')).toHaveClass('tw:inset-y-0 tw:right-0');
   });
 
   it('renders SheetContent with custom side variant', async () => {
@@ -87,6 +87,6 @@ describe('Sheet component', () => {
     );
 
     await user.click(screen.getByText('Open Sheet'));
-    expect(screen.getByRole('dialog')).toHaveClass('tw-inset-y-0 tw-left-0');
+    expect(screen.getByRole('dialog')).toHaveClass('tw:inset-y-0 tw:left-0');
   });
 });

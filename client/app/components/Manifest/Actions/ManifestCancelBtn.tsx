@@ -28,7 +28,7 @@ export function ManifestCancelBtn() {
       }}
     >
       <span>Cancel </span>
-      <FaTrash className="tw-inline" />
+      <FaTrash className="tw:inline" />
     </HtButton>
   );
 }

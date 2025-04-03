@@ -6,15 +6,15 @@ describe('Separator', () => {
   it('renders horizontal separator by default', () => {
     const { container } = render(<Separator />);
     const separator = container.firstChild;
-    expect(separator).toHaveClass('tw-h-[1px]');
-    expect(separator).toHaveClass('tw-w-full');
+    expect(separator).toHaveClass('tw:h-[1px]');
+    expect(separator).toHaveClass('tw:w-full');
   });
 
   it('renders vertical separator when orientation is vertical', () => {
     const { container } = render(<Separator orientation="vertical" />);
     const separator = container.firstChild;
-    expect(separator).toHaveClass('tw-h-full');
-    expect(separator).toHaveClass('tw-w-[1px]');
+    expect(separator).toHaveClass('tw:h-full');
+    expect(separator).toHaveClass('tw:w-[1px]');
   });
 
   it('applies additional class names', () => {

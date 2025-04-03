@@ -32,9 +32,9 @@ export function TopNav() {
   };
 
   return (
-    <header className="tw-fixed tw-left-0 tw-top-0 tw-z-50 tw-flex tw-min-h-16 tw-w-full tw-items-center tw-bg-primary tw-px-5">
-      <nav className="tw-flex tw-grow tw-items-center tw-justify-between">
-        <div className="tw-flex tw-items-center" id="leftNavSection">
+    <header className="tw:fixed tw:left-0 tw:top-0 tw:z-50 tw:flex tw:min-h-16 tw:w-full tw:items-center tw:bg-primary tw:px-5">
+      <nav className="tw:flex tw:grow tw:items-center tw:justify-between">
+        <div className="tw:flex tw:items-center" id="leftNavSection">
           <Button
             size="icon"
             aria-label="toggleSidebarNavigation"
@@ -43,57 +43,57 @@ export function TopNav() {
             onClick={toggleSidebar}
             rounded
             variant={null}
-            className="tw-border-none tw-bg-transparent tw-text-white hover:tw-bg-gray-700"
+            className="tw:border-none tw:bg-transparent tw:text-white tw:hover:bg-gray-700"
           >
             <LuMenu size={32} strokeWidth={2} />
           </Button>
-          <Link to="/" className="tw-hidden tw-px-3 sm:tw-block">
+          <Link to="/" className="tw:hidden tw:px-3 tw:sm:block">
             <img
               src={logo}
               alt="haztrak logo, hazardous waste tracking made easy."
               width={125}
               height={'auto'}
-              className="tw-my-3"
+              className="tw:my-3"
             />
           </Link>
         </div>
         <div
-          className="tw-hidden tw-max-w-64 tw-grow tw-items-center tw-justify-center md:tw-flex"
+          className="tw:hidden tw:max-w-64 tw:grow tw:items-center tw:justify-center tw:md:flex"
           id="centerNavSection"
         >
           <OrgSelect />
         </div>
-        <div id="rightNavSection" className="tw-flex tw-items-center">
+        <div id="rightNavSection" className="tw:flex tw:items-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="tw-border-0 tw-text-white hover:tw-bg-transparent hover:tw-text-accent"
+                className="tw:border-0 tw:text-white tw:hover:bg-transparent tw:hover:text-accent"
               >
                 <Avatar>
                   <AvatarImage src={profile?.avatar} alt="avatar" />
                   <AvatarFallback>
-                    <FaUser size={16} className="tw-text-black" />
+                    <FaUser size={16} className="tw:text-black" />
                   </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="tw-me-5 tw-w-56">
+            <DropdownMenuContent className="tw:me-5 tw:w-56">
               <DropdownMenuItem asChild>
                 <Link to={'./profile'} relative="path">
-                  <LuUser className="tw-mr-2 tw-size-4 tw-text-primary" />
+                  <LuUser className="tw:mr-2 tw:size-4 tw:text-primary" />
                   <span>Profile</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to={'./organization'} relative="path">
-                  <TbBinaryTree className="tw-mr-2 tw-size-4 tw-text-primary" />
+                  <TbBinaryTree className="tw:mr-2 tw:size-4 tw:text-primary" />
                   <span>Organization</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
-                <LogOut className="tw-mr-2 tw-size-4 tw-text-destructive" />
+                <LogOut className="tw:mr-2 tw:size-4 tw:text-destructive" />
                 <span>Log out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>

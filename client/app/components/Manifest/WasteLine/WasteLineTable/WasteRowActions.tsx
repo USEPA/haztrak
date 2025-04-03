@@ -37,7 +37,7 @@ function WasteRowActions({
   const actions: RowDropdownItems[] = [
     {
       text: 'Remove',
-      icon: <FaTrash className="tw-text-destructive" />,
+      icon: <FaTrash className="tw:text-destructive" />,
       onClick: () => {
         wasteForm.remove(index);
       },
@@ -46,7 +46,7 @@ function WasteRowActions({
     },
     {
       text: 'Edit',
-      icon: <FaPen className="tw-text-secondary" />,
+      icon: <FaPen className="tw:text-secondary" />,
       onClick: () => {
         setEditWasteLine(index);
         toggleWLModal();
@@ -72,7 +72,7 @@ function WasteRowActions({
           title={`transporter ${index + 1} actions`}
           className="bg-transparent border-0 text-dark no-caret justify-content-end"
         >
-          <FaEllipsisV className="tw-pe-2 tw-shadow-none" />
+          <FaEllipsisV className="tw:pe-2 tw:shadow-none" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
           {actions.map((action, i) => {

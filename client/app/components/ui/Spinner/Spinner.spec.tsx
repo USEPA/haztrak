@@ -5,13 +5,13 @@ import { Spinner } from './Spinner';
 describe('Spinner', () => {
   it('renders with default size and show true', () => {
     const { container } = render(<Spinner />);
-    expect(container.querySelector('span')).toHaveClass('tw-flex');
-    expect(container.querySelector('svg')).toHaveClass('tw-animate-spin');
+    expect(container.querySelector('span')).toHaveClass('tw:flex');
+    expect(container.querySelector('svg')).toHaveClass('tw:animate-spin');
   });
 
   it('renders hidden with show false', () => {
     const { container } = render(<Spinner show={false} />);
-    expect(container.querySelector('span')).toHaveClass('tw-hidden');
+    expect(container.querySelector('span')).toHaveClass('tw:hidden');
   });
 
   it('renders with custom className', () => {
@@ -30,7 +30,7 @@ describe('Spinner', () => {
         <div>Child Element</div>
       </Spinner>
     );
-    expect(container.querySelector('div')).toHaveClass('tw-animate-spin');
+    expect(container.querySelector('div')).toHaveClass('tw:animate-spin');
     expect(container.querySelector('div')).toHaveTextContent('Child Element');
   });
 

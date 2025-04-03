@@ -20,10 +20,10 @@ const renderErrorMessage = (code: number | undefined): ReactElement => {
 export const ErrorPage = ({ code }: ErrorPageProps) => {
   const navigate = useNavigate();
   return (
-    <div className="tw-container tw-p-8">
+    <div className="tw:container tw:p-8">
       <Card>
         <CardHeader />
-        <CardContent className="tw-grid tw-justify-center">{renderErrorMessage(code)}</CardContent>
+        <CardContent className="tw:grid tw:justify-center">{renderErrorMessage(code)}</CardContent>
         <CardFooter>
           <Button variant="secondary" onClick={() => navigate(-1)}>
             Return

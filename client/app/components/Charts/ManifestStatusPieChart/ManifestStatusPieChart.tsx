@@ -175,7 +175,7 @@ const renderLegend = (props: any): ReactElement => {
   const { payload, handleMouseEnter, handleMouseLeave, handleClick } = props;
 
   return (
-    <div className="tw-relative tw-flex tw-flex-wrap tw-justify-center">
+    <div className="tw:relative tw:flex tw:flex-wrap tw:justify-center">
       {payload.map((entry: any, index: number) => {
         const dataEntry = data.find((d) => d.name === entry.value);
         const activeAlphaColor = entry.color.slice(
@@ -192,9 +192,9 @@ const renderLegend = (props: any): ReactElement => {
             onMouseEnter={() => handleMouseEnter(null, index)}
             onMouseLeave={handleMouseLeave}
             onClick={handleClick(dataEntry)}
-            className="tw-me-4 tw-inline-block"
+            className="tw:me-4 tw:inline-block"
           >
-            <svg className="tw-me-4 tw-inline-block tw-h-4  tw-align-middle" viewBox="0 0 32 32">
+            <svg className="tw:me-4 tw:inline-block tw:h-4  tw:align-middle" viewBox="0 0 32 32">
               <title></title>
               <desc></desc>
               <path stroke="none" fill={entry.color} d="M0,4h32v24h-32z" />

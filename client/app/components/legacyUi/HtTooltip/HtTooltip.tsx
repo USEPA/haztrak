@@ -30,7 +30,7 @@ interface InfoTooltipProps {
 export function InfoIconTooltip({ message }: InfoTooltipProps) {
   return (
     <HtTooltip text={message}>
-      <FaInfoCircle size={12} className="text-muted tw-inline tw-align-top " />
+      <FaInfoCircle size={12} className="text-muted tw:inline tw:align-top " />
     </HtTooltip>
   );
 }

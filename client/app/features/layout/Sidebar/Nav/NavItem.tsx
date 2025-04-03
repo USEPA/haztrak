@@ -21,9 +21,9 @@ export function NavItem({ route, targetBlank }: NavItemProps) {
   return (
     <Button asChild variant="link">
       <Link to={route.url} target={targetBlank ? '_blank' : undefined} onClick={toggleSidebar}>
-        <route.icon color={colors.cyan[700]} size={24} className="tw-me-3" />
-        <span className="tw-text-lg tw-text-black">{route.text}</span>
-        {route.external && <LuExternalLink className="tw-m-2 tw-text-destructive" />}
+        <route.icon color={colors.cyan[700]} size={24} className="tw:me-3" />
+        <span className="tw:text-lg tw:text-black">{route.text}</span>
+        {route.external && <LuExternalLink className="tw:m-2 tw:text-destructive" />}
       </Link>
     </Button>
   );

@@ -33,7 +33,7 @@ export function Root() {
     <NavContext.Provider value={{ showSidebar, setShowSidebar }}>
       <TopNav />
       <Sidebar />
-      <main className="tw-mx-8 tw-mt-20">
+      <main className="tw:mx-8 tw:mt-20">
         <ToastContainer
           position="bottom-right"
           autoClose={5000}

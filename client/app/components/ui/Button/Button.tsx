@@ -5,27 +5,27 @@ import * as React from 'react';
 import { cn } from '~/lib/utils';
 
 const buttonVariants = cva(
-  'tw-text-md tw-inline-flex tw-items-center tw-justify-center tw-whitespace-nowrap tw-p-2 tw-font-medium tw-ring-offset-background tw-transition-colors focus-visible:tw-outline-none focus-visible:tw-ring-2 focus-visible:tw-ring-ring focus-visible:tw-ring-offset-2 disabled:tw-pointer-events-none disabled:tw-opacity-50',
+  'tw:text-md tw:inline-flex tw:items-center tw:justify-center tw:whitespace-nowrap tw:p-2 tw:font-medium tw:ring-offset-background tw:transition-colors tw:focus-visible:outline-hidden tw:focus-visible:ring-2 tw:focus-visible:ring-ring tw:focus-visible:ring-offset-2 tw:disabled:pointer-events-none tw:disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'tw-bg-primary tw-text-primary-foreground hover:tw-bg-primary/90',
-        destructive: 'tw-bg-destructive tw-text-destructive-foreground hover:tw-bg-destructive/90',
+        default: 'tw:bg-primary tw:text-primary-foreground tw:hover:bg-primary/90',
+        destructive: 'tw:bg-destructive tw:text-destructive-foreground tw:hover:bg-destructive/90',
         outline:
-          'tw-border tw-border-input tw-bg-transparent hover:tw-bg-accent hover:tw-text-accent-foreground',
-        secondary: 'tw-bg-secondary tw-text-secondary-foreground hover:tw-bg-secondary/90',
-        ghost: 'hover:tw-bg-accent hover:tw-text-accent-foreground',
-        link: 'tw-text-primary tw-underline-offset-4 hover:tw-underline',
+          'tw:border tw:border-input tw:bg-transparent tw:hover:bg-accent tw:hover:text-accent-foreground',
+        secondary: 'tw:bg-secondary tw:text-secondary-foreground tw:hover:bg-secondary/90',
+        ghost: 'tw:hover:bg-accent tw:hover:text-accent-foreground',
+        link: 'tw:text-primary tw:underline-offset-4 tw:hover:underline',
       },
       size: {
-        default: 'tw-h-10',
-        sm: 'tw-h-9 tw-px-3',
-        lg: 'tw-h-11 tw-px-8',
-        icon: 'tw-size-10',
+        default: 'tw:h-10',
+        sm: 'tw:h-9 tw:px-3',
+        lg: 'tw:h-11 tw:px-8',
+        icon: 'tw:size-10',
       },
       rounded: {
-        false: 'tw-rounded-md',
-        true: 'tw-rounded-full',
+        false: 'tw:rounded-md',
+        true: 'tw:rounded-full',
       },
     },
     defaultVariants: {

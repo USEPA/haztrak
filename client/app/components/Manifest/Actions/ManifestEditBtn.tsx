@@ -22,7 +22,7 @@ export function ManifestEditBtn({ children: _unused, ...props }: ManifestEditBtn
   return (
     <HtButton {...props} variant="info" type="button" name="edit" onClick={handleClick}>
       <span>Edit </span>
-      <FaPenToSquare className="tw-inline" />
+      <FaPenToSquare className="tw:inline" />
     </HtButton>
   );
 }

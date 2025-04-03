@@ -9,7 +9,7 @@ interface AppProviderProps {
 }
 
 const GlobalSpinner = () => (
-  <div className="align-items-center tw-flex tw-h-screen tw-justify-center">
+  <div className="align-items-center tw:flex tw:h-screen tw:justify-center">
     <Spinner size="lg" />
   </div>
 );

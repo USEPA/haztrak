@@ -64,7 +64,7 @@ export function SyncManifestBtn({
       }}
     >
       <span>Sync Manifest </span>
-      <FaSync className={syncInProgress ? 'tw-spin tw-inline' : 'tw-inline'} />
+      <FaSync className={syncInProgress ? 'tw-spin tw:inline' : 'tw:inline'} />
     </RcraApiUserBtn>
   );
 }

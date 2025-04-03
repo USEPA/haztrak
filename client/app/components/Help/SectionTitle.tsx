@@ -7,8 +7,8 @@ export function SectionTitle({
   variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }) {
   return (
-    <div className="tw-pb-3 tw-text-center ">
-      <h2 className={`${variant ?? 'h2'} text-primary tw-relative tw-font-bold tw-uppercase`}>
+    <div className="tw:pb-3 tw:text-center ">
+      <h2 className={`${variant ?? 'h2'} text-primary tw:relative tw:font-bold tw:uppercase`}>
         <div
           className="bg-secondary-subtle"
           style={{

@@ -7,7 +7,7 @@ const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
     <div
       ref={ref}
       className={cn(
-        'tw-rounded-lg tw-border tw-bg-card tw-text-card-foreground tw-shadow-sm',
+        'tw:rounded-lg tw:border tw:bg-card tw:text-card-foreground tw:shadow-sm',
         className
       )}
       {...props}
@@ -20,7 +20,7 @@ const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('tw-flex tw-flex-col tw-space-y-1.5 tw-p-6', className)}
+      className={cn('tw:flex tw:flex-col tw:space-y-1.5 tw:p-6', className)}
       {...props}
     />
   )
@@ -32,7 +32,7 @@ const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HT
     // eslint-disable-next-line jsx-a11y/heading-has-content
     <h3
       ref={ref}
-      className={cn('tw-text-xl tw-font-semibold tw-leading-none tw-tracking-tight', className)}
+      className={cn('tw:text-xl tw:font-semibold tw:leading-none tw:tracking-tight', className)}
       {...props}
     />
   )
@@ -43,20 +43,20 @@ const CardDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <p ref={ref} className={cn('tw-text-sm tw-text-muted-foreground', className)} {...props} />
+  <p ref={ref} className={cn('tw:text-sm tw:text-muted-foreground', className)} {...props} />
 ));
 CardDescription.displayName = 'CardDescription';
 
 const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('tw-p-6 tw-pt-0', className)} {...props} />
+    <div ref={ref} className={cn('tw:p-6 tw:pt-0', className)} {...props} />
   )
 );
 CardContent.displayName = 'CardContent';
 
 const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('tw-flex tw-items-center tw-p-6 tw-pt-0', className)} {...props} />
+    <div ref={ref} className={cn('tw:flex tw:items-center tw:p-6 tw:pt-0', className)} {...props} />
   )
 );
 CardFooter.displayName = 'CardFooter';

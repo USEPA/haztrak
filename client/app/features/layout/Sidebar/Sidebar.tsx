@@ -14,10 +14,10 @@ export function Sidebar(): ReactElement | null {
 
   return (
     <Sheet open={showSidebar} onOpenChange={setShowSidebar}>
-      <SheetContent side="left" className="tw-flex tw-flex-col tw-items-start">
+      <SheetContent side="left" className="tw:flex tw:flex-col tw:items-start">
         <SheetHeader>
           <SheetTitle asChild>
-            <Link to="/" className="tw-flex tw-justify-center">
+            <Link to="/" className="tw:flex tw:justify-center">
               <img
                 src={logo}
                 alt="haztrak logo, hazardous waste tracking made easy."
@@ -28,7 +28,7 @@ export function Sidebar(): ReactElement | null {
             </Link>
           </SheetTitle>
         </SheetHeader>
-        <div className="tw-mx-auto tw-flex tw-w-full tw-items-center tw-justify-center md:tw-hidden">
+        <div className="tw:mx-auto tw:flex tw:w-full tw:items-center tw:justify-center tw:md:hidden">
           <OrgSelect />
         </div>
         <nav>
