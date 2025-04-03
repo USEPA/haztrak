@@ -2,8 +2,6 @@ import * as path from 'path';
 /// <reference types="vitest" />
 import viteReact from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-// @ts-expect-error - error with vite-plugin-eslint
-import eslint from 'vite-plugin-eslint';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 import { dependencies } from './package.json';
 
@@ -37,7 +35,7 @@ export default defineConfig({
       },
     },
   },
-  plugins: [viteReact(), viteTsconfigPaths(), eslint()],
+  plugins: [viteReact(), viteTsconfigPaths()],
   server: {
     host: true,
     port: 3000,
