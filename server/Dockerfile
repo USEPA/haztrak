@@ -4,7 +4,10 @@ LABEL maintainer="graham.david@epa.gov"
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-#RUN apt get libffi-dev gcc libc-dev curl
+#RUN apt install libffi-dev gcc libc-dev curl
+RUN apt-get update && \
+    apt-get install -y libffi-dev gcc libc-dev curl && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 RUN --mount=type=cache,target=/root/.cache/uv \
@@ -31,8 +34,8 @@ ENV PATH="/app/.venv/bin:$PATH"
 WORKDIR /app
 
 EXPOSE 8000
-RUN python manage.py migrate && \
-    python manage.py collectstatic --noinput
+# RUN python manage.py migrate && \
+#    python manage.py collectstatic --noinput
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 ## Production

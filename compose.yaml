@@ -7,8 +7,6 @@ services:
       context: ./server
     ports:
       - "8000:8000"
-    volumes:
-      - ./server:/app
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
       HT_HOST: ${HT_HOST}
@@ -61,8 +59,6 @@ services:
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
       HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
-    volumes:
-      - ./server:/app
     command: python manage.py celery_worker
 
   celery-beat:
@@ -81,8 +77,6 @@ services:
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
       HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
-    volumes:
-      - ./server:/app
     command: python manage.py celery_beat
 
   db:
