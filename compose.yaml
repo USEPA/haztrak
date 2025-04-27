@@ -7,6 +7,8 @@ services:
       context: ./server
     ports:
       - "8000:8000"
+    volumes:
+      - ./server:/app
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
       HT_HOST: ${HT_HOST}
@@ -25,24 +27,12 @@ services:
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
       HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.trak.rule=Host(`${HT_HOST}`)"
-      - "traefik.http.routers.trak.rule=PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`)"
-      - "traefik.http.routers.trak.entrypoints=web"
     command: |
       sh -c "
       python manage.py makemigrations &&
       python manage.py migrate &&
       python manage.py loaddata core_dev.yaml rcrasite_dev.yaml org_dev.yaml profile_dev.yaml &&
       python manage.py runserver 0.0.0.0:8000"
-    healthcheck:
-      test:
-        ["CMD", "curl", "-f", "http://localhost:8000/api/health/startup-probe/"]
-      interval: 30s
-      timeout: 20s
-      retries: 5
-      start_period: 10s
     depends_on:
       db:
         condition: service_healthy
@@ -71,10 +61,9 @@ services:
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
       HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
+    volumes:
+      - ./server:/app
     command: python manage.py celery_worker
-    depends_on:
-      trak:
-        condition: service_healthy
 
   celery-beat:
     restart: unless-stopped
@@ -92,10 +81,9 @@ services:
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
       HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
+    volumes:
+      - ./server:/app
     command: python manage.py celery_beat
-    depends_on:
-      trak:
-        condition: service_healthy
 
   db:
     restart: unless-stopped
@@ -108,7 +96,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $HT_DB_USER -d $HT_DB_NAME"]
+      test: [ "CMD-SHELL", "pg_isready -U $HT_DB_USER -d $HT_DB_NAME" ]
       interval: 3s
       timeout: 3s
       retries: 5

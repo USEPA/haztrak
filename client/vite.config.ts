@@ -39,9 +39,6 @@ export default defineConfig({
   server: {
     host: true,
     port: 3000,
-    hmr: {
-      clientPort: 8080,
-    },
   },
   test: {
     environment: 'jsdom',
