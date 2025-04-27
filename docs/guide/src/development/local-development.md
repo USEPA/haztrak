@@ -42,7 +42,7 @@ that we've specified in
 the [docker-compose.yaml](https://github.com/USEPA/haztrak/blob/main/docker-compose.yaml) file._
 
 After all containers are successfully running (you can inspect with `docker ps`),
-visit [localhost:8080](http://localhost)
+visit [localhost:8080](http://localhost:8080)
 
 ## Fixtures (logging in)
 

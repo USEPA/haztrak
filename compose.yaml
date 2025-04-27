@@ -28,7 +28,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.trak.rule=Host(`${HT_HOST}`)"
-      - "traefik.http.routers.trak.rule=PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`)"
+      - "traefik.http.routers.trak.rule=PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`)"
       - "traefik.http.routers.trak.entrypoints=web"
     command: |
       sh -c "
@@ -36,6 +36,13 @@ services:
       python manage.py migrate &&
       python manage.py loaddata core_dev.yaml rcrasite_dev.yaml org_dev.yaml profile_dev.yaml &&
       python manage.py runserver 0.0.0.0:8000"
+    healthcheck:
+      test:
+        ["CMD", "curl", "-f", "http://localhost:8000/api/health/startup-probe/"]
+      interval: 30s
+      timeout: 20s
+      retries: 5
+      start_period: 10s
     depends_on:
       db:
         condition: service_healthy
@@ -65,6 +72,9 @@ services:
       HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
     command: python manage.py celery_worker
+    depends_on:
+      trak:
+        condition: service_healthy
 
   celery-beat:
     restart: unless-stopped
@@ -83,6 +93,9 @@ services:
       HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
     command: python manage.py celery_beat
+    depends_on:
+      trak:
+        condition: service_healthy
 
   db:
     restart: unless-stopped
@@ -115,26 +128,7 @@ services:
       VITE_HT_API_URL: ${VITE_HT_API_URL}
       VITE_HT_ENV: ${VITE_HT_ENV}
       VITE_GITHUB_URL: ${VITE_GITHUB_URL}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.client.rule=Host(`${HT_HOST}`)"
-      - "traefik.http.routers.client.entrypoints=web"
     command: sh -c "cd /app; npm install; npm start"
-
-  proxy:
-    image: traefik:v3.1
-    container_name: proxy
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--log.level=DEBUG"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-    ports:
-      - "8080:8080"
-      - "80:80"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   mail:
     container_name: mail
