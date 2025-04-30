@@ -13,19 +13,16 @@ services:
       - ./server/profile:/app/profile
       - ./server/rcrawaste:/app/rcrawaste
       - ./server/wasteline:/app/wasteline
-    ports:
-      - "8000:8000"
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
-      HT_HOST: ${HT_HOST}
+      CELERY_BROKER_URL: "redis://redis:6379"
+      HT_HOST: "http://localhost"
       HT_SECRET_KEY: ${HT_SECRET_KEY}
-      HT_DEBUG: ${HT_DEBUG}
+      HT_DEBUG: true
       HT_LOG_LEVEL: ${HT_LOG_LEVEL}
       HT_TIMEZONE: ${HT_TIMEZONE}
       HT_RCRAINFO_ENV: ${HT_RCRAINFO_ENV}
-      HT_CORS_DOMAIN: ${HT_CORS_DOMAIN}
-      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+      HT_CORS_DOMAIN: "http://localhost"
       HT_CACHE_URL: ${HT_CACHE_URL}
       HT_DB_ENGINE: ${HT_DB_ENGINE}
       HT_DB_NAME: ${HT_DB_NAME}
@@ -67,8 +64,7 @@ services:
       - ./server/wasteline:/app/wasteline
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
-      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+      CELERY_BROKER_URL: "redis://redis:6379"
       CELERY_LOG_LEVEL: ${CELERY_LOG_LEVEL}
       HT_RCRAINFO_ENV: ${HT_RCRAINFO_ENV}
       HT_DB_ENGINE: ${HT_DB_ENGINE}
@@ -95,8 +91,7 @@ services:
       - ./server/wasteline:/app/wasteline
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
-      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+      CELERY_BROKER_URL: "redis://redis:6379"
       CELERY_LOG_LEVEL: ${CELERY_LOG_LEVEL}
       HT_RCRAINFO_ENV: ${HT_RCRAINFO_ENV}
       HT_DB_ENGINE: ${HT_DB_ENGINE}
@@ -130,8 +125,6 @@ services:
     build:
       context: ./client
       target: dev
-    ports:
-      - "3000:3000"
     volumes:
       - ./client:/app
     environment:
@@ -139,6 +132,17 @@ services:
       VITE_HT_ENV: ${VITE_HT_ENV}
       VITE_GITHUB_URL: ${VITE_GITHUB_URL}
     command: sh -c "cd /app; npm install; npm start"
+
+  nginx:
+    container_name: nginx
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./configs/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - trak
+      - client
 
   mail:
     container_name: mail

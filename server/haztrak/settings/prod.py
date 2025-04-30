@@ -11,7 +11,7 @@ ALLOWED_HOSTS = [os.getenv("HT_HOST")]
 CORS_ORIGIN_WHITELIST = [os.getenv("HT_CORS_DOMAIN", "http://*")]
 
 # Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+# https://docs.djangoproject.com/en/stable/ref/settings/#databases
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("HT_DB_ENGINE", "django.db.backends.postgresql"),
