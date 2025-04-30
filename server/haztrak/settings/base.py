@@ -28,8 +28,6 @@ AUTH_USER_MODEL = "core.TrakUser"
 
 WSGI_APPLICATION = "haztrak.wsgi.application"
 
-SITE_ID = 1
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -41,9 +39,10 @@ INSTALLED_APPS = [
     "guardian",
     "rest_framework",
     "rest_framework.authtoken",
-    "allauth",
     "allauth.account",
+    "allauth.headless",
     "allauth.socialaccount",
+    "allauth.usersessions",
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "corsheaders",
@@ -237,6 +236,16 @@ REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_COOKIE": "_auth",
     "JWT_AUTH_RETURN_EXPIRATION": True,
+}
+
+# AllAuth
+HEADLESS_ONLY = True
+HEADLESS_FRONTEND_URLS = {
+    "account_confirm_email": "/account/verify-email/{key}",
+    "account_reset_password": "/account/password/reset",
+    "account_reset_password_from_key": "/account/password/reset/key/{key}",
+    "account_signup": "/account/signup",
+    "socialaccount_login_error": "/account/provider/callback",
 }
 
 SIMPLE_JWT = {
