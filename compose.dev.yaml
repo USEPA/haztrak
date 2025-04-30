@@ -13,8 +13,6 @@ services:
       - ./server/profile:/app/profile
       - ./server/rcrawaste:/app/rcrawaste
       - ./server/wasteline:/app/wasteline
-    ports:
-      - "8000:8000"
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
       HT_HOST: ${HT_HOST}
@@ -130,8 +128,6 @@ services:
     build:
       context: ./client
       target: dev
-    ports:
-      - "3000:3000"
     volumes:
       - ./client:/app
     environment:
@@ -139,6 +135,17 @@ services:
       VITE_HT_ENV: ${VITE_HT_ENV}
       VITE_GITHUB_URL: ${VITE_GITHUB_URL}
     command: sh -c "cd /app; npm install; npm start"
+
+  nginx:
+    container_name: nginx
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./configs/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - trak
+      - client
 
   mail:
     container_name: mail
