@@ -1,7 +1,7 @@
 """Emanifest search service."""
 
-from datetime import UTC, datetime, timedelta, timezone
-from typing import Literal, Optional, get_args
+from datetime import UTC, datetime, timedelta
+from typing import Literal, get_args
 
 from core.services import RcraClient
 

@@ -4,7 +4,6 @@ import logging
 import os
 import shlex
 import subprocess
-import sys
 
 from django.core.management.base import BaseCommand
 from django.utils import autoreload
@@ -18,7 +17,7 @@ logger = logging.getLogger(__name__)
 def restart_celery_beat():
     """Restart Celery Beat."""
     celery_beat_cmd = f"celery -A haztrak beat -l {CELERY_LOG_LEVEL}"
-    subprocess.call(shlex.split(f"{celery_beat_cmd}"))  # noqa: S603
+    subprocess.call(shlex.split(f"{celery_beat_cmd}"))
 
 
 class Command(BaseCommand):

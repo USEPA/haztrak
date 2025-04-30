@@ -32,7 +32,7 @@ class SiteIDProvider(BaseProvider):
     """Custom provider for generating site IDs."""
 
     PREFIXES = ["VAT", "VAD", "TXD", "TXR", "TND", "TNR", "LAD", "LAR", "CAD", "CAR", "MAD", "MAR"]
-    NUMBERS = ["".join(random.choices(string.digits, k=9)) for _ in range(100)]  # noqa: S311
+    NUMBERS = ["".join(random.choices(string.digits, k=9)) for _ in range(100)]
 
     def site_id(self):
         """Generate a random site ID."""
@@ -73,7 +73,7 @@ class UserFactoryPermissions(TypedDict, total=False):
 def user_factory(db, faker):
     """Abstract factory for Django's User model."""
 
-    def create_user(  # noqa: PLR0913
+    def create_user(
         username: str | None = None,
         first_name: str | None = None,
         last_name: str | None = None,
@@ -350,7 +350,7 @@ def mocker(mocker: pytest_mock.MockerFixture):
 
 
 @pytest.fixture
-def user_with_org_factory(  # noqa: PLR0913
+def user_with_org_factory(
     db,
     user_factory,
     org_factory,

@@ -2,7 +2,7 @@
 
 import uuid
 from profile.models import RcrainfoProfile
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING
 
 from core.models import TrakUser
 from django.conf import settings

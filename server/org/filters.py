@@ -20,8 +20,8 @@ class ObjectPermissionsFilter(BaseFilterBackend):
         """Filter the queryset."""
         user = request.user
         permission = self.perm_format % {
-            "app_label": queryset.model._meta.app_label,  # noqa: SLF001
-            "model_name": queryset.model._meta.model_name,  # noqa: SLF001
+            "app_label": queryset.model._meta.app_label,
+            "model_name": queryset.model._meta.model_name,
         }
 
         return get_objects_for_user(user, permission, queryset, **self.shortcut_kwargs)

@@ -1,5 +1,3 @@
-from typing import Optional
-
 import pytest
 from org.models import Org, Site
 from rcrasite.models import RcraSite

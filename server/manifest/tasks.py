@@ -98,7 +98,7 @@ def save_to_emanifest(self, *, manifest_data: dict, username: str):
             task_status.update_task_status(status="SUCCESS", results=new_manifest)
             return new_manifest
         msg = "error creating manifest"
-        raise EManifestError(msg)  # noqa: TRY301
+        raise EManifestError(msg)
     except EManifestError as exc:
         msg = f"failed to create manifest ({manifest_data}): {exc.message}"
         logger.exception(msg)

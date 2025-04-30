@@ -16,7 +16,7 @@ def quicker_sign_response_factory(faker: Faker):
         site_id: str,
         site_type: RcraSiteType | None = RcraSiteType.GENERATOR,
         printed_name: str | None = None,
-        sign_date: datetime | None = datetime.utcnow().replace(tzinfo=UTC),  # noqa: B008, DTZ003
+        sign_date: datetime | None = datetime.utcnow().replace(tzinfo=UTC),  # noqa: B008
     ) -> dict:
         sign_date_iso = sign_date.isoformat(timespec="milliseconds")
         return {

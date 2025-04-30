@@ -1,7 +1,7 @@
 """Manifest services."""
 
 import logging
-from typing import Literal, Optional
+from typing import Literal
 
 from django.db import transaction
 from django.db.models import Q, QuerySet
