@@ -292,12 +292,13 @@ wheels = [
 
 [[package]]
 name = "django-allauth"
-version = "64.2.1"
+version = "65.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "asgiref" },
     { name = "django" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a6/da/8d8c16c42681d0917e03334fa9b10be3a473622a4c156f7db75a0cf5ca3b/django_allauth-64.2.1.tar.gz", hash = "sha256:54bf0af8dc5c334254dd56f9069447c19b9b623110a095b2a0dcb82a414e1055", size = 1248695, upload_time = "2024-09-05T20:06:14.984Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/08/8557880768ba4d5966195ee5e57c69d8b9425c62ffb80293e2ad36dffb83/django_allauth-65.7.0.tar.gz", hash = "sha256:eb060692150f39e1529893c2de5f9b46e1dab51153ff6cca7ad72c7c125259ea", size = 1640126, upload_time = "2025-04-03T07:52:05.391Z" }
 
 [package.optional-dependencies]
 socialaccount = [
@@ -552,7 +553,7 @@ dependencies = [
     { name = "celery" },
     { name = "dj-rest-auth", extra = ["with-social"] },
     { name = "django" },
-    { name = "django-allauth" },
+    { name = "django-allauth", extra = ["socialaccount"] },
     { name = "django-celery-beat" },
     { name = "django-celery-results" },
     { name = "django-cors-headers" },
@@ -597,7 +598,7 @@ requires-dist = [
     { name = "celery", specifier = ">=5.5.1,<5.6.0" },
     { name = "dj-rest-auth", extras = ["with-social"], specifier = "==7.0.1" },
     { name = "django", specifier = "==5.1.5" },
-    { name = "django-allauth", specifier = ">=64.0.0,<65.0.0" },
+    { name = "django-allauth", extras = ["socialaccount"], specifier = ">=65.0.0,<66.0.0" },
     { name = "django-celery-beat", specifier = "==2.8.0" },
     { name = "django-celery-results", specifier = "==2.5.1" },
     { name = "django-cors-headers", specifier = "==4.4.0" },
