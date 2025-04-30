@@ -4,6 +4,8 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from django.utils.log import DEFAULT_LOGGING
+
 # Globals
 HAZTRAK_VERSION = "0.7.2"
 
@@ -191,8 +193,7 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 # Logging
 # https://docs.python.org/3/library/logging.html#logrecord-attributes
 LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
+    **DEFAULT_LOGGING,
     "formatters": {
         "superverbose": {
             "format": "%(levelname)s %(asctime)s %(module)s:%(lineno)d %(process)d "
