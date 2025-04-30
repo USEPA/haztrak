@@ -39,7 +39,7 @@ docker-compose --env-file configs/.env.dev up --build
 
 The follow variables are required, haztrak will exit if not present.
 `HT_SECRET_KEY`: Salt for cryptographic hashing,
-[required by Django](https://docs.djangoproject.com/en/4.1/ref/settings/#secret-key)
+[required by Django](https://docs.djangoproject.com/en/stable/ref/settings/#secret-key)
 
 ### Optional (server)
 
@@ -47,19 +47,19 @@ The follow variables are required, haztrak will exit if not present.
   - Value: `True` or `False`
   - Default: `False`
   -
-  Description: [Django's DEBUG value](https://docs.djangoproject.com/en/4.1/ref/settings/#debug)
+  Description: [Django's DEBUG value](https://docs.djangoproject.com/en/stable/ref/settings/#debug)
 - `HT_HOST`
   - Value: host/domain names that Django will serve
   - Default: ['localhost']
   - Description: the URL that the server will serve from,
-    see [Django's ALLOWED_HOSTS documentation](https://docs.djangoproject.com/en/4.1/ref/settings/#allowed-hosts)
+    see [Django's ALLOWED_HOSTS documentation](https://docs.djangoproject.com/en/stable/ref/settings/#allowed-hosts)
     - Haztrak currently only accepts one value
 - `HT_TIMEZONE`
   - Value: one of the approved names from
     the [TZ Database list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
   - Default: 'UTC'
   - Description: see Django's documentation
-    on [TIME_ZONE](https://docs.djangoproject.com/en/4.1/ref/settings/#time-zone-1)
+    on [TIME_ZONE](https://docs.djangoproject.com/en/stable/ref/settings/#time-zone-1)
     - In the future, `USE_TZ` will be enabled by default
 - `HT_RCRAINFO_ENV`
   - Value: `preprod`, `prod`, or the base url of the target RCRAInfo environment
@@ -85,7 +85,7 @@ directory, which
 may not be recommended for production, but this is an example web application.
 
 - `HT_DB_ENGINE`
-  - [The server driver](https://docs.djangoproject.com/en/4.1/ref/settings/#engine)
+  - [The server driver](https://docs.djangoproject.com/en/stable/ref/settings/#engine)
     used by
     django's ORM (e.g., `django.db.backends.postgresql_psycopg2`)
   - default: `django.db.backends.sqlite3`
@@ -101,7 +101,7 @@ may not be recommended for production, but this is an example web application.
   - default: `5432`
   - [default for postgres is 5342](https://www.postgresql.org/docs/current/app-postgres.html)
 - `HT_TEST_DB_NAME`
-  - [Name of database used for testing](https://docs.djangoproject.com/en/4.1/ref/settings/#test)
+  - [Name of database used for testing](https://docs.djangoproject.com/en/stable/ref/settings/#test)
     defaults to `test` if not present
 
 #### Celery
@@ -153,7 +153,7 @@ will default to `HT_LOG_LEVEL`s default.
 
 - `VITE_HT_API_URL`
   - Value: host/domain name of the haztrak back end
-  - Default: `http://localhost:8000`
+  - Default: `http://localhost`
 - `VITE_HT_ENV`
   - Default: `PROD`
   - Options: `PROD`, `DEV`, `TEST`

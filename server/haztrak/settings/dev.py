@@ -15,7 +15,7 @@ REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [  # noqa: F405
 ]
 
 # Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+# https://docs.djangoproject.com/en/stable/ref/settings/#databases
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("HT_DB_ENGINE", "django.db.backends.sqlite3"),
