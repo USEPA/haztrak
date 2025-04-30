@@ -5,6 +5,14 @@ services:
     image: haztrak-server
     build:
       context: ./server
+    volumes:
+      - ./server/core:/app/core
+      - ./server/haztrak:/app/haztrak
+      - ./server/manifest:/app/manifest
+      - ./server/org:/app/org
+      - ./server/profile:/app/profile
+      - ./server/rcrawaste:/app/rcrawaste
+      - ./server/wasteline:/app/wasteline
     ports:
       - "8000:8000"
     environment:
@@ -25,11 +33,6 @@ services:
       HT_DB_PASSWORD: ${HT_DB_PASSWORD}
       HT_DB_HOST: db
       HT_DB_PORT: ${HT_DB_PORT}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.trak.rule=Host(`${HT_HOST}`)"
-      - "traefik.http.routers.trak.rule=PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`)"
-      - "traefik.http.routers.trak.entrypoints=web"
     command: |
       sh -c "
       python manage.py makemigrations &&
@@ -52,6 +55,16 @@ services:
     restart: unless-stopped
     container_name: celery-worker
     image: haztrak-server
+    build:
+      context: ./server
+    volumes:
+      - ./server/core:/app/core
+      - ./server/haztrak:/app/haztrak
+      - ./server/manifest:/app/manifest
+      - ./server/org:/app/org
+      - ./server/profile:/app/profile
+      - ./server/rcrawaste:/app/rcrawaste
+      - ./server/wasteline:/app/wasteline
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}
@@ -70,6 +83,16 @@ services:
     restart: unless-stopped
     container_name: celery-beat
     image: haztrak-server
+    build:
+      context: ./server
+    volumes:
+      - ./server/core:/app/core
+      - ./server/haztrak:/app/haztrak
+      - ./server/manifest:/app/manifest
+      - ./server/org:/app/org
+      - ./server/profile:/app/profile
+      - ./server/rcrawaste:/app/rcrawaste
+      - ./server/wasteline:/app/wasteline
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}
@@ -95,7 +118,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $HT_DB_USER -d $HT_DB_NAME"]
+      test: [ "CMD-SHELL", "pg_isready -U $HT_DB_USER -d $HT_DB_NAME" ]
       interval: 3s
       timeout: 3s
       retries: 5
@@ -115,26 +138,7 @@ services:
       VITE_HT_API_URL: ${VITE_HT_API_URL}
       VITE_HT_ENV: ${VITE_HT_ENV}
       VITE_GITHUB_URL: ${VITE_GITHUB_URL}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.client.rule=Host(`${HT_HOST}`)"
-      - "traefik.http.routers.client.entrypoints=web"
     command: sh -c "cd /app; npm install; npm start"
-
-  proxy:
-    image: traefik:v3.1
-    container_name: proxy
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--log.level=DEBUG"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-    ports:
-      - "8080:8080"
-      - "80:80"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   mail:
     container_name: mail

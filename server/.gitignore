@@ -6,3 +6,6 @@ test_db-journal
 **/*coverage.json
 /htmlcov/
 media
+.idea
+.run
+.vscode

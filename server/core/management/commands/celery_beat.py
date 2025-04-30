@@ -18,11 +18,6 @@ logger = logging.getLogger(__name__)
 def restart_celery_beat():
     """Restart Celery Beat."""
     celery_beat_cmd = f"celery -A haztrak beat -l {CELERY_LOG_LEVEL}"
-    cmd = f'pkill -f "{celery_beat_cmd}"'
-    if sys.platform == "win32":
-        cmd = "taskkill /f /t /im celery.exe"
-
-    subprocess.call(shlex.split(cmd))  # noqa: S603
     subprocess.call(shlex.split(f"{celery_beat_cmd}"))  # noqa: S603
 
 
