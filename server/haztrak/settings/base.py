@@ -43,8 +43,6 @@ INSTALLED_APPS = [
     "allauth.headless",
     "allauth.socialaccount",
     "allauth.usersessions",
-    "dj_rest_auth",
-    "dj_rest_auth.registration",
     "corsheaders",
     "django_extensions",
     "health_check",
@@ -142,7 +140,6 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
@@ -247,6 +244,7 @@ HEADLESS_FRONTEND_URLS = {
     "account_signup": "/account/signup",
     "socialaccount_login_error": "/account/provider/callback",
 }
+SITE_ID = 1
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),

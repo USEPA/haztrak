@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router';
 import { ErrorPage } from '~/features/errorPage/ErrorPage';
+import { ExampleRoute } from '~/features/example/ExampleRoute';
 import { Login } from '~/features/login';
 import { Component as PrivateRoute } from '~/features/privateRoute';
 
@@ -87,6 +88,10 @@ export const router = createBrowserRouter(
     {
       path: 'about',
       lazy: () => import('~/features/about'),
+    },
+    {
+      path: 'account/:accountPath',
+      element: <ExampleRoute />,
     },
     {
       path: '*',

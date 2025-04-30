@@ -63,11 +63,24 @@ export interface LoginRequest {
 }
 
 export interface AuthSuccessResponse {
-  access: string;
-  refresh: string;
-  user: HaztrakUser;
-  access_expiration: string;
-  refresh_expiration: string;
+  status: number;
+  data: {
+    user: {
+      id: string;
+      display: string;
+      has_usable_password: boolean;
+      email: string;
+      username: string;
+    };
+    methods: {
+      method: string;
+      at: number;
+      username: string;
+    }[];
+    meta: {
+      is_authenticated: boolean;
+    };
+  };
 }
 
 export interface HaztrakProfileResponse {
@@ -86,19 +99,19 @@ export const userApi = haztrakApi.injectEndpoints({
     // Note: build.query<ReturnType, ArgType>
     login: build.mutation<AuthSuccessResponse, LoginRequest>({
       query: (data) => ({
-        url: 'auth/login/',
+        url: '_allauth/browser/v1/auth/login',
         method: 'POST',
         data: data,
       }),
-      invalidatesTags: ['user'],
+      invalidatesTags: ['user', 'auth'],
     }),
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     logout: build.mutation<void, void>({
       query: () => ({
-        url: 'auth/logout/',
+        url: '_allauth/browser/v1/auth/logout',
         method: 'POST',
       }),
-      invalidatesTags: ['user'],
+      invalidatesTags: ['user', 'auth'],
     }),
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     getUser: build.query<HaztrakUser, void>({
@@ -108,6 +121,14 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       providesTags: ['user'],
     }),
+    getSession: build.query<HaztrakUser, void>({
+      query: () => ({
+        url: '_allauth/browser/v1/auth/session',
+        method: 'GET',
+      }),
+      providesTags: ['auth', 'user'],
+    }),
+
     updateUser: build.mutation<HaztrakUser, HaztrakUser>({
       query: (data) => ({
         url: 'auth/user/',
