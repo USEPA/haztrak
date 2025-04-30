@@ -106,17 +106,17 @@ class TestEmanifestSearchClass:
         """Tests."""
 
         def test_add_start_date(self):
-            search = EmanifestSearch().add_start_date(datetime.now())  # noqa: DTZ005
+            search = EmanifestSearch().add_start_date(datetime.now())
             assert search.start_date is not None
 
         def test_add_end_date(self):
-            search = EmanifestSearch().add_end_date(datetime.now())  # noqa: DTZ005
+            search = EmanifestSearch().add_end_date(datetime.now())
             assert search.end_date is not None
 
         def test_add_end_date_defaults_to_now(self):
             now = datetime.now(UTC)
             search = EmanifestSearch().add_end_date()
-            end_date = datetime.strptime(search.end_date, RcraClient.datetime_format)  # noqa: DTZ007
+            end_date = datetime.strptime(search.end_date, RcraClient.datetime_format)
             assert end_date.day == now.day
             assert end_date.month == now.month
             assert end_date.year == now.year

@@ -18,7 +18,7 @@ class TestProfileViewSet:
 
     @pytest.fixture
     def profile(self, db, profile_factory, user_factory):
-        user = user_factory(username="testuser", password="password")  # noqa: S106
+        user = user_factory(username="testuser", password="password")
         return profile_factory(user=user)
 
     @pytest.fixture
@@ -29,7 +29,7 @@ class TestProfileViewSet:
         return SimpleUploadedFile("test.jpg", bts.getvalue(), content_type="image/jpeg")
 
     def test_retrieves_profile_details(self, api_client, profile):
-        api_client.login(username="testuser", password="password")  # noqa: S106
+        api_client.login(username="testuser", password="password")
         url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.id})
         response = api_client.get(url)
         assert response.status_code == 200
@@ -39,7 +39,7 @@ class TestProfileViewSet:
     def test_updates_profile_image(self, api_client, profile, generate_photo_file):
         # TODO(David): Implement this test - I keep getting a 500 internal server error
         #  even though I can successfully use this endpoint
-        api_client.login(username="testuser", password="password")  # noqa: S106
+        api_client.login(username="testuser", password="password")
         url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.id})
 
         f = io.BytesIO()

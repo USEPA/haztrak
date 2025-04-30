@@ -106,7 +106,7 @@ class RcraProfileService:
         try:
             permissions = []
             for permission_json in rcra_response["users"][0]["sites"]:
-                permissions.append(permission_json)  # noqa: PERF402
+                permissions.append(permission_json)
         except KeyError as exc:
             msg = f"Error parsing RCRAInfo response: {exc!s}"
             raise RcraProfileServiceError(msg) from exc

@@ -2,11 +2,9 @@
 
 import uuid
 
-from django.contrib.auth.models import AbstractUser, Group
-from django.contrib.auth.models import Permission as DjangoPermission
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from guardian.mixins import GuardianUserMixin
-from guardian.models import GroupObjectPermissionAbstract, UserObjectPermissionAbstract
 
 
 class TrakUser(GuardianUserMixin, AbstractUser):

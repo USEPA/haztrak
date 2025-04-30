@@ -1,5 +1,4 @@
 from profile.models import RcrainfoProfile, RcrainfoSiteAccess
-from typing import Optional
 
 import pytest
 from conftest import SiteIDProvider

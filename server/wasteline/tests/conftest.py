@@ -1,5 +1,3 @@
-from typing import Optional
-
 import pytest
 from faker import Faker
 from manifest.models import Manifest

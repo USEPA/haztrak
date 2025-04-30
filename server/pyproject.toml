@@ -89,27 +89,26 @@ exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["ALL"]
-ignore = [
-    "ANN", # type annotations
-    "FBT", # boolean trap
-    "ARG", # no unused arguments
-    "CPY", # copyright notices
-    "F401",
-    "COM812",
-    "E721",
-    "D107",
-    "RUF012",
-    "FIX002",
-    "DJ001",
-    "D203",
-    "D212",
-    "COM812",
-    "TD003",
-    "G004",
-    "BLE001"
+select = [
+    "F", # pyflakes
+    "E", # pycodestyle
+    "I", # isort
+    "N", # pep8-naming
+    "UP", # pyupgrade
+    "RUF", # ruff
+    "B", # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "ISC", # flake8-implicit-str-concat
+    "PIE", # flake8-pie
+    "PT", # flake-pytest-style
+    "PTH", # flake8-use-pathlib
+    "PD", # pandas-vet
+    "SIM", # flake8-simplify
+    "TID", # flake8-tidy-imports
 ]
-
+extend-ignore = [
+    "RUF012",
+]
 [tool.ruff.lint.per-file-ignores]
 "**/migrations/**.py" = ["D100", "D101", "D102", "D103", "E501", "RUF012"]
 "**/tests/**/*.py" = ["S101", "E501", "PLR0917", "ISC001", "D100", "D101", "D102", "PLR0913", "PLR2004"]

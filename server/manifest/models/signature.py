@@ -82,9 +82,9 @@ class Signer(models.Model):
     def __str__(self):
         """Human-readable representation."""
         return (
-            f"{(lambda i: i or '')(self.first_name)}, "  # noqa: PLC3002
-            f"{(lambda i: i or '')(self.middle_initial)} "  # noqa: PLC3002
-            f"{(lambda i: i or '')(self.last_name)}"  # noqa: PLC3002
+            f"{(lambda i: i or '')(self.first_name)}, "
+            f"{(lambda i: i or '')(self.middle_initial)} "
+            f"{(lambda i: i or '')(self.last_name)}"
         )
 
 
@@ -148,9 +148,9 @@ class ESignature(models.Model):
         """Human-readable representation."""
         if self.signer is not None:
             return (
-                f"{(lambda i: i or '')(self.signer.first_name)}, "  # noqa: PLC3002
-                f"{(lambda i: i or '')(self.signer.middle_initial)} "  # noqa: PLC3002
-                f"{(lambda i: i or '')(self.signer.last_name)}"  # noqa: PLC3002
+                f"{(lambda i: i or '')(self.signer.first_name)}, "
+                f"{(lambda i: i or '')(self.signer.middle_initial)} "
+                f"{(lambda i: i or '')(self.signer.last_name)}"
                 f"e-signature on {self.sign_date}"
             )
         return f"e-signature on {self.sign_date}"
@@ -184,13 +184,13 @@ class QuickerSign:
     This is not a django model, however for the time being we do not have a better location.
     """
 
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         mtn: list[str],
         printed_name: str,
         site_type: Literal["Generator", "Tsdf", "Transporter"],
         site_id: str,
-        printed_date: datetime | str | None = datetime.utcnow().replace(tzinfo=UTC),  # noqa: DTZ003, B008
+        printed_date: datetime | str | None = datetime.utcnow().replace(tzinfo=UTC),  # noqa: B008
         transporter_order: int | None = None,
     ):
         self.mtn = mtn
@@ -207,7 +207,7 @@ class QuickerSign:
                 self.printed_date: datetime = datetime.fromisoformat(printed_date)
             # If error, default to current time
             except ValueError:
-                self.printed_date: datetime = datetime.utcnow().replace(tzinfo=UTC)  # noqa: DTZ003
+                self.printed_date: datetime = datetime.utcnow().replace(tzinfo=UTC)
         else:
             msg = f"printed_date must be string or datetime, received {type(printed_date)}"
             raise TypeError(
