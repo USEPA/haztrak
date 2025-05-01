@@ -425,20 +425,6 @@ wheels = [
 ]
 
 [[package]]
-name = "djangorestframework-simplejwt"
-version = "5.5.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "django" },
-    { name = "djangorestframework" },
-    { name = "pyjwt" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/db/1e/0d4439d0fa1d93599fbcfc56efdc02cbf012e3a4b4ef90c835e0a51017d4/djangorestframework_simplejwt-5.5.0.tar.gz", hash = "sha256:474a1b737067e6462b3609627a392d13a4da8a08b1f0574104ac6d7b1406f90e", size = 97946 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/42/b4/d1c1750aa7c8cc07e4974275f96b9b9b3a38e95ff734e14b4e97790c8974/djangorestframework_simplejwt-5.5.0-py3-none-any.whl", hash = "sha256:4ef6b38af20cdde4a4a51d1fd8e063cbbabb7b45f149cc885d38d905c5a62edb", size = 103480 },
-]
-
-[[package]]
 name = "djangorestframework-stubs"
 version = "3.15.0"
 source = { registry = "https://pypi.org/simple" }
@@ -545,7 +531,6 @@ dependencies = [
     { name = "django-guardian" },
     { name = "django-health-check" },
     { name = "djangorestframework" },
-    { name = "djangorestframework-simplejwt" },
     { name = "drf-spectacular" },
     { name = "emanifest" },
     { name = "gunicorn" },
@@ -589,7 +574,6 @@ requires-dist = [
     { name = "django-guardian", specifier = "==2.4.0" },
     { name = "django-health-check", specifier = "==3.18.3" },
     { name = "djangorestframework", specifier = "==3.15.2" },
-    { name = "djangorestframework-simplejwt", specifier = "==5.5.0" },
     { name = "drf-spectacular", specifier = "==0.28.0" },
     { name = "emanifest", specifier = "==4.0.3" },
     { name = "gunicorn", specifier = "==22.0.0" },
