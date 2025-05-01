@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@react-router/dev": "^7.5.3",
     "@tailwindcss/postcss": "^4.1.1",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
