@@ -51,8 +51,10 @@ class StateWasteCodesView(ListAPIView):
             state_code_data = get_state_waste_codes(state_id)
             serializer = WasteCodeSerializer(state_code_data, many=True)
             return Response(serializer.data, status=HTTPStatus.OK)
-        except ValueError as e:
-            return Response(data=str(e), status=HTTPStatus.UNPROCESSABLE_ENTITY)
+        except ValueError:
+            return Response(
+                data="Could not process request", status=HTTPStatus.UNPROCESSABLE_ENTITY
+            )
 
 
 @extend_schema(
