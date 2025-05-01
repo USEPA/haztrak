@@ -11,7 +11,7 @@ import logo from '/assets/img/haztrak-logos/low-resolution/svg/haztrak-low-resol
  */
 export function Login(): ReactElement {
   useTitle('Login');
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,7 +19,7 @@ export function Login(): ReactElement {
     if (isAuthenticated) {
       navigate(location.state?.from ? location.state.from : '/', { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, isLoading]);
 
   return (
     <Container fluid className="bg-light vh-100 align-items-center py-5 d-flex">

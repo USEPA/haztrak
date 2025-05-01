@@ -8,14 +8,7 @@ import { Transporter } from '~/components/Manifest/Transporter';
 import { Handler, RcraSiteType } from '~/components/Manifest/manifestSchema';
 import { HtForm } from '~/components/legacyUi';
 import { useProgressTracker } from '~/hooks';
-import {
-  addTask,
-  selectCurrentUser,
-  updateTask,
-  useAppDispatch,
-  useAppSelector,
-  useSignEManifestMutation,
-} from '~/store';
+import { addTask, updateTask, useAppDispatch, useSignEManifestMutation } from '~/store';
 
 const siteType = z.enum(['Transporter', 'Generator', 'Tsdf', 'Broker']);
 /**
@@ -56,13 +49,13 @@ interface QuickerSignProps {
  */
 export function QuickerSignForm({ mtn, mtnHandler, handleClose, siteType }: QuickerSignProps) {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(selectCurrentUser);
+  // const user = useAppSelector(selectCurrentUser);
   const [signManifest, { data, error: ApiError }] = useSignEManifestMutation();
   const [taskId, setTaskId] = useState<string | undefined>(undefined);
   useProgressTracker({ taskId: taskId });
   const { register, handleSubmit, setValue } = useForm<QuickerSignature>({
     defaultValues: {
-      printedSignatureName: user?.username,
+      printedSignatureName: 'Dude!',
       printedSignatureDate: new Date().toISOString().slice(0, -8),
     },
   });

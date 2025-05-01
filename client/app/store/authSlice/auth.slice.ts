@@ -33,9 +33,21 @@ const slice = createSlice({
       state.username = payload.data.user.username;
       state.email = payload.data.user.email;
     });
-    // builder.addMatcher(userApi.endpoints.getUser.matchFulfilled, (state, { payload }) => {
-    //   state.user = payload;
-    // });
+    builder.addMatcher(userApi.endpoints.getSession.matchFulfilled, (state, { payload }) => {
+      state.isAuthenticated = true;
+      state.username = payload.data.user.username;
+      state.email = payload.data.user.email;
+    });
+    builder.addMatcher(userApi.endpoints.getSession.matchRejected, (state) => {
+      state.isAuthenticated = false;
+      state.username = null;
+      state.email = null;
+    });
+    builder.addMatcher(userApi.endpoints.getSession.matchPending, (state, { payload }) => {
+      state.isAuthenticated = false;
+      state.username = null;
+      state.email = null;
+    });
     builder.addMatcher(userApi.endpoints.logout.matchFulfilled, (state) => {
       state.email = null;
       state.username = null;

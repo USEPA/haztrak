@@ -121,7 +121,7 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       providesTags: ['user'],
     }),
-    getSession: build.query<HaztrakUser, void>({
+    getSession: build.query<AuthSuccessResponse, void>({
       query: () => ({
         url: '_allauth/browser/v1/auth/session',
         method: 'GET',
