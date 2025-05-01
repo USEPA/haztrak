@@ -122,9 +122,9 @@ export const userApi = haztrakApi.injectEndpoints({
       invalidatesTags: ['user', 'auth'],
     }),
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    getUser: build.query<HaztrakUser, void>({
+    getCurrentUser: build.query<HaztrakUser, void>({
       query: () => ({
-        url: 'auth/user/',
+        url: 'user/current-user',
         method: 'GET',
       }),
       providesTags: ['user'],
@@ -136,7 +136,6 @@ export const userApi = haztrakApi.injectEndpoints({
       }),
       providesTags: ['auth', 'user'],
     }),
-
     updateUser: build.mutation<HaztrakUser, HaztrakUser>({
       query: (data) => ({
         url: 'auth/user/',

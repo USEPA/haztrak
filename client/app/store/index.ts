@@ -32,7 +32,7 @@ export const {
 export const {
   useLoginMutation,
   useLogoutMutation,
-  useGetUserQuery,
+  useGetCurrentUserQuery,
   useGetProfileQuery,
   useGetRcrainfoProfileQuery,
   useUpdateUserMutation,
