@@ -28,7 +28,6 @@ admin.site.site_header = "Haztrak Admin"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # re_path(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path(
         "api/",
         include(
@@ -52,11 +51,6 @@ urlpatterns = [
             ],
         ),
     ),
-    # Even when using headless, the third-party provider endpoints are stil
-    # needed for handling e.g. the OAuth handshake. The account views
-    # can be disabled using `HEADLESS_ONLY = True`.
-    path("accounts/", include("allauth.urls")),
-    # Include the API endpoints:
 ]
 
 if settings.DEBUG:
