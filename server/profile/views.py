@@ -1,5 +1,6 @@
 """Views for the profile app."""
 
+from http import HTTPStatus
 from profile.models import Profile, RcrainfoProfile
 from profile.serializers import ProfileSerializer, RcrainfoProfileSerializer
 from profile.services import get_user_profile
@@ -7,7 +8,6 @@ from typing import TYPE_CHECKING
 
 from celery.exceptions import CeleryError
 from rcrasite.tasks import sync_user_rcrainfo_sites
-from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
     RetrieveAPIView,
@@ -79,5 +79,5 @@ class RcrainfoProfileSyncView(CreateAPIView):
         except CeleryError as exc:
             return self.response(
                 data={"error": str(exc)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                status=HTTPStatus.INTERNAL_SERVER_ERROR,
             )

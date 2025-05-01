@@ -1,6 +1,7 @@
 """Views for the rcrasite app."""
 
 import logging
+from http import HTTPStatus
 
 from django.core.exceptions import ValidationError
 from django.utils.decorators import method_decorator
@@ -9,7 +10,7 @@ from drf_spectacular.utils import extend_schema, inline_serializer
 from rcrasite.models import RcraSite
 from rcrasite.serializers import RcraSiteSearchSerializer, RcraSiteSerializer
 from rcrasite.services import RcraSiteService, query_rcra_sites
-from rest_framework import serializers, status
+from rest_framework import serializers
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -67,7 +68,7 @@ class RcraSiteSearchView(APIView):
         serializer.is_valid(raise_exception=True)
         rcra_sites = query_rcra_sites(**serializer.validated_data)
         data = self.serializer_class(rcra_sites, many=True).data
-        return Response(data, status=status.HTTP_200_OK)
+        return Response(data, status=HTTPStatus.OK)
 
 
 handler_types = {
@@ -124,4 +125,4 @@ class HandlerSearchView(APIView):
             epaSiteId=serializer.data["siteId"],
             siteType=handler_types[serializer.data["siteType"]],
         )
-        return Response(status=status.HTTP_200_OK, data=data["sites"])
+        return Response(status=HTTPStatus.OK, data=data["sites"])

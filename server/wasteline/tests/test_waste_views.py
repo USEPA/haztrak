@@ -1,7 +1,7 @@
+from http import HTTPStatus
 from typing import TYPE_CHECKING
 
 import pytest
-from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
 from wasteline.models import DotLookupType, WasteCode
@@ -32,7 +32,7 @@ class TestWasteCodeLookupViews:
         request = factory.get(reverse("wasteline:code:federal"))
         force_authenticate(request, user)
         response: Response = FederalWasteCodesView.as_view()(request)
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
 
     def test_federal_returns_list_of_all_federal_codes(self, factory, user):
         number_federal_codes = WasteCode.federal.all().count()
@@ -48,7 +48,7 @@ class TestWasteCodeLookupViews:
         request = factory.get(f"{reverse('wasteline:code:state', args=[state_id])}")
         force_authenticate(request, user)
         response: Response = StateWasteCodesView.as_view()(request, state_id=state_id)
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
 
     def test_state_waste_codes_returns_list_codes(self, factory, user, waste_code_factory):
         # Arrange
@@ -104,7 +104,7 @@ class TestDOTLookupViews:
         response: Response = DotIdNumberView.as_view()(request)
         # Assert
         assert isinstance(response.data, list)
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
 
     def test_dot_identifiers_can_be_queried(self, factory, user, dot_lookup_factory):
         # Arrange
@@ -117,7 +117,7 @@ class TestDOTLookupViews:
         # Assert
         assert dot_id in response.data
         assert len(response.data) == 1
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
 
     def test_dot_shipping_name_view_returns_json_with_list_of_strings(self, factory, user):
         # Arrange
@@ -127,7 +127,7 @@ class TestDOTLookupViews:
         response: Response = DotShippingNameView.as_view()(request)
         # Assert
         assert isinstance(response.data, list)
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
 
     def test_dot_hazard_class_view_returns_a_list_of_strings(self, factory, user):
         # Arrange
@@ -137,4 +137,4 @@ class TestDOTLookupViews:
         response: Response = DotHazardClassView.as_view()(request)
         # Assert
         assert isinstance(response.data, list)
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK

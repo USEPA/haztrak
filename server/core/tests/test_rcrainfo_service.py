@@ -1,11 +1,11 @@
 from datetime import UTC, datetime
+from http import HTTPStatus
 
 import emanifest
 from core.services import RcraClient, get_rcra_client
 from manifest.models import QuickerSign
 from manifest.serializers import QuickerSignSerializer
 from responses import matchers
-from rest_framework import status
 
 
 class TestRcrainfoService:
@@ -124,4 +124,4 @@ class TestQuickerSign:
         )
         signature_serializer = QuickerSignSerializer(quicker_signature)
         response = rcrainfo.sign_manifest(**signature_serializer.data)
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK

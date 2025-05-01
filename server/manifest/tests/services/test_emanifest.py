@@ -1,8 +1,9 @@
+from http import HTTPStatus
+
 import pytest
 import pytest_mock
 from core.services import RcraClient, get_rcra_client
 from manifest.services import EManifest
-from rest_framework import status
 
 
 class TestEManifestService:
@@ -21,7 +22,7 @@ class TestEManifestService:
             url=f"{rcrainfo.base_url}v1/emanifest/manifest/{manifest_json.get('manifestTrackingNumber')}",
             content_type="application/json",
             json=manifest_json,
-            status=status.HTTP_200_OK,
+            status=HTTPStatus.OK,
         )
 
     def test_pull_manifests(

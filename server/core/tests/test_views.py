@@ -1,9 +1,9 @@
+from http import HTTPStatus
 from unittest import mock
 
 import pytest
 from core.views import LaunchExampleTaskView, TaskStatusView
 from django.test.client import Client
-from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
 
@@ -20,7 +20,7 @@ class TestUserViews:
     def test_returns_user_details(self, factory, user):
         c = Client()
         c.force_login(user)
-        response = c.get(reverse("rest_user_details"))
+        response = c.get(reverse("core:current_user"))
         data: dict = response.json()
         assert response.status_code == 200
         assert user.username in data.values()
@@ -37,7 +37,7 @@ class TestLaunchExampleTaskView:
             request = factory.get(reverse("core:task:example"))
             mock_task.return_value = "123"
             response = LaunchExampleTaskView.as_view()(request)
-            assert response.status_code == status.HTTP_200_OK
+            assert response.status_code == HTTPStatus.OK
             assert response.data == {"taskId": "123"}
 
 
@@ -59,5 +59,5 @@ class TestTaskStatusView:
                 "taskId": task_id,
             }
             response = TaskStatusView.as_view()(request, task_id=task_id)
-            assert response.status_code == status.HTTP_200_OK
+            assert response.status_code == HTTPStatus.OK
             assert "PENDING" in response.data.values()

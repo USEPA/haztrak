@@ -1,5 +1,7 @@
 """Views for the Wasteline API."""
 
+from http import HTTPStatus
+
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import (
@@ -8,7 +10,7 @@ from drf_spectacular.utils import (
     OpenApiResponse,
     extend_schema,
 )
-from rest_framework import serializers, status
+from rest_framework import serializers
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -48,9 +50,9 @@ class StateWasteCodesView(ListAPIView):
             state_id = self.kwargs["state_id"]
             state_code_data = get_state_waste_codes(state_id)
             serializer = WasteCodeSerializer(state_code_data, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=HTTPStatus.OK)
         except ValueError as e:
-            return Response(data=str(e), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            return Response(data=str(e), status=HTTPStatus.UNPROCESSABLE_ENTITY)
 
 
 @extend_schema(
@@ -80,7 +82,7 @@ class DotIdNumberView(APIView):
         """Return a list of DOT ID numbers, optionally filtered by a query parameter."""
         query = request.query_params.get("q", "")
         id_numbers = filter_dot_id_numbers(query)
-        return Response(data=id_numbers, status=status.HTTP_200_OK)
+        return Response(data=id_numbers, status=HTTPStatus.OK)
 
 
 @extend_schema(
@@ -110,7 +112,7 @@ class DotShippingNameView(APIView):
         """Return a list of DOT Proper Shipping Names, optionally filtered by a query parameter."""
         query = request.query_params.get("q", "")
         shipping_names = filter_dot_shipping_names(query)
-        return Response(data=shipping_names, status=status.HTTP_200_OK)
+        return Response(data=shipping_names, status=HTTPStatus.OK)
 
 
 @extend_schema(
@@ -140,4 +142,4 @@ class DotHazardClassView(APIView):
         """Return a list of DOT Hazard classes, optionally filtered by a query parameter."""
         query = request.query_params.get("q", "")
         dot_classes = filter_dot_hazard_classes(query)
-        return Response(data=dot_classes, status=status.HTTP_200_OK)
+        return Response(data=dot_classes, status=HTTPStatus.OK)
