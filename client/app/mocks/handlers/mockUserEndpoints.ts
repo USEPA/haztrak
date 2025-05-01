@@ -5,8 +5,7 @@ import {
   createMockRcrainfoProfileResponse,
   createMockServerTask,
 } from '~/mocks/fixtures/mockUser';
-import { HaztrakUser } from '~/store/authSlice/auth.slice';
-import { AuthSuccessResponse } from '~/store/userApi/userApi';
+import { AuthSuccessResponse, HaztrakUser } from '~/store/userApi/userApi';
 
 /** mock Rest API*/
 const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
@@ -25,13 +24,29 @@ export const mockUserEndpoints = [
     return HttpResponse.json({ ...createMockProfileResponse() }, { status: 200 });
   }),
   /** Login */
-  http.post(`${API_BASE_URL}/api/auth/login/`, () => {
+  http.post(`${API_BASE_URL}/api/browser/v1/auth/login/`, () => {
+    const user = createMockHaztrakUser();
     const body: AuthSuccessResponse = {
-      access: 'mockToken',
-      user: createMockHaztrakUser(),
-      access_expiration: 'dateToDo',
-      refresh_expiration: 'dateToDo',
-      refresh: 'mockRefreshToken',
+      status: 200,
+      data: {
+        user: {
+          id: user.id ? user.id : '',
+          email: user.email ? user.email : '',
+          username: user.username,
+          display: 'foo',
+          has_usable_password: true,
+        },
+        methods: [
+          {
+            method: 'password',
+            at: 0,
+            username: createMockHaztrakUser().username,
+          },
+        ],
+        meta: {
+          is_authenticated: true,
+        },
+      },
     };
     return HttpResponse.json(
       {

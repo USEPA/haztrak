@@ -12,8 +12,9 @@ describe('TopNav', () => {
     renderWithProviders(<TopNav />, {
       preloadedState: {
         auth: {
-          user: { username: username },
-          token: 'fakeToken',
+          username: username,
+          isAuthenticated: true,
+          email: 'foo@gmail.com',
         },
       },
     });

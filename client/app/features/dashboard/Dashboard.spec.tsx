@@ -32,8 +32,9 @@ describe('Home', () => {
     renderWithProviders(<Dashboard />, {
       preloadedState: {
         auth: {
-          user: { username: USERNAME },
-          token: 'fake_token',
+          isAuthenticated: true,
+          username: USERNAME,
+          email: 'foo@gmail.com',
         },
       },
     });
