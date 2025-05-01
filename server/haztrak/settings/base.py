@@ -14,8 +14,6 @@ CACHE_URL = "HT_CACHE_URL"
 TIMEZONE_ENV = "HT_TIMEZONE"
 TEST_DB_NAME_ENV = "HT_TEST_DB_NAME"
 HT_LOG_LEVEL = os.getenv("HT_LOG_LEVEL", "INFO")
-HT_TRAK_LOG_LEVEL = os.getenv("HT_TRAK_LOG_LEVEL", HT_LOG_LEVEL)
-HT_CORE_LOG_LEVEL = os.getenv("HT_CORE_LOG_LEVEL", HT_LOG_LEVEL)
 HT_SIGNING_KEY = os.getenv(
     "HT_SIGNING_KEY",
     "0dd3f4e68730bedfb07e6bc2e8f00a56c4db2d4a4b37e64ac0a83b8c97ec55dd",
@@ -28,8 +26,6 @@ AUTH_USER_MODEL = "core.TrakUser"
 
 WSGI_APPLICATION = "haztrak.wsgi.application"
 
-SITE_ID = 1
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -41,11 +37,10 @@ INSTALLED_APPS = [
     "guardian",
     "rest_framework",
     "rest_framework.authtoken",
-    "allauth",
     "allauth.account",
+    "allauth.headless",
     "allauth.socialaccount",
-    "dj_rest_auth",
-    "dj_rest_auth.registration",
+    "allauth.usersessions",
     "corsheaders",
     "django_extensions",
     "health_check",
@@ -143,7 +138,6 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
@@ -219,16 +213,6 @@ LOGGING = {
             "handlers": ["console"],
             "propagate": False,
         },
-        "rcrasite": {
-            "level": HT_TRAK_LOG_LEVEL,
-            "handlers": ["console"],
-            "propagate": False,
-        },
-        "core": {
-            "level": HT_CORE_LOG_LEVEL,
-            "handlers": ["console"],
-            "propagate": False,
-        },
     },
 }
 
@@ -238,6 +222,17 @@ REST_AUTH = {
     "JWT_AUTH_COOKIE": "_auth",
     "JWT_AUTH_RETURN_EXPIRATION": True,
 }
+
+# AllAuth
+HEADLESS_ONLY = True
+HEADLESS_FRONTEND_URLS = {
+    "account_confirm_email": "/account/verify-email/{key}",
+    "account_reset_password": "/account/password/reset",
+    "account_reset_password_from_key": "/account/password/reset/key/{key}",
+    "account_signup": "/account/signup",
+    "socialaccount_login_error": "/account/provider/callback",
+}
+SITE_ID = 1
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),

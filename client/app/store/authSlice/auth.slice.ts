@@ -2,23 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '~/store';
 import { userApi } from '~/store/userApi/userApi';
 
-export interface HaztrakUser {
-  id?: string;
-  username: string;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-}
-
 /** The Redux stored information on the current haztrak user*/
 export interface AuthSlice {
-  user: HaztrakUser | null;
-  token: string | null;
+  isAuthenticated: boolean;
+  username: string | null;
+  email: string | null;
 }
 
 const initialState: AuthSlice = {
-  user: null,
-  token: null,
+  isAuthenticated: false,
+  username: null,
+  email: null,
 };
 
 const slice = createSlice({
@@ -27,25 +21,35 @@ const slice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addMatcher(userApi.endpoints.login.matchFulfilled, (state, { payload }) => {
-      state.token = payload.access;
-      state.user = payload.user;
+      state.isAuthenticated = true;
+      state.username = payload.data.user.username;
+      state.email = payload.data.user.email;
     });
-    builder.addMatcher(userApi.endpoints.getUser.matchFulfilled, (state, { payload }) => {
-      state.user = payload;
+    builder.addMatcher(userApi.endpoints.getSession.matchFulfilled, (state, { payload }) => {
+      state.isAuthenticated = true;
+      state.username = payload.data.user.username;
+      state.email = payload.data.user.email;
+    });
+    builder.addMatcher(userApi.endpoints.getSession.matchRejected, (state, { payload }) => {
+      if (payload?.status === 401) {
+        state.isAuthenticated = false;
+        state.username = null;
+        state.email = null;
+      }
+    });
+    builder.addMatcher(userApi.endpoints.getSession.matchPending, (state, { payload }) => {
+      state.isAuthenticated = false;
+      state.username = null;
+      state.email = null;
     });
     builder.addMatcher(userApi.endpoints.logout.matchFulfilled, (state) => {
-      state.user = null;
-      state.token = null;
-    });
-    builder.addMatcher(userApi.endpoints.getUser.matchRejected, (state, { payload }) => {
-      if (payload?.status === 401) {
-        state.user = null;
-        state.token = null;
-      }
+      state.email = null;
+      state.username = null;
+      state.isAuthenticated = false;
     });
   },
 });
 
 export default slice.reducer;
 
-export const selectCurrentUser = (state: RootState) => state.auth.user;
+export const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated;

@@ -20,7 +20,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path, re_path
+from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 # Change the Django Admin page title
@@ -28,16 +28,12 @@ admin.site.site_header = "Haztrak Admin"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    re_path(
-        r"^api-auth/",
-        include("rest_framework.urls", namespace="rest_framework"),
-    ),  # Browsable API authentication
     path(
         "api/",
         include(
             [
-                path("auth/registration/", include("dj_rest_auth.registration.urls")),
-                path("auth/", include("dj_rest_auth.urls")),
+                # path("auth/registration/", include("dj_rest_auth.registration.urls")),
+                # path("auth/", include("dj_rest_auth.urls")),
                 path("", include("manifest.urls", namespace="manifest")),
                 path("", include("wasteline.urls", namespace="wasteline")),
                 path("", include("rcrasite.urls", namespace="rcrasite")),
@@ -51,6 +47,7 @@ urlpatterns = [
                     name="swagger-ui",
                 ),
                 path(r"health/", include("health_check.urls")),
+                path("", include("allauth.headless.urls")),
             ],
         ),
     ),

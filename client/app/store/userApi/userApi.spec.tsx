@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { cleanup, renderWithProviders, screen } from '~/mocks';
 import { mockUserEndpoints } from '~/mocks/handlers';
-import { useGetUserQuery, useUpdateUserMutation } from '~/store';
+import { useGetCurrentUserQuery, useUpdateUserMutation } from '~/store';
 
 const server = setupServer(...mockUserEndpoints);
 afterEach(() => {
@@ -15,7 +15,7 @@ afterAll(() => server.close());
 
 const UserQueryComponent = () => {
   const [fetchCount, setFetchCount] = useState(0);
-  const { data, error, isLoading, isFetching } = useGetUserQuery();
+  const { data, error, isLoading, isFetching } = useGetCurrentUserQuery();
   const [updateUser] = useUpdateUserMutation();
 
   useEffect(() => {

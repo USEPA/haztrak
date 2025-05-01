@@ -15,14 +15,13 @@ export function AvatarForm({ avatar }: AvatarFormProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [updateAvatar, { data, isSuccess }] = useUpdateAvatarMutation();
-  const { user } = useAuth();
 
   const onSubmit = (data: any) => {
     const formData = new FormData();
     formData.append('avatar', data.avatar[0]);
-    if (user?.id) {
-      updateAvatar({ id: user?.id, avatar: formData });
-    }
+    // if (user?.id) {
+    //   updateAvatar({ id: user?.id, avatar: formData });
+    // }
   };
 
   // When the avatar is changed, submit the form

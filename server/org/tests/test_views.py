@@ -1,9 +1,9 @@
+from http import HTTPStatus
 from unittest.mock import patch
 
 import pytest
 from org.models import Org
 from org.views import OrgDetailsView, OrgListView, SiteDetailsView
-from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
@@ -24,7 +24,7 @@ class TestOrgDetailsView:
         request = self.factory.get(reverse("org:details", args=[org.slug]))
         force_authenticate(request, user)
         response = OrgDetailsView.as_view()(request, org_slug=org.slug)
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
         assert response.data["slug"] == org.slug
 
     def test_404_when_org_id_not_defined(self, org, user):
@@ -33,7 +33,7 @@ class TestOrgDetailsView:
         with patch("org.views.get_org_by_slug") as mock_org:
             mock_org.side_effect = Org.DoesNotExist
             response = OrgDetailsView.as_view()(request, org_slug="foo")
-            assert response.status_code == status.HTTP_404_NOT_FOUND
+            assert response.status_code == HTTPStatus.NOT_FOUND
 
 
 class TestSiteListView:
@@ -52,17 +52,17 @@ class TestSiteListView:
 
     def test_responds_with_site_in_json_format(self, api_client):
         response = self.client.get(reverse("org:site:list"))
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
 
     def test_other_sites_not_included(self, api_client):
         response = self.client.get(reverse("org:site:list"))
         response_site_id = [i["handler"]["epaSiteId"] for i in response.data]
         assert self.other_site.rcra_site.epa_id not in response_site_id
 
-    def test_unauthenticated_returns_401(self, api_client):
+    def test_unauthenticated_returns_403(self, api_client):
         self.client.logout()
         response = self.client.get(reverse("org:site:list"))
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert response.status_code == HTTPStatus.FORBIDDEN
 
 
 class TestSiteDetailsApi:
@@ -84,7 +84,7 @@ class TestSiteDetailsApi:
         # Act
         response = SiteDetailsView.as_view()(request, epa_id=site.rcra_site.epa_id)
         # Assert
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
         assert response.data["handler"]["epaSiteId"] == site.rcra_site.epa_id
 
     def test_non_user_sites_not_returned(self, site_factory, org_factory, setup_user_site_perm):
@@ -94,7 +94,7 @@ class TestSiteDetailsApi:
         # Act
         response = SiteDetailsView.as_view()(request, epa_id=other_site.rcra_site.epa_id)
         # Assert
-        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert response.status_code == HTTPStatus.NOT_FOUND
 
 
 class TestOrgListView:
@@ -114,7 +114,7 @@ class TestOrgListView:
         # Act
         response = OrgListView.as_view()(request)
         # Assert
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
         assert response.data[0]["slug"] == org.slug
 
     def test_filters_orgs(self, setup_user_org_perm, org_factory):
@@ -125,7 +125,7 @@ class TestOrgListView:
         response = OrgListView.as_view()(request)
         org_slugs = [i["slug"] for i in response.data]
         # Assert
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
         assert org.slug in org_slugs
         assert other_org.slug not in org_slugs
 
@@ -149,5 +149,5 @@ class TestOrgSitesListView:
         response = client.get(reverse("org:sites", args=[org.slug]))
         # Assert
         assert response.headers["Content-Type"] == "application/json"
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
         assert len(response.data) == 1

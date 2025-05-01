@@ -32,18 +32,19 @@ export const {
 export const {
   useLoginMutation,
   useLogoutMutation,
-  useGetUserQuery,
+  useGetCurrentUserQuery,
   useGetProfileQuery,
   useGetRcrainfoProfileQuery,
   useUpdateUserMutation,
   useUpdateRcrainfoProfileMutation,
   useSyncRcrainfoProfileMutation,
   useUpdateAvatarMutation,
+  useGetSessionQuery,
 } = userApi;
 
 // Authentication Slice
-export { selectCurrentUser } from '~/store/authSlice/auth.slice';
-export type { HaztrakUser } from '~/store/authSlice/auth.slice';
+export { selectIsAuthenticated } from '~/store/authSlice/auth.slice';
+export type { HaztrakUser } from '~/store/userApi/userApi';
 
 // Notification Slice
 export {

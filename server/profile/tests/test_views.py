@@ -1,12 +1,11 @@
-import http
 import io
+from http import HTTPStatus
 from profile.serializers import ProfileSerializer
 from profile.views import ProfileDetailsView, RcrainfoProfileRetrieveUpdateView
 
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
 from PIL import Image
-from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
@@ -32,7 +31,7 @@ class TestProfileViewSet:
         api_client.login(username="testuser", password="password")
         url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.id})
         response = api_client.get(url)
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert response.data == ProfileSerializer(profile).data
 
     @pytest.mark.skip(reason="Not implemented")
@@ -52,16 +51,16 @@ class TestProfileViewSet:
         response = api_client.patch(url, payload, format="multipart")
         assert 200 <= response.status_code < 300
 
-    def test_returns_401_for_anonymous_user(self, api_client, profile):
+    def test_returns_403_for_anonymous_user(self, api_client, profile):
         url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.pk})
         response = api_client.get(url)
-        assert response.status_code == http.HTTPStatus.UNAUTHORIZED
+        assert response.status_code == HTTPStatus.FORBIDDEN
 
-    def test_returns_401_for_anonymous_user_on_update(self, api_client, profile):
+    def test_returns_403_for_anonymous_user_on_update(self, api_client, profile):
         url = reverse("profile:profile-detail", kwargs={"user_id": profile.user.pk})
         data = {"field_name": "new_value"}  # Replace with actual fields
         response = api_client.put(url, data)
-        assert response.status_code == http.HTTPStatus.UNAUTHORIZED
+        assert response.status_code == HTTPStatus.FORBIDDEN
 
 
 class TestRcrainfoProfileRetrieveUpdateView:
@@ -85,7 +84,7 @@ class TestRcrainfoProfileRetrieveUpdateView:
         )
         force_authenticate(request, user)
         response = RcrainfoProfileRetrieveUpdateView.as_view()(request, username=user.username)
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
         assert response.data["rcraUsername"] == rcrainfo_profile.rcra_username
 
     def test_does_not_return_the_api_key_but_does_return_api_id(
@@ -120,7 +119,7 @@ class TestRcrainfoProfileRetrieveUpdateView:
         profile_factory(user=user, rcrainfo_profile=rcra_profile)
         response = client.get(reverse("profile:rcrainfo:retrieve-update", args=[user.username]))
         assert response.headers["Content-Type"] == "application/json"
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
 
     def test_rcrainfo_profile_updates(
         self,
@@ -192,13 +191,13 @@ class TestProfileDetailsView:
         request, user = request_factory
         profile_factory(user=user)
         response = ProfileDetailsView.as_view()(request)
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
         assert "user" in response.data
 
-    def test_returns_401_when_unauthenticated(self, profile_factory, user_factory):
+    def test_returns_403_when_unauthenticated(self, profile_factory, user_factory):
         user = user_factory()
         factory = APIRequestFactory()
         request = factory.get(reverse("profile:my-profile"))
         profile_factory(user=user)
         response = ProfileDetailsView.as_view()(request)
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert response.status_code == HTTPStatus.FORBIDDEN

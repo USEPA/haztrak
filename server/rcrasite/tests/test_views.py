@@ -1,10 +1,10 @@
+from http import HTTPStatus
 from typing import TYPE_CHECKING
 from unittest.mock import patch
 
 import pytest
 from rcrasite.models import RcraSiteType
 from rcrasite.views import HandlerSearchView, RcraSiteSearchView
-from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 
@@ -26,7 +26,7 @@ class TestRcraSiteView:
     def test_endpoint_returns_json_with_rcra_site(self, client, generator):
         response: Response = client.get(reverse("rcrasite:details", args=[generator.epa_id]))
         assert response.headers["Content-Type"] == "application/json"
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
         assert response.data["epaSiteId"] == generator.epa_id
 
 
@@ -103,7 +103,7 @@ class TestRcraSiteSearchView:
             },
         )
         # Assert
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
         assert response.headers["Content-Type"] == "application/json"
 
 
@@ -128,7 +128,7 @@ class TestHandlerSearchView:
             )
             force_authenticate(request, user)
             response = HandlerSearchView.as_view()(request)
-            assert response.status_code == status.HTTP_200_OK
+            assert response.status_code == HTTPStatus.OK
 
     def test_short_epa_id_returns_400(self, user_factory):
         user = user_factory()
@@ -140,7 +140,7 @@ class TestHandlerSearchView:
         )
         force_authenticate(request, user)
         response = HandlerSearchView.as_view()(request)
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.status_code == HTTPStatus.BAD_REQUEST
 
     def test_null_epa_id_returns_400(self, user_factory):
         user = user_factory()
@@ -152,4 +152,4 @@ class TestHandlerSearchView:
         )
         force_authenticate(request, user)
         response = HandlerSearchView.as_view()(request)
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.status_code == HTTPStatus.BAD_REQUEST

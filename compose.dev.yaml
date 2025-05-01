@@ -11,7 +11,7 @@ services:
       - ./server/manifest:/app/manifest
       - ./server/org:/app/org
       - ./server/profile:/app/profile
-      - ./server/rcrawaste:/app/rcrawaste
+      - ./server/rcrasite:/app/rcrasite
       - ./server/wasteline:/app/wasteline
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"
@@ -60,7 +60,7 @@ services:
       - ./server/manifest:/app/manifest
       - ./server/org:/app/org
       - ./server/profile:/app/profile
-      - ./server/rcrawaste:/app/rcrawaste
+      - ./server/rcrasite:/app/rcrasite
       - ./server/wasteline:/app/wasteline
     environment:
       DJANGO_SETTINGS_MODULE: "haztrak.settings.dev"

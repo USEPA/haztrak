@@ -1,6 +1,7 @@
 """Views for the manifest app."""
 
 import logging
+from http import HTTPStatus
 
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
 from manifest.models import Manifest
@@ -14,7 +15,7 @@ from manifest.services import (
     update_manifest,
 )
 from org.services import sync_site_manifest_with_rcrainfo
-from rest_framework import mixins, serializers, status, viewsets
+from rest_framework import mixins, serializers, viewsets
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -42,7 +43,7 @@ class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins
             data=manifest_serializer.validated_data,
         )
         data = ManifestSerializer(manifest).data
-        return Response(data=data, status=status.HTTP_201_CREATED)
+        return Response(data=data, status=HTTPStatus.CREATED)
 
     def update(self, request: Request, mtn: str) -> Response:
         """Update a HazTrak hazardous waste manifest."""
@@ -54,7 +55,7 @@ class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins
             data=manifest_serializer.validated_data,
         )
         data = ManifestSerializer(manifest).data
-        return Response(data=data, status=status.HTTP_200_OK)
+        return Response(data=data, status=HTTPStatus.OK)
 
     @extend_schema(
         responses={
@@ -82,7 +83,7 @@ class ElectronicManifestSaveView(GenericAPIView):
         manifest_serializer = self.serializer_class(data=request.data)
         manifest_serializer.is_valid(raise_exception=True)
         data = save_emanifest(username=str(request.user), data=manifest_serializer.data)
-        return Response(data=data, status=status.HTTP_201_CREATED)
+        return Response(data=data, status=HTTPStatus.CREATED)
 
 
 class MtnListView(ListAPIView):
@@ -117,7 +118,7 @@ class ElectronicManifestSignView(GenericAPIView):
         signature = quicker_serializer.save()
         emanifest = EManifest(username=str(request.user))
         data: TaskResponse = emanifest.sign(signature=signature)
-        return Response(data=data, status=status.HTTP_200_OK)
+        return Response(data=data, status=HTTPStatus.OK)
 
 
 @extend_schema(
@@ -151,4 +152,4 @@ class SiteManifestSyncView(APIView):
             username=request.user.username,
             **serializer.validated_data,
         )
-        return Response(data=data, status=status.HTTP_200_OK)
+        return Response(data=data, status=HTTPStatus.OK)

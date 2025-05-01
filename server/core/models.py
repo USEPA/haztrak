@@ -10,18 +10,18 @@ from guardian.mixins import GuardianUserMixin
 class TrakUser(GuardianUserMixin, AbstractUser):
     """Haztrak abstract user model. It simply inherits from Django's AbstractUser model."""
 
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
+
     class Meta:
         """Metaclass."""
 
         verbose_name = "User"
         verbose_name_plural = "Users"
         ordering = ["username"]
-
-    id = models.UUIDField(
-        primary_key=True,
-        editable=False,
-        default=uuid.uuid4,
-    )
 
     def has_perm(self, perm, obj=None):
         """Check if user has permission."""

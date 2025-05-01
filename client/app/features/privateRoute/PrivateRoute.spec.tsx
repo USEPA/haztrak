@@ -10,7 +10,7 @@ vi.mock('~/hooks');
 describe('PrivateRoute Component', () => {
   it('renders Outlet when user is authenticated', () => {
     // @ts-expect-error - Just mocking the minimal required properties
-    vi.mocked(useAuth).mockReturnValue({ user: { firstName: 'John', username: 'testuser1' } });
+    vi.mocked(useAuth).mockReturnValue({ isAuthenticated: true });
     renderWithProviders(
       <Routes>
         <Route path="/private" element={<PrivateRoute />}>
@@ -25,7 +25,7 @@ describe('PrivateRoute Component', () => {
 
   it('redirects to login when user is not authenticated', () => {
     // @ts-expect-error - Just mocking the minimal required properties
-    vi.mocked(useAuth).mockReturnValue({ user: null, login: {} });
+    vi.mocked(useAuth).mockReturnValue({ isAuthenticated: false });
     renderWithProviders(
       <Routes>
         <Route path="/" element={<div>home</div>} />
@@ -39,7 +39,7 @@ describe('PrivateRoute Component', () => {
 
   it('preserves the location state when redirecting to login', () => {
     // @ts-expect-error - Just mocking the minimal required properties
-    vi.mocked(useAuth).mockReturnValue({ user: { firstName: 'John', username: 'testuser1' } });
+    vi.mocked(useAuth).mockReturnValue({ isAuthenticated: true });
     renderWithProviders(
       <Routes>
         <Route path="/private" element={<PrivateRoute />}>

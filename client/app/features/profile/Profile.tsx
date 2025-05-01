@@ -6,7 +6,7 @@ import { HtCard } from '~/components/legacyUi';
 import { Spinner } from '~/components/ui';
 import { AvatarForm } from '~/features/profile/components/AvatarForm';
 import { useTitle } from '~/hooks';
-import { useGetProfileQuery, useGetRcrainfoProfileQuery, useGetUserQuery } from '~/store';
+import { useGetCurrentUserQuery, useGetProfileQuery, useGetRcrainfoProfileQuery } from '~/store';
 
 /**
  * Display user profile, including their Haztrak information, their organization,
@@ -15,7 +15,7 @@ import { useGetProfileQuery, useGetRcrainfoProfileQuery, useGetUserQuery } from 
  */
 export function Profile(): ReactElement {
   const { data: profile, isLoading: profileLoading } = useGetProfileQuery();
-  const { data: user, isLoading: userLoading } = useGetUserQuery();
+  const { data: user, isLoading: userLoading } = useGetCurrentUserQuery();
   const { data: rcrainfoProfile } = useGetRcrainfoProfileQuery('testuser1');
   const isLoading = profileLoading || userLoading;
   useTitle('Profile');

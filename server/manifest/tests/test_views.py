@@ -1,9 +1,9 @@
+from http import HTTPStatus
 from unittest.mock import patch
 
 import pytest
 from celery.result import AsyncResult
 from manifest.views import ElectronicManifestSignView, ManifestViewSet, MtnListView
-from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
 
@@ -34,7 +34,7 @@ class TestManifestCRUD:
         # Act
         response = ManifestViewSet.as_view({"get": "retrieve"})(request, mtn=manifest.mtn)
         # Assert
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
         assert manifest.mtn in response.data.values()
 
 
@@ -97,9 +97,9 @@ class TestMtnListView:
             response = MtnListView.as_view()(request)
             assert isinstance(response.data, list)
 
-    def test_401_if_not_authorized(self, factory, user):
+    def test_403_if_not_authorized(self, factory, user):
         with patch("manifest.views.get_manifests") as mock_get_manifests:
             mock_get_manifests.return_value = []
             request = factory.get(reverse("manifest:mtn:list"))
             response = MtnListView.as_view()(request)
-            assert response.status_code == status.HTTP_401_UNAUTHORIZED
+            assert response.status_code == HTTPStatus.FORBIDDEN

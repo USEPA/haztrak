@@ -2,7 +2,7 @@
 
 from django.urls import include, path
 
-from .views import LaunchExampleTaskView, TaskStatusView
+from .views import GetCurrentTrakUserView, LaunchExampleTaskView, TaskStatusView
 
 task_patterns = (
     [
@@ -15,4 +15,12 @@ task_patterns = (
 app_name = "core"
 urlpatterns = [
     path("task", include(task_patterns)),
+    path(
+        "user/",
+        include(
+            [
+                path("current-user", GetCurrentTrakUserView.as_view(), name="current_user"),
+            ]
+        ),
+    ),
 ]

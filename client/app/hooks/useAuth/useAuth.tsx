@@ -1,13 +1,18 @@
-import { selectCurrentUser, useAppSelector, useGetUserQuery, useLoginMutation } from '~/store';
+import {
+  selectIsAuthenticated,
+  useAppSelector,
+  useGetSessionQuery,
+  useLoginMutation,
+} from '~/store';
 
 export const useAuth = () => {
-  // ToDo: add user loading state
-  useGetUserQuery();
-  const user = useAppSelector(selectCurrentUser);
+  const { isLoading } = useGetSessionQuery();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const [login, loginState] = useLoginMutation();
 
   return {
-    user,
+    isAuthenticated,
+    isLoading,
     login: { login, ...loginState },
   };
 };

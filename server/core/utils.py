@@ -1,9 +1,11 @@
 """Utility functions for the core app."""
 
+from http import HTTPStatus
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.http import Http404
-from rest_framework import exceptions, status
+from rest_framework import exceptions
 from rest_framework.exceptions import APIException, NotFound
 from rest_framework.response import Response
 from rest_framework.serializers import as_serializer_error
@@ -46,7 +48,7 @@ def exception_handler(exc, context):
     else:
         response = Response(
             {"detail": "Unhandled server error"},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status=HTTPStatus.INTERNAL_SERVER_ERROR,
         )
         response.data["status_code"] = 500
 

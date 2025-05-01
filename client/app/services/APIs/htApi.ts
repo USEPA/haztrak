@@ -1,7 +1,6 @@
 /**htApi.ts - service for making requests to the Haztrak API*/
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { redirect } from 'react-router';
-import { rootStore } from '~/store';
 
 /** An Axios instance with an interceptor to automatically apply authentication headers*/
 export const htApi = axios.create({
@@ -19,10 +18,6 @@ export const htApi = axios.create({
 htApi.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     config.headers = config.headers ?? {};
-    const token = rootStore.getState().auth.token;
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
     return config;
   },
   (error) => {

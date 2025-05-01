@@ -3,7 +3,7 @@ name: "React Client Tests"
 
 on:
   pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
     paths:
       - "client/**"
       - ".github/workflows/test_client.yaml"
@@ -23,7 +23,7 @@ jobs:
         working-directory: ./client
     strategy:
       matrix:
-        node-version: [20, 22]
+        node-version: [ "22" ]
     steps:
       - name: "Checkout"
         uses: actions/checkout@v3
@@ -56,7 +56,7 @@ jobs:
         working-directory: ./client
     strategy:
       matrix:
-        node-version: [20, 22]
+        node-version: [ 20, 22 ]
     steps:
       - name: "Checkout"
         uses: actions/checkout@v3

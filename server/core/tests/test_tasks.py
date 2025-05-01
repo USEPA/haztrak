@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from typing import TYPE_CHECKING
 
 import pytest
@@ -5,7 +6,6 @@ from core.services.task_service import TaskService
 from core.views import TaskStatusView
 from django.core.cache import cache
 from django_celery_results.models import TaskResult
-from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
 
 if TYPE_CHECKING:
@@ -43,7 +43,7 @@ class TestTaskStatusView:
         # Act
         response: Response = TaskStatusView.as_view()(request, task_id=self.mock_task_id)
         # Assert
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
         assert response.data["taskId"] == self.mock_task_id
         assert response.data["status"] == task_status
 
@@ -56,7 +56,7 @@ class TestTaskStatusView:
         # Act
         response: Response = TaskStatusView.as_view()(request, task_id=self.mock_task_id)
         # Assert
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
 
     def test_returns_db_results(self, factory, user, cache_factory):
         # Arrange
@@ -72,7 +72,7 @@ class TestTaskStatusView:
         # Act
         response: Response = TaskStatusView.as_view()(request, task_id=self.mock_task_id)
         # Assert
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == HTTPStatus.OK
         assert response.data["taskId"] == self.mock_task_id
 
 
