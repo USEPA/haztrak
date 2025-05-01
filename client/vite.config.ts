@@ -1,6 +1,6 @@
 import * as path from 'path';
 /// <reference types="vitest" />
-import viteReact from '@vitejs/plugin-react';
+import { reactRouter } from '@react-router/dev/vite';
 import { defineConfig } from 'vite';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 import { dependencies } from './package.json';
@@ -35,7 +35,7 @@ export default defineConfig({
       },
     },
   },
-  plugins: [viteReact(), viteTsconfigPaths()],
+  plugins: [viteTsconfigPaths(), reactRouter()],
   server: {
     host: true,
     port: 3000,
