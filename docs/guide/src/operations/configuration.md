@@ -134,16 +134,6 @@ https://docs.python.org/3/library/logging.html#logging-levels
 
 - `HT_LOG_LEVEL`
   - default: `INFO`
-- `HT_TRAK_LOG_LEVEL`
-  - default: Same level specified by `HT_LOG_LEVEL` if not provided
-- `HT_CORE_LOG_LEVEL`
-  - default: Same level specified by `HT_LOG_LEVEL` if not provided
-
-The `HT_TRAK_LOG_LEVEL` and `HT_CORE_LOG_LEVEL` are specific to the Trak and
-Core
-django apps, respectively. If none of these variables are supplied, all values
-will default to `HT_LOG_LEVEL`s default.
-
 - `CELERY_LOG_LEVEL`
   - default: `INFO`
 

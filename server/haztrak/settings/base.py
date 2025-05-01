@@ -14,8 +14,6 @@ CACHE_URL = "HT_CACHE_URL"
 TIMEZONE_ENV = "HT_TIMEZONE"
 TEST_DB_NAME_ENV = "HT_TEST_DB_NAME"
 HT_LOG_LEVEL = os.getenv("HT_LOG_LEVEL", "INFO")
-HT_TRAK_LOG_LEVEL = os.getenv("HT_TRAK_LOG_LEVEL", HT_LOG_LEVEL)
-HT_CORE_LOG_LEVEL = os.getenv("HT_CORE_LOG_LEVEL", HT_LOG_LEVEL)
 HT_SIGNING_KEY = os.getenv(
     "HT_SIGNING_KEY",
     "0dd3f4e68730bedfb07e6bc2e8f00a56c4db2d4a4b37e64ac0a83b8c97ec55dd",
@@ -212,16 +210,6 @@ LOGGING = {
     "loggers": {
         "django": {
             "level": HT_LOG_LEVEL,
-            "handlers": ["console"],
-            "propagate": False,
-        },
-        "rcrasite": {
-            "level": HT_TRAK_LOG_LEVEL,
-            "handlers": ["console"],
-            "propagate": False,
-        },
-        "core": {
-            "level": HT_CORE_LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
