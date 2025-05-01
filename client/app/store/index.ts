@@ -44,7 +44,7 @@ export const {
 
 // Authentication Slice
 export { selectIsAuthenticated } from '~/store/authSlice/auth.slice';
-export type { HaztrakUser } from '~/store/authSlice/auth.slice';
+export type { HaztrakUser } from '~/store/userApi/userApi';
 
 // Notification Slice
 export {

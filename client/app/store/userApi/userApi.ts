@@ -1,6 +1,14 @@
 import { HaztrakSite } from '~/components/Site';
-import { HaztrakUser } from '~/store/authSlice/auth.slice';
 import { TaskResponse, haztrakApi } from '~/store/htApi.slice';
+
+/** The user data stored in the Redux store */
+export interface HaztrakUser {
+  id?: string;
+  username: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+}
 
 /**The user's RCRAInfo account data stored in the Redux store*/
 export interface ProfileSlice {

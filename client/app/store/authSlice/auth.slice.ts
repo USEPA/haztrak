@@ -2,14 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '~/store';
 import { userApi } from '~/store/userApi/userApi';
 
-export interface HaztrakUser {
-  id?: string;
-  username: string;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-}
-
 /** The Redux stored information on the current haztrak user*/
 export interface AuthSlice {
   isAuthenticated: boolean;
@@ -38,10 +30,12 @@ const slice = createSlice({
       state.username = payload.data.user.username;
       state.email = payload.data.user.email;
     });
-    builder.addMatcher(userApi.endpoints.getSession.matchRejected, (state) => {
-      state.isAuthenticated = false;
-      state.username = null;
-      state.email = null;
+    builder.addMatcher(userApi.endpoints.getSession.matchRejected, (state, { payload }) => {
+      if (payload?.status === 401) {
+        state.isAuthenticated = false;
+        state.username = null;
+        state.email = null;
+      }
     });
     builder.addMatcher(userApi.endpoints.getSession.matchPending, (state, { payload }) => {
       state.isAuthenticated = false;
@@ -53,12 +47,6 @@ const slice = createSlice({
       state.username = null;
       state.isAuthenticated = false;
     });
-    // builder.addMatcher(userApi.endpoints.getUser.matchRejected, (state, { payload }) => {
-    //   if (payload?.status === 401) {
-    //     state.user = null;
-    //     state.isAuthenticated = false;
-    //   }
-    // });
   },
 });
 

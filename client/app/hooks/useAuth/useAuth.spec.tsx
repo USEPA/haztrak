@@ -11,27 +11,19 @@ beforeAll(() => server.listen());
 afterAll(() => server.close());
 
 describe('useAuth', () => {
-  it('returns user from useAppSelector', () => {
+  it('unauthenticated by default', () => {
     const mockUser = createMockHaztrakUser();
 
     const { result } = renderHookWithProviders(() => useAuth(), {
-      preloadedState: { auth: { user: mockUser, token: null } },
+      preloadedState: { auth: { isAuthenticated: false, username: null, email: null } },
     });
 
-    expect(result.current.user?.username).toEqual(mockUser.username);
-  });
-
-  it('returns null when no user is present', () => {
-    const { result } = renderHookWithProviders(() => useAuth(), {
-      preloadedState: { auth: { user: null, token: null } },
-    });
-
-    expect(result.current.user).toBeNull();
+    expect(result.current.isAuthenticated).toBeFalsy();
   });
 
   it('returns login function and state', () => {
     const { result } = renderHookWithProviders(() => useAuth(), {
-      preloadedState: { auth: { user: null, token: null } },
+      preloadedState: { auth: { isAuthenticated: true, username: null, email: null } },
     });
 
     expect(result.current.login).toHaveProperty('login');
