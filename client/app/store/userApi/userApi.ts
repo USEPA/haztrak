@@ -107,7 +107,7 @@ export const userApi = haztrakApi.injectEndpoints({
     // Note: build.query<ReturnType, ArgType>
     login: build.mutation<AuthSuccessResponse, LoginRequest>({
       query: (data) => ({
-        url: '_allauth/browser/v1/auth/login',
+        url: 'browser/v1/auth/login',
         method: 'POST',
         data: data,
       }),
@@ -116,7 +116,7 @@ export const userApi = haztrakApi.injectEndpoints({
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     logout: build.mutation<void, void>({
       query: () => ({
-        url: '_allauth/browser/v1/auth/logout',
+        url: 'browser/v1/auth/logout',
         method: 'POST',
       }),
       invalidatesTags: ['user', 'auth'],
@@ -131,7 +131,7 @@ export const userApi = haztrakApi.injectEndpoints({
     }),
     getSession: build.query<AuthSuccessResponse, void>({
       query: () => ({
-        url: '_allauth/browser/v1/auth/session',
+        url: 'browser/v1/auth/session',
         method: 'GET',
       }),
       providesTags: ['auth', 'user'],

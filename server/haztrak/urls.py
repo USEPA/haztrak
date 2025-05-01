@@ -48,7 +48,7 @@ urlpatterns = [
                     name="swagger-ui",
                 ),
                 path(r"health/", include("health_check.urls")),
-                path("_allauth/", include("allauth.headless.urls")),
+                path("", include("allauth.headless.urls")),
             ],
         ),
     ),
