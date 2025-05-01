@@ -11,11 +11,11 @@ import { AuthSuccessResponse, HaztrakUser } from '~/store/userApi/userApi';
 const API_BASE_URL = import.meta.env.VITE_HT_API_URL;
 export const mockUserEndpoints = [
   /** GET User */
-  http.get(`${API_BASE_URL}/api/auth/user/`, () => {
+  http.get(`${API_BASE_URL}/api/user/current-user`, () => {
     return HttpResponse.json({ ...createMockHaztrakUser() }, { status: 200 });
   }),
   /** Update User */
-  http.put(`${API_BASE_URL}/api/auth/user/`, (info) => {
+  http.put(`${API_BASE_URL}/api/user/current-user`, (info) => {
     const user: HaztrakUser = { ...createMockHaztrakUser() };
     return HttpResponse.json({ ...user, ...info.request.body }, { status: 200 });
   }),
@@ -56,7 +56,7 @@ export const mockUserEndpoints = [
     );
   }),
   /** Logout */
-  http.post(`${API_BASE_URL}/api/auth/logout/`, () => {
+  http.post(`${API_BASE_URL}/api/browser/v1/auth/logout/`, () => {
     return HttpResponse.json({ detail: 'Successfully logged out.' }, { status: 200 });
   }),
   /** GET RCRAInfo profile */
