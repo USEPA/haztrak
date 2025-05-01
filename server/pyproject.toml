@@ -32,7 +32,6 @@ dependencies = [
     "redis==5.1.0",
     "drf-spectacular==0.28.0",
     "django-health-check==3.18.3",
-    "dj-rest-auth[with-social]==7.0.1",
     "django-guardian==2.4.0",
     "django-allauth[socialaccount]>=65.0.0,<66.0.0",
     "djangorestframework-simplejwt==5.5.0",
