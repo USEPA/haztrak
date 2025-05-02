@@ -4,6 +4,8 @@ import { reactRouter } from '@react-router/dev/vite';
 import { defineConfig } from 'vite';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 
+const isTest = process.env.NODE_ENV === 'test';
+
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
@@ -15,7 +17,7 @@ export default defineConfig({
     outDir: 'build',
     chunkSizeWarningLimit: 500,
   },
-  plugins: [viteTsconfigPaths(), reactRouter()],
+  plugins: [viteTsconfigPaths(), !isTest && reactRouter()],
   server: {
     host: true,
     port: 3000,
