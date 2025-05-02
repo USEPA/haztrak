@@ -53,8 +53,8 @@ export default defineConfig({
         '**/build/**',
         '**/dist/**',
         '**/coverage/**',
-        '**/app/setupTests.ts',
-        '**/app/reportWebVitals.ts',
+        '**/src/setupTests.ts',
+        '**/src/reportWebVitals.ts',
         '**/public/**',
         '**/*.d.ts',
         '**/index.ts',
@@ -63,6 +63,6 @@ export default defineConfig({
       ],
     },
     globals: true,
-    setupFiles: ['./app/mocks/setupTests.ts'],
+    setupFiles: ['./src/mocks/setupTests.ts'],
   },
 });
