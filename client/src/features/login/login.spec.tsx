@@ -1,7 +1,7 @@
 import { renderWithProviders, screen } from '~/mocks';
 
 import { describe, expect, test } from 'vitest';
-import { Login } from '~/features/login';
+import { Component as Login } from '~/features/login';
 
 describe('Login component', () => {
   test('renders', () => {
