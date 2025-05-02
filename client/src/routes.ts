@@ -11,10 +11,10 @@ export default [
         ...prefix('/:siteId', [
           index('./features/siteDetails/index.ts'),
           ...prefix('/manifest', [
-            index('./features/manifestList/index.ts', { id: 'globalmanifestList' }),
-            route('/new', './features/newManifest/index.ts', { id: 'globalManifestNew' }),
+            index('./features/manifestList/index.ts', { id: 'siteManifestList' }),
+            route('/new', './features/newManifest/index.ts', { id: 'siteManifestNew' }),
             route('/:mtn/:action', './features/manifestDetails/index.ts', {
-              id: 'globalManifestDetails',
+              id: 'siteManifestDetails',
             }),
           ]),
         ]),
