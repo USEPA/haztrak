@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App';
+import { HydratedRouter } from 'react-router/dom';
 
 // Start mock service worker in development mode
 async function enableMocking() {
@@ -17,7 +17,7 @@ const root = createRoot(container);
 enableMocking().then(() => {
   root.render(
     <React.StrictMode>
-      <App />
+      <HydratedRouter />
     </React.StrictMode>
   );
 });
