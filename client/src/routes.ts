@@ -8,7 +8,21 @@ export default [
       route('/organization', './features/org/index.ts'),
       ...prefix('/site', [
         index('./features/siteList/index.ts'),
-        route('/:siteId', './features/siteDetails/index.ts'),
+        ...prefix('/:siteId', [
+          index('./features/siteDetails/index.ts'),
+          ...prefix('/manifest', [
+            index('./features/manifestList/index.ts', { id: 'globalmanifestList' }),
+            route('/new', './features/newManifest/index.ts', { id: 'globalManifestNew' }),
+            route('/:mtn/:action', './features/manifestDetails/index.ts', {
+              id: 'globalManifestDetails',
+            }),
+          ]),
+        ]),
+      ]),
+      ...prefix('/manifest', [
+        index('./features/manifestList/index.ts'),
+        route('/new', './features/newManifest/index.ts'),
+        route('/:mtn/:action', './features/manifestDetails/index.ts'),
       ]),
     ]),
   ]),

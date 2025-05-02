@@ -1,5 +1,4 @@
-import { SiteDetails, siteDetailsLoader } from './SiteDetails';
+import { SiteDetails } from './SiteDetails';
 
-export { siteDetailsLoader as loader };
 export { SiteDetails as Component };
 export default SiteDetails;
