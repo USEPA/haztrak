@@ -23,7 +23,7 @@ dependencies = [
     "django-cors-headers==4.4.0",
     "django-extensions==3.2.3",
     "django-celery-beat==2.8.0",
-    "djangorestframework==3.15.2",
+    "djangorestframework==3.16.0",
     "gunicorn==23.0.0",
     "emanifest==4.0.3",
     "psycopg[binary]==3.2.6",
