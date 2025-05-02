@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import { AppProvider } from '~/providers';
+import './globals.css';
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
@@ -9,7 +11,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <link rel="icon" href="/favicon.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
-        <meta name="description" content="Web site created using create-react-app" />
+        <meta name="description" content="Hazardous waste tracking made easy" />
         <link rel="manifest" href="/manifest.json" />
         <title>Haztrak</title>
         <Meta />
@@ -26,5 +28,9 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function Root() {
-  return <Outlet />;
+  return (
+    <AppProvider>
+      <Outlet />;
+    </AppProvider>
+  );
 }
