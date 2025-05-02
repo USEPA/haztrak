@@ -1,8 +1,8 @@
-import { type RouteConfig, index, route } from '@react-router/dev/routes';
+import { type RouteConfig, index, layout, route } from '@react-router/dev/routes';
 
 export default [
   route('/', './features/privateRoute/index.ts', [
-    route('.', './features/layout/index.ts', [index('./features/dashboard/index.ts')]),
+    layout('./features/layout/index.ts', [index('./features/dashboard/index.ts')]),
   ]),
   route('login', './features/login/index.ts'),
   route('register', './features/register/index.ts'),
