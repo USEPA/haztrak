@@ -48,7 +48,3 @@ repos:
     rev: v3.15.0
     hooks:
       - id: pyupgrade
-  - repo: https://github.com/biomejs/pre-commit
-    rev: v0.6.1
-    hooks:
-      - id: biome-check
