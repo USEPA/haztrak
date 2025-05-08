@@ -373,7 +373,7 @@ wheels = [
 
 [[package]]
 name = "django-stubs"
-version = "5.0.4"
+version = "5.1.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asgiref" },
@@ -382,22 +382,27 @@ dependencies = [
     { name = "types-pyyaml" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/36/f4/2dfc77809e4d04164ec614755e2359ec2e68a32f7b5428909fa0b7f8f4e0/django_stubs-5.0.4.tar.gz", hash = "sha256:78e3764488fdfd2695f12502136548ec22f8d4b1780541a835042b8238d11514", size = 262238, upload-time = "2024-07-28T18:10:22.041Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/dd/48/e733ceff94ed3c4ccba4c2f0708739974bbcdbcfb69efefb87b10780937f/django_stubs-5.1.3.tar.gz", hash = "sha256:8c230bc5bebee6da282ba8a27ad1503c84a0c4cd2f46e63d149e76d2a63e639a", size = 267390, upload-time = "2025-02-07T09:56:59.773Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ec/f0/36c0f82ed7b4ef630b39e165590645c4fe4361f52d41bca5001327d62f57/django_stubs-5.0.4-py3-none-any.whl", hash = "sha256:c2502f5ecbae50c68f9a86d52b5b2447d8648fd205036dad0ccb41e19a445927", size = 466530, upload-time = "2024-07-28T18:10:19.978Z" },
+    { url = "https://files.pythonhosted.org/packages/74/94/3551a181faf44a63a4ef1ab8e0eb7f27f6af168c2f719ea482e54b39d237/django_stubs-5.1.3-py3-none-any.whl", hash = "sha256:716758ced158b439213062e52de6df3cff7c586f9f9ad7ab59210efbea5dfe78", size = 472753, upload-time = "2025-02-07T09:56:57.291Z" },
+]
+
+[package.optional-dependencies]
+compatible-mypy = [
+    { name = "mypy" },
 ]
 
 [[package]]
 name = "django-stubs-ext"
-version = "5.0.4"
+version = "5.1.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/91/77/ef453a8286fff87db8efd7fe93c1a86f05aeddcc78973c883af91b667f74/django_stubs_ext-5.0.4.tar.gz", hash = "sha256:85da065224204774208be29c7d02b4482d5a69218a728465c2fbe41725fdc819", size = 9410, upload-time = "2024-07-28T18:09:42.706Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9f/06/7b210e0073c6cb8824bde82afc25f268e8c410a99d3621297f44fa3f6a6c/django_stubs_ext-5.1.3.tar.gz", hash = "sha256:3e60f82337f0d40a362f349bf15539144b96e4ceb4dbd0239be1cd71f6a74ad0", size = 9613, upload-time = "2025-02-07T09:56:22.543Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cc/54/66a7ccb1f4e4a8e37e0881a3dfdcabaee9fc0c0c91cbe64170e794acebd7/django_stubs_ext-5.0.4-py3-none-any.whl", hash = "sha256:910cbaff3d1e8e806a5c27d5ddd4088535aae8371ea921b7fd680fdfa5f14e30", size = 8954, upload-time = "2024-07-28T18:09:41.325Z" },
+    { url = "https://files.pythonhosted.org/packages/cc/52/50125afcf29382b7f9d88a992e44835108dd2f1694d6d17d6d3d6fe06c81/django_stubs_ext-5.1.3-py3-none-any.whl", hash = "sha256:64561fbc53e963cc1eed2c8eb27e18b8e48dcb90771205180fe29fc8a59e55fd", size = 9034, upload-time = "2025-02-07T09:56:19.51Z" },
 ]
 
 [[package]]
@@ -544,7 +549,7 @@ dependencies = [
 dev = [
     { name = "celery-types" },
     { name = "coverage" },
-    { name = "django-stubs" },
+    { name = "django-stubs", extra = ["compatible-mypy"] },
     { name = "django-stubs-ext" },
     { name = "djangorestframework-stubs" },
     { name = "faker" },
@@ -560,6 +565,28 @@ dev = [
     { name = "pytest-xdist" },
     { name = "responses" },
     { name = "ruff" },
+    { name = "types-redis" },
+]
+test = [
+    { name = "coverage" },
+    { name = "faker" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "pytest-django" },
+    { name = "pytest-env" },
+    { name = "pytest-mock" },
+    { name = "pytest-randomly" },
+    { name = "pytest-xdist" },
+    { name = "responses" },
+]
+type = [
+    { name = "celery-types" },
+    { name = "django-stubs", extra = ["compatible-mypy"] },
+    { name = "django-stubs-ext" },
+    { name = "djangorestframework-stubs" },
+    { name = "mypy" },
+    { name = "mypy-extensions" },
+    { name = "types-redis" },
 ]
 
 [package.metadata]
@@ -587,12 +614,12 @@ requires-dist = [
 dev = [
     { name = "celery-types", specifier = "==0.23.0" },
     { name = "coverage", specifier = "==7.5.4" },
-    { name = "django-stubs", specifier = "==5.0.4" },
-    { name = "django-stubs-ext", specifier = "==5.0.4" },
+    { name = "django-stubs", extras = ["compatible-mypy"], specifier = ">=5.1.3,<5.2.0" },
+    { name = "django-stubs-ext", specifier = ">=5.1.3,<5.2.0" },
     { name = "djangorestframework-stubs", specifier = "==3.15.0" },
     { name = "faker", specifier = "==26.1.0" },
     { name = "mypy", specifier = "==1.15.0" },
-    { name = "mypy-extensions", specifier = "==1.0.0" },
+    { name = "mypy-extensions", specifier = ">=1.0.0" },
     { name = "pre-commit", specifier = "==4.2.0" },
     { name = "pytest", specifier = "==8.3.4" },
     { name = "pytest-cov", specifier = ">=6.0.0" },
@@ -603,6 +630,28 @@ dev = [
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "responses", specifier = "==0.25.3" },
     { name = "ruff", specifier = "==0.11.7" },
+    { name = "types-redis", specifier = ">=4.6.0" },
+]
+test = [
+    { name = "coverage", specifier = "==7.5.4" },
+    { name = "faker", specifier = "==26.1.0" },
+    { name = "pytest", specifier = "==8.3.4" },
+    { name = "pytest-cov", specifier = ">=6.0.0" },
+    { name = "pytest-django", specifier = "==4.8.0" },
+    { name = "pytest-env", specifier = ">=1.1.5" },
+    { name = "pytest-mock", specifier = ">=3.14.0" },
+    { name = "pytest-randomly", specifier = ">=3.16.0" },
+    { name = "pytest-xdist", specifier = ">=3.6.1" },
+    { name = "responses", specifier = "==0.25.3" },
+]
+type = [
+    { name = "celery-types", specifier = "==0.23.0" },
+    { name = "django-stubs", extras = ["compatible-mypy"], specifier = ">=5.1.3,<5.2.0" },
+    { name = "django-stubs-ext", specifier = ">=5.1.3,<5.2.0" },
+    { name = "djangorestframework-stubs", specifier = "==3.15.0" },
+    { name = "mypy", specifier = "==1.15.0" },
+    { name = "mypy-extensions", specifier = ">=1.0.0" },
+    { name = "types-redis", specifier = ">=4.6.0" },
 ]
 
 [[package]]
@@ -1186,6 +1235,15 @@ wheels = [
 ]
 
 [[package]]
+name = "setuptools"
+version = "80.3.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/70/dc/3976b322de9d2e87ed0007cf04cc7553969b6c7b3f48a565d0333748fbcd/setuptools-80.3.1.tar.gz", hash = "sha256:31e2c58dbb67c99c289f51c16d899afedae292b978f8051efaf6262d8212f927", size = 1315082, upload-time = "2025-05-04T18:47:04.397Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/53/7e/5d8af3317ddbf9519b687bd1c39d8737fde07d97f54df65553faca5cffb1/setuptools-80.3.1-py3-none-any.whl", hash = "sha256:ea8e00d7992054c4c592aeb892f6ad51fe1b4d90cc6947cc45c45717c40ec537", size = 1201172, upload-time = "2025-05-04T18:47:02.575Z" },
+]
+
+[[package]]
 name = "six"
 version = "1.17.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1204,12 +1262,50 @@ wheels = [
 ]
 
 [[package]]
+name = "types-cffi"
+version = "1.17.0.20250326"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "types-setuptools" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3f/3b/d29491d754b9e42edd4890648311ffa5d4d000b7d97b92ac4d04faad40d8/types_cffi-1.17.0.20250326.tar.gz", hash = "sha256:6c8fea2c2f34b55e5fb77b1184c8ad849d57cf0ddccbc67a62121ac4b8b32254", size = 16887, upload-time = "2025-03-26T02:53:52.296Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/61/49/ce473d7fbc2c80931ef9f7530fd3ddf31b8a5bca56340590334ce6ffbfb1/types_cffi-1.17.0.20250326-py3-none-any.whl", hash = "sha256:5af4ecd7374ae0d5fa9e80864e8d4b31088cc32c51c544e3af7ed5b5ed681447", size = 20133, upload-time = "2025-03-26T02:53:51.159Z" },
+]
+
+[[package]]
+name = "types-pyopenssl"
+version = "24.1.0.20240722"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cryptography" },
+    { name = "types-cffi" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/93/29/47a346550fd2020dac9a7a6d033ea03fccb92fa47c726056618cc889745e/types-pyOpenSSL-24.1.0.20240722.tar.gz", hash = "sha256:47913b4678a01d879f503a12044468221ed8576263c1540dcb0484ca21b08c39", size = 8458, upload-time = "2024-07-22T02:32:22.558Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/98/05/c868a850b6fbb79c26f5f299b768ee0adc1f9816d3461dcf4287916f655b/types_pyOpenSSL-24.1.0.20240722-py3-none-any.whl", hash = "sha256:6a7a5d2ec042537934cfb4c9d4deb0e16c4c6250b09358df1f083682fe6fda54", size = 7499, upload-time = "2024-07-22T02:32:21.232Z" },
+]
+
+[[package]]
 name = "types-pyyaml"
 version = "6.0.12.20250402"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/2d/68/609eed7402f87c9874af39d35942744e39646d1ea9011765ec87b01b2a3c/types_pyyaml-6.0.12.20250402.tar.gz", hash = "sha256:d7c13c3e6d335b6af4b0122a01ff1d270aba84ab96d1a1a1063ecba3e13ec075", size = 17282, upload-time = "2025-04-02T02:56:00.235Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ed/56/1fe61db05685fbb512c07ea9323f06ea727125951f1eb4dff110b3311da3/types_pyyaml-6.0.12.20250402-py3-none-any.whl", hash = "sha256:652348fa9e7a203d4b0d21066dfb00760d3cbd5a15ebb7cf8d33c88a49546681", size = 20329, upload-time = "2025-04-02T02:55:59.382Z" },
+]
+
+[[package]]
+name = "types-redis"
+version = "4.6.0.20241004"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cryptography" },
+    { name = "types-pyopenssl" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3a/95/c054d3ac940e8bac4ca216470c80c26688a0e79e09f520a942bb27da3386/types-redis-4.6.0.20241004.tar.gz", hash = "sha256:5f17d2b3f9091ab75384153bfa276619ffa1cf6a38da60e10d5e6749cc5b902e", size = 49679, upload-time = "2024-10-04T02:43:59.224Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/55/82/7d25dce10aad92d2226b269bce2f85cfd843b4477cd50245d7d40ecf8f89/types_redis-4.6.0.20241004-py3-none-any.whl", hash = "sha256:ef5da68cb827e5f606c8f9c0b49eeee4c2669d6d97122f301d3a55dc6a63f6ed", size = 58737, upload-time = "2024-10-04T02:43:57.968Z" },
 ]
 
 [[package]]
@@ -1222,6 +1318,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/00/7d/eb174f74e3f5634eaacb38031bbe467dfe2e545bc255e5c90096ec46bc46/types_requests-2.32.0.20250328.tar.gz", hash = "sha256:c9e67228ea103bd811c96984fac36ed2ae8da87a36a633964a21f199d60baf32", size = 22995, upload-time = "2025-03-28T02:55:13.271Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/cc/15/3700282a9d4ea3b37044264d3e4d1b1f0095a4ebf860a99914fd544e3be3/types_requests-2.32.0.20250328-py3-none-any.whl", hash = "sha256:72ff80f84b15eb3aa7a8e2625fffb6a93f2ad5a0c20215fc1dcfa61117bcb2a2", size = 20663, upload-time = "2025-03-28T02:55:11.946Z" },
+]
+
+[[package]]
+name = "types-setuptools"
+version = "80.3.0.20250505"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "setuptools" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f4/1e/9c401fc3aa8f8c1596a9daedbe8d1c70c830e20d78753117d75f7e9b9535/types_setuptools-80.3.0.20250505.tar.gz", hash = "sha256:5fd3d34b8fa3441d68d010fef95e232d1e48f3f5cb578f3477b7aae4f8374502", size = 41205, upload-time = "2025-05-05T03:06:44.726Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3f/bf/466fa9faaf6a99dc68c37492693069c99b4f83c73b5bac59649051a74937/types_setuptools-80.3.0.20250505-py3-none-any.whl", hash = "sha256:117c86a82367306388b55310d04da807ff4c3ecdf769656a5fdc0fdd06a2c1b6", size = 63106, upload-time = "2025-05-05T03:06:43.063Z" },
 ]
 
 [[package]]
