@@ -4,8 +4,6 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-from django.utils.log import DEFAULT_LOGGING
-
 # Globals
 HAZTRAK_VERSION = "0.7.2"
 
@@ -183,38 +181,6 @@ CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "django-db")
 CELERY_RESULT_EXTENDED = True
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
-
-# Logging
-# https://docs.python.org/3/library/logging.html#logrecord-attributes
-LOGGING = {
-    **DEFAULT_LOGGING,
-    "formatters": {
-        "superverbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s:%(lineno)d %(process)d "
-            "%(thread)d %(message)s",
-        },
-        "verbose": {"format": "%(levelname)s %(asctime)s %(module)s:%(lineno)d %(message)s"},
-        "simple": {"format": "%(levelname)s %(message)s"},
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": os.getenv("HT_LOG_FORMAT", "verbose"),
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "INFO",
-        "formatter": "verbose",
-    },
-    "loggers": {
-        "django": {
-            "level": HT_LOG_LEVEL,
-            "handlers": ["console"],
-            "propagate": False,
-        },
-    },
-}
 
 REST_AUTH = {
     "USER_DETAILS_SERIALIZER": "core.serializers.TrakUserSerializer",
