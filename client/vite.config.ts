@@ -1,10 +1,19 @@
-/// <reference types="vitest" />
 import * as path from 'path';
-import { reactRouter } from '@react-router/dev/vite';
+/// <reference types="vitest" />
+import viteReact from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
+import { dependencies } from './package.json';
 
-const isTest = process.env.NODE_ENV === 'test';
+function renderChunks(deps: Record<string, string>) {
+  const chunks = {};
+  Object.keys(deps).forEach((key) => {
+    if (['react', 'react-router', 'react-dom'].includes(key)) return;
+    // @ts-expect-error - error with vite-plugin-eslint
+    chunks[key] = [key];
+  });
+  return chunks;
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,10 +23,19 @@ export default defineConfig({
     },
   },
   build: {
+    sourcemap: true,
     outDir: 'build',
     chunkSizeWarningLimit: 500,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-router', 'react-dom'],
+          ...renderChunks(dependencies),
+        },
+      },
+    },
   },
-  plugins: [viteTsconfigPaths(), !isTest && reactRouter()],
+  plugins: [viteReact(), viteTsconfigPaths()],
   server: {
     host: true,
     port: 3000,
@@ -35,8 +53,8 @@ export default defineConfig({
         '**/build/**',
         '**/dist/**',
         '**/coverage/**',
-        '**/src/setupTests.ts',
-        '**/src/reportWebVitals.ts',
+        '**/app/setupTests.ts',
+        '**/app/reportWebVitals.ts',
         '**/public/**',
         '**/*.d.ts',
         '**/index.ts',
@@ -45,6 +63,6 @@ export default defineConfig({
       ],
     },
     globals: true,
-    setupFiles: ['./src/mocks/setupTests.ts'],
+    setupFiles: ['./app/mocks/setupTests.ts'],
   },
 });
