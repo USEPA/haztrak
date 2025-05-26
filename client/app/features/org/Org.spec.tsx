@@ -17,11 +17,7 @@ describe('Org feature', () => {
   describe('org loader function', () => {
     it('returns null when org query parameter is missing', async () => {
       const request = new Request('http://localhost/org');
-      const result = await orgLoader({
-        request,
-        params: {},
-        context: undefined,
-      });
+      const result = await orgLoader({ request, params: {}, context: {} });
       expect(result).toBeNull();
     });
   });

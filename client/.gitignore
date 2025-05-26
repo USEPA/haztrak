@@ -20,6 +20,4 @@ yarn-error.log*
 tsconfig.tsbuildinfo
 .next
 next-env.d.ts
-
-# React Router
 .react-router/
