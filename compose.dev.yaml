@@ -126,7 +126,12 @@ services:
       context: ./client
       target: dev
     volumes:
-      - ./client:/app
+      - ./client/public:/app/public
+      - ./client/app:/app/app
+      - ./client/postcss.config.js:/app/postcss.config.js
+      - ./client/vite.config.ts:/app/vite.config.ts
+      - ./client/nginx.conf:/app/nginx.conf
+      - ./client/index.html:/app/index.html
     environment:
       VITE_HT_API_URL: ${VITE_HT_API_URL}
       VITE_HT_ENV: ${VITE_HT_ENV}
