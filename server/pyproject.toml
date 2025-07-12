@@ -18,7 +18,7 @@ license = { text = "MIT" }
 requires-python = ">=3.12.0"
 
 dependencies = [
-    "django==5.1.10",
+    "django==5.2.3",
     "django-celery-results==2.5.1",
     "django-cors-headers==4.7.0",
     "django-extensions==4.1",
