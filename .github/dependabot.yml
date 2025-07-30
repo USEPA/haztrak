@@ -18,8 +18,6 @@ updates:
       - 'client'
       - 'dependencies'
     open-pull-requests-limit: 2
-    reviewers:
-      - 'dpgraham4401'
   - package-ecosystem: 'pip'
     directory: '/server'
     schedule:
@@ -28,5 +26,3 @@ updates:
       - 'server'
       - 'dependencies'
     open-pull-requests-limit: 2
-    reviewers:
-      - 'dpgraham4401'
