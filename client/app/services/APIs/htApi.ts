@@ -4,7 +4,7 @@ import { redirect } from 'react-router';
 
 /** An Axios instance with an interceptor to automatically apply authentication headers*/
 export const htApi = axios.create({
-  baseURL: `${import.meta.env.VITE_HT_API_URL}/api`,
+  baseURL: `${import.meta.env.VITE_HT_API_URL}`,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
