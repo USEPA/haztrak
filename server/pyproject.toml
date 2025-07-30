@@ -32,7 +32,7 @@ dependencies = [
     "redis==5.1.0",
     "drf-spectacular==0.28.0",
     "django-health-check==3.18.3",
-    "django-guardian==3.0.0",
+    "django-guardian==3.0.3",
     "django-allauth[socialaccount]>=65.0.0,<66.0.0",
     "pillow==11.1.0",
 ]
