@@ -49,7 +49,7 @@ file._
 
 After all containers are successfully running (you can inspect with
 `docker ps`),
-visit [localhost:8080](http://localhost:8080)
+visit [http://localhost](http://localhost)
 
 ## Fixtures (logging in)
 
@@ -97,8 +97,8 @@ The general steps for obtaining an API ID and key (in preprod) are as follows.
    in [RCRAInfo (PreProduction)](https://rcrainfopreprod.epa.gov/rcrainfo/action/secured/login)
 2. Request access to one fo the test site EPA IDs (e.g., VATESTGEN001)
 
-  - You'll need 'Site Manager' level access to obtain API credentials
-  - Await approval, or contact EPA via the "Feedback/Report an issue".
+- You'll need 'Site Manager' level access to obtain API credentials
+- Await approval, or contact EPA via the "Feedback/Report an issue".
 
 3. Login after approval, generate your API Key.
 
