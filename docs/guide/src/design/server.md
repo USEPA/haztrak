@@ -12,14 +12,18 @@ language, it's easy to read).
 The choice to use Django was made because it is a mature, well-documented, and
 widely used framework that provides a lot of functionality out of the box.
 
-Many Django developer have turned to what they call the 'service layer', which
-usually encapsulated the use cases business logic. It's a contentious topic
-whether the policy/business logic should be
-here or somewhere else, those in favor typically cite the principles discussed
-in Uncle Bob's classic book
-[CLean Architecture](https://www.goodreads.com/en/book/show/18043011-clean-architecture).
-
 ### Useful Links for Django architecture, the service layer, and more
+
+in each Django app, you'll find a `service` package which encapsulates the domain logic.
+Haztrak adopted this approach, for a couple reasons including:
+
+1. Ease of testing
+2. separation of concerns
+
+- We subscribe to the belief that the view should be worried about just that, 'the representation'
+- The model/active record approach leads to god classes that do too much
+
+3. A good place to place multimodel logic.
 
 [DjangoCon 2021 talk by Paul Wolf](https://www.youtube.com/watch?v=l5AtMQbAsAk&t=75s).
 [Hack Soft Django Styleguide repo](https://github.com/HackSoftware/Django-Styleguide).
@@ -29,16 +33,10 @@ in Uncle Bob's classic book
 
 ## Admin Site
 
-The Admin site provides a quick, model-centric interface where trusted
-users can manage content. It's not intended to provide a process centric
-interface,
-admin user's should not be, for example, signing manifests through the admin
-site.
-
 The admin interface is an out-of-the-box feature of
 the [Django framework](https://docs.djangoproject.com/en/stable/ref/contrib/admin/).
 It can be found by appending `/admin` to the URL of the host and port of HTTP
-server, for example `http://localhost:8000/admin`
+server, for example `http://localhost/admin`
 
 ## In-memory Database
 

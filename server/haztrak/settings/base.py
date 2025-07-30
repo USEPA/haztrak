@@ -79,7 +79,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 # URLs
 ROOT_URLCONF = "haztrak.urls"
-APPEND_SLASH = False
+APPEND_SLASH = True
 
 TEMPLATES = [
     {

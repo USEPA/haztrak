@@ -76,7 +76,7 @@ export const haztrakApi = createApi({
   tagTypes: ['user', 'auth', 'profile', 'rcrainfoProfile', 'site', 'code', 'manifest', 'org'],
   reducerPath: 'haztrakApi',
   baseQuery: htApiBaseQuery({
-    baseUrl: `${import.meta.env.VITE_HT_API_URL}/api/`,
+    baseUrl: `${import.meta.env.VITE_HT_API_URL}/`,
   }),
   endpoints: (build) => ({
     // Note: build.query<ReturnType, ArgType>
