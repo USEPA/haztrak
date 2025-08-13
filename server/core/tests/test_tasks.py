@@ -2,7 +2,7 @@ from http import HTTPStatus
 from typing import TYPE_CHECKING
 
 import pytest
-from core.services.task_service import TaskService
+from core.services.task_status import TaskService
 from core.views import TaskStatusView
 from django.core.cache import cache
 from django_celery_results.models import TaskResult
