@@ -5,7 +5,7 @@ from rcrasite.views import HandlerSearchView, RcraSiteDetailsView, RcraSiteSearc
 
 rcrainfo_rcrasite_patterns = (
     [
-        path("/rcrasite/search", HandlerSearchView.as_view(), name="search"),
+        path("rcrasite/search", HandlerSearchView.as_view(), name="search"),
     ],
     "rcrainfo",
 )

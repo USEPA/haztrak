@@ -6,8 +6,8 @@ from .views import GetCurrentTrakUserView, LaunchExampleTaskView, TaskStatusView
 
 task_patterns = (
     [
-        path("/example", LaunchExampleTaskView.as_view(), name="example"),
-        path("/<str:task_id>", TaskStatusView.as_view(), name="status"),
+        path("example", LaunchExampleTaskView.as_view(), name="example"),
+        path("<str:task_id>", TaskStatusView.as_view(), name="status"),
     ],
     "task",
 )
