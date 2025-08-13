@@ -122,6 +122,8 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
+SOCIALACCOUNT_PROVIDERS = {"google": {"EMAIL_AUTHENTICATION": True}}
+
 # Internationalization
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = os.getenv(TIMEZONE_ENV, "UTC")
