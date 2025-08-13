@@ -3,7 +3,7 @@
 from http import HTTPStatus
 
 from core.serializers import TrakUserSerializer
-from core.services.task_service import get_task_status, launch_example_task
+from core.services import get_task_status, launch_example_task
 from django_celery_results.models import TaskResult
 from rest_framework import permissions
 from rest_framework.exceptions import ValidationError
