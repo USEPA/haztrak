@@ -22,7 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 AUTH_USER_MODEL = "core.TrakUser"
 
-WSGI_APPLICATION = "haztrak.wsgi.application"
+WSGI_APPLICATION = "haztrak.wsgi.app"
+ASGI_APPLICATION = "haztrak.asgi.app"
 
 INSTALLED_APPS = [
     "django.contrib.admin",

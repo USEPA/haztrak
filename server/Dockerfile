@@ -18,27 +18,17 @@ ADD . /app
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
 
-# Then, use a final image without uv
+# App
 FROM python:3.12-slim-bookworm
 COPY --from=builder --chown=app:app /app /app
 
-# Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
 
-# Copy the application from the builder
 COPY --from=builder --chown=app:app /app /app
 
-# Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
 
 WORKDIR /app
 
 EXPOSE 8000
-# RUN python manage.py migrate && \
-#    python manage.py collectstatic --noinput
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
-## Production
-#FROM builder AS production
-#EXPOSE 8000
-#CMD  ./run.sh
+CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "haztrak.asgi:app"]
