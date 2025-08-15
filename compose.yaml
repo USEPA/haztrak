@@ -35,7 +35,7 @@ services:
       python manage.py makemigrations &&
       python manage.py migrate &&
       python manage.py loaddata core_dev.yaml rcrasite_dev.yaml org_dev.yaml profile_dev.yaml &&
-      python manage.py runserver 0.0.0.0:8000"
+      uvicorn --host 0.0.0.0 --port 8000 --reload haztrak.asgi:app"
     depends_on:
       db:
         condition: service_healthy
