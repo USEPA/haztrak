@@ -31,4 +31,4 @@ ENV PATH="/app/.venv/bin:$PATH"
 WORKDIR /app
 
 EXPOSE 8000
-CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "haztrak.asgi:app"]
+CMD ["gunicorn", "--bind", "0.0.0:8000", "--workers", "2", "-k", "uvicorn_worker.UvicornWorker", "haztrak.asgi:app"]
