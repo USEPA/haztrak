@@ -21,7 +21,7 @@ class RcraProfileTasks(Task):
 
 
 @shared_task(name="sync profile", base=RcraProfileTasks, bind=True, acks_late=True)
-def sync_user_rcrainfo_sites(self: RcraProfileTasks, username: str) -> None:
+def sync_user_rcrainfo_sites_task(self: RcraProfileTasks, username: str) -> None:
     """
     Task to pull a user's RCRAInfo profile.
 

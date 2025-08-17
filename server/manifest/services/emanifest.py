@@ -9,7 +9,7 @@ from django.db import transaction
 from manifest.models import Manifest, QuickerSign
 from manifest.serializers import ManifestSerializer, QuickerSignSerializer
 from manifest.services.emanifest_search import EmanifestSearch
-from manifest.tasks import pull_manifest, sign_manifest
+from manifest.tasks import pull_manifest_by_mtn_task, sign_manifest_task
 from requests import RequestException
 
 if TYPE_CHECKING:
@@ -98,7 +98,7 @@ class EManifest:
             site_type=signature.site_type,
         )
         signature_serializer = QuickerSignSerializer(signature)
-        task = sign_manifest.delay(username=self.username, **signature_serializer.data)
+        task = sign_manifest_task.delay(username=self.username, **signature_serializer.data)
         return {"taskId": task.id}
 
     def submit_quick_signature(self, signature: dict) -> PullManifestsResult:
@@ -107,7 +107,7 @@ class EManifest:
         response = self.rcrainfo.sign_manifest(**signature)
         if response.ok:
             for manifest in response.json()["manifestReports"]:
-                pull_manifest.delay(
+                pull_manifest_by_mtn_task.delay(
                     mtn=[manifest["manifestTrackingNumber"]],
                     username=self.username,
                 )

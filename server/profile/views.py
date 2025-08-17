@@ -7,7 +7,7 @@ from profile.services import get_user_profile
 from typing import TYPE_CHECKING
 
 from celery.exceptions import CeleryError
-from rcrasite.tasks import sync_user_rcrainfo_sites
+from rcrasite.tasks import sync_user_rcrainfo_sites_task
 from rest_framework.generics import (
     CreateAPIView,
     RetrieveAPIView,
@@ -74,7 +74,7 @@ class RcrainfoProfileSyncView(CreateAPIView):
     def create(self, request: Request, **kwargs) -> Response:
         """Create."""
         try:
-            task: CeleryTask = sync_user_rcrainfo_sites.delay(str(self.request.user))
+            task: CeleryTask = sync_user_rcrainfo_sites_task.delay(str(self.request.user))
             return self.response({"taskId": task.id})
         except CeleryError as exc:
             return self.response(

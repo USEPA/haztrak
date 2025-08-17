@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from django.db import transaction
 from django.db.models import QuerySet
 from manifest.services import TaskResponse
-from manifest.tasks import sync_site_manifests
+from manifest.tasks import sync_site_manifests_task
 from org.models import Org, Site
 
 if TYPE_CHECKING:
@@ -98,5 +98,5 @@ def sync_site_manifest_with_rcrainfo(
     site_id: str | None = None,
 ) -> TaskResponse:
     """Launch a batch processing task to sync a site's manifests from RCRAInfo."""
-    task = sync_site_manifests.delay(site_id=site_id, username=username)
+    task = sync_site_manifests_task.delay(site_id=site_id, username=username)
     return {"taskId": task.id}

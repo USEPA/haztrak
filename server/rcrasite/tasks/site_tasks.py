@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 @shared_task(name="get rcra_site", bind=True)
-def get_rcra_site(self, *, site_id: str, username: str) -> str:
+def get_rcra_site_task(self, *, site_id: str, username: str) -> str:
     """Task to get the rcra_site from the EPA API."""
     try:
         site_service = RcraSiteService(username=username)
