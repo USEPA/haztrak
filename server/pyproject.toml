@@ -36,6 +36,7 @@ dependencies = [
     "django-allauth[socialaccount]>=65.0.0,<66.0.0",
     "pillow==11.1.0",
     "uvicorn[standard]>=0.35.0",
+    "uvicorn-worker>=0.3.0",
 ]
 
 [dependency-groups]
