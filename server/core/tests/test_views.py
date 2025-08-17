@@ -2,7 +2,7 @@ from http import HTTPStatus
 from unittest import mock
 
 import pytest
-from core.views import LaunchExampleTaskView, TaskStatusView
+from core.views import TaskStatusView
 from django.test.client import Client
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, force_authenticate
@@ -25,20 +25,6 @@ class TestUserViews:
         assert response.status_code == 200
         assert user.username in data.values()
         assert user.first_name in data.values()
-
-
-class TestLaunchExampleTaskView:
-    @pytest.fixture
-    def factory(self):
-        return APIRequestFactory()
-
-    def test_successful_launch(self, factory):
-        with mock.patch("core.views.launch_example_task") as mock_task:
-            request = factory.get(reverse("core:task:example"))
-            mock_task.return_value = "123"
-            response = LaunchExampleTaskView.as_view()(request)
-            assert response.status_code == HTTPStatus.OK
-            assert response.data == {"taskId": "123"}
 
 
 class TestTaskStatusView:

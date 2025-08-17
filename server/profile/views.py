@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING
 from celery.exceptions import CeleryError
 from rcrasite.tasks import sync_user_rcrainfo_sites_task
 from rest_framework.generics import (
-    CreateAPIView,
     RetrieveAPIView,
     RetrieveUpdateAPIView,
 )
@@ -17,6 +16,7 @@ from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 if TYPE_CHECKING:
@@ -65,14 +65,14 @@ class RcrainfoProfileRetrieveUpdateView(RetrieveUpdateAPIView):
         return RcrainfoProfile.objects.get_by_trak_username(self.kwargs.get(self.lookup_url_kwarg))
 
 
-class RcrainfoProfileSyncView(CreateAPIView):
+class RcrainfoProfileSyncView(APIView):
     """Launches a task to sync the logged-in user's RCRAInfo profile."""
 
     queryset = None
     response = Response
 
-    def create(self, request: Request, **kwargs) -> Response:
-        """Create."""
+    def post(self, request: Request, **kwargs) -> Response:
+        """Create a job to sync the user's RCRAInfo profile."""
         try:
             task: CeleryTask = sync_user_rcrainfo_sites_task.delay(str(self.request.user))
             return self.response({"taskId": task.id})
