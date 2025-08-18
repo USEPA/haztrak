@@ -12,7 +12,7 @@ site_urls = (
     # or    /org/<org>/sites
     [
         path("", SiteListView.as_view(), name="list"),
-        path("<str:epa_id>", SiteDetailsView.as_view(), name="details"),
+        path("/<str:epa_id>", SiteDetailsView.as_view(), name="details"),
     ],
     "site",
 )
