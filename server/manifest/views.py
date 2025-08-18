@@ -39,7 +39,7 @@ class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins
         manifest_serializer = self.serializer_class(data=request.data)
         manifest_serializer.is_valid(raise_exception=True)
         manifest = create_manifest(
-            username=str(request.user),
+            username=request.user.username,
             data=manifest_serializer.validated_data,
         )
         data = ManifestSerializer(manifest).data
@@ -50,7 +50,7 @@ class ManifestViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins
         manifest_serializer = self.serializer_class(data=request.data)
         manifest_serializer.is_valid(raise_exception=True)
         manifest = update_manifest(
-            username=str(request.user),
+            username=request.user.username,
             mtn=mtn,
             data=manifest_serializer.validated_data,
         )
@@ -82,7 +82,7 @@ class ElectronicManifestSaveView(GenericAPIView):
         """Electronic Manifest Save View."""
         manifest_serializer = self.serializer_class(data=request.data)
         manifest_serializer.is_valid(raise_exception=True)
-        data = save_emanifest(username=str(request.user), data=manifest_serializer.data)
+        data = save_emanifest(username=request.user.username, data=manifest_serializer.data)
         return Response(data=data, status=HTTPStatus.CREATED)
 
 
@@ -95,7 +95,7 @@ class MtnListView(ListAPIView):
     def get_queryset(self):
         """Get a list of manifest tracking numbers."""
         return get_manifests(
-            username=str(self.request.user),
+            username=self.request.user.username,
             epa_id=self.kwargs.get("epa_id", None),
             site_type=self.kwargs.get("site_type", None),
         )
@@ -116,7 +116,7 @@ class ElectronicManifestSignView(GenericAPIView):
         quicker_serializer = self.serializer_class(data=request.data)
         quicker_serializer.is_valid(raise_exception=True)
         signature = quicker_serializer.save()
-        emanifest = EManifest(username=str(request.user))
+        emanifest = EManifest(username=request.user.username)
         data: TaskResponse = emanifest.sign(signature=signature)
         return Response(data=data, status=HTTPStatus.OK)
 
