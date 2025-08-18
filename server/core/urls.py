@@ -2,19 +2,18 @@
 
 from django.urls import include, path
 
-from .views import GetCurrentTrakUserView, LaunchExampleTaskView, TaskStatusView
+from .views import GetCurrentTrakUserView, TaskStatusView
 
 task_patterns = (
     [
-        path("/example", LaunchExampleTaskView.as_view(), name="example"),
-        path("/<str:task_id>", TaskStatusView.as_view(), name="status"),
+        path("<str:task_id>", TaskStatusView.as_view(), name="status"),
     ],
     "task",
 )
 
 app_name = "core"
 urlpatterns = [
-    path("task", include(task_patterns)),
+    path("task/", include(task_patterns)),
     path(
         "user/",
         include(

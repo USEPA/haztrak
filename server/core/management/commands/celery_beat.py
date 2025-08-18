@@ -8,7 +8,7 @@ import subprocess
 from django.core.management.base import BaseCommand
 from django.utils import autoreload
 from django_celery_beat.models import CrontabSchedule, IntervalSchedule, PeriodicTask
-from wasteline.tasks import pull_federal_codes
+from wasteline.tasks import pull_federal_codes_task
 
 CELERY_LOG_LEVEL = os.getenv("CELERY_LOG_LEVEL", "INFO")
 logger = logging.getLogger(__name__)
@@ -37,8 +37,8 @@ class Command(BaseCommand):
 
         periodic_tasks_data = [
             {
-                "task": pull_federal_codes,
-                "name": f"{pull_federal_codes.name}",
+                "task": pull_federal_codes_task,
+                "name": f"{pull_federal_codes_task.name}",
                 # https://crontab.guru/once-a-month
                 "cron": {
                     "minute": "0",

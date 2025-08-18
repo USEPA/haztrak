@@ -15,9 +15,9 @@ profile_router.register("profile", ProfileViewSet)
 
 rcrainfo_profile_patterns = (
     [
-        path("/sync", RcrainfoProfileSyncView.as_view(), name="sync"),
+        path("sync", RcrainfoProfileSyncView.as_view(), name="sync"),
         path(
-            "/<str:username>",
+            "<str:username>",
             RcrainfoProfileRetrieveUpdateView.as_view(),
             name="retrieve-update",
         ),
@@ -28,6 +28,6 @@ rcrainfo_profile_patterns = (
 app_name = "profile"
 urlpatterns = [
     path("my-profile", ProfileDetailsView.as_view(), name="my-profile"),
-    path("rcrainfo-profile", include(rcrainfo_profile_patterns)),
+    path("rcrainfo-profile/", include(rcrainfo_profile_patterns)),
     path("", include(profile_router.urls)),
 ]

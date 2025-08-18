@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 @shared_task(name="pull manifest", bind=True, acks_late=True)
-def pull_manifest(self: Task, *, mtn: list[str], username: str) -> dict:
+def pull_manifest_by_mtn_task(self: Task, *, mtn: list[str], username: str) -> dict:
     """This task initiates a call to the EManifest to pull a manifest by MTN."""
     from core.services import TaskService
     from manifest.services import EManifest
@@ -34,12 +34,7 @@ def pull_manifest(self: Task, *, mtn: list[str], username: str) -> dict:
 
 
 @shared_task(name="sign manifests", bind=True, acks_late=True)
-def sign_manifest(
-    self: Task,
-    *,
-    username: str,
-    **signature_data: dict,
-) -> dict:
+def sign_manifest_task(self: Task, *, username: str, **signature_data: dict) -> dict:
     """A task to Quicker Sign manifest, by MTN, in RCRAInfo."""
     from manifest.services import EManifest
 
@@ -54,7 +49,7 @@ def sign_manifest(
 
 
 @shared_task(name="sync site manifests", bind=True)
-def sync_site_manifests(self, *, site_id: str, username: str):
+def sync_site_manifests_task(self, *, site_id: str, username: str):
     """Asynchronous task to sync an EPA site's manifests."""
     from manifest.services.emanifest import sync_manifests
     from org.services import get_user_site, update_emanifest_sync_date
@@ -78,7 +73,7 @@ def sync_site_manifests(self, *, site_id: str, username: str):
 
 
 @shared_task(name="save RCRAInfo manifests", bind=True)
-def save_to_emanifest(self, *, manifest_data: dict, username: str):
+def save_to_emanifest_task(self, *, manifest_data: dict, username: str):
     """Save manifest data to the EManifest.
 
     Asynchronous task to use the RCRAInfo web services to create an electronic (RCRA) manifest

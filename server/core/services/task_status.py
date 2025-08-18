@@ -4,14 +4,13 @@ import logging
 from typing import TYPE_CHECKING
 
 from core.serializers import TaskStatusSerializer
-from core.tasks import example_task
 from django.core.cache import CacheKeyWarning, cache
 from django_celery_results.models import TaskResult
 from rest_framework.exceptions import ValidationError
 from rest_framework.utils.serializer_helpers import ReturnDict
 
 if TYPE_CHECKING:
-    from celery.result import AsyncResult
+    pass
 
 logger = logging.getLogger(__name__)
 
@@ -46,16 +45,6 @@ def _parse_status(task_status: dict) -> ReturnDict:
     if task_serializer.is_valid():
         return task_serializer.data
     raise ValidationError(task_serializer.errors)
-
-
-def launch_example_task() -> str | None:
-    """Launches an example long-running celery task."""
-    try:
-        task: AsyncResult = example_task.delay()
-    except KeyError:
-        return None
-    else:
-        return task.id
 
 
 class TaskService:
@@ -107,16 +96,6 @@ class TaskService:
                 return cache_data
         except CacheKeyWarning:
             return None
-
-    @staticmethod
-    def launch_example_task() -> str | None:
-        """Launches an example long-running celery task."""
-        try:
-            task: AsyncResult = example_task.delay()
-        except KeyError:
-            return None
-        else:
-            return task.id
 
     def update_task_status(self, status: str, results: dict | None = None) -> object | None:
         """Updates the status of a long-running celery task in our key-value store.
